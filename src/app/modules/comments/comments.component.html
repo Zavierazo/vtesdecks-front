@@ -1,0 +1,34 @@
+<ng-container *transloco="let t; read: 'comments'">
+  <div class="mt-2 d-flex flex-row align-items-center p-3 form-color" *isLogged="true">
+    <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')">
+    <form class="comment-form" [formGroup]="form" (ngSubmit)="addComment()">
+      <div class="input-group mb-3">
+        <input type="text" formControlName="comment" class="form-control" [placeholder]="t('comment_placeholder')">
+        <button type="button" class="btn btn-outline-primary" (click)="addComment()" title="Send comment">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-2 d-flex flex-row align-items-center p-3 form-color justify-content-center" *isLogged="false">
+    {{ t('must_logged') }}
+  </div>
+  <ng-container *ngIf="(comments$ | async)! as comments; else loading">
+    <ng-container *ngIf="comments.length > 0; else noComments">
+      <div class="mt-2 mb-4">
+        <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>
+      </div>
+    </ng-container>
+    <ng-template #noComments>
+      <div class="row d-flex justify-content-center no-comments">
+        <span class="col-12">
+          <i class="bi bi-chat bi-fs-2x" aria-hidden="true"></i>
+        </span>
+        <span class="col-12">{{ t('no_comments') }}</span>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
+</ng-container>

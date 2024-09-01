@@ -1,0 +1,503 @@
+i.vtes {
+  display: inline-block;
+  font-family: sans-serif;
+  position: relative;
+  flex-grow: 1;
+  margin: 0;
+  width: 1.6em;
+  height: 1.6em;
+  filter: drop-shadow(1px 1px 2px white);
+
+  &-small {
+    width: 1.3em;
+    height: 1.3em;
+  }
+
+  &-big {
+    width: 2em;
+    height: 2em;
+  }
+}
+
+/* Clans */
+i.noclan {
+  content: url(/assets/img/icons/clans/noclan.svg);
+}
+i.guruhi {
+  content: url(/assets/img/icons/clans/guruhi.svg);
+}
+i.abo {
+  content: url(/assets/img/icons/clans/abomination.svg);
+}
+i.ahrimanes {
+  content: url(/assets/img/icons/clans/ahrimane.svg);
+}
+i.akunanse {
+  content: url(/assets/img/icons/clans/akunanse.svg);
+}
+i.assamite {
+  content: url(/assets/img/icons/clans/assamite.svg);
+}
+i.baali {
+  content: url(/assets/img/icons/clans/baali.svg);
+}
+i.bloodbrothers {
+  content: url(/assets/img/icons/clans/bloodbrother.svg);
+}
+i.brujah {
+  content: url(/assets/img/icons/clans/brujah.svg);
+}
+i.brujahanti {
+  content: url(/assets/img/icons/clans/brujahantitribu.svg);
+}
+i.caitiff {
+  content: url(/assets/img/icons/clans/caitiff.svg);
+}
+i.daughters {
+  content: url(/assets/img/icons/clans/daughterofcacophony.svg);
+}
+i.fos {
+  content: url(/assets/img/icons/clans/followerofset.svg);
+}
+i.gangrel {
+  content: url(/assets/img/icons/clans/gangrel.svg);
+}
+i.gangrelanti {
+  content: url(/assets/img/icons/clans/gangrelantitribu.svg);
+}
+i.gargoyle {
+  content: url(/assets/img/icons/clans/gargoyle.svg);
+}
+i.giovanni {
+  content: url(/assets/img/icons/clans/giovanni.svg);
+}
+i.guruhi {
+  content: url(/assets/img/icons/clans/guruhi.svg);
+}
+i.harbingers {
+  content: url(/assets/img/icons/clans/harbingerofskulls.svg);
+}
+i.ishtarri {
+  content: url(/assets/img/icons/clans/ishtarri.svg);
+}
+i.kiasyd {
+  content: url(/assets/img/icons/clans/kiasyd.svg);
+}
+i.lasombra {
+  content: url(/assets/img/icons/clans/lasombra.svg);
+}
+i.malkavian {
+  content: url(/assets/img/icons/clans/malkavian.svg);
+}
+i.malkaviananti {
+  content: url(/assets/img/icons/clans/malkavianantitribu.svg);
+}
+i.nagaraja {
+  content: url(/assets/img/icons/clans/nagaraja.svg);
+}
+i.nosferatu {
+  content: url(/assets/img/icons/clans/nosferatu.svg);
+}
+i.nosferatuanti {
+  content: url(/assets/img/icons/clans/nosferatuantitribu.svg);
+}
+i.osebo {
+  content: url(/assets/img/icons/clans/osebo.svg);
+}
+i.pander {
+  content: url(/assets/img/icons/clans/pander.svg);
+}
+i.ravnos {
+  content: url(/assets/img/icons/clans/ravnos.svg);
+}
+i.salubri {
+  content: url(/assets/img/icons/clans/salubri.svg);
+}
+i.salubrianti {
+  content: url(/assets/img/icons/clans/salubriantitribu.svg);
+}
+i.samedi {
+  content: url(/assets/img/icons/clans/samedi.svg);
+}
+i.toreador {
+  content: url(/assets/img/icons/clans/toreador.svg);
+}
+i.toreadoranti {
+  content: url(/assets/img/icons/clans/toreadorantitribu.svg);
+}
+i.tremere {
+  content: url(/assets/img/icons/clans/tremere.svg);
+}
+i.tremereanti {
+  content: url(/assets/img/icons/clans/tremereantitribu.svg);
+}
+i.truebrujah {
+  content: url(/assets/img/icons/clans/truebrujah.svg);
+}
+i.tzimisce {
+  content: url(/assets/img/icons/clans/tzimisce.svg);
+}
+i.ventrue {
+  content: url(/assets/img/icons/clans/ventrue.svg);
+}
+i.ventrueanti {
+  content: url(/assets/img/icons/clans/ventrueantitribu.svg);
+}
+
+/* Creeds */
+i.avenger {
+  content: url(/assets/img/icons/creeds/iconcreavenger.gif);
+}
+i.defender {
+  content: url(/assets/img/icons/creeds/iconcredefender.gif);
+}
+i.innocent {
+  content: url(/assets/img/icons/creeds/iconcreinnocent.gif);
+}
+i.judge {
+  content: url(/assets/img/icons/creeds/iconcrejudge.gif);
+}
+i.martyr {
+  content: url(/assets/img/icons/creeds/iconcremartyr.gif);
+}
+i.redeemer {
+  content: url(/assets/img/icons/creeds/iconcreredeemer.gif);
+}
+i.visionary {
+  content: url(/assets/img/icons/creeds/iconcrevisionary.gif);
+}
+
+/* Disciplines */
+i.nodiscipline {
+  content: url(/assets/img/icons/disciplines/nodiscipline.svg);
+}
+i.abombwe {
+  content: url(/assets/img/icons/disciplines/abombwe.svg);
+}
+i.abombwesup {
+  content: url(/assets/img/icons/disciplines/abombwesup.svg);
+}
+i.animalism {
+  content: url(/assets/img/icons/disciplines/animalism.svg);
+}
+i.animalismsup {
+  content: url(/assets/img/icons/disciplines/animalismsup.svg);
+}
+i.auspex {
+  content: url(/assets/img/icons/disciplines/auspex.svg);
+}
+i.auspexsup {
+  content: url(/assets/img/icons/disciplines/auspexsup.svg);
+}
+i.celerity {
+  content: url(/assets/img/icons/disciplines/celerity.svg);
+}
+i.celeritysup {
+  content: url(/assets/img/icons/disciplines/celeritysup.svg);
+}
+i.chimerstry {
+  content: url(/assets/img/icons/disciplines/chimerstry.svg);
+}
+i.chimerstrysup {
+  content: url(/assets/img/icons/disciplines/chimerstrysup.svg);
+}
+i.daimoinon {
+  content: url(/assets/img/icons/disciplines/daimoinon.svg);
+}
+i.daimoinonsup {
+  content: url(/assets/img/icons/disciplines/daimoinonsup.svg);
+}
+i.dementation {
+  content: url(/assets/img/icons/disciplines/dementation.svg);
+}
+i.dementationsup {
+  content: url(/assets/img/icons/disciplines/dementationsup.svg);
+}
+i.dominate {
+  content: url(/assets/img/icons/disciplines/dominate.svg);
+}
+i.dominatesup {
+  content: url(/assets/img/icons/disciplines/dominatesup.svg);
+}
+i.fortitude {
+  content: url(/assets/img/icons/disciplines/fortitude.svg);
+}
+i.fortitudesup {
+  content: url(/assets/img/icons/disciplines/fortitudesup.svg);
+}
+i.melpominee {
+  content: url(/assets/img/icons/disciplines/melpominee.svg);
+}
+i.melpomineesup {
+  content: url(/assets/img/icons/disciplines/melpomineesup.svg);
+}
+i.mytherceria {
+  content: url(/assets/img/icons/disciplines/mytherceria.svg);
+}
+i.mytherceriasup {
+  content: url(/assets/img/icons/disciplines/mytherceriasup.svg);
+}
+i.necromancy {
+  content: url(/assets/img/icons/disciplines/necromancy.svg);
+}
+i.necromancysup {
+  content: url(/assets/img/icons/disciplines/necromancysup.svg);
+}
+i.obeah {
+  content: url(/assets/img/icons/disciplines/obeah.svg);
+}
+i.obeahsup {
+  content: url(/assets/img/icons/disciplines/obeahsup.svg);
+}
+i.obfuscate {
+  content: url(/assets/img/icons/disciplines/obfuscate.svg);
+}
+i.obfuscatesup {
+  content: url(/assets/img/icons/disciplines/obfuscatesup.svg);
+}
+i.obtenebration {
+  content: url(/assets/img/icons/disciplines/obtenebration.svg);
+}
+i.obtenebrationsup {
+  content: url(/assets/img/icons/disciplines/obtenebrationsup.svg);
+}
+i.potence {
+  content: url(/assets/img/icons/disciplines/potence.svg);
+}
+i.potencesup {
+  content: url(/assets/img/icons/disciplines/potencesup.svg);
+}
+i.presence {
+  content: url(/assets/img/icons/disciplines/presence.svg);
+}
+i.presencesup {
+  content: url(/assets/img/icons/disciplines/presencesup.svg);
+}
+i.protean {
+  content: url(/assets/img/icons/disciplines/protean.svg);
+}
+i.proteansup {
+  content: url(/assets/img/icons/disciplines/proteansup.svg);
+}
+i.quietus {
+  content: url(/assets/img/icons/disciplines/quietus.svg);
+}
+i.quietussup {
+  content: url(/assets/img/icons/disciplines/quietussup.svg);
+}
+i.sanguinus {
+  content: url(/assets/img/icons/disciplines/sanguinus.svg);
+}
+i.sanguinussup {
+  content: url(/assets/img/icons/disciplines/sanguinussup.svg);
+}
+i.serpentis {
+  content: url(/assets/img/icons/disciplines/serpentis.svg);
+}
+i.serpentissup {
+  content: url(/assets/img/icons/disciplines/serpentissup.svg);
+}
+i.spiritus {
+  content: url(/assets/img/icons/disciplines/spiritus.svg);
+}
+i.spiritussup {
+  content: url(/assets/img/icons/disciplines/spiritussup.svg);
+}
+i.temporis {
+  content: url(/assets/img/icons/disciplines/temporis.svg);
+}
+i.temporissup {
+  content: url(/assets/img/icons/disciplines/temporissup.svg);
+}
+i.thanatosis {
+  content: url(/assets/img/icons/disciplines/thanatosis.svg);
+}
+i.thanatosissup {
+  content: url(/assets/img/icons/disciplines/thanatosissup.svg);
+}
+i.bloodsorcery {
+  content: url(/assets/img/icons/disciplines/bloodsorcery.svg);
+}
+i.bloodsorcerysup {
+  content: url(/assets/img/icons/disciplines/bloodsorcerysup.svg);
+}
+i.valeren {
+  content: url(/assets/img/icons/disciplines/valeren.svg);
+}
+i.valerensup {
+  content: url(/assets/img/icons/disciplines/valerensup.svg);
+}
+i.vicissitude {
+  content: url(/assets/img/icons/disciplines/vicissitude.svg);
+}
+i.vicissitudesup {
+  content: url(/assets/img/icons/disciplines/vicissitudesup.svg);
+}
+i.visceratika {
+  content: url(/assets/img/icons/disciplines/visceratika.svg);
+}
+i.visceratikasup {
+  content: url(/assets/img/icons/disciplines/visceratikasup.svg);
+}
+i.striga {
+  content: url(/assets/img/icons/disciplines/striga.svg);
+}
+i.strigasup {
+  content: url(/assets/img/icons/disciplines/strigasup.svg);
+}
+i.maleficia {
+  content: url(/assets/img/icons/disciplines/maleficia.svg);
+}
+i.maleficiasup {
+  content: url(/assets/img/icons/disciplines/maleficiasup.svg);
+}
+
+/* Virtues */
+i.defense {
+  content: url(/assets/img/icons/disciplines/defense.svg);
+}
+i.innocence {
+  content: url(/assets/img/icons/disciplines/innocence.svg);
+}
+i.judgment {
+  content: url(/assets/img/icons/disciplines/judgment.svg);
+}
+i.martyrdom {
+  content: url(/assets/img/icons/disciplines/martyrdom.svg);
+}
+i.redemption {
+  content: url(/assets/img/icons/disciplines/redemption.svg);
+}
+i.vengeance {
+  content: url(/assets/img/icons/disciplines/vengeance.svg);
+}
+i.vision {
+  content: url(/assets/img/icons/disciplines/vision.svg);
+}
+
+/* Miscelaneous */
+i.flight {
+  content: url(/assets/img/icons/misc/flight.gif);
+}
+i.bloodx {
+  content: url(/assets/img/icons/misc/bloodx.png);
+  width: 1em;
+}
+i.blood1 {
+  content: url(/assets/img/icons/misc/blood1.png);
+  width: 1em;
+}
+i.blood2 {
+  content: url(/assets/img/icons/misc/blood2.png);
+  width: 1em;
+}
+i.blood3 {
+  content: url(/assets/img/icons/misc/blood3.png);
+  width: 1em;
+}
+i.blood4 {
+  content: url(/assets/img/icons/misc/blood4.png);
+  width: 1em;
+}
+i.bloodcost {
+  content: url(/assets/img/icons/misc/bloodcost.png);
+  width: 1em;
+}
+i.poolx {
+  content: url(/assets/img/icons/misc/poolx.png);
+  width: 0.9em;
+}
+i.poolx {
+  content: url(/assets/img/icons/misc/poolx.png);
+  width: 0.9em;
+}
+i.pool1 {
+  content: url(/assets/img/icons/misc/pool1.png);
+  width: 0.9em;
+}
+i.pool2 {
+  content: url(/assets/img/icons/misc/pool2.png);
+  width: 0.9em;
+}
+i.pool3 {
+  content: url(/assets/img/icons/misc/pool3.png);
+  width: 0.9em;
+}
+i.pool4 {
+  content: url(/assets/img/icons/misc/pool4.png);
+  width: 0.9em;
+}
+i.pool5 {
+  content: url(/assets/img/icons/misc/pool5.png);
+  width: 0.9em;
+}
+i.pool6 {
+  content: url(/assets/img/icons/misc/pool6.png);
+  width: 0.9em;
+}
+i.poolcost {
+  content: url(/assets/img/icons/misc/poolcost.png);
+  width: 0.9em;
+}
+i.advanced {
+  content: url(/assets/img/icons/misc/advanced.svg);
+  width: 0.9em;
+  max-width: 0.9em;
+}
+i.directedaction {
+  content: url(/assets/img/icons/misc/directedaction.gif);
+}
+i.burnoption {
+  content: url(/assets/img/icons/misc/burn.svg);
+}
+
+/* Type */
+i.master {
+  content: url(/assets/img/icons/types/master.svg);
+}
+i.action {
+  content: url(/assets/img/icons/types/action.svg);
+}
+i.ally {
+  content: url(/assets/img/icons/types/ally.svg);
+}
+i.combat {
+  content: url(/assets/img/icons/types/combat.svg);
+}
+i.conviction {
+  content: url(/assets/img/icons/types/conviction.svg);
+}
+i.equipment {
+  content: url(/assets/img/icons/types/equipment.svg);
+}
+i.event {
+  content: url(/assets/img/icons/types/event.svg);
+}
+i.modifier {
+  content: url(/assets/img/icons/types/actionmodifier.svg);
+}
+i.political {
+  content: url(/assets/img/icons/types/politicalaction.svg);
+}
+i.power {
+  content: url(/assets/img/icons/types/power.svg);
+}
+i.reaction {
+  content: url(/assets/img/icons/types/reaction.svg);
+}
+i.reflex {
+  content: url(/assets/img/icons/types/reflex.svg);
+}
+i.retainer {
+  content: url(/assets/img/icons/types/retainer.svg);
+}
+
+/* Card Back */
+i.crypt_back {
+  content: url(/assets/img/icons/misc/crypt_back.jpg);
+  width: 2em;
+}
+i.library_back {
+  content: url(/assets/img/icons/misc/library_back.jpg);
+  width: 2em;
+}

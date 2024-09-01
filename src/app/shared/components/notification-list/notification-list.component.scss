@@ -1,0 +1,38 @@
+.notification-container {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.notification-ui_dd-content {
+  margin-bottom: 30px;
+}
+
+.notification-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 7px;
+  -webkit-box-shadow: 5px 5px 10px rgba(140, 140, 140, 0.1);
+  box-shadow: 5px 5px 10px rgba(140, 140, 140, 0.1);
+  cursor: pointer;
+  overflow: auto;
+}
+
+.notification-list--unread {
+  border-left: 2px solid rgb(var(--bs-primary-rgb));
+}
+
+.notification-list .notification-list_content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.notification-list .notification-list_content .notification-list_detail p {
+  margin-bottom: 5px;
+  line-height: 1.2;
+}

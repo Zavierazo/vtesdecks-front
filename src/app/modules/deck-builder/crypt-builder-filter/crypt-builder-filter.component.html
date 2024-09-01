@@ -1,0 +1,70 @@
+<ng-container *transloco="let t; read: 'crypt_builder_filter'">
+  <div class="row g-1 mb-2 items-center" *ngIf=" printOnDemand !==undefined">
+    <div class="form-check form-switch form-check-inline">
+      <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"
+        [formControl]="printOnDemandControl" />
+      <label class="form-check-label" for="printOnDemandCheck">{{ t('print_on_demand') }}</label>
+    </div>
+  </div>
+  <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
+  <div id="clans" class="row g-1">
+    <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)">
+    </app-clan-filter>
+  </div>
+  <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
+  <div id="disciplines" class="row g-1">
+    <app-discipline-filter [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
+      [(superiorDisciplines)]="superiorDisciplines"
+      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)"></app-discipline-filter>
+  </div>
+  <div class="row g-1 mt-2">
+    <label for="group" class="form-label text-primary fw-bold">{{ t('group') }}</label>
+    <ngx-slider id="group" [options]="{
+        floor: 1,
+        ceil: maxGroup,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true,
+        translate: translateGroupSlider
+      }" [formControl]="groupSliderControl">
+    </ngx-slider>
+  </div>
+  <div class="row g-1 mt-2">
+    <label for="capacity" class="form-label text-primary fw-bold">{{ t('capacity') }}</label>
+    <ngx-slider id="capacity" [options]="{
+        floor: 1,
+        ceil: maxCapacity,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true
+      }" [formControl]="capacitySliderControl">
+    </ngx-slider>
+  </div>
+  <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="title" [formControl]="titleControl">
+      <option selected></option>
+      <option *ngFor="let title of (titles$ | async)" [value]="title">
+        {{ title | titlecase }}
+      </option>
+    </select>
+    <label for="title">{{ t('title') }}</label>
+  </div>
+  <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="sect" [formControl]="sectControl">
+      <option selected></option>
+      <option *ngFor="let sect of (sects$ | async)" [value]="sect">
+        {{ sect | titlecase }}
+      </option>
+    </select>
+    <label for="sect">{{ t('sect') }}</label>
+  </div>
+  <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
+  <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">
+    <div class="col-6 form-check" *ngFor="let taint of (taints$ | async)">
+      <input class="form-check-input" type="checkbox" [id]="taint" [formControlName]="taint">
+      <label class="form-check-label" [for]="taint">
+        {{ taint | titlecase }}
+      </label>
+    </div>
+  </form>
+</ng-container>

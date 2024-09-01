@@ -1,0 +1,50 @@
+@for $columns from 3 through 6 {
+  .seating-#{$columns} {
+    --seats-count: #{$columns};
+    --table-radius: 8rem;
+    --table-size: calc(var(--table-radius) * 2);
+
+    display: grid;
+    place-items: center;
+    list-style: none;
+    border: 1px solid black;
+    width: var(--table-size);
+    height: var(--table-size);
+    border-radius: 50%;
+    position: relative;
+
+    .seat {
+      --seat-number: 1;
+      --angle: calc(1turn / var(--seats-count) * (var(--seat-number) - 1));
+
+      display: grid;
+      place-items: center;
+      width: 5rem;
+      height: 5rem;
+      font-size: calc(var(--table-radius) / 10);
+      text-align: center;
+      position: absolute;
+      background: var(--bs-secondary);
+      color: white;
+      padding: 1em;
+      border-radius: 50%;
+      transform: rotate(var(--angle))
+        translateY(calc(-1 * var(--table-radius)))
+        rotate(calc(-1 * var(--angle)));
+
+      @for $i from 1 through 12 {
+        &:nth-of-type(#{$i}) {
+          --seat-number: #{$i};
+        }
+      }
+    }
+
+    .first {
+      background: var(--bs-primary);
+    }
+
+    .missing {
+      background: var(--bs-danger);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<ng-container *transloco="let t; read: 'import_amaranth'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('title') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center">
+    <form [formGroup]="form">
+      <div class="form-floating text-start">
+        <input type="text" class="form-control rounded-3" id="name" placeholder="url" formControlName="url">
+        <label for="url">{{ t('placeholder') }}</label>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-success" (click)="modal.close(url)">
+      {{ 'shared.import' | transloco }}
+    </button>
+  </div>
+</ng-container>

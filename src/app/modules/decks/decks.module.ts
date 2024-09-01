@@ -1,0 +1,46 @@
+import { CommonModule } from '@angular/common';
+import { DeckCardModule } from '../deck-card/deck-card.module';
+import { DecksComponent } from './decks.component';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
+import { DeckFiltersComponent } from './filter/deck-filters.component';
+import { DeckSharedModule } from '../deck-shared/deck-shared.module';
+import { NgxSliderModule } from 'ngx-slider-v2';
+import { CardProportionComponent } from './filter/card-proportion/card-proportion.component';
+import { CardFilterComponent } from './filter/card-filter/card-filter.component';
+import { decksResolver } from './decks.resolver';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: DecksComponent,
+    pathMatch: 'full',
+    title: 'VTES Decks - Decks',
+    resolve: { decks: decksResolver },
+  },
+];
+
+@NgModule({
+  declarations: [
+    DecksComponent,
+    DeckFiltersComponent,
+    CardProportionComponent,
+    CardFilterComponent,
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    DeckSharedModule,
+    NgbModule,
+    NgxSliderModule,
+    DeckCardModule,
+    InfiniteScrollModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+  ],
+})
+export class DecksModule {}

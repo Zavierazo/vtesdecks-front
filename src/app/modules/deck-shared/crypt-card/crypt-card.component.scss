@@ -1,0 +1,22 @@
+.crypt-card {
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.card-button {
+  position: fixed;
+  bottom: calc(50% - 80px);
+  z-index: 1002;
+}
+
+.card-button-mobile {
+  bottom: calc(65% - 80px);
+}
+
+.card-button-previous {
+  left: 0;
+}
+
+.card-button-next {
+  right: 0;
+}

@@ -1,0 +1,21 @@
+<div class="container" *transloco="let t; read: 'changelog'">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-12">
+      <div class="mt-4">
+        {{ t('reload_page') }}
+      </div>
+      <ng-container *ngIf="(changelog$ | async) as changelogList">
+        <ng-container *ngFor="let changelog of changelogList">
+          <h5 class="mt-4">
+            <span class="p-2 bg-light shadow rounded text-success"> Version {{ changelog.version }}</span> - {{
+            changelog.date }}
+          </h5>
+          <ul class="list mt-3">
+            <li class="text-muted ml-3" *ngFor="let change of changelog.changes"><i
+                class="mdi mdi-circle-medium mr-2"></i><span [innerHTML]="change"></span></li>
+          </ul>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

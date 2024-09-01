@@ -1,0 +1,57 @@
+<ng-container *transloco="let t; read: 'table_seating'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('title') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row row-cols-1 row-cols-sm-2 g-3">
+      <form class="col" [formGroup]="form">
+        <div formArrayName="players" *ngFor="let player of players.controls; let i = index">
+          <div [formGroupName]="i" class="input-group mb-3">
+            <div class="input-group-text form-switch">
+              <input formControlName="active" class="form-check-input ms-0 mt-0" type="checkbox" role="switch"
+                [attr.aria-label]="t('active_player')">
+            </div>
+            <input formControlName="name" type="text" class="form-control" [attr.aria-label]="t('player_name')">
+            <button type="button" class="btn btn-outline-danger" (click)="removePlayer(i)">
+              <i aria-hidden="true" class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary" (click)="addPlayer()">
+            <i aria-hidden="true" class="bi bi-person"></i>
+            {{ t('add_player') }}
+          </button>
+          <button type="button" class="btn btn-success" (click)="shuffle()">
+            <i aria-hidden="true" class="bi bi-shuffle"></i>
+            {{ t('shuffle') }}
+          </button>
+        </div>
+      </form>
+      <div class="col d-flex flex-column justify-content-center align-items-center">
+        <div *ngFor="let table of tables" class="m-5" [ngClass]="{
+        'seating-6': table.length === 6,
+        'seating-5': table.length === 5,
+        'seating-4': table.length === 4,
+        'seating-3': table.length === 3
+      }">
+          <ng-container *ngIf="table.length > 2">
+            <label *ngFor="let seat of table; let first=first" class="seat" [ngClass]="{
+          'first': first,
+          'missing': seat === 'Missing'
+          }">
+              <span *ngIf="seat === 'Missing'; else seatName">
+                {{ t('missing') }}
+              </span>
+              <ng-template #seatName>
+                {{ seat }}
+              </ng-template>
+            </label>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ng-container>

@@ -1,0 +1,169 @@
+<main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100" role="main"
+  *transloco="let t; read:'deck_builder'">
+  <div class="row">
+    <section class="dark-grey-text col-12">
+      <div class="mb-2 bg-light rounded-3">
+        <form class="container-fluid py-3 text-center" [formGroup]="form">
+          <div class="justify-content-center align-self-center text-start p-2">
+            <div class="form-floating">
+              <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('name')"
+                formControlName="name">
+              <label for="name">{{ t('name') }}</label>
+            </div>
+          </div>
+          <div class="justify-content-center align-self-center text-start p-2">
+            <div class="form-floating">
+              <textarea class="form-control w-vw-100" id="description" type="text"
+                [placeholder]="t('description_placeholder')" style="height: 10rem;"
+                formControlName="description"></textarea>
+              <label for="description">{{ t('description') }}</label>
+            </div>
+          </div>
+
+          <div class="justify-content-center align-self-center px-2 pt-2">
+            <div ngbDropdown class="d-inline-block m-2">
+              <button id="dropdownImport" type="button" class="btn btn-primary" ngbDropdownToggle>
+                <i class="bi bi-cloud-plus-fill"></i>
+                {{ t('import') }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownImport">
+                <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
+                <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
+              </div>
+            </div>
+            <a type="button" class="btn btn-primary m-2" *ngIf="(deckId$ | async)!!"
+              [routerLink]="'/deck/' + (deckId$ | async)!!" target="_blank">
+              <i class="bi bi-eye"></i>
+              {{ t('view') }}
+            </a>
+            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              (click)="shareDeck()">
+              <i class="bi bi-share-fill"></i>
+              {{ t('share') }}
+            </button>
+            <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
+              <i class="bi bi-save-fill"></i>
+              {{ t('save') }}
+            </button>
+            <button type="button" class="btn btn-primary m-2" *ngIf="(deckId$ | async)!!" (click)="deleteDeck()">
+              <i class="bi bi-trash-fill"></i>
+              {{ t('delete') }}
+            </button>
+            <div class="d-flex justify-content-end form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="published" formControlName="published">
+              <label class="ms-1 form-check-label" for="published">{{ t('published') }}</label>
+              <span [ngbTooltip]="t('published_tooltip')">
+                <i class="ms-1 bi bi-question-circle"></i>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+  <div class="col-12 d-flex justify-content-center mb-3">
+    <div class="btn-group" role="group" aria-label="Default button group">
+      <button type="button" class="btn btn-outline-secondary" *ngIf="stateHistory.hasPast" (click)="stateHistory.undo()"
+        [ngbTooltip]="t('undo_tooltip')">
+        <i class="bi bi-arrow-counterclockwise"></i>{{ t('undo') }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" disabled="true">{{ t('change_history') }}</button>
+      <button type="button" class="btn btn-outline-secondary" *ngIf="stateHistory.hasFuture"
+        (click)="stateHistory.redo()" [ngbTooltip]="t('redo_tooltip')">
+        {{ t('redo') }}<i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-12 d-flex justify-content-center mt-3">
+    <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+    <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
+    <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
+      {{ (cryptSize$ | async)! }}
+    </span>
+    <ul class="ms-3 list-unstyled text-danger" *ngIf="(cryptErrors$ | async)!.length > 0">
+      <li *ngFor="let error of (cryptErrors$ | async)!" class="fw-bold"><i
+          class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+      </li>
+    </ul>
+  </div>
+  <div class="col-12 text-center mt-2">
+    <div class="row justify-content-center">
+      <h5 class="col-auto d-flex justify-content-center" *ngFor="let disciplineStat of (cryptDisciplines$ | async)!"
+        [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
+        <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
+        &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
+      </h5>
+    </div>
+  </div>
+  <div class="col-12 mt-3">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2" *ngIf="(cryptList$ | async)! as cryptList">
+      <ul class="col list-group" *ngFor="let crypt of cryptList; trackBy: trackByFn">
+        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
+      </ul>
+    </div>
+  </div>
+  <div class="col-12 text-center mt-3">
+    <div class="row">
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (minCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-md-0">MIN</p>
+      </div>
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (maxCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-md-0">MAX</p>
+      </div>
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (avgCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-0">AVG</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 d-flex justify-content-center mt-3">
+    <h1 (click)="openLibraryBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+    <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
+    <span class="circle_number ms-2" [title]="'deck.total_library' | transloco">
+      {{ (librarySize$ | async)! }}
+    </span>
+    <div>
+      <div class="costx ms-2" [title]="'deck.total_pool_cost' | transloco">
+        {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
+      </div>
+      <div class="costx ms-2" [title]="'deck.total_blood_cost' | transloco">
+        {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+      </div>
+    </div>
+    <ul class="ms-3 list-unstyled text-danger" *ngIf="(libraryErrors$ | async)!.length > 0">
+      <li *ngFor="let error of (libraryErrors$ | async)!" class="fw-bold"><i
+          class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+      </li>
+    </ul>
+  </div>
+  <div class="col-12 text-center mt-2">
+    <div class="row justify-content-center">
+      <h5 class="col-auto d-flex justify-content-center"
+        *ngFor="let libraryDiscipline of (libraryDisciplines$ | async)!">
+        <span *ngIf="libraryDiscipline.disciplines.length === 0" [title]="'deck.no_discipline' | transloco">
+          <i class="bi bi-square" style="font-size: 26px;"></i>
+        </span>
+        <ng-container *ngFor="let disc of libraryDiscipline.disciplines; let isFirst = first">
+          <span *ngIf="!isFirst">+</span>
+          <i class="vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
+        </ng-container>
+        <span class="pt-1">&nbsp;{{ libraryDiscipline.inferior }}</span>
+      </h5>
+      <h5 class="col-auto d-flex justify-content-center" *ngFor="let libraryClan of (libraryClans$ | async)!">
+        <ng-container *ngFor="let clan of libraryClan.clans; let isFirst = first">
+          <span *ngIf="!isFirst">/</span>
+          <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
+        </ng-container>
+        <span class="pt-1">&nbsp;{{ libraryClan.number }}</span>
+      </h5>
+    </div>
+  </div>
+  <div class="col-12 mt-3">
+    <app-library-list *ngIf="(libraryList$ | async)! as libraryList" [libraryList]="libraryList" [withControls]="true"
+      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)">
+    </app-library-list>
+  </div>
+</main>

@@ -1,0 +1,76 @@
+<ng-container *transloco="let t; read: 'deck_shared'">
+  <a *ngIf="(library$ | async)! as library; else loading"
+    class="list-group-item list-group-item-action bg-dark text-white disable-select border-dark" #popover="ngbPopover"
+    [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+    (click)="popover.open()" [ngStyle]="{
+    background: 'url(/assets/' + library.cropImage + ') scroll',
+    'background-repeat': 'no-repeat',
+    'background-position': 'right 33%',
+    'background-size': '50%'
+  }" [autoClose]="false">
+    <ng-template #imgPopover>
+      <img [ngClass]="{
+        'img-popover': !(isMobile$ | async)!,
+        'img-popover-mobile': (isMobile$ | async)!
+      }" [src]="'/assets/' + library.image" [alt]="library.name" />
+    </ng-template>
+    <div class="row">
+      <div *ngIf="withControls && card.number > 1" class="col-auto">
+        <i class="btn-icon bi bi-dash-square bi-fs-1_5x" aria-hidden="true" (click)="removeCard()"></i>
+      </div>
+      <div *ngIf="withControls && card.number <= 1" class="col-auto">
+        <i class="bi bi-x-square bi-fs-1_5x" [ngClass]="{
+        'btn-icon text-danger': card.number > 0,
+        'text-dark': card.number <= 0
+      }" aria-hidden="true" (click)="removeCard()"></i>
+      </div>
+      <div *ngIf="card.number" class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
+      'mt-2': withControls
+    }">
+        {{ card.number }}
+      </div>
+      <div *ngIf="withControls" class="col-auto">
+        <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
+      </div>
+      <div class="col" [ngClass]="{
+      'mt-1': withControls
+    }">
+        <i class="vtes float-start" *ngFor="let typeIcon of library.typeIcons" [ngClass]="typeIcon"></i>
+        <span class="ms-1 float-start">{{ library.name }}</span>
+        <span *ngIf="library.banned" class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
+        <span *ngIf="library.trifle" class="badge rounded-pill bg-light text-black d-none d-sm-inline ms-1 float-start">
+          {{ t('trifle') }}
+        </span>
+        <i *ngIf="library.bloodCost" class="vtes float-end me-1" [ngClass]="{
+        'bloodx': library.bloodCost < 0,
+        'blood1': library.bloodCost === 1,
+        'blood2': library.bloodCost === 2,
+        'blood3': library.bloodCost === 3,
+        'blood4': library.bloodCost === 4,
+        'bloodcost': library.bloodCost > 4
+      }"></i>
+        <i *ngIf="library.poolCost" class="vtes float-end me-1" [ngClass]="{
+        'poolx': library.poolCost < 0,
+        'pool1': library.poolCost === 1,
+        'pool2': library.poolCost === 2,
+        'pool3': library.poolCost === 3,
+        'pool4': library.poolCost === 4,
+        'pool5': library.poolCost === 5,
+        'pool6': library.poolCost === 6,
+        'poolcost': library.poolCost > 6
+      }"></i>
+        <i class="vtes float-end me-1" *ngFor="let discipline of library.disciplineIcons" [ngClass]="discipline"></i>
+        <i *ngIf="library.burn" class="vtes float-end burnoption me-1"></i>
+        <i *ngFor="let clanIcon of library.clanIcons" class="vtes float-end me-1" [ngClass]="clanIcon"></i>
+      </div>
+    </div>
+  </a>
+  <ng-template #loading>
+    <div class="list-group-item list-group-item-action">
+      <ngx-skeleton-loader count="1" animation="progress" [theme]="{
+        height: '20px',
+        'margin-bottom': '0'
+      }"></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+</ng-container>

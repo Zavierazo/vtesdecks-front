@@ -1,0 +1,120 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+@import "bootstrap-icons/font/bootstrap-icons.scss";
+@import "icons.scss";
+
+/* Importing Bootstrap SCSS file. */
+$enable-smooth-scroll: false;
+@import "bootstrap/scss/bootstrap";
+
+/* Importing theme styles*/
+body[data-bs-theme="dark"] {
+  @import "theme-dark.scss";
+}
+/* Override ngx-slider colors. */
+.ngx-slider {
+  .ngx-slider-pointer {
+    background: rgb(var(--bs-primary-rgb)) !important;
+  }
+  .ngx-slider-pointer:after {
+    background: rgb(var(--bs-light-rgb)) !important;
+  }
+  .ngx-slider-tick {
+    background: rgb(var(--bs-primary-rgb)) !important;
+  }
+  .ngx-slider-selection {
+    background: rgb(var(--bs-primary-rgb)) !important;
+  }
+}
+
+$handleBgColor: var(--bs-primary-rgb);
+
+/* Override ngPopover style */
+
+.popover {
+  background-color: black;
+  border: none;
+  text-align: center;
+  max-width: 300px;
+}
+
+.popover-body {
+  padding: 0px;
+}
+
+.bs-popover-bottom > .popover-arrow::after {
+  border-bottom-color: black;
+}
+
+.bs-popover-top > .popover-arrow::after {
+  border-top-color: black;
+}
+
+.bs-popover-start > .popover-arrow::after {
+  border-left-color: black;
+}
+
+.bs-popover-end > .popover-arrow::after {
+  border-right-color: black;
+}
+
+/** Bootstrap icons size **/
+
+.bi-fs-5x {
+  font-size: 5em;
+}
+
+.bi-fs-4x {
+  font-size: 4em;
+}
+
+.bi-fs-3x {
+  font-size: 3em;
+}
+
+.bi-fs-2x {
+  font-size: 2em;
+}
+
+.bi-fs-1_5x {
+  font-size: 1.5em;
+}
+
+.bi-fs-1_2x {
+  font-size: 1.2em;
+}
+
+.bi-fs-sm {
+  font-size: 0.7em;
+}
+/** Button icon **/
+
+.btn-icon {
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  color: rgb(var(--bs-primary-rgb));
+}
+
+.btn-badge {
+  cursor: pointer;
+}
+
+/** Disable select **/
+
+.disable-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

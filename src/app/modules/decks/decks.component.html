@@ -1,0 +1,96 @@
+<div id="container" class="h-100">
+  <header class="border-bottom mb-3 p-2 sticky-top bg-light">
+    <form [formGroup]="mainForm" class="d-flex flex-row align-items-center">
+      <div class="col-auto flex-fill">
+        <span class="me-md-auto">
+          <strong>{{ total$ | async }}</strong>&nbsp;decks
+        </span>
+      </div>
+      <div class="row ms-1">
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <label class="input-group-text" for="deckType">
+              <i class="bi bi-stack" aria-hidden="true"></i>
+            </label>
+            <select *isLogged="true" class="form-select" id="deckType" formControlName="type">
+              <option value="ALL">All</option>
+              <option value="USER">My Decks</option>
+              <option value="TOURNAMENT">Tournament</option>
+              <option value="COMMUNITY">Community</option>
+              <option value="PRECONSTRUCTED">Preconstructed</option>
+            </select>
+            <select *isLogged="false" class="form-select" id="deckType" formControlName="type">
+              <option value="ALL">All</option>
+              <option value="TOURNAMENT">Tournament</option>
+              <option value="COMMUNITY">Community</option>
+              <option value="PRECONSTRUCTED">Preconstructed</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <label class="input-group-text" for="deckOrder">
+              <i class="bi bi-sort-alpha-down" aria-hidden="true"></i>
+            </label>
+            <select class="form-select" id="deckOrder" formControlName="order">
+              <option value="NEWEST">Newest</option>
+              <option value="OLDEST">Oldest</option>
+              <option value="MODIFIED">Modified</option>
+              <option value="NAME">Name</option>
+              <option value="POPULAR">Popular</option>
+              <option value="RATE">Rate</option>
+              <option value="VOTES">Votes</option>
+              <option value="VIEWS">Views</option>
+              <option value="COMMENTS">Comments</option>
+              <option value="PLAYERS">Players(TWD)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </header>
+  <div class="row">
+    <div class="col-3" *ngIf="!(isMobileOrTablet$ | async)!">
+      <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
+    </div>
+    <main class="p-0" [ngClass]="{
+        'col-12': (isMobileOrTablet$ | async),
+        'col-9': !(isMobileOrTablet$ | async)
+      }">
+      <div class="decks-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100"
+        (scrolled)="onScroll()">
+        <ng-container *ngIf="(decks$ | async)! as decks">
+          <div class="col-12 px-2" *ngFor="let deck of decks">
+            <app-deck-card [deck]="deck" (tagClick)="onTagClick($event)"></app-deck-card>
+          </div>
+          <div class="d-flex justify-content-center" *ngIf="!(isLoading$ | async)! && decks.length === 0">
+            <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
+              Clear Filters
+            </button>
+          </div>
+        </ng-container>
+      </div>
+      <div class="alert alert-light" *ngIf="isLoading$ | async">
+        <app-loading></app-loading>
+        <div style="height: 100vw"></div>
+      </div>
+    </main>
+  </div>
+</div>
+<button *ngIf="showScrollButton$ | async" class="btn btn-secondary btn-lg border back-to-top" placement="start"
+  ngbTooltip="Back to top" (click)="scrollToTop()">
+  <i class="bi bi-chevron-up"></i>
+</button>
+<button *ngIf="isMobileOrTablet$ | async" class="btn btn-primary btn-sm filters-mobile" placement="start"
+  ngbTooltip="Show filters" (click)="openFilters(filtersMobile)">
+  <i class="bi bi-funnel-fill"></i>&nbsp;Filters
+</button>
+<ng-template #filtersMobile let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title" id="offcanvas-basic-title"><i class="bi bi-funnel-fill"></i>&nbsp;Filters</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+  <div class="offcanvas-body">
+    <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
+  </div>
+</ng-template>

@@ -1,0 +1,85 @@
+<li *ngIf="(crypt$ | async)! as crypt; else loading"
+  class="list-group-item list-group-item-action bg-dark text-white disable-select border-dark" #popover="ngbPopover"
+  [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+  (click)="popover.open()" [ngStyle]="{
+    background: 'url(/assets/' + crypt.cropImage + ') scroll',
+    'background-repeat': 'no-repeat',
+    'background-position': 'right 33%',
+    'background-size': '50%'
+  }" [autoClose]="false">
+  <ng-template #imgPopover>
+    <img [ngClass]="{
+        'img-popover': !(isMobile$ | async)!,
+        'img-popover-mobile': (isMobile$ | async)!
+      }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
+    <h6 class="text-white">
+      <ng-container *ngIf="card.number > 0">
+        <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
+      </ng-container>
+      <ng-container *ngIf="card.number > 1">
+        <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
+      </ng-container>
+      <ng-container *ngIf="card.number > 2">
+        <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
+      </ng-container>
+      <ng-container *ngIf="card.number > 3">
+        <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
+      </ng-container>
+    </h6>
+  </ng-template>
+  <div class="row">
+    <div class="col-6">
+      <div class="row">
+        <div *ngIf="withControls && card.number > 1" class="col-auto">
+          <i class="btn-icon bi bi-dash-square bi-fs-1_5x" aria-hidden="true" (click)="removeCard()"></i>
+        </div>
+        <div *ngIf="withControls && card.number <= 1" class="col-auto">
+          <i class="bi bi-x-square bi-fs-1_5x" [ngClass]="{
+            'btn-icon text-danger': card.number > 0,
+            'text-dark': card.number <= 0
+          }" aria-hidden="true" (click)="removeCard()"></i>
+        </div>
+        <div *ngIf="card.number" class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
+          'mt-2': withControls
+        }">
+          {{ card.number }}
+        </div>
+        <div *ngIf="withControls" class="col-auto">
+          <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
+        </div>
+        <div class="col-9">
+          <span class="float-start">{{ crypt.name }}</span>
+          <small class="float-start ms-1 d-none d-sm-inline">
+            <span class="badge rounded-pill bg-light text-black crypt_group">
+              {{ crypt.group == -1 ? "any" : crypt.group }}
+            </span>
+          </small>
+          <span *ngIf="crypt.banned" class="ms-1 float-start badge text-bg-danger">{{ 'deck_shared.banned' | transloco
+            }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <ng-container *ngFor="let discipline of crypt.disciplineIcons">
+            <i class="vtes" [ngClass]="discipline"></i>
+          </ng-container>
+          <i class="vtes float-end" [ngClass]="crypt.clanIcon"></i>
+          <i *ngIf="crypt.adv" class="vtes float-end advanced"></i>
+          <span class="badge rounded-pill bg-danger float-end">
+            {{ crypt.capacity }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+<ng-template #loading>
+  <div class="list-group-item list-group-item-action">
+    <ngx-skeleton-loader count="1" animation="progress" [theme]="{
+        height: '20px',
+        'margin-bottom': '0'
+      }"></ngx-skeleton-loader>
+  </div>
+</ng-template>

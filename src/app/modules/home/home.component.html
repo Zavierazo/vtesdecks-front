@@ -1,0 +1,163 @@
+<section class="mt-4">
+  <div class="row d-flex g-1 g-md-2 g-lg-3 justify-content-center align-items-center">
+    <div class="col-6 col-lg-4">
+      <a routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT' }"
+        class="card bg-primary text-white text-decoration-none">
+        <div class="card-body row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="h2-responsive fw-bold mt-n2 mb-0">
+              <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500"></animated-digit>
+            </h2>
+            <p class="fw-bold mb-0">Tournament Decks</p>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-award bi-fs-4x text-black-50"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4">
+      <a routerLink="/decks" [queryParams]="{ type: 'COMMUNITY' }"
+        class="card bg-primary text-white text-decoration-none">
+        <div class="card-body row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="h2-responsive fw-bold mt-n2 mb-0 countCommunityDecks">
+              <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500"></animated-digit>
+            </h2>
+            <p class="fw-bold mb-0">Community Decks</p>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-people bi-fs-4x text-black-50"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4">
+      <a routerLink="/decks" [queryParams]="{ type: 'PRECONSTRUCTED' }"
+        class="card bg-primary text-white text-decoration-none">
+        <div class="card-body row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="h2-responsive fw-bold mt-n2 mb-0 countPreconstructedDecks">
+              <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500"></animated-digit>
+            </h2>
+            <p class="fw-bold mb-0">Preconstructed Decks</p>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-bag bi-fs-4x text-black-50"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4">
+      <ng-template #deckBuilderCard>
+        <div class="card bg-success text-white">
+          <div class="card-body row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-sm-6">
+              <h3 class="fw-bold text-light mt-2 mb-3">Deck Builder</h3>
+            </div>
+            <div class="col-auto">
+              <i class="bi bi-magic bi-fs-4x text-black-50"></i>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <a routerLink="/decks/builder" class="text-decoration-none" *isLogged="true">
+        <ng-container *ngTemplateOutlet="deckBuilderCard"></ng-container>
+      </a>
+      <span class="text-decoration-none" href="javascript:void(0)" (click)="openLoginModal()" *isLogged="false">
+        <ng-container *ngTemplateOutlet="deckBuilderCard"></ng-container>
+      </span>
+    </div>
+    <div class="col-6 col-lg-4" *isLogged="true">
+      <a routerLink="/decks" [queryParams]="{ type: 'USER' }" class="card bg-success text-white text-decoration-none">
+        <div class="card-body row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="h2-responsive fw-bold mt-n2 mb-0 countPreconstructedDecks">
+              <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500"></animated-digit>
+            </h2>
+            <p class="fw-bold mb-0">My Decks</p>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-stack bi-fs-4x text-black-50"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4" *isLogged="true">
+      <a routerLink="/decks" [queryParams]="{ favorite: true}" class="card bg-success text-white text-decoration-none">
+        <div class="card-body row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="h2-responsive fw-bold mt-n2 mb-0 countPreconstructedDecks">
+              <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500"></animated-digit>
+            </h2>
+            <p class="fw-bold mb-0">Bookmark Decks</p>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-bookmark-star bi-fs-4x text-black-50"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4">
+      <a routerLink="/cards/crypt" class="text-decoration-none">
+        <div class="card bg-secondary text-white">
+          <div class="card-body row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-sm-6">
+              <h3 class="fw-bold text-light mt-2 mb-3">Crypt</h3>
+            </div>
+            <div class="col-auto">
+              <i class="bi bi-file-person bi-fs-4x text-black-50"></i>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-lg-4">
+      <a routerLink="/cards/library" class="text-decoration-none">
+        <div class="card bg-secondary text-white">
+          <div class="card-body row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-sm-6">
+              <h3 class="fw-bold text-light mt-2 mb-3">Library</h3>
+            </div>
+            <div class="col-auto">
+              <i class="bi bi-file-richtext bi-fs-4x text-black-50"></i>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="row m-3 d-flex justify-content-between align-items-center">
+    <p class="text-center w-responsive mx-auto mb-2">
+      If you want to contribute, report bugs or raise a problem, you can do so
+      by
+      <a routerLink="/contact" class="text-decoration-none">contacting us</a>
+      or sending an email to
+      <a href="mailto:support@vtesdecks.com" target="_blank" class="text-decoration-none">support&#64;vtesdecks.com</a>
+    </p>
+    <a class="text-center text-muted w-responsive mx-auto" href="https://www.buymeacoffee.com/zavierazo"
+      target="_blank">
+      <img width="235" height="50"
+        src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=zavierazo&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00"
+        alt="Buy me a coffee" />
+    </a>
+  </div>
+</section>
+<div class="row mt-3">
+  <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }"
+    [decks]="deckHome?.tournamentPopular">
+  </app-home-section>
+  <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }"
+    [decks]="deckHome?.communityPopular">
+  </app-home-section>
+</div>
+<div class="row mb-3">
+  <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }"
+    [decks]="deckHome?.tournamentNewest">
+  </app-home-section>
+  <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }"
+    [decks]="deckHome?.communityNewest">
+  </app-home-section>
+</div>

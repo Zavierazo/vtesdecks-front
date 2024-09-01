@@ -1,0 +1,23 @@
+.deck-card {
+  min-width: 300px;
+  background-color: #ffffff;
+  background: linear-gradient(#ffffff, darken(#ffffff, 20));
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+.text-bg-tag {
+  color: #fff !important;
+  background-color: RGBA(
+    var(--bs-secondary-rgb),
+    var(--bs-bg-opacity, 1)
+  ) !important;
+
+  &:hover {
+    background-color: RGBA(
+      var(--bs-primary-rgb),
+      var(--bs-bg-opacity, 1)
+    ) !important;
+  }
+}

@@ -1,0 +1,12 @@
+header {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  z-index: 100;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1001;
+}

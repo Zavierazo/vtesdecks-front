@@ -1,0 +1,9 @@
+.img-popover {
+  width: 276px;
+  height: auto;
+
+  &-mobile {
+    width: 75vw;
+    max-width: 276px;
+  }
+}

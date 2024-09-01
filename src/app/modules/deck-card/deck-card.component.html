@@ -1,0 +1,60 @@
+<a [routerLink]="deck.owner ? '/decks/builder' : ('/deck/' + deck.id)"
+  [queryParams]="{id: deck.owner ? deck.id : undefined}" class="text-center text-decoration-none">
+  <div class="deck-card border border-2 rounded-3 center hover-shadow my-2 text-black" [ngClass]="{
+    'border-dark': !deck.owner,
+    'border-primary': deck.owner
+  }" [ngStyle]="{'min-height':height}">
+    <div class="info px-3 py-2">
+      <span class="float-start">
+        <span class="badge bg-transparent text-black">
+          {{ deck.stats.crypt }}&nbsp;<i class="bi bi-person-badge"></i>
+          {{ deck.stats.library }}&nbsp;<i class="bi bi-stack"></i>
+        </span>
+      </span>
+      <span class="stats d-inline-flex float-end">
+        <span class="badge bg-transparent text-black">
+          {{ deck.comments }}&nbsp;<i class="bi bi-chat"></i>
+          {{ deck.views }}&nbsp;<i class="bi bi-eye-fill"></i>
+        </span>
+      </span>
+      <h2>
+        <strong *ngIf="deck.favorite" title="Bookmarked">
+          <i class="bi bi-bookmark-star-fill text-primary bi-fs-sm"></i>
+        </strong>
+        <strong *ngIf="!deck.published" title="Private Deck">
+          <i class="bi bi-incognito text-secondary bi-fs-sm"></i>
+        </strong>
+        {{ deck.name | titlecase | truncate: 30:true }}
+      </h2>
+      <span class="clan badge rounded-pill">
+        <i *ngFor="let icon of deck.clanIcons" class="vtes-big" [ngClass]="icon"></i>
+      </span>
+      <div class="disciplines badge rounded-pill">
+        <i *ngFor="let icon of deck.disciplineIcons" class="vtes-big" [ngClass]="icon"></i>
+      </div>
+      <span class="float-end" *ngIf="deck.rate as rate">
+        <i class="bi bi-star" *ngIf="rate < 3"></i>
+        <i class="bi bi-star-half" *ngIf="rate >= 3 && rate < 4"></i>
+        <i class="bi bi-star-fill" *ngIf="rate >= 4 "></i>
+        {{ deck.rate }}
+      </span>
+      <div *ngIf="deck.tournament">
+        <strong><i class="bi bi-award-fill"></i>&nbsp;<span>{{
+            deck.tournament
+            }}</span></strong>
+      </div>
+      <div>
+        <span class="me-2">{{ deck.author | truncate: 25:true }}</span>
+        <span>{{ deck.creationDate | date: "longDate" }}</span>
+      </div>
+      <div *ngIf="deck.tags?.length">
+        <span *ngFor="let tag of deck.tags" class="badge rounded-pill mx-1 text-bg-tag" [ngClass]="{
+          'text-bg-tag': !isMobileOrTablet,
+          'text-bg-secondary': isMobileOrTablet
+        }" (click)="onTagClick(tag, $event)">
+          #{{ tag }}
+        </span>
+      </div>
+    </div>
+  </div>
+</a>

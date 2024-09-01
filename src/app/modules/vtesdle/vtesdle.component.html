@@ -1,0 +1,76 @@
+<div class="container">
+  <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 my-3" role="main">
+    <div class="d-flex justify-content-center align-self-center">
+      <button *ngIf="!infiniteMode; else infiniteLeftModeButtons" ngbTooltip="Help" placement="left" type="button"
+        class="ms-2 btn btn-info" (click)="help()">
+        <i class="bi bi-fs-1x bi-question-lg"></i>
+      </button>
+      <ng-template #infiniteLeftModeButtons>
+        <button ngbTooltip="Reset" placement="left" type="button" class="ms-2 btn btn-danger"
+          (click)="infiniteModeInit()">
+          <i class="bi bi-fs-1x bi-arrow-counterclockwise"></i>
+        </button>
+      </ng-template>
+      <h1 class="ms-2 fw-bold title">VTESDLE</h1>
+      <button *ngIf="!infiniteMode; else infiniteRightModeButtons" ngbTooltip="Infinite Mode" placement="right"
+        type="button" class="ms-2 btn btn-dark" (click)="switchMode()">
+        <i class="bi bi-fs-1x bi-infinity"></i>
+      </button>
+      <ng-template #infiniteRightModeButtons>
+        <button ngbTooltip="Today Mode" placement="right" type="button" class="ms-2 btn btn-dark"
+          (click)="switchMode()">
+          <i class="bi bi-fs-1x bi-calendar"></i>
+        </button>
+      </ng-template>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center align-self-center">
+      <div class="image-container">
+        <img *ngIf="cardId; else loading" [src]="getImageUrl()" alt="image to guess" class="card-image" />
+        <ng-template #loading>
+          <app-loading [size]="10"></app-loading>
+        </ng-template>
+      </div>
+    </div>
+    <hr>
+    <ng-template #cryptTemplate let-r="result" let-t="term">
+      <i class="vtes" [class]="r['clanIcon']"></i>
+      <i class="vtes advanced" *ngIf="r.adv"></i>
+      <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
+    </ng-template>
+    <div class="mt-2 row">
+      <div class="col-12" *ngIf="lives > 0 && !guessed">
+        <input autofocus #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+          [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+          placeholder="Guess the card name..." (selectItem)="selectCryptItem($event, cryptInput)" />
+      </div>
+      <div class="alert alert-success" role="alert" *ngIf="guessed">
+        Congratulations, you have guessed the card!
+        <span *ngIf="!infiniteMode">
+          Come back tomorrow for more!
+        </span>
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf="!guessed && lives <=0">
+        <span *ngIf="infiniteMode; else todayMode">
+          Game over, press retry for more!
+        </span>
+        <ng-template #todayMode>
+          Game over, come back tomorrow for more!
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-12 pr-0 text-center">
+      <div class="rating">
+        <ng-template #heartTemplate let-fill="fill">
+          <span class="heart" [class.full]="fill === 100">&hearts;
+          </span>
+        </ng-template>
+        <ngb-rating [rate]="lives" [starTemplate]="heartTemplate" [readonly]="true" [max]="maxLives">
+        </ngb-rating>
+      </div>
+      <div>
+        {{ lives }}&nbsp;remaining lives
+      </div>
+    </div>
+  </main>
+</div>

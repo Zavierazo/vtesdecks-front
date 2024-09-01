@@ -1,0 +1,48 @@
+<footer class="bg-primary text-center text-white" *transloco="let t; read: 'footer'">
+  <div class="container p-4">
+    <section>
+      <div class="row">
+        <div class="col-12 col-lg-5">
+          <img width="50" height="50" src="/assets/img/darkpack.png" alt="Dark Pack logo" />
+          <p class="text-left">
+            {{ t('trademark') }}
+            <a href="https://worldofdarkness.com" target="_blank" class="text-white">worldofdarkness.com</a>
+          </p>
+        </div>
+        <div class="col-12 col-lg-7 text-center d-flex justify-content-center pt-5">
+          <div class="mx-3">
+            <h6 class="text-uppercase fw-bold">
+              <a [routerLink]="'/changelog'" class="text-white text-decoration-none fs-5">{{ t('changelog') }}</a>
+            </h6>
+          </div>
+          <div class="mx-3">
+            <h6 class="text-uppercase fw-bold">
+              <a [routerLink]="'/terms'" class="text-white text-decoration-none fs-5">{{ t('terms') }}</a>
+            </h6>
+          </div>
+          <div class="mx-3">
+            <h6 class="text-uppercase fw-bold">
+              <a [routerLink]="'/privacy-policy'" class="text-white text-decoration-none fs-5">
+                {{ t('privacy_policy') }}
+              </a>
+            </h6>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <!-- Email -->
+      <a class="btn btn-outline-light btn-floating m-1" href="mailto:support@vtesdecks.com" target="_blank"
+        role="button" [title]="t('mail')"><i class="bi bi-envelope"></i></a>
+      <!-- Twitter -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/DecksVtes" target="_blank"
+        role="button" title="Twitter"><i class="bi bi-twitter"></i></a>
+      <!-- Instagram -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/vtesdecks" target="_blank"
+        role="button" title="Instagram"><i class="bi bi-instagram"></i></a>
+    </section>
+  </div>
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2020-{{ now | date:'YY' }} {{ t('copyright') }}
+  </div>
+</footer>

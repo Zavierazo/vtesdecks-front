@@ -1,0 +1,100 @@
+<ng-container *transloco="let t;read: 'library_section'">
+  <div id="container" class="min-vh-100">
+    <header class="border-bottom mb-0 mb-lg-3 pt-2 p-1 px-3 sticky-top bg-light">
+      <form class="flex-fill">
+        <div class="row g-1" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+          <div class="col mb-2">
+            <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
+              [formControl]="nameFormControl">
+          </div>
+          <div ngbDropdown class="col-auto d-inline-block">
+            <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle>
+              <i class="bi bi-sort-alpha-down"></i>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownSortBy">
+              <button ngbDropdownItem (click)="onChangeSortBy('name',$event)" [ngClass]="{'active': sortBy ==='name'}">
+                {{ t('name') }}
+              </button>
+              <button ngbDropdownItem (click)="onChangeSortBy('type',$event)" [ngClass]="{'active': sortBy ==='type'}">
+                {{ t('type') }}
+              </button>
+              <button ngbDropdownItem (click)="onChangeSortBy('deckPopularity',$event)"
+                [ngClass]="{'active': sortBy ==='deckPopularity'}" [title]="t('deck_popularity_title')">
+                {{ t('deck_popularity') }}
+              </button>
+              <button ngbDropdownItem (click)="onChangeSortBy('cardPopularity',$event)"
+                [ngClass]="{'active': sortBy ==='cardPopularity'}" [title]="t('card_popularity_title')">
+                {{ t('card_popularity') }}
+              </button>
+            </div>
+          </div>
+          <div class="col-auto d-inline-block" *ngIf="!(isMobileOrTablet$ | async)!">
+            <button type="button" class="btn btn-danger" (click)="initFilters()">
+              <i class="bi bi-arrow-clockwise"></i> {{ t('reset')}}
+            </button>
+          </div>
+          <div class="col-auto" *ngIf="(isMobileOrTablet$ | async)!">
+            <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
+              <i class="bi bi-funnel-fill"></i><span *ngIf="!(isMobile$ | async)!"> {{ t('filters')}}</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </header>
+    <div class="library-body">
+      <div class="row">
+        <div class="col-4" *ngIf="!(isMobileOrTablet$ | async) && (library$ | async)!">
+          <ng-container *ngTemplateOutlet="filter"></ng-container>
+        </div>
+        <div [ngClass]="{
+      'col-12': (isMobileOrTablet$ | async),
+      'col-8': !(isMobileOrTablet$ | async)
+    }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100" (scrolled)="onScroll()">
+          <strong class="d-flex justify-content-center" *ngIf="(isMobileOrTablet$ | async)">
+            {{ t('results', { count: (resultsCount$ | async)! }) }}
+          </strong>
+          <div class="d-flex justify-content-center mt-2" *ngIf="(library$ | async)?.length === 0">
+            <button type="button" class="btn btn-danger btn-lg" (click)="initFilters()">
+              {{ t('reset_filters') }}
+            </button>
+          </div>
+          <ul class="col list-group" *ngFor="let library of (library$ | async)! ; trackBy: trackByFn">
+            <app-library [card]="getCard(library)" (click)="openLibraryCard(library)"
+              [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button *ngIf="showScrollButton$ | async" class="btn btn-secondary btn-lg border back-to-top" placement="start"
+    [ngbTooltip]="t('back_to_top')" (click)="scrollToTop()">
+    <i class="bi bi-chevron-up"></i>
+  </button>
+
+  <ng-template #filterModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"><i class="bi bi-funnel-fill"></i>{{ t('filters') }}</h4>
+      <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+        (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngTemplateOutlet="filter"></ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #filter>
+    <strong class="float-end">
+      {{ t('results', { count: (resultsCount$ | async)! }) }}
+    </strong>
+    <app-library-builder-filter [(printOnDemand)]="printOnDemand" (printOnDemandChange)="onChangePrintOnDemand($event)"
+      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
+      (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
+      [(taints)]="taints" (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types"
+      (typesChange)="onChangeTypesFilter($event)" [(bloodCostSlider)]="bloodCostSlider"
+      (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)" [(poolCostSlider)]="poolCostSlider"
+      (poolCostSliderChange)="onChangePoolCostSliderFilter($event)" [(title)]="title"
+      (titleChange)="onChangeTitleFilter($event)">
+    </app-library-builder-filter>
+  </ng-template>
+</ng-container>

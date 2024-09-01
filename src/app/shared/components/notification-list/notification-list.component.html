@@ -1,0 +1,25 @@
+<ng-container *transloco="let t; read: 'notification'">
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title" id="offcanvas-basic-title">{{ t('title') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+  </div>
+  <div class="offcanvas-body notification-container" *ngIf="(notifications$ | async) as notifications">
+    <div class="d-flex flex-column justify-content-center mb-3">
+      <button *ngIf="notifications.length > 0" type="button" class="btn btn-outline-info btn-sm" (click)="readAll()">
+        {{ t('mark_all_read') }}
+      </button>
+    </div>
+    <div class="notification-list" *ngFor="let notification of notifications" [ngClass]="{
+      'notification-list--unread': !notification.read
+    }" [routerLink]="notification.link" (click)="!notification.read ? read(notification.id): offcanvas.close()">
+      <div class="notification-list_content">
+        <div class="notification-list_detail">
+          <p [innerHTML]="notification.notification"></p>
+          <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="notifications.length === 0" class="text-center">{{
+      t('no_notifications') }}</p>
+  </div>
+</ng-container>

@@ -1,0 +1,22 @@
+div.costx {
+  font-size: 30px;
+  display: inline-block;
+}
+div.costx i{
+  vertical-align: middle;
+}
+
+span.circle_number {
+  font-size: 30px;
+  width: 48px;
+  height: 48px;
+  line-height: 45px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 64px;
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid #000;
+  background-color: black;
+  color: white;
+}

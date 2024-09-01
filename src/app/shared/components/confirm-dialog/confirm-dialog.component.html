@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.close(false)"></button>
+</div>
+<div class="modal-body">
+  <p [innerHTML]="message"></p>
+</div>
+<div class="modal-footer" *transloco="let t">
+  <button type="button" class="btn btn-outline-secondary" (click)="modal.close(false)">{{ t(cancelLabel) }}</button>
+  <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close(true)">{{ t(okLabel) }}</button>
+</div>

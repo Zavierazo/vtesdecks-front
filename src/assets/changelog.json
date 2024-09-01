@@ -1,0 +1,381 @@
+[
+  {
+    "version": "2.21.0",
+    "date": "20th July, 2024",
+    "changes": [
+      "Add 30th Anniversary cards"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.20.0",
+    "date": "8th June, 2024",
+    "changes": [
+      "Add notifications when someone comment on your decks"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.5",
+    "date": "13th March, 2024",
+    "changes": [
+      "Fix name change detection filter on deck builder"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.4",
+    "date": "23th February, 2024",
+    "changes": [
+      "Add library discipline/clan/title/sect not required filter"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.3",
+    "date": "21th February, 2024",
+    "changes": [
+      "Fix user update display name"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.2",
+    "date": "17th February, 2024",
+    "changes": [
+      "Fix dark mode styles",
+      "Fix typo errors"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.1",
+    "date": "9th February, 2024",
+    "changes": [
+      "Fix reset password on mobile device"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.19.0",
+    "date": "8th February, 2024",
+    "changes": [
+      "Add Forgot Password functionality",
+      "Fix Show of Force image"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.18.1",
+    "date": "7th February, 2024",
+    "changes": [
+      "Add Promo Tegyrius, Vizier"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.18.0",
+    "date": "4th February, 2024",
+    "changes": [
+      "Redesign MyDecks with advanced filters",
+      "Redesign Bookmarks with advanced filters",
+      "Fix error when enter crypt&library section by first time",
+      "Improve deck pagination on scroll"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.17.0",
+    "date": "2nd February, 2024",
+    "changes": [
+      "New way to filter decks with tags based on deck content",
+      "Add badge to banned cards"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.16.0",
+    "date": "29th January, 2024",
+    "changes": [
+      "Add Gamepod as Print of Demand shop"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.15.0",
+    "date": "27th January, 2024",
+    "changes": [
+      "New Dark Mode Theme: Experience our website in a sleek and eye-friendly dark color scheme.",
+      "Add Table Seating Tool"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.14.1",
+    "date": "7th January, 2024",
+    "changes": [
+      "Fix error that allows publish empty decks",
+      "Fix missing icons on decks page"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.14.0",
+    "date": "5th January, 2024",
+    "changes": [
+      "Add new cards of V5 (Ravnos, Tzimisce & Salubri)",
+      "Refactor all web icons",
+      "Fix Thaumaturgy discipline icons to be Blood Sorcery",
+      "Update Emerald Legionnaire & Ashur Tablets image with ERRATA"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.13.0",
+    "date": "31th December, 2023",
+    "changes": [
+      "Add errata to decks with cards that have changed their text that can affect the viability of the deck. (Preparing for the upcoming changes in Ashur/Legionnaire)"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.12.0",
+    "date": "10th November, 2023",
+    "changes": [
+      "Add swipe navigation on Crypt&Library section for mobile devices",
+      "Add list of decks containing card on Crypt&Library section"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.11.0",
+    "date": "20th October, 2023",
+    "changes": [
+      "New deck filter: absolute library cards ratio",
+      "Allow custom input for library cards ratio"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.10.0",
+    "date": "13th October, 2023",
+    "changes": [
+      "Allow navigate with keyboard arrow on Crypt & Library section",
+      "Dismiss Crypt & Library card modal on back button click",
+      "Add result count on Crypt & Library section"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.9.0",
+    "date": "7th October, 2023",
+    "changes": [
+      "Add New Blood 2 Preconstructed Decks",
+      "Add Open in builder from Deck"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.8.0",
+    "date": "16th September, 2023",
+    "changes": [
+      "Add New Blood 2"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.8.0",
+    "date": "11th August, 2023",
+    "changes": [
+      "Add Print on Demand filter on Crypt & Library sections",
+      "Add link to DriveThruCards on Crypt & Library detail"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.7.2",
+    "date": "6th August, 2023",
+    "changes": [
+      "Minor fix on deck descriptions"
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.7.1",
+    "date": "2nd August, 2023",
+    "changes": [
+      "Fix library section type filter for multi-type cards.",
+      "Fix deck builder library filter for multi-type cards."
+    ],
+    "showDialog": false
+  },
+  {
+    "version": "2.7.0",
+    "date": "29th July, 2023",
+    "changes": [
+      "Update card with Shadows of Berlin and Echoes of Gehenna changes.",
+      "Add Crypt & Library detail modal on deck view.",
+      "Add Preconstructed decks section."
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.6.0",
+    "date": "21st April, 2023",
+    "changes": [
+      "Fix a bug where the Tools menu was not rendering correctly on certain pages.",
+      "Enhanced user experience by optimizing the storage of crypt and library data for quicker access."
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.6",
+    "date": "26th March, 2023",
+    "changes": [
+      "Improve homepage links for mobile devices"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.5",
+    "date": "18th March, 2023",
+    "changes": [
+      "Update card text",
+      "Update card images",
+      "Fix discipline icons on card rulings text"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.4",
+    "date": "17th March, 2023",
+    "changes": [
+      "Added button to navigate between cards on crypt/library detail modal"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.3",
+    "date": "10th March, 2023",
+    "changes": [
+      "Sort option that is active will now be highlighted",
+      "Add Crypt & Library Sets detail"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.2",
+    "date": "6th March, 2023",
+    "changes": [
+      "Add new sorting criteria for crypt&deck cards based on popularity"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.1",
+    "date": "5th March, 2023",
+    "changes": [
+      "Add Crypt & Library detail with rulings"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.5.0",
+    "date": "4th March, 2023",
+    "changes": [
+      "Add Crypt section to view all crypt cards with filters",
+      "Add Library section to view all library cards with filters"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.4.0",
+    "date": "1st March, 2023",
+    "changes": [
+      "New minigame VTESDLE based on WORDLE popular game"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.3.3",
+    "date": "25th February, 2023",
+    "changes": [
+      "Improved deck builder filter by name when search for cards with accents and special characters",
+      "Now login's 'Remember me' is checked by default",
+      "Fixed interaction with header links for mobile"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.3.2",
+    "date": "13th February, 2023",
+    "changes": [
+      "Change the group filter in the deck builder to be smarter. Now takes into account the vampires you already have for the initial adjustment"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.3.1",
+    "date": "3rd February, 2023",
+    "changes": [
+      "Change home layout to show first the popular decks. This was done to improve how popular decks are sorted, since showing new ones first tended to always be popular ones",
+      "Disallow rating on own decks",
+      "Fix problem in deck filter when it was filtered by cards removed from the deck"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.3.0",
+    "date": "28th January, 2023",
+    "changes": [
+      "Update framework to Angular 15.1"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.2.0",
+    "date": "28th December, 2022",
+    "changes": [
+      "Added Progressive Web App configuration, now website can be installed as Android/IOS app with prefetch data"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.1.0",
+    "date": "22nd October, 2022",
+    "changes": [
+      "Add new Fall of London set"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.0.1",
+    "date": "21st October, 2022",
+    "changes": [
+      "Add promo card: Maila"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "2.0.0",
+    "date": "3rd September, 2022",
+    "changes": [
+      "We have rebuilt the app on a new framework and modernized its design",
+      "<strong>Modern Frontend</strong> used: Angular 14.1 with Bootstrap 5.2",
+      "Improved <strong>Deck Builder Tool</strong> with tons of new filters and utilities",
+      "Improved <strong>Deck Card</strong>, more simple and clean",
+      "Improved <strong>Decks Filters</strong>, more responsive and easy to use",
+      "New option to save your <strong>private decks</strong>",
+      "<strong>Changelog</strong> page"
+    ],
+    "showDialog": true
+  },
+  {
+    "version": "1.0.0",
+    "date": "31th August, 2020",
+    "changes": [
+      "Initial Released"
+    ],
+    "showDialog": true
+  }
+]

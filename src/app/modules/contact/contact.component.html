@@ -1,0 +1,64 @@
+<div class="container py-4" *transloco="let t; read:'contact'">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label class="form-label" for="name">{{ t('name') }}</label>
+      <input class="form-control" id="name" type="text" [placeholder]="t('name')" formControlName="name"
+        autocomplete="name" />
+      <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+        <div class="invalid-feedback d-block" *ngIf="name?.errors?.['required']">
+          <i class="bi bi-x-circle-fill"></i>
+          {{ 'shared.field_required' | transloco: { field: t('name') } }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="emailAddress">{{ t('email') }}</label>
+      <input class="form-control" id="emailAddress" type="email" placeholder="user@example.com" formControlName="email"
+        autocomplete="email" />
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+        <div class="invalid-feedback d-block" *ngIf="email?.errors?.['required']">
+          <i class="bi bi-x-circle-fill"></i>
+          {{ 'shared.field_required' | transloco: { field: t('email') } }}
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="email?.errors?.['email']">
+          <i class="bi bi-x-circle-fill"></i>{{ t('email_required') }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="subject">{{ t('subject') }}</label>
+      <input class="form-control" id="subject" type="text" [placeholder]="t('subject')" formControlName="subject" />
+      <div *ngIf="subject?.invalid && (subject?.dirty || subject?.touched)">
+        <div class="invalid-feedback d-block" *ngIf="subject?.errors?.['required']">
+          <i class="bi bi-x-circle-fill"></i>
+          {{ 'shared.field_required' | transloco: { field: t('subject') } }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="message">{{ t('message') }}</label>
+      <textarea class="form-control" id="message" type="text" [placeholder]="t('message')" style="height: 10rem;"
+        formControlName="message"></textarea>
+      <div *ngIf="message?.invalid && (message?.dirty || message?.touched)">
+        <div class="invalid-feedback d-block" *ngIf="message?.errors?.['required']">
+          <i class="bi bi-x-circle-fill"></i>
+          {{ 'shared.field_required' | transloco: { field: t('message') } }}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="successful">
+      <div class="text-center mb-3 text-success">{{ t('successful') }}</div>
+    </div>
+    <div *ngIf="error">
+      <div class="text-center text-danger mb-3">
+        <i class="bi bi-x-circle-fill"></i> {{ t('error') }} &nbsp;Error sending message! Please contact us to mail
+        <a href="mailto:support@vtesdecks.com">
+          support&#64;vtesdecks.com
+        </a>
+      </div>
+    </div>
+    <div class="d-grid">
+      <button class="btn btn-primary btn-lg" type="submit" [disabled]="form.invalid">{{ t('submit') }}</button>
+    </div>
+  </form>
+</div>

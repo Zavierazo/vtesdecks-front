@@ -1,0 +1,20 @@
+.deck-card {
+  background-color: #000000;
+  background: linear-gradient(#000000, lighten(#000000, 20));
+}
+
+.text-black {
+  color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+}
+
+.bg-light {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.border-dark {
+  border-color: var(--bs-dark-border-subtle) !important;
+}
+
+.text-black-50 {
+  color: rgba(var(--bs-white-rgb), 0.5) !important;
+}

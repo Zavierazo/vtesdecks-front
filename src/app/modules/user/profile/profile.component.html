@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-md-3 border-right">
+    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+      <img class="rounded-circle mt-5" width="150px" [src]="profileImage$ | async" [alt]="displayName$ | async">
+      <span class="fw-bold">
+        {{ displayName$ | async }}
+      </span>
+      <span class="text-black-50">
+        {{ email$ | async }}
+      </span>
+    </div>
+  </div>
+  <div class="col-md-9 border-right">
+    <form class="p-3 py-5" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-right">Profile Settings</h4>
+      </div>
+      <div class="row">
+        <ngb-alert type="warning" [dismissible]="false">
+          For profile image we use <a class="fw-bold" href="https://gravatar.com/profiles/edit"
+            target="_blank">Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to
+          place when you do things like comment or post on a blog.
+        </ngb-alert>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <label class="labels">Display Name</label>
+          <input type="text" class="form-control" placeholder="Display Name..." formControlName="displayName"
+            autocomplete="nickname">
+          <div *ngIf="displayName?.invalid && (displayName?.dirty || displayName?.touched)">
+            <div class="invalid-feedback d-block" *ngIf="displayName?.hasError('required')">
+              <i class="bi bi-x-circle-fill"></i> Display Name is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4 mt-2">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="inputPassword4">Old Password</label>
+            <input type="password" class="form-control" id="inputPassword4" formControlName="password"
+              autocomplete="current-password" placeholder="Leave blank if you don't want to change it">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword5">New Password</label>
+            <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword"
+              autocomplete="new-password">
+            <div *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)">
+              <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('hasNumber')">
+                <i class="bi bi-x-circle-fill"></i> Must contain at least 1 number!
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('minlength')">
+                <i class="bi bi-x-circle-fill"></i> Must be at least 8 characters!
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword6">Confirm Password</label>
+            <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword"
+              autocomplete="new-password">
+            <div *ngIf="confirmNewPassword?.invalid && (confirmNewPassword?.dirty || confirmNewPassword?.touched)">
+              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('hasNumber')">
+                <i class="bi bi-x-circle-fill"></i> Must contain at least 1 number!
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('minlength')">
+                <i class="bi bi-x-circle-fill"></i> Must be at least 8 characters!
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('noPasswordMatch')">
+                <i class="bi bi-x-circle-fill"></i> Password must match!
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="mb-2">Password requirements</p>
+          <p class="small text-muted mb-2">To create a new password, you have to meet all of the following requirements:
+          </p>
+          <ul class="small text-muted pl-4 mb-0">
+            <li>Minimum 8 character</li>
+            <li>At least one number</li>
+            <li>Can’t be the same as a previous password</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-5 text-center">
+        <div *ngIf="message" class="text-center mb-3 text-success"
+          [ngClass]="{'text-success': successful,'text-danger': !successful}">
+          {{ message }}
+        </div>
+        <button class="btn btn-primary profile-button" type="submit" [disabled]="form.invalid">
+          Save Profile
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
