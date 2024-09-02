@@ -31,21 +31,12 @@ export class AppComponent implements OnInit {
     private modalService: NgbModal,
     private apiDataService: ApiDataService,
     private colorThemeService: ColorThemeService,
-    private googleAnalyticsService: GoogleAnalyticsService,
-    private toastService: ToastService
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     this.colorThemeService.load();
   }
 
   ngOnInit() {
-    // Temporal
-    this.toastService.show(
-      'Our cloud provider is experiencing technical difficulties in their data center. As a result, our website may be experiencing intermittent outages until the issue is resolved. We apologize for any inconvenience this may cause.',
-      {
-        classname: 'bg-warning text-dark',
-        delay: 30000,
-      }
-    );
     // Init GA consent
     this.googleAnalyticsConsentUpdate();
     // Update GA consent
