@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { ApiChangelog } from './models/api-changelog';
 import { ColorThemeService } from './services/color-theme.service';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -30,12 +31,21 @@ export class AppComponent implements OnInit {
     private modalService: NgbModal,
     private apiDataService: ApiDataService,
     private colorThemeService: ColorThemeService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private toastService: ToastService
   ) {
     this.colorThemeService.load();
   }
 
   ngOnInit() {
+    // Temporal
+    this.toastService.show(
+      'Our cloud provider is experiencing technical difficulties in their data center. As a result, our website may be experiencing intermittent outages until the issue is resolved. We apologize for any inconvenience this may cause.',
+      {
+        classname: 'bg-warning text-dark',
+        delay: 30000,
+      }
+    );
     // Init GA consent
     this.googleAnalyticsConsentUpdate();
     // Update GA consent
