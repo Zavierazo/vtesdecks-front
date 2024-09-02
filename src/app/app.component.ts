@@ -11,7 +11,6 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { ApiChangelog } from './models/api-changelog';
 import { ColorThemeService } from './services/color-theme.service';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
