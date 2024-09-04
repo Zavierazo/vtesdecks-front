@@ -4,7 +4,7 @@ import { LibraryTypeFilterComponent } from './library-type-filter/library-type-f
 import { LibraryBuilderFilterComponent } from './library-builder-filter/library-builder-filter.component';
 import { LibraryBuilderComponent } from './library-builder/library-builder.component';
 import { CryptBuilderFilterComponent } from './crypt-builder-filter/crypt-builder-filter.component';
-import { NgxSliderModule } from 'ngx-slider-v2';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component';
 import { ImportVdbComponent } from './import-vdb/import-vdb.component';
 import { BuilderComponent } from './builder.component';

@@ -5,7 +5,15 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, retryWhen, concatMap, delay, throwError, of } from 'rxjs';
+import {
+  Observable,
+  retryWhen,
+  concatMap,
+  delay,
+  throwError,
+  of,
+  startWith,
+} from 'rxjs';
 import { ToastService } from './services/toast.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { environment } from '../environments/environment';
@@ -34,7 +42,7 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
             concatMap((error, count) => {
               if (
                 count <= retryCount &&
-                !error.url.includes('api.krcg.org') &&
+                !error.url.startWith('https://api.krcg.org') &&
                 (error.status === 503 ||
                   error.status === 504 ||
                   error.status === 0)
