@@ -10,8 +10,12 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha-2';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpMonitorInterceptor } from './http-monitor.interceptor';
 import {
@@ -149,6 +153,8 @@ const routes: Routes = [
     HeaderComponent,
     NotificationListComponent,
   ],
+  bootstrap: [AppComponent],
+  exports: [RouterModule],
   imports: [
     CommonModule,
     SharedModule,
@@ -159,7 +165,6 @@ const routes: Routes = [
     AkitaNgRouterStoreModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
-    HttpClientModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
     JwtModule.forRoot({
       jwtOptionsProvider: {
@@ -209,8 +214,7 @@ const routes: Routes = [
         include: ['library_v1', 'crypt_v1'],
       }),
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
-  exports: [RouterModule],
 })
 export class AppModule {}

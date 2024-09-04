@@ -9,7 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { DeckFiltersComponent } from './filter/deck-filters.component';
 import { DeckSharedModule } from '../deck-shared/deck-shared.module';
-import { NgxSliderModule } from 'ngx-slider-v2';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CardProportionComponent } from './filter/card-proportion/card-proportion.component';
 import { CardFilterComponent } from './filter/card-filter/card-filter.component';
 import { decksResolver } from './decks.resolver';
