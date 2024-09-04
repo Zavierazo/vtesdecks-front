@@ -1,10 +1,14 @@
 # VtesDecksFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
+This project is an Angular application serving as the front-end for [VTES Decks](vtesdecks.com), a online card search, TWD browser and deck builder for Vampire the Eternal Struggle (VTES)
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+The API backend is not yet published on github. It will be added soon so that it can be used locally as well.
+
+Change `src/environments/environment.ts` to switch apiDomain to `api.vtesdecks.com` and api.baseUrl to `https://api.vtesdecks.com/1.0` to use production api locally.
 
 ## Code scaffolding
 
@@ -18,10 +22,13 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
 ## Further help
 
+If you need support/help don't hesitate to fill Issue or send me an email to support@vtesdecks.com
+
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## CONTRIBUTION
+Contributions are welcome! Please create an issue to discuss your proposed feature or fix before starting work on it. 
+
+We don't have specific coding style or test requirements at this time.
