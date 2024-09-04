@@ -151,7 +151,6 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   initQuery() {
-    console.log('search');
     this.limitTo = LibraryBuilderComponent.PAGE_SIZE;
     this.updateQuery();
   }
