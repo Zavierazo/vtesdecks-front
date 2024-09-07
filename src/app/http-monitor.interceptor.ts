@@ -42,7 +42,7 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
             concatMap((error, count) => {
               if (
                 count <= retryCount &&
-                !error.url.startWith('https://api.krcg.org') &&
+                !error.url.startsWith('https://api.krcg.org') &&
                 (error.status === 503 ||
                   error.status === 504 ||
                   error.status === 0)
