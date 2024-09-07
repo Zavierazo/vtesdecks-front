@@ -93,7 +93,7 @@
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button"
             aria-expanded="false">
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
-              class="rounded-circle me-2">
+              class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>
           </a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">

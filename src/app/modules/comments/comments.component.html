@@ -1,6 +1,7 @@
 <ng-container *transloco="let t; read: 'comments'">
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color" *isLogged="true">
-    <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')">
+    <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')"
+      onerror="this.src='/assets/img/default_user.png'">
     <form class="comment-form" [formGroup]="form" (ngSubmit)="addComment()">
       <div class="input-group mb-3">
         <input type="text" formControlName="comment" class="form-control" [placeholder]="t('comment_placeholder')">
