@@ -1,8 +1,7 @@
-name: 'Dev - PR Label Checker'
+name: 'PR Label Checker'
 on:
   pull_request:
-    branches:
-      - dev
+    branches: [ "main" ]
     types:
       - reopened
       - labeled

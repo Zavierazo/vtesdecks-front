@@ -1,8 +1,7 @@
-name: 'Dev - PR Open'
+name: 'PR Open'
 on:
   pull_request:
-    branches:
-      - dev
+    branches: [ "main" ]
     types:
       - opened
 jobs:

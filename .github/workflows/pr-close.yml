@@ -1,8 +1,7 @@
-name: 'Dev - PR Close'
+name: 'PR Close'
 on:
   pull_request:
-    branches:
-      - dev
+    branches: [ "main" ]
     types:
       - closed
 jobs:
