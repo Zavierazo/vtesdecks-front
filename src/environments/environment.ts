@@ -1,10 +1,10 @@
 export const environment = {
   appVersion: require('../../package.json').version + '-dev',
   domain: 'localhost',
-  apiDomain: 'api.vtesdecks.com',
+  apiDomain: 'localhost:8080',
   production: false,
   api: {
-    baseUrl: 'https://api.vtesdecks.com/1.0',
+    baseUrl: 'http://localhost:8080/api/1.0',
   },
   recaptcha: {
     siteKey: '6Lfd9cAZAAAAAENUCZQzjo46pSVAobIuktoTzbDq',
