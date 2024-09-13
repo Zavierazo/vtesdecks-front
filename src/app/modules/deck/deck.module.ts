@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { CommentsModule } from '../comments/comments.module';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
-import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
+import { TranslocoModule } from '@ngneat/transloco';
 import { deckResolver } from './deck.resolver';
 
 const routes: Routes = [

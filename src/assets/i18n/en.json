@@ -251,5 +251,34 @@
   },
   "changelog": {
     "reload_page": "If you experience strange behavior, reload page (Ctrl+F5 for Windows/Linux or Command+Shift+R for MacOS)"
+  },
+  "vtesdle": {
+    "help": "Help",
+    "infinite_mode": "Infinite Mode",
+    "today_mode": "Today Mode",
+    "guess_placeholder": "Guess the card name...",
+    "win_message": "Congratulations, you have guessed the card!",
+    "come_back_message": "Come back tomorrow for more!",
+    "game_over_infinite_message": "Game over, press retry for more!",
+    "game_over_today_message": "Game over, come back tomorrow for more!",
+    "remaining_lives": "{{ lives }} remaining lives"
+  },
+  "verify_account": {
+    "success": "Account verified!",
+    "error": "Sorry, we couldn't find an account with that email!"
+  },
+  "user_profile": {
+    "settings": "Profile Settings",
+    "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
+    "display_name": "Display Name",
+    "old_password": "Old Password",
+    "old_password_placeholder": "Leave blank if you don't want to change it",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "password_requirements": "Password requirements",
+    "password_requirements_detail": "To create a new password, you have to meet all of the following requirements:",
+    "password_not_same": "Can’t be the same as a previous password",
+    "save": "Save Profile",
+    "error": "An error occurred while updating your settings."
   }
 }

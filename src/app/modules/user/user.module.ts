@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ProfileComponent } from './profile/profile.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { CanActivateUser } from '../../shared/guards/can-activate-user.guard';
 import { SharedModule } from '../../shared/shared.module';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Routes = [
   {
@@ -24,10 +24,10 @@ const routes: Routes = [
     CommonModule,
     NgbModule,
     RouterModule.forChild(routes),
-    InfiniteScrollModule,
     ReactiveFormsModule,
     SharedModule,
     DeckCardModule,
+    TranslocoModule,
   ],
 })
 export class UserModule {}

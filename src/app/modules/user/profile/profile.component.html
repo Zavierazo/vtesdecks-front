@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *transloco="let t; read: 'user_profile'">
   <div class="col-md-3 border-right">
     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
       <img class="rounded-circle mt-5" width="150px" [src]="profileImage$ | async" [alt]="displayName$ | async"
@@ -14,23 +14,19 @@
   <div class="col-md-9 border-right">
     <form class="p-3 py-5" [formGroup]="form" (ngSubmit)="submit()">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="text-right">Profile Settings</h4>
+        <h4 class="text-right">{{ t('settings') }}</h4>
       </div>
       <div class="row">
-        <ngb-alert type="warning" [dismissible]="false">
-          For profile image we use <a class="fw-bold" href="https://gravatar.com/profiles/edit"
-            target="_blank">Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to
-          place when you do things like comment or post on a blog.
-        </ngb-alert>
+        <ngb-alert type="warning" [dismissible]="false" [innerHTML]="t('profile_image_alert')" />
       </div>
       <div class="row mt-2">
         <div class="col-md-12">
-          <label class="labels">Display Name</label>
-          <input type="text" class="form-control" placeholder="Display Name..." formControlName="displayName"
-            autocomplete="nickname">
+          <label class="labels">{{ t('display_name') }}</label>
+          <input type="text" class="form-control" [placeholder]="t('display_name') + '...'"
+            formControlName="displayName" autocomplete="nickname">
           <div *ngIf="displayName?.invalid && (displayName?.dirty || displayName?.touched)">
             <div class="invalid-feedback d-block" *ngIf="displayName?.hasError('required')">
-              <i class="bi bi-x-circle-fill"></i> Display Name is required.
+              <i class="bi bi-x-circle-fill"></i> {{ 'shared.field_required' | transloco:{ field: t('display_name') } }}
             </div>
           </div>
         </div>
@@ -38,48 +34,49 @@
       <div class="row mb-4 mt-2">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="inputPassword4">Old Password</label>
+            <label for="inputPassword4">{{ t('old_password') }}</label>
             <input type="password" class="form-control" id="inputPassword4" formControlName="password"
-              autocomplete="current-password" placeholder="Leave blank if you don't want to change it">
+              autocomplete="current-password" [placeholder]="t('old_password_placeholder')">
           </div>
           <div class="form-group">
-            <label for="inputPassword5">New Password</label>
+            <label for="inputPassword5">{{ t('new_password') }}</label>
             <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword"
               autocomplete="new-password">
             <div *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)">
               <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('hasNumber')">
-                <i class="bi bi-x-circle-fill"></i> Must contain at least 1 number!
+                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
               </div>
               <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('minlength')">
-                <i class="bi bi-x-circle-fill"></i> Must be at least 8 characters!
+                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="inputPassword6">Confirm Password</label>
+            <label for="inputPassword6">{{ t('confirm_password') }}</label>
             <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword"
               autocomplete="new-password">
             <div *ngIf="confirmNewPassword?.invalid && (confirmNewPassword?.dirty || confirmNewPassword?.touched)">
               <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('hasNumber')">
-                <i class="bi bi-x-circle-fill"></i> Must contain at least 1 number!
+                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
               </div>
               <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('minlength')">
-                <i class="bi bi-x-circle-fill"></i> Must be at least 8 characters!
+                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
               </div>
               <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('noPasswordMatch')">
-                <i class="bi bi-x-circle-fill"></i> Password must match!
+                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_match' | transloco}}
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <p class="mb-2">Password requirements</p>
-          <p class="small text-muted mb-2">To create a new password, you have to meet all of the following requirements:
+          <p class="mb-2">{{ t('password_requirements') }}</p>
+          <p class="small text-muted mb-2">
+            {{ t('password_requirements_detail') }}
           </p>
           <ul class="small text-muted pl-4 mb-0">
-            <li>Minimum 8 character</li>
-            <li>At least one number</li>
-            <li>Can’t be the same as a previous password</li>
+            <li>{{ 'login_modal.must_8_characters' | transloco }}</li>
+            <li>{{ 'login_modal.must_one_number' | transloco }}</li>
+            <li>{{ t('password_not_same') }}</li>
           </ul>
         </div>
       </div>
@@ -89,7 +86,7 @@
           {{ message }}
         </div>
         <button class="btn btn-primary profile-button" type="submit" [disabled]="form.invalid">
-          Save Profile
+          {{ t('save') }}
         </button>
       </div>
     </form>
