@@ -10,10 +10,10 @@ import {
 import { ApiDataService } from '../../services/api.data.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiResetPassword } from '../../models/api-reset-password';
 import { ApiResponse } from '../../models/api-response';
 import { ToastService } from '../../services/toast.service';
 import { switchMap, take } from 'rxjs';
+import { TranslocoService } from '@ngneat/transloco';
 
 @UntilDestroy()
 @Component({
@@ -44,7 +44,8 @@ export class ResetPasswordComponent implements OnInit {
     private apiDataService: ApiDataService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit() {}
@@ -76,7 +77,7 @@ export class ResetPasswordComponent implements OnInit {
         next: (user: ApiResponse) => {
           if (user.successful) {
             this.toastService.show(
-              'Your password has been successfully reset. You can now log in using your new password.',
+              this.translocoService.translate('reset_password.success'),
               {
                 classname: 'bg-success text-light',
                 delay: 10000,
@@ -85,7 +86,8 @@ export class ResetPasswordComponent implements OnInit {
             this.router.navigate(['/']);
           } else {
             this.toastService.show(
-              user.message ?? "Sorry, we couldn't reset your password",
+              user.message ??
+                this.translocoService.translate('reset_password.error'),
               {
                 classname: 'bg-danger text-light',
                 delay: 10000,
@@ -95,10 +97,13 @@ export class ResetPasswordComponent implements OnInit {
         },
         error: (error) => {
           console.error(error.message);
-          this.toastService.show("Sorry, we couldn't reset your password", {
-            classname: 'bg-danger text-light',
-            delay: 10000,
-          });
+          this.toastService.show(
+            this.translocoService.translate('reset_password.error'),
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            }
+          );
         },
       });
   }

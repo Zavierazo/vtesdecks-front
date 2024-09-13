@@ -24,7 +24,8 @@
     </ng-template>
   </div>
   <div class="card-footer white">
-    <a class="btn btn-success btn-rounded btn-lg" routerLink="/decks" [queryParams]="deckParams" role="button">See
-      More...</a>
+    <a class="btn btn-success btn-rounded btn-lg" routerLink="/decks" [queryParams]="deckParams" role="button">
+      {{ 'home.see_more' | transloco }}
+    </a>
   </div>
 </div>

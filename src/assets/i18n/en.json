@@ -280,5 +280,25 @@
     "password_not_same": "Can’t be the same as a previous password",
     "save": "Save Profile",
     "error": "An error occurred while updating your settings."
-  }
+  },
+  "reset_password": {
+    "reset_password": "Reset Password",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "success": "Your password has been successfully reset. You can now log in using your new password.",
+    "error": "Sorry, we couldn't reset your password"
+  },
+  "home": {
+    "tournament_decks": "Tournament Decks",
+    "community_decks": "Community Decks",
+    "preconstructed_decks": "Preconstructed Decks",
+    "deck_builder": "Deck Builder",
+    "user_decks": "My Decks",
+    "bookmarked_decks": "Bookmarked Decks",
+    "contribute_message": "If you want to contribute, report bugs or raise a problem, you can do so by",
+    "contribute_github_issues": "GitHub Issues",
+    "contribute_or_message": "or sending an email to",
+    "see_more": "See More..."
+  },
+  "decks": {}
 }
