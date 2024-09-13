@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
   declarations: [CommentsComponent, CommentComponent],

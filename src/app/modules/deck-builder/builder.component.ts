@@ -28,7 +28,7 @@ import { getDisciplineIcon } from '../../utils/disciplines';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ApiDisciplineStat } from '../../models/api-discipline-stat';
-import { TranslocoService, provideTranslocoScope } from '@ngneat/transloco';
+import { TranslocoService } from '@ngneat/transloco';
 
 @UntilDestroy()
 @Component({

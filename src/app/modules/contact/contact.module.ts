@@ -3,7 +3,7 @@ import { ContactComponent } from './contact.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Routes = [
   {

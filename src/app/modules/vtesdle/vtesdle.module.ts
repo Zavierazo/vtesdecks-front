@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DeckSharedModule } from '../deck-shared/deck-shared.module';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     DeckSharedModule,
     ReactiveFormsModule,
     NgxSkeletonLoaderModule,
+    TranslocoModule,
     RouterModule.forChild(routes),
   ],
   declarations: [VtesdleComponent],
