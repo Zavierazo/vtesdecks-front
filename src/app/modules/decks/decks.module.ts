@@ -3,7 +3,7 @@ import { DeckCardModule } from '../deck-card/deck-card.module';
 import { DecksComponent } from './decks.component';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
@@ -38,7 +38,7 @@ const routes: Routes = [
     NgbModule,
     NgxSliderModule,
     DeckCardModule,
-    InfiniteScrollModule,
+    InfiniteScrollDirective,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
   ],
