@@ -17,7 +17,7 @@ import { CanDeactivateComponent } from '../../shared/guards/can-deactivate-compo
 import { DeckSharedModule } from '../deck-shared/deck-shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SharedModule } from '../../shared/shared.module';
 import { TranslocoModule } from '@ngneat/transloco';
 import { librarySectionResolver } from './library-section/library-section.resolver';
@@ -64,7 +64,7 @@ const routes: Routes = [
     NgbModule,
     SharedModule,
     ReactiveFormsModule,
-    InfiniteScrollModule,
+    InfiniteScrollDirective,
     DeckSharedModule,
     NgxSliderModule,
     RouterModule.forChild(routes),

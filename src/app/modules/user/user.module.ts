@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ProfileComponent } from './profile/profile.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +24,7 @@ const routes: Routes = [
     CommonModule,
     NgbModule,
     RouterModule.forChild(routes),
-    InfiniteScrollModule,
+    InfiniteScrollDirective,
     ReactiveFormsModule,
     SharedModule,
     DeckCardModule,
