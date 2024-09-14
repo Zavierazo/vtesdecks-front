@@ -3,14 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
-} from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LoginComponent } from '../../shared/components/login/login.component';
-import { ApiDataService } from '../../services/api.data.service';
-import { switchMap, tap } from 'rxjs';
-import { ApiHome } from '../../models/api-home';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthQuery } from '../../state/auth/auth.query';
+} from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { LoginComponent } from '../../shared/components/login/login.component'
+import { ApiDataService } from '../../services/api.data.service'
+import { switchMap, tap } from 'rxjs'
+import { ApiHome } from '../../models/api-home'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
 @Component({
@@ -20,13 +20,13 @@ import { AuthQuery } from '../../state/auth/auth.query';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  deckHome?: ApiHome;
+  deckHome?: ApiHome
 
   constructor(
     private modalService: NgbModal,
     private apiDataService: ApiDataService,
     private authQuery: AuthQuery,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -37,14 +37,14 @@ export class HomeComponent implements OnInit {
         untilDestroyed(this),
         switchMap(() => this.apiDataService.getDeckHome()),
         tap((result) => {
-          this.deckHome = result;
-          this.changeDetector.markForCheck();
-        })
+          this.deckHome = result
+          this.changeDetector.markForCheck()
+        }),
       )
-      .subscribe();
+      .subscribe()
   }
 
   openLoginModal() {
-    this.modalService.open(LoginComponent);
+    this.modalService.open(LoginComponent)
   }
 }

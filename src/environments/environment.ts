@@ -12,4 +12,4 @@ export const environment = {
   googleAnalytics: {
     trackingId: 'G-0WW72ST9EZ',
   },
-};
+}

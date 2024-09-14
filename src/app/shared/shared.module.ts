@@ -1,19 +1,19 @@
-import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TruncatePipe } from './pipes/truncate.pipe';
-import { AnimatedDigitComponent } from './components/animated-digit/animated-digit.component';
-import { LoadingComponent } from './components/loading/loading.component';
-import { DateAsAgoPipe } from './pipes/date-ago.pipe';
-import { IsLoggedDirective } from './directives/is-logged.directive';
-import { ToastsContainer } from './components/toast-container/toast-container.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ThemeSelectorComponent } from './components/theme-selector/theme-selector.component';
-import { TableSeatingComponent } from './components/table-seating/table-seating.component';
-import { TranslocoModule } from '@ngneat/transloco';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoModule } from '@ngneat/transloco'
+import { AnimatedDigitComponent } from './components/animated-digit/animated-digit.component'
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component'
+import { LoadingComponent } from './components/loading/loading.component'
+import { LoginComponent } from './components/login/login.component'
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component'
+import { TableSeatingComponent } from './components/table-seating/table-seating.component'
+import { ThemeSelectorComponent } from './components/theme-selector/theme-selector.component'
+import { ToastsContainer } from './components/toast-container/toast-container.component'
+import { IsLoggedDirective } from './directives/is-logged.directive'
+import { DateAsAgoPipe } from './pipes/date-ago.pipe'
+import { TruncatePipe } from './pipes/truncate.pipe'
 
 @NgModule({
   declarations: [

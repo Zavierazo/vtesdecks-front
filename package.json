@@ -6,10 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
   },
   "private": true,
   "dependencies": {
+    "@angular-slider/ngx-slider": "^18.0.0",
     "@angular/animations": "^18.2.4",
     "@angular/cdk": "^18.2.4",
     "@angular/common": "^18.2.4",
@@ -40,7 +42,6 @@
     "ngx-google-analytics": "^14.0.1",
     "ngx-infinite-scroll": "^18.0.0",
     "ngx-skeleton-loader": "^9.0.0",
-    "@angular-slider/ngx-slider": "^18.0.0",
     "rxjs": "^7.8.1",
     "tslib": "2.4.1",
     "zone.js": "^0.14.10"
@@ -58,6 +59,7 @@
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
+    "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   }
 }

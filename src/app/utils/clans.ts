@@ -1,10 +1,10 @@
 export class Clan {
-  name: string;
-  icon: string;
+  name: string
+  icon: string
 
   constructor(name: string, icon: string) {
-    this.name = name;
-    this.icon = icon;
+    this.name = name
+    this.icon = icon
   }
 }
 
@@ -55,8 +55,8 @@ export const CLAN_LIST = [
   new Clan('Judge', 'judge'),
   new Clan('Martyr', 'martyr'),
   new Clan('Redeemer', 'redeemer'),
-];
+]
 
 export function getClanIcon(clan: string): string | undefined {
-  return CLAN_LIST.find((c) => c.name === clan)?.icon;
+  return CLAN_LIST.find((c) => c.name === clan)?.icon
 }

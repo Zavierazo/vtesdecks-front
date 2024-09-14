@@ -1,38 +1,30 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
   HttpEvent,
+  HttpHandler,
   HttpInterceptor,
-} from '@angular/common/http';
-import {
-  Observable,
-  retryWhen,
-  concatMap,
-  delay,
-  throwError,
-  of,
-  startWith,
-} from 'rxjs';
-import { ToastService } from './services/toast.service';
-import { TranslocoService } from '@ngneat/transloco';
-import { environment } from '../environments/environment';
+  HttpRequest,
+} from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { TranslocoService } from '@ngneat/transloco'
+import { concatMap, delay, Observable, of, retryWhen, throwError } from 'rxjs'
+import { environment } from '../environments/environment'
+import { ToastService } from './services/toast.service'
 
-export const retryCount = 10;
-export const retryWaitMilliSeconds = 5000;
+export const retryCount = 10
+export const retryWaitMilliSeconds = 5000
 
 @Injectable()
 export class HttpMonitorInterceptor implements HttpInterceptor {
   constructor(
     private toastService: ToastService,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
   intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const useLocale = request?.url?.includes(environment.apiDomain);
+    const useLocale = request?.url?.includes(environment.apiDomain)
     return next
       .handle(useLocale ? this.getLocaleRequest(request) : request)
       .pipe(
@@ -47,31 +39,31 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
                   error.status === 504 ||
                   error.status === 0)
               ) {
-                console.warn('Error ' + error.status + ' retrying...');
+                console.warn('Error ' + error.status + ' retrying...')
                 this.toastService.show(
                   this.translocoService.translate(
-                    'shared.service_temporarily_unavailable'
+                    'shared.service_temporarily_unavailable',
                   ),
                   {
                     classname: 'bg-danger text-light',
                     delay: 5000,
-                  }
-                );
-                return of(error);
+                  },
+                )
+                return of(error)
               }
-              return throwError(() => error);
-            })
-          )
-        )
-      );
+              return throwError(() => error)
+            }),
+          ),
+        ),
+      )
   }
 
   getLocaleRequest(request: HttpRequest<unknown>): HttpRequest<unknown> {
     return request.clone({
       params: request.params.set(
         'locale',
-        this.translocoService.getActiveLang()
+        this.translocoService.getActiveLang(),
       ),
-    });
+    })
   }
 }

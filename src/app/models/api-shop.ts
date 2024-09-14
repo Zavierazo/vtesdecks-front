@@ -1,7 +1,7 @@
 export interface ApiShop {
-  cardId: number;
-  platform: string;
-  set: string;
-  link: string;
-  price: number;
+  cardId: number
+  platform: string
+  set: string
+  link: string
+  price: number
 }

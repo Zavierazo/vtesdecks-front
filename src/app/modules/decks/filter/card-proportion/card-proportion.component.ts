@@ -7,14 +7,14 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-} from '@angular/core';
+} from '@angular/core'
 import {
   ControlContainer,
   FormControl,
   FormGroupDirective,
-} from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, tap } from 'rxjs';
+} from '@angular/forms'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { debounceTime, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -27,53 +27,53 @@ import { debounceTime, tap } from 'rxjs';
   ],
 })
 export class CardProportionComponent implements OnInit, OnChanges {
-  private static readonly ABSOLUTE_MAX = 90;
-  private static readonly PERCENTAGE_MAX = 100;
+  private static readonly ABSOLUTE_MAX = 90
+  private static readonly PERCENTAGE_MAX = 100
 
-  @Input() controlName!: string;
+  @Input() controlName!: string
 
-  @Input() absolute!: boolean;
+  @Input() absolute!: boolean
 
-  @Input() custom!: boolean;
+  @Input() custom!: boolean
 
-  @Input() value!: string;
+  @Input() value!: string
 
-  @Output() valueChanges: EventEmitter<string> = new EventEmitter();
+  @Output() valueChanges: EventEmitter<string> = new EventEmitter()
 
-  min = new FormControl<number>(0);
-  max = new FormControl<number>(0);
+  min = new FormControl<number>(0)
+  max = new FormControl<number>(0)
 
   constructor() {}
 
   ngOnInit() {
-    this.patchCustomValue();
-    this.listenCustomValue();
+    this.patchCustomValue()
+    this.listenCustomValue()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['absolute'] || changes['custom']) {
-      this.patchCustomValue();
+      this.patchCustomValue()
     }
   }
 
   private patchCustomValue() {
-    const min = 0;
+    const min = 0
     const max = this.absolute
       ? CardProportionComponent.ABSOLUTE_MAX
-      : CardProportionComponent.PERCENTAGE_MAX;
+      : CardProportionComponent.PERCENTAGE_MAX
     if (this.value && this.value !== 'any') {
-      const values = this.value?.split(',');
-      this.min.patchValue(Number(values[0]), { emitEvent: false });
-      this.max.patchValue(Number(values[1]), { emitEvent: false });
+      const values = this.value?.split(',')
+      this.min.patchValue(Number(values[0]), { emitEvent: false })
+      this.max.patchValue(Number(values[1]), { emitEvent: false })
     } else {
-      this.min.patchValue(min, { emitEvent: false });
-      this.max.patchValue(max, { emitEvent: false });
+      this.min.patchValue(min, { emitEvent: false })
+      this.max.patchValue(max, { emitEvent: false })
     }
   }
 
   private listenCustomValue() {
-    this.handleValueChanges(this.min);
-    this.handleValueChanges(this.max);
+    this.handleValueChanges(this.min)
+    this.handleValueChanges(this.max)
   }
 
   private handleValueChanges(control: FormControl<number | null>) {
@@ -84,20 +84,20 @@ export class CardProportionComponent implements OnInit, OnChanges {
         tap((value) => {
           if (value !== null) {
             if (value < 0) {
-              control.patchValue(0);
+              control.patchValue(0)
             } else if (
               this.absolute &&
               value > CardProportionComponent.ABSOLUTE_MAX
             ) {
-              control.patchValue(CardProportionComponent.ABSOLUTE_MAX);
+              control.patchValue(CardProportionComponent.ABSOLUTE_MAX)
             } else if (
               !this.absolute &&
               value > CardProportionComponent.PERCENTAGE_MAX
             ) {
-              control.patchValue(CardProportionComponent.PERCENTAGE_MAX);
+              control.patchValue(CardProportionComponent.PERCENTAGE_MAX)
             } else {
-              const min = this.min.value;
-              const max = this.max.value;
+              const min = this.min.value
+              const max = this.max.value
               if (
                 min === 0 &&
                 ((this.absolute &&
@@ -105,14 +105,14 @@ export class CardProportionComponent implements OnInit, OnChanges {
                   (!this.absolute &&
                     max === CardProportionComponent.PERCENTAGE_MAX))
               ) {
-                this.valueChanges.emit('any');
+                this.valueChanges.emit('any')
               } else {
-                this.valueChanges.emit(`${this.min.value},${this.max.value}`);
+                this.valueChanges.emit(`${this.min.value},${this.max.value}`)
               }
             }
           }
-        })
+        }),
       )
-      .subscribe();
+      .subscribe()
   }
 }

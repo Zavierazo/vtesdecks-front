@@ -1,18 +1,18 @@
-import { TranslocoService } from '@ngneat/transloco';
-import { AuthQuery } from '../../../state/auth/auth.query';
-import { ApiComment } from '../../../models/api-comment';
+import { TranslocoService } from '@ngneat/transloco'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { ApiComment } from '../../../models/api-comment'
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
-} from '@angular/core';
-import { Observable, tap, filter, switchMap } from 'rxjs';
-import { CommentsService } from '../../../state/comments/comments.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+} from '@angular/core'
+import { Observable, tap, filter, switchMap } from 'rxjs'
+import { CommentsService } from '../../../state/comments/comments.service'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { FormControl, FormGroup } from '@angular/forms'
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 @UntilDestroy()
 @Component({
   selector: 'app-comment',
@@ -21,70 +21,70 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentComponent implements OnInit {
-  @Input() comment!: ApiComment;
+  @Input() comment!: ApiComment
 
-  isAdmin$!: Observable<boolean>;
+  isAdmin$!: Observable<boolean>
 
-  form!: FormGroup;
+  form!: FormGroup
 
-  isEditing = false;
+  isEditing = false
 
   constructor(
     private authQuery: AuthQuery,
     private commentsService: CommentsService,
     private modalService: NgbModal,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
-    this.isAdmin$ = this.authQuery.selectAdmin();
+    this.isAdmin$ = this.authQuery.selectAdmin()
     this.form = new FormGroup({
       comment: new FormControl(this.comment.content),
-    });
+    })
   }
 
   get formComment() {
-    return this.form.get('comment');
+    return this.form.get('comment')
   }
 
   deleteComment(): void {
     const modalRef = this.modalService.open(ConfirmDialogComponent, {
       size: 'sm',
       centered: true,
-    });
+    })
     modalRef.componentInstance.title = this.translocoService.translate(
-      'comments.delete_modal_title'
-    );
+      'comments.delete_modal_title',
+    )
     modalRef.componentInstance.message = this.translocoService.translate(
-      'comments.delete_modal_message'
-    );
+      'comments.delete_modal_message',
+    )
     modalRef.closed
       .pipe(
         untilDestroyed(this),
         filter((result) => result),
-        switchMap(() => this.commentsService.deleteComment(this.comment.id))
+        switchMap(() => this.commentsService.deleteComment(this.comment.id)),
       )
-      .subscribe();
+      .subscribe()
   }
   switchEditComment(): void {
-    this.isEditing = !this.isEditing;
+    this.isEditing = !this.isEditing
   }
 
   editComment(): void {
     if (this.form.invalid) {
-      return;
+      return
     }
-    const commentValue = this.formComment?.value;
+    const commentValue = this.formComment?.value
     if (commentValue !== this.comment.content) {
       const comment = {
         id: this.comment.id,
         content: commentValue,
-      } as ApiComment;
+      } as ApiComment
       this.commentsService
         .editComment(comment)
         .pipe(untilDestroyed(this))
-        .subscribe();
+        .subscribe()
     }
-    this.isEditing = false;
+    this.isEditing = false
   }
 }

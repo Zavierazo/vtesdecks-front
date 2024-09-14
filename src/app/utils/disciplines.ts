@@ -1,23 +1,23 @@
 export class Discipline {
-  name: string;
-  icon: string;
-  abbrev: string;
-  hasSuperior: boolean;
+  name: string
+  icon: string
+  abbrev: string
+  hasSuperior: boolean
 
   constructor(
     name: string,
     abbrev: string,
     icon: string,
-    hasSuperior: boolean
+    hasSuperior: boolean,
   ) {
-    this.name = name;
-    this.abbrev = abbrev;
-    this.icon = icon;
-    this.hasSuperior = hasSuperior;
+    this.name = name
+    this.abbrev = abbrev
+    this.icon = icon
+    this.hasSuperior = hasSuperior
   }
 
   get iconSuperior(): string {
-    return this.icon + 'sup';
+    return this.icon + 'sup'
   }
 }
 
@@ -59,15 +59,15 @@ export const DISCIPLINE_LIST = [
   new Discipline('Redemption', 'red', 'redemption', false),
   new Discipline('Vengeance', 'ven', 'vengeance', false),
   new Discipline('Vision', 'viz', 'vision', false),
-];
+]
 
 export function getDisciplineIcon(
   discipline: string,
-  superior: boolean
+  superior: boolean,
 ): string | undefined {
   if (superior) {
-    return DISCIPLINE_LIST.find((d) => d.name === discipline)?.iconSuperior;
+    return DISCIPLINE_LIST.find((d) => d.name === discipline)?.iconSuperior
   } else {
-    return DISCIPLINE_LIST.find((d) => d.name === discipline)?.icon;
+    return DISCIPLINE_LIST.find((d) => d.name === discipline)?.icon
   }
 }

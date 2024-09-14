@@ -6,14 +6,14 @@ import {
   Input,
   OnInit,
   Output,
-} from '@angular/core';
-import { Observable } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ApiCard } from '../../../models/api-card';
-import { ApiLibrary } from '../../../models/api-library';
-import { LibraryQuery } from '../../../state/library/library.query';
-import { LibraryService } from '../../../state/library/library.service';
-import { MediaService } from '../../../services/media.service';
+} from '@angular/core'
+import { Observable } from 'rxjs'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiCard } from '../../../models/api-card'
+import { ApiLibrary } from '../../../models/api-library'
+import { LibraryQuery } from '../../../state/library/library.query'
+import { LibraryService } from '../../../state/library/library.service'
+import { MediaService } from '../../../services/media.service'
 
 @UntilDestroy()
 @Component({
@@ -23,24 +23,24 @@ import { MediaService } from '../../../services/media.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LibraryComponent implements OnInit {
-  @Input() card!: ApiCard;
+  @Input() card!: ApiCard
 
-  @Input() withControls = false;
+  @Input() withControls = false
 
-  @Input() disablePopover = false;
+  @Input() disablePopover = false
 
-  @Output() cardAdded = new EventEmitter<number>();
+  @Output() cardAdded = new EventEmitter<number>()
 
-  @Output() cardRemoved = new EventEmitter<number>();
+  @Output() cardRemoved = new EventEmitter<number>()
 
-  library$!: Observable<ApiLibrary | undefined>;
+  library$!: Observable<ApiLibrary | undefined>
 
-  isMobile$!: Observable<boolean>;
+  isMobile$!: Observable<boolean>
 
   constructor(
     private libraryQuery: LibraryQuery,
     private libraryService: LibraryService,
-    private mediaService: MediaService
+    private mediaService: MediaService,
   ) {}
 
   ngOnInit() {
@@ -48,25 +48,25 @@ export class LibraryComponent implements OnInit {
       this.libraryService
         .getLibrary(this.card.id)
         .pipe(untilDestroyed(this))
-        .subscribe();
+        .subscribe()
     }
-    this.library$ = this.libraryQuery.selectEntity(this.card.id);
-    this.isMobile$ = this.mediaService.observeMobile();
+    this.library$ = this.libraryQuery.selectEntity(this.card.id)
+    this.isMobile$ = this.mediaService.observeMobile()
   }
 
   addCard() {
-    this.cardAdded.emit(this.card.id);
+    this.cardAdded.emit(this.card.id)
   }
 
   removeCard() {
-    this.cardRemoved.emit(this.card.id);
+    this.cardRemoved.emit(this.card.id)
   }
 
   // Avoid context menu on right click
   @HostListener('contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
     if (this.withControls) {
-      event.preventDefault();
+      event.preventDefault()
     }
   }
 
@@ -79,14 +79,14 @@ export class LibraryComponent implements OnInit {
         event.target.classList.contains('btn-icon')
       ) {
         //Avoid run when btn icons clicked
-        return;
+        return
       }
       if (event.detail > 1) {
         if (event.button === 0) {
-          this.addCard();
+          this.addCard()
         }
         if (event.button === 2) {
-          this.removeCard();
+          this.removeCard()
         }
       }
     }

@@ -1,5 +1,5 @@
-import { Component, TemplateRef } from '@angular/core';
-import { ToastService } from '../../../services/toast.service';
+import { Component, TemplateRef } from '@angular/core'
+import { ToastService } from '../../../services/toast.service'
 
 @Component({
   selector: 'app-toasts',
@@ -27,6 +27,6 @@ export class ToastsContainer {
   constructor(public toastService: ToastService) {}
 
   isTemplate(toast: any) {
-    return toast.textOrTpl instanceof TemplateRef;
+    return toast.textOrTpl instanceof TemplateRef
   }
 }

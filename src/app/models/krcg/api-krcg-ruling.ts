@@ -1,4 +1,4 @@
 export interface ApiKrcgRuling {
-  links: any;
-  text: string[];
+  links: any
+  text: string[]
 }
