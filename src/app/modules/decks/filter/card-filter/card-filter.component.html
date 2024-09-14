@@ -19,7 +19,7 @@
     </div>
     <ng-container *ngFor="let card of cards">
       <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getCrypt(card.id) | async as crypt">
-        <div class="btn-group btn-group-sm me-2" role="group" [attr.aria-label]="t('number_of_copies')">
+        <div class="btn-group btn-group-sm me-2" role="optgroup" [attr.aria-label]="t('number_of_copies')">
           <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary"
             (click)="decreaseCopies(card.id)">
             <i class="bi bi-dash-lg" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
     </div>
     <ng-container *ngFor="let card of cards">
       <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getLibrary(card.id) | async as library">
-        <div class="btn-group btn-group-sm me-2" role="group" [attr.aria-label]="t('number_of_copies')">
+        <div class="btn-group btn-group-sm me-2" role="optgroup" [attr.aria-label]="t('number_of_copies')">
           <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary"
             (click)="decreaseCopies(card.id)">
             <i class="bi bi-dash-lg" aria-hidden="true"></i>

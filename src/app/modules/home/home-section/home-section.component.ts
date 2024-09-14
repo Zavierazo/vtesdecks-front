@@ -13,7 +13,7 @@ import { ApiDeck } from '../../../models/api-deck';
   styleUrls: ['./home-section.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeSectionComponent implements OnInit {
+export class HomeSectionComponent {
   @Input()
   title!: string;
   @Input()
@@ -22,8 +22,6 @@ export class HomeSectionComponent implements OnInit {
   deckParams!: { [key: string]: any };
 
   constructor(private router: Router) {}
-
-  ngOnInit() {}
 
   onTagClick(tag: string): void {
     this.router.navigate(['/decks'], {
