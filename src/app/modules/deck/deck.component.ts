@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,26 +7,24 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
-import { Observable, tap, timer, switchMap } from 'rxjs'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { ApiDeck } from '../../models/api-deck'
-import { DeckService } from '../../state/deck/deck.service'
-import { DeckQuery } from '../../state/deck/deck.query'
-import { AuthQuery } from '../../state/auth/auth.query'
-import { ToastService } from '../../services/toast.service'
-import { ApiDataService } from '../../services/api.data.service'
-import { environment } from '../../../environments/environment'
 import { Title } from '@angular/platform-browser'
-import { PreviousRouteService } from '../../services/previous-route-service'
-import { getDisciplineIcon } from '../../utils/disciplines'
-import { getClanIcon } from '../../utils/clans'
-import { MediaService } from '../../services/media.service'
+import { ActivatedRoute, Router } from '@angular/router'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { Observable, switchMap, tap, timer } from 'rxjs'
+import { environment } from '../../../environments/environment'
 import { ApiCard } from '../../models/api-card'
-import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
+import { ApiDeck } from '../../models/api-deck'
+import { ApiDataService } from '../../services/api.data.service'
+import { MediaService } from '../../services/media.service'
+import { PreviousRouteService } from '../../services/previous-route-service'
+import { ToastService } from '../../services/toast.service'
+import { AuthQuery } from '../../state/auth/auth.query'
 import { CryptQuery } from '../../state/crypt/crypt.query'
-import { Clipboard } from '@angular/cdk/clipboard'
+import { DeckQuery } from '../../state/deck/deck.query'
+import { getClanIcon } from '../../utils/clans'
+import { getDisciplineIcon } from '../../utils/disciplines'
+import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
 
 @UntilDestroy()
 @Component({

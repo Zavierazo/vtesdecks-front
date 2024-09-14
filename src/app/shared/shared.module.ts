@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoModule } from '@ngneat/transloco'
 import { AnimatedDigitComponent } from './components/animated-digit/animated-digit.component'
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component'
+import { LangSelectorComponent } from './components/lang-selector/lang-selector.component'
 import { LoadingComponent } from './components/loading/loading.component'
 import { LoginComponent } from './components/login/login.component'
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component'
@@ -26,6 +27,7 @@ import { TruncatePipe } from './pipes/truncate.pipe'
     LoginComponent,
     PageNotFoundComponent,
     ThemeSelectorComponent,
+    LangSelectorComponent,
     TableSeatingComponent,
     ConfirmDialogComponent,
   ],
@@ -39,6 +41,7 @@ import { TruncatePipe } from './pipes/truncate.pipe'
     ToastsContainer,
     LoginComponent,
     PageNotFoundComponent,
+    LangSelectorComponent,
     ThemeSelectorComponent,
     TableSeatingComponent,
   ],
