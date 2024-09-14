@@ -13,22 +13,15 @@ import { ApiDeck } from '../../../models/api-deck';
   styleUrls: ['./home-section.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeSectionComponent implements OnInit {
+export class HomeSectionComponent {
+  @Input()
+  title!: string;
   @Input()
   decks?: ApiDeck[];
   @Input()
   deckParams!: { [key: string]: any };
-  @Input()
-  type!: string;
-  @Input()
-  order!: string;
 
   constructor(private router: Router) {}
-
-  ngOnInit() {
-    this.type = this.deckParams['type'];
-    this.order = this.deckParams['order'];
-  }
 
   onTagClick(tag: string): void {
     this.router.navigate(['/decks'], {

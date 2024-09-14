@@ -160,19 +160,19 @@
     </div>
   </section>
   <div class="row mt-3">
-    <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }"
-      [decks]="deckHome?.tournamentPopular">
+    <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_tournament')"
+      [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular">
     </app-home-section>
-    <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }"
-      [decks]="deckHome?.communityPopular">
+    <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_community')"
+      [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular">
     </app-home-section>
   </div>
   <div class="row mb-3">
-    <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }"
-      [decks]="deckHome?.tournamentNewest">
+    <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_tournament')"
+      [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest">
     </app-home-section>
-    <app-home-section class="col-md-12 col-lg-6 my-3" [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }"
-      [decks]="deckHome?.communityNewest">
+    <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_community')"
+      [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest">
     </app-home-section>
   </div>
 </ng-container>

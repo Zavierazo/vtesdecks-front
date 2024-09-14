@@ -13,6 +13,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CardProportionComponent } from './filter/card-proportion/card-proportion.component';
 import { CardFilterComponent } from './filter/card-filter/card-filter.component';
 import { decksResolver } from './decks.resolver';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
     DeckCardModule,
     InfiniteScrollDirective,
     ReactiveFormsModule,
+    TranslocoModule,
     RouterModule.forChild(routes),
   ],
 })

@@ -85,7 +85,7 @@
         </div>
         <div class="modal-footer align-self-end">
           <div class="row justify-content-between w-100">
-            <button type="button" class="btn btn-primary col-auto me-auto" title="Search deck with this card"
+            <button type="button" class="btn btn-primary col-auto me-auto" [title]="t('search_title')"
               routerLink="/decks" [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-search"></i> {{ t('search') }}
             </button>

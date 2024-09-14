@@ -1,4 +1,4 @@
-<div class="input-group">
+<div class="input-group" *transloco="let t; read: 'filters'">
   <label class="input-group-text p-1 proportion-label" for="proportion">
     <i class="vtes" [ngClass]="controlName"></i>
   </label>
@@ -8,8 +8,8 @@
   </ng-container>
   <ng-container *ngIf="!custom">
     <select id="proportion" class="form-select" [formControlName]="controlName">
-      <option value="any">Any</option>
-      <option value="0,0">None</option>
+      <option value="any">{{ t('any') }}</option>
+      <option value="0,0">{{ t('none') }}</option>
       <option value="0,5">&lt;5<span *ngIf="!absolute">%</span></option>
       <option value="5,10">5-10<span *ngIf="!absolute">%</span></option>
       <option value="10,20">10-20<span *ngIf="!absolute">%</span></option>

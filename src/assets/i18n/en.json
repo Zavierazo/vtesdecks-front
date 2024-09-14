@@ -1,87 +1,63 @@
 {
-  "shared": {
-    "ok": "Ok",
-    "cancel": "Cancel",
-    "import": "Import",
-    "close": "Close",
-    "loading": "Loading",
-    "field_required": "{{ field }} is required.",
-    "service_temporarily_unavailable": "Service temporarily unavailable. Please wait...",
-    "crypt": "Crypt",
-    "library": "Library",
-    "unexpected_error": "Unexpected error. Please try again later.",
-    "not_required": "Not Required"
-  },
-  "notification": {
-    "title": "Notifications",
-    "mark_all_read": "Mark all as read",
-    "no_notifications": "You're all caught up!"
-  },
-  "header": {
-    "home": "Home",
-    "decks": "Decks",
-    "crypt": "Crypt",
-    "library": "Library",
-    "builder": "Builder",
-    "tools": "Tools",
-    "table_seating": "Table Seating",
-    "contact": "Contact",
-    "login": "Login",
-    "sign_up": "Sign-up",
-    "my_decks": "My Decks",
-    "bookmarks": "Bookmarks",
-    "profile_settings": "Profile Settings",
-    "logout": "Logout",
-    "theme": "Theme",
-    "notifications": "Notifications",
-    "unread_notifications": "unread notifications"
-  },
-  "footer": {
-    "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",
-    "copyright": "Copyright: VTES Decks. All Rights Reserved",
-    "changelog": "Changelog",
-    "terms": "Terms",
-    "privacy_policy": "Privacy Policy",
-    "mail": "Mail"
-  },
-  "table_seating": {
-    "title": "Table Seating",
-    "active_player": "Active player",
-    "player_name": "Player name",
-    "add_player": "Add Player",
-    "shuffle": "Shuffle",
-    "missing": "Missing",
-    "player": "Player"
-  },
-  "page_not_found": {
-    "danger_text": "Opps!",
-    "page_not_found": "Page not found.",
-    "does_not_exists": "The page you’re looking for doesn’t exist.",
-    "go_home": "Go Home"
-  },
-  "login_modal": {
-    "login": "Login",
-    "create_account": "Create an Account",
-    "forgot_password": "Forgot Password",
-    "username_or_email": "Username or Email",
-    "username": "Username",
-    "password": "Password",
-    "password_confirm": "Confirm Password",
-    "email": "Email",
-    "remember_me": "Remember me",
-    "does_not_have_account": "Don't have an account?",
-    "create_account_here": "Sign Up Here",
-    "invalid_email_format": "Invalid email format.",
-    "must_one_number": "Must contain at least 1 number!",
-    "must_8_characters": "Must be at least 8 characters!",
-    "must_match": "Password must match!",
-    "read_and_agree_terms": "I have read and agree to the terms",
-    "terms_mandatory": "Terms must be accepted.",
-    "already_member": "Already a member?"
-  },
   "can_deactivate_guard": {
     "title": "Warning: Unsaved Changes!",
     "message": "You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes."
+  },
+  "changelog": {
+    "reload_page": "If you experience strange behavior, reload page (Ctrl+F5 for Windows/Linux or Command+Shift+R for MacOS)"
+  },
+  "comments": {
+    "profile_image": "Profile image",
+    "comment_placeholder": "Enter your comment...",
+    "must_logged": "You must be logged in to post a comment.",
+    "no_comments": "No comments",
+    "admin": "Admin",
+    "edit": "Edit",
+    "edit_title": "Edit comment",
+    "edit_placeholder": "Modify your comment...",
+    "delete": "Delete",
+    "delete_title": "Delete comment",
+    "delete_modal_title": "Delete this comment?",
+    "delete_modal_message": "This can not be undone!"
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "email_required": "Invalid email format.",
+    "subject": "Subject",
+    "message": "Message",
+    "successful": "Thank you for contacting us!",
+    "error": "Error sending message! Please contact us to mail",
+    "submit": "Submit"
+  },
+  "crypt_builder": {
+    "title": "Crypt"
+  },
+  "crypt_builder_filter": {
+    "print_on_demand": "Print on Demand",
+    "clans": "Clans",
+    "disciplines": "Disciplines",
+    "group": "Group",
+    "capacity": "Capacity",
+    "title": "Title",
+    "sect": "Sect",
+    "taints": "Taints"
+  },
+  "crypt_section": {
+    "card_name": "Card Name",
+    "name": "Name",
+    "capacity": "Capacity",
+    "clan": "Clan",
+    "group": "Group",
+    "deck_popularity": "Deck Popularity",
+    "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
+    "card_popularity": "Card Popularity",
+    "card_popularity_title": "popularity based on number of copies of this card over all decks",
+    "reset": "Reset",
+    "filters": "Filters",
+    "results": "{{ count }} results",
+    "reset_filters": "Reset Filters",
+    "back_to_top": "Back to top"
   },
   "date_ago_pipe": {
     "long_time_ago": "a long time ago",
@@ -96,13 +72,28 @@
     "prefix": " ",
     "suffix": " ago"
   },
-  "deck_builder_service": {
-    "min_crypt_cards": "Crypt must have at least 12 cards",
-    "banned_card": "{{ name }} is banned card",
-    "invalid_crypt_group": "Crypt must have at most 2 crypt groups",
-    "consecutive_crypt_group": "Crypt must have consecutive crypt groups",
-    "min_library_cards": "Library must have at least 60 cards",
-    "max_library_cards": "Library must have at most 90 cards"
+  "deck": {
+    "add_to_bookmarks": "Add to Bookmarks",
+    "created_by": "Created by",
+    "tournament": "Tournament",
+    "players": "{{ count }} players",
+    "buy_dtc": "Buy at DriveThruCards",
+    "source": "Source",
+    "twda": "Tournament Winning Deck Archive",
+    "views": "Views",
+    "rate_deck": "Take a second to rate this deck!",
+    "votes": "{{ count }} votes",
+    "comments": "Comments",
+    "share": "Share",
+    "clone": "Clone",
+    "errata": "Errata",
+    "errata_modified": "has been modified by an errata in",
+    "total_crypt": "Total Crypt Cards",
+    "disciplines_sup_inf": "{{ count }} Superior | Inferior",
+    "total_library": "Total Library Cards",
+    "total_pool_cost": "Total Pool Cost",
+    "total_blood_cost": "Total Blood Cost",
+    "no_discipline": "No discipline"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -130,93 +121,13 @@
     "redo": "Redo",
     "redo_tooltip": "Redo last change"
   },
-  "deck": {
-    "add_to_bookmarks": "Add to Bookmarks",
-    "created_by": "Created by",
-    "tournament": "Tournament",
-    "players": "{{ count }} players",
-    "buy_dtc": "Buy at DriveThruCards",
-    "source": "Source",
-    "twda": "Tournament Winning Deck Archive",
-    "views": "Views",
-    "rate_deck": "Take a second to rate this deck!",
-    "votes": "{{ count }} votes",
-    "comments": "Comments",
-    "share": "Share",
-    "clone": "Clone",
-    "errata": "Errata",
-    "errata_modified": "has been modified by an errata in",
-    "total_crypt": "Total Crypt Cards",
-    "disciplines_sup_inf": "{{ count }} Superior | Inferior",
-    "total_library": "Total Library Cards",
-    "total_pool_cost": "Total Pool Cost",
-    "total_blood_cost": "Total Blood Cost",
-    "no_discipline": "No discipline"
-  },
-  "library_section": {
-    "card_name": "Card Name",
-    "name": "Name",
-    "type": "Type",
-    "deck_popularity": "Deck Popularity",
-    "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
-    "card_popularity": "Card Popularity",
-    "card_popularity_title": "popularity based on number of copies of this card over all decks",
-    "reset": "Reset",
-    "filters": "Filters",
-    "results": "{{ count }} results",
-    "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
-  },
-  "library_builder": {
-    "title": "Library"
-  },
-  "library_builder_filter": {
-    "print_on_demand": "Print on Demand",
-    "type": "Type",
-    "disciplines": "Disciplines",
-    "clans": "Clans",
-    "sect": "Sect",
-    "title": "Title",
-    "blood_cost": "Blood Cost",
-    "pool_cost": "Pool Cost",
-    "taints": "Taints"
-  },
-  "crypt_section": {
-    "card_name": "Card Name",
-    "name": "Name",
-    "capacity": "Capacity",
-    "clan": "Clan",
-    "group": "Group",
-    "deck_popularity": "Deck Popularity",
-    "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
-    "card_popularity": "Card Popularity",
-    "card_popularity_title": "popularity based on number of copies of this card over all decks",
-    "reset": "Reset",
-    "filters": "Filters",
-    "results": "{{ count }} results",
-    "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
-  },
-  "crypt_builder": {
-    "title": "Crypt"
-  },
-  "crypt_builder_filter": {
-    "print_on_demand": "Print on Demand",
-    "clans": "Clans",
-    "disciplines": "Disciplines",
-    "group": "Group",
-    "capacity": "Capacity",
-    "title": "Title",
-    "sect": "Sect",
-    "taints": "Taints"
-  },
-  "import_vdb": {
-    "title": "Import VDB",
-    "placeholder": "https://vdb.im/decks?id=..."
-  },
-  "import_amaranth": {
-    "title": "Import Amaranth",
-    "placeholder": "https://amaranth.vtes.co.nz/#deck/..."
+  "deck_builder_service": {
+    "min_crypt_cards": "Crypt must have at least 12 cards",
+    "banned_card": "{{ name }} is banned card",
+    "invalid_crypt_group": "Crypt must have at most 2 crypt groups",
+    "consecutive_crypt_group": "Crypt must have consecutive crypt groups",
+    "min_library_cards": "Library must have at least 60 cards",
+    "max_library_cards": "Library must have at most 90 cards"
   },
   "deck_shared": {
     "banned": "Banned",
@@ -233,39 +144,195 @@
     "print_on_demand": "Print on Demand",
     "promo": "Promo"
   },
-  "contact": {
+  "decks": {
+    "total_decks": "<strong>{{ total }}</strong> decks",
+    "all": "All",
+    "my_decks": "My Decks",
+    "tournament": "Tournament",
+    "community": "Community",
+    "preconstructed": "Preconstructed",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "modified": "Modified",
     "name": "Name",
+    "popular": "Popular",
+    "rate": "Rate",
+    "votes": "Votes",
+    "views": "Views",
+    "comments": "Comments",
+    "players_twd": "Players(TWD)",
+    "clear_filters": "Clear Filters",
+    "back_to_top": "Back to top",
+    "filters": "Filters",
+    "show_filters": "Show filters"
+  },
+  "filters": {
+    "crypt_cards": "Crypt Cards",
+    "star_vampire": "With Star Vampire",
+    "library_cards": "Library Cards",
+    "number_of_copies": "number of copies",
+    "any": "Any",
+    "none": "None",
+    "clear_filters": "Clear Filters",
+    "bookmarked": "Bookmarked",
+    "tags": "Tags",
+    "tags_placeholder": "Add Tags...",
+    "clans": "Clans",
+    "single_clan": "Single Clan",
+    "disciplines": "Disciplines",
+    "single_discipline": "Single Discipline",
+    "composition": "Composition",
+    "library": "Library",
+    "crypt": "Crypt",
+    "group": "Group",
+    "year": "Year",
+    "players": "Players",
+    "library_distribution_tooltip": "Switch between Percentage (%) and Absolute (#) cards proportion",
+    "card_proportion_tooltip": "Customize Card Proportions",
+    "custom": "Custom",
+    "other_filters": "Other Filters",
+    "name": "Name",
+    "author": "Author",
+    "card_text": "Card Text"
+  },
+  "footer": {
+    "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",
+    "copyright": "Copyright: VTES Decks. All Rights Reserved",
+    "changelog": "Changelog",
+    "terms": "Terms",
+    "privacy_policy": "Privacy Policy",
+    "mail": "Mail"
+  },
+  "header": {
+    "home": "Home",
+    "decks": "Decks",
+    "crypt": "Crypt",
+    "library": "Library",
+    "builder": "Builder",
+    "tools": "Tools",
+    "table_seating": "Table Seating",
+    "contact": "Contact",
+    "login": "Login",
+    "sign_up": "Sign-up",
+    "my_decks": "My Decks",
+    "bookmarks": "Bookmarks",
+    "profile_settings": "Profile Settings",
+    "logout": "Logout",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "unread_notifications": "unread notifications"
+  },
+  "home": {
+    "tournament_decks": "Tournament Decks",
+    "community_decks": "Community Decks",
+    "preconstructed_decks": "Preconstructed Decks",
+    "deck_builder": "Deck Builder",
+    "user_decks": "My Decks",
+    "bookmarked_decks": "Bookmarked Decks",
+    "contribute_message": "If you want to contribute, report bugs or raise a problem, you can do so by",
+    "contribute_github_issues": "GitHub Issues",
+    "contribute_or_message": "or sending an email to",
+    "popular_tournament": "Popular Tournament",
+    "popular_community": "Popular Community",
+    "newest_tournament": "Newest Tournament",
+    "newest_community": "Newest Community",
+    "see_more": "See More..."
+  },
+  "import_amaranth": {
+    "title": "Import Amaranth",
+    "placeholder": "https://amaranth.vtes.co.nz/#deck/..."
+  },
+  "import_vdb": {
+    "title": "Import VDB",
+    "placeholder": "https://vdb.im/decks?id=..."
+  },
+  "library_builder": {
+    "title": "Library"
+  },
+  "library_builder_filter": {
+    "print_on_demand": "Print on Demand",
+    "type": "Type",
+    "disciplines": "Disciplines",
+    "clans": "Clans",
+    "sect": "Sect",
+    "title": "Title",
+    "blood_cost": "Blood Cost",
+    "pool_cost": "Pool Cost",
+    "taints": "Taints"
+  },
+  "library_section": {
+    "card_name": "Card Name",
+    "name": "Name",
+    "type": "Type",
+    "deck_popularity": "Deck Popularity",
+    "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
+    "card_popularity": "Card Popularity",
+    "card_popularity_title": "popularity based on number of copies of this card over all decks",
+    "reset": "Reset",
+    "filters": "Filters",
+    "results": "{{ count }} results",
+    "reset_filters": "Reset Filters",
+    "back_to_top": "Back to top"
+  },
+  "login_modal": {
+    "login": "Login",
+    "create_account": "Create an Account",
+    "forgot_password": "Forgot Password",
+    "username_or_email": "Username or Email",
+    "username": "Username",
+    "password": "Password",
+    "password_confirm": "Confirm Password",
     "email": "Email",
-    "email_required": "Invalid email format.",
-    "subject": "Subject",
-    "message": "Message",
-    "successful": "Thank you for contacting us!",
-    "error": "Error sending message! Please contact us to mail",
-    "submit": "Submit"
+    "remember_me": "Remember me",
+    "does_not_have_account": "Don't have an account?",
+    "create_account_here": "Sign Up Here",
+    "invalid_email_format": "Invalid email format.",
+    "must_one_number": "Must contain at least 1 number!",
+    "must_8_characters": "Must be at least 8 characters!",
+    "must_match": "Password must match!",
+    "read_and_agree_terms": "I have read and agree to the terms",
+    "terms_mandatory": "Terms must be accepted.",
+    "already_member": "Already a member?"
   },
-  "comments": {
-    "profile_image": "Profile image",
-    "comment_placeholder": "Enter your comment...",
-    "must_logged": "You must be logged in to post a comment.",
-    "no_comments": "No comments"
+  "notification": {
+    "title": "Notifications",
+    "mark_all_read": "Mark all as read",
+    "no_notifications": "You're all caught up!"
   },
-  "changelog": {
-    "reload_page": "If you experience strange behavior, reload page (Ctrl+F5 for Windows/Linux or Command+Shift+R for MacOS)"
+  "page_not_found": {
+    "danger_text": "Opps!",
+    "page_not_found": "Page not found.",
+    "does_not_exists": "The page you’re looking for doesn’t exist.",
+    "go_home": "Go Home"
   },
-  "vtesdle": {
-    "help": "Help",
-    "infinite_mode": "Infinite Mode",
-    "today_mode": "Today Mode",
-    "guess_placeholder": "Guess the card name...",
-    "win_message": "Congratulations, you have guessed the card!",
-    "come_back_message": "Come back tomorrow for more!",
-    "game_over_infinite_message": "Game over, press retry for more!",
-    "game_over_today_message": "Game over, come back tomorrow for more!",
-    "remaining_lives": "{{ lives }} remaining lives"
+  "reset_password": {
+    "reset_password": "Reset Password",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "success": "Your password has been successfully reset. You can now log in using your new password.",
+    "error": "Sorry, we couldn't reset your password"
   },
-  "verify_account": {
-    "success": "Account verified!",
-    "error": "Sorry, we couldn't find an account with that email!"
+  "shared": {
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "import": "Import",
+    "close": "Close",
+    "loading": "Loading",
+    "field_required": "{{ field }} is required.",
+    "service_temporarily_unavailable": "Service temporarily unavailable. Please wait...",
+    "crypt": "Crypt",
+    "library": "Library",
+    "unexpected_error": "Unexpected error. Please try again later.",
+    "not_required": "Not Required"
+  },
+  "table_seating": {
+    "title": "Table Seating",
+    "active_player": "Active player",
+    "player_name": "Player name",
+    "add_player": "Add Player",
+    "shuffle": "Shuffle",
+    "missing": "Missing",
+    "player": "Player"
   },
   "user_profile": {
     "settings": "Profile Settings",
@@ -281,24 +348,19 @@
     "save": "Save Profile",
     "error": "An error occurred while updating your settings."
   },
-  "reset_password": {
-    "reset_password": "Reset Password",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "success": "Your password has been successfully reset. You can now log in using your new password.",
-    "error": "Sorry, we couldn't reset your password"
+  "verify_account": {
+    "success": "Account verified!",
+    "error": "Sorry, we couldn't find an account with that email!"
   },
-  "home": {
-    "tournament_decks": "Tournament Decks",
-    "community_decks": "Community Decks",
-    "preconstructed_decks": "Preconstructed Decks",
-    "deck_builder": "Deck Builder",
-    "user_decks": "My Decks",
-    "bookmarked_decks": "Bookmarked Decks",
-    "contribute_message": "If you want to contribute, report bugs or raise a problem, you can do so by",
-    "contribute_github_issues": "GitHub Issues",
-    "contribute_or_message": "or sending an email to",
-    "see_more": "See More..."
-  },
-  "decks": {}
+  "vtesdle": {
+    "help": "Help",
+    "infinite_mode": "Infinite Mode",
+    "today_mode": "Today Mode",
+    "guess_placeholder": "Guess the card name...",
+    "win_message": "Congratulations, you have guessed the card!",
+    "come_back_message": "Come back tomorrow for more!",
+    "game_over_infinite_message": "Game over, press retry for more!",
+    "game_over_today_message": "Game over, come back tomorrow for more!",
+    "remaining_lives": "{{ lives }} remaining lives"
+  }
 }
