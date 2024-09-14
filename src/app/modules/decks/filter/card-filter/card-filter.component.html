@@ -1,93 +1,99 @@
-<ng-template #cryptTemplate let-r="result" let-t="term">
-  <i class="vtes" [class]="r['clanIcon']"></i>
-  <i class="vtes advanced" *ngIf="r.adv"></i>
-  <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
-</ng-template>
+<ng-container *transloco="let t; read: 'filters'">
+  <ng-template #cryptTemplate let-r="result" let-t="term">
+    <i class="vtes" [class]="r['clanIcon']"></i>
+    <i class="vtes advanced" *ngIf="r.adv"></i>
+    <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
+  </ng-template>
 
-<ng-template #libraryTemplate let-r="result" let-t="term">
-  <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of r['typeIcons']"></i>
-  <ngb-highlight class="align-top ms-2" [result]="r.name" [term]="t"></ngb-highlight>
-</ng-template>
+  <ng-template #libraryTemplate let-r="result" let-t="term">
+    <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of r['typeIcons']"></i>
+    <ngb-highlight class="align-top ms-2" [result]="r.name" [term]="t"></ngb-highlight>
+  </ng-template>
 
-<div class="mb-3 row">
-  <label for="crypt" class="col-12 col-form-label text-primary fw-bold">Crypt Cards</label>
-  <div class="col-12">
-    <input #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
-      [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
-      (selectItem)="selectCryptItem($event, cryptInput)" />
-  </div>
-  <ng-container *ngFor="let card of cards">
-    <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getCrypt(card.id) | async as crypt">
-      <div class="btn-group btn-group-sm me-2" role="group" aria-label="number of copies">
-        <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary" (click)="decreaseCopies(card.id)">
-          <i class="bi bi-dash-lg" aria-hidden="true"></i>
-        </button>
-        <button *ngIf="card.count === 1" type="button" class="btn btn-outline-danger" (click)="decreaseCopies(card.id)">
-          <i class="bi bi-trash" aria-hidden="true"></i>
-        </button>
-        <button type="button" disabled="true" class="btn btn-outline-primary">
-          {{ card.count }}
-        </button>
-        <button type="button" class="btn btn-outline-primary" (click)="increaseCopies(card.id)">
-          <i class="bi bi-plus-lg" aria-hidden="true"></i>
-        </button>
-      </div>
-      <ng-template #imgPopover>
-        <img [ngClass]="{
+  <div class="mb-3 row">
+    <label for="crypt" class="col-12 col-form-label text-primary fw-bold">{{ t('crypt_cards') }}</label>
+    <div class="col-12">
+      <input #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+        [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+        (selectItem)="selectCryptItem($event, cryptInput)" />
+    </div>
+    <ng-container *ngFor="let card of cards">
+      <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getCrypt(card.id) | async as crypt">
+        <div class="btn-group btn-group-sm me-2" role="group" [attr.aria-label]="t('number_of_copies')">
+          <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary"
+            (click)="decreaseCopies(card.id)">
+            <i class="bi bi-dash-lg" aria-hidden="true"></i>
+          </button>
+          <button *ngIf="card.count === 1" type="button" class="btn btn-outline-danger"
+            (click)="decreaseCopies(card.id)">
+            <i class="bi bi-trash" aria-hidden="true"></i>
+          </button>
+          <button type="button" disabled="true" class="btn btn-outline-primary">
+            {{ card.count }}
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="increaseCopies(card.id)">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ng-template #imgPopover>
+          <img [ngClass]="{
             'img-popover': !(isMobile$ | async)!,
             'img-popover-mobile': (isMobile$ | async)!
           }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
-      </ng-template>
-      <i class="vtes" [class]="crypt.clanIcon"></i>
-      <i class="vtes advanced" *ngIf="crypt.adv"></i>
-      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
-        triggers="mouseenter:mouseleave" (click)="popover.open()">
-        {{ crypt.name }}
-      </span>
-    </div>
-  </ng-container>
-  <form [formGroup]="form">
-    <div class="form-check form-switch d-inline-block ms-2 mt-2">
-      <input class="form-check-input" type="checkbox" role="switch" id="starVampireCheck"
-        formControlName="starVampire" />
-      <label class="form-check-label" for="starVampireCheck">With Star Vampire</label>
-    </div>
-  </form>
-</div>
-<div class="mb-3 row">
-  <label for="crypt" class="col-12 col-form-label text-primary fw-bold">Library Cards</label>
-  <div class="col-12">
-    <input #libraryInput id="crypt" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
-      [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
-      (selectItem)="selectLibraryItem($event, libraryInput)" />
-  </div>
-  <ng-container *ngFor="let card of cards">
-    <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getLibrary(card.id) | async as library">
-      <div class="btn-group btn-group-sm me-2" role="group" aria-label="number of copies">
-        <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary" (click)="decreaseCopies(card.id)">
-          <i class="bi bi-dash-lg" aria-hidden="true"></i>
-        </button>
-        <button *ngIf="card.count === 1" type="button" class="btn btn-outline-danger" (click)="decreaseCopies(card.id)">
-          <i class="bi bi-trash" aria-hidden="true"></i>
-        </button>
-        <button type="button" disabled="true" class="btn btn-outline-primary">
-          {{ card.count }}
-        </button>
-        <button type="button" class="btn btn-outline-primary" (click)="increaseCopies(card.id)">
-          <i class="bi bi-plus-lg" aria-hidden="true"></i>
-        </button>
+        </ng-template>
+        <i class="vtes" [class]="crypt.clanIcon"></i>
+        <i class="vtes advanced" *ngIf="crypt.adv"></i>
+        <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
+          triggers="mouseenter:mouseleave" (click)="popover.open()">
+          {{ crypt.name }}
+        </span>
       </div>
-      <ng-template #imgPopover>
-        <img [ngClass]="{
+    </ng-container>
+    <form [formGroup]="form">
+      <div class="form-check form-switch d-inline-block ms-2 mt-2">
+        <input class="form-check-input" type="checkbox" role="switch" id="starVampireCheck"
+          formControlName="starVampire" />
+        <label class="form-check-label" for="starVampireCheck">{{ t('star_vampire') }}</label>
+      </div>
+    </form>
+  </div>
+  <div class="mb-3 row">
+    <label for="crypt" class="col-12 col-form-label text-primary fw-bold">{{ t('star_vampire') }}</label>
+    <div class="col-12">
+      <input #libraryInput id="crypt" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
+        [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
+        (selectItem)="selectLibraryItem($event, libraryInput)" />
+    </div>
+    <ng-container *ngFor="let card of cards">
+      <div class="col-12 mt-2 d-flex flex-row align-items-center" *ngIf="getLibrary(card.id) | async as library">
+        <div class="btn-group btn-group-sm me-2" role="group" [attr.aria-label]="t('number_of_copies')">
+          <button *ngIf="card.count > 1" type="button" class="btn btn-outline-primary"
+            (click)="decreaseCopies(card.id)">
+            <i class="bi bi-dash-lg" aria-hidden="true"></i>
+          </button>
+          <button *ngIf="card.count === 1" type="button" class="btn btn-outline-danger"
+            (click)="decreaseCopies(card.id)">
+            <i class="bi bi-trash" aria-hidden="true"></i>
+          </button>
+          <button type="button" disabled="true" class="btn btn-outline-primary">
+            {{ card.count }}
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="increaseCopies(card.id)">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ng-template #imgPopover>
+          <img [ngClass]="{
             'img-popover': !(isMobile$ | async)!,
             'img-popover-mobile': (isMobile$ | async)!
           }" [src]="'/assets/' + library.image" [alt]="library.name" />
-      </ng-template>
-      <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of library.typeIcons"></i>
-      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
-        triggers="mouseenter:mouseleave" (click)="popover.open()">
-        {{ library.name }}
-      </span>
-    </div>
-  </ng-container>
-</div>
+        </ng-template>
+        <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of library.typeIcons"></i>
+        <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
+          triggers="mouseenter:mouseleave" (click)="popover.open()">
+          {{ library.name }}
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

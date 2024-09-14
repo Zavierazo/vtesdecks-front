@@ -1,25 +1,25 @@
-<div class="mt-2">
+<div class="mt-2" *transloco="let t; read: 'filters'">
   <div class="d-grid gap-2 mb-3">
     <button type="button" class="btn btn-danger" (click)="reset()">
-      Clear Filters
+      {{ t('clear_filters') }}
     </button>
   </div>
   <form [formGroup]="filterForm">
     <div *isLogged="true" class="row g-1 mb-2 items-center">
       <div class="form-check form-switch form-check-inline">
         <input class="form-check-input" type="checkbox" role="switch" id="favoriteCheck" formControlName="favorite" />
-        <label class="form-check-label" for="favoriteCheck">Bookmarked</label>
+        <label class="form-check-label" for="favoriteCheck">{{ t('bookmarked') }}</label>
       </div>
     </div>
-    <label for="clans" class="form-label text-primary fw-bold">Tags</label>
+    <label for="clans" class="form-label text-primary fw-bold">{{ t('tags') }}</label>
     <div class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
         <ngb-highlight class="align-top ms-1" [result]="'#'+r" [term]="t"></ngb-highlight>
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
-        placeholder="Add Tags..." [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate" [editable]="false"
-        (selectItem)="onSelectTagItem($event, tagsInput)" (focus)="tagFocus$.next($any($event).target.value)"
-        (click)="tagClick$.next($any($event).target.value)" />
+        [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
+        [editable]="false" (selectItem)="onSelectTagItem($event, tagsInput)"
+        (focus)="tagFocus$.next($any($event).target.value)" (click)="tagClick$.next($any($event).target.value)" />
       <div *ngIf="tags" class="d-flex flex-wrap justify-content-start gap-2 my-2">
         <span *ngFor="let tag of tags" class="badge rounded-pill text-bg-primary btn-badge"
           (click)="onDeselectTag(tag)">
@@ -27,20 +27,20 @@
         </span>
       </div>
     </div>
-    <label for="clans" class="form-label text-primary fw-bold">Clans</label>
+    <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
     <div class="form-check form-switch d-inline-block ms-2">
       <input class="form-check-input" type="checkbox" role="switch" id="singleClanCheck" formControlName="singleClan" />
-      <label class="form-check-label" for="singleClanCheck">Single Clan</label>
+      <label class="form-check-label" for="singleClanCheck">{{ t('single_clan') }}</label>
     </div>
     <div id="clans" class="user-select-none mb-2">
       <app-clan-filter [(clans)]="clans" (clansChange)="changeClanFilter()">
       </app-clan-filter>
     </div>
-    <label for="disciplines" class="form-label text-primary fw-bold">Disciplines</label>
+    <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
     <div class="form-check form-switch d-inline-block ms-2">
       <input class="form-check-input" type="checkbox" role="switch" id="singleDisciplineCheck"
         formControlName="singleDiscipline" />
-      <label class="form-check-label" for="singleDisciplineCheck">Single Discipline</label>
+      <label class="form-check-label" for="singleDisciplineCheck">{{ t('single_discipline') }}</label>
     </div>
     <div id="disciplines" class="user-select-none mb-2">
       <app-discipline-filter [(disciplines)]="disciplines" [showSuperior]="false"
@@ -48,20 +48,20 @@
       </app-discipline-filter>
     </div>
     <app-card-filter #cardFilter></app-card-filter>
-    <label class="form-label text-primary fw-bold">Composition</label>
+    <label class="form-label text-primary fw-bold">{{ t('composition') }}</label>
     <div class="row g-1 mb-2">
       <div class="col-12">
-        <label for="librarySize" class="form-label text-secondary fw-bold">Library</label>
+        <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
         <ngx-slider id="librarySize" [options]="{ floor: 60, ceil: 90, step: 1 }" formControlName="librarySize">
         </ngx-slider>
       </div>
       <div class="col-12 mb-2">
-        <label for="cryptSize" class="form-label text-secondary fw-bold">Crypt</label>
+        <label for="cryptSize" class="form-label text-secondary fw-bold">{{ t('crypt') }}</label>
         <ngx-slider id="cryptSize" [options]="{ floor: 12, ceil: 40, step: 1 }" formControlName="cryptSize">
         </ngx-slider>
       </div>
       <div class="col-12 mb-2">
-        <label for="group" class="form-label text-secondary fw-bold">Group</label>
+        <label for="group" class="form-label text-secondary fw-bold">{{ t('group') }}</label>
         <ngx-slider id="group" [options]="{
               floor: 0,
               ceil: 7,
@@ -73,18 +73,18 @@
         </ngx-slider>
       </div>
       <div class="col-12 mb-2">
-        <label for="year" class="form-label text-secondary fw-bold">Year</label>
+        <label for="year" class="form-label text-secondary fw-bold">{{ t('year') }}</label>
         <ngx-slider id="year" [options]="{ floor: 1998, ceil: getCurrentYear(), step: 1 }" formControlName="year">
         </ngx-slider>
       </div>
       <div class="col-12 mb-2">
-        <label for="players" class="form-label text-secondary fw-bold">Players</label>
+        <label for="players" class="form-label text-secondary fw-bold">{{ t('players') }}</label>
         <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players">
         </ngx-slider>
       </div>
     </div>
-    <label class="form-label text-secondary fw-bold">Library Cards</label>
-    <div class="row d-inline-block ms-1" ngbTooltip="Switch between Percentage (%) and Absolute (#) cards proportion">
+    <label class="form-label text-secondary fw-bold">{{ t('library_cards') }}</label>
+    <div class="row d-inline-block ms-1" [ngbTooltip]="t('library_distribution_tooltip')">
       <div class="col">
         <div class="d-inline-block me-1">%</div>
         <div class="form-check form-switch d-inline-block">
@@ -94,10 +94,10 @@
         </div>
       </div>
     </div>
-    <div class="form-check d-inline-block ms-3" ngbTooltip="Customize Card Proportions.">
+    <div class="form-check d-inline-block ms-3" [ngbTooltip]="t('card_proportion_tooltip')">
       <input class="form-check-input" type="checkbox" role="switch" id="customProportionCheck"
         formControlName="customProportion" />
-      <label class="form-check-label" for="customProportionCheck">Custom</label>
+      <label class="form-check-label" for="customProportionCheck">{{ t('custom') }}</label>
     </div>
     <div class="row g-2 mb-2">
       <div class="col-6">
@@ -150,18 +150,19 @@
           (valueChanges)="onProportionChange('event',$event)"></app-card-proportion>
       </div>
     </div>
-    <label class="form-label text-primary fw-bold">Other Filters</label>
+    <label class="form-label text-primary fw-bold">{{ t('other_filters') }}</label>
     <div class="form-floating mb-2">
-      <input type="text" class="form-control" id="deckName" placeholder="Name" formControlName="name" />
-      <label for="deckName" class="text-primary">Name</label>
+      <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
+      <label for="deckName" class="text-primary">{{ t('name') }}</label>
     </div>
     <div class="form-floating mb-2">
-      <input type="text" class="form-control" id="deckAuthor" placeholder="Name" formControlName="author" />
-      <label for="deckAuthor" class="text-primary">Author</label>
+      <input type="text" class="form-control" id="deckAuthor" [placeholder]="t('author')" formControlName="author" />
+      <label for="deckAuthor" class="text-primary">{{ t('author') }}</label>
     </div>
     <div class="form-floating">
-      <input type="text" class="form-control" id="deckCardText" placeholder="Name" formControlName="cardText" />
-      <label for="deckCardText" class="text-primary">Card Text</label>
+      <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text')"
+        formControlName="cardText" />
+      <label for="deckCardText" class="text-primary">{{ t('card_text') }}</label>
     </div>
   </form>
 </div>

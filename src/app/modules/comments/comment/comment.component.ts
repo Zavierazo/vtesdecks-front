@@ -1,3 +1,4 @@
+import { TranslocoService } from '@ngneat/transloco';
 import { AuthQuery } from '../../../state/auth/auth.query';
 import { ApiComment } from '../../../models/api-comment';
 import {
@@ -31,7 +32,8 @@ export class CommentComponent implements OnInit {
   constructor(
     private authQuery: AuthQuery,
     private commentsService: CommentsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit() {
@@ -50,8 +52,12 @@ export class CommentComponent implements OnInit {
       size: 'sm',
       centered: true,
     });
-    modalRef.componentInstance.title = 'Delete this comment?';
-    modalRef.componentInstance.message = 'This can not be undone!';
+    modalRef.componentInstance.title = this.translocoService.translate(
+      'comments.delete_modal_title'
+    );
+    modalRef.componentInstance.message = this.translocoService.translate(
+      'comments.delete_modal_message'
+    );
     modalRef.closed
       .pipe(
         untilDestroyed(this),

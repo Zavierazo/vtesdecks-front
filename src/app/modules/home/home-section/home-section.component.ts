@@ -15,20 +15,15 @@ import { ApiDeck } from '../../../models/api-deck';
 })
 export class HomeSectionComponent implements OnInit {
   @Input()
+  title!: string;
+  @Input()
   decks?: ApiDeck[];
   @Input()
   deckParams!: { [key: string]: any };
-  @Input()
-  type!: string;
-  @Input()
-  order!: string;
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.type = this.deckParams['type'];
-    this.order = this.deckParams['order'];
-  }
+  ngOnInit() {}
 
   onTagClick(tag: string): void {
     this.router.navigate(['/decks'], {

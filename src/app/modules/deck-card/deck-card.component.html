@@ -39,9 +39,9 @@
         {{ deck.rate }}
       </span>
       <div *ngIf="deck.tournament">
-        <strong><i class="bi bi-award-fill"></i>&nbsp;<span>{{
-            deck.tournament
-            }}</span></strong>
+        <strong>
+          <i class="bi bi-award-fill"></i>&nbsp;{{ deck.tournament }}
+        </strong>
       </div>
       <div>
         <span class="me-2">{{ deck.author | truncate: 25:true }}</span>
