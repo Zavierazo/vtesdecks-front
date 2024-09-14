@@ -58,9 +58,9 @@
     </form>
   </div>
   <div class="mb-3 row">
-    <label for="crypt" class="col-12 col-form-label text-primary fw-bold">{{ t('star_vampire') }}</label>
+    <label for="library" class="col-12 col-form-label text-primary fw-bold">{{ t('library_cards') }}</label>
     <div class="col-12">
-      <input #libraryInput id="crypt" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
+      <input #libraryInput id="library" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
         [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
         (selectItem)="selectLibraryItem($event, libraryInput)" />
     </div>
