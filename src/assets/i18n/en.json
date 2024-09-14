@@ -69,7 +69,7 @@
     "day": "day",
     "month": "month",
     "year": "year",
-    "prefix": " ",
+    "prefix": "",
     "suffix": " ago"
   },
   "deck": {
@@ -245,6 +245,9 @@
   "import_vdb": {
     "title": "Import VDB",
     "placeholder": "https://vdb.im/decks?id=..."
+  },
+  "language": {
+    "title": "Language"
   },
   "library_builder": {
     "title": "Library"

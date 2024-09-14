@@ -9,6 +9,10 @@ import {
 } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import {
+  NgbTypeahead,
+  NgbTypeaheadSelectItemEvent,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   Observable,
@@ -21,13 +25,9 @@ import {
   merge,
   tap,
 } from 'rxjs'
+import { ApiDataService } from '../../../services/api.data.service'
 import { DecksQuery } from '../../../state/decks/decks.query'
 import { CardFilterComponent } from './card-filter/card-filter.component'
-import {
-  NgbTypeahead,
-  NgbTypeaheadSelectItemEvent,
-} from '@ng-bootstrap/ng-bootstrap'
-import { ApiDataService } from '../../../services/api.data.service'
 
 @UntilDestroy()
 @Component({
@@ -46,8 +46,8 @@ export class DeckFiltersComponent implements OnInit {
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
 
-  @ViewChild('cardFilter', { static: true }) cardFilter!: CardFilterComponent
-  @ViewChild('tagsTypeahead', { static: true }) tagsTypeahead!: NgbTypeahead
+  @ViewChild('cardFilter') cardFilter!: CardFilterComponent
+  @ViewChild('tagsTypeahead') tagsTypeahead!: NgbTypeahead
 
   constructor(
     private route: ActivatedRoute,

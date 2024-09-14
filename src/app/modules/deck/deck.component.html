@@ -158,7 +158,7 @@
                 {{ errata.name }}
               </strong>
               {{ t('errata_modified') }}
-              {{ errata.effectiveDate | date: 'MMMM yyyy' }}.
+              {{ errata.effectiveDate | translocoDate: { dateStyle: 'medium' } }}.
               {{ errata.description }}
               <ng-template #imgPopover>
                 <img [ngClass]="{

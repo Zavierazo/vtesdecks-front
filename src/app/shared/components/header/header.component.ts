@@ -1,14 +1,14 @@
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { AuthService } from '../../../state/auth/auth.service'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
-import { LoginComponent, Tabs } from '../login/login.component'
-import { isChristmas } from '../../../utils/vtes-utils'
 import { ColorThemeService } from '../../../services/color-theme.service'
-import { TableSeatingComponent } from '../table-seating/table-seating.component'
 import { MediaService } from '../../../services/media.service'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { AuthService } from '../../../state/auth/auth.service'
+import { isChristmas } from '../../../utils/vtes-utils'
+import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
+import { TableSeatingComponent } from '../table-seating/table-seating.component'
 
 @Component({
   selector: 'app-header',
