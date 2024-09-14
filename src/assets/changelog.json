@@ -1,56 +1,84 @@
 [
   {
+    "version": "2.22.0",
+    "date": "15th September, 2024",
+    "changes": [
+      "Add Spanish localization"
+    ],
+    "showDialog": false
+  },
+  {
     "version": "2.21.0",
     "date": "20th July, 2024",
-    "changes": ["Add 30th Anniversary cards"],
+    "changes": [
+      "Add 30th Anniversary cards"
+    ],
     "showDialog": false
   },
   {
     "version": "2.20.0",
     "date": "8th June, 2024",
-    "changes": ["Add notifications when someone comment on your decks"],
+    "changes": [
+      "Add notifications when someone comment on your decks"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.5",
     "date": "13th March, 2024",
-    "changes": ["Fix name change detection filter on deck builder"],
+    "changes": [
+      "Fix name change detection filter on deck builder"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.4",
     "date": "23th February, 2024",
-    "changes": ["Add library discipline/clan/title/sect not required filter"],
+    "changes": [
+      "Add library discipline/clan/title/sect not required filter"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.3",
     "date": "21th February, 2024",
-    "changes": ["Fix user update display name"],
+    "changes": [
+      "Fix user update display name"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.2",
     "date": "17th February, 2024",
-    "changes": ["Fix dark mode styles", "Fix typo errors"],
+    "changes": [
+      "Fix dark mode styles",
+      "Fix typo errors"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.1",
     "date": "9th February, 2024",
-    "changes": ["Fix reset password on mobile device"],
+    "changes": [
+      "Fix reset password on mobile device"
+    ],
     "showDialog": false
   },
   {
     "version": "2.19.0",
     "date": "8th February, 2024",
-    "changes": ["Add Forgot Password functionality", "Fix Show of Force image"],
+    "changes": [
+      "Add Forgot Password functionality",
+      "Fix Show of Force image"
+    ],
     "showDialog": true
   },
   {
     "version": "2.18.1",
     "date": "7th February, 2024",
-    "changes": ["Add Promo Tegyrius, Vizier"],
+    "changes": [
+      "Add Promo Tegyrius, Vizier"
+    ],
     "showDialog": true
   },
   {
@@ -76,7 +104,9 @@
   {
     "version": "2.16.0",
     "date": "29th January, 2024",
-    "changes": ["Add Gamepod as Print of Demand shop"],
+    "changes": [
+      "Add Gamepod as Print of Demand shop"
+    ],
     "showDialog": true
   },
   {
@@ -156,7 +186,9 @@
   {
     "version": "2.8.0",
     "date": "16th September, 2023",
-    "changes": ["Add New Blood 2"],
+    "changes": [
+      "Add New Blood 2"
+    ],
     "showDialog": true
   },
   {
@@ -171,7 +203,9 @@
   {
     "version": "2.7.2",
     "date": "6th August, 2023",
-    "changes": ["Minor fix on deck descriptions"],
+    "changes": [
+      "Minor fix on deck descriptions"
+    ],
     "showDialog": false
   },
   {
@@ -205,7 +239,9 @@
   {
     "version": "2.5.6",
     "date": "26th March, 2023",
-    "changes": ["Improve homepage links for mobile devices"],
+    "changes": [
+      "Improve homepage links for mobile devices"
+    ],
     "showDialog": true
   },
   {
@@ -246,7 +282,9 @@
   {
     "version": "2.5.1",
     "date": "5th March, 2023",
-    "changes": ["Add Crypt & Library detail with rulings"],
+    "changes": [
+      "Add Crypt & Library detail with rulings"
+    ],
     "showDialog": true
   },
   {
@@ -261,7 +299,9 @@
   {
     "version": "2.4.0",
     "date": "1st March, 2023",
-    "changes": ["New minigame VTESDLE based on WORDLE popular game"],
+    "changes": [
+      "New minigame VTESDLE based on WORDLE popular game"
+    ],
     "showDialog": true
   },
   {
@@ -295,7 +335,9 @@
   {
     "version": "2.3.0",
     "date": "28th January, 2023",
-    "changes": ["Update framework to Angular 15.1"],
+    "changes": [
+      "Update framework to Angular 15.1"
+    ],
     "showDialog": true
   },
   {
@@ -309,13 +351,17 @@
   {
     "version": "2.1.0",
     "date": "22nd October, 2022",
-    "changes": ["Add new Fall of London set"],
+    "changes": [
+      "Add new Fall of London set"
+    ],
     "showDialog": true
   },
   {
     "version": "2.0.1",
     "date": "21st October, 2022",
-    "changes": ["Add promo card: Maila"],
+    "changes": [
+      "Add promo card: Maila"
+    ],
     "showDialog": true
   },
   {
@@ -335,7 +381,9 @@
   {
     "version": "1.0.0",
     "date": "31th August, 2020",
-    "changes": ["Initial Released"],
+    "changes": [
+      "Initial Released"
+    ],
     "showDialog": true
   }
 ]
