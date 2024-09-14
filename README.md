@@ -6,7 +6,7 @@ This project is an Angular application serving as the front-end for [VTES Decks]
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-The API backend is not yet published on github. It will be added soon so that it can be used locally as well.
+By default it points to the local backend, you can find how to start the backend at [vtesdecks-back](https://github.com/Zavierazo/vtesdecks-back)
 
 Change `src/environments/environment.ts` to switch apiDomain to `api.vtesdecks.com` and api.baseUrl to `https://api.vtesdecks.com/1.0` to use production api locally.
 
