@@ -3,9 +3,9 @@ import {
   Component,
   Input,
   OnInit,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiDeck } from '../../../models/api-deck';
+} from '@angular/core'
+import { Router } from '@angular/router'
+import { ApiDeck } from '../../../models/api-deck'
 
 @Component({
   selector: 'app-home-section',
@@ -15,11 +15,11 @@ import { ApiDeck } from '../../../models/api-deck';
 })
 export class HomeSectionComponent {
   @Input()
-  title!: string;
+  title!: string
   @Input()
-  decks?: ApiDeck[];
+  decks?: ApiDeck[]
   @Input()
-  deckParams!: { [key: string]: any };
+  deckParams!: { [key: string]: any }
 
   constructor(private router: Router) {}
 
@@ -28,6 +28,6 @@ export class HomeSectionComponent {
       queryParams: {
         tags: tag,
       },
-    });
+    })
   }
 }

@@ -1,9 +1,9 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ApiDataService } from './../../services/api.data.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastService } from '../../services/toast.service';
-import { TranslocoService } from '@ngneat/transloco';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from './../../services/api.data.service'
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { ToastService } from '../../services/toast.service'
+import { TranslocoService } from '@ngneat/transloco'
 
 @UntilDestroy()
 @Component({
@@ -17,7 +17,7 @@ export class VerifyAccountComponent implements OnInit {
     private route: ActivatedRoute,
     private apiDataService: ApiDataService,
     private toastService: ToastService,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
@@ -33,31 +33,31 @@ export class VerifyAccountComponent implements OnInit {
                 {
                   classname: 'bg-success text-light',
                   delay: 30000,
-                }
-              );
+                },
+              )
             } else {
               this.toastService.show(
                 this.translocoService.translate('verify_account.error'),
                 {
                   classname: 'bg-danger text-light',
                   delay: 10000,
-                }
-              );
+                },
+              )
             }
-            this.router.navigate(['/']);
+            this.router.navigate(['/'])
           },
           error: (error) => {
-            console.error(error.message);
+            console.error(error.message)
             this.toastService.show(
               this.translocoService.translate('verify_account.error'),
               {
                 classname: 'bg-danger text-light',
                 delay: 10000,
-              }
-            );
-            this.router.navigate(['/']);
+              },
+            )
+            this.router.navigate(['/'])
           },
-        });
-    });
+        })
+    })
   }
 }

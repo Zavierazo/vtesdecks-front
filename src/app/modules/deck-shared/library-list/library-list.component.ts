@@ -1,4 +1,4 @@
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,13 +6,13 @@ import {
   Input,
   OnInit,
   Output,
-} from '@angular/core';
-import { ApiCard } from '../../../models/api-card';
-import { LibraryQuery } from '../../../state/library/library.query';
-import { LibraryCardComponent } from '../library-card/library-card.component';
-import { MediaService } from '../../../services/media.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
+} from '@angular/core'
+import { ApiCard } from '../../../models/api-card'
+import { LibraryQuery } from '../../../state/library/library.query'
+import { LibraryCardComponent } from '../library-card/library-card.component'
+import { MediaService } from '../../../services/media.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { Observable } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -43,85 +43,85 @@ export class LibraryListComponent implements OnInit {
     'Reaction/Combat',
     'Reaction/Action Modifier',
     'Event',
-  ];
-  @Input() libraryList!: ApiCard[];
+  ]
+  @Input() libraryList!: ApiCard[]
 
-  @Input() withControls = false;
+  @Input() withControls = false
 
-  @Output() cardAdded = new EventEmitter<number>();
+  @Output() cardAdded = new EventEmitter<number>()
 
-  @Output() cardRemoved = new EventEmitter<number>();
+  @Output() cardRemoved = new EventEmitter<number>()
 
-  isMobileOrTablet$!: Observable<boolean>;
+  isMobileOrTablet$!: Observable<boolean>
 
   constructor(
     private libraryQuery: LibraryQuery,
     private mediaService: MediaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet();
+    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   }
 
   get libraryTypes(): string[] {
     return this.libraryList
       .reduce((acc, card) => {
         if (!acc.includes(card.type!)) {
-          acc.push(card.type!);
+          acc.push(card.type!)
         }
-        return acc;
+        return acc
       }, [] as string[])
-      .sort((a, b) => this.libraryTypeOrder(a) - this.libraryTypeOrder(b));
+      .sort((a, b) => this.libraryTypeOrder(a) - this.libraryTypeOrder(b))
   }
 
   libraryCards(type: String): ApiCard[] {
-    return this.libraryList.filter((card) => card.type === type);
+    return this.libraryList.filter((card) => card.type === type)
   }
 
   percentageSize(type: String): number {
-    return Math.round((this.librarySizeByType(type) / this.librarySize) * 100);
+    return Math.round((this.librarySizeByType(type) / this.librarySize) * 100)
   }
 
   librarySizeByType(type: String): number {
     return this.libraryList
       .filter((card) => card.type === type)
-      .reduce((acc, card) => acc + card.number, 0);
+      .reduce((acc, card) => acc + card.number, 0)
   }
 
   trackByFn(_: number, item: ApiCard) {
-    return item.id;
+    return item.id
   }
 
   get librarySize(): number {
-    return this.libraryList.reduce((acc, card) => acc + card.number, 0);
+    return this.libraryList.reduce((acc, card) => acc + card.number, 0)
   }
 
   get masterTrifle(): number {
     return this.libraryList
       .filter((card) => card.type === 'Master')
       .filter((card) => this.libraryQuery.getEntity(card.id)?.trifle === true)
-      .reduce((acc, card) => acc + card.number, 0);
+      .reduce((acc, card) => acc + card.number, 0)
   }
 
   private libraryTypeOrder(type: string): number {
-    return LibraryListComponent.libraryTypeOrder.indexOf(type);
+    return LibraryListComponent.libraryTypeOrder.indexOf(type)
   }
 
   openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
     if (this.withControls) {
-      return;
+      return
     }
     const modalRef = this.modalService.open(LibraryCardComponent, {
       size: 'lg',
       centered: true,
       scrollable: true,
-    });
-    const libraryList = cardList.map((c) => this.libraryQuery.getEntity(c.id));
-    const current = libraryList.find((c) => c!.id === card.id);
-    modalRef.componentInstance.cardList = libraryList;
+    })
+    const libraryList = cardList.map((c) => this.libraryQuery.getEntity(c.id))
+    const current = libraryList.find((c) => c!.id === card.id)
+    modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = current
       ? libraryList.indexOf(current)
-      : 0;
+      : 0
   }
 }

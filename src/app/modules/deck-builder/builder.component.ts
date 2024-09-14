@@ -1,34 +1,34 @@
-import { ApiClanStat } from './../../models/api-clan-stat';
-import { environment } from './../../../environments/environment';
-import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component';
-import { ImportVdbComponent } from './import-vdb/import-vdb.component';
-import { CryptService } from './../../state/crypt/crypt.service';
-import { LibraryService } from './../../state/library/library.service';
-import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query';
+import { ApiClanStat } from './../../models/api-clan-stat'
+import { environment } from './../../../environments/environment'
+import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
+import { ImportVdbComponent } from './import-vdb/import-vdb.component'
+import { CryptService } from './../../state/crypt/crypt.service'
+import { LibraryService } from './../../state/library/library.service'
+import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
   ChangeDetectorRef,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service';
-import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard';
-import { Observable, tap, debounceTime, filter, switchMap, zip } from 'rxjs';
-import { ApiCard } from '../../models/api-card';
-import { ActivatedRoute } from '@angular/router';
-import { StateHistoryPlugin } from '@datorama/akita';
-import { ToastService } from '../../services/toast.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component';
-import { LibraryBuilderComponent } from './library-builder/library-builder.component';
-import { getClanIcon } from '../../utils/clans';
-import { getDisciplineIcon } from '../../utils/disciplines';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ApiDisciplineStat } from '../../models/api-discipline-stat';
-import { TranslocoService } from '@ngneat/transloco';
+} from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
+import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
+import { Observable, tap, debounceTime, filter, switchMap, zip } from 'rxjs'
+import { ApiCard } from '../../models/api-card'
+import { ActivatedRoute } from '@angular/router'
+import { StateHistoryPlugin } from '@datorama/akita'
+import { ToastService } from '../../services/toast.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
+import { LibraryBuilderComponent } from './library-builder/library-builder.component'
+import { getClanIcon } from '../../utils/clans'
+import { getDisciplineIcon } from '../../utils/disciplines'
+import { Clipboard } from '@angular/cdk/clipboard'
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
+import { ApiDisciplineStat } from '../../models/api-discipline-stat'
+import { TranslocoService } from '@ngneat/transloco'
 
 @UntilDestroy()
 @Component({
@@ -38,24 +38,24 @@ import { TranslocoService } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
-  form!: FormGroup;
-  deckId$!: Observable<string | undefined>;
-  cryptList$!: Observable<ApiCard[]>;
-  cryptSize$!: Observable<number>;
-  cryptDisciplines$!: Observable<ApiDisciplineStat[]>;
-  minCrypt$!: Observable<number>;
-  maxCrypt$!: Observable<number>;
-  avgCrypt$!: Observable<number>;
-  libraryList$!: Observable<ApiCard[]>;
-  librarySize$!: Observable<number>;
-  libraryPoolCost$!: Observable<number | undefined>;
-  libraryBloodCost$!: Observable<number | undefined>;
-  libraryClans$!: Observable<ApiClanStat[]>;
-  libraryDisciplines$!: Observable<ApiDisciplineStat[]>;
-  cryptErrors$!: Observable<string[]>;
-  libraryErrors$!: Observable<string[]>;
-  saved$!: Observable<boolean>;
-  stateHistory!: StateHistoryPlugin;
+  form!: FormGroup
+  deckId$!: Observable<string | undefined>
+  cryptList$!: Observable<ApiCard[]>
+  cryptSize$!: Observable<number>
+  cryptDisciplines$!: Observable<ApiDisciplineStat[]>
+  minCrypt$!: Observable<number>
+  maxCrypt$!: Observable<number>
+  avgCrypt$!: Observable<number>
+  libraryList$!: Observable<ApiCard[]>
+  librarySize$!: Observable<number>
+  libraryPoolCost$!: Observable<number | undefined>
+  libraryBloodCost$!: Observable<number | undefined>
+  libraryClans$!: Observable<ApiClanStat[]>
+  libraryDisciplines$!: Observable<ApiDisciplineStat[]>
+  cryptErrors$!: Observable<string[]>
+  libraryErrors$!: Observable<string[]>
+  saved$!: Observable<boolean>
+  stateHistory!: StateHistoryPlugin
 
   constructor(
     private route: ActivatedRoute,
@@ -67,62 +67,62 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     private modalService: NgbModal,
     private changeDetector: ChangeDetectorRef,
     private clipboard: Clipboard,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
-    this.cryptList$ = this.deckBuilderQuery.selectCrypt();
-    this.cryptSize$ = this.deckBuilderQuery.selectCryptSize();
-    this.cryptDisciplines$ = this.deckBuilderQuery.selectCryptDisciplines();
-    this.minCrypt$ = this.deckBuilderQuery.selectMinCrypt();
-    this.maxCrypt$ = this.deckBuilderQuery.selectMaxCrypt();
-    this.avgCrypt$ = this.deckBuilderQuery.selectAvgCrypt();
-    this.libraryList$ = this.deckBuilderQuery.selectLibrary();
-    this.librarySize$ = this.deckBuilderQuery.selectLibrarySize();
-    this.libraryPoolCost$ = this.deckBuilderQuery.selectLibraryPoolCost();
-    this.libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost();
-    this.libraryClans$ = this.deckBuilderQuery.selectLibraryClans();
-    this.libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines();
-    this.cryptErrors$ = this.deckBuilderQuery.selectCryptErrors();
-    this.libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors();
-    this.deckId$ = this.deckBuilderQuery.selectDeckId();
-    this.saved$ = this.deckBuilderQuery.selectSaved();
-    this.stateHistory = new StateHistoryPlugin(this.deckBuilderQuery);
-    this.initForm();
+    this.cryptList$ = this.deckBuilderQuery.selectCrypt()
+    this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()
+    this.cryptDisciplines$ = this.deckBuilderQuery.selectCryptDisciplines()
+    this.minCrypt$ = this.deckBuilderQuery.selectMinCrypt()
+    this.maxCrypt$ = this.deckBuilderQuery.selectMaxCrypt()
+    this.avgCrypt$ = this.deckBuilderQuery.selectAvgCrypt()
+    this.libraryList$ = this.deckBuilderQuery.selectLibrary()
+    this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()
+    this.libraryPoolCost$ = this.deckBuilderQuery.selectLibraryPoolCost()
+    this.libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
+    this.libraryClans$ = this.deckBuilderQuery.selectLibraryClans()
+    this.libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines()
+    this.cryptErrors$ = this.deckBuilderQuery.selectCryptErrors()
+    this.libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
+    this.deckId$ = this.deckBuilderQuery.selectDeckId()
+    this.saved$ = this.deckBuilderQuery.selectSaved()
+    this.stateHistory = new StateHistoryPlugin(this.deckBuilderQuery)
+    this.initForm()
     this.initCards()
       .pipe(
         untilDestroyed(this),
-        switchMap(() => this.initDeck())
+        switchMap(() => this.initDeck()),
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear();
+          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('deck_builder.deck_not_exists'),
             {
               classname: 'bg-danger text-light',
               delay: 10000,
-            }
-          );
-          this.changeDetector.markForCheck();
+            },
+          )
+          this.changeDetector.markForCheck()
         },
-      });
+      })
   }
 
   private initCards(): Observable<any> {
     return zip(
       this.cryptService.getCryptCards(),
-      this.libraryService.getLibraryCards()
-    );
+      this.libraryService.getLibraryCards(),
+    )
   }
 
   initDeck(): Observable<any> {
-    const id = this.route.snapshot.queryParams['id'];
-    const cloneDeck = history.state?.deck;
+    const id = this.route.snapshot.queryParams['id']
+    const cloneDeck = history.state?.deck
 
     return this.deckBuilderService
       .init(id, cloneDeck)
-      .pipe(tap(() => this.onDeckLoaded()));
+      .pipe(tap(() => this.onDeckLoaded()))
   }
 
   saveDeck() {
@@ -132,9 +132,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         {
           classname: 'bg-danger text-light',
           delay: 3000,
-        }
-      );
-      return;
+        },
+      )
+      return
     }
     if (
       !this.deckBuilderQuery.getName() ||
@@ -145,11 +145,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         {
           classname: 'bg-danger text-light',
           delay: 3000,
-        }
-      );
-      return;
+        },
+      )
+      return
     }
-    this.deckBuilderService.validateDeck();
+    this.deckBuilderService.validateDeck()
     if (
       this.deckBuilderQuery.getPublished() &&
       !this.deckBuilderQuery.isValidDeck()
@@ -159,9 +159,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         {
           classname: 'bg-danger text-light',
           delay: 5000,
-        }
-      );
-      return;
+        },
+      )
+      return
     }
     this.deckBuilderService
       .saveDeck()
@@ -173,52 +173,52 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
             {
               classname: 'bg-success text-light',
               delay: 5000,
-            }
-          )
+            },
+          ),
         ),
-        tap(() => this.onDeckLoaded())
+        tap(() => this.onDeckLoaded()),
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear();
+          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
               classname: 'bg-danger text-light',
               delay: 10000,
-            }
-          );
+            },
+          )
         },
-      });
+      })
   }
 
   shareDeck() {
-    const deckId = this.deckBuilderQuery.getDeckId();
+    const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
-      this.clipboard.copy(`https://${environment.domain}/deck/${deckId}`);
+      this.clipboard.copy(`https://${environment.domain}/deck/${deckId}`)
       this.toastService.show(
         this.translocoService.translate('deck_builder.link_copied'),
         {
           classname: 'bg-success text-light',
           delay: 5000,
-        }
-      );
+        },
+      )
     }
   }
 
   deleteDeck() {
-    const deckId = this.deckBuilderQuery.getDeckId();
+    const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
       const modalRef = this.modalService.open(ConfirmDialogComponent, {
         size: 'sm',
         centered: true,
-      });
+      })
       modalRef.componentInstance.title = this.translocoService.translate(
-        'deck_builder.delete_title'
-      );
+        'deck_builder.delete_title',
+      )
       modalRef.componentInstance.message = this.translocoService.translate(
-        'deck_builder.delete_message'
-      );
+        'deck_builder.delete_message',
+      )
       modalRef.closed
         .pipe(
           untilDestroyed(this),
@@ -227,53 +227,53 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
             this.deckBuilderService.deleteDeck(deckId).pipe(
               untilDestroyed(this),
               tap(() => {
-                this.onDeckLoaded();
+                this.onDeckLoaded()
                 this.toastService.show(
                   this.translocoService.translate(
-                    'deck_builder.delete_successful'
+                    'deck_builder.delete_successful',
                   ),
                   {
                     classname: 'bg-success text-light',
                     delay: 5000,
-                  }
-                );
-              })
-            )
-          )
+                  },
+                )
+              }),
+            ),
+          ),
         )
         .subscribe({
           error: () => {
-            this.stateHistory.clear();
+            this.stateHistory.clear()
             this.toastService.show(
               this.translocoService.translate('shared.unexpected_error'),
               {
                 classname: 'bg-danger text-light',
                 delay: 10000,
-              }
-            );
+              },
+            )
           },
-        });
+        })
     }
   }
 
   canDeactivate(): boolean {
-    return this.deckBuilderQuery.getSaved();
+    return this.deckBuilderQuery.getSaved()
   }
 
   addCard(id: number) {
     if (this.stateHistory.hasFuture) {
-      this.clearFutureHistory();
+      this.clearFutureHistory()
     }
-    this.deckBuilderService.addCard(id);
-    this.changeDetector.markForCheck();
+    this.deckBuilderService.addCard(id)
+    this.changeDetector.markForCheck()
   }
 
   removeCard(id: number) {
     if (this.stateHistory.hasFuture) {
-      this.clearFutureHistory();
+      this.clearFutureHistory()
     }
-    this.deckBuilderService.removeCard(id);
-    this.changeDetector.markForCheck();
+    this.deckBuilderService.removeCard(id)
+    this.changeDetector.markForCheck()
   }
 
   openCryptBuilder() {
@@ -281,7 +281,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       size: 'xl',
       centered: true,
       scrollable: true,
-    });
+    })
   }
 
   openLibraryBuilder() {
@@ -289,7 +289,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       size: 'xl',
       centered: true,
       scrollable: true,
-    });
+    })
   }
 
   openImportAmaranth() {
@@ -300,23 +300,23 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
-          this.deckBuilderService.importDeck('AMARANTH', result)
+          this.deckBuilderService.importDeck('AMARANTH', result),
         ),
-        tap(() => this.onDeckLoaded())
+        tap(() => this.onDeckLoaded()),
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear();
+          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
               classname: 'bg-danger text-light',
               delay: 10000,
-            }
-          );
-          this.changeDetector.markForCheck();
+            },
+          )
+          this.changeDetector.markForCheck()
         },
-      });
+      })
   }
 
   openImportVdb() {
@@ -327,35 +327,35 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
-          this.deckBuilderService.importDeck('VDB', result)
+          this.deckBuilderService.importDeck('VDB', result),
         ),
-        tap(() => this.onDeckLoaded())
+        tap(() => this.onDeckLoaded()),
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear();
+          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
               classname: 'bg-danger text-light',
               delay: 10000,
-            }
-          );
-          this.changeDetector.markForCheck();
+            },
+          )
+          this.changeDetector.markForCheck()
         },
-      });
+      })
   }
 
   getClanIcon(clan: string): string | undefined {
-    return getClanIcon(clan);
+    return getClanIcon(clan)
   }
 
   getDisciplineIcon(discipline: string, superior: boolean): string | undefined {
-    return getDisciplineIcon(discipline, superior);
+    return getDisciplineIcon(discipline, superior)
   }
 
   trackByFn(_: number, item: ApiCard) {
-    return item.id;
+    return item.id
   }
 
   private initForm() {
@@ -363,7 +363,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       name: new FormControl(undefined, Validators.required),
       description: new FormControl(undefined),
       published: new FormControl(true),
-    });
+    })
     this.form
       .get('name')
       ?.valueChanges.pipe(
@@ -371,10 +371,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         filter((value) => value.length > 0),
         debounceTime(100),
         tap((value) => {
-          this.deckBuilderService.updateName(value);
-        })
+          this.deckBuilderService.updateName(value)
+        }),
       )
-      .subscribe();
+      .subscribe()
     this.form
       .get('description')
       ?.valueChanges.pipe(
@@ -382,38 +382,38 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         filter((value) => value.length > 0),
         debounceTime(100),
         tap((value) => {
-          this.deckBuilderService.updateDescription(value);
-        })
+          this.deckBuilderService.updateDescription(value)
+        }),
       )
-      .subscribe();
+      .subscribe()
     this.form
       .get('published')
       ?.valueChanges.pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.stateHistory.ignoreNext();
-          this.deckBuilderService.updatePublished(value);
-        })
+          this.stateHistory.ignoreNext()
+          this.deckBuilderService.updatePublished(value)
+        }),
       )
-      .subscribe();
+      .subscribe()
   }
 
   private onDeckLoaded() {
-    this.stateHistory.clear();
+    this.stateHistory.clear()
     this.form
       .get('name')
-      ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false });
+      ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })
     this.form
       .get('description')
       ?.patchValue(this.deckBuilderQuery.getDescription(), {
         emitEvent: false,
-      });
+      })
     this.form
       .get('published')
       ?.patchValue(this.deckBuilderQuery.getPublished(), {
         emitEvent: false,
-      });
-    this.changeDetector.markForCheck();
+      })
+    this.changeDetector.markForCheck()
   }
 
   private clearFutureHistory() {
@@ -421,6 +421,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       past: history.past,
       present: history.present,
       future: [],
-    }));
+    }))
   }
 }

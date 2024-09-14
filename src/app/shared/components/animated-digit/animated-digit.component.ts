@@ -6,7 +6,7 @@ import {
   ViewChild,
   OnChanges,
   SimpleChanges,
-} from '@angular/core';
+} from '@angular/core'
 
 @Component({
   selector: 'animated-digit',
@@ -14,58 +14,58 @@ import {
   styleUrls: ['animated-digit.component.scss'],
 })
 export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
-  @Input() duration!: number;
-  @Input() digit!: number;
-  @Input() steps!: number;
-  @ViewChild('animatedDigit') animatedDigit!: ElementRef;
+  @Input() duration!: number
+  @Input() digit!: number
+  @Input() steps!: number
+  @ViewChild('animatedDigit') animatedDigit!: ElementRef
 
   animateCount() {
     if (!this.duration) {
-      this.duration = 1000;
+      this.duration = 1000
     }
 
     if (typeof this.digit === 'number') {
-      this.counterFunc(this.digit + 1, this.duration, this.animatedDigit);
+      this.counterFunc(this.digit + 1, this.duration, this.animatedDigit)
     }
   }
 
   counterFunc(endValue: number, durationMs: number, element: ElementRef) {
     if (!this.steps) {
-      this.steps = 12;
+      this.steps = 12
     }
 
-    const stepCount = Math.abs(durationMs / this.steps);
-    const valueIncrement = (endValue - 0) / stepCount;
-    const sinValueIncrement = Math.PI / stepCount;
+    const stepCount = Math.abs(durationMs / this.steps)
+    const valueIncrement = (endValue - 0) / stepCount
+    const sinValueIncrement = Math.PI / stepCount
 
-    let currentValue = 0;
-    let currentSinValue = 0;
+    let currentValue = 0
+    let currentSinValue = 0
 
     function step() {
-      currentSinValue += sinValueIncrement;
-      currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2;
+      currentSinValue += sinValueIncrement
+      currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2
 
       if (element && element.nativeElement) {
-        element.nativeElement.textContent = Math.abs(Math.floor(currentValue));
+        element.nativeElement.textContent = Math.abs(Math.floor(currentValue))
       }
 
       if (currentSinValue < Math.PI) {
-        window.requestAnimationFrame(step);
+        window.requestAnimationFrame(step)
       }
     }
 
-    step();
+    step()
   }
 
   ngAfterViewInit() {
     if (this.digit) {
-      this.animateCount();
+      this.animateCount()
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['digit']) {
-      this.animateCount();
+      this.animateCount()
     }
   }
 }

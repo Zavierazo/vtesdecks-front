@@ -1,10 +1,10 @@
 export class LibraryType {
-  name: string;
-  icon: string;
+  name: string
+  icon: string
 
   constructor(name: string, icon: string) {
-    this.name = name;
-    this.icon = icon;
+    this.name = name
+    this.icon = icon
   }
 }
 
@@ -21,4 +21,4 @@ export const LIBRARY_TYPE_LIST = [
   new LibraryType('Event', 'event'),
   new LibraryType('Power', 'power'),
   new LibraryType('Conviction', 'conviction'),
-];
+]

@@ -1,7 +1,7 @@
-import { ApiDataService } from './../../services/api.data.service';
-import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { ApiChangelog } from '../../models/api-changelog';
+import { Component, OnInit } from '@angular/core'
+import { Observable } from 'rxjs'
+import { ApiChangelog } from '../../models/api-changelog'
+import { ApiDataService } from './../../services/api.data.service'
 
 @Component({
   selector: 'app-changelog',
@@ -9,11 +9,11 @@ import { ApiChangelog } from '../../models/api-changelog';
   styleUrls: ['./changelog.component.scss'],
 })
 export class ChangelogComponent implements OnInit {
-  changelog$!: Observable<ApiChangelog[]>;
+  changelog$!: Observable<ApiChangelog[]>
 
   constructor(private apiDataService: ApiDataService) {}
 
   ngOnInit() {
-    this.changelog$ = this.apiDataService.getChangelog();
+    this.changelog$ = this.apiDataService.getChangelog()
   }
 }

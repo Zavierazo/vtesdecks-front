@@ -6,18 +6,18 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
-@import "bootstrap-icons/font/bootstrap-icons.scss";
-@import "icons.scss";
+@import 'bootstrap-icons/font/bootstrap-icons.scss';
+@import 'icons.scss';
 
 /* Importing Bootstrap SCSS file. */
 $enable-smooth-scroll: false;
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';
 
 /* Importing theme styles*/
-body[data-bs-theme="dark"] {
-  @import "theme-dark.scss";
+body[data-bs-theme='dark'] {
+  @import 'theme-dark.scss';
 }
 /* Override ngx-slider colors. */
 .ngx-slider {

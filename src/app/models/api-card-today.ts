@@ -1,5 +1,5 @@
-import { ApiCrypt } from './api-crypt';
+import { ApiCrypt } from './api-crypt'
 export interface ApiCardToday {
-  day: Date;
-  card: ApiCrypt;
+  day: Date
+  card: ApiCrypt
 }

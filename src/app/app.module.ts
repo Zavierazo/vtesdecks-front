@@ -1,40 +1,40 @@
-import { GlobalErrorHandler } from './services/global-error.handler';
-import { AuthQuery } from './state/auth/auth.query';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
-import { environment } from '../environments/environment';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha-2';
+import { CommonModule } from '@angular/common'
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
-} from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpMonitorInterceptor } from './http-monitor.interceptor';
+} from '@angular/common/http'
+import { ErrorHandler, NgModule } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { RouterModule, Routes } from '@angular/router'
+import { ServiceWorkerModule } from '@angular/service-worker'
+import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
+import { persistState } from '@datorama/akita'
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service'
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store'
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
 import {
-  NgcCookieConsentModule,
   NgcCookieConsentConfig,
-} from 'ngx-cookieconsent';
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { RouterModule, Routes } from '@angular/router';
-import { CommonModule } from '@angular/common';
+  NgcCookieConsentModule,
+} from 'ngx-cookieconsent'
 import {
   NgxGoogleAnalyticsModule,
   NgxGoogleAnalyticsRouterModule,
-} from 'ngx-google-analytics';
-import { SharedModule } from './shared/shared.module';
-import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { persistState } from '@datorama/akita';
-import { TranslocoRootModule } from './transloco-root.module';
-import { NotificationListComponent } from './shared/components/notification-list/notification-list.component';
+} from 'ngx-google-analytics'
+import { environment } from '../environments/environment'
+import { AppComponent } from './app.component'
+import { HttpMonitorInterceptor } from './http-monitor.interceptor'
+import { GlobalErrorHandler } from './services/global-error.handler'
+import { FooterComponent } from './shared/components/footer/footer.component'
+import { HeaderComponent } from './shared/components/header/header.component'
+import { NotificationListComponent } from './shared/components/notification-list/notification-list.component'
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component'
+import { SharedModule } from './shared/shared.module'
+import { AuthQuery } from './state/auth/auth.query'
+import { TranslocoRootModule } from './transloco-root.module'
 
 const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
@@ -52,7 +52,7 @@ const cookieConfig: NgcCookieConsentConfig = {
   position: 'bottom-right',
   theme: 'edgeless',
   type: 'opt-in',
-};
+}
 
 function jwtOptionsFactory(authQuery: AuthQuery) {
   return {
@@ -61,7 +61,7 @@ function jwtOptionsFactory(authQuery: AuthQuery) {
     headerName: 'Authorization',
     authScheme: '',
     skipWhenExpired: true,
-  };
+  }
 }
 
 const routes: Routes = [
@@ -85,14 +85,14 @@ const routes: Routes = [
     path: 'decks/builder',
     loadChildren: () =>
       import('./modules/deck-builder/deck-builder.module').then(
-        (m) => m.DeckBuilderModule
+        (m) => m.DeckBuilderModule,
       ),
   },
   {
     path: 'cards',
     loadChildren: () =>
       import('./modules/deck-builder/deck-builder.module').then(
-        (m) => m.DeckBuilderModule
+        (m) => m.DeckBuilderModule,
       ),
   },
   {
@@ -114,28 +114,28 @@ const routes: Routes = [
     path: 'changelog',
     loadChildren: () =>
       import('./modules/changelog/changelog.module').then(
-        (m) => m.ChangelogModule
+        (m) => m.ChangelogModule,
       ),
   },
   {
     path: 'privacy-policy',
     loadChildren: () =>
       import('./modules/privacy-policy/privacy-policy.module').then(
-        (m) => m.PrivacyPolicyModule
+        (m) => m.PrivacyPolicyModule,
       ),
   },
   {
     path: 'verify',
     loadChildren: () =>
       import('./modules/verify-account/verify-account.module').then(
-        (m) => m.VerifyAccountModule
+        (m) => m.VerifyAccountModule,
       ),
   },
   {
     path: 'reset-password',
     loadChildren: () =>
       import('./modules/reset-password/reset-password.module').then(
-        (m) => m.ResetPasswordModule
+        (m) => m.ResetPasswordModule,
       ),
   },
   {
@@ -144,7 +144,7 @@ const routes: Routes = [
       import('./modules/vtesdle/vtesdle.module').then((m) => m.VtesdleModule),
   },
   { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
-];
+]
 
 @NgModule({
   declarations: [

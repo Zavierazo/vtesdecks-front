@@ -1,7 +1,7 @@
-import { ApiDeck } from "./api-deck";
+import { ApiDeck } from './api-deck'
 
 export interface ApiDecks {
-  offset: number;
-  total: number;
-  decks: ApiDeck[];
+  offset: number
+  total: number
+  decks: ApiDeck[]
 }

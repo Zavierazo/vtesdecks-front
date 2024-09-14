@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { ApiDataService } from '../../../services/api.data.service';
-import { Observable, of, tap } from 'rxjs';
-import { ApiUserNotification } from '../../../models/api-user-notification';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthService } from '../../../state/auth/auth.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { ApiDataService } from '../../../services/api.data.service'
+import { Observable, of, tap } from 'rxjs'
+import { ApiUserNotification } from '../../../models/api-user-notification'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { AuthService } from '../../../state/auth/auth.service'
 
 @UntilDestroy()
 @Component({
@@ -14,16 +14,16 @@ import { AuthService } from '../../../state/auth/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationListComponent implements OnInit {
-  notifications$!: Observable<ApiUserNotification[]>;
+  notifications$!: Observable<ApiUserNotification[]>
 
   constructor(
     public offcanvas: NgbActiveOffcanvas,
     private apiDataService: ApiDataService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
-    this.notifications$ = this.apiDataService.getNotifications();
+    this.notifications$ = this.apiDataService.getNotifications()
   }
 
   read(id: number) {
@@ -32,11 +32,11 @@ export class NotificationListComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap(() => {
-          this.authService.readNotification();
-          this.offcanvas.close();
-        })
+          this.authService.readNotification()
+          this.offcanvas.close()
+        }),
       )
-      .subscribe();
+      .subscribe()
   }
 
   readAll() {
@@ -45,10 +45,10 @@ export class NotificationListComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap(() => {
-          this.authService.readNotification(true);
-          this.offcanvas.close();
-        })
+          this.authService.readNotification(true)
+          this.offcanvas.close()
+        }),
       )
-      .subscribe();
+      .subscribe()
   }
 }

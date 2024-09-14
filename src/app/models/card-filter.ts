@@ -1,4 +1,4 @@
 export interface CardFilter {
-  id: number;
-  count: number;
+  id: number
+  count: number
 }

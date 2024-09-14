@@ -5,8 +5,8 @@ import {
   EventEmitter,
   Input,
   ChangeDetectorRef,
-} from '@angular/core';
-import { CLAN_LIST } from '../../../utils/clans';
+} from '@angular/core'
+import { CLAN_LIST } from '../../../utils/clans'
 
 @Component({
   selector: 'app-clan-filter',
@@ -15,36 +15,36 @@ import { CLAN_LIST } from '../../../utils/clans';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClanFilterComponent {
-  @Input() showNotRequired: boolean = false;
-  @Input() clans: string[] = [];
-  @Output() clansChange: EventEmitter<string[]> = new EventEmitter();
+  @Input() showNotRequired: boolean = false
+  @Input() clans: string[] = []
+  @Output() clansChange: EventEmitter<string[]> = new EventEmitter()
 
-  clansList = CLAN_LIST;
+  clansList = CLAN_LIST
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   toggleNotRequired() {
     if (!this.isSelected('none')) {
-      this.clans.push('none');
-      this.clansChange.emit(this.clans);
+      this.clans.push('none')
+      this.clansChange.emit(this.clans)
     } else {
-      this.clans = this.clans?.filter((value) => value !== 'none');
-      this.clansChange.emit(this.clans);
+      this.clans = this.clans?.filter((value) => value !== 'none')
+      this.clansChange.emit(this.clans)
     }
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.detectChanges()
   }
 
   toggle(name: string) {
     if (!this.isSelected(name)) {
-      this.clans.push(name);
+      this.clans.push(name)
     } else {
-      this.clans = this.clans.filter((value) => value !== name);
+      this.clans = this.clans.filter((value) => value !== name)
     }
-    this.clansChange.emit(this.clans);
-    this.changeDetectorRef.detectChanges();
+    this.clansChange.emit(this.clans)
+    this.changeDetectorRef.detectChanges()
   }
 
   isSelected(name: string): boolean {
-    return this.clans?.some((value) => value === name);
+    return this.clans?.some((value) => value === name)
   }
 }

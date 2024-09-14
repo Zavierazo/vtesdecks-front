@@ -1,9 +1,9 @@
-import { VerifyAccountComponent } from './verify-account.component';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
-import { TranslocoModule } from '@ngneat/transloco';
+import { VerifyAccountComponent } from './verify-account.component'
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { CommonModule } from '@angular/common'
+import { SharedModule } from '../../shared/shared.module'
+import { TranslocoModule } from '@ngneat/transloco'
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     pathMatch: 'full',
     title: 'VTES Decks - Verify Account',
   },
-];
+]
 
 @NgModule({
   declarations: [VerifyAccountComponent],

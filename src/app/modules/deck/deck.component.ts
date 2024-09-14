@@ -5,27 +5,27 @@ import {
   Component,
   OnInit,
   ViewChild,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, tap, timer, switchMap } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { ApiDeck } from '../../models/api-deck';
-import { DeckService } from '../../state/deck/deck.service';
-import { DeckQuery } from '../../state/deck/deck.query';
-import { AuthQuery } from '../../state/auth/auth.query';
-import { ToastService } from '../../services/toast.service';
-import { ApiDataService } from '../../services/api.data.service';
-import { environment } from '../../../environments/environment';
-import { Title } from '@angular/platform-browser';
-import { PreviousRouteService } from '../../services/previous-route-service';
-import { getDisciplineIcon } from '../../utils/disciplines';
-import { getClanIcon } from '../../utils/clans';
-import { MediaService } from '../../services/media.service';
-import { ApiCard } from '../../models/api-card';
-import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component';
-import { CryptQuery } from '../../state/crypt/crypt.query';
-import { Clipboard } from '@angular/cdk/clipboard';
+} from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { Observable, tap, timer, switchMap } from 'rxjs'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { ApiDeck } from '../../models/api-deck'
+import { DeckService } from '../../state/deck/deck.service'
+import { DeckQuery } from '../../state/deck/deck.query'
+import { AuthQuery } from '../../state/auth/auth.query'
+import { ToastService } from '../../services/toast.service'
+import { ApiDataService } from '../../services/api.data.service'
+import { environment } from '../../../environments/environment'
+import { Title } from '@angular/platform-browser'
+import { PreviousRouteService } from '../../services/previous-route-service'
+import { getDisciplineIcon } from '../../utils/disciplines'
+import { getClanIcon } from '../../utils/clans'
+import { MediaService } from '../../services/media.service'
+import { ApiCard } from '../../models/api-card'
+import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
+import { CryptQuery } from '../../state/crypt/crypt.query'
+import { Clipboard } from '@angular/cdk/clipboard'
 
 @UntilDestroy()
 @Component({
@@ -35,23 +35,23 @@ import { Clipboard } from '@angular/cdk/clipboard';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeckComponent implements OnInit, AfterViewInit {
-  id!: string;
+  id!: string
 
-  isLoading$!: Observable<boolean>;
+  isLoading$!: Observable<boolean>
 
-  isAuthenticated$!: Observable<boolean>;
+  isAuthenticated$!: Observable<boolean>
 
-  userDisplayName$!: Observable<string | undefined>;
+  userDisplayName$!: Observable<string | undefined>
 
-  deck$!: Observable<ApiDeck | undefined>;
+  deck$!: Observable<ApiDeck | undefined>
 
-  isMobile$!: Observable<boolean>;
+  isMobile$!: Observable<boolean>
 
-  isMobileOrTablet$!: Observable<boolean>;
+  isMobileOrTablet$!: Observable<boolean>
 
-  isBookmarked = false;
+  isBookmarked = false
 
-  isRated = false;
+  isRated = false
 
   constructor(
     private route: ActivatedRoute,
@@ -66,24 +66,24 @@ export class DeckComponent implements OnInit, AfterViewInit {
     private modalService: NgbModal,
     private cryptQuery: CryptQuery,
     private router: Router,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
   ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id')!;
-    this.isLoading$ = this.deckQuery.selectLoading();
-    this.isAuthenticated$ = this.authQuery.selectAuthenticated();
-    this.userDisplayName$ = this.authQuery.selectDisplayName();
-    this.isMobile$ = this.mediaService.observeMobile();
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet();
+    this.id = this.route.snapshot.paramMap.get('id')!
+    this.isLoading$ = this.deckQuery.selectLoading()
+    this.isAuthenticated$ = this.authQuery.selectAuthenticated()
+    this.userDisplayName$ = this.authQuery.selectDisplayName()
+    this.isMobile$ = this.mediaService.observeMobile()
+    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.deck$ = this.deckQuery.selectDeck().pipe(
       untilDestroyed(this),
       tap((deck) => {
-        this.isBookmarked = deck?.favorite ?? false;
-        this.isRated = deck?.rated ?? false;
-        this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`);
-      })
-    );
+        this.isBookmarked = deck?.favorite ?? false
+        this.isRated = deck?.rated ?? false
+        this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
+      }),
+    )
   }
 
   ngAfterViewInit(): void {
@@ -93,27 +93,27 @@ export class DeckComponent implements OnInit, AfterViewInit {
         switchMap(() =>
           this.apiDataService.deckView(
             this.id,
-            this.previousRouteService.getPreviousUrl()
-          )
-        )
+            this.previousRouteService.getPreviousUrl(),
+          ),
+        ),
       )
-      .subscribe();
+      .subscribe()
   }
 
   @ViewChild('bookmarkTooltip') set favoriteTooltip(tooltip: NgbTooltip) {
     if (this.isBookmarked || !tooltip || !this.authQuery.isAuthenticated()) {
-      return;
+      return
     }
-    tooltip.open();
-    setTimeout(() => tooltip.close(), 2000);
+    tooltip.open()
+    setTimeout(() => tooltip.close(), 2000)
   }
 
   @ViewChild('ratingTooltip') set ratingTooltip(tooltip: NgbTooltip) {
     if (this.isRated || !tooltip || !this.authQuery.isAuthenticated()) {
-      return;
+      return
     }
-    tooltip.open();
-    setTimeout(() => tooltip.close(), 2000);
+    tooltip.open()
+    setTimeout(() => tooltip.close(), 2000)
   }
 
   rateDeck(rating: number) {
@@ -131,7 +131,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
             classname: 'bg-success text-light',
             delay: 5000,
           }),
-      });
+      })
   }
 
   toggleBookmark() {
@@ -145,25 +145,25 @@ export class DeckComponent implements OnInit, AfterViewInit {
             {
               classname: 'bg-danger text-light',
               delay: 5000,
-            }
+            },
           ),
         complete: () => {
-          this.isBookmarked = !this.isBookmarked;
-          this.changeDetectorRef.detectChanges();
+          this.isBookmarked = !this.isBookmarked
+          this.changeDetectorRef.detectChanges()
         },
-      });
+      })
   }
 
   getClanIcon(clan: string): string | undefined {
-    return getClanIcon(clan);
+    return getClanIcon(clan)
   }
 
   getDisciplineIcon(discipline: string, superior: boolean): string | undefined {
-    return getDisciplineIcon(discipline, superior);
+    return getDisciplineIcon(discipline, superior)
   }
 
   get exportUrl(): string {
-    return environment.api.baseUrl + '/decks/' + this.id + '/export';
+    return environment.api.baseUrl + '/decks/' + this.id + '/export'
   }
 
   openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
@@ -171,25 +171,25 @@ export class DeckComponent implements OnInit, AfterViewInit {
       size: 'lg',
       centered: true,
       scrollable: true,
-    });
-    const cryptList = cardList.map((c) => this.cryptQuery.getEntity(c.id));
-    const current = cryptList.find((c) => c!.id === card.id);
-    modalRef.componentInstance.cardList = cryptList;
-    modalRef.componentInstance.index = current ? cryptList.indexOf(current) : 0;
+    })
+    const cryptList = cardList.map((c) => this.cryptQuery.getEntity(c.id))
+    const current = cryptList.find((c) => c!.id === card.id)
+    modalRef.componentInstance.cardList = cryptList
+    modalRef.componentInstance.index = current ? cryptList.indexOf(current) : 0
   }
 
   onOpenInBuilder(): void {
     this.router.navigateByUrl('/decks/builder', {
       state: { deck: this.deckQuery.getDeck() },
-    });
+    })
   }
 
   onShare(): void {
-    this.clipboard.copy(`https://${environment.domain}/deck/${this.id}`);
+    this.clipboard.copy(`https://${environment.domain}/deck/${this.id}`)
     this.toastService.show('Link copied to clipboard', {
       classname: 'bg-success text-light',
       delay: 5000,
-    });
+    })
   }
 
   onTag(tag: string): void {
@@ -197,6 +197,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
       queryParams: {
         tags: tag,
       },
-    });
+    })
   }
 }

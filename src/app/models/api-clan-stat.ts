@@ -1,4 +1,4 @@
 export interface ApiClanStat {
-  clans: string[];
-  number: number;
+  clans: string[]
+  number: number
 }

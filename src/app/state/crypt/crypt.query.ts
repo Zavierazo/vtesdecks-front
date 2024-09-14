@@ -1,16 +1,16 @@
-import { ApiDisciplineStat } from './../../models/api-discipline-stat';
-import { ApiCrypt } from './../../models/api-crypt';
-import { Observable, map } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { CryptState, CryptStore } from './crypt.store';
-import { ApiCard } from '../../models/api-card';
+import { ApiDisciplineStat } from './../../models/api-discipline-stat'
+import { ApiCrypt } from './../../models/api-crypt'
+import { Observable, map } from 'rxjs'
+import { Injectable } from '@angular/core'
+import { QueryEntity } from '@datorama/akita'
+import { CryptState, CryptStore } from './crypt.store'
+import { ApiCard } from '../../models/api-card'
 @Injectable({
   providedIn: 'root',
 })
 export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
   constructor(protected override store: CryptStore) {
-    super(store);
+    super(store)
   }
 
   selectByName(name: string, limit: number = 5): Observable<ApiCrypt[]> {
@@ -18,25 +18,25 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
       limitTo: limit,
       filterBy: (entity) =>
         entity.name.toLowerCase().includes(name.toLowerCase()),
-    });
+    })
   }
 
   selectTitles(): Observable<string[]> {
     return this.selectAll().pipe(
       map((crypt) =>
-        crypt.filter((crypt) => crypt.title).map((crypt) => crypt.title)
+        crypt.filter((crypt) => crypt.title).map((crypt) => crypt.title),
       ),
-      map((titles) => [...new Set(titles)].sort())
-    );
+      map((titles) => [...new Set(titles)].sort()),
+    )
   }
 
   selectSects(): Observable<string[]> {
     return this.selectAll().pipe(
       map((crypt) =>
-        crypt.filter((crypt) => crypt.sect).map((crypt) => crypt.sect)
+        crypt.filter((crypt) => crypt.sect).map((crypt) => crypt.sect),
       ),
-      map((sects) => [...new Set(sects)].sort())
-    );
+      map((sects) => [...new Set(sects)].sort()),
+    )
   }
 
   selectTaints(): Observable<string[]> {
@@ -45,21 +45,21 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
         crypt
           .filter((crypt) => crypt.taints)
           .map((crypt) => crypt.taints)
-          .flat()
+          .flat(),
       ),
-      map((taints) => [...new Set(taints)].sort())
-    );
+      map((taints) => [...new Set(taints)].sort()),
+    )
   }
 
   getMaxCapacity(): number {
     return this.getAll().reduce(
       (max, crypt) => Math.max(max, crypt.capacity),
-      11
-    );
+      11,
+    )
   }
 
   getMaxGroup(): number {
-    return this.getAll().reduce((max, crypt) => Math.max(max, crypt.group), 7);
+    return this.getAll().reduce((max, crypt) => Math.max(max, crypt.group), 7)
   }
 
   getTaints(): string[] {
@@ -69,54 +69,54 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
           .filter((crypt) => crypt.taints)
           .map((crypt) => crypt.taints)
           .flat()
-          .sort()
+          .sort(),
       ),
-    ];
+    ]
   }
 
   getDisciplines(cards: ApiCard[]): ApiDisciplineStat[] {
-    const disciplines: ApiDisciplineStat[] = [];
+    const disciplines: ApiDisciplineStat[] = []
     cards.forEach((card) => {
-      const crypt = this.getEntity(card.id);
+      const crypt = this.getEntity(card.id)
       if (crypt) {
         crypt.superiorDisciplines?.forEach((superiorDiscipline) => {
           const discipline = disciplines.find(
-            (d) => d.disciplines[0] === superiorDiscipline
-          );
+            (d) => d.disciplines[0] === superiorDiscipline,
+          )
           if (discipline) {
-            discipline.superior++;
+            discipline.superior++
           } else {
             disciplines.push({
               disciplines: [superiorDiscipline],
               inferior: 0,
               superior: 1,
-            });
+            })
           }
-        });
+        })
         crypt.disciplines
           ?.filter(
             (discipline) =>
               !crypt.superiorDisciplines?.some(
-                (superiorDiscipline) => superiorDiscipline === discipline
-              )
+                (superiorDiscipline) => superiorDiscipline === discipline,
+              ),
           )
           .forEach((inferiorDiscipline) => {
             const discipline = disciplines.find(
-              (d) => d.disciplines[0] === inferiorDiscipline
-            );
+              (d) => d.disciplines[0] === inferiorDiscipline,
+            )
             if (discipline) {
-              discipline.inferior++;
+              discipline.inferior++
             } else {
               disciplines.push({
                 disciplines: [inferiorDiscipline],
                 inferior: 1,
                 superior: 0,
-              });
+              })
             }
-          });
+          })
       }
-    });
-    disciplines.sort((a, b) => b.superior - a.superior);
-    return disciplines;
+    })
+    disciplines.sort((a, b) => b.superior - a.superior)
+    return disciplines
   }
 }

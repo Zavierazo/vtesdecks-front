@@ -1,14 +1,14 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthQuery } from '../../../state/auth/auth.query';
-import { ApiUser } from '../../../models/api-user';
-import { AuthService } from '../../../state/auth/auth.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { ApiUser } from '../../../models/api-user'
+import { AuthService } from '../../../state/auth/auth.service'
 import {
   AfterViewInit,
   Component,
   Input,
   OnDestroy,
   OnInit,
-} from '@angular/core';
+} from '@angular/core'
 import {
   AbstractControl,
   FormControl,
@@ -16,12 +16,12 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators,
-} from '@angular/forms';
-import { ReCaptchaV3Service } from 'ng-recaptcha-2';
-import { switchMap, Observable } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '../../../services/toast.service';
-import { ApiResponse } from '../../../models/api-response';
+} from '@angular/forms'
+import { ReCaptchaV3Service } from 'ng-recaptcha-2'
+import { switchMap, Observable } from 'rxjs'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { ToastService } from '../../../services/toast.service'
+import { ApiResponse } from '../../../models/api-response'
 
 export enum Tabs {
   Login,
@@ -36,17 +36,17 @@ export enum Tabs {
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
-  tab = Tabs.Login;
+  tab = Tabs.Login
 
-  Tabs = Tabs;
+  Tabs = Tabs
 
-  isLoading$!: Observable<boolean>;
+  isLoading$!: Observable<boolean>
 
   loginForm = new FormGroup({
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
     remember: new FormControl(true),
-  });
+  })
 
   registerForm = new FormGroup(
     {
@@ -66,52 +66,52 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     {
       validators: this.passwordMatchValidator,
-    }
-  );
+    },
+  )
 
   forgotPasswordForm = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
-  });
+  })
 
   constructor(
     public activeModal: NgbActiveModal,
     private recaptchaV3Service: ReCaptchaV3Service,
     private authService: AuthService,
     private authQuery: AuthQuery,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {}
 
   ngOnInit() {
-    this.isLoading$ = this.authQuery.selectLoading();
+    this.isLoading$ = this.authQuery.selectLoading()
   }
 
   ngAfterViewInit() {
     const element = document.getElementsByClassName(
-      'grecaptcha-badge'
-    )[0] as HTMLElement;
+      'grecaptcha-badge',
+    )[0] as HTMLElement
     if (element) {
-      element.style.visibility = 'visible';
+      element.style.visibility = 'visible'
     }
   }
   ngOnDestroy() {
     const element = document.getElementsByClassName(
-      'grecaptcha-badge'
-    )[0] as HTMLElement;
+      'grecaptcha-badge',
+    )[0] as HTMLElement
     if (element) {
-      element.style.visibility = 'hidden';
+      element.style.visibility = 'hidden'
     }
   }
 
   switchTab(tab: Tabs) {
-    this.tab = tab;
+    this.tab = tab
   }
 
   get loginUsername() {
-    return this.loginForm.get('username');
+    return this.loginForm.get('username')
   }
 
   get loginPassword() {
-    return this.loginForm.get('password');
+    return this.loginForm.get('password')
   }
 
   onLoginSubmit() {
@@ -124,61 +124,61 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loginForm.value.username ?? '',
             this.loginForm.value.password ?? '',
             this.loginForm.value.remember ?? false,
-            token
-          )
-        )
+            token,
+          ),
+        ),
       )
       .subscribe({
         next: (user: ApiUser) => {
           if (user.token) {
-            this.activeModal.close();
+            this.activeModal.close()
           } else {
-            console.warn(user.message);
+            console.warn(user.message)
             this.toastService.show(user.message!, {
               classname: 'bg-danger text-light',
               delay: 5000,
-            });
+            })
           }
         },
         error: (error) => {
-          console.error(error.message);
+          console.error(error.message)
           this.toastService.show(error.message, {
             classname: 'bg-danger text-light',
             delay: 5000,
-          });
+          })
         },
-      });
+      })
   }
 
   get registerUsername() {
-    return this.registerForm.get('username');
+    return this.registerForm.get('username')
   }
 
   get registerEmail() {
-    return this.registerForm.get('email');
+    return this.registerForm.get('email')
   }
 
   get registerPassword() {
-    return this.registerForm.get('password');
+    return this.registerForm.get('password')
   }
 
   get registerConfirmPassword() {
-    return this.registerForm.get('confirmPassword');
+    return this.registerForm.get('confirmPassword')
   }
 
   get registerTerms() {
-    return this.registerForm.get('terms');
+    return this.registerForm.get('terms')
   }
 
   private passwordMatchValidator(
-    control: AbstractControl
+    control: AbstractControl,
   ): ValidationErrors | null {
-    const password = control!.get('password')?.value;
-    const confirmPassword = control!.get('confirmPassword')?.value;
+    const password = control!.get('password')?.value
+    const confirmPassword = control!.get('confirmPassword')?.value
     if (password !== confirmPassword) {
-      control!.get('confirmPassword')?.setErrors({ noPasswordMatch: true });
+      control!.get('confirmPassword')?.setErrors({ noPasswordMatch: true })
     }
-    return null;
+    return null
   }
 
   onRegisterSubmit() {
@@ -192,9 +192,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
             this.registerForm.value.email ?? '',
             this.registerForm.value.password ?? '',
             this.registerForm.value.confirmPassword ?? '',
-            token
-          )
-        )
+            token,
+          ),
+        ),
       )
       .subscribe({
         next: (user: ApiResponse) => {
@@ -202,41 +202,41 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
             this.toastService.show(user.message!, {
               classname: 'bg-success text-light',
               delay: 30000,
-            });
-            this.activeModal.close();
+            })
+            this.activeModal.close()
           } else {
-            console.warn(user.message);
+            console.warn(user.message)
             this.toastService.show(user.message!, {
               classname: 'bg-danger text-light',
               delay: 10000,
-            });
+            })
           }
         },
         error: (error) => {
-          console.error(error.message);
+          console.error(error.message)
           this.toastService.show(error.message, {
             classname: 'bg-danger text-light',
             delay: 10000,
-          });
+          })
         },
-      });
+      })
   }
 
   private patternValidator(
     regex: RegExp,
-    error: ValidationErrors
+    error: ValidationErrors,
   ): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
       if (!control.value) {
-        return {};
+        return {}
       }
-      const valid = regex.test(control.value);
-      return valid ? {} : error;
-    };
+      const valid = regex.test(control.value)
+      return valid ? {} : error
+    }
   }
 
   get forgotPasswordEmail() {
-    return this.forgotPasswordForm.get('email');
+    return this.forgotPasswordForm.get('email')
   }
 
   onForgotPasswordSubmit(): void {
@@ -247,9 +247,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
         switchMap((token: string) =>
           this.authService.forgotPassword(
             this.forgotPasswordForm.value.email ?? '',
-            token
-          )
-        )
+            token,
+          ),
+        ),
       )
       .subscribe({
         next: (user: ApiResponse) => {
@@ -257,23 +257,23 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
             this.toastService.show(user.message!, {
               classname: 'bg-success text-light',
               delay: 30000,
-            });
-            this.activeModal.close();
+            })
+            this.activeModal.close()
           } else {
-            console.warn(user.message);
+            console.warn(user.message)
             this.toastService.show(user.message!, {
               classname: 'bg-danger text-light',
               delay: 10000,
-            });
+            })
           }
         },
         error: (error) => {
-          console.error(error.message);
+          console.error(error.message)
           this.toastService.show(error.message, {
             classname: 'bg-danger text-light',
             delay: 10000,
-          });
+          })
         },
-      });
+      })
   }
 }

@@ -1,11 +1,11 @@
-import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
-import { isDevMode, NgModule } from '@angular/core';
-import { TranslocoHttpLoader } from './transloco-loader';
+import { isDevMode, NgModule } from '@angular/core'
+import { provideTransloco, TranslocoModule } from '@ngneat/transloco'
+import { provideTranslocoLocale } from '@ngneat/transloco-locale'
 import {
   cookiesStorage,
   provideTranslocoPersistLang,
-} from '@ngneat/transloco-persist-lang';
-import { provideTranslocoLocale } from '@ngneat/transloco-locale';
+} from '@ngneat/transloco-persist-lang'
+import { TranslocoHttpLoader } from './transloco-loader'
 
 @NgModule({
   exports: [TranslocoModule],
