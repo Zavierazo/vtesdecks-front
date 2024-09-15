@@ -1,4 +1,5 @@
 import { ApiCard } from '../models/api-card'
+import { ApiKrcgRuling } from '../models/krcg/api-krcg-ruling'
 import { DISCIPLINE_LIST } from './disciplines'
 
 export function isCrypt(value: ApiCard): boolean {
@@ -44,27 +45,27 @@ export const searchIncludes = (
   return false
 }
 
-export function formatRulingText(text: string, links: any): string {
-  for (const key in links) {
-    if (text.includes(key)) {
+export function formatRulingText(ruling: ApiKrcgRuling): string {
+  let text = ruling.text
+  ruling.references.forEach((reference) => {
+    if (text.includes(reference.text)) {
       text = text.replace(
-        key,
-        `<a class="text-decoration-none" href="${links[key]}" target="_blank">${key}</a>`,
+        reference.text,
+        `<a class="text-decoration-none" href="${reference.url}" target="_blank">${reference.label}</a>`,
       )
     }
-  }
+  })
   DISCIPLINE_LIST.forEach((discipline) => {
     const disciplineText = `[${discipline.abbrev}]`
-    if (text.includes(disciplineText)) {
-      text = text.replace(
-        disciplineText,
-        `<i class="vtes vtes-small ${discipline.icon}"></i>`,
-      )
-    }
     if (text.includes(disciplineText.toUpperCase())) {
       text = text.replace(
         disciplineText.toUpperCase(),
         `<i class="vtes vtes-small ${discipline.iconSuperior}"></i>`,
+      )
+    } else if (text.includes(disciplineText)) {
+      text = text.replace(
+        disciplineText,
+        `<i class="vtes vtes-small ${discipline.icon}"></i>`,
       )
     }
   })

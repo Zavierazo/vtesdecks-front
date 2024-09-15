@@ -1,6 +1,3 @@
-import { MediaService } from './../../../services/media.service'
-import { ApiLibrary } from './../../../models/api-library'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,14 +7,18 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
-import { EMPTY, Observable } from 'rxjs'
-import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { ApiDataService } from '../../../services/api.data.service'
-import { formatRulingText } from '../../../utils/vtes-utils'
-import { ApiShop } from '../../../models/api-shop'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
+import { ApiShop } from '../../../models/api-shop'
+import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
+import { ApiKrcgRuling } from '../../../models/krcg/api-krcg-ruling'
+import { ApiDataService } from '../../../services/api.data.service'
 import { Shop, getShop } from '../../../utils/shops'
+import { formatRulingText } from '../../../utils/vtes-utils'
+import { ApiLibrary } from './../../../models/api-library'
+import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({
@@ -146,8 +147,8 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck()
   }
 
-  formatText(text: string, links: any): string {
-    return formatRulingText(text, links)
+  formatText(ruling: ApiKrcgRuling): string {
+    return formatRulingText(ruling)
   }
 
   getShopInfo(code: string): Shop | undefined {

@@ -56,10 +56,10 @@
             {{ card.artist }}
           </a-->
           </p>
-          <ng-container *ngIf="(krcgCard$ | async)?.rulings as krcgRuling">
+          <ng-container *ngIf="(krcgCard$ | async)?.rulings as krcgRulings">
             <strong>{{ t('rulings') }}</strong>
             <ul>
-              <li *ngFor="let ruleText of krcgRuling.text" [innerHTML]="formatText(ruleText, krcgRuling.links) "></li>
+              <li *ngFor="let ruling of krcgRulings" [innerHTML]="formatText(ruling) "></li>
             </ul>
           </ng-container>
           <ng-container *ngIf="(preconstructedDecks$ | async)?.decks as decks">
