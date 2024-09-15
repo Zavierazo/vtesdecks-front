@@ -1,8 +1,3 @@
-import { MediaService } from './../../../services/media.service'
-import { EMPTY, Observable } from 'rxjs'
-import { ApiDataService } from './../../../services/api.data.service'
-import { ApiCrypt } from './../../../models/api-crypt'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,11 +8,17 @@ import {
   OnInit,
 } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
-import { formatRulingText } from '../../../utils/vtes-utils'
-import { ApiShop } from '../../../models/api-shop'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
+import { ApiShop } from '../../../models/api-shop'
+import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
+import { ApiKrcgRuling } from '../../../models/krcg/api-krcg-ruling'
 import { Shop, getShop } from '../../../utils/shops'
+import { formatRulingText } from '../../../utils/vtes-utils'
+import { ApiCrypt } from './../../../models/api-crypt'
+import { ApiDataService } from './../../../services/api.data.service'
+import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({
@@ -147,8 +148,8 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck()
   }
 
-  formatText(text: string, links: any): string {
-    return formatRulingText(text, links)
+  formatText(ruling: ApiKrcgRuling): string {
+    return formatRulingText(ruling)
   }
 
   getShopInfo(code: string): Shop | undefined {
