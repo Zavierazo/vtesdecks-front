@@ -142,7 +142,8 @@
     "previous_card": "Previous Card",
     "next_card": "Next Card",
     "print_on_demand": "Print on Demand",
-    "promo": "Promo"
+    "promo": "Promo",
+    "private_deck": "Private Deck"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",

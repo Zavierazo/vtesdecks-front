@@ -4,7 +4,10 @@ import {
   provideTransloco,
   TranslocoModule,
 } from '@ngneat/transloco'
-import { provideTranslocoLocale } from '@ngneat/transloco-locale'
+import {
+  provideTranslocoLocale,
+  TranslocoLocaleModule,
+} from '@ngneat/transloco-locale'
 import {
   cookiesStorage,
   provideTranslocoPersistLang,
@@ -29,7 +32,7 @@ function getDefaultLang(): string {
 }
 
 @NgModule({
-  exports: [TranslocoModule],
+  exports: [TranslocoModule, TranslocoLocaleModule],
   providers: [
     provideTransloco({
       config: {
@@ -46,7 +49,12 @@ function getDefaultLang(): string {
       },
       loader: TranslocoHttpLoader,
     }),
-    provideTranslocoLocale(),
+    provideTranslocoLocale({
+      langToLocaleMapping: {
+        en: 'en-US',
+        es: 'es-ES',
+      },
+    }),
     provideTranslocoPersistLang({
       storage: {
         useValue: cookiesStorage(),
