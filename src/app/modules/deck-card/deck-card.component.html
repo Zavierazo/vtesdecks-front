@@ -21,7 +21,7 @@
         <strong *ngIf="deck.favorite" title="Bookmarked">
           <i class="bi bi-bookmark-star-fill text-primary bi-fs-sm"></i>
         </strong>
-        <strong *ngIf="!deck.published" title="Private Deck">
+        <strong *ngIf="!deck.published" [title]="'deck_shared.private_deck' | transloco">
           <i class="bi bi-incognito text-secondary bi-fs-sm"></i>
         </strong>
         {{ deck.name | titlecase | truncate: 30:true }}
@@ -45,7 +45,7 @@
       </div>
       <div>
         <span class="me-2">{{ deck.author | truncate: 25:true }}</span>
-        <span>{{ deck.creationDate | date: "longDate" }}</span>
+        <span>{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
       </div>
       <div *ngIf="deck.tags?.length">
         <span *ngFor="let tag of deck.tags" class="badge rounded-pill mx-1 text-bg-tag" [ngClass]="{

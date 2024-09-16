@@ -26,7 +26,7 @@
                 type: deck.type
               }">
                 <strong th:utext="${deck.author}">{{ deck.author }}</strong> </a>,
-              {{ deck.creationDate | date }}
+              {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
             </p>
             <p *ngIf="deck.tournament">
               <b>{{ t('tournament') }}: </b>
@@ -158,7 +158,7 @@
                 {{ errata.name }}
               </strong>
               {{ t('errata_modified') }}
-              {{ errata.effectiveDate | translocoDate: { dateStyle: 'medium' } }}.
+              {{ errata.effectiveDate | translocoDate: { dateStyle: 'long' } }}.
               {{ errata.description }}
               <ng-template #imgPopover>
                 <img [ngClass]="{
