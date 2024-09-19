@@ -131,7 +131,6 @@
   },
   "deck_shared": {
     "banned": "Prohibida",
-    "trifle": "Nimiedad",
     "rulings": "Reglas",
     "sets": "Expansión",
     "artist": "Artista",
@@ -366,5 +365,22 @@
     "game_over_infinite_message": "¡Se acabó el juego, presiona Reintentar para más!",
     "game_over_today_message": "¡Se acabó el juego, vuelve mañana para más!",
     "remaining_lives": "{{ lives }} vidas restantes"
+  },
+  "vtes": {
+    "type": {
+      "master": "Heril",
+      "conviction": "Convicción",
+      "action": "Acción",
+      "political": "Política",
+      "power": "Poder",
+      "equipment": "Equipo",
+      "ally": "Aliado",
+      "retainer": "Criado",
+      "modifier": "Modificador de acción",
+      "combat": "Combate",
+      "reaction": "Reacción",
+      "event": "Evento",
+      "trifle": "Nimiedad"
+    }
   }
 }

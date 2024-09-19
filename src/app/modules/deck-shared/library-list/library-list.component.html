@@ -1,9 +1,10 @@
 <div class="row" *transloco="let t; read: 'deck_shared'">
-  <ul *ngFor="let libraryType of libraryTypes" class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
+  <ul *ngFor="let libraryType of libraryTypes; trackBy: trackByIndexFn"
+    class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
     <li class="list-group-item list-group-item-primary">
-      {{ librarySizeByType(libraryType) }}&nbsp;{{ libraryType }}
+      {{ librarySizeByType(libraryType) }}&nbsp;{{ libraryType | libraryTypeTransloco }}
       <ng-container *ngIf="libraryType === 'Master' && masterTrifle > 0">
-        &nbsp;-&nbsp;{{ masterTrifle }} {{ t('trifle') }}
+        &nbsp;-&nbsp;{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
       </ng-container>
       <span class="float-end"> {{ percentageSize(libraryType) }}% </span>
     </li>

@@ -131,7 +131,6 @@
   },
   "deck_shared": {
     "banned": "Banned",
-    "trifle": "Trifle",
     "rulings": "Rulings",
     "sets": "Sets",
     "artist": "Artist",
@@ -366,5 +365,22 @@
     "game_over_infinite_message": "Game over, press retry for more!",
     "game_over_today_message": "Game over, come back tomorrow for more!",
     "remaining_lives": "{{ lives }} remaining lives"
+  },
+  "vtes": {
+    "type": {
+      "master": "Master",
+      "conviction": "Conviction",
+      "action": "Action",
+      "political": "Political Action",
+      "power": "Power",
+      "equipment": "Equipment",
+      "ally": "Ally",
+      "retainer": "Retainer",
+      "modifier": "Action Modifier",
+      "combat": "Combat",
+      "reaction": "Reaction",
+      "event": "Event",
+      "trifle": "Nimiedad"
+    }
   }
 }
