@@ -180,7 +180,7 @@
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
         <h5 class="col-auto d-flex justify-content-center" *ngFor="let disciplineStat of deck.stats.cryptDisciplines"
-          [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] })">
+          [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
           <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
           &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
         </h5>
@@ -228,18 +228,19 @@
       <div class="row justify-content-center">
         <h5 class="col-auto d-flex justify-content-center" *ngFor="let disciplineStat of deck.stats.libraryDisciplines">
           <span *ngIf="disciplineStat.disciplines.length === 0" [title]="t('no_discipline')">
-            <i class="bi bi-square" style="font-size: 26px;"></i>
+            <i class="bi bi-square" style="font-size: 32px;"></i>
           </span>
           <ng-container *ngFor="let discipline of disciplineStat.disciplines; let isFirst = first">
             <span *ngIf="!isFirst">+</span>
-            <i class="vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!" [title]="discipline"></i>
+            <i class="vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!"
+              [title]="discipline  |disciplineTransloco"></i>
           </ng-container>
           <span class="pt-1">&nbsp;{{ disciplineStat.inferior }}</span>
         </h5>
         <h5 class="col-auto d-flex justify-content-center" *ngFor="let clanStat of deck.stats.libraryClans">
           <ng-container *ngFor="let clan of clanStat.clans; let isFirst = first">
             <span *ngIf="!isFirst">/</span>
-            <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
+            <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
           </ng-container>
           <span class="pt-1">&nbsp;{{ clanStat.number }}</span>
         </h5>

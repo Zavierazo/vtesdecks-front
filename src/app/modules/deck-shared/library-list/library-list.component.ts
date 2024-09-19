@@ -1,4 +1,3 @@
-import { UntilDestroy } from '@ngneat/until-destroy'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,12 +6,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy } from '@ngneat/until-destroy'
+import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
+import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryCardComponent } from '../library-card/library-card.component'
-import { MediaService } from '../../../services/media.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { Observable } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -75,18 +75,22 @@ export class LibraryListComponent implements OnInit {
       .sort((a, b) => this.libraryTypeOrder(a) - this.libraryTypeOrder(b))
   }
 
-  libraryCards(type: String): ApiCard[] {
+  libraryCards(type: string): ApiCard[] {
     return this.libraryList.filter((card) => card.type === type)
   }
 
-  percentageSize(type: String): number {
+  percentageSize(type: string): number {
     return Math.round((this.librarySizeByType(type) / this.librarySize) * 100)
   }
 
-  librarySizeByType(type: String): number {
+  librarySizeByType(type: string): number {
     return this.libraryList
       .filter((card) => card.type === type)
       .reduce((acc, card) => acc + card.number, 0)
+  }
+
+  trackByIndexFn(index: number, _: string) {
+    return index
   }
 
   trackByFn(_: number, item: ApiCard) {

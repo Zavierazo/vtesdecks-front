@@ -39,7 +39,7 @@
         <span class="ms-1 float-start">{{ library.name }}</span>
         <span *ngIf="library.banned" class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
         <span *ngIf="library.trifle" class="badge rounded-pill bg-light text-black d-none d-sm-inline ms-1 float-start">
-          {{ t('trifle') }}
+          {{ 'vtes.type.trifle' | transloco }}
         </span>
         <i *ngIf="library.bloodCost" class="vtes float-end me-1" [ngClass]="{
         'bloodx': library.bloodCost < 0,

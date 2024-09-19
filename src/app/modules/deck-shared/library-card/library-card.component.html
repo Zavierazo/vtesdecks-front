@@ -15,7 +15,7 @@
         </div>
         <div class="modal-body flex-wrap">
           <span *ngIf="card.trifle" class="badge rounded-pill bg-dark text-white d-none d-sm-inline ms-1 float-end">
-            {{ t('trifle') }}
+            {{ 'vtes.type.trifle' | transloco }}
           </span>
           <i *ngIf="card.bloodCost" class="vtes float-end me-1" [ngClass]="{
             'bloodx': card.bloodCost < 0,
