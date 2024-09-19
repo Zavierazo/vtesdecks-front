@@ -89,7 +89,7 @@ export class LibraryListComponent implements OnInit {
       .reduce((acc, card) => acc + card.number, 0)
   }
 
-  trackByIndexFn(index: number, item: string) {
+  trackByIndexFn(index: number, _: string) {
     return index
   }
 
