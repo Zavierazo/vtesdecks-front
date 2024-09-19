@@ -7,6 +7,7 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
 import { SharedModule } from '../../shared/shared.module'
 import { ClanFilterComponent } from './clan-filter/clan-filter.component'
+import { ClanTranslocoPipe } from './clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from './crypt-card/crypt-card.component'
 import { CryptComponent } from './crypt/crypt.component'
 import { DisciplineFilterComponent } from './discipline-filter/discipline-filter.component'
@@ -29,6 +30,7 @@ import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
     SetTooltipComponent,
     LibraryTypeTranslocoPipe,
     DisciplineTranslocoPipe,
+    ClanTranslocoPipe,
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,7 @@ import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
     SetTooltipComponent,
     LibraryTypeTranslocoPipe,
     DisciplineTranslocoPipe,
+    ClanTranslocoPipe,
   ],
 })
 export class DeckSharedModule {}

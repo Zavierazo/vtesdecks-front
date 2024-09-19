@@ -4,7 +4,7 @@
   }"></i>
 </span>
 <ng-container *ngFor="let clan of clansList">
-  <span (click)="toggle(clan.name)" [title]="clan.name">
+  <span (click)="toggle(clan.name)" [title]="clan.label | transloco">
     <i class="btn-icon vtes-big" [class]="clan.icon" [ngClass]="{
         'non-selected': !isSelected(clan.name),
         'bg-dark': isSelected(clan.name)

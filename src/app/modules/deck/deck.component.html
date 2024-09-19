@@ -240,7 +240,7 @@
         <h5 class="col-auto d-flex justify-content-center" *ngFor="let clanStat of deck.stats.libraryClans">
           <ng-container *ngFor="let clan of clanStat.clans; let isFirst = first">
             <span *ngIf="!isFirst">/</span>
-            <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
+            <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
           </ng-container>
           <span class="pt-1">&nbsp;{{ clanStat.number }}</span>
         </h5>
