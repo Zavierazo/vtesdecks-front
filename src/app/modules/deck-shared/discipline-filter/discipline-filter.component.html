@@ -4,7 +4,7 @@
   }"></i>
 </span>
 <ng-container *ngFor="let discipline of disciplineList">
-  <span (click)="toggle(discipline)" [title]="discipline.name">
+  <span (click)="toggle(discipline)" [title]="discipline.label | transloco">
     <i class="btn-icon vtes-big" [class]="getIcon(discipline)" [ngClass]="{
         'non-selected': !isSelected(discipline.name)
       }"></i>

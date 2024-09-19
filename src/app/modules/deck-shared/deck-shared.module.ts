@@ -10,6 +10,7 @@ import { ClanFilterComponent } from './clan-filter/clan-filter.component'
 import { CryptCardComponent } from './crypt-card/crypt-card.component'
 import { CryptComponent } from './crypt/crypt.component'
 import { DisciplineFilterComponent } from './discipline-filter/discipline-filter.component'
+import { DisciplineTranslocoPipe } from './discipline-transloco/discipline-transloco.pipe'
 import { LibraryCardComponent } from './library-card/library-card.component'
 import { LibraryListComponent } from './library-list/library-list.component'
 import { LibraryTypeTranslocoPipe } from './library-type-transloco/library-type-transloco.pipe'
@@ -27,6 +28,7 @@ import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
     ClanFilterComponent,
     SetTooltipComponent,
     LibraryTypeTranslocoPipe,
+    DisciplineTranslocoPipe,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,8 @@ import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
     DisciplineFilterComponent,
     ClanFilterComponent,
     SetTooltipComponent,
+    LibraryTypeTranslocoPipe,
+    DisciplineTranslocoPipe,
   ],
 })
 export class DeckSharedModule {}
