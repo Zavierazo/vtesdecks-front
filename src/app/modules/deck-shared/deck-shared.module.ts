@@ -12,7 +12,7 @@ import { CryptComponent } from './crypt/crypt.component'
 import { DisciplineFilterComponent } from './discipline-filter/discipline-filter.component'
 import { LibraryCardComponent } from './library-card/library-card.component'
 import { LibraryListComponent } from './library-list/library-list.component'
-import { LibraryTypeTranslocoPipe } from './library-type-translation/library-type-transloco.pipe'
+import { LibraryTypeTranslocoPipe } from './library-type-transloco/library-type-transloco.pipe'
 import { LibraryComponent } from './library/library.component'
 import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
 
