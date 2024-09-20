@@ -13,10 +13,8 @@ import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
-import { ApiKrcgRuling } from '../../../models/krcg/api-krcg-ruling'
 import { ApiDataService } from '../../../services/api.data.service'
 import { Shop, getShop } from '../../../utils/shops'
-import { formatRulingText } from '../../../utils/vtes-utils'
 import { ApiLibrary } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
 
@@ -145,10 +143,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
       })
       .pipe(untilDestroyed(this))
     this.changeDetectorRef.markForCheck()
-  }
-
-  formatText(ruling: ApiKrcgRuling): string {
-    return formatRulingText(ruling)
   }
 
   getShopInfo(code: string): Shop | undefined {
