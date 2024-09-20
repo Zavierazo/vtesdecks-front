@@ -1,6 +1,4 @@
 import { ApiCard } from '../models/api-card'
-import { ApiKrcgRuling } from '../models/krcg/api-krcg-ruling'
-import { DISCIPLINE_LIST } from './disciplines'
 
 export function isCrypt(value: ApiCard): boolean {
   return value.id >= 200000
@@ -43,32 +41,4 @@ export const searchIncludes = (
     }
   }
   return false
-}
-
-export function formatRulingText(ruling: ApiKrcgRuling): string {
-  let text = ruling.text
-  ruling.references.forEach((reference) => {
-    if (text.includes(reference.text)) {
-      text = text.replace(
-        reference.text,
-        `<a class="text-decoration-none" href="${reference.url}" target="_blank">${reference.label}</a>`,
-      )
-    }
-  })
-  DISCIPLINE_LIST.forEach((discipline) => {
-    const disciplineText = `[${discipline.abbrev}]`
-    if (text.includes(disciplineText.toUpperCase())) {
-      text = text.replace(
-        disciplineText.toUpperCase(),
-        `<i class="vtes vtes-small ${discipline.iconSuperior}"></i>`,
-      )
-    } else if (text.includes(disciplineText)) {
-      text = text.replace(
-        disciplineText,
-        `<i class="vtes vtes-small ${discipline.icon}"></i>`,
-      )
-    }
-  })
-  text = text.replace(/\{(.*?)\}/g, '<span class="fw-semibold">$1</span>')
-  return text
 }

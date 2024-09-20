@@ -16,6 +16,7 @@ import { LibraryCardComponent } from './library-card/library-card.component'
 import { LibraryListComponent } from './library-list/library-list.component'
 import { LibraryTypeTranslocoPipe } from './library-type-transloco/library-type-transloco.pipe'
 import { LibraryComponent } from './library/library.component'
+import { RulingTextComponent } from './ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SetTooltipComponent } from './set-tooltip/set-tooltip.component'
     DisciplineFilterComponent,
     ClanFilterComponent,
     SetTooltipComponent,
+    RulingTextComponent,
     LibraryTypeTranslocoPipe,
     DisciplineTranslocoPipe,
     ClanTranslocoPipe,

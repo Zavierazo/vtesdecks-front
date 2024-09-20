@@ -59,7 +59,9 @@
           <ng-container *ngIf="(krcgCard$ | async)?.rulings as krcgRulings">
             <strong>{{ t('rulings') }}</strong>
             <ul>
-              <li *ngFor="let ruling of krcgRulings" [innerHTML]="formatText(ruling) "></li>
+              <li *ngFor="let ruling of krcgRulings">
+                <app-ruling-text [ruling]="ruling"></app-ruling-text>
+              </li>
             </ul>
           </ng-container>
           <ng-container *ngIf="(preconstructedDecks$ | async)?.decks as decks">

@@ -1,0 +1,29 @@
+@for (item of rulingsText; track item) {
+@if (item.type==='card') {
+@if (item.popoverImage) {
+<span class="fw-semibold" #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave"
+  container="body" (click)="popover.open()" [autoClose]="false" tabindex="0">
+  <ng-template #imgPopover>
+    <img [ngClass]="{
+      'img-popover': !(isMobile$ | async)!,
+      'img-popover-mobile': (isMobile$ | async)!
+    }" [src]=" item.popoverImage" [alt]="item.text" />
+  </ng-template>
+  {{ item.text }}
+</span>
+}
+@else {
+<span class="fw-semibold">{{ item.text }}</span>
+}
+}
+@else if (item.type==='reference') {
+@if (item.link) {
+<a class="text-decoration-none" [href]="item.link" target="_blank">
+  {{ item.text }}
+</a>
+}
+}
+@else {
+{{ item.text }}
+}
+}
