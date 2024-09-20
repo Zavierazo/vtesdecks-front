@@ -1,12 +1,3 @@
-import { searchIncludes } from '../../../utils/vtes-utils'
-import { MediaService } from './../../../services/media.service'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl } from '@angular/forms'
-import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
-import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
-import { ApiCard } from './../../../models/api-card'
-import { ApiCrypt } from './../../../models/api-crypt'
-import { CryptQuery } from './../../../state/crypt/crypt.query'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,9 +5,18 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { Observable, tap, debounceTime, min, max } from 'rxjs'
+import { FormControl } from '@angular/forms'
 import { Order, SortBy } from '@datorama/akita'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { debounceTime, Observable, tap } from 'rxjs'
+import { searchIncludes } from '../../../utils/vtes-utils'
+import { ApiCard } from './../../../models/api-card'
+import { ApiCrypt } from './../../../models/api-crypt'
+import { MediaService } from './../../../services/media.service'
+import { CryptQuery } from './../../../state/crypt/crypt.query'
+import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
+import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
 
 @UntilDestroy()
 @Component({
@@ -170,7 +170,11 @@ export class CryptBuilderComponent implements OnInit {
       filterBy: (entity) => {
         const name = this.nameFormControl.value
         if (name && !searchIncludes(entity.name, name)) {
-          return false
+          if (entity.i18n?.name) {
+            return searchIncludes(entity.i18n.name, name)
+          } else {
+            return false
+          }
         }
         if (this.clans.length > 0 && !this.clans.includes(entity.clan)) {
           return false

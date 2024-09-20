@@ -1,8 +1,9 @@
-import { ApiCrypt } from './../../models/api-crypt'
 import { Injectable } from '@angular/core'
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita'
+import { ApiCrypt } from './../../models/api-crypt'
 
 export interface CryptState extends EntityState<ApiCrypt> {
+  locale?: string
   lastUpdate?: Date
 }
 
@@ -21,9 +22,10 @@ export class CryptStore extends EntityStore<CryptState, ApiCrypt> {
     super(initialState)
   }
 
-  updateLastUpdate(lastUpdate: Date) {
+  updateLastUpdate(locale: string, lastUpdate: Date) {
     this.update((state) => ({
       ...state,
+      locale,
       lastUpdate,
     }))
   }

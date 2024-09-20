@@ -1,17 +1,18 @@
-import { CryptQuery } from './crypt.query'
-import { ApiDataService } from './../../services/api.data.service'
 import { Injectable } from '@angular/core'
-import { CryptState, CryptStore } from './crypt.store'
+import { TranslocoService } from '@ngneat/transloco'
 import {
-  tap,
-  switchMap,
-  Observable,
+  defaultIfEmpty,
   EMPTY,
   filter,
   map,
-  defaultIfEmpty,
+  Observable,
+  switchMap,
+  tap,
 } from 'rxjs'
 import { ApiCrypt } from '../../models/api-crypt'
+import { ApiDataService } from './../../services/api.data.service'
+import { CryptQuery } from './crypt.query'
+import { CryptState, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -22,18 +23,25 @@ export class CryptService {
     private cryptQuery: CryptQuery,
     private cryptStore: CryptStore,
     private apiDataService: ApiDataService,
+    private translocoService: TranslocoService,
   ) {}
 
   getCryptCards(): Observable<ApiCrypt[]> {
+    const locale = this.translocoService.getActiveLang()
     const cryptState: CryptState = this.cryptStore.getValue()
     const request$ = this.apiDataService
       .getAllCrypt()
       .pipe(tap((cards: ApiCrypt[]) => this.cryptStore.set(cards)))
     return this.apiDataService.getCryptLastUpdate().pipe(
       map((crypt) => crypt.lastUpdate),
-      filter((lastUpdate) => lastUpdate !== cryptState.lastUpdate),
+      filter(
+        (lastUpdate) =>
+          lastUpdate !== cryptState.lastUpdate || locale !== cryptState.locale,
+      ),
       switchMap((lastUpdate) =>
-        request$.pipe(tap(() => this.cryptStore.updateLastUpdate(lastUpdate))),
+        request$.pipe(
+          tap(() => this.cryptStore.updateLastUpdate(locale, lastUpdate)),
+        ),
       ),
       defaultIfEmpty([]),
     )

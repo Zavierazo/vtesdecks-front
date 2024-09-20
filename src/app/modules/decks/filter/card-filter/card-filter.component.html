@@ -2,12 +2,12 @@
   <ng-template #cryptTemplate let-r="result" let-t="term">
     <i class="vtes" [class]="r['clanIcon']"></i>
     <i class="vtes advanced" *ngIf="r.adv"></i>
-    <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
+    <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
   </ng-template>
 
   <ng-template #libraryTemplate let-r="result" let-t="term">
     <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of r['typeIcons']"></i>
-    <ngb-highlight class="align-top ms-2" [result]="r.name" [term]="t"></ngb-highlight>
+    <ngb-highlight class="align-top ms-2" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
   </ng-template>
 
   <div class="mb-3 row">
@@ -36,16 +36,29 @@
           </button>
         </div>
         <ng-template #imgPopover>
+          @if( crypt.i18n && crypt.i18n.image ){
+          <img #i18nImage [ngClass]="{
+          'img-popover': !(isMobile$ | async)!,
+          'img-popover-mobile': (isMobile$ | async)!
+        }" [src]="crypt.i18n.image" [alt]="crypt.i18n.name" (error)="i18nImage.src='/assets/' + crypt.image" />
+          }
+          @else{
           <img [ngClass]="{
-            'img-popover': !(isMobile$ | async)!,
-            'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
+          'img-popover': !(isMobile$ | async)!,
+          'img-popover-mobile': (isMobile$ | async)!
+        }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
+          }
         </ng-template>
         <i class="vtes" [class]="crypt.clanIcon"></i>
         <i class="vtes advanced" *ngIf="crypt.adv"></i>
         <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
           triggers="mouseenter:mouseleave" (click)="popover.open()">
+          @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
+          {{ crypt.i18n.name }}
+          }
+          @else{
           {{ crypt.name }}
+          }
         </span>
       </div>
     </ng-container>
@@ -83,15 +96,28 @@
           </button>
         </div>
         <ng-template #imgPopover>
+          @if( library.i18n && library.i18n.image ){
+          <img #i18nImage [ngClass]="{
+      'img-popover': !(isMobile$ | async)!,
+      'img-popover-mobile': (isMobile$ | async)!
+    }" [src]="library.i18n.image" [alt]="library.i18n.name" (error)="i18nImage.src='/assets/' + library.image" />
+          }
+          @else{
           <img [ngClass]="{
-            'img-popover': !(isMobile$ | async)!,
-            'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="'/assets/' + library.image" [alt]="library.name" />
+      'img-popover': !(isMobile$ | async)!,
+      'img-popover-mobile': (isMobile$ | async)!
+    }" [src]="'/assets/' + library.image" [alt]="library.name" />
+          }
         </ng-template>
         <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of library.typeIcons"></i>
         <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
           triggers="mouseenter:mouseleave" (click)="popover.open()">
+          @if( library.i18n && library.i18n.name !== library.name ){
+          {{ library.i18n.name }}
+          }
+          @else{
           {{ library.name }}
+          }
         </span>
       </div>
     </ng-container>

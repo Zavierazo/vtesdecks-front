@@ -2,13 +2,33 @@
   <div class="library-card" *ngIf="cardList[index] as card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
+        @if( card.i18n && card.i18n.image ){
+        <img #i18nImage class="rounded mx-auto d-block img-fluid" [src]="card.i18n.image" [alt]="card.i18n.name"
+          (error)="i18nImage.src='/assets/' + card.image" />
+        }
+        @else {
         <img class="rounded mx-auto d-block img-fluid" [src]="'/assets/' + card.image" [alt]="card.name" />
+        }
       </div>
       <div class="col-sm-12 col-md-7 ps-0">
         <div class="modal-header">
           <h4 class="modal-title d-flex align-items-center">
-            <i *ngFor="let typeIcon of card.typeIcons" class="vtes vtes-big float-start" [ngClass]="typeIcon"></i>{{
-            card.name }}
+            <i *ngFor="let typeIcon of card.typeIcons" class="vtes vtes-big float-start" [ngClass]="typeIcon"></i>
+            <span class="d-flex flex-column">
+              @if( card.i18n && card.i18n.name !== card.name ){
+              <span>
+                {{ card.i18n.name }}
+              </span>
+              <span class="text-muted default-locale-name">
+                {{ card.name }}
+              </span>
+              }
+              @else{
+              <span>
+                {{ card.name }}
+              </span>
+              }
+            </span>
           </h4>
           <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
             (click)="modal.dismiss('Cross click')"></button>

@@ -1,10 +1,10 @@
-import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { ApiCrypt } from './../../models/api-crypt'
-import { Observable, map } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { QueryEntity } from '@datorama/akita'
-import { CryptState, CryptStore } from './crypt.store'
+import { Observable, map } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiCrypt } from './../../models/api-crypt'
+import { ApiDisciplineStat } from './../../models/api-discipline-stat'
+import { CryptState, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +17,8 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
     return this.selectAll({
       limitTo: limit,
       filterBy: (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()),
+        entity.name.toLowerCase().includes(name.toLowerCase()) ||
+        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()),
     })
   }
 
