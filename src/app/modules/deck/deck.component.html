@@ -54,7 +54,7 @@
             <p *ngIf="deck.tags" class="d-flex flex-wrap justify-content-center gap-2 my-2">
               <span *ngFor="let tag of deck.tags" class="badge rounded-pill text-bg-primary btn-badge"
                 (click)="onTag(tag)">
-                #{{tag}}
+                #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
               </span>
             </p>
 

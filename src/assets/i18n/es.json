@@ -53,10 +53,10 @@
     "deck_popularity_title": "popularidad basada en la cantidad de mazos que contienen al menos una copia de la carta",
     "card_popularity": "Popularidad de la carta",
     "card_popularity_title": "popularidad basada en el número de copias de esta carta en todos los mazos",
-    "reset": "Restablecer",
+    "reset": "Reiniciar",
     "filters": "Filtros",
     "results": "{{ count }} resultados",
-    "reset_filters": "Restablecer filtros",
+    "reset_filters": "Reiniciar filtros",
     "back_to_top": "Volver arriba"
   },
   "date_ago_pipe": {
@@ -93,7 +93,11 @@
     "total_library": "Cartas de biblioteca",
     "total_pool_cost": "Coste total de vida",
     "total_blood_cost": "Coste total de sangre",
-    "no_discipline": "Sin disciplina"
+    "no_discipline": "Sin disciplina",
+    "rate_failed": "Algo salió mal al puntuar el mazo",
+    "rate_success": "¡Gracias por tu puntuación!",
+    "bookmark_error": "Algo salió mal al añadir el mazo a favoritos",
+    "link_copied": "Enlace copiado al portapapeles"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -236,7 +240,8 @@
     "popular_community": "Comunidad Populares",
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
-    "see_more": "Ver más..."
+    "see_more": "Ver más...",
+    "buy_me_a_coffee": "Invítame a un café"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -274,7 +279,7 @@
     "reset": "Reiniciar",
     "filters": "Filtros",
     "results": "{{ count }} resultados",
-    "reset_filters": "Restablecer filtros",
+    "reset_filters": "Reiniciar filtros",
     "back_to_top": "Volver arriba"
   },
   "login_modal": {
@@ -468,6 +473,59 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer"
+    },
+    "tags": {
+      "ramp": "rampeo",
+      "ally": "aliado",
+      "bleed": "sangrado",
+      "block": "bloqueo",
+      "combat": "combate",
+      "rush": "visita",
+      "stealth": "sigilo",
+      "swarm": "enjambre",
+      "vote": "voto"
+    },
+    "taints": {
+      "+Intercept": "+Intercepción",
+      "+Stealth": "+Sigilo",
+      "+Bleed": "+Sangrado",
+      "+Strength": "+Fuerza",
+      "+Hand Size": "+a la Mano",
+      "Titled": "Titulado",
+      "Maneuver": "Maniobra",
+      "Additional Strike": "Ataque Adicional",
+      "Aggravated": "Agravado",
+      "Prevent": "Prevención",
+      "Press": "Acoso",
+      "Enter combat": "Entrar en combate",
+      "Unlock": "Enderezar",
+      "Black Hand": "Mano Negra:",
+      "Seraph": "Seraph",
+      "Infernal": "Infernal",
+      "Red List": "Lista Roja",
+      "Advanced": "Avanzado",
+      "Banned": "Baneado",
+      "Slave": "Esclavo",
+      "Used by TWD": "Usado en TWD",
+      "Add Blood": "Añadir Sangre",
+      "+Intercept / -Stealth": "+Intercepción / -Sigilo",
+      "+Stealth / -Intercept": "+Sigilo / -Intercepción",
+      "+Votes / Title": "+Votos / Titulo",
+      "Dodge": "Esquivar",
+      "Combat Ends": "Combate Termina",
+      "Change target": "Cambiar objetivo",
+      "Reduce a Bleed": "Reducir un Sangrado",
+      "Wake": "Despierta",
+      "Create vampire": "Crear vampiro",
+      "Burn Option": "Opcion de Quemar",
+      "Reflex": "Reflex",
+      "Multi-Type": "Multi-Tipo",
+      "Multi-Discipline": "Multi-Disciplina",
+      "Flight": "Vuelo",
+      "Sterile": "Estéril",
+      "Scarce": "Escaso",
+      "Blood Cursed": "Sangre Maldita",
+      "Circle": "Círculo"
     }
   }
 }

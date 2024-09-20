@@ -93,7 +93,11 @@
     "total_library": "Total Library Cards",
     "total_pool_cost": "Total Pool Cost",
     "total_blood_cost": "Total Blood Cost",
-    "no_discipline": "No discipline"
+    "no_discipline": "No discipline",
+    "rate_failed": "Something went wrong rating the deck",
+    "rate_success": "Thanks for your rating!!",
+    "bookmark_error": "Something went wrong adding the deck to bookmarks",
+    "link_copied": "Link copied to clipboard"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -236,7 +240,8 @@
     "popular_community": "Popular Community",
     "newest_tournament": "Newest Tournament",
     "newest_community": "Newest Community",
-    "see_more": "See More..."
+    "see_more": "See More...",
+    "buy_me_a_coffee": "Buy me a coffee"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -468,6 +473,59 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer"
+    },
+    "tags": {
+      "ramp": "ramp",
+      "ally": "ally",
+      "bleed": "bleed",
+      "block": "block",
+      "combat": "combat",
+      "rush": "rush",
+      "stealth": "stealth",
+      "swarm": "swarm",
+      "vote": "vote"
+    },
+    "taints": {
+      "+Intercept": "+Intercept",
+      "+Stealth": "+Stealth",
+      "+Bleed": "+Bleed",
+      "+Strength": "+Strength",
+      "+Hand Size": "+Hand Size",
+      "Titled": "Titled",
+      "Maneuver": "Maneuver",
+      "Additional Strike": "Additional Strike",
+      "Aggravated": "Aggravated",
+      "Prevent": "Prevent",
+      "Press": "Press",
+      "Enter combat": "Enter combat",
+      "Unlock": "Unlock",
+      "Black Hand": "Black Hand",
+      "Seraph": "Seraph",
+      "Infernal": "Infernal",
+      "Red List": "Red List",
+      "Advanced": "Advanced",
+      "Banned": "Banned",
+      "Slave": "Slave",
+      "Used by TWD": "Used by TWD",
+      "Add Blood": "Add Blood",
+      "+Intercept / -Stealth": "+Intercept / -Stealth",
+      "+Stealth / -Intercept": "+Stealth / -Intercept",
+      "+Votes / Title": "+Votes / Title",
+      "Dodge": "Dodge",
+      "Combat Ends": "Combat Ends",
+      "Change target": "Change target",
+      "Reduce a Bleed": "Reduce a Bleed",
+      "Wake": "Wake",
+      "Create vampire": "Create vampire",
+      "Burn Option": "Burn Option",
+      "Reflex": "Reflex",
+      "Multi-Type": "Multi-Type",
+      "Multi-Discipline": "Multi-Discipline",
+      "Flight": "Flight",
+      "Sterile": "Sterile",
+      "Scarce": "Scarce",
+      "Blood Cursed": "Blood Cursed",
+      "Circle": "Circle"
     }
   }
 }
