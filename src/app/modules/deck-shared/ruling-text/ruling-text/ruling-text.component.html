@@ -2,7 +2,7 @@
 @if (item.type==='card') {
 @if (item.popoverImage) {
 <span class="fw-semibold" #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave"
-  container="body" (click)="popover.open()" [autoClose]="false">
+  container="body" (click)="popover.open()" [autoClose]="false" tabindex="0">
   <ng-template #imgPopover>
     <img [ngClass]="{
       'img-popover': !(isMobile$ | async)!,
