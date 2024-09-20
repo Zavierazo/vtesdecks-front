@@ -1,11 +1,11 @@
-import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { ApiLibrary } from './../../models/api-library'
-import { map, Observable } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { QueryEntity } from '@datorama/akita'
-import { LibraryState, LibraryStore } from './library.store'
+import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiClanStat } from './../../models/api-clan-stat'
+import { ApiDisciplineStat } from './../../models/api-discipline-stat'
+import { ApiLibrary } from './../../models/api-library'
+import { LibraryState, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +18,8 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
     return this.selectAll({
       limitTo: limit,
       filterBy: (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()),
+        entity.name.toLowerCase().includes(name.toLowerCase()) ||
+        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()),
     })
   }
 

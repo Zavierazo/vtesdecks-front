@@ -1,8 +1,9 @@
-import { ApiLibrary } from './../../models/api-library'
 import { Injectable } from '@angular/core'
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita'
+import { ApiLibrary } from './../../models/api-library'
 
 export interface LibraryState extends EntityState<ApiLibrary> {
+  locale?: string
   lastUpdate?: Date
 }
 
@@ -21,9 +22,10 @@ export class LibraryStore extends EntityStore<LibraryState, ApiLibrary> {
     super(initialState)
   }
 
-  updateLastUpdate(lastUpdate: Date) {
+  updateLastUpdate(locale: string, lastUpdate: Date) {
     this.update((state) => ({
       ...state,
+      locale,
       lastUpdate,
     }))
   }

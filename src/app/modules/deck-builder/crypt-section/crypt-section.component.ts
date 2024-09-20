@@ -1,5 +1,4 @@
-import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
-import { CryptService } from './../../../state/crypt/crypt.service'
+import { DOCUMENT, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,7 +26,8 @@ import { ApiCrypt } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
-import { DOCUMENT, ViewportScroller } from '@angular/common'
+import { CryptService } from './../../../state/crypt/crypt.service'
+import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
 
 @UntilDestroy()
 @Component({
@@ -176,7 +176,11 @@ export class CryptSectionComponent implements OnInit {
   private filterBy: SelectOptions<ApiCrypt>['filterBy'] = (entity) => {
     const name = this.nameFormControl.value
     if (name && !searchIncludes(entity.name, name)) {
-      return false
+      if (entity.i18n?.name) {
+        return searchIncludes(entity.i18n.name, name)
+      } else {
+        return false
+      }
     }
     if (this.printOnDemand && !entity.printOnDemand) {
       return false

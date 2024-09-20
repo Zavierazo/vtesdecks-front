@@ -1,3 +1,5 @@
+import { ApiI18n } from './api-i18n'
+
 export interface ApiCrypt {
   id: number
   name: string
@@ -21,6 +23,7 @@ export interface ApiCrypt {
   taints: string[]
   deckPopularity: number
   cardPopularity: number
+  i18n: ApiI18n
   printOnDemand: boolean
   lastUpdate: Date
 }

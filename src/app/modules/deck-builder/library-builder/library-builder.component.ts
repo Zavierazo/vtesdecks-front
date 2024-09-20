@@ -1,11 +1,3 @@
-import { searchIncludes } from './../../../utils/vtes-utils'
-import { ApiLibrary } from './../../../models/api-library'
-import { MediaService } from './../../../services/media.service'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl } from '@angular/forms'
-import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
-import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
-import { ApiCard } from './../../../models/api-card'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,10 +5,18 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { Observable, tap, debounceTime } from 'rxjs'
+import { FormControl } from '@angular/forms'
 import { Order, SortBy } from '@datorama/akita'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { debounceTime, Observable, tap } from 'rxjs'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { ApiCard } from './../../../models/api-card'
+import { ApiLibrary } from './../../../models/api-library'
+import { MediaService } from './../../../services/media.service'
+import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
+import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
+import { searchIncludes } from './../../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({
@@ -160,7 +160,11 @@ export class LibraryBuilderComponent implements OnInit {
       filterBy: (entity) => {
         const name = this.nameFormControl.value
         if (name && !searchIncludes(entity.name, name)) {
-          return false
+          if (entity.i18n?.name) {
+            return searchIncludes(entity.i18n.name, name)
+          } else {
+            return false
+          }
         }
         if (this.types.length > 0) {
           let typeMatch = false

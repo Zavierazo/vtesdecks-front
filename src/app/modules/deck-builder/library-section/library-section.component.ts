@@ -1,5 +1,4 @@
-import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
-import { LibraryService } from './../../../state/library/library.service'
+import { DOCUMENT, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +7,9 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
+import { FormControl } from '@angular/forms'
+import { Order, SelectOptions, SortBy } from '@datorama/akita'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   BehaviorSubject,
@@ -19,15 +21,12 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { FormControl } from '@angular/forms'
-import { ApiLibrary } from '../../../models/api-library'
-import { Order, SelectOptions, SortBy } from '@datorama/akita'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { MediaService } from '../../../services/media.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { searchIncludes } from '../../../utils/vtes-utils'
 import { ApiCard } from '../../../models/api-card'
-import { DOCUMENT, ViewportScroller } from '@angular/common'
+import { ApiLibrary } from '../../../models/api-library'
+import { MediaService } from '../../../services/media.service'
+import { LibraryQuery } from '../../../state/library/library.query'
+import { searchIncludes } from '../../../utils/vtes-utils'
+import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
 
 @UntilDestroy()
 @Component({
@@ -62,7 +61,6 @@ export class LibrarySectionComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private viewportService: ViewportScroller,
     private changeDetector: ChangeDetectorRef,
-    private libraryService: LibraryService,
     private libraryQuery: LibraryQuery,
     private mediaService: MediaService,
     private modalService: NgbModal,
@@ -178,7 +176,11 @@ export class LibrarySectionComponent implements OnInit {
   private filterBy: SelectOptions<ApiLibrary>['filterBy'] = (entity) => {
     const name = this.nameFormControl.value
     if (name && !searchIncludes(entity.name, name)) {
-      return false
+      if (entity.i18n?.name) {
+        return searchIncludes(entity.i18n.name, name)
+      } else {
+        return false
+      }
     }
     if (this.printOnDemand && !entity.printOnDemand) {
       return false

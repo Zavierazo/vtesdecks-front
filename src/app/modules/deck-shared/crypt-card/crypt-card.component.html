@@ -2,12 +2,33 @@
   <div class="crypt-card" *ngIf="cardList[index] as card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
+        @if( card.i18n && card.i18n.image ){
+        <img #i18nImage class="rounded mx-auto d-block img-fluid" [src]="card.i18n.image" [alt]="card.i18n.name"
+          (error)="i18nImage.src='/assets/' + card.image" />
+        }
+        @else {
         <img class="rounded mx-auto d-block img-fluid" [src]="'/assets/' + card.image" [alt]="card.name" />
+        }
       </div>
       <div class="col-sm-12 col-md-7 ps-0">
         <div class="modal-header">
           <h4 class="modal-title d-flex align-items-center">
-            <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>{{ card.name }}
+            <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>
+            <span class="d-flex flex-column">
+              @if( card.i18n && card.i18n.name !== card.name ){
+              <span>
+                {{ card.i18n.name }}
+              </span>
+              <span class="text-muted default-locale-name">
+                {{ card.name }}
+              </span>
+              }
+              @else{
+              <span>
+                {{ card.name }}
+              </span>
+              }
+            </span>
             <small class="float-start ms-1 d-none d-sm-inline">
               <span class="badge rounded-pill bg-dark text-white crypt_group">
                 {{ card.group == -1 ? "any" : card.group }}

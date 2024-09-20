@@ -7,13 +7,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
-import { Observable } from 'rxjs'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary } from '../../../models/api-library'
+import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
-import { MediaService } from '../../../services/media.service'
 
 @UntilDestroy()
 @Component({

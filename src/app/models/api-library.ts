@@ -1,3 +1,5 @@
+import { ApiI18n } from './api-i18n'
+
 export interface ApiLibrary {
   id: number
   name: string
@@ -26,6 +28,7 @@ export interface ApiLibrary {
   taints: string[]
   deckPopularity: number
   cardPopularity: number
+  i18n: ApiI18n
   printOnDemand: boolean
   lastUpdate: Date
 }

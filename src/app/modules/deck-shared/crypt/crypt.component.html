@@ -8,10 +8,18 @@
     'background-size': '50%'
   }" [autoClose]="false">
   <ng-template #imgPopover>
+    @if( crypt.i18n && crypt.i18n.image ){
+    <img #i18nImage [ngClass]="{
+        'img-popover': !(isMobile$ | async)!,
+        'img-popover-mobile': (isMobile$ | async)!
+      }" [src]="crypt.i18n.image" [alt]="crypt.i18n.name" (error)="i18nImage.src='/assets/' + crypt.image" />
+    }
+    @else{
     <img [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
       }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
+    }
     <h6 class="text-white">
       <ng-container *ngIf="card.number > 0">
         <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
@@ -48,7 +56,19 @@
           <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
         </div>
         <div class="col-9">
-          <span class="float-start">{{ crypt.name }}</span>
+          @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
+          <div class="float-start d-flex flex-column">
+            <span>{{ crypt.i18n.name }}</span>
+            <span class="text-muted default-locale-name">
+              {{ crypt.name }}
+            </span>
+          </div>
+          }
+          @else{
+          <span class="float-start">
+            {{ crypt.name }}
+          </span>
+          }
           <small class="float-start ms-1 d-none d-sm-inline">
             <span class="badge rounded-pill bg-light text-black crypt_group">
               {{ crypt.group == -1 ? "any" : crypt.group }}
