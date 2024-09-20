@@ -240,7 +240,8 @@
     "popular_community": "Comunidad Populares",
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
-    "see_more": "Ver más..."
+    "see_more": "Ver más...",
+    "buy_me_a_coffee": "Invítame a un café"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -472,6 +473,17 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer"
+    },
+    "tags": {
+      "ramp": "rampeo",
+      "ally": "aliado",
+      "bleed": "sangrado",
+      "block": "bloqueo",
+      "combat": "combate",
+      "rush": "visita",
+      "stealth": "sigilo",
+      "swarm": "enjambre",
+      "vote": "voto"
     }
   }
 }

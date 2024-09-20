@@ -14,7 +14,8 @@
     <label for="clans" class="form-label text-primary fw-bold">{{ t('tags') }}</label>
     <div class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
-        <ngb-highlight class="align-top ms-1" [result]="'#'+r" [term]="t"></ngb-highlight>
+        <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)"
+          [term]="t"></ngb-highlight>
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
@@ -23,7 +24,7 @@
       <div *ngIf="tags" class="d-flex flex-wrap justify-content-start gap-2 my-2">
         <span *ngFor="let tag of tags" class="badge rounded-pill text-bg-primary btn-badge"
           (click)="onDeselectTag(tag)">
-          #{{tag}}
+          #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
       </div>
     </div>

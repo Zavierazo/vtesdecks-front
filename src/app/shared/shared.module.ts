@@ -14,6 +14,7 @@ import { ThemeSelectorComponent } from './components/theme-selector/theme-select
 import { ToastsContainer } from './components/toast-container/toast-container.component'
 import { IsLoggedDirective } from './directives/is-logged.directive'
 import { DateAsAgoPipe } from './pipes/date-ago.pipe'
+import { TranslocoFallbackPipe } from './pipes/transloco-fallback'
 import { TruncatePipe } from './pipes/truncate.pipe'
 
 @NgModule({
@@ -22,6 +23,7 @@ import { TruncatePipe } from './pipes/truncate.pipe'
     AnimatedDigitComponent,
     TruncatePipe,
     DateAsAgoPipe,
+    TranslocoFallbackPipe,
     IsLoggedDirective,
     ToastsContainer,
     LoginComponent,
@@ -44,6 +46,7 @@ import { TruncatePipe } from './pipes/truncate.pipe'
     LangSelectorComponent,
     ThemeSelectorComponent,
     TableSeatingComponent,
+    TranslocoFallbackPipe,
   ],
 })
 export class SharedModule {}

@@ -240,7 +240,8 @@
     "popular_community": "Popular Community",
     "newest_tournament": "Newest Tournament",
     "newest_community": "Newest Community",
-    "see_more": "See More..."
+    "see_more": "See More...",
+    "buy_me_a_coffee": "Buy me a coffee"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -472,6 +473,17 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer"
+    },
+    "tags": {
+      "ramp": "ramp",
+      "ally": "ally",
+      "bleed": "bleed",
+      "block": "block",
+      "combat": "combat",
+      "rush": "rush",
+      "stealth": "stealth",
+      "swarm": "swarm",
+      "vote": "vote"
     }
   }
 }

@@ -52,7 +52,7 @@
           'text-bg-tag': !isMobileOrTablet,
           'text-bg-secondary': isMobileOrTablet
         }" (click)="onTagClick(tag, $event)">
-          #{{ tag }}
+          #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
       </div>
     </div>
