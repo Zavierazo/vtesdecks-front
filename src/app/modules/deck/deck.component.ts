@@ -10,6 +10,7 @@ import {
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
@@ -66,6 +67,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
     private cryptQuery: CryptQuery,
     private router: Router,
     private clipboard: Clipboard,
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
@@ -121,15 +123,21 @@ export class DeckComponent implements OnInit, AfterViewInit {
       .pipe(untilDestroyed(this))
       .subscribe({
         error: () =>
-          this.toastService.show('Something went wrong rating the deck', {
-            classname: 'bg-danger text-light',
-            delay: 5000,
-          }),
+          this.toastService.show(
+            this.translocoService.translate('deck.rate_failed'),
+            {
+              classname: 'bg-danger text-light',
+              delay: 5000,
+            },
+          ),
         complete: () =>
-          this.toastService.show('Thanks for your rating!!', {
-            classname: 'bg-success text-light',
-            delay: 5000,
-          }),
+          this.toastService.show(
+            this.translocoService.translate('deck.rate_success'),
+            {
+              classname: 'bg-success text-light',
+              delay: 5000,
+            },
+          ),
       })
   }
 
@@ -140,7 +148,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
       .subscribe({
         error: () =>
           this.toastService.show(
-            'Something went wrong adding the deck to bookmarks',
+            this.translocoService.translate('deck.bookmark_error'),
             {
               classname: 'bg-danger text-light',
               delay: 5000,
@@ -185,10 +193,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onShare(): void {
     this.clipboard.copy(`https://${environment.domain}/deck/${this.id}`)
-    this.toastService.show('Link copied to clipboard', {
-      classname: 'bg-success text-light',
-      delay: 5000,
-    })
+    this.toastService.show(
+      this.translocoService.translate('deck.link_copied'),
+      {
+        classname: 'bg-success text-light',
+        delay: 5000,
+      },
+    )
   }
 
   onTag(tag: string): void {

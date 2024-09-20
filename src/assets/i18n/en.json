@@ -93,7 +93,11 @@
     "total_library": "Total Library Cards",
     "total_pool_cost": "Total Pool Cost",
     "total_blood_cost": "Total Blood Cost",
-    "no_discipline": "No discipline"
+    "no_discipline": "No discipline",
+    "rate_failed": "Something went wrong rating the deck",
+    "rate_success": "Thanks for your rating!!",
+    "bookmark_error": "Something went wrong adding the deck to bookmarks",
+    "link_copied": "Link copied to clipboard"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
