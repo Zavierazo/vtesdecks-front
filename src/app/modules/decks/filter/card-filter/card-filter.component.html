@@ -40,13 +40,14 @@
           <img #i18nImage [ngClass]="{
           'img-popover': !(isMobile$ | async)!,
           'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="crypt.i18n.image" [alt]="crypt.i18n.name" (error)="i18nImage.src='/assets/' + crypt.image" />
+        }" [src]="'/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
+            (error)="i18nImage.src='/assets' + crypt.image" />
           }
           @else{
           <img [ngClass]="{
           'img-popover': !(isMobile$ | async)!,
           'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="'/assets/' + crypt.image" [alt]="crypt.name" />
+        }" [src]="'/assets' + crypt.image" [alt]="crypt.name" />
           }
         </ng-template>
         <i class="vtes" [class]="crypt.clanIcon"></i>
