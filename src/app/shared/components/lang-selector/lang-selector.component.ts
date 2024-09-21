@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { TranslocoService } from '@ngneat/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '../../../services/media.service'
+import { CryptService } from '../../../state/crypt/crypt.service'
+import { LibraryService } from '../../../state/library/library.service'
 import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
 
+@UntilDestroy()
 @Component({
   selector: 'app-lang-selector',
   templateUrl: './lang-selector.component.html',
@@ -17,6 +21,8 @@ export class LangSelectorComponent {
   constructor(
     private translocoService: TranslocoService,
     private mediaService: MediaService,
+    private libraryService: LibraryService,
+    private cryptService: CryptService,
   ) {}
 
   isActive(code: string): boolean {
@@ -25,5 +31,7 @@ export class LangSelectorComponent {
 
   switchLanguage(code: string) {
     this.translocoService.setActiveLang(code)
+    this.libraryService.getLibraryCards().pipe(untilDestroyed(this)).subscribe()
+    this.cryptService.getCryptCards().pipe(untilDestroyed(this)).subscribe()
   }
 }
