@@ -13,13 +13,14 @@
       <img #i18nImage [ngClass]="{
           'img-popover': !(isMobile$ | async)!,
           'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="library.i18n.image" [alt]="library.i18n.name" (error)="i18nImage.src='/assets/' + library.image" />
+        }" [src]="'/assets' + library.i18n.image" [alt]="library.i18n.name"
+        (error)="i18nImage.src='/assets' + library.image" />
       }
       @else{
       <img [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="'/assets/' + library.image" [alt]="library.name" />
+      }" [src]="'/assets' + library.image" [alt]="library.name" />
       }
     </ng-template>
     <div class="row">
