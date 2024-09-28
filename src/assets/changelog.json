@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.24.0",
+    "date": "28th September, 2024",
+    "changes": [
+      "Add Portuguese localization"
+    ],
+    "showDialog": false
+  },
+  {
     "version": "2.22.0",
     "date": "15th September, 2024",
     "changes": [
