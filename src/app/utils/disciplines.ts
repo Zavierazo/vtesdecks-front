@@ -113,6 +113,13 @@ export const DISCIPLINE_LIST = [
     true,
   ),
   new Discipline(
+    'Oblivion',
+    'vtes.discipline.oblivion',
+    'obl',
+    'oblivion',
+    true,
+  ),
+  new Discipline(
     'Obtenebration',
     'vtes.discipline.obtenebration',
     'obt',
