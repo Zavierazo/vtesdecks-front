@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.25.0",
+    "date": "28th September, 2024",
+    "changes": [
+      "Add Oblivion discipline",
+      "Add Fifth Edition: Lasombra"
+    ]
+  },
+  {
     "version": "2.24.0",
     "date": "28th September, 2024",
     "changes": [
