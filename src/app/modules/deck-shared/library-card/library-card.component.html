@@ -27,6 +27,11 @@
               <span>
                 {{ card.name }}
               </span>
+              @if(card.aka && card.aka !== card.name){
+              <span class="text-muted default-locale-name">
+                {{ card.aka }}
+              </span>
+              }
               }
             </span>
           </h4>

@@ -66,9 +66,14 @@
           </div>
           }
           @else{
-          <span class="float-start">
-            {{ crypt.name }}
-          </span>
+          <div class="float-start d-flex flex-column">
+            <span>{{ crypt.name }}</span>
+            @if(crypt.aka && crypt.aka !== crypt.name){
+            <span class="text-muted default-locale-name">
+              {{ crypt.aka }}
+            </span>
+            }
+          </div>
           }
           <small class="float-start ms-1 d-none d-sm-inline">
             <span class="badge rounded-pill bg-light text-black crypt_group">

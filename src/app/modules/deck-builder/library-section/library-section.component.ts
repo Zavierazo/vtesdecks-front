@@ -178,6 +178,8 @@ export class LibrarySectionComponent implements OnInit {
     if (name && !searchIncludes(entity.name, name)) {
       if (entity.i18n?.name) {
         return searchIncludes(entity.i18n.name, name)
+      } else if (entity.aka) {
+        return searchIncludes(entity.aka, name)
       } else {
         return false
       }

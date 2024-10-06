@@ -54,9 +54,14 @@
         </div>
         }
         @else{
-        <span class="ms-1 float-start">
-          {{ library.name }}
-        </span>
+        <div class="ms-1 float-start d-flex flex-column">
+          <span>{{ library.name }}</span>
+          @if(library.aka && library.aka !== library.name){
+          <span class="text-muted default-locale-name">
+            {{ library.aka }}
+          </span>
+          }
+        </div>
         }
         <span *ngIf="library.banned" class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
         <span *ngIf="library.trifle" class="badge rounded-pill bg-light text-black d-none d-sm-inline ms-1 float-start">
