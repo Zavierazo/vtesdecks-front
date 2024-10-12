@@ -218,6 +218,7 @@
     "contact": "Contact",
     "login": "Login",
     "sign_up": "Sign-up",
+    "statistics": "Statistics",
     "my_decks": "My Decks",
     "bookmarks": "Bookmarks",
     "profile_settings": "Profile Settings",
@@ -370,6 +371,16 @@
     "game_over_infinite_message": "Game over, press retry for more!",
     "game_over_today_message": "Game over, come back tomorrow for more!",
     "remaining_lives": "{{ lives }} remaining lives"
+  },
+  "statistics": {
+    "statistics": "Statistics",
+    "statistics_by_year": "Statistics by Year",
+    "all": "All",
+    "tournament": "Tournament",
+    "community": "Community",
+    "playstyle": "Playstyle",
+    "disciplines": "Disciplines",
+    "clans": "Clans"
   },
   "vtes": {
     "type": {

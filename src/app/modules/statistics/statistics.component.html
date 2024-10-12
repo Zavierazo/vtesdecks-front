@@ -1,0 +1,51 @@
+<div class="d-flex flex-column justify-content-center align-items-center mt-4" *transloco="let t; read: 'statistics'">
+  <h1>{{ t('statistics') }}</h1>
+
+  <div class="container p-4">
+    <form [formGroup]="globalForm" class="row row-cols-1 row-cols-lg-2 g-4">
+      <div class="col">
+        <div class="input-group mt-3">
+          <label class="input-group-text" for="typeSelect">
+            <i class="bi bi-stack" aria-hidden="true"></i>
+          </label>
+          <select id="typeSelect" class="form-select" formControlName="type">
+            <option value="ALL">{{ t('all') }}</option>
+            <option value="TOURNAMENT">{{ t('tournament') }}</option>
+            <option value="COMMUNITY">{{ t('community') }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <ngx-slider id="globalYear" [options]="{ floor: 1998, ceil: currentYear, step: 1 }" formControlName="year">
+        </ngx-slider>
+      </div>
+    </form>
+    <div class="row row-cols-1 g-4 mt-4" *ngIf="rangeBehavior|async as range">
+      <app-line-chart *ngIf="disciplineStatistics$ | async as disciplines" class="col" [title]="t('disciplines')"
+        [range]="range" [labels]="years" [statistics]="disciplines"></app-line-chart>
+      <app-line-chart *ngIf="clanStatistics$ | async as clans" class="col" [title]="t('clans')" [range]="range"
+        [labels]="years" [statistics]="clans"></app-line-chart>
+      <app-line-chart *ngIf="tagStatistics$ | async as tags" class="col" [title]="t('playstyle')" [range]="range"
+        [labels]="years" [statistics]="tags"></app-line-chart>
+    </div>
+  </div>
+
+  <h1>{{ t('statistics_by_year') }}</h1>
+  <form [formGroup]="yearForm" class="d-flex flex-row align-items-center">
+    <div class="input-group">
+      <label class="input-group-text" for="yearSelect">
+        <i class="bi bi-calendar-event" aria-hidden="true"></i>
+      </label>
+      <select class="form-select" id="yearSelect" aria-labelledby="yearSelect" formControlName="year">
+        <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+      </select>
+    </div>
+  </form>
+  <div class="container p-4">
+    <div class="row row-cols-1 row-cols-lg-2 g-4" *ngIf="statistics$ | async as statistics">
+      <app-bar-chart class="col" [title]="t('disciplines')" [labels]="disciplines"
+        [statistics]="statistics.disciplines"></app-bar-chart>
+      <app-bar-chart class="col" [title]="t('clans')" [labels]="clans" [statistics]="statistics.clans"></app-bar-chart>
+      <app-radar-chart class="col" [title]="t('playstyle')" [statistics]="statistics.tags"></app-radar-chart>
+    </div>
+  </div>

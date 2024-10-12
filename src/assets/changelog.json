@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.26.0",
+    "date": "12th October, 2024",
+    "changes": [
+      "Add statistics section"
+    ]
+  },
+  {
     "version": "2.25.0",
     "date": "28th September, 2024",
     "changes": [
