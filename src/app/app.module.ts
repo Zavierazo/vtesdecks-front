@@ -143,6 +143,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/vtesdle/vtesdle.module').then((m) => m.VtesdleModule),
   },
+  {
+    path: 'statistics',
+    loadChildren: () =>
+      import('./modules/statistics/statistics.module').then(
+        (m) => m.StatisticsModule,
+      ),
+  },
   { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
 ]
 

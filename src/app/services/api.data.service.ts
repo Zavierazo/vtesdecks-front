@@ -7,6 +7,7 @@ import { ApiComment } from '../models/api-comment'
 import { ApiContact } from '../models/api-contact'
 import { ApiCrypt } from '../models/api-crypt'
 import { ApiDecks } from '../models/api-decks'
+import { ApiHistoricStatistic } from '../models/api-historic-statistic'
 import { ApiHome } from '../models/api-home'
 import { ApiResetPassword } from '../models/api-reset-password'
 import { ApiResponse } from '../models/api-response'
@@ -15,6 +16,7 @@ import { ApiShop } from '../models/api-shop'
 import { ApiUser } from '../models/api-user'
 import { ApiUserNotification } from '../models/api-user-notification'
 import { ApiUserSettings } from '../models/api-user-settings'
+import { ApiYearStatistic } from '../models/api-year-statistic'
 import { ApiCardToday } from './../models/api-card-today'
 import { ApiDeck } from './../models/api-deck'
 import { ApiDeckBuilder } from './../models/api-deck-builder'
@@ -370,6 +372,32 @@ export class ApiDataService {
   userRefresh(): Observable<ApiUser> {
     return this.httpClient.get<ApiUser>(
       `${environment.api.baseUrl}${this.userRefreshPath}`,
+    )
+  }
+
+  getStatistics(year: number, type: string): Observable<ApiYearStatistic> {
+    return this.httpClient.get<ApiYearStatistic>(
+      `${environment.api.baseUrl}/statistics?year=${year}&type=${type}`,
+    )
+  }
+
+  getHistoricTagStatistics(type: string): Observable<ApiHistoricStatistic[]> {
+    return this.httpClient.get<ApiHistoricStatistic[]>(
+      `${environment.api.baseUrl}/statistics/tags?type=${type}`,
+    )
+  }
+
+  getHistoricDisciplineStatistics(
+    type: string,
+  ): Observable<ApiHistoricStatistic[]> {
+    return this.httpClient.get<ApiHistoricStatistic[]>(
+      `${environment.api.baseUrl}/statistics/disciplines?type=${type}`,
+    )
+  }
+
+  getHistoricClanStatistics(type: string): Observable<ApiHistoricStatistic[]> {
+    return this.httpClient.get<ApiHistoricStatistic[]>(
+      `${environment.api.baseUrl}/statistics/clans?type=${type}`,
     )
   }
 }

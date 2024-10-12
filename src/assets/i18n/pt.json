@@ -210,6 +210,7 @@
     "contact": "Contato",
     "login": "Conectar",
     "sign_up": "Cadastrar",
+    "statistics": "Estatísticas",
     "my_decks": "Meus mazos",
     "bookmarks": "Favoritos",
     "profile_settings": "Configurações de perfil",
@@ -362,6 +363,16 @@
     "game_over_infinite_message": "Fim do jogo, pressione Repetir para mais!",
     "game_over_today_message": "Fim do jogo, volte amanhã para mais!",
     "remaining_lives": "{{ lives }} vidas restantes"
+  },
+  "statistics": {
+    "statistics": "Estadísticas",
+    "statistics_by_year": "Estadísticas por ano",
+    "all": "Todos",
+    "tournament": "Torneio",
+    "community": "Comunidade",
+    "playstyle": "Estilo de jogo",
+    "disciplines": "Disciplinas",
+    "clans": "Clãs"
   },
   "vtes": {
     "type": {
