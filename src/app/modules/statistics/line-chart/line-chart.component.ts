@@ -4,7 +4,6 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core'
 import { ChartConfiguration, ChartData } from 'chart.js'
 import { ApiHistoricStatistic } from '../../../models/api-historic-statistic'
@@ -36,7 +35,7 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.data = this.getChartData(this.statistics)
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.data = this.getChartData(this.statistics)
   }
 
