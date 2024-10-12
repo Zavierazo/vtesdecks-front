@@ -10,7 +10,6 @@ import { ApiStatistic } from '../../../models/api-statistic'
 @Component({
   selector: 'app-radar-chart',
   templateUrl: './radar-chart.component.html',
-  styleUrls: ['./radar-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadarChartComponent implements OnInit {

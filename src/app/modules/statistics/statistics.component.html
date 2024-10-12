@@ -33,10 +33,10 @@
   <h1>{{ t('statistics_by_year') }}</h1>
   <form [formGroup]="yearForm" class="d-flex flex-row align-items-center">
     <div class="input-group">
-      <label class="input-group-text" for="year">
+      <label class="input-group-text" for="yearSelect">
         <i class="bi bi-calendar-event" aria-hidden="true"></i>
       </label>
-      <select class="form-select" id="year" formControlName="year">
+      <select class="form-select" id="yearSelect" aria-labelledby="yearSelect" formControlName="year">
         <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
       </select>
     </div>

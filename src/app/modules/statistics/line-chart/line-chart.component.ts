@@ -12,7 +12,6 @@ import { ApiHistoricStatistic } from '../../../models/api-historic-statistic'
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineChartComponent implements OnInit, OnChanges {
