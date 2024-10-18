@@ -26,7 +26,6 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  providers: [provideCharts(withDefaultRegisterables())],
   imports: [
     CommonModule,
     SharedModule,
@@ -43,5 +42,6 @@ const routes: Routes = [
     BarChartComponent,
     LineChartComponent,
   ],
+  providers: [provideCharts(withDefaultRegisterables())],
 })
 export class StatisticsModule {}
