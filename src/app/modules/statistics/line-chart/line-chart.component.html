@@ -2,4 +2,32 @@
   <h2>{{ title }}</h2>
   <canvas baseChart [data]="data" [options]="options" type="line">
   </canvas>
+  <button type="button" class="btn btn-outline-primary m-3" (click)="isTableCollapsed = !isTableCollapsed"
+    [attr.aria-expanded]="!isTableCollapsed" aria-controls="collapseExample">
+    {{ 'statistics.show_data' | transloco }}
+  </button>
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="isTableCollapsed" class="table-responsive w-100 p-3">
+    <table class="table table-striped-columns table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          @for (label of data.labels; track label) {
+          <th scope="col">{{ label }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (d of data.datasets; track d; let i = $index) {
+        <tr [class]="'line-' + i">
+          <th scope="row">{{ d.label }}</th>
+          @for (label of data.labels; track label; let j = $index) {
+          <td [ngClass]="{'fw-bold': d && d.data[j] > 10}">
+            {{ d && d.data[j] }}%
+          </td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

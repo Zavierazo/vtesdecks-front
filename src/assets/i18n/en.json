@@ -380,7 +380,8 @@
     "community": "Community",
     "playstyle": "Playstyle",
     "disciplines": "Disciplines",
-    "clans": "Clans"
+    "clans": "Clans",
+    "show_data": "Show Data"
   },
   "vtes": {
     "type": {
