@@ -4,10 +4,10 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http'
-import { ErrorHandler, NgModule } from '@angular/core'
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { RouterModule, Routes } from '@angular/router'
+import { Router, RouterModule, Routes } from '@angular/router'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
 import { persistState } from '@datorama/akita'
@@ -15,6 +15,7 @@ import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service'
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store'
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import * as Sentry from '@sentry/angular'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
 import {
   NgcCookieConsentConfig,
@@ -201,6 +202,16 @@ const routes: Routes = [
     TranslocoRootModule,
   ],
   providers: [
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
     {
       provide: NG_ENTITY_SERVICE_CONFIG,
       useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' },

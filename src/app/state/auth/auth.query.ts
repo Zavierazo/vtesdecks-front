@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { Query } from '@datorama/akita'
+import { Observable } from 'rxjs'
 import { ApiUser } from '../../models/api-user'
 import { AuthStore } from './auth.store'
 
@@ -42,6 +42,10 @@ export class AuthQuery extends Query<ApiUser> {
 
   isAuthenticated(): boolean {
     return !!this.getValue().token
+  }
+
+  getUser(): string | undefined {
+    return this.getValue().user
   }
 
   getToken(): string | undefined {
