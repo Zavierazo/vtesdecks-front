@@ -13,7 +13,10 @@ Sentry.init({
   dsn: 'https://f8e1909b015ae47bde6da8890aefc4a9@o4508688066609152.ingest.de.sentry.io/4508688070541392',
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
+    Sentry.replayIntegration({
+      maskAllText: false,
+      blockAllMedia: false,
+    }),
   ],
   // Tracing
   tracesSampleRate: 1.0, //  Capture 100% of the transactions
