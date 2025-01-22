@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -6,7 +7,7 @@ import {
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { TranslocoService } from '@ngneat/transloco'
-import { concatMap, delay, Observable, of, retryWhen, throwError } from 'rxjs'
+import { Observable, retry, timer } from 'rxjs'
 import { environment } from '../environments/environment'
 import { ToastService } from './services/toast.service'
 
@@ -25,7 +26,10 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const isApiRequest = request?.url?.includes(environment.apiDomain)
-    const httpRequest = request?.clone({
+    if (!isApiRequest) {
+      return next.handle(request)
+    }
+    const httpRequest = request.clone({
       // Workarround to avoid 504 errors
       headers: request.headers
         .set('Cache-Control', 'no-cache, no-store, must-revalidate')
@@ -37,44 +41,28 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         this.translocoService.getActiveLang(),
       ),
     })
-
-    return next.handle(isApiRequest ? httpRequest : request).pipe(
-      retryWhen((error) =>
-        error.pipe(
-          delay(retryWaitMilliSeconds),
-          concatMap((error, count) => {
-            if (
-              count <= retryCount &&
-              !error.url.startsWith('https://api.krcg.org') &&
-              (error.status === 503 ||
-                error.status === 504 ||
-                error.status === 0)
-            ) {
-              console.warn('Error ' + error.status + ' retrying...')
-              this.toastService.show(
-                this.translocoService.translate(
-                  'shared.service_temporarily_unavailable',
-                ),
-                {
-                  classname: 'bg-danger text-light',
-                  delay: 5000,
-                },
-              )
-              return of(error)
-            }
-            return throwError(() => error)
-          }),
-        ),
-      ),
+    return next.handle(httpRequest).pipe(
+      retry({
+        count: retryCount,
+        delay: (error) => this.shouldRetry(error),
+      }),
     )
   }
 
-  getLocaleRequest(request: HttpRequest<unknown>): HttpRequest<unknown> {
-    return request.clone({
-      params: request.params.set(
-        'locale',
-        this.translocoService.getActiveLang(),
-      ),
-    })
+  shouldRetry(error: HttpErrorResponse) {
+    if (error.status === 503 || error.status === 504 || error.status === 0) {
+      console.warn('Error ' + error.status + ' retrying...')
+      this.toastService.show(
+        this.translocoService.translate(
+          'shared.service_temporarily_unavailable',
+        ),
+        {
+          classname: 'bg-danger text-light',
+          delay: 5000,
+        },
+      )
+      return timer(retryWaitMilliSeconds)
+    }
+    throw error
   }
 }

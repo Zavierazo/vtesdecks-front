@@ -1,5 +1,20 @@
 [
   {
+    "version": "2.28.0",
+    "date": "22th January, 2025",
+    "changes": [
+      "Fix service unavailable error due to cache",
+      "Improve error handling"
+    ]
+  },
+  {
+    "version": "2.27.0",
+    "date": "8th January, 2025",
+    "changes": [
+      "Update framework to Angular 18.2.13"
+    ]
+  },
+  {
     "version": "2.26.0",
     "date": "12th October, 2024",
     "changes": [

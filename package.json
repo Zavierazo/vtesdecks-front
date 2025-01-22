@@ -1,13 +1,14 @@
 {
   "name": "vtes-decks-front",
-  "version": "2.27.3",
+  "version": "2.28.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront && sentry-cli sourcemaps upload --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +35,8 @@
     "@ngneat/transloco-persist-lang": "^5.0.0",
     "@ngneat/until-destroy": "^10.0.0",
     "@popperjs/core": "^2.11.8",
+    "@sentry/angular": "^8.50.0",
+    "@sentry/cli": "^2.41.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.7",
