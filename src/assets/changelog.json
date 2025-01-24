@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.28.1",
+    "date": "24th January, 2025",
+    "changes": [
+      "Fix draw probability issue",
+      "Fix TypeError"
+    ]
+  },
+  {
     "version": "2.28.0",
     "date": "22th January, 2025",
     "changes": [

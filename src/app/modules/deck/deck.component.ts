@@ -174,13 +174,19 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
+    if (!this.cryptQuery.getEntity(card.id)) {
+      // Loading...
+      return
+    }
     const modalRef = this.modalService.open(CryptCardComponent, {
       size: 'lg',
       centered: true,
       scrollable: true,
     })
-    const cryptList = cardList.map((c) => this.cryptQuery.getEntity(c.id))
-    const current = cryptList.find((c) => c!.id === card.id)
+    const cryptList = cardList
+      .map((c) => this.cryptQuery.getEntity(c.id))
+      .filter(Boolean)
+    const current = cryptList.find((c) => c?.id === card.id)
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = current ? cryptList.indexOf(current) : 0
   }
