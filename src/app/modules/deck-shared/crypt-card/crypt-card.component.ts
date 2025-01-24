@@ -119,7 +119,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   }
 
   private fetchShops() {
-    if (this.cardList[this.index].printOnDemand) {
+    if (this.cardList[this.index]?.printOnDemand) {
       this.shops$ = this.apiDataService
         .getCardShops(this.cardList[this.index].id)
         .pipe(untilDestroyed(this))
@@ -130,6 +130,9 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   }
 
   private fetchRulings() {
+    if (!this.cardList[this.index]) {
+      return
+    }
     this.krcgCard$ = this.apiDataService
       .getKrcgCard(this.cardList[this.index].id)
       .pipe(untilDestroyed(this))

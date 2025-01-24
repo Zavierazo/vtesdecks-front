@@ -116,13 +116,19 @@ export class LibraryListComponent implements OnInit {
     if (this.withControls) {
       return
     }
+    if (!this.libraryQuery.getEntity(card.id)) {
+      // Loading...
+      return
+    }
     const modalRef = this.modalService.open(LibraryCardComponent, {
       size: 'lg',
       centered: true,
       scrollable: true,
     })
-    const libraryList = cardList.map((c) => this.libraryQuery.getEntity(c.id))
-    const current = libraryList.find((c) => c!.id === card.id)
+    const libraryList = cardList
+      .map((c) => this.libraryQuery.getEntity(c.id))
+      .filter(Boolean)
+    const current = libraryList.find((c) => c?.id === card.id)
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = current
       ? libraryList.indexOf(current)
