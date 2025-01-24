@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,12 +7,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiCrypt } from '../../../models/api-crypt'
+import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { CryptService } from '../../../state/crypt/crypt.service'
-import { MediaService } from '../../../services/media.service'
 import drawProbability from '../../../utils/draw-probability'
 
 @UntilDestroy()
@@ -66,7 +66,7 @@ export class CryptComponent implements OnInit {
   }
 
   getDrawProbability(copy: number): number {
-    const size = this.cryptSize && this.cryptSize > 13 ? this.cryptSize : 13
+    const size = this.cryptSize && this.cryptSize > 12 ? this.cryptSize : 12
     return Math.floor(drawProbability(copy, size, 4, this.card.number))
   }
 
