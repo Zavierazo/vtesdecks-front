@@ -97,7 +97,9 @@
     "rate_failed": "Something went wrong rating the deck",
     "rate_success": "Thanks for your rating!!",
     "bookmark_error": "Something went wrong adding the deck to bookmarks",
-    "link_copied": "Link copied to clipboard"
+    "link_copied": "Link copied to clipboard",
+    "clipboard": "Clipboard",
+    "deck_copied": "Deck copied to clipboard"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",

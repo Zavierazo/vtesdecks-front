@@ -97,7 +97,9 @@
     "rate_failed": "Algo deu errado ao avaliar o mazo",
     "rate_success": "Obrigado pela sua avaliação!",
     "bookmark_error": "Algo deu errado ao adicionar o mazo aos favoritos",
-    "link_copied": "Link copiado para a área de transferência"
+    "link_copied": "Link copiado para a área de transferência",
+    "clipboard": "Área de transferência",
+    "deck_copied": "Mazo copiado para a área de transferência"
   },
   "deck_builder": {
     "deck_not_exists": "O mazo não existe. Tente novamente mais tarde.",
