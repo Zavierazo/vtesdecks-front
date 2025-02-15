@@ -400,4 +400,10 @@ export class ApiDataService {
       `${environment.api.baseUrl}/statistics/clans?type=${type}`,
     )
   }
+
+  getExportDeck(id: string): Observable<string> {
+    return this.httpClient.get<string>(
+      `${environment.api.baseUrl}${this.deckDetailPath}${id}/export?type=BCN_CRISIS`,
+        { responseType: 'text' as 'json' }
+    )  }
 }

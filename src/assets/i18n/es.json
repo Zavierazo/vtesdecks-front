@@ -97,7 +97,9 @@
     "rate_failed": "Algo salió mal al puntuar el mazo",
     "rate_success": "¡Gracias por tu puntuación!",
     "bookmark_error": "Algo salió mal al añadir el mazo a favoritos",
-    "link_copied": "Enlace copiado al portapapeles"
+    "link_copied": "Enlace copiado al portapapeles",
+    "clipboard": "Portapapeles",
+    "deck_copied": "Lista copiada al portapapeles"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",

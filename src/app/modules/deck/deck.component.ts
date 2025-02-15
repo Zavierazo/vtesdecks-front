@@ -215,4 +215,17 @@ export class DeckComponent implements OnInit, AfterViewInit {
       },
     })
   }
+
+  onCopyDeckToCLipboard(): void {
+    this.apiDataService.getExportDeck(this.id).subscribe((data) => {
+      this.clipboard.copy(data)
+      this.toastService.show(
+        this.translocoService.translate('deck.deck_copied'),
+        {
+          classname: 'bg-success text-light',
+          delay: 5000,
+        },
+      )
+    })
+  }
 }
