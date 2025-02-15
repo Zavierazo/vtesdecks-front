@@ -218,7 +218,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onCopyDeckToCLipboard(): void {
     this.apiDataService.getExportDeck(this.id).subscribe((data) => {
-      console.log(data)
       this.clipboard.copy(data)
       this.toastService.show(
         this.translocoService.translate('deck.deck_copied'),
