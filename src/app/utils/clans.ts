@@ -50,6 +50,7 @@ export const CLAN_LIST = [
   new Clan('Tzimisce', 'tzimisce', 'vtes.clan.tzimisce'),
   new Clan('Ventrue', 'ventrue', 'vtes.clan.ventrue'),
   new Clan('Ventrue antitribu', 'ventrueanti', 'vtes.clan.ventrueanti'),
+  new Clan('Hecata', 'hecata', 'vtes.clan.hecata'),
   new Clan('Visionary', 'visionary', 'vtes.clan.visionary'),
   new Clan('Avenger', 'avenger', 'vtes.clan.avenger'),
   new Clan('Defender', 'defender', 'vtes.clan.defender'),
