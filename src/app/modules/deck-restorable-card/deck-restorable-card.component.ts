@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoService } from '@ngneat/transloco'
@@ -6,7 +6,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { filter, switchMap, tap } from 'rxjs'
 import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from '../../services/api.data.service'
-import { MediaService } from '../../services/media.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
 
@@ -16,29 +15,16 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
   templateUrl: './deck-restorable-card.component.html',
   styleUrls: ['./deck-restorable-card.component.scss'],
 })
-export class DeckRestorableCardComponent implements OnInit {
+export class DeckRestorableCardComponent {
   @Input() deck!: ApiDeck
 
-  isMobileOrTablet = false
-
   constructor(
-    private router: Router,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-    private translocoService: TranslocoService,
-    private apiDataService: ApiDataService,
-    private toastService: ToastService,
+    private readonly router: Router,
+    private readonly modalService: NgbModal,
+    private readonly translocoService: TranslocoService,
+    private readonly apiDataService: ApiDataService,
+    private readonly toastService: ToastService,
   ) {}
-
-  ngOnInit(): void {
-    this.mediaService
-      .observeMobileOrTablet()
-      .pipe(
-        untilDestroyed(this),
-        tap((isMobileOrTablet) => (this.isMobileOrTablet = isMobileOrTablet)),
-      )
-      .subscribe()
-  }
 
   restoreDeck() {
     const id = this.deck.id

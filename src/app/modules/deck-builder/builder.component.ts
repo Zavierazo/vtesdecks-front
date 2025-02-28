@@ -58,17 +58,17 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   stateHistory!: StateHistoryPlugin
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private deckBuilderQuery: DeckBuilderQuery,
-    private deckBuilderService: DeckBuilderService,
-    private libraryService: LibraryService,
-    private cryptService: CryptService,
-    private toastService: ToastService,
-    private modalService: NgbModal,
-    private changeDetector: ChangeDetectorRef,
-    private clipboard: Clipboard,
-    private translocoService: TranslocoService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly deckBuilderQuery: DeckBuilderQuery,
+    private readonly deckBuilderService: DeckBuilderService,
+    private readonly libraryService: LibraryService,
+    private readonly cryptService: CryptService,
+    private readonly toastService: ToastService,
+    private readonly modalService: NgbModal,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly clipboard: Clipboard,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
