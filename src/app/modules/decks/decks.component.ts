@@ -1,8 +1,4 @@
-import { DeckFiltersComponent } from './filter/deck-filters.component'
-import { MediaService } from './../../services/media.service'
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
-import { DecksQuery } from './../../state/decks/decks.query'
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy'
+import { DOCUMENT, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,21 +7,25 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
+  debounceTime,
+  distinctUntilChanged,
   fromEvent,
   map,
   Observable,
-  tap,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
   skip,
+  switchMap,
+  tap,
 } from 'rxjs'
 import { ApiDeck } from '../../models/api-deck'
 import { DecksService } from '../../state/decks/decks.service'
-import { DOCUMENT, ViewportScroller } from '@angular/common'
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { MediaService } from './../../services/media.service'
+import { DecksQuery } from './../../state/decks/decks.query'
+import { DeckFiltersComponent } from './filter/deck-filters.component'
 
 @UntilDestroy()
 @Component({
@@ -36,6 +36,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 })
 export class DecksComponent implements OnInit {
   decks$!: Observable<ApiDeck[]>
+  restorableDecks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
   isLoading$!: Observable<boolean>
   showScrollButton$!: Observable<boolean>
@@ -70,6 +71,7 @@ export class DecksComponent implements OnInit {
       .subscribe()
     this.decks$ = this.decksQuery.selectAll()
     this.total$ = this.decksQuery.selectTotal()
+    this.restorableDecks$ = this.decksQuery.selectRestorableDecks()
     this.listenScroll()
     this.initMainForm()
   }

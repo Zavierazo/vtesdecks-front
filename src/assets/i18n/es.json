@@ -109,7 +109,7 @@
     "deck_saved": "¡Mazo guardado exitosamente! Ahora puedes compartirlo con tus amigos!",
     "link_copied": "Enlace copiado al portapapeles",
     "delete_title": "¿Eliminar este mazo?",
-    "delete_message": "¡Esto no se puede deshacer!",
+    "delete_message": "El mazo será eliminado. El mazo estará disponible durante 60 días después de su eliminación para poder ser restaurado.",
     "delete_successful": "Mazo eliminado",
     "name": "Nombre",
     "description": "Descripción",
@@ -125,7 +125,10 @@
     "undo_tooltip": "Deshacer el último cambio",
     "change_history": "Historial de cambios",
     "redo": "Rehacer",
-    "redo_tooltip": "Rehacer el último cambio"
+    "redo_tooltip": "Rehacer el último cambio",
+    "restore_title": "¿Restaurar mazo?",
+    "restore_message": "¿Estás seguro de que quieres restaurar '{{ name }}'?",
+    "restore_successful": "¡Mazo restaurado!"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos 12 cartas.",
@@ -148,7 +151,8 @@
     "next_card": "Carta siguiente",
     "print_on_demand": "Impresión bajo demanda",
     "promo": "Promo",
-    "private_deck": "Mazo Privado"
+    "private_deck": "Mazo Privado",
+    "restore_deck": "Restaurar mazo"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

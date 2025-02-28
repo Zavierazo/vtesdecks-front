@@ -285,6 +285,13 @@ export class ApiDataService {
     )
   }
 
+  restoreDeckBuilder(id: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/restore`,
+      {},
+    )
+  }
+
   saveDeckBuilder(deck: ApiDeckBuilder): Observable<ApiDeckBuilder> {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}`,

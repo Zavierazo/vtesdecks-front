@@ -1,0 +1,16 @@
+<div class="text-center text-decoration-none" [title]="'deck_shared.restore_deck' | transloco" (click)="restoreDeck()">
+  <div class="deck-card border border-2 rounded-3 center hover-shadow my-2 text-black border-secondary">
+    <div class="info px-3 py-2">
+      <span class="float-start">
+        <i class="bi bi-arrow-counterclockwise text-secondary bi-fs-3x"></i>
+      </span>
+      <h2>
+        {{ deck.name | titlecase | truncate: 30:true }}
+      </h2>
+      <div>
+        <span class="me-2">{{ deck.author | truncate: 25:true }}</span>
+        <span>{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
+      </div>
+    </div>
+  </div>
+</div>
