@@ -109,7 +109,7 @@
     "deck_saved": "Deck saved successfully! You can now share it with your friends!!",
     "link_copied": "Link copied to clipboard",
     "delete_title": "Delete this deck?",
-    "delete_message": "This can not be undone!",
+    "delete_message": "Deck will be deleted. The deck will be available for 60 days after deletion to be restored.",
     "delete_successful": "Deck deleted",
     "name": "Name",
     "description": "Description",
@@ -125,7 +125,10 @@
     "undo_tooltip": "Undo last change",
     "change_history": "Change History",
     "redo": "Redo",
-    "redo_tooltip": "Redo last change"
+    "redo_tooltip": "Redo last change",
+    "restore_title": "Restore Deck?",
+    "restore_message": "Are you sure you want to restore '{{ name }}'?",
+    "restore_successful": "Deck restored"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least 12 cards",
@@ -148,7 +151,8 @@
     "next_card": "Next Card",
     "print_on_demand": "Print on Demand",
     "promo": "Promo",
-    "private_deck": "Private Deck"
+    "private_deck": "Private Deck",
+    "restore_deck": "Restore Deck"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",

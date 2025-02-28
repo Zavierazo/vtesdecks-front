@@ -1,10 +1,10 @@
+import { Injectable } from '@angular/core'
+import { Params } from '@angular/router'
+import { transaction } from '@datorama/akita'
 import { EMPTY, Observable, tap } from 'rxjs'
 import { ApiDecks } from './../../models/api-decks'
 import { ApiDataService } from './../../services/api.data.service'
 import { DecksState, DecksStore } from './decks.store'
-import { Injectable } from '@angular/core'
-import { transaction } from '@datorama/akita'
-import { Params } from '@angular/router'
 @Injectable({
   providedIn: 'root',
 })
@@ -42,6 +42,9 @@ export class DecksService {
     this.decksStore.add(response.decks)
     this.decksStore.updateTotal(response.total)
     this.decksStore.updatePage(response.total > nextOffset, nextOffset)
+    if (response.offset === 0) {
+      this.decksStore.updateRestorableDecks(response.restorableDecks)
+    }
     this.decksStore.setLoading(false)
   }
 }

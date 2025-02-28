@@ -1,19 +1,20 @@
+import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { CommonModule } from '@angular/common'
-import { DeckCardModule } from '../deck-card/deck-card.module'
-import { DecksComponent } from './decks.component'
 import { NgModule } from '@angular/core'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule, Routes } from '@angular/router'
-import { SharedModule } from '../../shared/shared.module'
-import { DeckFiltersComponent } from './filter/deck-filters.component'
-import { DeckSharedModule } from '../deck-shared/deck-shared.module'
-import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { CardProportionComponent } from './filter/card-proportion/card-proportion.component'
-import { CardFilterComponent } from './filter/card-filter/card-filter.component'
-import { decksResolver } from './decks.resolver'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoModule } from '@ngneat/transloco'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
+import { SharedModule } from '../../shared/shared.module'
+import { DeckCardModule } from '../deck-card/deck-card.module'
+import { DeckRestorableCardModule } from '../deck-restorable-card/deck-restorable-card.module'
+import { DeckSharedModule } from '../deck-shared/deck-shared.module'
+import { DecksComponent } from './decks.component'
+import { decksResolver } from './decks.resolver'
+import { CardFilterComponent } from './filter/card-filter/card-filter.component'
+import { CardProportionComponent } from './filter/card-proportion/card-proportion.component'
+import { DeckFiltersComponent } from './filter/deck-filters.component'
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
     NgbModule,
     NgxSliderModule,
     DeckCardModule,
+    DeckRestorableCardModule,
     InfiniteScrollDirective,
     ReactiveFormsModule,
     TranslocoModule,

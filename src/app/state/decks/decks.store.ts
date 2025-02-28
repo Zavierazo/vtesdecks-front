@@ -8,6 +8,7 @@ export interface DecksState extends EntityState<ApiDeck> {
   hasMore: boolean
   offset: number
   total: number
+  restorableDecks: ApiDeck[]
 }
 
 const initialState: DecksState = {
@@ -15,6 +16,7 @@ const initialState: DecksState = {
   hasMore: true,
   offset: 0,
   total: 0,
+  restorableDecks: [],
 }
 
 @Injectable({
@@ -47,6 +49,13 @@ export class DecksStore extends EntityStore<DecksState, ApiDeck> {
     this.update((state) => ({
       ...state,
       total,
+    }))
+  }
+
+  updateRestorableDecks(restorableDecks: ApiDeck[]) {
+    this.update((state) => ({
+      ...state,
+      restorableDecks,
     }))
   }
 }

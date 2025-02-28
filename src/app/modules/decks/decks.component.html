@@ -70,6 +70,11 @@
             </div>
           </ng-container>
         </div>
+        <div *ngIf="(restorableDecks$ | async)! as decks">
+          <div class="col-12 px-2">
+            <app-deck-restorable-card *ngFor="let deck of decks" [deck]="deck"></app-deck-restorable-card>
+          </div>
+        </div>
         <div class="alert alert-light" *ngIf="isLoading$ | async">
           <app-loading></app-loading>
           <div style="height: 100vw"></div>

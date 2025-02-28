@@ -1,34 +1,34 @@
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { environment } from './../../../environments/environment'
-import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
-import { ImportVdbComponent } from './import-vdb/import-vdb.component'
-import { CryptService } from './../../state/crypt/crypt.service'
-import { LibraryService } from './../../state/library/library.service'
-import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
+import { Clipboard } from '@angular/cdk/clipboard'
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
-  ChangeDetectorRef,
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
-import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
-import { Observable, tap, debounceTime, filter, switchMap, zip } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { StateHistoryPlugin } from '@datorama/akita'
-import { ToastService } from '../../services/toast.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
-import { LibraryBuilderComponent } from './library-builder/library-builder.component'
+import { TranslocoService } from '@ngneat/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
+import { ApiCard } from '../../models/api-card'
+import { ApiDisciplineStat } from '../../models/api-discipline-stat'
+import { ToastService } from '../../services/toast.service'
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
+import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
+import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
-import { Clipboard } from '@angular/cdk/clipboard'
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
-import { ApiDisciplineStat } from '../../models/api-discipline-stat'
-import { TranslocoService } from '@ngneat/transloco'
+import { environment } from './../../../environments/environment'
+import { ApiClanStat } from './../../models/api-clan-stat'
+import { CryptService } from './../../state/crypt/crypt.service'
+import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
+import { LibraryService } from './../../state/library/library.service'
+import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
+import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
+import { ImportVdbComponent } from './import-vdb/import-vdb.component'
+import { LibraryBuilderComponent } from './library-builder/library-builder.component'
 
 @UntilDestroy()
 @Component({
@@ -58,6 +58,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   stateHistory!: StateHistoryPlugin
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private deckBuilderQuery: DeckBuilderQuery,
     private deckBuilderService: DeckBuilderService,
@@ -237,6 +238,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
                     delay: 5000,
                   },
                 )
+                this.router.navigate(['/decks'], {
+                  queryParams: {
+                    type: 'USER',
+                  },
+                })
               }),
             ),
           ),

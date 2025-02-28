@@ -109,7 +109,7 @@
     "deck_saved": "Mazo salvo com sucesso! Você pode agora compartilhar com seus amigos!",
     "link_copied": "Link copiado para a área de transferência",
     "delete_title": "Eliminar este mazo?",
-    "delete_message": "Isso não pode ser desfeito!",
+    "delete_message": "O mazo será eliminado. O mazo estará disponível por 60 dias após a sua eliminação para poder ser restaurado.",
     "delete_successful": "Mazo eliminado",
     "name": "Nome",
     "description": "Descrição",
@@ -125,7 +125,10 @@
     "undo": "Desfazer",
     "change_history": "Histórico de mudanças",
     "redo": "Refazer",
-    "redo_tooltip": "Refazer a última mudança"
+    "redo_tooltip": "Refazer a última mudança",
+    "restore_title": "Restaurar mazo?",
+    "restore_message": "Tem certeza de que deseja restaurar '{{ name }}'?",
+    "restore_successful": "Mazo restaurado"
   },
   "deck_shared": {
     "banned": "Banido",
@@ -140,7 +143,8 @@
     "next_card": "Cartão seguinte",
     "print_on_demand": "Impressão em demanda",
     "promo": "Promo",
-    "private_deck": "Mazo privado"
+    "private_deck": "Mazo privado",
+    "restore_deck": "Restaurar mazo"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

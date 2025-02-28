@@ -4,4 +4,5 @@ export interface ApiDecks {
   offset: number
   total: number
   decks: ApiDeck[]
+  restorableDecks: ApiDeck[]
 }

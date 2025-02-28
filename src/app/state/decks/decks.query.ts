@@ -1,9 +1,9 @@
+import { Injectable } from '@angular/core'
+import { Params } from '@angular/router'
+import { QueryEntity } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { ApiDeck } from './../../models/api-deck'
 import { DecksState, DecksStore } from './decks.store'
-import { Injectable } from '@angular/core'
-import { QueryEntity } from '@datorama/akita'
-import { Params } from '@angular/router'
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +18,10 @@ export class DecksQuery extends QueryEntity<DecksState, ApiDeck> {
 
   selectParams(): Observable<Params> {
     return this.select((decks: DecksState) => decks.params)
+  }
+
+  selectRestorableDecks(): Observable<ApiDeck[]> {
+    return this.select((decks: DecksState) => decks.restorableDecks)
   }
 
   getParam(key: string): any {
