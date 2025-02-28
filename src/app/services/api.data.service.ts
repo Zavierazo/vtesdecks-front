@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, of } from 'rxjs'
+import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { ApiChangelog } from '../models/api-changelog'
 import { ApiComment } from '../models/api-comment'
@@ -312,7 +312,16 @@ export class ApiDataService {
   }
 
   getKrcgCard(id: number): Observable<ApiKrcgCard> {
-    return this.httpClient.get<ApiKrcgCard>(`https://api.krcg.org/card/${id}`)
+    return this.httpClient
+      .get<ApiKrcgCard>(`https://api.krcg.org/card/${id}`)
+      .pipe(
+        catchError((err) => {
+          if (err.status === 404) {
+            return of()
+          }
+          throw err
+        }),
+      )
   }
 
   getChangelog(): Observable<ApiChangelog[]> {
@@ -404,6 +413,7 @@ export class ApiDataService {
   getExportDeck(id: string): Observable<string> {
     return this.httpClient.get<string>(
       `${environment.api.baseUrl}${this.deckDetailPath}${id}/export?type=BCN_CRISIS`,
-        { responseType: 'text' as 'json' }
-    )  }
+      { responseType: 'text' as 'json' },
+    )
+  }
 }
