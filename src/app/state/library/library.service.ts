@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
   EMPTY,
@@ -13,9 +13,7 @@ import { ApiDataService } from '../../services/api.data.service'
 import { ApiLibrary } from './../../models/api-library'
 import { LibraryQuery } from './library.query'
 import { LibraryState, LibraryStore } from './library.store'
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LibraryService {
   static readonly limit = 10
 

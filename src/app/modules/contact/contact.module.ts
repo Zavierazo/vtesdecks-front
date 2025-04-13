@@ -1,9 +1,9 @@
-import { ReactiveFormsModule } from '@angular/forms'
-import { ContactComponent } from './contact.component'
-import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
 import { CommonModule } from '@angular/common'
-import { TranslocoModule } from '@ngneat/transloco'
+import { NgModule } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { RouterModule, Routes } from '@angular/router'
+import { TranslocoModule } from '@jsverse/transloco'
+import { ContactComponent } from './contact.component'
 
 const routes: Routes = [
   {

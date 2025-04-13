@@ -29,10 +29,11 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
 
 @UntilDestroy()
 @Component({
-  selector: 'app-library-section',
-  templateUrl: './library-section.component.html',
-  styleUrls: ['./library-section.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-library-section',
+    templateUrl: './library-section.component.html',
+    styleUrls: ['./library-section.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LibrarySectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

@@ -8,10 +8,11 @@ import { AuthService } from '../../../state/auth/auth.service'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-notification-list',
-  templateUrl: './notification-list.component.html',
-  styleUrls: ['./notification-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-notification-list',
+    templateUrl: './notification-list.component.html',
+    styleUrls: ['./notification-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotificationListComponent implements OnInit {
   notifications$!: Observable<ApiUserNotification[]>

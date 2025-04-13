@@ -3,10 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
-  selector: 'app-import-amaranth',
-  templateUrl: './import-amaranth.component.html',
-  styleUrls: ['./import-amaranth.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-import-amaranth',
+    templateUrl: './import-amaranth.component.html',
+    styleUrls: ['./import-amaranth.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImportAmaranthComponent implements OnInit {
   form!: FormGroup

@@ -11,7 +11,8 @@ import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
 @Directive({
-  selector: '[isLogged]',
+    selector: '[isLogged]',
+    standalone: false
 })
 export class IsLoggedDirective {
   private hasView = false

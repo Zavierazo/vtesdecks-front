@@ -1,9 +1,9 @@
-import { VerifyAccountComponent } from './verify-account.component'
+import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { CommonModule } from '@angular/common'
+import { TranslocoModule } from '@jsverse/transloco'
 import { SharedModule } from '../../shared/shared.module'
-import { TranslocoModule } from '@ngneat/transloco'
+import { VerifyAccountComponent } from './verify-account.component'
 
 const routes: Routes = [
   {
