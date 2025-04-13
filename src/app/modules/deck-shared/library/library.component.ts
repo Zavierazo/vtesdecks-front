@@ -17,10 +17,11 @@ import { LibraryService } from '../../../state/library/library.service'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-library',
-  templateUrl: './library.component.html',
-  styleUrls: ['./library.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-library',
+    templateUrl: './library.component.html',
+    styleUrls: ['./library.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LibraryComponent implements OnInit {
   @Input() card!: ApiCard

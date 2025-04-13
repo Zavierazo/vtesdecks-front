@@ -30,10 +30,11 @@ import { MediaService } from '../../../../services/media.service'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-card-filter',
-  templateUrl: './card-filter.component.html',
-  styleUrls: ['./card-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-card-filter',
+    templateUrl: './card-filter.component.html',
+    styleUrls: ['./card-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CardFilterComponent implements OnInit {
   cards: CardFilter[] = []

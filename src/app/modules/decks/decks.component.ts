@@ -29,10 +29,11 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-decks',
-  templateUrl: './decks.component.html',
-  styleUrls: ['./decks.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-decks',
+    templateUrl: './decks.component.html',
+    styleUrls: ['./decks.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DecksComponent implements OnInit {
   decks$!: Observable<ApiDeck[]>

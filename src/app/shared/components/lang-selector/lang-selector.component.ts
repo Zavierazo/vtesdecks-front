@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '../../../services/media.service'
 import { CryptService } from '../../../state/crypt/crypt.service'
@@ -12,6 +12,7 @@ import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
   templateUrl: './lang-selector.component.html',
   styleUrls: ['./lang-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class LangSelectorComponent {
   isMobile$ = this.mediaService.observeMobileOrTablet()

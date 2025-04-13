@@ -8,9 +8,10 @@ import { ChartData, ChartOptions } from 'chart.js'
 import { ApiStatistic } from '../../../models/api-statistic'
 
 @Component({
-  selector: 'app-radar-chart',
-  templateUrl: './radar-chart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-radar-chart',
+    templateUrl: './radar-chart.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RadarChartComponent implements OnInit {
   @Input() title!: string

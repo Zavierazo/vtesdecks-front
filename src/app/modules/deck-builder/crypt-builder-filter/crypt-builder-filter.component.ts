@@ -14,10 +14,11 @@ import { CryptQuery } from '../../../state/crypt/crypt.query'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-crypt-builder-filter',
-  templateUrl: './crypt-builder-filter.component.html',
-  styleUrls: ['./crypt-builder-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-crypt-builder-filter',
+    templateUrl: './crypt-builder-filter.component.html',
+    styleUrls: ['./crypt-builder-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   @Input() printOnDemand?: boolean

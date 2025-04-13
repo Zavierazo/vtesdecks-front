@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 
-@Pipe({
-  name: 'libraryTypeTransloco',
-})
+@Pipe({ name: 'libraryTypeTransloco', standalone: false })
 export class LibraryTypeTranslocoPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

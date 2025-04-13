@@ -20,10 +20,11 @@ import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-library-card',
-  templateUrl: './library-card.component.html',
-  styleUrls: ['./library-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-library-card',
+    templateUrl: './library-card.component.html',
+    styleUrls: ['./library-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
   @Input() cardList!: ApiLibrary[]

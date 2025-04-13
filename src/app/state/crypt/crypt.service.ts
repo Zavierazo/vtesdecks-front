@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
   EMPTY,
@@ -13,9 +13,7 @@ import { ApiCrypt } from '../../models/api-crypt'
 import { ApiDataService } from './../../services/api.data.service'
 import { CryptQuery } from './crypt.query'
 import { CryptState, CryptStore } from './crypt.store'
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CryptService {
   static readonly limit = 10
 

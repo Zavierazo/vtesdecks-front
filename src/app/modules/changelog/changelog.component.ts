@@ -4,9 +4,10 @@ import { ApiChangelog } from '../../models/api-changelog'
 import { ApiDataService } from './../../services/api.data.service'
 
 @Component({
-  selector: 'app-changelog',
-  templateUrl: './changelog.component.html',
-  styleUrls: ['./changelog.component.scss'],
+    selector: 'app-changelog',
+    templateUrl: './changelog.component.html',
+    styleUrls: ['./changelog.component.scss'],
+    standalone: false
 })
 export class ChangelogComponent implements OnInit {
   changelog$!: Observable<ApiChangelog[]>

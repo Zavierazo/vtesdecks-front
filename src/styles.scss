@@ -1,3 +1,10 @@
+@use 'sass:meta';
+@use 'bootstrap-icons/font/bootstrap-icons.scss';
+@use 'icons.scss';
+
+/* Importing Bootstrap SCSS file. */
+$enable-smooth-scroll: false;
+@use 'bootstrap/scss/bootstrap';
 /* You can add global styles to this file, and also import other style files */
 
 html,
@@ -8,16 +15,10 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
-@import 'bootstrap-icons/font/bootstrap-icons.scss';
-@import 'icons.scss';
-
-/* Importing Bootstrap SCSS file. */
-$enable-smooth-scroll: false;
-@import 'bootstrap/scss/bootstrap';
 
 /* Importing theme styles*/
 body[data-bs-theme='dark'] {
-  @import 'theme-dark.scss';
+  @include meta.load-css('theme-dark.scss');
 }
 /* Override ngx-slider colors. */
 .ngx-slider {
