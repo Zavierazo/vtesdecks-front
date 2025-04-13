@@ -21,9 +21,9 @@ export class AuthStore {
   private readonly error$ = toObservable(this.error)
 
   constructor(
-    private localStorage: LocalStorageService,
-    private sessionStorage: SessionStorageService,
-    private cookieConsentService: NgcCookieConsentService,
+    private readonly localStorage: LocalStorageService,
+    private readonly sessionStorage: SessionStorageService,
+    private readonly cookieConsentService: NgcCookieConsentService,
   ) {
     const previousState = this.sessionStorage.getValue<ApiUser>(
       AuthStore.storeName,

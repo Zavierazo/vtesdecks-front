@@ -10,8 +10,8 @@ export class CommentsService {
   static readonly limit = 10
 
   constructor(
-    private commentsStore: CommentsStore,
-    private apiDataService: ApiDataService,
+    private readonly commentsStore: CommentsStore,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   getComments(id: string): Observable<ApiComment[]> {

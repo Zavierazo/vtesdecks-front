@@ -10,8 +10,8 @@ export class DeckService {
   static readonly limit = 10
 
   constructor(
-    private deckStore: DeckStore,
-    private apiDataService: ApiDataService,
+    private readonly deckStore: DeckStore,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   getDeck(id: string): Observable<ApiDeck> {

@@ -12,11 +12,11 @@ import { DeckBuilderStore } from './deck-builder.store'
 })
 export class DeckBuilderService {
   constructor(
-    private store: DeckBuilderStore,
-    private query: DeckBuilderQuery,
-    private libraryQuery: LibraryQuery,
-    private apiDataService: ApiDataService,
-    private translocoService: TranslocoService,
+    private readonly store: DeckBuilderStore,
+    private readonly query: DeckBuilderQuery,
+    private readonly libraryQuery: LibraryQuery,
+    private readonly apiDataService: ApiDataService,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {

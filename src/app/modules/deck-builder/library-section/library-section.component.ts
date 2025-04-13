@@ -8,7 +8,6 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order } from '@datorama/akita'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
@@ -46,7 +45,7 @@ export class LibrarySectionComponent implements OnInit {
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   sortBy: keyof ApiLibrary = 'name'
-  sortByOrder: Order = Order.ASC
+  sortByOrder: 'asc' | 'desc' = 'asc'
   printOnDemand: boolean = false
   types: string[] = []
   clans: string[] = []
@@ -94,7 +93,7 @@ export class LibrarySectionComponent implements OnInit {
     this.poolCostSlider = [0, 6]
     this.taints = []
     this.sortBy = 'name'
-    this.sortByOrder = Order.ASC
+    this.sortByOrder = 'asc'
     this.onChangeNameFilter()
     this.initQuery()
   }
@@ -103,11 +102,11 @@ export class LibrarySectionComponent implements OnInit {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === Order.ASC ? Order.DESC : Order.ASC
+      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
-      this.sortByOrder = Order.DESC
+      this.sortByOrder = 'desc'
     } else {
-      this.sortByOrder = Order.ASC
+      this.sortByOrder = 'asc'
     }
     this.sortBy = sortBy
     this.initQuery()
@@ -173,7 +172,7 @@ export class LibrarySectionComponent implements OnInit {
     this.updateQuery()
   }
 
-  private filterBy: (entity: ApiLibrary, index?: number) => boolean = (
+  private readonly filterBy: (entity: ApiLibrary, index?: number) => boolean = (
     entity,
   ) => {
     const name = this.nameFormControl.value
@@ -204,9 +203,10 @@ export class LibrarySectionComponent implements OnInit {
     if (this.clans?.length > 0) {
       let clanMatch = false
       for (const clan of this.clans) {
-        if (clan === 'none' && entity.clans.length === 0) {
-          clanMatch = true
-        } else if (entity.clans.includes(clan)) {
+        if (
+          (clan === 'none' && entity.clans.length === 0) ||
+          entity.clans.includes(clan)
+        ) {
           clanMatch = true
         }
       }

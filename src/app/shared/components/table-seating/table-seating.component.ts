@@ -1,4 +1,3 @@
-import { transaction } from '@datorama/akita'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,12 +6,12 @@ import {
 } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService } from '@ngneat/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgcCookieConsentService } from 'ngx-cookieconsent'
+import { debounceTime, tap } from 'rxjs'
 import { LocalStorageService } from '../../../services/local-storage.service'
 import { SessionStorageService } from '../../../services/session-storage.service'
-import { NgcCookieConsentService } from 'ngx-cookieconsent'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { debounceTime, tap } from 'rxjs'
-import { TranslocoService } from '@ngneat/transloco'
 
 @UntilDestroy()
 @Component({
@@ -28,12 +27,12 @@ export class TableSeatingComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private localStorage: LocalStorageService,
-    private sessionStorage: SessionStorageService,
-    private cookieConsentService: NgcCookieConsentService,
-    private translocoService: TranslocoService,
-    private fb: FormBuilder,
-    private cd: ChangeDetectorRef,
+    private readonly localStorage: LocalStorageService,
+    private readonly sessionStorage: SessionStorageService,
+    private readonly cookieConsentService: NgcCookieConsentService,
+    private readonly translocoService: TranslocoService,
+    private readonly fb: FormBuilder,
+    private readonly cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
