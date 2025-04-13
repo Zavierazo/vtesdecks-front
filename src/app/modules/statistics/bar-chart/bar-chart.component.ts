@@ -8,9 +8,10 @@ import { ChartConfiguration, ChartData } from 'chart.js'
 import { ApiStatistic } from '../../../models/api-statistic'
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-bar-chart',
+    templateUrl: './bar-chart.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BarChartComponent implements OnInit {
   @Input() title!: string

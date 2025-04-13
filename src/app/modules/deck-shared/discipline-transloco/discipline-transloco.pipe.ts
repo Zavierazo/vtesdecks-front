@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import { DISCIPLINE_LIST } from '../../../utils/disciplines'
 
-@Pipe({
-  name: 'disciplineTransloco',
-})
+@Pipe({ name: 'disciplineTransloco', standalone: false })
 export class DisciplineTranslocoPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

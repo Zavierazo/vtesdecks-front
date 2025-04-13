@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 
-@Pipe({
-  name: 'translocoFallback',
-})
+@Pipe({ name: 'translocoFallback', standalone: false })
 export class TranslocoFallbackPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

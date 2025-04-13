@@ -2,7 +2,7 @@
   class="list-group-item list-group-item-action bg-dark text-white disable-select border-dark" #popover="ngbPopover"
   [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
   (click)="popover.open()" [ngStyle]="{
-    background: 'url(/assets/' + crypt.cropImage + ') scroll',
+    background: 'url(/assets' + crypt.cropImage + ') scroll',
     'background-repeat': 'no-repeat',
     'background-position': 'right 33%',
     'background-size': '50%'

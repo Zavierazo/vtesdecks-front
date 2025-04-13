@@ -1,15 +1,16 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService } from './../../services/api.data.service'
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
+import { TranslocoService } from '@jsverse/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '../../services/toast.service'
-import { TranslocoService } from '@ngneat/transloco'
+import { ApiDataService } from './../../services/api.data.service'
 
 @UntilDestroy()
 @Component({
   selector: 'app-verify-account',
   templateUrl: './verify-account.component.html',
   styleUrls: ['./verify-account.component.scss'],
+  standalone: false,
 })
 export class VerifyAccountComponent implements OnInit {
   constructor(
@@ -30,18 +31,12 @@ export class VerifyAccountComponent implements OnInit {
             if (successful) {
               this.toastService.show(
                 this.translocoService.translate('verify_account.success'),
-                {
-                  classname: 'bg-success text-light',
-                  delay: 30000,
-                },
+                { classname: 'bg-success text-light', delay: 30000 },
               )
             } else {
               this.toastService.show(
                 this.translocoService.translate('verify_account.error'),
-                {
-                  classname: 'bg-danger text-light',
-                  delay: 10000,
-                },
+                { classname: 'bg-danger text-light', delay: 10000 },
               )
             }
             this.router.navigate(['/'])
@@ -50,10 +45,7 @@ export class VerifyAccountComponent implements OnInit {
             console.error(error.message)
             this.toastService.show(
               this.translocoService.translate('verify_account.error'),
-              {
-                classname: 'bg-danger text-light',
-                delay: 10000,
-              },
+              { classname: 'bg-danger text-light', delay: 10000 },
             )
             this.router.navigate(['/'])
           },

@@ -1,13 +1,13 @@
-import { SharedModule } from './../../shared/shared.module'
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
-import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { VtesdleComponent } from './vtesdle.component'
-import { RouterModule, Routes } from '@angular/router'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
+import { RouterModule, Routes } from '@angular/router'
+import { TranslocoModule } from '@jsverse/transloco'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
 import { DeckSharedModule } from '../deck-shared/deck-shared.module'
-import { TranslocoModule } from '@ngneat/transloco'
+import { SharedModule } from './../../shared/shared.module'
+import { VtesdleComponent } from './vtesdle.component'
 
 const routes: Routes = [
   {

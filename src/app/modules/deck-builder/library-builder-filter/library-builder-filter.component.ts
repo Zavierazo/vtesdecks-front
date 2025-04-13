@@ -14,10 +14,11 @@ import { LibraryQuery } from '../../../state/library/library.query'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-library-builder-filter',
-  templateUrl: './library-builder-filter.component.html',
-  styleUrls: ['./library-builder-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-library-builder-filter',
+    templateUrl: './library-builder-filter.component.html',
+    styleUrls: ['./library-builder-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   @Input() printOnDemand?: boolean

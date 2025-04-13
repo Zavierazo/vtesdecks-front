@@ -9,10 +9,11 @@ import {
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 
 @Component({
-  selector: 'app-discipline-filter',
-  templateUrl: './discipline-filter.component.html',
-  styleUrls: ['./discipline-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-discipline-filter',
+    templateUrl: './discipline-filter.component.html',
+    styleUrls: ['./discipline-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DisciplineFilterComponent {
   @Input() showNotRequired: boolean = false

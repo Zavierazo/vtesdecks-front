@@ -9,9 +9,10 @@ import {
 } from '@angular/core'
 
 @Component({
-  selector: 'animated-digit',
-  templateUrl: 'animated-digit.component.html',
-  styleUrls: ['animated-digit.component.scss'],
+    selector: 'animated-digit',
+    templateUrl: 'animated-digit.component.html',
+    styleUrls: ['animated-digit.component.scss'],
+    standalone: false
 })
 export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
   @Input() duration!: number
