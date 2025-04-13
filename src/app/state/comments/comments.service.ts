@@ -1,11 +1,8 @@
-import { ApiComment } from './../../models/api-comment'
-import { CommentsQuery } from './comments.query'
-import { ApiDataService } from './../../services/api.data.service'
 import { Injectable } from '@angular/core'
-import { tap, switchMap, of, Observable, EMPTY, filter } from 'rxjs'
+import { filter, Observable, tap } from 'rxjs'
+import { ApiComment } from './../../models/api-comment'
+import { ApiDataService } from './../../services/api.data.service'
 import { CommentsStore } from './comments.store'
-import { transaction } from '@datorama/akita'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 @Injectable({
   providedIn: 'root',
 })
@@ -48,7 +45,6 @@ export class CommentsService {
     )
   }
 
-  @transaction()
   private updateComments(comments: ApiComment[]) {
     this.commentsStore.set(comments)
     this.commentsStore.setLoading()

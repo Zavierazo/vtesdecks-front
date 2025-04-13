@@ -96,7 +96,7 @@ export class AuthStore {
     this.state.update(() => value)
   }
 
-  setLoading(value: boolean = false) {
+  setLoading(value = false) {
     this.loading.update(() => value)
   }
 

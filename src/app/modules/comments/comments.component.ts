@@ -1,17 +1,16 @@
-import { AuthQuery } from '../../state/auth/auth.query'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { CommentsService } from '../../state/comments/comments.service'
-import { CommentsQuery } from '../../state/comments/comments.query'
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
 } from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
 import { ApiComment } from '../../models/api-comment'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { Order } from '@datorama/akita'
+import { AuthQuery } from '../../state/auth/auth.query'
+import { CommentsQuery } from '../../state/comments/comments.query'
+import { CommentsService } from '../../state/comments/comments.service'
 
 @UntilDestroy()
 @Component({
@@ -43,10 +42,7 @@ export class CommentsComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe()
     this.isLoading$ = this.commentsQuery.selectLoading()
-    this.comments$ = this.commentsQuery.selectAll({
-      sortBy: 'created',
-      sortByOrder: Order.DESC,
-    })
+    this.comments$ = this.commentsQuery.selectAll()
     this.profileImage$ = this.authQuery.selectProfileImage()
     this.form = new FormGroup({
       comment: new FormControl('', [
