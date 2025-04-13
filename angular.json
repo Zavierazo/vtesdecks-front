@@ -23,7 +23,8 @@
           "options": {
             "sourceMap": true,
             "outputPath": {
-              "base": "dist/vtesDecksFront"
+              "base": "dist/vtesDecksFront",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
