@@ -9,11 +9,10 @@ import { RulingText } from '../../../../models/ruling-text'
 import { MediaService } from '../../../../services/media.service'
 
 @Component({
-    selector: 'app-ruling-text',
-    templateUrl: './ruling-text.component.html',
-    styleUrls: ['./ruling-text.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-ruling-text',
+  templateUrl: './ruling-text.component.html',
+  styleUrls: ['./ruling-text.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RulingTextComponent implements OnInit {
   @Input() ruling!: ApiKrcgRuling

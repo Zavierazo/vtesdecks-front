@@ -1,9 +1,13 @@
+import { ApiResponse } from './../../../models/api-response'
+import { AuthQuery } from './../../../state/auth/auth.query'
+import { AuthService } from './../../../state/auth/auth.service'
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit,
+  ChangeDetectorRef,
 } from '@angular/core'
+import { Observable, tap } from 'rxjs'
 import {
   AbstractControl,
   FormControl,
@@ -12,13 +16,9 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
-import { TranslocoService } from '@jsverse/transloco'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { Observable, tap } from 'rxjs'
 import { ApiUserSettings } from '../../../models/api-user-settings'
-import { ApiResponse } from './../../../models/api-response'
-import { AuthQuery } from './../../../state/auth/auth.query'
-import { AuthService } from './../../../state/auth/auth.service'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { TranslocoService } from '@ngneat/transloco'
 
 @UntilDestroy()
 @Component({
@@ -26,7 +26,6 @@ import { AuthService } from './../../../state/auth/auth.service'
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class ProfileComponent implements OnInit {
   email$!: Observable<string | undefined>
@@ -68,7 +67,9 @@ export class ProfileComponent implements OnInit {
           this.patternValidator(/\d/, { hasNumber: true }),
         ]),
       },
-      { validators: this.passwordMatchValidator },
+      {
+        validators: this.passwordMatchValidator,
+      },
     )
   }
 

@@ -31,11 +31,10 @@ import { CardFilterComponent } from './card-filter/card-filter.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck-filters',
-    templateUrl: './deck-filters.component.html',
-    styleUrls: ['./deck-filters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-deck-filters',
+  templateUrl: './deck-filters.component.html',
+  styleUrls: ['./deck-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeckFiltersComponent implements OnInit {
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()

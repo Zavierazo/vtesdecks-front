@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
-import { ReactiveFormsModule } from '@angular/forms'
-import { RouterModule, Routes } from '@angular/router'
-import { TranslocoModule } from '@jsverse/transloco'
+import { ProfileComponent } from './profile/profile.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { ReactiveFormsModule } from '@angular/forms'
+import { DeckCardModule } from '../deck-card/deck-card.module'
+import { CommonModule } from '@angular/common'
+import { RouterModule, Routes } from '@angular/router'
 import { CanActivateUser } from '../../shared/guards/can-activate-user.guard'
 import { SharedModule } from '../../shared/shared.module'
-import { DeckCardModule } from '../deck-card/deck-card.module'
-import { ProfileComponent } from './profile/profile.component'
+import { TranslocoModule } from '@ngneat/transloco'
 
 const routes: Routes = [
   {

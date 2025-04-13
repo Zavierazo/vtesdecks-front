@@ -29,11 +29,10 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-section',
-    templateUrl: './crypt-section.component.html',
-    styleUrls: ['./crypt-section.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-crypt-section',
+  templateUrl: './crypt-section.component.html',
+  styleUrls: ['./crypt-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CryptSectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

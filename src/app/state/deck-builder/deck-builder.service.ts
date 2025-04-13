@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { TranslocoService } from '@jsverse/transloco'
+import { TranslocoService } from '@ngneat/transloco'
 import { Observable, of, tap } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
@@ -7,7 +7,9 @@ import { LibraryQuery } from '../library/library.query'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class DeckBuilderService {
   constructor(
     private readonly store: DeckBuilderStore,

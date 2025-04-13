@@ -19,11 +19,10 @@ import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.s
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-builder',
-    templateUrl: './crypt-builder.component.html',
-    styleUrls: ['./crypt-builder.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-crypt-builder',
+  templateUrl: './crypt-builder.component.html',
+  styleUrls: ['./crypt-builder.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CryptBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20

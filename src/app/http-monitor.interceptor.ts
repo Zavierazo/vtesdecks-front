@@ -6,7 +6,7 @@ import {
   HttpRequest,
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { TranslocoService } from '@jsverse/transloco'
+import { TranslocoService } from '@ngneat/transloco'
 import { Observable, retry, timer } from 'rxjs'
 import { environment } from '../environments/environment'
 import { ToastService } from './services/toast.service'
@@ -41,11 +41,12 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         this.translocoService.getActiveLang(),
       ),
     })
-    return next
-      .handle(httpRequest)
-      .pipe(
-        retry({ count: retryCount, delay: (error) => this.shouldRetry(error) }),
-      )
+    return next.handle(httpRequest).pipe(
+      retry({
+        count: retryCount,
+        delay: (error) => this.shouldRetry(error),
+      }),
+    )
   }
 
   shouldRetry(error: HttpErrorResponse) {
@@ -55,7 +56,10 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         this.translocoService.translate(
           'shared.service_temporarily_unavailable',
         ),
-        { classname: 'bg-danger text-light', delay: 5000 },
+        {
+          classname: 'bg-danger text-light',
+          delay: 5000,
+        },
       )
       return timer(retryWaitMilliSeconds)
     }

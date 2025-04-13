@@ -3,15 +3,15 @@ import {
   getBrowserLang,
   provideTransloco,
   TranslocoModule,
-} from '@jsverse/transloco'
+} from '@ngneat/transloco'
 import {
   provideTranslocoLocale,
   TranslocoLocaleModule,
-} from '@jsverse/transloco-locale'
+} from '@ngneat/transloco-locale'
 import {
   cookiesStorage,
   provideTranslocoPersistLang,
-} from '@jsverse/transloco-persist-lang'
+} from '@ngneat/transloco-persist-lang'
 import { TranslocoHttpLoader } from './transloco-loader'
 
 export const SUPPORTED_LANGUAGES = [
@@ -51,9 +51,16 @@ function getDefaultLang(): string {
       loader: TranslocoHttpLoader,
     }),
     provideTranslocoLocale({
-      langToLocaleMapping: { en: 'en-US', es: 'es-ES' },
+      langToLocaleMapping: {
+        en: 'en-US',
+        es: 'es-ES',
+      },
     }),
-    provideTranslocoPersistLang({ storage: { useValue: cookiesStorage() } }),
+    provideTranslocoPersistLang({
+      storage: {
+        useValue: cookiesStorage(),
+      },
+    }),
   ],
 })
 export class TranslocoRootModule {}

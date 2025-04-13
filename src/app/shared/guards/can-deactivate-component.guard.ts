@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
-import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
 import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component'
+import { TranslocoService } from '@ngneat/transloco'
 
 export interface ComponentCanDeactivate {
   canDeactivate(): boolean | Observable<boolean>

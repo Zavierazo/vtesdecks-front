@@ -9,11 +9,10 @@ import {
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 
 @Component({
-    selector: 'app-library-type-filter',
-    templateUrl: './library-type-filter.component.html',
-    styleUrls: ['./library-type-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-library-type-filter',
+  templateUrl: './library-type-filter.component.html',
+  styleUrls: ['./library-type-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LibraryTypeFilterComponent {
   @Input() types: string[] = []

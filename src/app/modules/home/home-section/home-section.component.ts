@@ -8,11 +8,10 @@ import { Router } from '@angular/router'
 import { ApiDeck } from '../../../models/api-deck'
 
 @Component({
-    selector: 'app-home-section',
-    templateUrl: './home-section.component.html',
-    styleUrls: ['./home-section.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-home-section',
+  templateUrl: './home-section.component.html',
+  styleUrls: ['./home-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeSectionComponent {
   @Input()

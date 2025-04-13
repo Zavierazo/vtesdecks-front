@@ -27,11 +27,10 @@ import { ApiCardToday } from '../../models/api-card-today'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-vtesdle',
-    templateUrl: './vtesdle.component.html',
-    styleUrls: ['./vtesdle.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-vtesdle',
+  templateUrl: './vtesdle.component.html',
+  styleUrls: ['./vtesdle.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VtesdleComponent implements OnInit {
   maxLives = 6

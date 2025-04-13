@@ -5,8 +5,8 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms'
-import { TranslocoService } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { debounceTime, tap } from 'rxjs'
@@ -19,7 +19,6 @@ import { SessionStorageService } from '../../../services/session-storage.service
   templateUrl: './table-seating.component.html',
   styleUrls: ['./table-seating.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class TableSeatingComponent implements OnInit {
   static readonly storeName = 'table-seating'
@@ -37,7 +36,9 @@ export class TableSeatingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.form = this.fb.group({ players: this.fb.array([]) })
+    this.form = this.fb.group({
+      players: this.fb.array([]),
+    })
     this.init()
     this.form.valueChanges
       .pipe(

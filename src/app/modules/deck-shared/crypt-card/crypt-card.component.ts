@@ -20,11 +20,10 @@ import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-card',
-    templateUrl: './crypt-card.component.html',
-    styleUrls: ['./crypt-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-crypt-card',
+  templateUrl: './crypt-card.component.html',
+  styleUrls: ['./crypt-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
   readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'

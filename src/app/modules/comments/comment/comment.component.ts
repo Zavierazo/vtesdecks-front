@@ -1,25 +1,24 @@
+import { TranslocoService } from '@ngneat/transloco'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { ApiComment } from '../../../models/api-comment'
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup } from '@angular/forms'
-import { TranslocoService } from '@jsverse/transloco'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { filter, Observable, switchMap } from 'rxjs'
-import { ApiComment } from '../../../models/api-comment'
-import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
-import { AuthQuery } from '../../../state/auth/auth.query'
+import { Observable, tap, filter, switchMap } from 'rxjs'
 import { CommentsService } from '../../../state/comments/comments.service'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { FormControl, FormGroup } from '@angular/forms'
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 @UntilDestroy()
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class CommentComponent implements OnInit {
   @Input() comment!: ApiComment

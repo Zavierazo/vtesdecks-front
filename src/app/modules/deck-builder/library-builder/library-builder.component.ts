@@ -19,11 +19,10 @@ import { searchIncludes } from './../../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-builder',
-    templateUrl: './library-builder.component.html',
-    styleUrls: ['./library-builder.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-library-builder',
+  templateUrl: './library-builder.component.html',
+  styleUrls: ['./library-builder.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LibraryBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20

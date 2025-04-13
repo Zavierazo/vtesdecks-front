@@ -14,11 +14,10 @@ import { CommentsService } from '../../state/comments/comments.service'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-comments',
-    templateUrl: './comments.component.html',
-    styleUrls: ['./comments.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-comments',
+  templateUrl: './comments.component.html',
+  styleUrls: ['./comments.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentsComponent implements OnInit {
   @Input() deckId!: string

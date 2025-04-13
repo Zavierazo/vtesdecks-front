@@ -6,10 +6,9 @@ import { tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck-card',
-    templateUrl: './deck-card.component.html',
-    styleUrls: ['./deck-card.component.scss'],
-    standalone: false
+  selector: 'app-deck-card',
+  templateUrl: './deck-card.component.html',
+  styleUrls: ['./deck-card.component.scss'],
 })
 export class DeckCardComponent implements OnInit {
   @Input() deck!: ApiDeck

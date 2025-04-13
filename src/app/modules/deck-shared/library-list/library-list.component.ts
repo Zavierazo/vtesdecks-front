@@ -16,11 +16,10 @@ import { LibraryCardComponent } from '../library-card/library-card.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-list',
-    templateUrl: './library-list.component.html',
-    styleUrls: ['./library-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-library-list',
+  templateUrl: './library-list.component.html',
+  styleUrls: ['./library-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LibraryListComponent implements OnInit {
   static readonly libraryTypeOrder = [

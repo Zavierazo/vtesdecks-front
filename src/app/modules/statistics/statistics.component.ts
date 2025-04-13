@@ -10,10 +10,9 @@ import { ApiDataService } from './../../services/api.data.service'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-statistics',
-    templateUrl: './statistics.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-statistics',
+  templateUrl: './statistics.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticsComponent implements OnInit {
   currentYear = new Date().getFullYear()

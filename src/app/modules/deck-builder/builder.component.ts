@@ -7,8 +7,8 @@ import {
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
@@ -35,7 +35,6 @@ import { LibraryBuilderComponent } from './library-builder/library-builder.compo
   templateUrl: './builder.component.html',
   styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   form!: FormGroup
@@ -97,7 +96,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         error: () => {
           this.toastService.show(
             this.translocoService.translate('deck_builder.deck_not_exists'),
-            { classname: 'bg-danger text-light', delay: 10000 },
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            },
           )
           this.changeDetector.markForCheck()
         },
@@ -124,7 +126,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     if (this.deckBuilderQuery.getSaved()) {
       this.toastService.show(
         this.translocoService.translate('deck_builder.already_saved'),
-        { classname: 'bg-danger text-light', delay: 3000 },
+        {
+          classname: 'bg-danger text-light',
+          delay: 3000,
+        },
       )
       return
     }
@@ -134,7 +139,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     ) {
       this.toastService.show(
         this.translocoService.translate('deck_builder.name_required'),
-        { classname: 'bg-danger text-light', delay: 3000 },
+        {
+          classname: 'bg-danger text-light',
+          delay: 3000,
+        },
       )
       return
     }
@@ -145,7 +153,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     ) {
       this.toastService.show(
         this.translocoService.translate('deck_builder.invalid_public_deck'),
-        { classname: 'bg-danger text-light', delay: 5000 },
+        {
+          classname: 'bg-danger text-light',
+          delay: 5000,
+        },
       )
       return
     }
@@ -156,7 +167,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         tap(() =>
           this.toastService.show(
             this.translocoService.translate('deck_builder.deck_saved'),
-            { classname: 'bg-success text-light', delay: 5000 },
+            {
+              classname: 'bg-success text-light',
+              delay: 5000,
+            },
           ),
         ),
         tap(() => this.onDeckLoaded()),
@@ -165,7 +179,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         error: () => {
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            },
           )
         },
       })
@@ -177,7 +194,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       this.clipboard.copy(`https://${environment.domain}/deck/${deckId}`)
       this.toastService.show(
         this.translocoService.translate('deck_builder.link_copied'),
-        { classname: 'bg-success text-light', delay: 5000 },
+        {
+          classname: 'bg-success text-light',
+          delay: 5000,
+        },
       )
     }
   }
@@ -208,10 +228,15 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
                   this.translocoService.translate(
                     'deck_builder.delete_successful',
                   ),
-                  { classname: 'bg-success text-light', delay: 5000 },
+                  {
+                    classname: 'bg-success text-light',
+                    delay: 5000,
+                  },
                 )
                 this.router.navigate(['/decks'], {
-                  queryParams: { type: 'USER' },
+                  queryParams: {
+                    type: 'USER',
+                  },
                 })
               }),
             ),
@@ -221,7 +246,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           error: () => {
             this.toastService.show(
               this.translocoService.translate('shared.unexpected_error'),
-              { classname: 'bg-danger text-light', delay: 10000 },
+              {
+                classname: 'bg-danger text-light',
+                delay: 10000,
+              },
             )
           },
         })
@@ -260,7 +288,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openImportAmaranth() {
     this.modalService
-      .open(ImportAmaranthComponent, { centered: true })
+      .open(ImportAmaranthComponent, {
+        centered: true,
+      })
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
@@ -272,7 +302,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         error: () => {
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            },
           )
           this.changeDetector.markForCheck()
         },
@@ -281,7 +314,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openImportVdb() {
     this.modalService
-      .open(ImportVdbComponent, { centered: true })
+      .open(ImportVdbComponent, {
+        centered: true,
+      })
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
@@ -293,7 +328,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         error: () => {
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            },
           )
           this.changeDetector.markForCheck()
         },
@@ -357,10 +395,14 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })
     this.form
       .get('description')
-      ?.patchValue(this.deckBuilderQuery.getDescription(), { emitEvent: false })
+      ?.patchValue(this.deckBuilderQuery.getDescription(), {
+        emitEvent: false,
+      })
     this.form
       .get('published')
-      ?.patchValue(this.deckBuilderQuery.getPublished(), { emitEvent: false })
+      ?.patchValue(this.deckBuilderQuery.getPublished(), {
+        emitEvent: false,
+      })
     this.changeDetector.markForCheck()
   }
 }

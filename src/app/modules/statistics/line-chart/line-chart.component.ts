@@ -13,10 +13,9 @@ import { MediaService } from '../../../services/media.service'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-line-chart',
-    templateUrl: './line-chart.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-line-chart',
+  templateUrl: './line-chart.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineChartComponent implements OnInit, OnChanges {
   @Input() title!: string

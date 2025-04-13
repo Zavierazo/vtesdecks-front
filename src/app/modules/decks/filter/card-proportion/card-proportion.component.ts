@@ -18,14 +18,13 @@ import { debounceTime, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-card-proportion',
-    templateUrl: './card-proportion.component.html',
-    styleUrls: ['./card-proportion.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    viewProviders: [
-        { provide: ControlContainer, useExisting: FormGroupDirective },
-    ],
-    standalone: false
+  selector: 'app-card-proportion',
+  templateUrl: './card-proportion.component.html',
+  styleUrls: ['./card-proportion.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
 })
 export class CardProportionComponent implements OnInit, OnChanges {
   private static readonly ABSOLUTE_MAX = 90

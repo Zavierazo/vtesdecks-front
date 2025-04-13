@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common'
+import { ChangelogComponent } from './changelog.component'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { TranslocoModule } from '@jsverse/transloco'
-import { ChangelogComponent } from './changelog.component'
+import { CommonModule } from '@angular/common'
+import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco'
 
 const routes: Routes = [
   {

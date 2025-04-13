@@ -18,11 +18,10 @@ import drawProbability from '../../../utils/draw-probability'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt',
-    templateUrl: './crypt.component.html',
-    styleUrls: ['./crypt.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-crypt',
+  templateUrl: './crypt.component.html',
+  styleUrls: ['./crypt.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CryptComponent implements OnInit {
   @Input() card!: ApiCard

@@ -4,11 +4,10 @@ import { ColorThemeService } from '../../../services/color-theme.service'
 import { Theme } from '../../../models/theme'
 
 @Component({
-    selector: 'app-theme-selector',
-    templateUrl: './theme-selector.component.html',
-    styleUrls: ['./theme-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-theme-selector',
+  templateUrl: './theme-selector.component.html',
+  styleUrls: ['./theme-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSelectorComponent {
   isMobile$ = this.mediaService.observeMobileOrTablet()

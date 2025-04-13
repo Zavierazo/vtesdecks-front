@@ -3,11 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
-    selector: 'app-import-vdb',
-    templateUrl: './import-vdb.component.html',
-    styleUrls: ['./import-vdb.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-import-vdb',
+  templateUrl: './import-vdb.component.html',
+  styleUrls: ['./import-vdb.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImportVdbComponent implements OnInit {
   form!: FormGroup

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
-import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { filter, switchMap, tap } from 'rxjs'
 import { ApiDeck } from '../../models/api-deck'
@@ -14,7 +14,6 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
   selector: 'app-deck-restorable-card',
   templateUrl: './deck-restorable-card.component.html',
   styleUrls: ['./deck-restorable-card.component.scss'],
-  standalone: false,
 })
 export class DeckRestorableCardComponent {
   @Input() deck!: ApiDeck
@@ -38,7 +37,9 @@ export class DeckRestorableCardComponent {
     )
     modalRef.componentInstance.message = this.translocoService.translate(
       'deck_builder.restore_message',
-      { name: this.deck.name },
+      {
+        name: this.deck.name,
+      },
     )
     modalRef.closed
       .pipe(
@@ -52,9 +53,16 @@ export class DeckRestorableCardComponent {
                 this.translocoService.translate(
                   'deck_builder.restore_successful',
                 ),
-                { classname: 'bg-success text-light', delay: 5000 },
+                {
+                  classname: 'bg-success text-light',
+                  delay: 5000,
+                },
               )
-              this.router.navigate(['/decks/builder'], { queryParams: { id } })
+              this.router.navigate(['/decks/builder'], {
+                queryParams: {
+                  id,
+                },
+              })
             }),
           ),
         ),
@@ -63,7 +71,10 @@ export class DeckRestorableCardComponent {
         error: () => {
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
+            {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            },
           )
         },
       })
