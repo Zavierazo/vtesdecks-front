@@ -6,7 +6,6 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order, SortBy } from '@datorama/akita'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, Observable, tap } from 'rxjs'
@@ -33,8 +32,8 @@ export class CryptBuilderComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
 
   private limitTo = CryptBuilderComponent.PAGE_SIZE
-  sortBy!: SortBy<ApiCrypt>
-  sortByOrder!: Order
+  sortBy!: keyof ApiCrypt
+  sortByOrder!: 'asc' | 'desc'
   clans!: string[]
   disciplines!: string[]
   superiorDisciplines!: string[]
@@ -46,12 +45,12 @@ export class CryptBuilderComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    private cryptQuery: CryptQuery,
-    private deckBuilderQuery: DeckBuilderQuery,
-    private deckBuilderService: DeckBuilderService,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-    private changeDetector: ChangeDetectorRef,
+    private readonly cryptQuery: CryptQuery,
+    private readonly deckBuilderQuery: DeckBuilderQuery,
+    private readonly deckBuilderService: DeckBuilderService,
+    private readonly mediaService: MediaService,
+    private readonly modalService: NgbModal,
+    private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -91,19 +90,19 @@ export class CryptBuilderComponent implements OnInit {
     this.title = ''
     this.taints = []
     this.sortBy = 'name'
-    this.sortByOrder = Order.ASC
+    this.sortByOrder = 'asc'
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: SortBy<ApiCrypt>, event: MouseEvent) {
+  onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === Order.ASC ? Order.DESC : Order.ASC
+      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
-      this.sortByOrder = Order.DESC
+      this.sortByOrder = 'desc'
     } else {
-      this.sortByOrder = Order.ASC
+      this.sortByOrder = 'asc'
     }
     this.sortBy = sortBy
     this.initQuery()

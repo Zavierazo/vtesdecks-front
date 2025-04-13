@@ -1,48 +1,43 @@
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { LibraryService } from './../library/library.service'
-import { CryptService } from './../crypt/crypt.service'
-import { ApiCrypt } from './../../models/api-crypt'
 import { Injectable } from '@angular/core'
-import { Query } from '@datorama/akita'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiDisciplineStat } from '../../models/api-discipline-stat'
+import { ApiLibrary } from '../../models/api-library'
 import { isCrypt, isLibrary, roundNumber } from '../../utils/vtes-utils'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
+import { ApiClanStat } from './../../models/api-clan-stat'
+import { ApiCrypt } from './../../models/api-crypt'
 import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
-import { ApiLibrary } from '../../models/api-library'
-import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 
 @Injectable({
   providedIn: 'root',
 })
-export class DeckBuilderQuery extends Query<DeckBuilderState> {
+export class DeckBuilderQuery {
   constructor(
-    protected override store: DeckBuilderStore,
+    private readonly store: DeckBuilderStore,
     private libraryQuery: LibraryQuery,
     private cryptQuery: CryptQuery,
-  ) {
-    super(store)
-  }
+  ) {}
 
   selectDeckId(): Observable<string | undefined> {
-    return this.select((state) => state.id)
+    return this.store.select((state) => state.id)
   }
 
   selectSaved(): Observable<boolean> {
-    return this.select((state) => state.saved)
+    return this.store.select((state) => state.saved)
   }
 
   selectCryptErrors(): Observable<string[]> {
-    return this.select((state) => state.cryptErrors)
+    return this.store.select((state) => state.cryptErrors)
   }
 
   selectLibraryErrors(): Observable<string[]> {
-    return this.select((state) => state.libraryErrors)
+    return this.store.select((state) => state.libraryErrors)
   }
 
   selectCrypt(): Observable<ApiCard[]> {
-    return this.select((state) => state.cards.filter(isCrypt))
+    return this.store.select((state) => state.cards.filter(isCrypt))
   }
 
   selectCryptSize(): Observable<number> {
@@ -97,7 +92,7 @@ export class DeckBuilderQuery extends Query<DeckBuilderState> {
   }
 
   selectLibrary(): Observable<ApiCard[]> {
-    return this.select((state) => state.cards.filter(isLibrary))
+    return this.store.select((state) => state.cards.filter(isLibrary))
   }
 
   selectLibrarySize(): Observable<number> {
@@ -140,56 +135,65 @@ export class DeckBuilderQuery extends Query<DeckBuilderState> {
     )
   }
 
+  getValue(): DeckBuilderState {
+    return this.store.getValue()
+  }
+
   getDeckId(): string | undefined {
-    return this.getValue().id
+    return this.store.getValue().id
   }
 
   getSaved(): boolean {
-    return this.getValue().saved
+    return this.store.getValue().saved
   }
 
   getName(): string | undefined {
-    return this.getValue().name
+    return this.store.getValue().name
   }
 
   getDescription(): string | undefined {
-    return this.getValue().description
+    return this.store.getValue().description
   }
 
   getPublished(): boolean {
-    return this.getValue().published
+    return this.store.getValue().published
   }
 
   getCardNumber(id: number): number {
-    return this.getValue().cards.find((c) => c.id === id)?.number ?? 0
+    return this.store.getValue().cards.find((c) => c.id === id)?.number ?? 0
   }
 
   getCryptSize(): number {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isCrypt)
       .reduce((acc, c) => acc + c.number, 0)
   }
 
   getCrypt(): ApiCrypt[] {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isCrypt)
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
   }
 
   getLibrarySize(): number {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isLibrary)
       .reduce((acc, c) => acc + c.number, 0)
   }
 
   getLibrary(): ApiLibrary[] {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isLibrary)
       .map((card) => this.libraryQuery.getEntity(card.id) as ApiLibrary)
   }
 
   getMinGroupCrypt(): number {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isCrypt)
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
       .map((card) => card.group)
@@ -201,7 +205,8 @@ export class DeckBuilderQuery extends Query<DeckBuilderState> {
   }
 
   getMaxGroupCrypt(): number {
-    return this.getValue()
+    return this.store
+      .getValue()
       .cards.filter(isCrypt)
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
       .map((card) => card.group)
@@ -210,8 +215,8 @@ export class DeckBuilderQuery extends Query<DeckBuilderState> {
 
   isValidDeck(): boolean {
     return (
-      this.getValue().cryptErrors.length === 0 &&
-      this.getValue().libraryErrors.length === 0
+      this.store.getValue().cryptErrors.length === 0 &&
+      this.store.getValue().libraryErrors.length === 0
     )
   }
 }

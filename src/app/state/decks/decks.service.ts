@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { Params } from '@angular/router'
-import { transaction } from '@datorama/akita'
 import { EMPTY, Observable, tap } from 'rxjs'
 import { ApiDecks } from './../../models/api-decks'
 import { ApiDataService } from './../../services/api.data.service'
@@ -13,8 +12,8 @@ export class DecksService {
   static readonly limit = 10
 
   constructor(
-    private decksStore: DecksStore,
-    private apiDataService: ApiDataService,
+    private readonly decksStore: DecksStore,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   init(params: Params) {
@@ -36,7 +35,6 @@ export class DecksService {
     return EMPTY
   }
 
-  @transaction()
   private updateDecks(response: ApiDecks, limit: number) {
     const nextOffset = response.offset + limit
     this.decksStore.add(response.decks)

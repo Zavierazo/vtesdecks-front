@@ -12,9 +12,9 @@ import { AuthStore } from './auth.store'
 })
 export class AuthService {
   constructor(
-    private authStore: AuthStore,
-    private apiDataService: ApiDataService,
-    private jwtHelper: JwtHelperService,
+    private readonly authStore: AuthStore,
+    private readonly apiDataService: ApiDataService,
+    private readonly jwtHelper: JwtHelperService,
   ) {}
 
   readNotification(all?: boolean): void {

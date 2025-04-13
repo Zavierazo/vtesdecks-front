@@ -8,7 +8,6 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order, SelectOptions, SortBy } from '@datorama/akita'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
@@ -26,7 +25,6 @@ import { ApiCrypt } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
-import { CryptService } from './../../../state/crypt/crypt.service'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
 
 @UntilDestroy()
@@ -46,8 +44,8 @@ export class CryptSectionComponent implements OnInit {
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
-  sortBy: SortBy<ApiCrypt> = 'name'
-  sortByOrder: Order = Order.ASC
+  sortBy: keyof ApiCrypt = 'name'
+  sortByOrder: 'asc' | 'desc' = 'asc'
   printOnDemand: boolean = false
   clans: string[] = []
   disciplines: string[] = []
@@ -59,13 +57,12 @@ export class CryptSectionComponent implements OnInit {
   taints: string[] = []
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private viewportService: ViewportScroller,
-    private changeDetector: ChangeDetectorRef,
-    private cryptService: CryptService,
-    private cryptQuery: CryptQuery,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
+    @Inject(DOCUMENT) private readonly document: Document,
+    private readonly viewportService: ViewportScroller,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly cryptQuery: CryptQuery,
+    private readonly mediaService: MediaService,
+    private readonly modalService: NgbModal,
   ) {}
 
   ngOnInit() {
@@ -94,20 +91,20 @@ export class CryptSectionComponent implements OnInit {
     this.capacitySlider = [1, this.cryptQuery.getMaxCapacity()]
     this.taints = []
     this.sortBy = 'name'
-    this.sortByOrder = Order.ASC
+    this.sortByOrder = 'asc'
     this.onChangeNameFilter()
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: SortBy<ApiCrypt>, event: MouseEvent) {
+  onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === Order.ASC ? Order.DESC : Order.ASC
+      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
-      this.sortByOrder = Order.DESC
+      this.sortByOrder = 'desc'
     } else {
-      this.sortByOrder = Order.ASC
+      this.sortByOrder = 'asc'
     }
     this.sortBy = sortBy
     this.initQuery()
@@ -173,7 +170,9 @@ export class CryptSectionComponent implements OnInit {
     this.updateQuery()
   }
 
-  private filterBy: SelectOptions<ApiCrypt>['filterBy'] = (entity) => {
+  private readonly filterBy: (entity: ApiCrypt, index?: number) => boolean = (
+    entity,
+  ) => {
     const name = this.nameFormControl.value
     if (name && !searchIncludes(entity.name, name)) {
       if (entity.i18n?.name) {

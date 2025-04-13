@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { Query } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { ApiUser } from '../../models/api-user'
 import { AuthStore } from './auth.store'
@@ -7,64 +6,54 @@ import { AuthStore } from './auth.store'
 @Injectable({
   providedIn: 'root',
 })
-export class AuthQuery extends Query<ApiUser> {
-  constructor(protected override store: AuthStore) {
-    super(store)
+export class AuthQuery {
+  constructor(private readonly store: AuthStore) {}
+
+  selectLoading(): Observable<boolean> {
+    return this.store.selectLoading()
   }
 
   selectAuthenticated(): Observable<boolean> {
-    return this.select((user: ApiUser) => !!user.token)
-  }
-
-  selectToken(): Observable<string | undefined> {
-    return this.select((user: ApiUser) => user.token)
+    return this.store.select((user: ApiUser) => !!user.token)
   }
 
   selectAdmin(): Observable<boolean> {
-    return this.select((user: ApiUser) => Boolean(user.admin))
+    return this.store.select((user: ApiUser) => Boolean(user.admin))
   }
 
   selectDisplayName(): Observable<string | undefined> {
-    return this.select((user: ApiUser) => user.displayName)
+    return this.store.select((user: ApiUser) => user.displayName)
   }
 
   selectProfileImage(): Observable<string | undefined> {
-    return this.select((user: ApiUser) => user.profileImage)
+    return this.store.select((user: ApiUser) => user.profileImage)
   }
 
   selectNotificationCount(): Observable<number | undefined> {
-    return this.select((user: ApiUser) => user.notificationCount)
+    return this.store.select((user: ApiUser) => user.notificationCount)
   }
 
   selectEmail(): Observable<string | undefined> {
-    return this.select((user: ApiUser) => user.email)
+    return this.store.select((user: ApiUser) => user.email)
   }
 
   isAuthenticated(): boolean {
-    return !!this.getValue().token
+    return !!this.store.getValue().token
   }
 
   getUser(): string | undefined {
-    return this.getValue().user
+    return this.store.getValue().user
   }
 
   getToken(): string | undefined {
-    return this.getValue().token
+    return this.store.getValue().token
   }
 
   getDisplayName(): string | undefined {
-    return this.getValue().displayName
-  }
-
-  getProfileImage(): string | undefined {
-    return this.getValue().profileImage
-  }
-
-  getAdmin(): boolean | undefined {
-    return this.getValue().admin
+    return this.store.getValue().displayName
   }
 
   getEmail(): string | undefined {
-    return this.getValue().email
+    return this.store.getValue().email
   }
 }

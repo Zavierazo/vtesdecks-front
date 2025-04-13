@@ -20,10 +20,10 @@ export class LibraryService {
   static readonly limit = 10
 
   constructor(
-    private libraryQuery: LibraryQuery,
-    private libraryStore: LibraryStore,
-    private apiDataService: ApiDataService,
-    private translocoService: TranslocoService,
+    private readonly libraryQuery: LibraryQuery,
+    private readonly libraryStore: LibraryStore,
+    private readonly apiDataService: ApiDataService,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   getLibraryCards(): Observable<ApiLibrary[]> {

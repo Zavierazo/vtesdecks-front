@@ -1,22 +1,23 @@
+import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ApiDeck } from './../../models/api-deck'
 import { DeckState, DeckStore } from './deck.store'
-import { Injectable } from '@angular/core'
-import { Query } from '@datorama/akita'
 
 @Injectable({
   providedIn: 'root',
 })
-export class DeckQuery extends Query<DeckState> {
-  constructor(protected override store: DeckStore) {
-    super(store)
+export class DeckQuery {
+  constructor(private readonly store: DeckStore) {}
+
+  selectLoading(): Observable<boolean> {
+    return this.store.selectLoading()
   }
 
   selectDeck(): Observable<ApiDeck | undefined> {
-    return this.select((decks: DeckState) => decks.deck)
+    return this.store.select((decks: DeckState) => decks.deck)
   }
 
   getDeck(): ApiDeck | undefined {
-    return this.getValue().deck
+    return this.store.getValue().deck
   }
 }

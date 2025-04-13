@@ -1,9 +1,8 @@
+import { Injectable } from '@angular/core'
 import { Observable, tap } from 'rxjs'
+import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckStore } from './deck.store'
-import { Injectable } from '@angular/core'
-import { transaction } from '@datorama/akita'
-import { ApiDeck } from '../../models/api-deck'
 @Injectable({
   providedIn: 'root',
 })
@@ -11,8 +10,8 @@ export class DeckService {
   static readonly limit = 10
 
   constructor(
-    private deckStore: DeckStore,
-    private apiDataService: ApiDataService,
+    private readonly deckStore: DeckStore,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   getDeck(id: string): Observable<ApiDeck> {
@@ -23,7 +22,6 @@ export class DeckService {
       .pipe(tap((deck) => this.updateDeck(deck)))
   }
 
-  @transaction()
   private updateDeck(deck: ApiDeck) {
     this.deckStore.update((state) => ({ ...state, deck }))
     this.deckStore.setLoading(false)

@@ -1,29 +1,64 @@
 import { Injectable } from '@angular/core'
-import { QueryEntity } from '@datorama/akita'
 import { Observable, map } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiCrypt } from './../../models/api-crypt'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { CryptState, CryptStore } from './crypt.store'
+import { CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
 })
-export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
-  constructor(protected override store: CryptStore) {
-    super(store)
+export class CryptQuery {
+  constructor(private readonly store: CryptStore) {}
+
+  selectEntity(id: number): Observable<ApiCrypt | undefined> {
+    return this.store.selectEntity(id)
+  }
+
+  hasEntity(id: number): boolean {
+    return this.store.getEntity(id) !== undefined
+  }
+
+  getEntity(id: number): ApiCrypt | undefined {
+    return this.store.getEntity(id)
+  }
+
+  getAll({
+    filterBy,
+    sortBy,
+    sortByOrder,
+  }: {
+    filterBy?: (entity: ApiCrypt) => boolean
+    sortBy?: keyof ApiCrypt
+    sortByOrder?: 'asc' | 'desc'
+  }): ApiCrypt[] {
+    return this.store.getEntities(filterBy, sortBy, sortByOrder)
+  }
+
+  selectAll({
+    limitTo,
+    filterBy,
+    sortBy,
+    sortByOrder,
+  }: {
+    limitTo?: number
+    filterBy?: (entity: ApiCrypt) => boolean
+    sortBy?: keyof ApiCrypt
+    sortByOrder?: 'asc' | 'desc'
+  }): Observable<ApiCrypt[]> {
+    return this.store.selectEntities(limitTo, filterBy, sortBy, sortByOrder)
   }
 
   selectByName(name: string, limit: number = 5): Observable<ApiCrypt[]> {
-    return this.selectAll({
-      limitTo: limit,
-      filterBy: (entity) =>
+    return this.store.selectEntities(
+      limit,
+      (entity) =>
         entity.name.toLowerCase().includes(name.toLowerCase()) ||
         entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()),
-    })
+    )
   }
 
   selectTitles(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((crypt) =>
         crypt.filter((crypt) => crypt.title).map((crypt) => crypt.title),
       ),
@@ -32,7 +67,7 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
   }
 
   selectSects(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((crypt) =>
         crypt.filter((crypt) => crypt.sect).map((crypt) => crypt.sect),
       ),
@@ -41,7 +76,7 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
   }
 
   selectTaints(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((crypt) =>
         crypt
           .filter((crypt) => crypt.taints)
@@ -53,20 +88,22 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
   }
 
   getMaxCapacity(): number {
-    return this.getAll().reduce(
-      (max, crypt) => Math.max(max, crypt.capacity),
-      11,
-    )
+    return this.store
+      .getEntities()
+      .reduce((max, crypt) => Math.max(max, crypt.capacity), 11)
   }
 
   getMaxGroup(): number {
-    return this.getAll().reduce((max, crypt) => Math.max(max, crypt.group), 7)
+    return this.store
+      .getEntities()
+      .reduce((max, crypt) => Math.max(max, crypt.group), 7)
   }
 
   getTaints(): string[] {
     return [
       ...new Set(
-        this.getAll()
+        this.store
+          .getEntities()
           .filter((crypt) => crypt.taints)
           .map((crypt) => crypt.taints)
           .flat()
@@ -78,7 +115,7 @@ export class CryptQuery extends QueryEntity<CryptState, ApiCrypt> {
   getDisciplines(cards: ApiCard[]): ApiDisciplineStat[] {
     const disciplines: ApiDisciplineStat[] = []
     cards.forEach((card) => {
-      const crypt = this.getEntity(card.id)
+      const crypt = this.store.getEntity(card.id)
       if (crypt) {
         crypt.superiorDisciplines?.forEach((superiorDiscipline) => {
           const discipline = disciplines.find(

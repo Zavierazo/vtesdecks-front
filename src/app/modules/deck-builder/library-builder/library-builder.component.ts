@@ -6,7 +6,6 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order, SortBy } from '@datorama/akita'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, Observable, tap } from 'rxjs'
@@ -33,8 +32,8 @@ export class LibraryBuilderComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
 
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
-  sortBy!: SortBy<ApiLibrary>
-  sortByOrder!: Order
+  sortBy!: keyof ApiLibrary
+  sortByOrder!: 'asc' | 'desc'
   types!: string[]
   clans!: string[]
   disciplines!: string[]
@@ -46,12 +45,12 @@ export class LibraryBuilderComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    private libraryQuery: LibraryQuery,
-    private deckBuilderQuery: DeckBuilderQuery,
-    private deckBuilderService: DeckBuilderService,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-    private changeDetector: ChangeDetectorRef,
+    private readonly libraryQuery: LibraryQuery,
+    private readonly deckBuilderQuery: DeckBuilderQuery,
+    private readonly deckBuilderService: DeckBuilderService,
+    private readonly mediaService: MediaService,
+    private readonly modalService: NgbModal,
+    private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -81,19 +80,19 @@ export class LibraryBuilderComponent implements OnInit {
     this.poolCostSlider = [0, 6]
     this.taints = []
     this.sortBy = 'name'
-    this.sortByOrder = Order.ASC
+    this.sortByOrder = 'asc'
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: SortBy<ApiLibrary>, event: MouseEvent) {
+  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === Order.ASC ? Order.DESC : Order.ASC
+      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
-      this.sortByOrder = Order.DESC
+      this.sortByOrder = 'desc'
     } else {
-      this.sortByOrder = Order.ASC
+      this.sortByOrder = 'asc'
     }
     this.sortBy = sortBy
     this.initQuery()
@@ -183,9 +182,10 @@ export class LibraryBuilderComponent implements OnInit {
         if (this.clans.length > 0) {
           let clanMatch = false
           for (const clan of this.clans) {
-            if (clan === 'none' && entity.clans.length === 0) {
-              clanMatch = true
-            } else if (entity.clans.includes(clan)) {
+            if (
+              (clan === 'none' && entity.clans.length === 0) ||
+              entity.clans.includes(clan)
+            ) {
               clanMatch = true
             }
           }
