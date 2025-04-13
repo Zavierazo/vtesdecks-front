@@ -10,10 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { Router, RouterModule, Routes } from '@angular/router'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
-import { persistState } from '@datorama/akita'
-import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service'
-import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store'
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import * as Sentry from '@sentry/angular'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
@@ -169,8 +165,6 @@ const routes: Routes = [
     NgbModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'disabled' }),
     BrowserAnimationsModule,
-    environment.production ? [] : AkitaNgDevtools.forRoot(),
-    AkitaNgRouterStoreModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
     NgcCookieConsentModule.forRoot(cookieConfig),
@@ -213,10 +207,6 @@ const routes: Routes = [
       multi: true,
     },
     {
-      provide: NG_ENTITY_SERVICE_CONFIG,
-      useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' },
-    },
-    {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: environment.recaptcha.siteKey,
     },
@@ -226,12 +216,6 @@ const routes: Routes = [
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    {
-      provide: 'persistStorage',
-      useValue: persistState({
-        include: ['library_v1', 'crypt_v1'],
-      }),
-    },
     provideHttpClient(withInterceptorsFromDi()),
   ],
 })
