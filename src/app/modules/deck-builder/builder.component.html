@@ -61,19 +61,6 @@
       </div>
     </section>
   </div>
-  <div class="col-12 d-flex justify-content-center mb-3">
-    <div class="btn-group" role="group" aria-label="Default button group">
-      <button type="button" class="btn btn-outline-secondary" *ngIf="stateHistory.hasPast" (click)="stateHistory.undo()"
-        [ngbTooltip]="t('undo_tooltip')">
-        <i class="bi bi-arrow-counterclockwise"></i>{{ t('undo') }}
-      </button>
-      <button type="button" class="btn btn-outline-secondary" disabled="true">{{ t('change_history') }}</button>
-      <button type="button" class="btn btn-outline-secondary" *ngIf="stateHistory.hasFuture"
-        (click)="stateHistory.redo()" [ngbTooltip]="t('redo_tooltip')">
-        {{ t('redo') }}<i class="bi bi-arrow-clockwise"></i>
-      </button>
-    </div>
-  </div>
   <div class="col-12 d-flex justify-content-center mt-3">
     <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
     <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>

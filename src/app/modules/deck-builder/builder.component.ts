@@ -7,7 +7,6 @@ import {
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { StateHistoryPlugin } from '@datorama/akita'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -55,7 +54,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   cryptErrors$!: Observable<string[]>
   libraryErrors$!: Observable<string[]>
   saved$!: Observable<boolean>
-  stateHistory!: StateHistoryPlugin
 
   constructor(
     private readonly router: Router,
@@ -88,7 +86,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     this.libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
     this.deckId$ = this.deckBuilderQuery.selectDeckId()
     this.saved$ = this.deckBuilderQuery.selectSaved()
-    this.stateHistory = new StateHistoryPlugin(this.deckBuilderQuery)
     this.initForm()
     this.initCards()
       .pipe(
@@ -97,7 +94,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('deck_builder.deck_not_exists'),
             {
@@ -181,7 +177,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
@@ -249,7 +244,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         )
         .subscribe({
           error: () => {
-            this.stateHistory.clear()
             this.toastService.show(
               this.translocoService.translate('shared.unexpected_error'),
               {
@@ -267,17 +261,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   addCard(id: number) {
-    if (this.stateHistory.hasFuture) {
-      this.clearFutureHistory()
-    }
     this.deckBuilderService.addCard(id)
     this.changeDetector.markForCheck()
   }
 
   removeCard(id: number) {
-    if (this.stateHistory.hasFuture) {
-      this.clearFutureHistory()
-    }
     this.deckBuilderService.removeCard(id)
     this.changeDetector.markForCheck()
   }
@@ -312,7 +300,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
@@ -339,7 +326,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       .subscribe({
         error: () => {
-          this.stateHistory.clear()
           this.toastService.show(
             this.translocoService.translate('shared.unexpected_error'),
             {
@@ -397,7 +383,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       ?.valueChanges.pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.stateHistory.ignoreNext()
           this.deckBuilderService.updatePublished(value)
         }),
       )
@@ -405,7 +390,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   private onDeckLoaded() {
-    this.stateHistory.clear()
     this.form
       .get('name')
       ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })
@@ -420,13 +404,5 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         emitEvent: false,
       })
     this.changeDetector.markForCheck()
-  }
-
-  private clearFutureHistory() {
-    this.stateHistory.clear((history) => ({
-      past: history.past,
-      present: history.present,
-      future: [],
-    }))
   }
 }

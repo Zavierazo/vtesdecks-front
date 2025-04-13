@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core'
-import { Store, StoreConfig } from '@datorama/akita'
+import { Injectable, signal } from '@angular/core'
+import { toObservable } from '@angular/core/rxjs-interop'
+import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 
 export interface DeckBuilderState {
@@ -24,13 +25,13 @@ const initialState: DeckBuilderState = {
 @Injectable({
   providedIn: 'root',
 })
-@StoreConfig({ name: DeckBuilderStore.storeName, resettable: true })
-export class DeckBuilderStore extends Store<DeckBuilderState> {
-  static readonly storeName = 'deck-builder'
+export class DeckBuilderStore {
+  private readonly state = signal<DeckBuilderState>(initialState)
+  private readonly state$ = toObservable(this.state)
+  private readonly loading = signal<boolean>(false)
+  private readonly loading$ = toObservable(this.loading)
 
-  constructor() {
-    super(initialState)
-  }
+  constructor() {}
 
   updateName(name: string): void {
     this.update((state) => ({ ...state, name }))
@@ -80,5 +81,38 @@ export class DeckBuilderStore extends Store<DeckBuilderState> {
 
   setSaved(saved: boolean): void {
     this.update((state) => ({ ...state, saved }))
+  }
+
+  selectLoading(): Observable<boolean> {
+    return this.loading$
+  }
+
+  selectState(): Observable<DeckBuilderState> {
+    return this.state$
+  }
+
+  select(selector: (state: DeckBuilderState) => any): Observable<any> {
+    return this.state$.pipe(map(selector))
+  }
+
+  getValue(): DeckBuilderState {
+    return this.state()
+  }
+
+  getLoading(): boolean {
+    return this.loading()
+  }
+
+  reset(): void {
+    this.state.update(() => initialState)
+    this.loading.update(() => false)
+  }
+
+  setLoading(value = false) {
+    this.loading.update(() => value)
+  }
+
+  update(updateFn: (value: DeckBuilderState) => DeckBuilderState) {
+    this.state.update(updateFn)
   }
 }

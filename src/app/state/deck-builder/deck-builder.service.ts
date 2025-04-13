@@ -1,13 +1,12 @@
-import { DeckBuilderQuery } from './deck-builder.query'
-import { Observable, of, tap } from 'rxjs'
-import { ApiDataService } from './../../services/api.data.service'
 import { Injectable } from '@angular/core'
-import { DeckBuilderStore } from './deck-builder.store'
+import { TranslocoService } from '@ngneat/transloco'
+import { Observable, of, tap } from 'rxjs'
+import { ApiDeck } from 'src/app/models/api-deck'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { LibraryQuery } from '../library/library.query'
-import { transaction } from '@datorama/akita'
-import { ApiDeck } from 'src/app/models/api-deck'
-import { TranslocoService } from '@ngneat/transloco'
+import { ApiDataService } from './../../services/api.data.service'
+import { DeckBuilderQuery } from './deck-builder.query'
+import { DeckBuilderStore } from './deck-builder.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -30,8 +29,8 @@ export class DeckBuilderService {
             id: deck.id,
             name: deck.name,
             description: deck.description,
-            cards: deck.cards,
-            published: deck.published,
+            cards: deck.cards ?? [],
+            published: deck.published ?? false,
             saved: true,
           }))
           this.validateDeck()
@@ -60,7 +59,7 @@ export class DeckBuilderService {
           id: undefined,
           name: deck.name,
           description: deck.description,
-          cards: deck.cards,
+          cards: deck.cards ?? [],
           published: true,
           saved: false,
         }))
@@ -86,8 +85,8 @@ export class DeckBuilderService {
             id: deck.id,
             name: deck.name,
             description: deck.description,
-            cards: deck.cards,
-            published: deck.published,
+            cards: deck.cards ?? [],
+            published: deck.published ?? false,
             saved: true,
           }))
           this.validateDeck()
@@ -105,25 +104,21 @@ export class DeckBuilderService {
     )
   }
 
-  @transaction()
   updateName(name: string) {
     this.store.updateName(name)
     this.store.setSaved(false)
   }
 
-  @transaction()
   updateDescription(description: string) {
     this.store.updateDescription(description)
     this.store.setSaved(false)
   }
 
-  @transaction()
   updatePublished(published: boolean) {
     this.store.updatePublished(published)
     this.store.setSaved(false)
   }
 
-  @transaction()
   addCard(id: number) {
     const type = this.libraryQuery.getEntity(id)?.type
     this.store.addCard(id, type)
@@ -131,7 +126,6 @@ export class DeckBuilderService {
     this.store.setSaved(false)
   }
 
-  @transaction()
   removeCard(id: number) {
     this.store.removeCard(id)
     this.validateDeck()
