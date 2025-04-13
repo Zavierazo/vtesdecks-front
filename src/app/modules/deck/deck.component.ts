@@ -9,8 +9,8 @@ import {
 } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router } from '@angular/router'
+import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { TranslocoService } from '@ngneat/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
@@ -33,6 +33,7 @@ import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.compone
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DeckComponent implements OnInit, AfterViewInit {
   id!: string
@@ -125,18 +126,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
         error: () =>
           this.toastService.show(
             this.translocoService.translate('deck.rate_failed'),
-            {
-              classname: 'bg-danger text-light',
-              delay: 5000,
-            },
+            { classname: 'bg-danger text-light', delay: 5000 },
           ),
         complete: () =>
           this.toastService.show(
             this.translocoService.translate('deck.rate_success'),
-            {
-              classname: 'bg-success text-light',
-              delay: 5000,
-            },
+            { classname: 'bg-success text-light', delay: 5000 },
           ),
       })
   }
@@ -149,10 +144,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
         error: () =>
           this.toastService.show(
             this.translocoService.translate('deck.bookmark_error'),
-            {
-              classname: 'bg-danger text-light',
-              delay: 5000,
-            },
+            { classname: 'bg-danger text-light', delay: 5000 },
           ),
         complete: () => {
           this.isBookmarked = !this.isBookmarked
@@ -201,19 +193,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
     this.clipboard.copy(`https://${environment.domain}/deck/${this.id}`)
     this.toastService.show(
       this.translocoService.translate('deck.link_copied'),
-      {
-        classname: 'bg-success text-light',
-        delay: 5000,
-      },
+      { classname: 'bg-success text-light', delay: 5000 },
     )
   }
 
   onTag(tag: string): void {
-    this.router.navigate(['/decks'], {
-      queryParams: {
-        tags: tag,
-      },
-    })
+    this.router.navigate(['/decks'], { queryParams: { tags: tag } })
   }
 
   onCopyDeckToCLipboard(): void {
@@ -221,10 +206,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
       this.clipboard.copy(data)
       this.toastService.show(
         this.translocoService.translate('deck.deck_copied'),
-        {
-          classname: 'bg-success text-light',
-          delay: 5000,
-        },
+        { classname: 'bg-success text-light', delay: 5000 },
       )
     })
   }

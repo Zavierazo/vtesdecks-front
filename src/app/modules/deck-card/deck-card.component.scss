@@ -1,7 +1,9 @@
+@use 'sass:color';
+
 .deck-card {
   min-width: 300px;
   background-color: #ffffff;
-  background: linear-gradient(#ffffff, darken(#ffffff, 20));
+  background: linear-gradient(#ffffff, color.adjust(#ffffff, $lightness: -20%));
   box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   position: relative;

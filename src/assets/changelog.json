@@ -1,10 +1,16 @@
 [
   {
+    "version": "2.32.0",
+    "date": "14th April, 2025",
+    "changes": [
+      "Angular 19 Update"
+    ]
+  },
+  {
     "version": "2.31.0",
     "date": "14th April, 2025",
     "changes": [
       "Deprecated @akita library dependency",
-      "Angular 19 Update",
       "The deck builder history functionality has been removed because it was implemented by the @akita library which is no longer maintained"
     ]
   },

@@ -7,19 +7,20 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
-import { ApiDataService } from '../../services/api.data.service'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ActivatedRoute, Router } from '@angular/router'
-import { ApiResponse } from '../../models/api-response'
-import { ToastService } from '../../services/toast.service'
+import { TranslocoService } from '@jsverse/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { switchMap, take } from 'rxjs'
-import { TranslocoService } from '@ngneat/transloco'
+import { ApiResponse } from '../../models/api-response'
+import { ApiDataService } from '../../services/api.data.service'
+import { ToastService } from '../../services/toast.service'
 
 @UntilDestroy()
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
+  standalone: false,
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm = new FormGroup(
@@ -35,9 +36,7 @@ export class ResetPasswordComponent implements OnInit {
         this.patternValidator(/\d/, { hasNumber: true }),
       ]),
     },
-    {
-      validators: this.passwordMatchValidator,
-    },
+    { validators: this.passwordMatchValidator },
   )
 
   constructor(
@@ -78,20 +77,14 @@ export class ResetPasswordComponent implements OnInit {
           if (user.successful) {
             this.toastService.show(
               this.translocoService.translate('reset_password.success'),
-              {
-                classname: 'bg-success text-light',
-                delay: 10000,
-              },
+              { classname: 'bg-success text-light', delay: 10000 },
             )
             this.router.navigate(['/'])
           } else {
             this.toastService.show(
               user.message ??
                 this.translocoService.translate('reset_password.error'),
-              {
-                classname: 'bg-danger text-light',
-                delay: 10000,
-              },
+              { classname: 'bg-danger text-light', delay: 10000 },
             )
           }
         },
@@ -99,10 +92,7 @@ export class ResetPasswordComponent implements OnInit {
           console.error(error.message)
           this.toastService.show(
             this.translocoService.translate('reset_password.error'),
-            {
-              classname: 'bg-danger text-light',
-              delay: 10000,
-            },
+            { classname: 'bg-danger text-light', delay: 10000 },
           )
         },
       })

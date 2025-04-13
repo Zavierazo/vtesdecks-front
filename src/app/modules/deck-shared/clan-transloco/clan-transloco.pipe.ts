@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { TranslocoService } from '@ngneat/transloco'
+import { TranslocoService } from '@jsverse/transloco'
 import { CLAN_LIST } from '../../../utils/clans'
 
-@Pipe({
-  name: 'clanTransloco',
-})
+@Pipe({ name: 'clanTransloco', standalone: false })
 export class ClanTranslocoPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

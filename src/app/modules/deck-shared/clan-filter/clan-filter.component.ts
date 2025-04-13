@@ -9,10 +9,11 @@ import {
 import { CLAN_LIST } from '../../../utils/clans'
 
 @Component({
-  selector: 'app-clan-filter',
-  templateUrl: './clan-filter.component.html',
-  styleUrls: ['./clan-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-clan-filter',
+    templateUrl: './clan-filter.component.html',
+    styleUrls: ['./clan-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ClanFilterComponent {
   @Input() showNotRequired: boolean = false

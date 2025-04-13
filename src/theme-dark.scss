@@ -1,6 +1,8 @@
+@use 'sass:color';
+
 .deck-card {
   background-color: #000000;
-  background: linear-gradient(#000000, lighten(#000000, 20));
+  background: linear-gradient(#000000, color.adjust(#000000, $lightness: 20%));
 }
 
 .text-black {
