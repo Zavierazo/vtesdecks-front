@@ -7,7 +7,6 @@ import { ApiComment } from './../../models/api-comment'
   providedIn: 'root',
 })
 export class CommentsStore {
-  static readonly storeName = 'comments'
   private readonly state = signal<ApiComment[]>([])
   private readonly state$ = toObservable(this.state)
   private readonly loading = signal<boolean>(false)
