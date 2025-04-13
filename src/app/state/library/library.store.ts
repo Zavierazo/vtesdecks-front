@@ -145,7 +145,6 @@ export class LibraryStore {
   }
 
   set(entities: ApiLibrary[]) {
-    console.log(entities)
     this.entities.update(() => entities)
     this.updateStorage()
   }
