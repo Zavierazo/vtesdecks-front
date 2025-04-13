@@ -8,7 +8,7 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order, SelectOptions, SortBy } from '@datorama/akita'
+import { Order } from '@datorama/akita'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
@@ -45,7 +45,7 @@ export class LibrarySectionComponent implements OnInit {
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
-  sortBy: SortBy<ApiLibrary> = 'name'
+  sortBy: keyof ApiLibrary = 'name'
   sortByOrder: Order = Order.ASC
   printOnDemand: boolean = false
   types: string[] = []
@@ -99,7 +99,7 @@ export class LibrarySectionComponent implements OnInit {
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: SortBy<ApiLibrary>, event: MouseEvent) {
+  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
@@ -173,7 +173,9 @@ export class LibrarySectionComponent implements OnInit {
     this.updateQuery()
   }
 
-  private filterBy: SelectOptions<ApiLibrary>['filterBy'] = (entity) => {
+  private filterBy: (entity: ApiLibrary, index?: number) => boolean = (
+    entity,
+  ) => {
     const name = this.nameFormControl.value
     if (name && !searchIncludes(entity.name, name)) {
       if (entity.i18n?.name) {

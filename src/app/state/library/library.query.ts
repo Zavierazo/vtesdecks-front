@@ -1,30 +1,65 @@
 import { Injectable } from '@angular/core'
-import { QueryEntity } from '@datorama/akita'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from './../../models/api-clan-stat'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
 import { ApiLibrary } from './../../models/api-library'
-import { LibraryState, LibraryStore } from './library.store'
+import { LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
 })
-export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
-  constructor(protected override store: LibraryStore) {
-    super(store)
+export class LibraryQuery {
+  constructor(private readonly store: LibraryStore) {}
+
+  selectEntity(id: number): Observable<ApiLibrary | undefined> {
+    return this.store.selectEntity(id)
+  }
+
+  hasEntity(id: number): boolean {
+    return this.store.getEntity(id) !== undefined
+  }
+
+  getEntity(id: number): ApiLibrary | undefined {
+    return this.store.getEntity(id)
+  }
+
+  getAll({
+    filterBy,
+    sortBy,
+    sortByOrder,
+  }: {
+    filterBy?: (entity: ApiLibrary) => boolean
+    sortBy?: keyof ApiLibrary
+    sortByOrder?: 'asc' | 'desc'
+  }): ApiLibrary[] {
+    return this.store.getEntities(filterBy, sortBy, sortByOrder)
+  }
+
+  selectAll({
+    limitTo,
+    filterBy,
+    sortBy,
+    sortByOrder,
+  }: {
+    limitTo?: number
+    filterBy?: (entity: ApiLibrary) => boolean
+    sortBy?: keyof ApiLibrary
+    sortByOrder?: 'asc' | 'desc'
+  }): Observable<ApiLibrary[]> {
+    return this.store.selectEntities(limitTo, filterBy, sortBy, sortByOrder)
   }
 
   selectByName(name: string, limit: number = 5): Observable<ApiLibrary[]> {
-    return this.selectAll({
-      limitTo: limit,
-      filterBy: (entity) =>
+    return this.store.selectEntities(
+      limit,
+      (entity) =>
         entity.name.toLowerCase().includes(name.toLowerCase()) ||
         entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()),
-    })
+    )
   }
 
   selectSects(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((library) =>
         library
           .filter((library) => library.sects)
@@ -36,7 +71,7 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
   }
 
   selectTitles(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((library) =>
         library
           .filter((library) => library.titles)
@@ -48,7 +83,7 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
   }
 
   selectTaints(): Observable<string[]> {
-    return this.selectAll().pipe(
+    return this.store.selectAll().pipe(
       map((library) =>
         library
           .filter((library) => library.taints)
@@ -62,7 +97,8 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
   getTaints(): string[] {
     return [
       ...new Set(
-        this.getAll()
+        this.store
+          .getEntities()
           .filter((library) => library.taints)
           .map((library) => library.taints)
           .flat()
@@ -76,7 +112,7 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
     cards
       .filter((card) => card.type !== 'Master' && card.type !== 'Event')
       .forEach((card) => {
-        const library = this.getEntity(card.id)
+        const library = this.store.getEntity(card.id)
         if (library) {
           const discipline = disciplines.find(
             (disc) =>
@@ -101,8 +137,8 @@ export class LibraryQuery extends QueryEntity<LibraryState, ApiLibrary> {
   getClans(cards: ApiCard[]): ApiClanStat[] {
     const clans: ApiClanStat[] = []
     cards.forEach((card) => {
-      const library = this.getEntity(card.id)
-      if (library && library.clans && library.clans.length > 0) {
+      const library = this.store.getEntity(card.id)
+      if (library?.clans && library.clans.length > 0) {
         const clan = clans.find(
           (entity) =>
             entity.clans.length === library.clans.length &&

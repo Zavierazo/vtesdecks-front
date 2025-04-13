@@ -6,7 +6,7 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Order, SortBy } from '@datorama/akita'
+import { Order } from '@datorama/akita'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, Observable, tap } from 'rxjs'
@@ -33,7 +33,7 @@ export class LibraryBuilderComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
 
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
-  sortBy!: SortBy<ApiLibrary>
+  sortBy!: keyof ApiLibrary
   sortByOrder!: Order
   types!: string[]
   clans!: string[]
@@ -85,7 +85,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: SortBy<ApiLibrary>, event: MouseEvent) {
+  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
