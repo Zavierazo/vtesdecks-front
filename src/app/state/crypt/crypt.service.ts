@@ -34,7 +34,8 @@ export class CryptService {
       map((crypt) => crypt.lastUpdate),
       filter(
         (lastUpdate) =>
-          lastUpdate !== cryptState.lastUpdate || locale !== cryptState.locale,
+          lastUpdate !== this.cryptQuery.getLastUpdate() ||
+          locale !== cryptState.locale,
       ),
       switchMap((lastUpdate) =>
         request$.pipe(
