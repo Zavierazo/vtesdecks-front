@@ -25,19 +25,19 @@ export class LibraryStore {
   private readonly loading$ = toObservable(this.loading)
 
   constructor(private readonly localStorage: LocalStorageService) {
-    // Restore state from local storage
-    const previousLocalState = this.localStorage.getValue<LibraryState>(
-      LibraryStore.stateStoreName,
-    )
-    if (previousLocalState) {
-      this.update(() => previousLocalState)
-    }
     // Restore entities from local storage
     const previousLocalEntities = this.localStorage.getValue<ApiLibrary[]>(
       LibraryStore.entitiesStoreName,
     )
     if (previousLocalEntities) {
       this.set(previousLocalEntities)
+      // Restore state from local storage
+      const previousLocalState = this.localStorage.getValue<LibraryState>(
+        LibraryStore.stateStoreName,
+      )
+      if (previousLocalState) {
+        this.update(() => previousLocalState)
+      }
     }
   }
 
@@ -159,7 +159,7 @@ export class LibraryStore {
 
   private updateStorage(): void {
     const state = this.getValue()
-    if (state) {
+    if (state?.lastUpdate && state?.locale) {
       this.localStorage.setValue(LibraryStore.stateStoreName, state)
     }
     const entities = this.getEntities()
