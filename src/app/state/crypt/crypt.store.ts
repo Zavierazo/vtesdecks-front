@@ -6,7 +6,6 @@ import { LocalStorageService } from '../../services/local-storage.service'
 
 export interface CryptState {
   locale?: string
-  lastUpdate?: Date
 }
 
 const initialState: CryptState = {}
@@ -159,7 +158,7 @@ export class CryptStore {
 
   private updateStorage(): void {
     const state = this.getValue()
-    if (state?.lastUpdate && state?.locale) {
+    if (state?.locale) {
       this.localStorage.setValue(CryptStore.stateStoreName, state)
     }
     const entities = this.getEntities()

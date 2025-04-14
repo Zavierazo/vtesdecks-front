@@ -4,6 +4,10 @@ import { Injectable } from '@angular/core'
   providedIn: 'root',
 })
 export class LocalStorageService {
+  constructor() {
+    this.clearValue('AkitaStores')
+  }
+
   getValue<T>(key: string): T | null {
     const item = localStorage.getItem(key)
     if (!item) {
@@ -13,19 +17,32 @@ export class LocalStorageService {
     try {
       return JSON.parse(item)
     } catch (e) {
+      console.trace(e)
       return null
     }
   }
 
   setValue<T>(key: string, value: T): void {
-    localStorage.setItem(key, JSON.stringify(value))
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch (e) {
+      console.trace(e)
+    }
   }
 
   clearValue(key: string): void {
-    localStorage.removeItem(key)
+    try {
+      localStorage.removeItem(key)
+    } catch (e) {
+      console.trace(e)
+    }
   }
 
   clearAll(): void {
-    localStorage.clear()
+    try {
+      localStorage.clear()
+    } catch (e) {
+      console.trace(e)
+    }
   }
 }

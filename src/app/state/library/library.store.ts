@@ -6,7 +6,6 @@ import { ApiLibrary } from './../../models/api-library'
 
 export interface LibraryState {
   locale?: string
-  lastUpdate?: Date
 }
 
 const initialState: LibraryState = {}
@@ -159,7 +158,7 @@ export class LibraryStore {
 
   private updateStorage(): void {
     const state = this.getValue()
-    if (state?.lastUpdate && state?.locale) {
+    if (state?.locale) {
       this.localStorage.setValue(LibraryStore.stateStoreName, state)
     }
     const entities = this.getEntities()
