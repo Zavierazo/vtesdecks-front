@@ -6,15 +6,17 @@ import {
   Component,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ApiContact } from '../../models/api-contact'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, ReactiveFormsModule, NgIf, TranslocoPipe]
 })
 export class ContactComponent implements OnInit {
   form!: FormGroup

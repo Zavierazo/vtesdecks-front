@@ -7,8 +7,8 @@ import { AuthQuery } from '../../state/auth/auth.query'
 })
 export class CanActivateUser {
   constructor(
-    private authQuery: AuthQuery,
-    private router: Router,
+    private readonly authQuery: AuthQuery,
+    private readonly router: Router,
   ) {}
 
   canActivate(): boolean {

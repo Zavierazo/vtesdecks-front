@@ -5,8 +5,8 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { NgbActiveModal, NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { searchIncludes } from '../../../utils/vtes-utils'
@@ -16,6 +16,11 @@ import { MediaService } from './../../../services/media.service'
 import { CryptQuery } from './../../../state/crypt/crypt.query'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { CryptComponent } from '../../deck-shared/crypt/crypt.component';
+import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +28,7 @@ import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.s
     templateUrl: './crypt-builder.component.html',
     styleUrls: ['./crypt-builder.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, CryptComponent, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
 })
 export class CryptBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20

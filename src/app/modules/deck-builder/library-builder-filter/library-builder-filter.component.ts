@@ -1,5 +1,5 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +11,13 @@ import {
 } from '@angular/core'
 import { Observable, tap } from 'rxjs'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component';
+import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
+import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback';
 
 @UntilDestroy()
 @Component({
@@ -18,7 +25,7 @@ import { LibraryQuery } from '../../../state/library/library.query'
     templateUrl: './library-builder-filter.component.html',
     styleUrls: ['./library-builder-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, LibraryTypeFilterComponent, DisciplineFilterComponent, ClanFilterComponent, NgFor, NgxSliderModule, AsyncPipe, TitleCasePipe, TranslocoFallbackPipe, TranslocoPipe]
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   @Input() printOnDemand?: boolean

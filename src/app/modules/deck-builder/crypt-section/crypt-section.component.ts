@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,8 +7,8 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   BehaviorSubject,
@@ -26,6 +26,10 @@ import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { CryptComponent } from '../../deck-shared/crypt/crypt.component';
+import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +37,7 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     templateUrl: './crypt-section.component.html',
     styleUrls: ['./crypt-section.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, CryptComponent, NgbTooltip, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
 })
 export class CryptSectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

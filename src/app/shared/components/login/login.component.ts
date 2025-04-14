@@ -9,19 +9,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms'
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { switchMap, Observable } from 'rxjs'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ToastService } from '../../../services/toast.service'
 import { ApiResponse } from '../../../models/api-response'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 export enum Tabs {
   Login,
@@ -33,7 +28,7 @@ export enum Tabs {
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    standalone: false
+    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()

@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ApiLibrary } from './../../../../models/api-library'
 import { LibraryQuery } from './../../../../state/library/library.query'
 import { LibraryService } from './../../../../state/library/library.service'
@@ -22,11 +22,13 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap'
+import { NgbTypeaheadSelectItemEvent, NgbHighlight, NgbTypeahead, NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { CardFilter } from '../../../../models/card-filter'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DecksQuery } from '../../../../state/decks/decks.query'
 import { MediaService } from '../../../../services/media.service'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -34,7 +36,7 @@ import { MediaService } from '../../../../services/media.service'
     templateUrl: './card-filter.component.html',
     styleUrls: ['./card-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, NgbHighlight, NgFor, NgbTypeahead, NgClass, NgbPopover, ReactiveFormsModule, AsyncPipe]
 })
 export class CardFilterComponent implements OnInit {
   cards: CardFilter[] = []

@@ -8,9 +8,9 @@ import {
   ViewChild,
 } from '@angular/core'
 import { Title } from '@angular/platform-browser'
-import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoService } from '@jsverse/transloco'
-import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { NgbModal, NgbTooltip, NgbRating, NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
@@ -26,14 +26,49 @@ import { DeckQuery } from '../../state/deck/deck.query'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
+import { NgIf, NgClass, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
+import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component';
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
+import { CryptComponent } from '../deck-shared/crypt/crypt.component';
+import { LibraryListComponent } from '../deck-shared/library-list/library-list.component';
+import { CommentsComponent } from '../comments/comments.component';
+import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback';
+import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe';
+import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.pipe';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-deck',
-  templateUrl: './deck.component.html',
-  styleUrls: ['./deck.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+    selector: 'app-deck',
+    templateUrl: './deck.component.html',
+    styleUrls: ['./deck.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        NgIf,
+        LoadingComponent,
+        TranslocoDirective,
+        NgbTooltip,
+        NgClass,
+        RouterLink,
+        NgxGoogleAnalyticsModule,
+        NgFor,
+        AnimatedDigitComponent,
+        NgbRating,
+        IsLoggedDirective,
+        NgbPopover,
+        CryptComponent,
+        LibraryListComponent,
+        CommentsComponent,
+        AsyncPipe,
+        TitleCasePipe,
+        TranslocoFallbackPipe,
+        DisciplineTranslocoPipe,
+        ClanTranslocoPipe,
+        TranslocoPipe,
+        TranslocoDatePipe,
+    ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
   id!: string

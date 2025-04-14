@@ -7,13 +7,15 @@ import {
 import { ApiKrcgRuling } from '../../../../models/krcg/api-krcg-ruling'
 import { RulingText } from '../../../../models/ruling-text'
 import { MediaService } from '../../../../services/media.service'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgClass, AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-ruling-text',
     templateUrl: './ruling-text.component.html',
     styleUrls: ['./ruling-text.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [NgbPopover, NgClass, AsyncPipe]
 })
 export class RulingTextComponent implements OnInit {
   @Input() ruling!: ApiKrcgRuling

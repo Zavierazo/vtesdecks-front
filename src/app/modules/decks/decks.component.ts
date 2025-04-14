@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,9 +7,9 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   debounceTime,
@@ -26,6 +26,12 @@ import { DecksService } from '../../state/decks/decks.service'
 import { MediaService } from './../../services/media.service'
 import { DecksQuery } from './../../state/decks/decks.query'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { DeckCardComponent } from '../deck-card/deck-card.component';
+import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +39,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     templateUrl: './decks.component.html',
     styleUrls: ['./decks.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, NgIf, DeckFiltersComponent, NgClass, InfiniteScrollDirective, NgFor, DeckCardComponent, DeckRestorableCardComponent, LoadingComponent, NgbTooltip, AsyncPipe]
 })
 export class DecksComponent implements OnInit {
   decks$!: Observable<ApiDeck[]>

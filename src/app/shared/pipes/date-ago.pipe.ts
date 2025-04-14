@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 
-@Pipe({ name: 'dateAsAgo', standalone: false })
+@Pipe({ name: 'dateAsAgo' })
 export class DateAsAgoPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

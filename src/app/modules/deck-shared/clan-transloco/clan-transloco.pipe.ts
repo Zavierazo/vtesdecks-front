@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { CLAN_LIST } from '../../../utils/clans'
 
-@Pipe({ name: 'clanTransloco', standalone: false })
+@Pipe({ name: 'clanTransloco' })
 export class ClanTranslocoPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 

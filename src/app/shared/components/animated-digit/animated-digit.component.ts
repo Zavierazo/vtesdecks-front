@@ -11,8 +11,7 @@ import {
 @Component({
     selector: 'animated-digit',
     templateUrl: 'animated-digit.component.html',
-    styleUrls: ['animated-digit.component.scss'],
-    standalone: false
+    styleUrls: ['animated-digit.component.scss']
 })
 export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
   @Input() duration!: number

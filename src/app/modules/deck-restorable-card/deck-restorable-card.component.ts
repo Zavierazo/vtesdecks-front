@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
-import { TranslocoService } from '@jsverse/transloco'
+import { TranslocoService, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { filter, switchMap, tap } from 'rxjs'
@@ -8,13 +8,21 @@ import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
+import { TitleCasePipe } from '@angular/common';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-deck-restorable-card',
-  templateUrl: './deck-restorable-card.component.html',
-  styleUrls: ['./deck-restorable-card.component.scss'],
-  standalone: false,
+    selector: 'app-deck-restorable-card',
+    templateUrl: './deck-restorable-card.component.html',
+    styleUrls: ['./deck-restorable-card.component.scss'],
+    imports: [
+        TitleCasePipe,
+        TruncatePipe,
+        TranslocoPipe,
+        TranslocoDatePipe,
+    ],
 })
 export class DeckRestorableCardComponent {
   @Input() deck!: ApiDeck

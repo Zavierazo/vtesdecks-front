@@ -3,13 +3,19 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { MediaService } from '../../services/media.service'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { tap } from 'rxjs'
+import { RouterLink } from '@angular/router';
+import { NgClass, NgStyle, NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @UntilDestroy()
 @Component({
     selector: 'app-deck-card',
     templateUrl: './deck-card.component.html',
     styleUrls: ['./deck-card.component.scss'],
-    standalone: false
+    imports: [RouterLink, NgClass, NgStyle, NgIf, NgFor, TitleCasePipe, TruncatePipe, TranslocoFallbackPipe, TranslocoPipe, TranslocoDatePipe]
 })
 export class DeckCardComponent implements OnInit {
   @Input() deck!: ApiDeck

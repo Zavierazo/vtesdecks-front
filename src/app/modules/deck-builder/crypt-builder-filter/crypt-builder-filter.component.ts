@@ -1,5 +1,5 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +11,12 @@ import {
 } from '@angular/core'
 import { Observable, tap } from 'rxjs'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
+import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback';
 
 @UntilDestroy()
 @Component({
@@ -18,7 +24,7 @@ import { CryptQuery } from '../../../state/crypt/crypt.query'
     templateUrl: './crypt-builder-filter.component.html',
     styleUrls: ['./crypt-builder-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, ClanFilterComponent, DisciplineFilterComponent, NgxSliderModule, NgFor, AsyncPipe, TitleCasePipe, TranslocoFallbackPipe]
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   @Input() printOnDemand?: boolean

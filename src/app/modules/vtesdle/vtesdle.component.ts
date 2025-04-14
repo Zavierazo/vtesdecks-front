@@ -6,7 +6,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core'
-import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap'
+import { NgbTypeaheadSelectItemEvent, NgbTooltip, NgbHighlight, NgbTypeahead, NgbRating } from '@ng-bootstrap/ng-bootstrap'
 import {
   combineLatest,
   distinctUntilChanged,
@@ -24,6 +24,9 @@ import { CryptService } from '../../state/crypt/crypt.service'
 import { ActivatedRoute } from '@angular/router'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiCardToday } from '../../models/api-card-today'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NgIf } from '@angular/common';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +34,7 @@ import { ApiCardToday } from '../../models/api-card-today'
     templateUrl: './vtesdle.component.html',
     styleUrls: ['./vtesdle.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, NgbTooltip, LoadingComponent, NgbHighlight, NgbTypeahead, NgbRating]
 })
 export class VtesdleComponent implements OnInit {
   maxLives = 6

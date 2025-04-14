@@ -8,11 +8,13 @@ export interface ComponentCanDeactivate {
   canDeactivate(): boolean | Observable<boolean>
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CanDeactivateComponent {
   constructor(
-    private modalService: NgbModal,
-    private translocoService: TranslocoService,
+    private readonly modalService: NgbModal,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   canDeactivate(
