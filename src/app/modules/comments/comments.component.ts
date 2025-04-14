@@ -4,13 +4,18 @@ import {
   Input,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
 import { ApiComment } from '../../models/api-comment'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { CommentsQuery } from '../../state/comments/comments.query'
 import { CommentsService } from '../../state/comments/comments.service'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { CommentComponent } from './comment/comment.component';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @UntilDestroy()
 @Component({
@@ -18,7 +23,7 @@ import { CommentsService } from '../../state/comments/comments.service'
     templateUrl: './comments.component.html',
     styleUrls: ['./comments.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, IsLoggedDirective, ReactiveFormsModule, NgIf, NgFor, CommentComponent, LoadingComponent, AsyncPipe]
 })
 export class CommentsComponent implements OnInit {
   @Input() deckId!: string

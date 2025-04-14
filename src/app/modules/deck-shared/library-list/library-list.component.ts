@@ -13,6 +13,10 @@ import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryCardComponent } from '../library-card/library-card.component'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { LibraryComponent } from '../library/library.component';
+import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +24,7 @@ import { LibraryCardComponent } from '../library-card/library-card.component'
     templateUrl: './library-list.component.html',
     styleUrls: ['./library-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgFor, NgIf, LibraryComponent, AsyncPipe, TranslocoPipe, LibraryTypeTranslocoPipe]
 })
 export class LibraryListComponent implements OnInit {
   static readonly libraryTypeOrder = [

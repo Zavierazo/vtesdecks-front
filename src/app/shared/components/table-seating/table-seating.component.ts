@@ -4,22 +4,29 @@ import {
   Component,
   OnInit,
 } from '@angular/core'
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms'
-import { TranslocoService } from '@jsverse/transloco'
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { debounceTime, tap } from 'rxjs'
 import { LocalStorageService } from '../../../services/local-storage.service'
 import { SessionStorageService } from '../../../services/session-storage.service'
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-table-seating',
-  templateUrl: './table-seating.component.html',
-  styleUrls: ['./table-seating.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+    selector: 'app-table-seating',
+    templateUrl: './table-seating.component.html',
+    styleUrls: ['./table-seating.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        TranslocoDirective,
+        ReactiveFormsModule,
+        NgFor,
+        NgClass,
+        NgIf,
+    ],
 })
 export class TableSeatingComponent implements OnInit {
   static readonly storeName = 'table-seating'

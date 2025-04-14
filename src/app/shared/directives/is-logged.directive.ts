@@ -10,10 +10,7 @@ import { tap } from 'rxjs'
 import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
-@Directive({
-    selector: '[isLogged]',
-    standalone: false
-})
+@Directive({ selector: '[isLogged]' })
 export class IsLoggedDirective {
   private hasView = false
 

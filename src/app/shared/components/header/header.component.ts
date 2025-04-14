@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal, NgbOffcanvas, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem } from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { MediaService } from '../../../services/media.service'
@@ -9,13 +9,20 @@ import { isChristmas } from '../../../utils/vtes-utils'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
 import { TableSeatingComponent } from '../table-seating/table-seating.component'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { IsLoggedDirective } from '../../directives/is-logged.directive';
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
+import { LangSelectorComponent } from '../lang-selector/lang-selector.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, RouterLink, NgbCollapse, RouterLinkActive, IsLoggedDirective, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgxGoogleAnalyticsModule, NgbDropdownButtonItem, LangSelectorComponent, NgIf, ThemeSelectorComponent, AsyncPipe]
 })
 export class HeaderComponent implements OnInit {
   isCollapsed = true

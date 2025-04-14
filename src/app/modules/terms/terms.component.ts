@@ -4,8 +4,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
     selector: 'app-terms',
     templateUrl: './terms.component.html',
     styleUrls: ['./terms.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TermsComponent implements OnInit {
   constructor() {}

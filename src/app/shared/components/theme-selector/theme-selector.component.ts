@@ -2,13 +2,15 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { MediaService } from '../../../services/media.service'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { Theme } from '../../../models/theme'
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-theme-selector',
     templateUrl: './theme-selector.component.html',
     styleUrls: ['./theme-selector.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgClass, NgIf, AsyncPipe]
 })
 export class ThemeSelectorComponent {
   isMobile$ = this.mediaService.observeMobileOrTablet()

@@ -14,6 +14,10 @@ import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgIf, NgStyle, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 @UntilDestroy()
 @Component({
@@ -21,7 +25,7 @@ import { LibraryService } from '../../../state/library/library.service'
     templateUrl: './library.component.html',
     styleUrls: ['./library.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, NgbPopover, NgStyle, NgClass, NgFor, NgxSkeletonLoaderComponent, AsyncPipe, TranslocoPipe]
 })
 export class LibraryComponent implements OnInit {
   @Input() card!: ApiCard

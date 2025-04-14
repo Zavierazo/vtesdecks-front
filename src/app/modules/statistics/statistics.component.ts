@@ -1,19 +1,42 @@
+import { NgxSliderModule } from '@angular-slider/ngx-slider'
+import { AsyncPipe, NgFor, NgIf } from '@angular/common'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms'
+import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts'
 import { BehaviorSubject, Observable, tap } from 'rxjs'
 import { ApiHistoricStatistic } from '../../models/api-historic-statistic'
 import { ApiYearStatistic } from '../../models/api-year-statistic'
 import { CLAN_LIST } from '../../utils/clans'
 import { DISCIPLINE_LIST } from '../../utils/disciplines'
 import { ApiDataService } from './../../services/api.data.service'
+import { BarChartComponent } from './bar-chart/bar-chart.component'
+import { LineChartComponent } from './line-chart/line-chart.component'
+import { RadarChartComponent } from './radar-chart/radar-chart.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-statistics',
-    templateUrl: './statistics.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-statistics',
+  templateUrl: './statistics.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgxSliderModule,
+    NgIf,
+    LineChartComponent,
+    NgFor,
+    BarChartComponent,
+    RadarChartComponent,
+    AsyncPipe,
+  ],
+  providers: [provideCharts(withDefaultRegisterables())],
 })
 export class StatisticsComponent implements OnInit {
   currentYear = new Date().getFullYear()

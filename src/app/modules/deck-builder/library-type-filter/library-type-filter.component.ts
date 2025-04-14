@@ -7,13 +7,15 @@ import {
   Output,
 } from '@angular/core'
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
+import { NgFor, NgClass } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-library-type-filter',
     templateUrl: './library-type-filter.component.html',
     styleUrls: ['./library-type-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [NgFor, NgClass, TranslocoPipe]
 })
 export class LibraryTypeFilterComponent {
   @Input() types: string[] = []

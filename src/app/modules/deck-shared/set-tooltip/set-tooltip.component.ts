@@ -2,13 +2,14 @@ import { Component, Input, OnInit } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from './../../../services/api.data.service'
+import { NgIf } from '@angular/common';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-set-tooltip',
-  templateUrl: './set-tooltip.component.html',
-  styleUrls: ['./set-tooltip.component.scss'],
-  standalone: false,
+    selector: 'app-set-tooltip',
+    templateUrl: './set-tooltip.component.html',
+    styleUrls: ['./set-tooltip.component.scss'],
+    imports: [NgIf],
 })
 export class SetTooltipComponent implements OnInit {
   @Input() set!: string

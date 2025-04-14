@@ -10,13 +10,17 @@ import { ChartConfiguration, ChartData } from 'chart.js'
 import { tap } from 'rxjs'
 import { ApiHistoricStatistic } from '../../../models/api-historic-statistic'
 import { MediaService } from '../../../services/media.service'
+import { BaseChartDirective } from 'ng2-charts';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { NgClass } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @UntilDestroy()
 @Component({
     selector: 'app-line-chart',
     templateUrl: './line-chart.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [BaseChartDirective, NgbCollapse, NgClass, TranslocoPipe]
 })
 export class LineChartComponent implements OnInit, OnChanges {
   @Input() title!: string

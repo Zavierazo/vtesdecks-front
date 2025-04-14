@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,8 +7,8 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   BehaviorSubject,
@@ -26,6 +26,10 @@ import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { LibraryComponent } from '../../deck-shared/library/library.component';
+import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +37,7 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     templateUrl: './library-section.component.html',
     styleUrls: ['./library-section.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, LibraryComponent, NgbTooltip, LibraryBuilderFilterComponent, AsyncPipe, TranslocoPipe]
 })
 export class LibrarySectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

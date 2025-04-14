@@ -6,12 +6,13 @@ import {
 } from '@angular/core'
 import { ChartData, ChartOptions } from 'chart.js'
 import { ApiStatistic } from '../../../models/api-statistic'
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'app-radar-chart',
     templateUrl: './radar-chart.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [BaseChartDirective]
 })
 export class RadarChartComponent implements OnInit {
   @Input() title!: string

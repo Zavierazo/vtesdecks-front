@@ -1,5 +1,7 @@
 import { Component, TemplateRef } from '@angular/core'
 import { ToastService } from '../../../services/toast.service'
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgbToast } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-toasts',
@@ -22,7 +24,7 @@ import { ToastService } from '../../../services/toast.service'
         class: 'toast-container position-fixed top-0 end-0 p-3',
         style: 'z-index: 1200; margin-top: 4rem;',
     },
-    standalone: false
+    imports: [NgFor, NgbToast, NgIf, NgTemplateOutlet]
 })
 export class ToastsContainer {
   constructor(public toastService: ToastService) {}

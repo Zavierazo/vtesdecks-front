@@ -4,13 +4,14 @@ import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '../../services/toast.service'
 import { ApiDataService } from './../../services/api.data.service'
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-verify-account',
-  templateUrl: './verify-account.component.html',
-  styleUrls: ['./verify-account.component.scss'],
-  standalone: false,
+    selector: 'app-verify-account',
+    templateUrl: './verify-account.component.html',
+    styleUrls: ['./verify-account.component.scss'],
+    imports: [LoadingComponent],
 })
 export class VerifyAccountComponent implements OnInit {
   constructor(

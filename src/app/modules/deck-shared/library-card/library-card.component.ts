@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
@@ -17,6 +17,12 @@ import { ApiDataService } from '../../../services/api.data.service'
 import { Shop, getShop } from '../../../utils/shops'
 import { ApiLibrary } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component';
+import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component';
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
+import { RouterLink } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +30,7 @@ import { MediaService } from './../../../services/media.service'
     templateUrl: './library-card.component.html',
     styleUrls: ['./library-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, NgIf, NgFor, NgClass, NgbTooltip, SetTooltipComponent, RulingTextComponent, NgxGoogleAnalyticsModule, RouterLink, AsyncPipe, TranslocoPipe]
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
   @Input() cardList!: ApiLibrary[]

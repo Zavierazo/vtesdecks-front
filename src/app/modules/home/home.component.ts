@@ -11,6 +11,12 @@ import { switchMap, tap } from 'rxjs'
 import { ApiHome } from '../../models/api-home'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { AuthQuery } from '../../state/auth/auth.query'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { RouterLink } from '@angular/router';
+import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component';
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
+import { NgTemplateOutlet } from '@angular/common';
+import { HomeSectionComponent } from './home-section/home-section.component';
 
 @UntilDestroy()
 @Component({
@@ -18,7 +24,7 @@ import { AuthQuery } from '../../state/auth/auth.query'
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [TranslocoDirective, RouterLink, AnimatedDigitComponent, IsLoggedDirective, NgTemplateOutlet, HomeSectionComponent, TranslocoPipe]
 })
 export class HomeComponent implements OnInit {
   deckHome?: ApiHome

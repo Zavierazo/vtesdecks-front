@@ -15,6 +15,10 @@ import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { CryptService } from '../../../state/crypt/crypt.service'
 import drawProbability from '../../../utils/draw-probability'
+import { NgIf, NgStyle, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +26,7 @@ import drawProbability from '../../../utils/draw-probability'
     templateUrl: './crypt.component.html',
     styleUrls: ['./crypt.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [NgIf, NgbPopover, NgStyle, NgClass, NgFor, NgxSkeletonLoaderComponent, AsyncPipe, TranslocoPipe]
 })
 export class CryptComponent implements OnInit {
   @Input() card!: ApiCard

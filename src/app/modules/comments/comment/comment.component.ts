@@ -4,8 +4,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup } from '@angular/forms'
-import { TranslocoService } from '@jsverse/transloco'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { filter, Observable, switchMap } from 'rxjs'
@@ -13,13 +13,22 @@ import { ApiComment } from '../../../models/api-comment'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { CommentsService } from '../../../state/comments/comments.service'
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { DateAsAgoPipe } from '../../../shared/pipes/date-ago.pipe';
 @UntilDestroy()
 @Component({
-  selector: 'app-comment',
-  templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+    selector: 'app-comment',
+    templateUrl: './comment.component.html',
+    styleUrls: ['./comment.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        TranslocoDirective,
+        NgClass,
+        NgIf,
+        ReactiveFormsModule,
+        AsyncPipe,
+        DateAsAgoPipe,
+    ],
 })
 export class CommentComponent implements OnInit {
   @Input() comment!: ApiComment
