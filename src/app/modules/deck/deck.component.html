@@ -122,9 +122,9 @@
                     <i class="bi bi-dice-6 me-2"></i><span>{{ t('draw') }}</span>
                   </button>
                 </div>
-                <div class="col d-grid">
-                  <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" target="_blank" gaEvent="click"
-                    gaCategory="deck_in_builder" *isLogged="true">
+                <div class="col d-grid" *isLogged="true">
+                  <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" gaEvent="click"
+                    gaCategory="clone_in_deck">
                     <i class="bi bi-copy me-2"></i><span>{{ t('clone') }}</span>
                   </a>
                 </div>
