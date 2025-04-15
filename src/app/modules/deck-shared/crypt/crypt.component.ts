@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,7 +8,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { TranslocoPipe } from '@jsverse/transloco'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
 import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiCrypt } from '../../../models/api-crypt'
@@ -15,23 +19,30 @@ import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { CryptService } from '../../../state/crypt/crypt.service'
 import drawProbability from '../../../utils/draw-probability'
-import { NgIf, NgStyle, NgClass, NgFor, AsyncPipe } from '@angular/common';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { TranslocoPipe } from '@jsverse/transloco';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt',
-    templateUrl: './crypt.component.html',
-    styleUrls: ['./crypt.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgbPopover, NgStyle, NgClass, NgFor, NgxSkeletonLoaderComponent, AsyncPipe, TranslocoPipe]
+  selector: 'app-crypt',
+  templateUrl: './crypt.component.html',
+  styleUrls: ['./crypt.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgbPopover,
+    NgStyle,
+    NgClass,
+    NgFor,
+    NgxSkeletonLoaderComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class CryptComponent implements OnInit {
   @Input() card!: ApiCard
 
   @Input() cryptSize?: number
+
+  @Input() withDrawProbability = false
 
   @Input() withControls = false
 
@@ -72,7 +83,7 @@ export class CryptComponent implements OnInit {
 
   getDrawProbability(copy: number): number {
     const size = this.cryptSize && this.cryptSize > 12 ? this.cryptSize : 12
-    return Math.floor(drawProbability(copy, size, 4, this.card.number))
+    return Math.round(drawProbability(copy, size, 7, this.card.number))
   }
 
   // Avoid context menu on right click

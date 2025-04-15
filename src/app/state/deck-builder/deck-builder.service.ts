@@ -48,6 +48,20 @@ export class DeckBuilderService {
     return of({})
   }
 
+  clone(): void {
+    const { name, description, cards } = this.store.getValue()
+    this.store.reset()
+    this.store.update((state) => ({
+      ...state,
+      name: '[COPY] ' + name,
+      description,
+      cards: [...cards],
+      published: false,
+      saved: false,
+    }))
+    this.validateDeck()
+  }
+
   importDeck(type: string, url: string): Observable<ApiDeckBuilder> {
     return this.apiDataService.getDeckBuilderImport(type, url).pipe(
       tap((deck) => {

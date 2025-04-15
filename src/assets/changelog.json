@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.33.0",
+    "date": "15th April, 2025",
+    "changes": [
+      "Unify Export Deck in a dropdown menu",
+      "Add Export Deck in Deck Builder",
+      "Add Clone Deck in Deck Builder",
+      "Add Draw Cards tool",
+      "Add app version to footer"
+    ]
+  },
+  {
     "version": "2.32.0",
     "date": "14th April, 2025",
     "changes": [

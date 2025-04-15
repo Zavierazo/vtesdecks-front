@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,28 +8,42 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
 import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf, NgStyle, NgClass, NgFor, AsyncPipe } from '@angular/common';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import drawProbability from '../../../utils/draw-probability'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library',
-    templateUrl: './library.component.html',
-    styleUrls: ['./library.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgbPopover, NgStyle, NgClass, NgFor, NgxSkeletonLoaderComponent, AsyncPipe, TranslocoPipe]
+  selector: 'app-library',
+  templateUrl: './library.component.html',
+  styleUrls: ['./library.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgIf,
+    NgbPopover,
+    NgStyle,
+    NgClass,
+    NgFor,
+    NgxSkeletonLoaderComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class LibraryComponent implements OnInit {
   @Input() card!: ApiCard
+
+  @Input() librarySize?: number
+
+  @Input() withDrawProbability = false
 
   @Input() withControls = false
 
@@ -65,6 +80,12 @@ export class LibraryComponent implements OnInit {
 
   removeCard() {
     this.cardRemoved.emit(this.card.id)
+  }
+
+  getDrawProbability(copy: number): number {
+    const size =
+      this.librarySize && this.librarySize > 60 ? this.librarySize : 60
+    return Math.round(drawProbability(copy, size, 4, this.card.number))
   }
 
   // Avoid context menu on right click

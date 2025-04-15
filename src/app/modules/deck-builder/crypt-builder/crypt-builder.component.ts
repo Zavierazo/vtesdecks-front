@@ -1,4 +1,11 @@
 import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgTemplateOutlet,
+} from '@angular/common'
+import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -6,34 +13,59 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { NgbActiveModal, NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  NgbActiveModal,
+  NgbDropdown,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { searchIncludes } from '../../../utils/vtes-utils'
+import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
+import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { ApiCard } from './../../../models/api-card'
 import { ApiCrypt } from './../../../models/api-crypt'
 import { MediaService } from './../../../services/media.service'
 import { CryptQuery } from './../../../state/crypt/crypt.query'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component';
-import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-builder',
-    templateUrl: './crypt-builder.component.html',
-    styleUrls: ['./crypt-builder.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, CryptComponent, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
+  selector: 'app-crypt-builder',
+  templateUrl: './crypt-builder.component.html',
+  styleUrls: ['./crypt-builder.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgClass,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgIf,
+    NgTemplateOutlet,
+    InfiniteScrollDirective,
+    NgFor,
+    CryptComponent,
+    CryptBuilderFilterComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class CryptBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
+  cryptSize$!: Observable<number>
   isMobile$!: Observable<boolean>
   isMobileOrTablet$!: Observable<boolean>
 
@@ -60,6 +92,7 @@ export class CryptBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.initFilters()

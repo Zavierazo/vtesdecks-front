@@ -99,7 +99,9 @@
     "bookmark_error": "Algo salió mal al añadir el mazo a favoritos",
     "link_copied": "Enlace copiado al portapapeles",
     "clipboard": "Portapapeles",
-    "deck_copied": "Lista copiada al portapapeles"
+    "deck_copied": "Lista copiada al portapapeles",
+    "export": "Exportar",
+    "draw": "Draw"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -128,7 +130,9 @@
     "redo_tooltip": "Rehacer el último cambio",
     "restore_title": "¿Restaurar mazo?",
     "restore_message": "¿Estás seguro de que quieres restaurar '{{ name }}'?",
-    "restore_successful": "¡Mazo restaurado!"
+    "restore_successful": "¡Mazo restaurado!",
+    "clone": "Clonar",
+    "draw": "Draw"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos 12 cartas.",
@@ -176,6 +180,14 @@
     "filters": "Filtros",
     "show_filters": "Mostrar filtros"
   },
+  "draw_cards": {
+    "title": "Robar Cartas",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "shuffle": "Mezclar",
+    "remaining": "restantes",
+    "unique_crypt": "Vampiros Únicos"
+  },
   "filters": {
     "crypt_cards": "Cartas de Cripta",
     "star_vampire": "Con vampiro estrella",
@@ -207,7 +219,7 @@
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
-    "copyright": "Copyright: cubiertas VTES. ",
+    "copyright": "Copyright: VTES Decks. Todos los derechos reservados.",
     "changelog": "Registro de cambios",
     "terms": "Términos",
     "privacy_policy": "Política de Privacidad",

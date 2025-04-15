@@ -9,9 +9,9 @@
       <span class="float-end"> {{ percentageSize(libraryType) }}% </span>
     </li>
     <div *ngFor="let library of libraryCards(libraryType); trackBy: trackByFn">
-      <app-library [card]="library" [withControls]="withControls" (cardAdded)="cardAdded.emit($event)"
-        (cardRemoved)="cardRemoved.emit($event)" (click)="openCryptCard(library, libraryList!)"
-        [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
+      <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
+        (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
+        (click)="openCryptCard(library, libraryList!)" [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
     </div>
   </ul>
 </div>
