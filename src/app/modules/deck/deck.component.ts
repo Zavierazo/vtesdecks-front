@@ -1,4 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
+import { AsyncPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,9 +10,24 @@ import {
 } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
-import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { NgbModal, NgbTooltip, NgbRating, NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { TranslocoDatePipe } from '@jsverse/transloco-locale'
+import {
+  NgbDropdown,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+  NgbPopover,
+  NgbRating,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { ApiCard } from '../../models/api-card'
@@ -20,55 +36,57 @@ import { ApiDataService } from '../../services/api.data.service'
 import { MediaService } from '../../services/media.service'
 import { PreviousRouteService } from '../../services/previous-route-service'
 import { ToastService } from '../../services/toast.service'
+import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
+import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
+import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { DeckQuery } from '../../state/deck/deck.query'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
+import { CommentsComponent } from '../comments/comments.component'
+import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
+import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
-import { NgIf, NgClass, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
-import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component';
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
-import { CryptComponent } from '../deck-shared/crypt/crypt.component';
-import { LibraryListComponent } from '../deck-shared/library-list/library-list.component';
-import { CommentsComponent } from '../comments/comments.component';
-import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback';
-import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe';
-import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.pipe';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
+import { CryptComponent } from '../deck-shared/crypt/crypt.component'
+import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
+import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck',
-    templateUrl: './deck.component.html',
-    styleUrls: ['./deck.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        NgIf,
-        LoadingComponent,
-        TranslocoDirective,
-        NgbTooltip,
-        NgClass,
-        RouterLink,
-        NgxGoogleAnalyticsModule,
-        NgFor,
-        AnimatedDigitComponent,
-        NgbRating,
-        IsLoggedDirective,
-        NgbPopover,
-        CryptComponent,
-        LibraryListComponent,
-        CommentsComponent,
-        AsyncPipe,
-        TitleCasePipe,
-        TranslocoFallbackPipe,
-        DisciplineTranslocoPipe,
-        ClanTranslocoPipe,
-        TranslocoPipe,
-        TranslocoDatePipe,
-    ],
+  selector: 'app-deck',
+  templateUrl: './deck.component.html',
+  styleUrls: ['./deck.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    LoadingComponent,
+    TranslocoDirective,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    NgbTooltip,
+    NgClass,
+    RouterLink,
+    NgxGoogleAnalyticsModule,
+    NgFor,
+    AnimatedDigitComponent,
+    NgbRating,
+    IsLoggedDirective,
+    NgbPopover,
+    CryptComponent,
+    LibraryListComponent,
+    CommentsComponent,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslocoFallbackPipe,
+    DisciplineTranslocoPipe,
+    ClanTranslocoPipe,
+    TranslocoPipe,
+    TranslocoDatePipe,
+  ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
   id!: string
@@ -244,5 +262,17 @@ export class DeckComponent implements OnInit, AfterViewInit {
         { classname: 'bg-success text-light', delay: 5000 },
       )
     })
+  }
+
+  onDraw(): void {
+    const modalRef = this.modalService.open(DrawCardsComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.cards = [
+      ...(this.deckQuery.getDeck()?.crypt ?? []),
+      ...(this.deckQuery.getDeck()?.library ?? []),
+    ]
   }
 }

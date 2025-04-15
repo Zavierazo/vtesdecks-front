@@ -69,8 +69,8 @@
           </button>
         </div>
         <ul class="col list-group" *ngFor="let crypt of (crypt$ | async)! ; trackBy: trackByFn">
-          <app-crypt [card]="getCard(crypt)" [withControls]="true" (cardAdded)="addCard($event)"
-            (cardRemoved)="removeCard($event)"></app-crypt>
+          <app-crypt [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+            (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
         </ul>
       </div>
     </div>

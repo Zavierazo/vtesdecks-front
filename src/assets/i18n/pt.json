@@ -99,7 +99,9 @@
     "bookmark_error": "Algo deu errado ao adicionar o mazo aos favoritos",
     "link_copied": "Link copiado para a área de transferência",
     "clipboard": "Área de transferência",
-    "deck_copied": "Mazo copiado para a área de transferência"
+    "deck_copied": "Mazo copiado para a área de transferência",
+    "export": "Exportar",
+    "draw": "Draw"
   },
   "deck_builder": {
     "deck_not_exists": "O mazo não existe. Tente novamente mais tarde.",
@@ -128,7 +130,9 @@
     "redo_tooltip": "Refazer a última mudança",
     "restore_title": "Restaurar mazo?",
     "restore_message": "Tem certeza de que deseja restaurar '{{ name }}'?",
-    "restore_successful": "Mazo restaurado"
+    "restore_successful": "Mazo restaurado",
+    "clone": "Clonar",
+    "draw": "Draw"
   },
   "deck_shared": {
     "banned": "Banido",
@@ -168,6 +172,14 @@
     "filters": "Filtros",
     "show_filters": "Mostrar filtros"
   },
+  "draw_cards": {
+    "title": "Comprar Cartas",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "shuffle": "Baralhe",
+    "remaining": "restantes",
+    "unique_crypt": "Vampiros Únicos"
+  },
   "filters": {
     "crypt_cards": "Cartões de cripta",
     "star_vampire": "Com vampiro estrela",
@@ -199,7 +211,7 @@
   },
   "footer": {
     "trademark": "Partes da marca registradas são propriedade de Paradox Interactive AB e são usadas com permissão. Todos os direitos reservados. Para mais informações, visite",
-    "copyright": "Copyright: VTES. ",
+    "copyright": "Copyright: VTES Decks. Todos os direitos reservados.",
     "changelog": "Registro de alterações",
     "terms": "Termos",
     "privacy_policy": "Política de privacidade",

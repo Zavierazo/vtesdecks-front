@@ -22,6 +22,20 @@
         'img-popover-mobile': (isMobile$ | async)!
       }" [src]="'/assets' + library.image" [alt]="library.name" />
       }
+      <h6 class="text-white">
+        <ng-container *ngIf="card.number > 0">
+          <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
+        </ng-container>
+        <ng-container *ngIf="card.number > 1">
+          <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
+        </ng-container>
+        <ng-container *ngIf="card.number > 2">
+          <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
+        </ng-container>
+        <ng-container *ngIf="card.number > 3">
+          <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
+        </ng-container>
+      </h6>
     </ng-template>
     <div class="row">
       <div *ngIf="withControls && card.number > 1" class="col-auto">
@@ -33,7 +47,8 @@
         'text-dark': card.number <= 0
       }" aria-hidden="true" (click)="removeCard()"></i>
       </div>
-      <div *ngIf="card.number" class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
+      <div *ngIf="!withDrawProbability && card.number" class="col-auto list-group-item-primary deck_number h-100"
+        [ngClass]="{
       'mt-2': withControls
     }">
         {{ card.number }}
@@ -67,6 +82,11 @@
         <span *ngIf="library.trifle" class="badge rounded-pill bg-light text-black d-none d-sm-inline ms-1 float-start">
           {{ 'vtes.type.trifle' | transloco }}
         </span>
+        <small class="float-end d-none d-sm-inline ms-1" *ngIf="withDrawProbability">
+          <span class="badge rounded-pill bg-light text-info">
+            {{getDrawProbability(1)}}%
+          </span>
+        </small>
         <i *ngIf="library.bloodCost" class="vtes float-end me-1" [ngClass]="{
         'bloodx': library.bloodCost < 0,
         'blood1': library.bloodCost === 1,

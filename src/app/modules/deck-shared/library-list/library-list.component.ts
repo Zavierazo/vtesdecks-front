@@ -1,3 +1,4 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
@@ -13,18 +15,24 @@ import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryCardComponent } from '../library-card/library-card.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
-import { LibraryComponent } from '../library/library.component';
-import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe';
+import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe'
+import { LibraryComponent } from '../library/library.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-list',
-    templateUrl: './library-list.component.html',
-    styleUrls: ['./library-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgFor, NgIf, LibraryComponent, AsyncPipe, TranslocoPipe, LibraryTypeTranslocoPipe]
+  selector: 'app-library-list',
+  templateUrl: './library-list.component.html',
+  styleUrls: ['./library-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgFor,
+    NgIf,
+    LibraryComponent,
+    AsyncPipe,
+    TranslocoPipe,
+    LibraryTypeTranslocoPipe,
+  ],
 })
 export class LibraryListComponent implements OnInit {
   static readonly libraryTypeOrder = [

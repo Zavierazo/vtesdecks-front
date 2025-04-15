@@ -99,7 +99,9 @@
     "bookmark_error": "Something went wrong adding the deck to bookmarks",
     "link_copied": "Link copied to clipboard",
     "clipboard": "Clipboard",
-    "deck_copied": "Deck copied to clipboard"
+    "deck_copied": "Deck copied to clipboard",
+    "export": "Export",
+    "draw": "Draw"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -128,7 +130,9 @@
     "redo_tooltip": "Redo last change",
     "restore_title": "Restore Deck?",
     "restore_message": "Are you sure you want to restore '{{ name }}'?",
-    "restore_successful": "Deck restored"
+    "restore_successful": "Deck restored",
+    "clone": "Clone",
+    "draw": "Draw"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least 12 cards",
@@ -175,6 +179,14 @@
     "back_to_top": "Back to top",
     "filters": "Filters",
     "show_filters": "Show filters"
+  },
+  "draw_cards": {
+    "title": "Draw Cards",
+    "crypt": "Crypt",
+    "library": "Library",
+    "shuffle": "Shuffle",
+    "remaining": "remaining",
+    "unique_crypt": "Unique Vampires"
   },
   "filters": {
     "crypt_cards": "Crypt Cards",
