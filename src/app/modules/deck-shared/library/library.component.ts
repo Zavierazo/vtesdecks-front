@@ -85,7 +85,7 @@ export class LibraryComponent implements OnInit {
   getDrawProbability(copy: number): number {
     const size =
       this.librarySize && this.librarySize > 60 ? this.librarySize : 60
-    return Math.round(drawProbability(copy, size, 4, this.card.number))
+    return Math.round(drawProbability(copy, size, 7, this.card.number))
   }
 
   // Avoid context menu on right click

@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.34.1",
+    "date": "18th April, 2025",
+    "changes": [
+      "Fix Crypt & Library draw probability"
+    ]
+  },
+  {
     "version": "2.34.0",
     "date": "18th April, 2025",
     "changes": [

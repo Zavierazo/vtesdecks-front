@@ -83,7 +83,7 @@ export class CryptComponent implements OnInit {
 
   getDrawProbability(copy: number): number {
     const size = this.cryptSize && this.cryptSize > 12 ? this.cryptSize : 12
-    return Math.round(drawProbability(copy, size, 7, this.card.number))
+    return Math.round(drawProbability(copy, size, 4, this.card.number))
   }
 
   // Avoid context menu on right click
