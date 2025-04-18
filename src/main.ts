@@ -35,6 +35,7 @@ import {
   NgxGoogleAnalyticsModule,
   NgxGoogleAnalyticsRouterModule,
 } from 'ngx-google-analytics'
+import { MarkdownModule } from 'ngx-markdown'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { GlobalErrorHandler } from './app/services/global-error.handler'
@@ -159,6 +160,13 @@ const routes: Routes = [
         (m) => m.STATISTICS_ROUTES,
       ),
   },
+  {
+    path: 'ai',
+    loadChildren: () =>
+      import('./app/modules/vtes-ai/vtes-ai.routes').then(
+        (m) => m.VTES_AI_ROUTES,
+      ),
+  },
   { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
 ]
 
@@ -191,6 +199,7 @@ Sentry.init({
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
+      MarkdownModule.forRoot(),
       CommonModule,
       NgbModule,
       ReactiveFormsModule,

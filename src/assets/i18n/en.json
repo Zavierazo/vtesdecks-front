@@ -390,6 +390,25 @@
     "game_over_today_message": "Game over, come back tomorrow for more!",
     "remaining_lives": "{{ lives }} remaining lives"
   },
+  "vtes_ai": {
+    "title": "VTES AI Chat",
+    "new_chat": "New chat",
+    "must_3_characters": "Must be at least 3 characters",
+    "send_message": "Send message",
+    "history": "History",
+    "examples": "Examples",
+    "example_1": "Can I play a Delaying Tactics after votes and ballots have been cast?",
+    "example_2": "What is the turn sequence?",
+    "example_3": "What happens if i perform a successful political action with Lutz von Hohenzollern?",
+    "capabilities": "Capabilities",
+    "capabilities_1": "Remembers what user said earlier in the conversation",
+    "capabilities_2": "Understand the rules to play the game and all the cards",
+    "capabilities_3": "Trained with all cards rulings and tournament rules",
+    "limitations": "Limitations",
+    "limitation_1": "May occasionally generate incorrect information",
+    "limitation_2": "Although it understands other languages, it is trained with the names and rules in English",
+    "limitation_3": "May not know about recent changes in the cards or the rules"
+  },
   "statistics": {
     "statistics": "Statistics",
     "statistics_by_year": "Statistics by Year",

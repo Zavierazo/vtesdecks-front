@@ -1,0 +1,33 @@
+.vtes-ai {
+  min-height: 70vh;
+}
+
+.ia-send-button {
+  color: #acacbe;
+  z-index: 10;
+}
+
+.chat-item {
+  font-size: 14px;
+  color: #ececf1;
+  cursor: pointer;
+}
+
+.chat-item.active {
+  background-color: #343541;
+}
+
+.chat-item:hover {
+  background-color: #343541;
+}
+
+.history-mobile {
+  position: fixed;
+  top: 50vh;
+  left: -25px;
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}

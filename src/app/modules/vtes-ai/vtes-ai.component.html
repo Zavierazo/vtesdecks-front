@@ -1,0 +1,130 @@
+<div class="d-flex vtes-ai" *transloco="let t; read: 'vtes_ai'">
+
+  @if(!(isMobileOrTablet$ | async)){
+  <nav class="d-flex flex-column flex-shrink-0 bg-black" style="width: 260px;">
+    <div class="p-2">
+      <button class="btn btn-outline-light w-100 d-flex align-items-center gap-3 p-3"
+        style="border-radius: 0.375rem; height: 44px;" (click)="newChat()">
+        <i class="fas fa-plus"></i>
+        <span style="font-size: 14px;">{{ t('new_chat') }}</span>
+      </button>
+    </div>
+
+    <div class="flex-grow-1 overflow-y-auto px-2" style="height: 0;">
+      <div style="font-size: 12px; color: #888; padding: 8px 12px;">History</div>
+      @for (chat of (chats$ | async)?.slice()?.reverse(); track chat.id) {
+      <div class="chat-item mb-1 rounded-1 p-3 d-flex align-items-center gap-3"
+        [class.active]="chat.id === (activeChat$ | async)?.id" (click)="switchActiveChat(chat.id)">
+        <i class="fas fa-message"></i>
+        <span class="text-truncate">{{ chat.title }}</span>
+      </div>
+      }
+    </div>
+  </nav>
+  }
+
+  <main class="flex-grow-1 d-flex flex-column position-relative">
+    <div class="flex-grow-1  px-2 py-4">
+      <h1 class="text-black text-center mb-5 fw-semibold" style="font-size: 2rem;">{{ t('title') }}</h1>
+      <div #scrollFrame class="container overflow-y-auto" style="max-width: 60rem; max-height: 60vh;">
+        @if((activeChat$ | async); as activeChat){
+        @if(activeChat.chat.length === 0){
+        <div class="row g-3">
+          <div class="col-md-4">
+            <h2 class="text-black mb-3 text-center fw-normal fs-6">{{ t('examples') }}</h2>
+            <div class="d-flex flex-column gap-3">
+              <button class="btn btn-outline-secondary w-100 text-start p-3 rounded-3 text-black"
+                (click)="onAsk(t('example_1'))">
+                {{ t('example_1')}} →
+              </button>
+              <button class="btn btn-outline-secondary w-100 text-start p-3 rounded-3 text-black"
+                (click)="onAsk(t('example_2'))">
+                {{ t('example_2')}} →
+              </button>
+              <button class="btn btn-outline-secondary w-100 text-start p-3 rounded-3 text-black"
+                (click)="onAsk(t('example_3'))">
+                {{ t('example_3')}} →
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h2 class="text-black mb-3 text-center fw-normal fs-6">{{ t('capabilities') }}</h2>
+            <div class="d-flex flex-column gap-3">
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('capabilities_1') }}
+              </div>
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('capabilities_2') }}
+              </div>
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('capabilities_3') }}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h2 class="text-black mb-3 text-center fw-normal fs-6">{{ t('limitations') }}</h2>
+            <div class="d-flex flex-column gap-3">
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('limitation_1') }}
+              </div>
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('limitation_2') }}
+              </div>
+              <div class="card bg-light p-3 text-center rounded-3">
+                {{ t('limitation_3') }}
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+        @else{
+
+        @for(message of activeChat.chat; track $index){
+        @if(message.type === 'HUMAN'){
+        <div class="row justify-content-end" #item>
+          <div class="card bg-light p-3 py-2 text-center w-auto rounded-5">
+            {{ message.content }}
+          </div>
+        </div>
+        }@else {
+        <div class="row p-3 text-black" [innerHTML]="message.content | markdown | async" #item>
+        </div>
+        }
+        }
+        @if(loading$ | async){
+        <div class="row justify-content-start" #item>
+          <app-loading class="w-auto" [size]="2"></app-loading>
+        </div>
+        }
+        }
+        }
+      </div>
+    </div>
+
+    <div class="p-4 position-relative">
+      <div class="mx-auto position-relative" style="max-width: 60rem;">
+        <form [formGroup]="chatForm" (ngSubmit)="onAsk(chatForm.value.question)">
+          <div class="input-group">
+            <input formControlName="question" type="text"
+              class="form-control px-4 py-3 bg-light text-black border-1 rounded-4" [placeholder]="t('send_message')" />
+            <button class="ia-send-button btn position-absolute end-0 top-50 translate-middle-y me-2" type="submit">
+              <i class="bi bi-send"></i>
+            </button>
+          </div>
+          @if(question?.invalid && (question?.dirty || question?.touched)){
+          <div>
+            @if(question?.hasError('minlength')){
+            <div class="invalid-feedback d-block">
+              <i class="bi bi-x-circle-fill"></i> {{ t('must_3_characters') }}
+            </div>
+            }
+          </div>
+          }
+          <div class="text-center mt-2 text-muted" style="font-size: 0.75rem;">
+            Powered by <a href="https://chat.openai.com/" target="_blank">OpenAI</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>

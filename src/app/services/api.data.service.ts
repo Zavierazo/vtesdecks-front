@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
+import { ApiAiAskRequest } from '../models/api-ai-ask-request'
+import { ApiAiAskResponse } from '../models/api-ai-ask-response'
 import { ApiChangelog } from '../models/api-changelog'
 import { ApiComment } from '../models/api-comment'
 import { ApiContact } from '../models/api-contact'
@@ -57,6 +59,7 @@ export class ApiDataService {
   private readonly changelogPath = '/changelog'
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
+  private readonly aiAskPath = '/ai/ask'
 
   constructor(
     private httpClient: HttpClient,
@@ -421,6 +424,13 @@ export class ApiDataService {
     return this.httpClient.get<string>(
       `${environment.api.baseUrl}${this.deckDetailPath}${id}/export?type=BCN_CRISIS`,
       { responseType: 'text' as 'json' },
+    )
+  }
+
+  aiAsk(request: ApiAiAskRequest): Observable<ApiAiAskResponse> {
+    return this.httpClient.post<ApiAiAskResponse>(
+      `${environment.api.baseUrl}${this.aiAskPath}`,
+      request,
     )
   }
 }
