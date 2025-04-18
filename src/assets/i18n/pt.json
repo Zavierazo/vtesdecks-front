@@ -370,6 +370,25 @@
     "game_over_today_message": "Fim do jogo, volte amanhã para mais!",
     "remaining_lives": "{{ lives }} vidas restantes"
   },
+  "vtes_ai": {
+    "title": "VTES AI Chat",
+    "new_chat": "Novo chat",
+    "must_3_characters": "Deve ter pelo menos 3 caracteres",
+    "send_message": "Enviar mensagem",
+    "history": "Histórico",
+    "examples": "Exemplos",
+    "example_1": "Posso jogar Táticas de Atraso depois de votos terem sido lançadas?",
+    "example_2": "Qual é a sequência de turnos?",
+    "example_3": "O que acontece se eu realizo uma política de sucesso com Lutz von Hohenzollern?",
+    "capabilities": "Capacidades",
+    "capabilities_1": "Lembre-se do que o usuário disse anteriormente na conversa",
+    "capabilities_2": "Compreende as regras para jogar o jogo e todas as cartas",
+    "capabilities_3": "Treinado com todas as regras de cartas e regras de torneio",
+    "limitations": "Limitações",
+    "limitation_1": "Pode gerar informações incorretamente ocasionalmente",
+    "limitation_2": "Embora entenda outros idiomas, ele é treinado com os nomes e regras em inglês",
+    "limitation_3": "Não conheça as mudanças recentes nas cartas ou as regras"
+  },
   "statistics": {
     "statistics": "Estadísticas",
     "statistics_by_year": "Estadísticas por ano",

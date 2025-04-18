@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.33.0",
+    "date": "18th April, 2025",
+    "changes": [
+      "Add VTES AI Chat (currently in beta testing)"
+    ]
+  },
+  {
     "version": "2.32.0",
     "date": "14th April, 2025",
     "changes": [
