@@ -36,10 +36,20 @@
               <i class="bi bi-eye"></i>
               {{ t('view') }}
             </a>
+            <button type="button" class="btn btn-primary m-2" (click)="onDraw()" gaEvent="click"
+              gaCategory="clone_in_builder">
+              <i class="bi bi-dice-6 me-2"></i>
+              {{ t('draw') }}
+            </button>
             <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
               (click)="shareDeck()">
               <i class="bi bi-share-fill"></i>
               {{ t('share') }}
+            </button>
+            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
+              <i class="bi bi-copy me-2"></i>
+              {{ t('clone') }}
             </button>
             <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
               <i class="bi bi-save-fill"></i>

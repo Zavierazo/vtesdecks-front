@@ -1,14 +1,32 @@
 import { Clipboard } from '@angular/cdk/clipboard'
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
-import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import {
+  NgbDropdown,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
@@ -19,43 +37,43 @@ import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-compo
 import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
+import { CryptComponent } from '../deck-shared/crypt/crypt.component'
+import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { environment } from './../../../environments/environment'
 import { ApiClanStat } from './../../models/api-clan-stat'
 import { CryptService } from './../../state/crypt/crypt.service'
 import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
 import { LibraryService } from './../../state/library/library.service'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
+import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
 import { ImportVdbComponent } from './import-vdb/import-vdb.component'
 import { LibraryBuilderComponent } from './library-builder/library-builder.component'
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
-import { CryptComponent } from '../deck-shared/crypt/crypt.component';
-import { LibraryListComponent } from '../deck-shared/library-list/library-list.component';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-builder',
-    templateUrl: './builder.component.html',
-    styleUrls: ['./builder.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        TranslocoDirective,
-        ReactiveFormsModule,
-        NgbDropdown,
-        NgbDropdownToggle,
-        NgbDropdownMenu,
-        NgbDropdownButtonItem,
-        NgbDropdownItem,
-        NgIf,
-        RouterLink,
-        NgbTooltip,
-        NgFor,
-        NgClass,
-        CryptComponent,
-        LibraryListComponent,
-        AsyncPipe,
-        TranslocoPipe,
-    ],
+  selector: 'app-builder',
+  templateUrl: './builder.component.html',
+  styleUrls: ['./builder.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgIf,
+    RouterLink,
+    NgbTooltip,
+    NgFor,
+    NgClass,
+    CryptComponent,
+    LibraryListComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   form!: FormGroup
@@ -330,6 +348,20 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   trackByFn(_: number, item: ApiCard) {
     return item.id
+  }
+
+  onOpenInBuilder(): void {
+    this.deckBuilderService.clone()
+    this.onDeckLoaded()
+  }
+
+  onDraw(): void {
+    const modalRef = this.modalService.open(DrawCardsComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
   }
 
   private initForm() {

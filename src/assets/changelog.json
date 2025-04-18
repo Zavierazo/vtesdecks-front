@@ -1,9 +1,20 @@
 [
   {
-    "version": "2.33.0",
+    "version": "2.34.0",
     "date": "18th April, 2025",
     "changes": [
       "Add VTES AI Chat (currently in beta testing)"
+    ]
+  },
+  {
+    "version": "2.33.0",
+    "date": "15th April, 2025",
+    "changes": [
+      "Unify Export Deck in a dropdown menu",
+      "Add Export Deck in Deck Builder",
+      "Add Clone Deck in Deck Builder",
+      "Add Draw Cards tool",
+      "Add app version to footer"
     ]
   },
   {

@@ -1,5 +1,5 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { NgxSliderModule } from '@angular-slider/ngx-slider'
+import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,22 +9,33 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoDirective } from '@jsverse/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
+import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
-import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback';
+import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-builder-filter',
-    templateUrl: './crypt-builder-filter.component.html',
-    styleUrls: ['./crypt-builder-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, ClanFilterComponent, DisciplineFilterComponent, NgxSliderModule, NgFor, AsyncPipe, TitleCasePipe, TranslocoFallbackPipe]
+  selector: 'app-crypt-builder-filter',
+  templateUrl: './crypt-builder-filter.component.html',
+  styleUrls: ['./crypt-builder-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgIf,
+    ReactiveFormsModule,
+    ClanFilterComponent,
+    DisciplineFilterComponent,
+    NgxSliderModule,
+    NgFor,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslocoFallbackPipe,
+  ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   @Input() printOnDemand?: boolean

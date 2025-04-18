@@ -118,28 +118,29 @@
                   </button>
                 </div>
                 <div class="col d-grid">
-                  <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" target="_blank" gaEvent="click"
-                    gaCategory="deck_in_builder" *isLogged="true">
+                  <button type="button" class="btn btn-info" (click)="onDraw()" gaEvent="click" gaCategory="draw">
+                    <i class="bi bi-dice-6 me-2"></i><span>{{ t('draw') }}</span>
+                  </button>
+                </div>
+                <div class="col d-grid" *isLogged="true">
+                  <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" gaEvent="click"
+                    gaCategory="clone_in_deck">
                     <i class="bi bi-copy me-2"></i><span>{{ t('clone') }}</span>
                   </a>
                 </div>
-                <div class="col d-grid">
-                  <a type="button" class="btn btn-secondary" [href]="exportUrl+'?type=LACKEY'" target="_blank"
-                    gaEvent="export" gaCategory="lackey">
-                    <i class="bi bi-download me-2"></i><span>Lackey</span>
-                  </a>
-                </div>
-                <div class="col d-grid">
-                  <a type="button" class="btn btn-secondary" [href]="exportUrl+'?type=JOL'" target="_blank"
-                    gaEvent="export" gaCategory="jol">
-                    <i class="bi bi-download me-2"></i><span>JOL</span>
-                  </a>
-                </div>
-                <div class="col d-grid">
-                  <a type="button" class="btn btn-secondary" [href]="exportUrl+'?type=BCN_CRISIS'" target="_blank"
-                    gaEvent="export" gaCategory="bcnCrisis">
-                    <i class="bi bi-download me-2"></i><span>BCN&nbsp;Crisis</span>
-                  </a>
+                <div ngbDropdown class="col d-grid">
+                  <button id="dropdownExport" type="button" class="btn btn-secondary" ngbDropdownToggle>
+                    <i class="bi bi-download me-2"></i>
+                    {{ t('export') }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownExport">
+                    <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=LACKEY'"
+                      target="_blank" gaEvent="export" gaCategory="lackey">Lackey</a>
+                    <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=JOL'"
+                      target="_blank" gaEvent="export" gaCategory="jol">JOL</a>
+                    <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=BCN_CRISIS'"
+                      target="_blank" gaEvent="export" gaCategory="bcnCrisis">BCN&nbsp;Crisis</a>
+                  </div>
                 </div>
                 <div class="col d-grid">
                   <a type="button" class="btn btn-secondary" (click)="onCopyDeckToCLipboard()" target="_blank"

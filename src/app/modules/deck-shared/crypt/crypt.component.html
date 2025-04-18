@@ -48,7 +48,8 @@
             'text-dark': card.number <= 0
           }" aria-hidden="true" (click)="removeCard()"></i>
         </div>
-        <div *ngIf="card.number" class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
+        <div *ngIf="!withDrawProbability && card.number" class="col-auto list-group-item-primary deck_number h-100"
+          [ngClass]="{
           'mt-2': withControls
         }">
           {{ card.number }}
@@ -75,11 +76,6 @@
             }
           </div>
           }
-          <small class="float-start ms-1 d-none d-sm-inline">
-            <span class="badge rounded-pill bg-light text-black crypt_group">
-              {{ crypt.group == -1 ? "any" : crypt.group }}
-            </span>
-          </small>
           <span *ngIf="crypt.banned" class="ms-1 float-start badge text-bg-danger">
             {{ 'deck_shared.banned' | transloco }}
           </span>
@@ -92,6 +88,16 @@
           <ng-container *ngFor="let discipline of crypt.disciplineIcons">
             <i class="vtes" [ngClass]="discipline"></i>
           </ng-container>
+          <small class="float-end d-none d-sm-inline ms-1" *ngIf="withDrawProbability">
+            <span class="badge rounded-pill bg-light text-info">
+              {{getDrawProbability(1)}}%
+            </span>
+          </small>
+          <small class="float-end d-none d-sm-inline">
+            <span class="badge rounded-pill bg-light text-black crypt_group">
+              {{ crypt.group == -1 ? "any" : "G"+crypt.group }}
+            </span>
+          </small>
           <i class="vtes float-end" [ngClass]="crypt.clanIcon"></i>
           <i *ngIf="crypt.adv" class="vtes float-end advanced"></i>
           <span class="badge rounded-pill bg-danger float-end">
