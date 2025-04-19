@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Observable, of, tap } from 'rxjs'
+import { catchError, finalize, Observable, of, tap } from 'rxjs'
 import { ApiAiAskRequest } from '../../models/api-ai-ask-request'
 import { ApiAiAskResponse } from '../../models/api-ai-ask-response'
 import { ApiDataService } from './../../services/api.data.service'
@@ -47,7 +47,10 @@ export class VtesAiService {
     const request: ApiAiAskRequest = {
       chatHistory:
         chat?.chat.filter(
-          (c) => c.type != 'AI' || !c.content.startsWith('Quota exceeded'),
+          (c) =>
+            c.type != 'AI' ||
+            !c.content.startsWith('Quota exceeded') ||
+            !c.content.startsWith('Unexpected error'),
         ) ?? [],
       question,
     }
@@ -69,8 +72,21 @@ export class VtesAiService {
             },
           ],
         }))
-        this.store.setLoading()
       }),
+      catchError(() => {
+        this.store.update(chat.id, (chat) => ({
+          ...chat,
+          chat: [
+            ...chat.chat,
+            {
+              type: 'AI',
+              content: 'Unexpected error. Please try again later.',
+            },
+          ],
+        }))
+        return of()
+      }),
+      finalize(() => this.store.setLoading()),
     )
   }
 }
