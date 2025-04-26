@@ -49,6 +49,10 @@ export class LibraryComponent implements OnInit {
 
   @Input() disablePopover = false
 
+  @Input() maxNumber?: number
+
+  @Input() overrideImage?: string
+
   @Output() cardAdded = new EventEmitter<number>()
 
   @Output() cardRemoved = new EventEmitter<number>()
@@ -58,9 +62,9 @@ export class LibraryComponent implements OnInit {
   isMobile$!: Observable<boolean>
 
   constructor(
-    private libraryQuery: LibraryQuery,
-    private libraryService: LibraryService,
-    private mediaService: MediaService,
+    private readonly libraryQuery: LibraryQuery,
+    private readonly libraryService: LibraryService,
+    private readonly mediaService: MediaService,
   ) {}
 
   ngOnInit() {

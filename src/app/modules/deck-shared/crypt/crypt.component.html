@@ -12,26 +12,27 @@
     <img #i18nImage [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="'/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
+      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
       (error)="i18nImage.src='/assets' + crypt.image" />
     }
     @else{
-    <img [ngClass]="{
+    <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="'/assets' + crypt.image" [alt]="crypt.name" />
+      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.image" [alt]="crypt.name"
+      (error)="image.src='/assets' + crypt.image" />
     }
     <h6 class="text-white">
-      <ng-container *ngIf="card.number > 0">
+      <ng-container *ngIf="cryptSize && card.number > 0">
         <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
       </ng-container>
-      <ng-container *ngIf="card.number > 1">
+      <ng-container *ngIf="cryptSize && card.number > 1">
         <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
       </ng-container>
-      <ng-container *ngIf="card.number > 2">
+      <ng-container *ngIf="cryptSize && card.number > 2">
         <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
       </ng-container>
-      <ng-container *ngIf="card.number > 3">
+      <ng-container *ngIf="cryptSize && card.number > 3">
         <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
       </ng-container>
     </h6>
@@ -48,11 +49,11 @@
             'text-dark': card.number <= 0
           }" aria-hidden="true" (click)="removeCard()"></i>
         </div>
-        <div *ngIf="!withDrawProbability && card.number" class="col-auto list-group-item-primary deck_number h-100"
-          [ngClass]="{
+        <div *ngIf="!withDrawProbability  && (card.number || maxNumber)"
+          class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
           'mt-2': withControls
         }">
-          {{ card.number }}
+          {{ card.number }}<span *ngIf="maxNumber">/{{ maxNumber }}</span>
         </div>
         <div *ngIf="withControls" class="col-auto">
           <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>

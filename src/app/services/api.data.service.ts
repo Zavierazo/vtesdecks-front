@@ -11,6 +11,8 @@ import { ApiCrypt } from '../models/api-crypt'
 import { ApiDecks } from '../models/api-decks'
 import { ApiHistoricStatistic } from '../models/api-historic-statistic'
 import { ApiHome } from '../models/api-home'
+import { ApiProxy } from '../models/api-proxy'
+import { ApiProxyCardOption } from '../models/api-proxy-card-option'
 import { ApiResetPassword } from '../models/api-reset-password'
 import { ApiResponse } from '../models/api-response'
 import { ApiSet } from '../models/api-set'
@@ -60,6 +62,8 @@ export class ApiDataService {
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
   private readonly aiAskPath = '/ai/ask'
+  private readonly proxyPath = '/proxy'
+  private readonly proxyOptionsPath = '/proxy/options/'
 
   constructor(
     private httpClient: HttpClient,
@@ -431,6 +435,26 @@ export class ApiDataService {
     return this.httpClient.post<ApiAiAskResponse>(
       `${environment.api.baseUrl}${this.aiAskPath}`,
       request,
+    )
+  }
+
+  generateProxy(request: ApiProxy): Observable<Blob> {
+    return this.httpClient.post(
+      `${environment.api.baseUrl}${this.proxyPath}`,
+      request,
+      { responseType: 'blob' },
+    )
+  }
+
+  getProxyOption(id: number, set: string): Observable<ApiProxyCardOption> {
+    return this.httpClient.get<ApiProxyCardOption>(
+      `${environment.api.baseUrl}${this.proxyOptionsPath}${id}/${set}`,
+    )
+  }
+
+  getProxyOptions(id: number): Observable<ApiProxyCardOption[]> {
+    return this.httpClient.get<ApiProxyCardOption[]>(
+      `${environment.api.baseUrl}${this.proxyOptionsPath}${id}`,
     )
   }
 }

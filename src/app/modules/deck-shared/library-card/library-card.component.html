@@ -65,10 +65,10 @@
           <i *ngFor="let clanIcon of card.clanIcons" class="vtes float-end me-1" [ngClass]="clanIcon"></i>
           <p><strong>{{ t('sets') }}:&nbsp;</strong>
             <span class="badge text-bg-secondary me-1" *ngFor="let set of card.sets" #tooltip="ngbTooltip"
-              [ngbTooltip]="setContent" triggers="mouseenter:mouseleave" (click)="tooltip.open()">
+              [ngbTooltip]="setContent" triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()">
               {{ set }}&nbsp;
               <ng-template #setContent>
-                <app-set-tooltip [set]="set"></app-set-tooltip>
+                <app-set-tooltip [cardId]="card.id" [set]="set"></app-set-tooltip>
               </ng-template>
             </span>
           </p>

@@ -1,24 +1,31 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import { Component, Input, OnInit } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { Observable } from 'rxjs'
+import { ApiProxyCardOption } from '../../../models/api-proxy-card-option'
+import { MediaService } from '../../../services/media.service'
 import { ApiDataService } from './../../../services/api.data.service'
-import { NgIf } from '@angular/common';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-set-tooltip',
-    templateUrl: './set-tooltip.component.html',
-    styleUrls: ['./set-tooltip.component.scss'],
-    imports: [NgIf],
+  selector: 'app-set-tooltip',
+  templateUrl: './set-tooltip.component.html',
+  styleUrls: ['./set-tooltip.component.scss'],
+  imports: [NgClass, AsyncPipe],
 })
 export class SetTooltipComponent implements OnInit {
+  @Input() cardId!: number
   @Input() set!: string
+  @Input() proxySetOption$!: Observable<ApiProxyCardOption>
+  isMobile$ = this.mediaService.observeMobile()
   name!: string
   releaseYear!: number
 
   constructor(
-    private apiDataService: ApiDataService,
-    private translocoService: TranslocoService,
+    private readonly apiDataService: ApiDataService,
+    private readonly translocoService: TranslocoService,
+    private readonly mediaService: MediaService,
   ) {}
 
   ngOnInit() {
@@ -38,5 +45,12 @@ export class SetTooltipComponent implements OnInit {
           this.releaseYear = new Date(setInfo.releaseDate).getFullYear()
         })
     }
+
+    this.proxySetOption$ = this.apiDataService
+      .getProxyOption(
+        this.cardId,
+        abbrev.startsWith('Promo-') ? 'Promo' : abbrev,
+      )
+      .pipe(untilDestroyed(this))
   }
 }

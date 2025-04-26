@@ -48,6 +48,10 @@ export class CryptComponent implements OnInit {
 
   @Input() disablePopover = false
 
+  @Input() maxNumber?: number
+
+  @Input() overrideImage?: string | null
+
   @Output() cardAdded = new EventEmitter<number>()
 
   @Output() cardRemoved = new EventEmitter<number>()

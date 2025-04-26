@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,30 +8,41 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
+import { RouterLink } from '@angular/router'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { ApiDataService } from '../../../services/api.data.service'
 import { Shop, getShop } from '../../../utils/shops'
+import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
+import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 import { ApiLibrary } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
-import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component';
-import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
-import { RouterLink } from '@angular/router';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-card',
-    templateUrl: './library-card.component.html',
-    styleUrls: ['./library-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgFor, NgClass, NgbTooltip, SetTooltipComponent, RulingTextComponent, NgxGoogleAnalyticsModule, RouterLink, AsyncPipe, TranslocoPipe]
+  selector: 'app-library-card',
+  templateUrl: './library-card.component.html',
+  styleUrls: ['./library-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgIf,
+    NgFor,
+    NgClass,
+    NgbTooltip,
+    SetTooltipComponent,
+    RulingTextComponent,
+    NgxGoogleAnalyticsModule,
+    RouterLink,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
   @Input() cardList!: ApiLibrary[]
@@ -43,9 +55,9 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
 
   constructor(
     public modal: NgbActiveModal,
-    private apiDataService: ApiDataService,
-    private mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private readonly apiDataService: ApiDataService,
+    private readonly mediaService: MediaService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -124,6 +136,10 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchPreconstructedDecks()
   }
 
+  getShopInfo(code: string): Shop | undefined {
+    return getShop(code)
+  }
+
   private fetchShops(): void {
     if (this.cardList[this.index].printOnDemand) {
       this.shops$ = this.apiDataService
@@ -150,9 +166,5 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
       })
       .pipe(untilDestroyed(this))
     this.changeDetectorRef.markForCheck()
-  }
-
-  getShopInfo(code: string): Shop | undefined {
-    return getShop(code)
   }
 }
