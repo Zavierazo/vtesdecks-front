@@ -52,6 +52,7 @@ import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.compone
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
+import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
 
 @UntilDestroy()
 @Component({
@@ -108,20 +109,20 @@ export class DeckComponent implements OnInit, AfterViewInit {
   isRated = false
 
   constructor(
-    private route: ActivatedRoute,
-    private titleService: Title,
-    private deckQuery: DeckQuery,
-    private authQuery: AuthQuery,
-    private toastService: ToastService,
-    private apiDataService: ApiDataService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private previousRouteService: PreviousRouteService,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-    private cryptQuery: CryptQuery,
-    private router: Router,
-    private clipboard: Clipboard,
-    private translocoService: TranslocoService,
+    private readonly route: ActivatedRoute,
+    private readonly titleService: Title,
+    private readonly deckQuery: DeckQuery,
+    private readonly authQuery: AuthQuery,
+    private readonly toastService: ToastService,
+    private readonly apiDataService: ApiDataService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly previousRouteService: PreviousRouteService,
+    private readonly mediaService: MediaService,
+    private readonly modalService: NgbModal,
+    private readonly cryptQuery: CryptQuery,
+    private readonly router: Router,
+    private readonly clipboard: Clipboard,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
@@ -270,6 +271,19 @@ export class DeckComponent implements OnInit, AfterViewInit {
       centered: true,
       scrollable: true,
     })
+    modalRef.componentInstance.cards = [
+      ...(this.deckQuery.getDeck()?.crypt ?? []),
+      ...(this.deckQuery.getDeck()?.library ?? []),
+    ]
+  }
+
+  onPrint(): void {
+    const modalRef = this.modalService.open(PrintProxyComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.title = this.deckQuery.getDeck()?.name
     modalRef.componentInstance.cards = [
       ...(this.deckQuery.getDeck()?.crypt ?? []),
       ...(this.deckQuery.getDeck()?.library ?? []),

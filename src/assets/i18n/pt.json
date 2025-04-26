@@ -148,7 +148,8 @@
     "print_on_demand": "Impressão em demanda",
     "promo": "Promo",
     "private_deck": "Mazo privado",
-    "restore_deck": "Restaurar mazo"
+    "restore_deck": "Restaurar mazo",
+    "print": "Imprimir"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
@@ -179,6 +180,15 @@
     "shuffle": "Baralhe",
     "remaining": "restantes",
     "unique_crypt": "Vampiros Únicos"
+  },
+  "print_proxy": {
+    "title": "Criar PDF de Proxy",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "print": "Imprimir",
+    "select_arial": "Selecione a imagem proxy",
+    "select_all": "Selecionar Todos",
+    "reset": "Repor"
   },
   "filters": {
     "crypt_cards": "Cartões de cripta",

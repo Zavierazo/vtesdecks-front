@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.35.0",
+    "date": "26th April, 2025",
+    "changes": [
+      "Add Proxy Print tool",
+      "Add Proxy Images to set tooltip"
+    ]
+  },
+  {
     "version": "2.34.1",
     "date": "18th April, 2025",
     "changes": [

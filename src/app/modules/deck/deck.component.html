@@ -122,6 +122,11 @@
                     <i class="bi bi-dice-6 me-2"></i><span>{{ t('draw') }}</span>
                   </button>
                 </div>
+                <div class="col d-grid">
+                  <button type="button" class="btn btn-info" (click)="onPrint()" gaEvent="click" gaCategory="print">
+                    <i class="bi bi-printer me-2"></i><span>{{ 'deck_shared.print' | transloco }}</span>
+                  </button>
+                </div>
                 <div class="col d-grid" *isLogged="true">
                   <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" gaEvent="click"
                     gaCategory="clone_in_deck">

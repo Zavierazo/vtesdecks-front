@@ -39,6 +39,7 @@ import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
+import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
 import { environment } from './../../../environments/environment'
 import { ApiClanStat } from './../../models/api-clan-stat'
 import { CryptService } from './../../state/crypt/crypt.service'
@@ -361,6 +362,16 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       centered: true,
       scrollable: true,
     })
+    modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
+  }
+
+  onPrint(): void {
+    const modalRef = this.modalService.open(PrintProxyComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.title = this.deckBuilderQuery.getValue().name
     modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
   }
 

@@ -1,2 +1,9 @@
 <strong>{{name}}</strong>
-<span *ngIf="releaseYear">-&nbsp;{{ releaseYear }}</span>
+@if(releaseYear){
+<span>-&nbsp;{{ releaseYear }}</span>
+}
+@if( proxySetOption$ | async; as proxySetOption){ <img [ngClass]="{
+  'set-img-popover': !(isMobile$ | async)!,
+  'set-img-popover-mobile': (isMobile$ | async)!
+}" [src]="proxySetOption.imageUrl" [alt]="proxySetOption.setName" />
+}

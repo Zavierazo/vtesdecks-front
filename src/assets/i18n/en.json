@@ -156,7 +156,8 @@
     "print_on_demand": "Print on Demand",
     "promo": "Promo",
     "private_deck": "Private Deck",
-    "restore_deck": "Restore Deck"
+    "restore_deck": "Restore Deck",
+    "print": "Print"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
@@ -187,6 +188,15 @@
     "shuffle": "Shuffle",
     "remaining": "remaining",
     "unique_crypt": "Unique Vampires"
+  },
+  "print_proxy": {
+    "title": "Create Card Proxy PDF",
+    "crypt": "Crypt",
+    "library": "Library",
+    "print": "Print",
+    "select_arial": "Select proxy image",
+    "select_all": "Select All",
+    "reset": "Reset"
   },
   "filters": {
     "crypt_cards": "Crypt Cards",

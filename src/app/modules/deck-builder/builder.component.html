@@ -41,6 +41,11 @@
               <i class="bi bi-dice-6 me-2"></i>
               {{ t('draw') }}
             </button>
+            <button type="button" class="btn btn-primary m-2" (click)="onPrint()" gaEvent="click"
+              gaCategory="clone_in_builder">
+              <i class="bi bi-printer me-2"></i>
+              {{ 'deck_shared.print' | transloco }}
+            </button>
             <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
               (click)="shareDeck()">
               <i class="bi bi-share-fill"></i>
