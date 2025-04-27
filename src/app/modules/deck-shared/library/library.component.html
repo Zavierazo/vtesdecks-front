@@ -48,7 +48,7 @@
         'text-dark': card.number <= 0
       }" aria-hidden="true" (click)="removeCard()"></i>
       </div>
-      <div *ngIf="!withDrawProbability && (maxNumber || maxNumber)"
+      <div *ngIf="!withDrawProbability && (card.number || maxNumber)"
         class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
       'mt-2': withControls
     }">
