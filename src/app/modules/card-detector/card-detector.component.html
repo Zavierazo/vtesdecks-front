@@ -1,0 +1,7 @@
+<app-camera (pictureTaken)="handleImage($event)"></app-camera>
+
+@if(webcamImage){
+<div class="snapshot">
+  <img [src]="webcamImage.imageAsDataUrl" />
+</div>
+}

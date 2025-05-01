@@ -167,6 +167,14 @@ const routes: Routes = [
         (m) => m.VTES_AI_ROUTES,
       ),
   },
+  {
+    path: 'card-scanner',
+    loadChildren: () =>
+      import('./app/modules/card-detector/card-detector.routes').then(
+        (m) => m.CARD_DETECTOR_ROUTES,
+      ),
+  },
+
   { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
 ]
 
