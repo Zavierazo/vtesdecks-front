@@ -1,5 +1,7 @@
 import { ApiI18n } from './api-i18n'
 
+export type CryptSortBy = keyof ApiCrypt | 'relevance'
+
 export interface ApiCrypt {
   id: number
   name: string

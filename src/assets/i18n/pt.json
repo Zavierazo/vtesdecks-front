@@ -45,6 +45,7 @@
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
+    "relevance": "Relevância",
     "name": "Nome",
     "capacity": "Capacidade",
     "clan": "Clãs",
@@ -291,6 +292,7 @@
   },
   "library_section": {
     "card_name": "Nome do cartão",
+    "relevance": "Relevância",
     "name": "Nome",
     "type": "Tipo",
     "deck_popularity": "Popularidade do mazo",

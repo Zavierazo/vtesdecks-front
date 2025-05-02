@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.36.0",
+    "date": "2nd March, 2025",
+    "changes": [
+      "Add Relevance order to Crypt & Library in Deck Builder"
+    ]
+  },
+  {
     "version": "2.35.0",
     "date": "26th April, 2025",
     "changes": [

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core'
 import { Observable, map } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
-import { ApiCrypt } from './../../models/api-crypt'
+import { ApiClanStat } from '../../models/api-clan-stat'
+import { ApiCrypt, CryptSortBy } from './../../models/api-crypt'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { CryptStore } from './crypt.store'
+import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +29,7 @@ export class CryptQuery {
     sortByOrder,
   }: {
     filterBy?: (entity: ApiCrypt) => boolean
-    sortBy?: keyof ApiCrypt
+    sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
   }): ApiCrypt[] {
     return this.store.getEntities(filterBy, sortBy, sortByOrder)
@@ -39,13 +40,21 @@ export class CryptQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    crypt,
   }: {
     limitTo?: number
     filterBy?: (entity: ApiCrypt) => boolean
-    sortBy?: keyof ApiCrypt
+    sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
+    crypt?: CryptStats
   }): Observable<ApiCrypt[]> {
-    return this.store.selectEntities(limitTo, filterBy, sortBy, sortByOrder)
+    return this.store.selectEntities(
+      limitTo,
+      filterBy,
+      sortBy,
+      sortByOrder,
+      crypt,
+    )
   }
 
   selectByName(name: string, limit: number = 5): Observable<ApiCrypt[]> {
@@ -110,6 +119,40 @@ export class CryptQuery {
           .sort(),
       ),
     ]
+  }
+
+  getClans(cards: ApiCard[]): ApiClanStat[] {
+    const clans: ApiClanStat[] = []
+    cards.forEach((card) => {
+      const crypt = this.store.getEntity(card.id)
+      if (crypt) {
+        const clan = clans.find((c) => c.clans[0] === crypt.clan)
+        if (clan) {
+          clan.number++
+        } else {
+          clans.push({
+            clans: [crypt.clan],
+            number: 1,
+          })
+        }
+      }
+    })
+    clans.sort((a, b) => b.number - a.number)
+    return clans
+  }
+
+  getSects(cards: ApiCard[]): string[] {
+    const sects: string[] = []
+    cards.forEach((card) => {
+      const crypt = this.store.getEntity(card.id)
+      if (crypt?.sect) {
+        const sect = sects.find((sect) => sect === crypt.sect)
+        if (!sect) {
+          sects.push(crypt.sect)
+        }
+      }
+    })
+    return sects
   }
 
   getDisciplines(cards: ApiCard[]): ApiDisciplineStat[] {

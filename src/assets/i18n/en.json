@@ -45,6 +45,7 @@
   },
   "crypt_section": {
     "card_name": "Card Name",
+    "relevance": "Relevance",
     "name": "Name",
     "capacity": "Capacity",
     "clan": "Clan",
@@ -299,6 +300,7 @@
   },
   "library_section": {
     "card_name": "Card Name",
+    "relevance": "Relevance",
     "name": "Name",
     "type": "Type",
     "deck_popularity": "Deck Popularity",
