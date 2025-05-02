@@ -1,9 +1,20 @@
 import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
+import { ApiClanStat } from '../../models/api-clan-stat'
+import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { LocalStorageService } from '../../services/local-storage.service'
-import { ApiLibrary } from './../../models/api-library'
+import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
 
+export interface LibraryStats {
+  total: number
+  disciplines: ApiDisciplineStat[]
+  disciplineFactor?: number
+  cryptTotal: number
+  cryptClans: ApiClanStat[]
+  cryptDisciplines: ApiDisciplineStat[]
+  cryptSects: string[]
+}
 export interface LibraryState {
   locale?: string
 }
@@ -63,9 +74,13 @@ export class LibraryStore {
   selectEntities(
     limitTo?: number,
     filterFn?: (entity: ApiLibrary) => boolean,
-    sortBy?: keyof ApiLibrary,
+    sortBy?: LibrarySortBy,
     sortByOrder?: 'asc' | 'desc',
+    stats?: LibraryStats,
   ): Observable<ApiLibrary[]> {
+    if (stats) {
+      stats.disciplineFactor = this.getDisciplineFactor(stats)
+    }
     return this.entities$.pipe(
       map((current) => {
         let entities = [...current]
@@ -73,16 +88,24 @@ export class LibraryStore {
           entities = entities.filter(filterFn)
         }
         if (sortBy) {
-          entities = entities.sort((a, b) => {
-            if (a[sortBy] === b[sortBy]) {
-              return 0
-            }
-            if (sortByOrder === 'asc') {
-              return a[sortBy] > b[sortBy] ? 1 : -1
-            } else {
-              return a[sortBy] < b[sortBy] ? 1 : -1
-            }
-          })
+          if (sortBy === 'relevance') {
+            entities = entities.sort((a, b) => {
+              const aWeight = this.getRelevanceWeight(a, stats)
+              const bWeight = this.getRelevanceWeight(b, stats)
+              if (aWeight === bWeight) {
+                return this.sort(a['name'], b['name'], 'asc')
+              }
+              if (sortByOrder === 'asc') {
+                return aWeight > bWeight ? 1 : -1
+              } else {
+                return aWeight < bWeight ? 1 : -1
+              }
+            })
+          } else {
+            entities = entities.sort((a, b) =>
+              this.sort(a[sortBy], b[sortBy], sortByOrder),
+            )
+          }
         }
         if (limitTo) {
           entities = entities.slice(0, limitTo)
@@ -100,24 +123,17 @@ export class LibraryStore {
 
   getEntities(
     filterFn?: (entity: ApiLibrary) => boolean,
-    sortBy?: keyof ApiLibrary,
+    sortBy?: LibrarySortBy,
     sortByOrder?: 'asc' | 'desc',
   ): ApiLibrary[] {
     let entities = this.entities()
     if (filterFn) {
       entities = entities.filter(filterFn)
     }
-    if (sortBy) {
-      entities = entities.sort((a, b) => {
-        if (a[sortBy] === b[sortBy]) {
-          return 0
-        }
-        if (sortByOrder === 'asc') {
-          return a[sortBy] > b[sortBy] ? 1 : -1
-        } else {
-          return a[sortBy] < b[sortBy] ? 1 : -1
-        }
-      })
+    if (sortBy && sortBy !== 'relevance') {
+      entities = entities.sort((a, b) =>
+        this.sort(a[sortBy], b[sortBy], sortByOrder),
+      )
     }
     return entities
   }
@@ -164,6 +180,101 @@ export class LibraryStore {
     const entities = this.getEntities()
     if (entities?.length > 0) {
       this.localStorage.setValue(LibraryStore.entitiesStoreName, entities)
+    }
+  }
+
+  private getRelevanceWeight(entity: ApiLibrary, stats?: LibraryStats): number {
+    // Only apply relevance order if there are at least 40 cards
+    if (!stats || stats.total < 40 || entity.deckPopularity === 0) {
+      return 0
+    }
+    // Filter out cards with clans that are not in the crypt clans
+    if (
+      entity.clans.length > 0 &&
+      !entity.clans.every((clan) =>
+        stats.cryptClans.find((c) => c.clans[0] === clan),
+      )
+    ) {
+      return 0
+    }
+    // Filter out cards with invalid disciplines
+    if (
+      entity.disciplines.length > 0 &&
+      !entity.disciplines.some((discipline) =>
+        stats.cryptDisciplines.find((d) => d.disciplines[0] === discipline),
+      )
+    ) {
+      return 0
+    }
+    // Filter out cards with invalid sects
+    if (
+      entity.sects.length > 0 &&
+      !entity.sects.some((sect) => stats.cryptSects.includes(sect))
+    ) {
+      return 0
+    }
+    // Apply relevance order
+    return (
+      entity.deckPopularity *
+      this.getClanMultiplier(entity.clans, stats) *
+      this.getDisciplineMultiplier(entity.disciplines, stats)
+    )
+  }
+
+  private getClanMultiplier(clans: string[], stats: LibraryStats): number {
+    if (clans.length === 0 || stats.cryptClans.length === 0) {
+      return 1
+    }
+    const clanStats = clans.reduce((acc, clan) => {
+      const statInferior = stats.cryptClans.find((c) => c.clans[0] === clan)
+      if (statInferior) {
+        acc += statInferior.number
+      }
+      return acc
+    }, 0)
+    if (!clanStats) {
+      return 0.1
+    }
+    return clanStats / stats.cryptTotal
+  }
+
+  private getDisciplineMultiplier(
+    disciplines: string[],
+    stats: LibraryStats,
+  ): number {
+    const disciplineFactor = stats.disciplineFactor ?? 1
+    if (disciplines.length === 0 || stats.disciplines.length === 0) {
+      return disciplineFactor
+    }
+    const disciplineStats = disciplines.reduce((acc, discipline) => {
+      const statInferior = stats.disciplines.find(
+        (d) => d.disciplines[0] === discipline,
+      )
+      if (statInferior) {
+        acc += statInferior.inferior
+      }
+      return acc
+    }, 0)
+    return disciplineStats / disciplineFactor
+  }
+
+  private getDisciplineFactor(stats: LibraryStats): number {
+    return (
+      stats.disciplines.reduce(
+        (acc, discipline) => acc + discipline.inferior,
+        0,
+      ) / stats.total
+    )
+  }
+
+  private sort(a: any, b: any, order?: 'asc' | 'desc'): number {
+    if (a === b) {
+      return 0
+    }
+    if (order === 'asc') {
+      return a > b ? 1 : -1
+    } else {
+      return a < b ? 1 : -1
     }
   }
 }

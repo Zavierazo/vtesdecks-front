@@ -191,6 +191,12 @@ export class DeckBuilderQuery {
       .map((card) => this.libraryQuery.getEntity(card.id) as ApiLibrary)
   }
 
+  getLibraryDisciplines(): ApiDisciplineStat[] {
+    return this.libraryQuery.getDisciplines(
+      this.store.getValue().cards.filter(isLibrary),
+    )
+  }
+
   getMinGroupCrypt(): number {
     return this.store
       .getValue()
@@ -211,6 +217,20 @@ export class DeckBuilderQuery {
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
       .map((card) => card.group)
       .reduce((acc, group) => (acc < group ? group : acc), 0)
+  }
+
+  getCryptClans(): ApiClanStat[] {
+    return this.cryptQuery.getClans(this.store.getValue().cards.filter(isCrypt))
+  }
+
+  getCryptSects(): string[] {
+    return this.cryptQuery.getSects(this.store.getValue().cards.filter(isCrypt))
+  }
+
+  getCryptDisciplines(): ApiDisciplineStat[] {
+    return this.cryptQuery.getDisciplines(
+      this.store.getValue().cards.filter(isCrypt),
+    )
   }
 
   isValidDeck(): boolean {

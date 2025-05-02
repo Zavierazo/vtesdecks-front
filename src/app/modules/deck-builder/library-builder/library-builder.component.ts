@@ -30,7 +30,7 @@ import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { ApiCard } from './../../../models/api-card'
-import { ApiLibrary } from './../../../models/api-library'
+import { ApiLibrary, LibrarySortBy } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
@@ -70,7 +70,7 @@ export class LibraryBuilderComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
 
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
-  sortBy!: keyof ApiLibrary
+  sortBy!: LibrarySortBy
   sortByOrder!: 'asc' | 'desc'
   types!: string[]
   clans!: string[]
@@ -118,17 +118,21 @@ export class LibraryBuilderComponent implements OnInit {
     this.bloodCostSlider = [0, 4]
     this.poolCostSlider = [0, 6]
     this.taints = []
-    this.sortBy = 'name'
-    this.sortByOrder = 'asc'
+    this.sortBy = 'relevance'
+    this.sortByOrder = 'desc'
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
+  onChangeSortBy(sortBy: LibrarySortBy, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
-    } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
+    } else if (
+      sortBy === 'relevance' ||
+      sortBy === 'deckPopularity' ||
+      sortBy === 'cardPopularity'
+    ) {
       this.sortByOrder = 'desc'
     } else {
       this.sortByOrder = 'asc'
@@ -280,6 +284,14 @@ export class LibraryBuilderComponent implements OnInit {
       },
       sortBy: this.sortBy,
       sortByOrder: this.sortByOrder,
+      stats: {
+        total: this.deckBuilderQuery.getLibrarySize(),
+        disciplines: this.deckBuilderQuery.getLibraryDisciplines(),
+        cryptClans: this.deckBuilderQuery.getCryptClans(),
+        cryptSects: this.deckBuilderQuery.getCryptSects(),
+        cryptDisciplines: this.deckBuilderQuery.getCryptDisciplines(),
+        cryptTotal: this.deckBuilderQuery.getCryptSize(),
+      },
     })
     this.changeDetector.markForCheck()
   }

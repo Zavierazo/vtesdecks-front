@@ -30,7 +30,7 @@ import { searchIncludes } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { ApiCard } from './../../../models/api-card'
-import { ApiCrypt } from './../../../models/api-crypt'
+import { ApiCrypt, CryptSortBy } from './../../../models/api-crypt'
 import { MediaService } from './../../../services/media.service'
 import { CryptQuery } from './../../../state/crypt/crypt.query'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
@@ -70,7 +70,7 @@ export class CryptBuilderComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
 
   private limitTo = CryptBuilderComponent.PAGE_SIZE
-  sortBy!: keyof ApiCrypt
+  sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
   clans!: string[]
   disciplines!: string[]
@@ -128,17 +128,21 @@ export class CryptBuilderComponent implements OnInit {
     this.capacitySlider = [1, this.cryptQuery.getMaxCapacity()]
     this.title = ''
     this.taints = []
-    this.sortBy = 'name'
-    this.sortByOrder = 'asc'
+    this.sortBy = 'relevance'
+    this.sortByOrder = 'desc'
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
+  onChangeSortBy(sortBy: CryptSortBy, event: MouseEvent) {
     event.preventDefault()
     event.stopPropagation()
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
-    } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
+    } else if (
+      sortBy === 'relevance' ||
+      sortBy === 'deckPopularity' ||
+      sortBy === 'cardPopularity'
+    ) {
       this.sortByOrder = 'desc'
     } else {
       this.sortByOrder = 'asc'
@@ -255,6 +259,13 @@ export class CryptBuilderComponent implements OnInit {
       },
       sortBy: this.sortBy,
       sortByOrder: this.sortByOrder,
+      crypt: {
+        total: this.deckBuilderQuery.getCryptSize(),
+        minGroup: this.deckBuilderQuery.getMinGroupCrypt(),
+        maxGroup: this.deckBuilderQuery.getMaxGroupCrypt(),
+        clans: this.deckBuilderQuery.getCryptClans(),
+        disciplines: this.deckBuilderQuery.getCryptDisciplines(),
+      },
     })
     this.changeDetector.markForCheck()
   }

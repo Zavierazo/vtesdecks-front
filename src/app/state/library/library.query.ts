@@ -3,8 +3,8 @@ import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from './../../models/api-clan-stat'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { ApiLibrary } from './../../models/api-library'
-import { LibraryStore } from './library.store'
+import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
+import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +29,7 @@ export class LibraryQuery {
     sortByOrder,
   }: {
     filterBy?: (entity: ApiLibrary) => boolean
-    sortBy?: keyof ApiLibrary
+    sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
   }): ApiLibrary[] {
     return this.store.getEntities(filterBy, sortBy, sortByOrder)
@@ -40,13 +40,21 @@ export class LibraryQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    stats,
   }: {
     limitTo?: number
     filterBy?: (entity: ApiLibrary) => boolean
-    sortBy?: keyof ApiLibrary
+    sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
+    stats?: LibraryStats
   }): Observable<ApiLibrary[]> {
-    return this.store.selectEntities(limitTo, filterBy, sortBy, sortByOrder)
+    return this.store.selectEntities(
+      limitTo,
+      filterBy,
+      sortBy,
+      sortByOrder,
+      stats,
+    )
   }
 
   selectByName(name: string, limit: number = 5): Observable<ApiLibrary[]> {
