@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.37.0",
+    "date": "3rd March, 2025",
+    "changes": [
+      "Add more deck export options"
+    ]
+  },
+  {
     "version": "2.36.0",
     "date": "2nd March, 2025",
     "changes": [

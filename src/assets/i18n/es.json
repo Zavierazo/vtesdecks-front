@@ -100,6 +100,7 @@
     "bookmark_error": "Algo salió mal al añadir el mazo a favoritos",
     "link_copied": "Enlace copiado al portapapeles",
     "clipboard": "Portapapeles",
+    "file": "Archivo",
     "deck_copied": "Lista copiada al portapapeles",
     "export": "Exportar",
     "draw": "Draw"
@@ -133,7 +134,11 @@
     "restore_message": "¿Estás seguro de que quieres restaurar '{{ name }}'?",
     "restore_successful": "¡Mazo restaurado!",
     "clone": "Clonar",
-    "draw": "Draw"
+    "draw": "Draw",
+    "export": "Exportar",
+    "clipboard": "Portapapeles",
+    "file": "Archivo",
+    "deck_copied": "Lista copiada al portapapeles"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos 12 cartas.",
