@@ -100,6 +100,7 @@
     "bookmark_error": "Algo deu errado ao adicionar o mazo aos favoritos",
     "link_copied": "Link copiado para a área de transferência",
     "clipboard": "Área de transferência",
+    "file": "Arquivo",
     "deck_copied": "Mazo copiado para a área de transferência",
     "export": "Exportar",
     "draw": "Draw"
@@ -133,7 +134,11 @@
     "restore_message": "Tem certeza de que deseja restaurar '{{ name }}'?",
     "restore_successful": "Mazo restaurado",
     "clone": "Clonar",
-    "draw": "Draw"
+    "draw": "Draw",
+    "export": "Exportar",
+    "clipboard": "Área de transferência",
+    "file": "Arquivo",
+    "deck_copied": "Mazo copiado para a área de transferência"
   },
   "deck_shared": {
     "banned": "Banido",

@@ -255,8 +255,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/decks'], { queryParams: { tags: tag } })
   }
 
-  onCopyDeckToCLipboard(): void {
-    this.apiDataService.getExportDeck(this.id).subscribe((data) => {
+  onCopyToClipboard(type: string): void {
+    this.apiDataService.getExportDeck(this.id, type).subscribe((data) => {
       this.clipboard.copy(data)
       this.toastService.show(
         this.translocoService.translate('deck.deck_copied'),

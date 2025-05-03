@@ -21,21 +21,15 @@
           </div>
 
           <div class="justify-content-center align-self-center px-2 pt-2">
-            <div ngbDropdown class="d-inline-block m-2">
-              <button id="dropdownImport" type="button" class="btn btn-primary" ngbDropdownToggle>
-                <i class="bi bi-cloud-plus-fill"></i>
-                {{ t('import') }}
-              </button>
-              <div ngbDropdownMenu aria-labelledby="dropdownImport">
-                <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
-                <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
-              </div>
-            </div>
             <a type="button" class="btn btn-primary m-2" *ngIf="(deckId$ | async)!!"
               [routerLink]="'/deck/' + (deckId$ | async)!!" target="_blank">
               <i class="bi bi-eye"></i>
               {{ t('view') }}
             </a>
+            <button type="button" class="btn btn-primary m-2" [disabled]="!(deckId$ | async)!" (click)="shareDeck()">
+              <i class="bi bi-share-fill"></i>
+              {{ t('share') }}
+            </button>
             <button type="button" class="btn btn-primary m-2" (click)="onDraw()" gaEvent="click"
               gaCategory="clone_in_builder">
               <i class="bi bi-dice-6 me-2"></i>
@@ -46,11 +40,45 @@
               <i class="bi bi-printer me-2"></i>
               {{ 'deck_shared.print' | transloco }}
             </button>
-            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
-              (click)="shareDeck()">
-              <i class="bi bi-share-fill"></i>
-              {{ t('share') }}
-            </button>
+            <div ngbDropdown class="d-inline-block m-2">
+              <button id="dropdownImport" type="button" class="btn btn-primary" ngbDropdownToggle>
+                <i class="bi bi-cloud-plus-fill"></i>
+                {{ t('import') }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownImport">
+                <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
+                <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
+              </div>
+            </div>
+            <div ngbDropdown class="d-inline-block m-2">
+              <button id="dropdownExport" type="button" class="btn btn-primary" ngbDropdownToggle
+                [disabled]="!(saved$ | async)! || !(deckId$ | async)!">
+                <i class="bi bi-download"></i>
+                {{ t('export') }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownExport">
+                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=LACKEY'"
+                  target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - LACKEY
+                </a>
+                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=JOL'"
+                  target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - JOL
+                </a>
+                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=TWD'"
+                  target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - TWD
+                </a>
+                <hr class="dropdown-divider">
+                <button ngbDropdownItem (click)="onCopyToClipboard('LACKEY')"><i class="bi bi-clipboard me-2"></i>{{
+                  t('clipboard') }} - LACKEY</button>
+                <button ngbDropdownItem (click)="onCopyToClipboard('JOL')"><i class="bi bi-clipboard me-2"></i>{{
+                  t('clipboard') }} - JOL</button>
+                <button ngbDropdownItem (click)="onCopyToClipboard('TWD')"><i class="bi bi-clipboard me-2"></i>{{
+                  t('clipboard') }} - TWD</button>
+
+              </div>
+            </div>
             <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
               (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
               <i class="bi bi-copy me-2"></i>

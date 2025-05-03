@@ -31,6 +31,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiDisciplineStat } from '../../models/api-discipline-stat'
+import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
 import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
@@ -107,6 +108,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     private readonly changeDetector: ChangeDetectorRef,
     private readonly clipboard: Clipboard,
     private readonly translocoService: TranslocoService,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   ngOnInit() {
@@ -373,6 +375,27 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     })
     modalRef.componentInstance.title = this.deckBuilderQuery.getValue().name
     modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
+  }
+
+  onCopyToClipboard(type: string): void {
+    this.apiDataService
+      .getExportDeck(this.deckBuilderQuery.getDeckId()!, type)
+      .subscribe((data) => {
+        this.clipboard.copy(data)
+        this.toastService.show(
+          this.translocoService.translate('deck_builder.deck_copied'),
+          { classname: 'bg-success text-light', delay: 5000 },
+        )
+      })
+  }
+
+  get exportUrl(): string {
+    return (
+      environment.api.baseUrl +
+      '/decks/' +
+      this.deckBuilderQuery.getDeckId()! +
+      '/export'
+    )
   }
 
   private initForm() {

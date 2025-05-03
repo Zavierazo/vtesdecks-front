@@ -100,6 +100,7 @@
     "bookmark_error": "Something went wrong adding the deck to bookmarks",
     "link_copied": "Link copied to clipboard",
     "clipboard": "Clipboard",
+    "file": "File",
     "deck_copied": "Deck copied to clipboard",
     "export": "Export",
     "draw": "Draw"
@@ -133,7 +134,11 @@
     "restore_message": "Are you sure you want to restore '{{ name }}'?",
     "restore_successful": "Deck restored",
     "clone": "Clone",
-    "draw": "Draw"
+    "draw": "Draw",
+    "export": "Export",
+    "clipboard": "Clipboard",
+    "file": "File",
+    "deck_copied": "Deck copied to clipboard"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least 12 cards",
