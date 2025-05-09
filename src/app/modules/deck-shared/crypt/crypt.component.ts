@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common'
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,11 +27,9 @@ import drawProbability from '../../../utils/draw-probability'
   styleUrls: ['./crypt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgbPopover,
     NgStyle,
     NgClass,
-    NgFor,
     NgxSkeletonLoaderComponent,
     AsyncPipe,
     TranslocoPipe,

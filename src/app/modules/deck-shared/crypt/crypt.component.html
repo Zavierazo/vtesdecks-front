@@ -1,5 +1,5 @@
-<li *ngIf="(crypt$ | async)! as crypt; else loading"
-  class="list-group-item list-group-item-action bg-dark text-white disable-select border-dark" #popover="ngbPopover"
+@if(crypt$ | async; as crypt){
+<li class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
   [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
   (click)="popover.open()" [ngStyle]="{
     background: 'url(/assets' + crypt.cropImage + ') scroll',
@@ -23,45 +23,48 @@
       (error)="image.src='/assets' + crypt.image" />
     }
     <h6 class="text-white">
-      <ng-container *ngIf="cryptSize && card.number > 0">
-        <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
-      </ng-container>
-      <ng-container *ngIf="cryptSize && card.number > 1">
-        <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
-      </ng-container>
-      <ng-container *ngIf="cryptSize && card.number > 2">
-        <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
-      </ng-container>
-      <ng-container *ngIf="cryptSize && card.number > 3">
-        <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
-      </ng-container>
+      @if(cryptSize && card.number > 0){
+      <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
+      }
+      @if(cryptSize && card.number > 1){
+      <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
+      }
+      @if(cryptSize && card.number > 2){
+      <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
+      }
+      @if(cryptSize && card.number > 3){
+      <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
+      }
     </h6>
   </ng-template>
   <div class="row">
     <div class="col-6">
       <div class="row">
-        <div *ngIf="withControls && card.number > 1" class="col-auto">
-          <i class="btn-icon bi bi-dash-square bi-fs-1_5x" aria-hidden="true" (click)="removeCard()"></i>
+        @if(withControls && (card.number || maxNumber)){
+        <div class="col-auto">
+          <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
+              'bi-square btn-transparent': card.number <= 0,
+              'bi-x-square text-danger': card.number > 0 &&card.number <= 1,
+              'bi-dash-square': card.number > 1
+              }" aria-hidden="true" (click)="removeCard()"></i>
         </div>
-        <div *ngIf="withControls && card.number <= 1" class="col-auto">
-          <i class="bi bi-x-square bi-fs-1_5x" [ngClass]="{
-            'btn-icon text-danger': card.number > 0,
-            'text-dark': card.number <= 0
-          }" aria-hidden="true" (click)="removeCard()"></i>
-        </div>
-        <div *ngIf="!withDrawProbability  && (card.number || maxNumber)"
-          class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
+        }
+        @if(!withDrawProbability && (card.number || maxNumber)){
+        <div class="col-auto bg-primary-subtle deck_number h-100" [ngClass]="{
           'mt-2': withControls
         }">
-          {{ card.number }}<span *ngIf="maxNumber">/{{ maxNumber }}</span>
+          {{ card.number }}@if(maxNumber){<span>/{{ maxNumber }}</span>}
         </div>
-        <div *ngIf="withControls" class="col-auto">
+        }
+        @if(withControls){
+        <div class="col-auto">
           <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
         </div>
+        }
         <div class="col-9">
           @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
           <div class="float-start d-flex flex-column">
-            <span>{{ crypt.i18n.name }}</span>
+            <span class="text-body">{{ crypt.i18n.name }}</span>
             <span class="text-muted default-locale-name">
               {{ crypt.name }}
             </span>
@@ -69,7 +72,7 @@
           }
           @else{
           <div class="float-start d-flex flex-column">
-            <span>{{ crypt.name }}</span>
+            <span class="text-body">{{ crypt.name }}</span>
             @if(crypt.aka && crypt.aka !== crypt.name){
             <span class="text-muted default-locale-name">
               {{ crypt.aka }}
@@ -77,30 +80,36 @@
             }
           </div>
           }
-          <span *ngIf="crypt.banned" class="ms-1 float-start badge text-bg-danger">
+          @if(crypt.banned){
+          <span class="ms-1 float-start badge text-bg-danger">
             {{ 'deck_shared.banned' | transloco }}
           </span>
+          }
         </div>
       </div>
     </div>
     <div class="col-6">
       <div class="row">
         <div class="col-12">
-          <ng-container *ngFor="let discipline of crypt.disciplineIcons">
-            <i class="vtes" [ngClass]="discipline"></i>
-          </ng-container>
-          <small class="float-end d-none d-sm-inline ms-1" *ngIf="withDrawProbability">
+          @for(discipline of crypt.disciplineIcons; track discipline){
+          <i class="vtes" [ngClass]="discipline"></i>
+          }
+          @if(withDrawProbability){
+          <small class="float-end d-none d-sm-inline ms-1">
             <span class="badge rounded-pill bg-light text-info">
               {{getDrawProbability(1)}}%
             </span>
           </small>
+          }
           <small class="float-end d-none d-sm-inline">
-            <span class="badge rounded-pill bg-light text-black crypt_group">
+            <span class="badge rounded-pill bg-light text-body crypt_group">
               {{ crypt.group == -1 ? "any" : "G"+crypt.group }}
             </span>
           </small>
           <i class="vtes float-end" [ngClass]="crypt.clanIcon"></i>
-          <i *ngIf="crypt.adv" class="vtes float-end advanced"></i>
+          @if(crypt.adv){
+          <i class="vtes float-end advanced"></i>
+          }
           <span class="badge rounded-pill bg-danger float-end">
             {{ crypt.capacity }}
           </span>
@@ -109,11 +118,11 @@
     </div>
   </div>
 </li>
-<ng-template #loading>
-  <div class="list-group-item list-group-item-action">
-    <ngx-skeleton-loader count="1" animation="progress" [theme]="{
+} @else {
+<div class="list-group-item list-group-item-action">
+  <ngx-skeleton-loader count="1" animation="progress" [theme]="{
         height: '20px',
         'margin-bottom': '0'
       }"></ngx-skeleton-loader>
-  </div>
-</ng-template>
+</div>
+}

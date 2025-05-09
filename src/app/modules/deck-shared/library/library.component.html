@@ -1,69 +1,74 @@
 <ng-container *transloco="let t; read: 'deck_shared'">
-  <a *ngIf="(library$ | async)! as library; else loading"
-    class="list-group-item list-group-item-action bg-dark text-white disable-select border-dark" #popover="ngbPopover"
+  @if (library$ | async; as library) {
+  <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
     (click)="popover.open()" [ngStyle]="{
-    background: 'url(/assets' + library.cropImage + ') scroll',
-    'background-repeat': 'no-repeat',
-    'background-position': 'right 33%',
-    'background-size': '50%'
-  }" [autoClose]="false">
+      background: 'url(/assets' + library.cropImage + ') scroll',
+      'background-repeat': 'no-repeat',
+      'background-position': 'right 33%',
+      'background-size': '50%'
+    }" [autoClose]="false">
     <ng-template #imgPopover>
       @if( library.i18n && library.i18n.image ){
       <img #i18nImage [ngClass]="{
-          'img-popover': !(isMobile$ | async)!,
-          'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="overrideImage ? overrideImage : '/assets' + library.i18n.image" [alt]="library.i18n.name"
+            'img-popover': !(isMobile$ | async)!,
+            'img-popover-mobile': (isMobile$ | async)!
+          }" [src]="overrideImage ? overrideImage : '/assets' + library.i18n.image" [alt]="library.i18n.name"
         (error)="i18nImage.src='/assets' + library.image" />
       }
       @else{
       <img #image [ngClass]="{
-        'img-popover': !(isMobile$ | async)!,
-        'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage :'/assets' + library.image" [alt]="library.name"
+            'img-popover': !(isMobile$ | async)!,
+            'img-popover-mobile': (isMobile$ | async)!
+          }" [src]="overrideImage ? overrideImage :'/assets' + library.image" [alt]="library.name"
         (error)="image.src='/assets' + library.image" />
       }
       <h6 class="text-white">
-        <ng-container *ngIf="librarySize && card.number > 0">
-          <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
-        </ng-container>
-        <ng-container *ngIf="librarySize && card.number > 1">
-          <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
-        </ng-container>
-        <ng-container *ngIf="librarySize && card.number > 2">
-          <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
-        </ng-container>
-        <ng-container *ngIf="librarySize && card.number > 3">
-          <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
-        </ng-container>
+        @if (librarySize && card.number > 0) {
+        <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
+        }
+        @if (librarySize && card.number > 1) {
+        <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
+        }
+        @if (librarySize && card.number > 2) {
+        <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
+        }
+        @if (librarySize && card.number > 3) {
+        <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
+        }
       </h6>
     </ng-template>
     <div class="row">
-      <div *ngIf="withControls && card.number > 1" class="col-auto">
-        <i class="btn-icon bi bi-dash-square bi-fs-1_5x" aria-hidden="true" (click)="removeCard()"></i>
+      @if(withControls && (card.number || maxNumber)){
+      <div class="col-auto">
+        <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
+          'bi-square btn-transparent': card.number <= 0,
+          'bi-x-square text-danger': card.number > 0 &&card.number <= 1,
+          'bi-dash-square': card.number > 1
+          }" aria-hidden="true" (click)="removeCard()"></i>
       </div>
-      <div *ngIf="withControls && card.number <= 1" class="col-auto">
-        <i class="bi bi-x-square bi-fs-1_5x" [ngClass]="{
-        'btn-icon text-danger': card.number > 0,
-        'text-dark': card.number <= 0
-      }" aria-hidden="true" (click)="removeCard()"></i>
+      }
+      @if (!withDrawProbability && (card.number || maxNumber)) {
+      <div class="col-auto bg-primary-subtle deck_number h-100" [ngClass]="{
+            'mt-2': withControls
+          }">
+        {{ card.number }}@if (maxNumber) {/{{ maxNumber }}}
       </div>
-      <div *ngIf="!withDrawProbability && (card.number || maxNumber)"
-        class="col-auto list-group-item-primary deck_number h-100" [ngClass]="{
-      'mt-2': withControls
-    }">
-        {{ card.number }}<span *ngIf="maxNumber">/{{ maxNumber }}</span>
-      </div>
-      <div *ngIf="withControls" class="col-auto">
+      }
+      @if (withControls) {
+      <div class="col-auto">
         <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
       </div>
+      }
       <div class="col" [ngClass]="{
-      'mt-1': withControls
-    }">
-        <i class="vtes float-start" *ngFor="let typeIcon of library.typeIcons" [ngClass]="typeIcon"></i>
+          'mt-1': withControls
+        }">
+        @for (typeIcon of library.typeIcons; track typeIcon) {
+        <i class="vtes float-start" [ngClass]="typeIcon"></i>
+        }
         @if( library.i18n && library.i18n.name !== library.name ){
         <div class="ms-1 float-start d-flex flex-column">
-          <span>{{ library.i18n.name }}</span>
+          <span class="text-body">{{ library.i18n.name }}</span>
           <span class="text-muted default-locale-name">
             {{ library.name }}
           </span>
@@ -71,7 +76,7 @@
         }
         @else{
         <div class="ms-1 float-start d-flex flex-column">
-          <span>{{ library.name }}</span>
+          <span class="text-body">{{ library.name }}</span>
           @if(library.aka && library.aka !== library.name){
           <span class="text-muted default-locale-name">
             {{ library.aka }}
@@ -79,45 +84,61 @@
           }
         </div>
         }
-        <span *ngIf="library.banned" class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
-        <span *ngIf="library.trifle" class="badge rounded-pill bg-light text-black d-none d-sm-inline ms-1 float-start">
+        @if (library.banned) {
+        <span class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
+        }
+        @if (library.trifle) {
+        <span class="badge rounded-pill bg-light text-body d-none d-sm-inline ms-1 float-start">
           {{ 'vtes.type.trifle' | transloco }}
         </span>
-        <small class="float-end d-none d-sm-inline ms-1" *ngIf="withDrawProbability">
+        }
+        @if (withDrawProbability) {
+        <small class="float-end d-none d-sm-inline ms-1">
           <span class="badge rounded-pill bg-light text-info">
             {{getDrawProbability(1)}}%
           </span>
         </small>
-        <i *ngIf="library.bloodCost" class="vtes float-end me-1" [ngClass]="{
-        'bloodx': library.bloodCost < 0,
-        'blood1': library.bloodCost === 1,
-        'blood2': library.bloodCost === 2,
-        'blood3': library.bloodCost === 3,
-        'blood4': library.bloodCost === 4,
-        'bloodcost': library.bloodCost > 4
-      }"></i>
-        <i *ngIf="library.poolCost" class="vtes float-end me-1" [ngClass]="{
-        'poolx': library.poolCost < 0,
-        'pool1': library.poolCost === 1,
-        'pool2': library.poolCost === 2,
-        'pool3': library.poolCost === 3,
-        'pool4': library.poolCost === 4,
-        'pool5': library.poolCost === 5,
-        'pool6': library.poolCost === 6,
-        'poolcost': library.poolCost > 6
-      }"></i>
-        <i class="vtes float-end me-1" *ngFor="let discipline of library.disciplineIcons" [ngClass]="discipline"></i>
-        <i *ngIf="library.burn" class="vtes float-end burnoption me-1"></i>
-        <i *ngFor="let clanIcon of library.clanIcons" class="vtes float-end me-1" [ngClass]="clanIcon"></i>
+        }
+        @if (library.bloodCost) {
+        <i class="vtes float-end me-1" [ngClass]="{
+              'bloodx': library.bloodCost < 0,
+              'blood1': library.bloodCost === 1,
+              'blood2': library.bloodCost === 2,
+              'blood3': library.bloodCost === 3,
+              'blood4': library.bloodCost === 4,
+              'bloodcost': library.bloodCost > 4
+            }"></i>
+        }
+        @if (library.poolCost) {
+        <i class="vtes float-end me-1" [ngClass]="{
+              'poolx': library.poolCost < 0,
+              'pool1': library.poolCost === 1,
+              'pool2': library.poolCost === 2,
+              'pool3': library.poolCost === 3,
+              'pool4': library.poolCost === 4,
+              'pool5': library.poolCost === 5,
+              'pool6': library.poolCost === 6,
+              'poolcost': library.poolCost > 6
+            }"></i>
+        }
+        @for (discipline of library.disciplineIcons; track discipline) {
+        <i class="vtes float-end me-1" [ngClass]="discipline"></i>
+        }
+        @if (library.burn) {
+        <i class="vtes float-end burnoption me-1"></i>
+        }
+        @for (clanIcon of library.clanIcons; track clanIcon) {
+        <i class="vtes float-end me-1" [ngClass]="clanIcon"></i>
+        }
       </div>
     </div>
   </a>
-  <ng-template #loading>
-    <div class="list-group-item list-group-item-action">
-      <ngx-skeleton-loader count="1" animation="progress" [theme]="{
+  } @else {
+  <div class="list-group-item list-group-item-action">
+    <ngx-skeleton-loader count="1" animation="progress" [theme]="{
         height: '20px',
         'margin-bottom': '0'
       }"></ngx-skeleton-loader>
-    </div>
-  </ng-template>
+  </div>
+  }
 </ng-container>

@@ -106,6 +106,14 @@ $handleBgColor: var(--bs-primary-rgb);
   color: rgb(var(--bs-primary-rgb));
 }
 
+.btn-transparent {
+  color: transparent;
+}
+
+.btn-transparent:hover {
+  color: transparent !important;
+}
+
 .btn-badge {
   cursor: pointer;
 }
