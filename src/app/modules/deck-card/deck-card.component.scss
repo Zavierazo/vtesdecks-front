@@ -2,24 +2,79 @@
 
 .deck-card {
   min-width: 300px;
-  background-color: #ffffff;
-  background: linear-gradient(#ffffff, color.adjust(#ffffff, $lightness: -20%));
+  min-height: 160px;
+  transition: all 0.2s ease-in-out;
+  background-color: var(--bs-body-bg);
   box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   position: relative;
+
+  .deck-header,
+  .deck-content {
+    background-color: transparent;
+  }
+
+  .deck-stats {
+    @media (max-width: 600px) {
+      flex-direction: column !important;
+      align-items: flex-start;
+    }
+  }
+
+  .deck-engagement {
+    @media (max-width: 600px) {
+      flex-direction: column !important;
+      align-items: flex-end;
+    }
+  }
+
+  .deck-rating {
+    @media (max-width: 600px) {
+      span {
+        i {
+          display: inline-block;
+        }
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .badge {
+    &.bg-white {
+      background-color: var(--bs-tertiary-bg) !important;
+      color: var(--bs-body-color) !important;
+      border: 1px solid var(--bs-border-color);
+    }
+
+    &.bg-warning {
+      background-color: var(--bs-warning) !important;
+      color: var(--bs-dark) !important;
+    }
+  }
+
+  .text-dark {
+    color: var(--bs-body-color) !important;
+  }
+
+  .vtes {
+    filter: brightness(1.2);
+  }
+
+  &:hover {
+    border-color: var(--bs-body-color) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
 }
 
 .text-bg-tag {
   color: #fff !important;
-  background-color: RGBA(
-    var(--bs-secondary-rgb),
-    var(--bs-bg-opacity, 1)
-  ) !important;
+  background-color: var(--bs-secondary) !important;
+  border: 1px solid var(--bs-border-color);
 
   &:hover {
-    background-color: RGBA(
-      var(--bs-primary-rgb),
-      var(--bs-bg-opacity, 1)
-    ) !important;
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary-border-subtle);
   }
 }

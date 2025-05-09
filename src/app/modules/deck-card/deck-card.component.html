@@ -1,60 +1,102 @@
 <a [routerLink]="deck.owner ? '/decks/builder' : ('/deck/' + deck.id)"
-  [queryParams]="{id: deck.owner ? deck.id : undefined}" class="text-center text-decoration-none">
-  <div class="deck-card border border-2 rounded-3 center hover-shadow my-2 text-black" [ngClass]="{
-    'border-dark': !deck.owner,
+  [queryParams]="{id: deck.owner ? deck.id : undefined}" class="text-decoration-none">
+  <div class="deck-card border border-2 rounded-2 hover-shadow my-1 position-relative d-flex flex-column" [ngClass]="{
+    'border-secondary-subtle': !deck.owner,
     'border-primary': deck.owner
   }" [ngStyle]="{'min-height':height}">
-    <div class="info px-3 py-2">
-      <span class="float-start">
-        <span class="badge bg-transparent text-black">
-          {{ deck.stats.crypt }}&nbsp;<i class="bi bi-person-badge"></i>
-          {{ deck.stats.library }}&nbsp;<i class="bi bi-stack"></i>
+    <!-- Top Section -->
+    <div class="deck-header px-3 py-2">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="deck-stats d-flex gap-2 text-start">
+          <span class="small text-black">
+            <i class="bi bi-person-badge me-1"></i>{{ deck.stats.crypt }}
+          </span>
+          <span class="small text-black">
+            <i class="bi bi-stack me-1"></i>{{ deck.stats.library }}
+          </span>
+        </div>
+
+        <h2 class="deck-title fs-4 text-black text-center mb-0">
+          <span class="deck-indicators me-1">
+            @if (deck.favorite) {
+            <i class="bi bi-bookmark-star-fill text-primary small" title="Bookmarked"></i>
+            }
+            @if (!deck.published) {
+            <i class="bi bi-incognito text-secondary small" [title]="'deck_shared.private_deck' | transloco"></i>
+            }
+          </span>
+          {{ deck.name | titlecase | truncate: 30:true }}
+        </h2>
+
+        <div class="deck-engagement d-flex gap-2 text-end">
+          <span class="small text-black d-flex align-items-center">
+            <span>{{ deck.comments }}</span>
+            <i class="bi bi-chat ms-1"></i>
+          </span>
+          <span class="small text-black d-flex align-items-center">
+            <span>{{ deck.views }}</span>
+            <i class="bi bi-eye-fill ms-1"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Section -->
+    <div class="deck-meta d-flex align-items-center justify-content-center position-relative flex-grow-1">
+      <div class="d-flex align-items-center gap-2">
+        <div class="clan-badges">
+          @for (icon of deck.clanIcons; track icon) {
+          <i class="vtes small" [ngClass]="icon"></i>
+          }
+        </div>
+        <div class="discipline-badges">
+          @for (icon of deck.disciplineIcons; track icon) {
+          <i class="vtes small border rounded-1 border-light" [ngClass]="icon"></i>
+          }
+        </div>
+      </div>
+      @if (deck.rate) {
+      <div class="deck-rating position-absolute end-0">
+        <span class="small text-black me-3">
+          <span>{{ deck.rate }}</span>
+          <i class="bi ms-1" [ngClass]="{
+              'bi-star': deck.rate < 3,
+              'bi-star-half': deck.rate >= 3 && deck.rate < 4,
+              'bi-star-fill': deck.rate >= 4
+            }"></i>
         </span>
-      </span>
-      <span class="stats d-inline-flex float-end">
-        <span class="badge bg-transparent text-black">
-          {{ deck.comments }}&nbsp;<i class="bi bi-chat"></i>
-          {{ deck.views }}&nbsp;<i class="bi bi-eye-fill"></i>
+      </div>
+      }
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="deck-content px-3">
+      @if (deck.tournament) {
+      <div class="tournament-info text-center">
+        <span class="badge bg-warning text-dark small shadow-sm">
+          <i class="bi bi-award-fill me-1"></i>{{ deck.tournament }}
         </span>
-      </span>
-      <h2>
-        <strong *ngIf="deck.favorite" title="Bookmarked">
-          <i class="bi bi-bookmark-star-fill text-primary bi-fs-sm"></i>
-        </strong>
-        <strong *ngIf="!deck.published" [title]="'deck_shared.private_deck' | transloco">
-          <i class="bi bi-incognito text-secondary bi-fs-sm"></i>
-        </strong>
-        {{ deck.name | titlecase | truncate: 30:true }}
-      </h2>
-      <span class="clan badge rounded-pill">
-        <i *ngFor="let icon of deck.clanIcons" class="vtes-big" [ngClass]="icon"></i>
-      </span>
-      <div class="disciplines badge rounded-pill">
-        <i *ngFor="let icon of deck.disciplineIcons" class="vtes-big" [ngClass]="icon"></i>
       </div>
-      <span class="float-end" *ngIf="deck.rate as rate">
-        <i class="bi bi-star" *ngIf="rate < 3"></i>
-        <i class="bi bi-star-half" *ngIf="rate >= 3 && rate < 4"></i>
-        <i class="bi bi-star-fill" *ngIf="rate >= 4 "></i>
-        {{ deck.rate }}
-      </span>
-      <div *ngIf="deck.tournament">
-        <strong>
-          <i class="bi bi-award-fill"></i>&nbsp;{{ deck.tournament }}
-        </strong>
+      }
+
+      <div class="deck-author-date small text-center">
+        <span class="text-dark">{{ deck.author | truncate: 25:true }}</span>
+        <span class="text-dark mx-1">•</span>
+        <span class="text-dark">{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
       </div>
-      <div>
-        <span class="me-2">{{ deck.author | truncate: 25:true }}</span>
-        <span>{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
-      </div>
-      <div *ngIf="deck.tags?.length">
-        <span *ngFor="let tag of deck.tags" class="badge rounded-pill mx-1 text-bg-tag" [ngClass]="{
-          'text-bg-tag': !isMobileOrTablet,
-          'text-bg-secondary': isMobileOrTablet
-        }" (click)="onTagClick(tag, $event)">
+
+      @if (deck.tags?.length) {
+      <div class="deck-tags text-center mb-2">
+        @for (tag of deck.tags; track tag) {
+        <span class="badge rounded-pill me-1 small shadow-sm" [ngClass]="{
+                'text-bg-tag': !isMobileOrTablet,
+                'text-bg-secondary': isMobileOrTablet
+              }" (click)="onTagClick(tag, $event)" role="button" tabindex="0">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
+        }
       </div>
+      }
     </div>
   </div>
 </a>

@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.38.0",
+    "date": "9th May, 2025",
+    "changes": [
+      "Refactor deck card component layout and styles for improved responsiveness and aesthetics"
+    ]
+  },
+  {
     "version": "2.37.0",
     "date": "3rd March, 2025",
     "changes": [

@@ -6,7 +6,7 @@
     <div class="container-fluid" *ngIf="decks; else loading">
       <div class="row">
         <div class="col-12" *ngFor="let deck of decks">
-          <app-deck-card [deck]="deck" height="190px" (tagClick)="onTagClick($event)"></app-deck-card>
+          <app-deck-card [deck]="deck" height="170px" (tagClick)="onTagClick($event)"></app-deck-card>
         </div>
       </div>
     </div>
