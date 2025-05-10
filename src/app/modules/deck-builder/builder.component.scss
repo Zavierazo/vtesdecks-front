@@ -2,7 +2,7 @@ div.costx {
   font-size: 30px;
   display: inline-block;
 }
-div.costx i{
+div.costx i {
   vertical-align: middle;
 }
 
@@ -19,4 +19,50 @@ span.circle_number {
   border: 1px solid #000;
   background-color: black;
   color: white;
+}
+
+.deck-actions {
+  .btn {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+
+  .dropdown-menu {
+    padding: 0.5rem 0;
+    margin: 0;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+
+    .dropdown-header {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--bs-gray-600);
+    }
+
+    .dropdown-divider {
+      margin: 0.5rem 0;
+    }
+
+    a {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      color: var(--bs-gray-700);
+
+      &:hover {
+        color: var(--bs-primary);
+      }
+
+      i {
+        font-size: 1rem;
+        opacity: 0.8;
+      }
+    }
+  }
 }

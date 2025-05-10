@@ -20,28 +20,34 @@
             </div>
           </div>
 
-          <div class="justify-content-center align-self-center px-2 pt-2">
+          <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
             <a type="button" class="btn btn-primary m-2" *ngIf="(deckId$ | async)!!"
               [routerLink]="'/deck/' + (deckId$ | async)!!" target="_blank">
               <i class="bi bi-eye"></i>
               {{ t('view') }}
             </a>
-            <button type="button" class="btn btn-primary m-2" [disabled]="!(deckId$ | async)!" (click)="shareDeck()">
-              <i class="bi bi-share-fill"></i>
+            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
+              <i class="bi bi-copy me-2"></i>
+              {{ t('clone') }}
+            </button>
+            <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
+              (click)="shareDeck()">
+              <i class="bi bi-share"></i>
               {{ t('share') }}
             </button>
-            <button type="button" class="btn btn-primary m-2" (click)="onDraw()" gaEvent="click"
+            <button type="button" class="btn btn-outline-primary m-2" (click)="onDraw()" gaEvent="click"
               gaCategory="clone_in_builder">
-              <i class="bi bi-dice-6 me-2"></i>
+              <i class="bi bi-shuffle me-2"></i>
               {{ t('draw') }}
             </button>
-            <button type="button" class="btn btn-primary m-2" (click)="onPrint()" gaEvent="click"
+            <button type="button" class="btn btn-outline-primary m-2" (click)="onPrint()" gaEvent="click"
               gaCategory="clone_in_builder">
               <i class="bi bi-printer me-2"></i>
               {{ 'deck_shared.print' | transloco }}
             </button>
             <div ngbDropdown class="d-inline-block m-2">
-              <button id="dropdownImport" type="button" class="btn btn-primary" ngbDropdownToggle>
+              <button id="dropdownImport" type="button" class="btn btn-outline-primary" ngbDropdownToggle>
                 <i class="bi bi-cloud-plus-fill"></i>
                 {{ t('import') }}
               </button>
@@ -51,39 +57,36 @@
               </div>
             </div>
             <div ngbDropdown class="d-inline-block m-2">
-              <button id="dropdownExport" type="button" class="btn btn-primary" ngbDropdownToggle
+              <button id="dropdownExport" type="button" class="btn btn-outline-primary" ngbDropdownToggle
                 [disabled]="!(saved$ | async)! || !(deckId$ | async)!">
                 <i class="bi bi-download"></i>
                 {{ t('export') }}
               </button>
               <div ngbDropdownMenu aria-labelledby="dropdownExport">
-                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=LACKEY'"
-                  target="_blank">
-                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - LACKEY
+                <div class="dropdown-header">{{ t('file') }}</div>
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>LACKEY
                 </a>
-                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=JOL'"
-                  target="_blank">
-                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - JOL
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>JOL
                 </a>
-                <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=TWD'"
-                  target="_blank">
-                  <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - TWD
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>TWD
                 </a>
                 <hr class="dropdown-divider">
-                <button ngbDropdownItem (click)="onCopyToClipboard('LACKEY')"><i class="bi bi-clipboard me-2"></i>{{
-                  t('clipboard') }} - LACKEY</button>
-                <button ngbDropdownItem (click)="onCopyToClipboard('JOL')"><i class="bi bi-clipboard me-2"></i>{{
-                  t('clipboard') }} - JOL</button>
-                <button ngbDropdownItem (click)="onCopyToClipboard('TWD')"><i class="bi bi-clipboard me-2"></i>{{
-                  t('clipboard') }} - TWD</button>
+                <div class="dropdown-header">{{ t('clipboard') }}</div>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')">
+                  <i class="bi bi-clipboard me-2"></i>LACKEY
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')">
+                  <i class="bi bi-clipboard me-2"></i>JOL
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')">
+                  <i class="bi bi-clipboard me-2"></i>TWD
+                </button>
 
               </div>
             </div>
-            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
-              (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
-              <i class="bi bi-copy me-2"></i>
-              {{ t('clone') }}
-            </button>
             <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
               <i class="bi bi-save-fill"></i>
               {{ t('save') }}
