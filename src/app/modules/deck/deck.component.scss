@@ -1,7 +1,7 @@
 .star {
   position: relative;
   display: inline-block;
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #d3d3d3;
 }
 .full {
@@ -12,6 +12,103 @@
   display: inline-block;
   overflow: hidden;
   color: red;
+}
+
+.deck-meta {
+  p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  a {
+    color: var(--bs-primary);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--bs-primary-dark);
+    }
+  }
+}
+
+.deck-stat-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  h4 {
+    font-size: 2.5rem;
+    font-weight: 600;
+  }
+
+  i {
+    font-size: 1.5rem;
+    opacity: 0.8;
+  }
+}
+
+.deck-actions {
+  .btn {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+
+  .dropdown-menu {
+    padding: 0.5rem 0;
+    margin: 0;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+
+    .dropdown-header {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--bs-gray-600);
+    }
+
+    .dropdown-divider {
+      margin: 0.5rem 0;
+    }
+
+    a {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      color: var(--bs-gray-700);
+
+      &:hover {
+        background-color: var(--bs-gray-100);
+        color: var(--bs-primary);
+      }
+
+      i {
+        font-size: 1rem;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.btn-badge {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
 div.costx {
@@ -44,5 +141,50 @@ span.circle_number {
   &-mobile {
     width: 80vw;
     max-width: 300px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .deck-stat-card {
+    h4 {
+      font-size: 2rem;
+    }
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
+
+  .deck-actions {
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .dropdown-menu {
+      width: 100%;
+      margin-top: 0.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .d-inline-block {
+      width: 100%;
+      display: block !important;
+
+      .btn {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        &::after {
+          position: absolute;
+          right: 1rem;
+        }
+      }
+    }
   }
 }

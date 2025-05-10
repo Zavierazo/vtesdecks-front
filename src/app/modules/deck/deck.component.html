@@ -8,177 +8,152 @@
     <div class="row">
       <section class="dark-grey-text col-12">
         <div class="mb-2 bg-light rounded-3">
-          <div class="container-fluid py-4 text-center">
-            <div class="d-flex justify-content-center align-self-center">
-              <a [ngbTooltip]="t('add_to_bookmarks')" placement="left" #bookmarkTooltip="ngbTooltip"
-                (click)="toggleBookmark()">
-                <i class="bi bi-fs-1_5x text-black" [ngClass]="{
-                  'bi-bookmark-star': !isBookmarked,
-                  'bi-bookmark-star-fill': isBookmarked
-                }"></i>
-              </a>
-              <h3 class="ms-2 fw-bold">{{ deck.name | titlecase }}</h3>
-            </div>
-            <p>
-              {{ t('created_by') }}
-              <a class="text-decoration-none" routerLink="/decks" [queryParams]="{
-                author: deck.author,
-                type: deck.type
-              }">
-                <strong th:utext="${deck.author}">{{ deck.author }}</strong> </a>,
-              {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
-            </p>
-            <p *ngIf="deck.tournament">
-              <b>{{ t('tournament') }}: </b>
-              <a *ngIf="deck.url; else noUrlTournament" class="text-decoration-none" [href]="deck.url" target="_blank">
-                {{ deck.tournament }}
-              </a>
-              <ng-template #noUrlTournament>
-                {{ deck.tournament }}
-              </ng-template>
-              <ng-container *ngIf="deck.players">
-                ({{ t('players', { count: deck.players })}})
-              </ng-container>
-            </p>
-            <p *ngIf="deck.type==='PRECONSTRUCTED' && deck.url">
-              <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
-                gaEvent="purchase" gaCategory="dtc" [gaLabel]="deck.name">
-                <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
-              </a>
-            </p>
-            <p *ngIf="deck.source">
-              <b>{{ t('source') }}: </b>
-              <a class="text-decoration-none" [href]="deck.source" target="_blank">{{ t('twda') }}</a>
-            </p>
-
-            <p *ngIf="deck.tags" class="d-flex flex-wrap justify-content-center gap-2 my-2">
-              <span *ngFor="let tag of deck.tags" class="badge rounded-pill text-bg-primary btn-badge"
-                (click)="onTag(tag)">
-                #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
-              </span>
-            </p>
-
-            <div class="row d-flex justify-content-center mt-3">
-              <div class="col-12 col-sm-3 mb-4 text-center">
-                <div class="row">
-                  <div class="col-6 pr-0">
-                    <h4 class="display-4 text-right mb-0 count-up">
-                      <animated-digit [digit]="deck.views" [duration]="2000"></animated-digit>
-                    </h4>
-                  </div>
-                  <div class="col-auto">
-                    <p class="text-uppercase font-weight-normal mb-1">{{ t('views') }}</p>
-                    <p class="mb-0">
-                      <i class="bi bi-eye-fill bi-fs-2x mb-0"></i>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-3 mb-4 text-center">
-                <div class="row">
-                  <div class="col-12 pr-0 text-center">
-                    <div class="rating">
-                      <ng-template #starTemplate let-fill="fill">
-                        <span class="star" [class.full]="fill === 100">
-                          <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
-                        </span>
-                      </ng-template>
-                      <ngb-rating [ngbTooltip]="t('rate_deck')" placement="bottom" #ratingTooltip="ngbTooltip"
-                        [rate]="deck.rate ?? 0" [starTemplate]="starTemplate"
-                        [readonly]="!(isAuthenticated$ | async)! || (userDisplayName$ | async) === deck.author"
-                        [max]="5" (rateChange)="rateDeck($event)">
-                      </ngb-rating>
-                    </div>
-                    <div>
-                      <i class="bi bi-people-fill"></i>
-                      {{ t('votes', { count: deck.votes }) }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-3 mb-4 text-center">
-                <div class="row">
-                  <div class="col-6 pr-0">
-                    <h4 class="display-4 text-right mb-0 count-up">
-                      <animated-digit [digit]="deck.comments" [duration]="2000"></animated-digit>
-                    </h4>
-                  </div>
-                  <div class="col-auto">
-                    <p class="text-uppercase font-weight-normal mb-1">{{ t('comments') }}</p>
-                    <p class="mb-0"><i class="bi bi-chat bi-fs-2x mb-0"></i></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-md-10 row row-cols-2 row-cols-sm-3 row-cols-md-6 g-2 justify-content-center">
-                <div class="col d-grid">
-                  <button type="button" class="btn btn-info" (click)="onShare()" gaEvent="click" gaCategory="share">
-                    <i class="bi bi-share me-2"></i><span>{{ t('share') }}</span>
-                  </button>
-                </div>
-                <div class="col d-grid">
-                  <button type="button" class="btn btn-info" (click)="onDraw()" gaEvent="click" gaCategory="draw">
-                    <i class="bi bi-dice-6 me-2"></i><span>{{ t('draw') }}</span>
-                  </button>
-                </div>
-                <div class="col d-grid">
-                  <button type="button" class="btn btn-info" (click)="onPrint()" gaEvent="click" gaCategory="print">
-                    <i class="bi bi-printer me-2"></i><span>{{ 'deck_shared.print' | transloco }}</span>
-                  </button>
-                </div>
-                <div class="col d-grid" *isLogged="true">
-                  <a type="button" class="btn btn-info" (click)="onOpenInBuilder()" gaEvent="click"
-                    gaCategory="clone_in_deck">
-                    <i class="bi bi-copy me-2"></i><span>{{ t('clone') }}</span>
+          <div class="container-fluid py-4">
+            <div class="row align-items-center">
+              <div class="col-12 col-md-8 text-center text-md-start">
+                <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
+                  <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
+                    (click)="toggleBookmark()" class="me-3">
+                    <i class="bi bi-fs-1_5x text-black" [ngClass]="{
+                      'bi-bookmark-star': !isBookmarked,
+                      'bi-bookmark-star-fill': isBookmarked
+                    }"></i>
                   </a>
+                  <h3 class="fw-bold mb-0">{{ deck.name | titlecase }}</h3>
                 </div>
-                <div ngbDropdown class="col d-grid">
-                  <button id="dropdownExport" type="button" class="btn btn-secondary" ngbDropdownToggle>
-                    <i class="bi bi-download me-2"></i>
-                    {{ t('export') }}
+                <div class="deck-meta">
+                  <p class="mb-1">
+                    {{ t('created_by') }}
+                    <a class="text-decoration-none" routerLink="/decks" [queryParams]="{
+                      author: deck.author,
+                      type: deck.type
+                    }">
+                      <strong>{{ deck.author }}</strong>
+                    </a>
+                    <span class="text-muted ms-2">
+                      {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
+                    </span>
+                  </p>
+                  <p *ngIf="deck.tournament" class="mb-1">
+                    <b>{{ t('tournament') }}: </b>
+                    <a *ngIf="deck.url; else noUrlTournament" class="text-decoration-none" [href]="deck.url"
+                      target="_blank">
+                      {{ deck.tournament }}
+                    </a>
+                    <ng-template #noUrlTournament>
+                      {{ deck.tournament }}
+                    </ng-template>
+                    <ng-container *ngIf="deck.players">
+                      <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
+                    </ng-container>
+                  </p>
+                  <p *ngIf="deck.type==='PRECONSTRUCTED' && deck.url" class="mb-1">
+                    <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
+                      gaEvent="purchase" gaCategory="dtc" [gaLabel]="deck.name">
+                      <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
+                    </a>
+                  </p>
+                  <p *ngIf="deck.source" class="mb-1">
+                    <b>{{ t('source') }}: </b>
+                    <a class="text-decoration-none" [href]="deck.source" target="_blank">{{ t('twda') }}</a>
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mt-3 mt-md-0">
+                <div class="row g-3">
+                  <div class="col-6 col-md-12">
+                    <div class="deck-stat-card text-center p-3 rounded-3 bg-light shadow-sm">
+                      <h4 class="display-4 text-primary mb-0">
+                        <animated-digit [digit]="deck.views" [duration]="2000"></animated-digit>
+                      </h4>
+                      <p class="text-uppercase text-muted mb-0">{{ t('views') }}</p>
+                      <i class="bi bi-eye-fill text-primary"></i>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-12">
+                    <div class="deck-stat-card text-center p-3 rounded-3 bg-light shadow-sm">
+                      <div class="rating">
+                        <ng-template #starTemplate let-fill="fill">
+                          <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
+                          </span>
+                        </ng-template>
+                        <ngb-rating [ngbTooltip]="t('rate_deck')" placement="bottom" #ratingTooltip="ngbTooltip"
+                          [rate]="deck.rate ?? 0" [starTemplate]="starTemplate"
+                          [readonly]="!(isAuthenticated$ | async)! || (userDisplayName$ | async) === deck.author"
+                          [max]="5" (rateChange)="rateDeck($event)">
+                        </ngb-rating>
+                      </div>
+                      <p class="text-muted mb-0">
+                        <i class="bi bi-people-fill"></i>
+                        {{ t('votes', { count: deck.votes }) }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <div class="deck-actions d-flex flex-wrap justify-content-center gap-2">
+                  <button class="btn btn-primary" (click)="onOpenInBuilder()">
+                    <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
                   </button>
-                  <ul ngbDropdownMenu aria-labelledby="dropdownExport">
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=LACKEY'"
-                        target="_blank" gaEvent="export" gaCategory="file_lackey">
-                        <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - Lackey
+                  <button class="btn btn-outline-primary" (click)="onShare()">
+                    <i class="bi bi-share me-2"></i>{{ t('share') }}
+                  </button>
+                  <button class="btn btn-outline-primary" (click)="onDraw()">
+                    <i class="bi bi-shuffle me-2"></i>{{ t('draw') }}
+                  </button>
+                  <button class="btn btn-outline-primary" (click)="onPrint()">
+                    <i class="bi bi-printer me-2"></i>{{ 'deck_shared.print' | transloco }}
+                  </button>
+                  <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-primary" ngbDropdownToggle>
+                      <i class="bi bi-download me-2"></i>{{ t('export') }}
+                    </button>
+                    <div ngbDropdownMenu class="dropdown-menu">
+                      <div class="dropdown-header">{{ t('file') }}</div>
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank"
+                        gaEvent="export" gaCategory="file_lackey">
+                        <i class="bi bi-file-earmark me-2"></i>Lackey
                       </a>
-                    </li>
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=JOL'"
-                        target="_blank" gaEvent="export" gaCategory="file_jol">
-                        <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - JOL
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank"
+                        gaEvent="export" gaCategory="file_jol">
+                        <i class="bi bi-file-earmark me-2"></i>JOL
                       </a>
-                    </li>
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" [href]="exportUrl+'?type=TWD'"
-                        target="_blank" gaEvent="export" gaCategory="file_twd">
-                        <i class="bi bi-file-earmark me-2"></i>{{ t('file') }} - TWD
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank"
+                        gaEvent="export" gaCategory="file_twd">
+                        <i class="bi bi-file-earmark me-2"></i>TWD
                       </a>
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" (click)="onCopyToClipboard('LACKEY')"
-                        gaEvent="export" gaCategory="clipboard_lackey">
-                        <i class="bi bi-clipboard me-2"></i>{{ t('clipboard') }} - Lackey
+                      <div class="dropdown-divider"></div>
+                      <div class="dropdown-header">{{ t('clipboard') }}</div>
+                      <a ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')" gaEvent="export"
+                        gaCategory="clipboard_lackey">
+                        <i class="bi bi-clipboard me-2"></i>Lackey
                       </a>
-                    </li>
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" (click)="onCopyToClipboard('JOL')"
-                        gaEvent="export" gaCategory="clipboard_jol">
-                        <i class="bi bi-clipboard me-2"></i>{{ t('clipboard') }} - JOL
+                      <a ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')" gaEvent="export"
+                        gaCategory="clipboard_jol">
+                        <i class="bi bi-clipboard me-2"></i>JOL
                       </a>
-                    </li>
-                    <li>
-                      <a ngbDropdownItem type="button" class="btn btn-secondary" (click)="onCopyToClipboard('TWD')"
-                        gaEvent="export" gaCategory="clipboard_twd">
-                        <i class="bi bi-clipboard me-2"></i>{{ t('clipboard') }} - TWD
+                      <a ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')" gaEvent="export"
+                        gaCategory="clipboard_twd">
+                        <i class="bi bi-clipboard me-2"></i>TWD
                       </a>
-                    </li>
-                  </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3" *ngIf="deck.tags">
+              <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                  <span *ngFor="let tag of deck.tags" class="badge rounded-pill text-bg-primary btn-badge"
+                    (click)="onTag(tag)">
+                    #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+                  </span>
                 </div>
               </div>
             </div>
