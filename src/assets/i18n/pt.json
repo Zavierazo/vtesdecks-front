@@ -103,7 +103,8 @@
     "file": "Arquivo",
     "deck_copied": "Mazo copiado para a área de transferência",
     "export": "Exportar",
-    "draw": "Draw"
+    "draw": "Draw",
+    "edit": "Editar"
   },
   "deck_builder": {
     "deck_not_exists": "O mazo não existe. Tente novamente mais tarde.",

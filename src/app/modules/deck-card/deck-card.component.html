@@ -1,5 +1,4 @@
-<a [routerLink]="deck.owner ? '/decks/builder' : ('/deck/' + deck.id)"
-  [queryParams]="{id: deck.owner ? deck.id : undefined}" class="text-decoration-none">
+<a [routerLink]="'/deck/' + deck.id" class="text-decoration-none">
   <div class="deck-card border border-2 rounded-2 hover-shadow my-1 position-relative d-flex flex-column" [ngClass]="{
     'border-secondary-subtle': !deck.owner,
     'border-primary': deck.owner

@@ -1,7 +1,14 @@
 [
   {
-    "version": "2.38.0",
+    "version": "2.39.0",
     "date": "10th May, 2025",
+    "changes": [
+      "Improve deck layout and styles"
+    ]
+  },
+  {
+    "version": "2.38.0",
+    "date": "9th May, 2025",
     "changes": [
       "Refactor layout and styles for improved responsiveness and aesthetics"
     ]

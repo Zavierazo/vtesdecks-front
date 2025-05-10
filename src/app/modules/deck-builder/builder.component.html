@@ -22,7 +22,7 @@
 
           <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
             <a type="button" class="btn btn-primary m-2" *ngIf="(deckId$ | async)!!"
-              [routerLink]="'/deck/' + (deckId$ | async)!!" target="_blank">
+              [routerLink]="'/deck/' + (deckId$ | async)!!">
               <i class="bi bi-eye"></i>
               {{ t('view') }}
             </a>

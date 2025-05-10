@@ -103,7 +103,8 @@
     "file": "Archivo",
     "deck_copied": "Lista copiada al portapapeles",
     "export": "Exportar",
-    "draw": "Draw"
+    "draw": "Draw",
+    "edit": "Editar"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",

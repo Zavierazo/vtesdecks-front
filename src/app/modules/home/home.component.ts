@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgTemplateOutlet } from '@angular/common'
+import { NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,8 +32,6 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     NgTemplateOutlet,
     HomeSectionComponent,
     TranslocoPipe,
-    DatePipe,
-    NgFor,
   ],
 })
 export class HomeComponent implements OnInit {

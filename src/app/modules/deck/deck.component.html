@@ -97,9 +97,15 @@
             <div class="row mt-3">
               <div class="col-12">
                 <div class="deck-actions d-flex flex-wrap justify-content-center gap-2">
-                  <button class="btn btn-primary" (click)="onOpenInBuilder()">
+                  @if(deck.owner){
+                  <a class="btn btn-primary" [routerLink]="'/decks/builder'" [queryParams]="{id:deck.id }">
+                    <i class="bi bi-pencil-square me-2"></i>{{ t('edit') }}
+                  </a>
+                  }@else {
+                  <button class="btn btn-primary" (click)="onOpenInBuilder()" *isLogged="true">
                     <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
                   </button>
+                  }
                   <button class="btn btn-outline-primary" (click)="onShare()">
                     <i class="bi bi-share me-2"></i>{{ t('share') }}
                   </button>

@@ -103,7 +103,8 @@
     "file": "File",
     "deck_copied": "Deck copied to clipboard",
     "export": "Export",
-    "draw": "Draw"
+    "draw": "Draw",
+    "edit": "Edit"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
