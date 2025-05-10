@@ -262,12 +262,15 @@
     "unread_notifications": "notificaciones no leídas"
   },
   "home": {
+    "welcome_title": "Bienvenido a VTES Decks",
+    "welcome_subtitle": "Descubre, Comparte y Crea los mejores mazos de Vampire: The Eternal Struggle",
     "tournament_decks": "Mazos de Torneo",
     "community_decks": "Mazos de Comunidad",
     "preconstructed_decks": "Mazos Preconstruidos",
     "deck_builder": "Editor de Mazos",
     "user_decks": "Mis Mazos",
     "bookmarked_decks": "Mazos Favoritos",
+    "contribute_title": "Contribuir",
     "contribute_message": "Si desea contribuir, informar errores o plantear un problema, puede hacerlo mediante",
     "contribute_github_issues": "GitHub Issues",
     "contribute_or_message": "o enviando un correo electrónico a",
@@ -276,7 +279,8 @@
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
     "see_more": "Ver más...",
-    "buy_me_a_coffee": "Invítame a un café"
+    "buy_me_a_coffee": "Invítame a un café",
+    "contact_support": "Contactar Soporte"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",

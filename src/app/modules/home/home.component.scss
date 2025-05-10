@@ -1,0 +1,192 @@
+// Hero Section
+.hero-section {
+  background: linear-gradient(
+    135deg,
+    var(--bs-primary) 0%,
+    var(--bs-secondary) 100%
+  );
+  color: white;
+  border-radius: 0 0 2rem 2rem;
+  margin-top: -1rem;
+  padding: 4rem 0;
+
+  .hero-actions {
+    .hero-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      height: 100%;
+      min-height: 140px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      i {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+        opacity: 0.9;
+      }
+
+      span {
+        font-weight: 500;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      small {
+        font-size: 1.2rem;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: white;
+        filter: brightness(1.1);
+      }
+
+      &.bg-primary {
+        background: linear-gradient(
+          135deg,
+          var(--bs-primary) 0%,
+          rgba(var(--bs-primary-rgb), 0.8) 100%
+        );
+      }
+
+      &.bg-success {
+        background: linear-gradient(
+          135deg,
+          var(--bs-success) 0%,
+          rgba(var(--bs-success-rgb), 0.8) 100%
+        );
+      }
+
+      &.bg-secondary {
+        background: linear-gradient(
+          135deg,
+          var(--bs-secondary) 0%,
+          rgba(var(--bs-secondary-rgb), 0.8) 100%
+        );
+      }
+    }
+  }
+}
+
+// Card Hover Effects
+.hover-card {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Featured Decks Section
+.featured-decks {
+  .card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .badge {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+    }
+  }
+}
+
+// News Section
+.news-section {
+  background-color: var(--bs-light);
+
+  .card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Contribution Section
+.contribution-section {
+  .btn-outline-primary {
+    border-width: 2px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Statistics Cards
+.card {
+  .bi-fs-4x {
+    font-size: 2.5rem;
+    opacity: 0.8;
+  }
+
+  .h2-responsive {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 2rem 0;
+    margin: 0 calc(var(--bs-gutter-x) * -0.5);
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .hero-actions {
+      .hero-card {
+        min-height: 120px;
+        padding: 1rem;
+
+        i {
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+        }
+
+        span {
+          font-size: 1rem;
+        }
+
+        small {
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+
+  .card {
+    .bi-fs-4x {
+      font-size: 2rem;
+    }
+
+    .h2-responsive {
+      font-size: 2rem;
+    }
+  }
+}

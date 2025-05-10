@@ -262,12 +262,15 @@
     "unread_notifications": "unread notifications"
   },
   "home": {
+    "welcome_title": "Welcome to VTES Decks",
+    "welcome_subtitle": "Discover, Share, and Build the best Vampire: The Eternal Struggle decks",
     "tournament_decks": "Tournament Decks",
     "community_decks": "Community Decks",
     "preconstructed_decks": "Preconstructed Decks",
     "deck_builder": "Deck Builder",
     "user_decks": "My Decks",
     "bookmarked_decks": "Bookmarked Decks",
+    "contribute_title": "Contribute",
     "contribute_message": "If you want to contribute, report bugs or raise a problem, you can do so by",
     "contribute_github_issues": "GitHub Issues",
     "contribute_or_message": "or sending an email to",
@@ -276,7 +279,8 @@
     "newest_tournament": "Newest Tournament",
     "newest_community": "Newest Community",
     "see_more": "See More...",
-    "buy_me_a_coffee": "Buy me a coffee"
+    "buy_me_a_coffee": "Buy me a coffee",
+    "contact_support": "Contact Support"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
