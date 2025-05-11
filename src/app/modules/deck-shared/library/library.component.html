@@ -68,17 +68,17 @@
         }
         @if( library.i18n && library.i18n.name !== library.name ){
         <div class="ms-1 float-start d-flex flex-column">
-          <span class="text-body">{{ library.i18n.name }}</span>
-          <span class="text-muted default-locale-name">
+          <span class="text-body text-name">{{ library.i18n.name }}</span>
+          <span class="text-muted default-locale-name text-name">
             {{ library.name }}
           </span>
         </div>
         }
         @else{
         <div class="ms-1 float-start d-flex flex-column">
-          <span class="text-body">{{ library.name }}</span>
+          <span class="text-body text-name">{{ library.name }}</span>
           @if(library.aka && library.aka !== library.name){
-          <span class="text-muted default-locale-name">
+          <span class="text-muted default-locale-name text-name">
             {{ library.aka }}
           </span>
           }
