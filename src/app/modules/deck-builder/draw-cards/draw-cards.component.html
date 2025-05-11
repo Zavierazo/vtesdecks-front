@@ -21,8 +21,7 @@
           </span>
         </li>
         <div *ngFor="let crypt of cryptList()| slice:0:cryptDrawn()">
-          <app-crypt [card]="crypt" [cryptSize]="cryptList().length" [withDrawProbability]="true"
-            [disablePopover]="(isMobileOrTablet$ | async)!"></app-crypt>
+          <app-crypt [card]="crypt" [cryptSize]="cryptList().length" [withDrawProbability]="true"></app-crypt>
         </div>
       </ul>
       <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
@@ -36,8 +35,7 @@
           </span>
         </li>
         <div *ngFor="let library of libraryList()| slice:0:libraryDrawn()">
-          <app-library [card]="library" [librarySize]="libraryList().length" [withDrawProbability]="true"
-            [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
+          <app-library [card]="library" [librarySize]="libraryList().length" [withDrawProbability]="true"></app-library>
         </div>
       </ul>
     </div>

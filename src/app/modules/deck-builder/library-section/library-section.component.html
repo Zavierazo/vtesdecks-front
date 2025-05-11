@@ -60,7 +60,7 @@
           </div>
           <ul class="col list-group" *ngFor="let library of (library$ | async)! ; trackBy: trackByFn">
             <app-library [card]="getCard(library)" (click)="openLibraryCard(library)"
-              [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
+              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-library>
           </ul>
         </div>
       </div>

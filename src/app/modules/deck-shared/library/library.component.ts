@@ -47,6 +47,8 @@ export class LibraryComponent implements OnInit {
 
   @Input() disablePopover = false
 
+  @Input() disableClickPopover = false
+
   @Input() maxNumber?: number
 
   @Input() overrideImage?: string

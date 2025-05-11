@@ -2,7 +2,7 @@
   @if (library$ | async; as library) {
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-    (click)="popover.open()" [ngStyle]="{
+    (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="{
       background: 'url(/assets' + library.cropImage + ') scroll',
       'background-repeat': 'no-repeat',
       'background-position': 'right 33%',

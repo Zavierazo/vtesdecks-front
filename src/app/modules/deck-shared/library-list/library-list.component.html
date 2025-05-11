@@ -11,7 +11,8 @@
     <div *ngFor="let library of libraryCards(libraryType); trackBy: trackByFn">
       <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
         (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-        (click)="openCryptCard(library, libraryList!)" [disablePopover]="(isMobileOrTablet$ | async)!"></app-library>
+        (click)="openCryptCard(library, libraryList!)" [disablePopover]="(isMobileOrTablet$ | async)!"
+        [disableClickPopover]="true"></app-library>
     </div>
   </ul>
 </div>

@@ -69,7 +69,7 @@
           </div>
           <ul class="col list-group" *ngFor="let crypt of (crypt$ | async)! ; trackBy: trackByFn">
             <app-crypt [card]="getCard(crypt)" (click)="openCryptCard(crypt)"
-              [disablePopover]="(isMobileOrTablet$ | async)!"></app-crypt>
+              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-crypt>
           </ul>
         </div>
       </div>

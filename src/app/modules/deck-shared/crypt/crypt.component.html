@@ -1,7 +1,7 @@
 @if(crypt$ | async; as crypt){
 <li class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
   [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-  (click)="popover.open()" [ngStyle]="{
+  (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="{
     background: 'url(/assets' + crypt.cropImage + ') scroll',
     'background-repeat': 'no-repeat',
     'background-position': 'right 33%',

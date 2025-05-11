@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, SlicePipe } from '@angular/common'
+import { NgClass, NgFor, SlicePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +12,6 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { ApiCard } from '../../../models/api-card'
-import { MediaService } from '../../../services/media.service'
 import { isCrypt } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
@@ -28,7 +27,6 @@ import { LibraryComponent } from '../../deck-shared/library/library.component'
     NgFor,
     SlicePipe,
     NgxGoogleAnalyticsModule,
-    AsyncPipe,
     TranslocoPipe,
     CryptComponent,
     LibraryComponent,
@@ -36,7 +34,6 @@ import { LibraryComponent } from '../../deck-shared/library/library.component'
 })
 export class DrawCardsComponent implements OnInit {
   @Input() cards!: ApiCard[]
-  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   cryptList = signal<ApiCard[]>([])
   cryptDrawn = signal<number>(4)
   cryptUnique: Signal<number> = computed(
@@ -50,10 +47,7 @@ export class DrawCardsComponent implements OnInit {
   libraryList = signal<ApiCard[]>([])
   libraryDrawn = signal<number>(7)
 
-  constructor(
-    public modal: NgbActiveModal,
-    private mediaService: MediaService,
-  ) {}
+  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {
     const crypt: ApiCard[] = []
