@@ -11,8 +11,10 @@
         <label class="form-check-label" for="favoriteCheck">{{ t('bookmarked') }}</label>
       </div>
     </div>
-    <label for="clans" class="form-label text-primary fw-bold">{{ t('tags') }}</label>
-    <div class="mb-2">
+    <label for="tags" class="form-label text-primary fw-bold">
+      <i class="bi bi-tags me-2"></i>{{ t('tags') }}
+    </label>
+    <div id="tags" class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
         <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)"
           [term]="t"></ngb-highlight>
@@ -49,7 +51,9 @@
       </app-discipline-filter>
     </div>
     <app-card-filter #cardFilter></app-card-filter>
-    <label class="form-label text-primary fw-bold">{{ t('composition') }}</label>
+    <label class="form-label text-primary fw-bold">
+      <i class="bi bi-pie-chart me-2"></i>{{ t('composition') }}
+    </label>
     <div class="row g-1 mb-2">
       <div class="col-12">
         <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
@@ -154,16 +158,16 @@
     <label class="form-label text-primary fw-bold">{{ t('other_filters') }}</label>
     <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
-      <label for="deckName" class="text-primary">{{ t('name') }}</label>
+      <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
     </div>
     <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckAuthor" [placeholder]="t('author')" formControlName="author" />
-      <label for="deckAuthor" class="text-primary">{{ t('author') }}</label>
+      <label for="deckAuthor" class="text-primary"><i class="bi bi-person me-2"></i>{{ t('author') }}</label>
     </div>
     <div class="form-floating">
       <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text')"
         formControlName="cardText" />
-      <label for="deckCardText" class="text-primary">{{ t('card_text') }}</label>
+      <label for="deckCardText" class="text-primary"><i class="bi bi-card-text me-2"></i>{{ t('card_text') }}</label>
     </div>
   </form>
 </div>
