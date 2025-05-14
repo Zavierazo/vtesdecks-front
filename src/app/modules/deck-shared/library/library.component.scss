@@ -11,12 +11,12 @@
 .text-name {
   color: var(--bs-body-color) !important;
   text-shadow:
-    1px 0 #fff,
-    -1px 0 #fff,
-    0 1px #fff,
-    0 -1px #fff,
-    1px 1px #fff,
-    -1px -1px #fff,
-    1px -1px #fff,
-    -1px 1px #fff;
+    1px 0 var(--bs-body-bg),
+    -1px 0 var(--bs-body-bg),
+    0 1px var(--bs-body-bg),
+    0 -1px var(--bs-body-bg),
+    1px 1px var(--bs-body-bg),
+    -1px -1px var(--bs-body-bg),
+    1px -1px var(--bs-body-bg),
+    -1px 1px var(--bs-body-bg);
 }
