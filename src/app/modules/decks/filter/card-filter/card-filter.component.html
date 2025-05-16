@@ -63,6 +63,7 @@
         </span>
       </div>
     </ng-container>
+    @if(showStarVampireFilter){
     <form [formGroup]="form">
       <div class="form-check form-switch d-inline-block ms-2 mt-2">
         <input class="form-check-input" type="checkbox" role="switch" id="starVampireCheck"
@@ -70,6 +71,7 @@
         <label class="form-check-label" for="starVampireCheck">{{ t('star_vampire') }}</label>
       </div>
     </form>
+    }
   </div>
   <div class="mb-3 row">
     <label for="library" class="col-12 col-form-label text-primary fw-bold">{{ t('library_cards') }}</label>
@@ -101,13 +103,14 @@
           <img #i18nImage [ngClass]="{
       'img-popover': !(isMobile$ | async)!,
       'img-popover-mobile': (isMobile$ | async)!
-    }" [src]="library.i18n.image" [alt]="library.i18n.name" (error)="i18nImage.src='/assets/' + library.image" />
+    }" [src]="'/assets' + library.i18n.image" [alt]="library.i18n.name"
+            (error)="i18nImage.src='/assets' + library.image" />
           }
           @else{
           <img [ngClass]="{
       'img-popover': !(isMobile$ | async)!,
       'img-popover-mobile': (isMobile$ | async)!
-    }" [src]="'/assets/' + library.image" [alt]="library.name" />
+    }" [src]="'/assets' + library.image" [alt]="library.name" />
           }
         </ng-template>
         <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of library.typeIcons"></i>

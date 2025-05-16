@@ -1,17 +1,21 @@
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { ApiLibrary } from './../../../../models/api-library'
-import { LibraryQuery } from './../../../../state/library/library.query'
-import { LibraryService } from './../../../../state/library/library.service'
-import { ApiCrypt } from '../../../../models/api-crypt'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { CryptQuery } from '../../../../state/crypt/crypt.query'
-import { CryptService } from '../../../../state/crypt/crypt.service'
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   OnInit,
 } from '@angular/core'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { ActivatedRoute, Router } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
+import {
+  NgbHighlight,
+  NgbPopover,
+  NgbTypeahead,
+  NgbTypeaheadSelectItemEvent,
+} from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   combineLatest,
   debounceTime,
@@ -22,23 +26,37 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { NgbTypeaheadSelectItemEvent, NgbHighlight, NgbTypeahead, NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { ApiCrypt } from '../../../../models/api-crypt'
 import { CardFilter } from '../../../../models/card-filter'
-import { ActivatedRoute, Router } from '@angular/router'
-import { DecksQuery } from '../../../../state/decks/decks.query'
 import { MediaService } from '../../../../services/media.service'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { CryptQuery } from '../../../../state/crypt/crypt.query'
+import { CryptService } from '../../../../state/crypt/crypt.service'
+import { DecksQuery } from '../../../../state/decks/decks.query'
+import { ApiLibrary } from './../../../../models/api-library'
+import { LibraryQuery } from './../../../../state/library/library.query'
+import { LibraryService } from './../../../../state/library/library.service'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-card-filter',
-    templateUrl: './card-filter.component.html',
-    styleUrls: ['./card-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgbHighlight, NgFor, NgbTypeahead, NgClass, NgbPopover, ReactiveFormsModule, AsyncPipe]
+  selector: 'app-card-filter',
+  templateUrl: './card-filter.component.html',
+  styleUrls: ['./card-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgIf,
+    NgbHighlight,
+    NgFor,
+    NgbTypeahead,
+    NgClass,
+    NgbPopover,
+    ReactiveFormsModule,
+    AsyncPipe,
+  ],
 })
 export class CardFilterComponent implements OnInit {
+  @Input() showStarVampireFilter = true
+
   cards: CardFilter[] = []
 
   isMobile$!: Observable<boolean>
