@@ -286,7 +286,8 @@
     "newest_community": "Newest Community",
     "see_more": "See More...",
     "buy_me_a_coffee": "Buy me a coffee",
-    "contact_support": "Contact Support"
+    "contact_support": "Contact Support",
+    "whats_new": "What's new in v{{ version }} ({{ date }})"
   },
   "import_amaranth": {
     "title": "Import Amaranth",

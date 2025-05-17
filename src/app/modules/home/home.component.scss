@@ -151,6 +151,10 @@
 
 // Responsive Adjustments
 @media (max-width: 768px) {
+  .hero-alert {
+    margin: 0 calc(var(--bs-gutter-x) * -0.5);
+  }
+
   .hero-section {
     padding: 2rem 0;
     margin: 0 calc(var(--bs-gutter-x) * -0.5);

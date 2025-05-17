@@ -1,4 +1,22 @@
 <ng-container *transloco="let t; read: 'home'">
+  @if (showChangelogAlert && changelogAlert) {
+  <div class="hero-alert alert alert-info alert-dismissible fade show mb-0 rounded-0 border-0" role="alert"
+    style="z-index: 1050;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <strong>{{ t('whats_new', { version: changelogAlert.version, date: changelogAlert.date }) }}</strong>
+          @for (change of changelogAlert.changes; track change) {
+          <ul class="mb-0 ps-4">
+            <li [innerHTML]="change"></li>
+          </ul>
+          }
+        </div>
+        <button type="button" class="btn-close ms-3" aria-label="Close" (click)="closeChangelogAlert()"></button>
+      </div>
+    </div>
+  </div>
+  }
   <!-- Hero Section -->
   <section class="hero-section py-5 mb-4">
     <div class="container">
