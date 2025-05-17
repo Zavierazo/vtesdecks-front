@@ -606,5 +606,26 @@
       "Blood Cursed": "Maldição de Sangue",
       "Circle": "Círculo"
     }
+  },
+  "limited_format": {
+    "title": "Formato Limitado",
+    "predefined_formats": "Formato Predefinido",
+    "create_custom": "Criar Formato Personalizado",
+    "back": "Voltar",
+    "export": "Exportar",
+    "import": "Importar",
+    "format_name": "Nome do Formato",
+    "format_name_placeholder": "Digite o nome do formato",
+    "card_limits": "Limites de Cartas",
+    "crypt_cards": "Cartas da Cripta",
+    "library_cards": "Cartas da Biblioteca",
+    "min_cards": "Mínimo de Cartas",
+    "max_cards": "Máximo de Cartas",
+    "sets": "Conjuntos",
+    "allowed_cards": "Cartas Permitidas",
+    "banned_cards": "Cartas Proibidas",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "remove": "Remover"
   }
 }
