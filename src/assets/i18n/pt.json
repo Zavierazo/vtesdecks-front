@@ -41,7 +41,8 @@
     "capacity": "Capacidade",
     "title": "Título",
     "sect": "Seita",
-    "taints": "Taints"
+    "taints": "Taints",
+    "limited_format": "Formato Limitado"
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
@@ -77,6 +78,7 @@
     "add_to_bookmarks": "Adicionar aos favoritos",
     "created_by": "Criado por",
     "tournament": "Torneio",
+    "limited_format": "Formato Limitado",
     "players": "{{ count }} jogadores",
     "buy_dtc": "Compre em DriveThruCards",
     "source": "Fonte",
@@ -139,7 +141,18 @@
     "export": "Exportar",
     "clipboard": "Área de transferência",
     "file": "Arquivo",
+    "limited_format": "Formato Limitado",
     "deck_copied": "Mazo copiado para a área de transferência"
+  },
+  "deck_builder_service": {
+    "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
+    "max_crypt_cards": "Cripta deve ter no máximo {{ maxCrypt }} cartões",
+    "banned_card": "{{ name }} é uma carta proibida",
+    "invalid_crypt_group": "Cripta deve ter no máximo 2 grupos de cripta",
+    "consecutive_crypt_group": "Cripta deve ter grupos de cripta consecutivos",
+    "min_library_cards": "Biblioteca deve ter pelo menos {{ minLibrary }} cartões",
+    "max_library_cards": "Biblioteca deve ter no máximo {{ maxLibrary }} cartões",
+    "limited_format_not_allowed": "{{ name }} não é permitido neste formato"
   },
   "deck_shared": {
     "banned": "Banido",
@@ -298,7 +311,8 @@
     "title": "Título",
     "blood_cost": "Custo de Sangue",
     "pool_cost": "Custo da Vida",
-    "taints": "Taints"
+    "taints": "Taints",
+    "limited_format": "Formato Limitado"
   },
   "library_section": {
     "card_name": "Nome do cartão",

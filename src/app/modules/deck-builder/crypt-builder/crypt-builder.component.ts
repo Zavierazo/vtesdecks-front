@@ -72,6 +72,7 @@ export class CryptBuilderComponent implements OnInit {
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
+  limitedFormat?: boolean
   clans!: string[]
   disciplines!: string[]
   superiorDisciplines!: string[]
@@ -109,6 +110,9 @@ export class CryptBuilderComponent implements OnInit {
   }
 
   initFilters() {
+    if (this.deckBuilderQuery.getLimitedFormat() !== undefined) {
+      this.limitedFormat = true
+    }
     this.nameFormControl.patchValue('', { emitEvent: false })
     this.clans = []
     this.disciplines = []
@@ -130,6 +134,11 @@ export class CryptBuilderComponent implements OnInit {
     this.taints = []
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
+    this.initQuery()
+  }
+
+  onChangeLimitedFormat(limitedFormat: boolean) {
+    this.limitedFormat = limitedFormat
     this.initQuery()
   }
 
@@ -252,6 +261,28 @@ export class CryptBuilderComponent implements OnInit {
         }
         for (const taint of this.taints) {
           if (!entity.taints.includes(taint)) {
+            return false
+          }
+        }
+        const limitedFormatState = this.deckBuilderQuery.getLimitedFormat()
+        if (this.limitedFormat && limitedFormatState) {
+          if (limitedFormatState.banned.crypt[entity.id]) {
+            return false
+          }
+          if (limitedFormatState.banned.library[entity.id]) {
+            return false
+          }
+          if (limitedFormatState.allowed.crypt[entity.id]) {
+            return true
+          }
+          if (limitedFormatState.allowed.library[entity.id]) {
+            return true
+          }
+          if (
+            !Object.keys(limitedFormatState.sets).some((set) =>
+              entity.sets.some((entitySet) => entitySet.split(':')[0] === set),
+            )
+          ) {
             return false
           }
         }

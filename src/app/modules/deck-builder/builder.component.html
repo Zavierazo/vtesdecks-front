@@ -46,6 +46,13 @@
               <i class="bi bi-printer me-2"></i>
               {{ 'deck_shared.print' | transloco }}
             </button>
+            <button type="button" class="btn btn-outline-primary m-2" [ngClass]="{
+              'btn-primary': limitedFormat$ | async,
+              'btn-outline-primary': !(limitedFormat$ | async)
+            }" (click)="openLimitedFormatModal()">
+              <i class="bi bi-funnel"></i>
+              {{ t('limited_format') }}
+            </button>
             <div ngbDropdown class="d-inline-block m-2">
               <button id="dropdownImport" type="button" class="btn btn-outline-primary" ngbDropdownToggle>
                 <i class="bi bi-cloud-plus-fill"></i>

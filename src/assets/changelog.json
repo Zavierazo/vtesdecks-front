@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.40.0",
+    "date": "17th May, 2025",
+    "changes": [
+      "Add Limited Format to Deck Builder"
+    ]
+  },
+  {
     "version": "2.39.0",
     "date": "10th May, 2025",
     "changes": [

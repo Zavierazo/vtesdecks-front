@@ -2,11 +2,14 @@ import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiDeckExtra } from '../../models/api-deck-extra'
+import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 
 export interface DeckBuilderState {
   id?: string
   name?: string
   description?: string
+  extra?: ApiDeckExtra
   published: boolean
   cards: ApiCard[]
   cryptErrors: string[]
@@ -81,6 +84,13 @@ export class DeckBuilderStore {
 
   setSaved(saved: boolean): void {
     this.update((state) => ({ ...state, saved }))
+  }
+
+  setLimitedFormat(format?: ApiDeckLimitedFormat): void {
+    this.update((state) => ({
+      ...state,
+      extra: format ? { limitedFormat: format } : undefined,
+    }))
   }
 
   selectLoading(): Observable<boolean> {

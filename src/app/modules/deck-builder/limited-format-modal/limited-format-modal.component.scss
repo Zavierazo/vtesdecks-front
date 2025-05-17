@@ -1,0 +1,107 @@
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.list-group-item {
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.form-check {
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+h6 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.modal-footer {
+  .btn-outline-secondary {
+    &:hover {
+      background-color: #6c757d;
+      color: white;
+    }
+  }
+}
+
+// Card selection sections
+.card-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background-color: #f8f9fa;
+
+  h6 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+}
+
+// Checkbox groups
+.checkbox-group {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background-color: white;
+}
+
+// Format selection
+.format-selection {
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+
+    .form-check {
+      margin: 0;
+      width: 100%;
+    }
+  }
+}
+
+// Import/Export buttons
+.import-export-buttons {
+  .btn {
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+// Custom format form
+.custom-format-form {
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    margin-bottom: 1rem;
+  }
+}
+
+.img-popover {
+  width: 276px;
+  height: auto;
+
+  &-mobile {
+    width: 75vw;
+    max-width: 276px;
+  }
+}

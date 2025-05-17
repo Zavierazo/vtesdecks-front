@@ -41,7 +41,8 @@
     "capacity": "Capacity",
     "title": "Title",
     "sect": "Sect",
-    "taints": "Taints"
+    "taints": "Taints",
+    "limited_format": "Limited Format"
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -77,6 +78,7 @@
     "add_to_bookmarks": "Add to Bookmarks",
     "created_by": "Created by",
     "tournament": "Tournament",
+    "limited_format": "Limited Format",
     "players": "{{ count }} players",
     "buy_dtc": "Buy at DriveThruCards",
     "source": "Source",
@@ -110,7 +112,7 @@
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
     "already_saved": "Deck already saved!",
     "name_required": "Deck name is required",
-    "invalid_public_deck": "Invalid deck, public decks requires valid deck composition(12+ crypt cards, 60-90 library cards & valid crypt groups)",
+    "invalid_public_deck": "Invalid deck, public decks requires valid deck composition",
     "deck_saved": "Deck saved successfully! You can now share it with your friends!!",
     "link_copied": "Link copied to clipboard",
     "delete_title": "Delete this deck?",
@@ -139,15 +141,18 @@
     "export": "Export",
     "clipboard": "Clipboard",
     "file": "File",
+    "limited_format": "Limited Format",
     "deck_copied": "Deck copied to clipboard"
   },
   "deck_builder_service": {
-    "min_crypt_cards": "Crypt must have at least 12 cards",
+    "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
+    "max_crypt_cards": "Crypt must have at most {{ maxCrypt }} cards",
     "banned_card": "{{ name }} is banned card",
     "invalid_crypt_group": "Crypt must have at most 2 crypt groups",
     "consecutive_crypt_group": "Crypt must have consecutive crypt groups",
-    "min_library_cards": "Library must have at least 60 cards",
-    "max_library_cards": "Library must have at most 90 cards"
+    "min_library_cards": "Library must have at least {{ minLibrary}} cards",
+    "max_library_cards": "Library must have at most {{ maxLibrary }} cards",
+    "limited_format_not_allowed": "{{ name }} is not allowed in this format"
   },
   "deck_shared": {
     "banned": "Banned",
@@ -306,7 +311,8 @@
     "title": "Title",
     "blood_cost": "Blood Cost",
     "pool_cost": "Pool Cost",
-    "taints": "Taints"
+    "taints": "Taints",
+    "limited_format": "Limited Format"
   },
   "library_section": {
     "card_name": "Card Name",
@@ -351,7 +357,7 @@
   "page_not_found": {
     "danger_text": "Opps!",
     "page_not_found": "Page not found.",
-    "does_not_exists": "The page you’re looking for doesn’t exist.",
+    "does_not_exists": "The page you're looking for doesn't exist.",
     "go_home": "Go Home"
   },
   "reset_password": {
@@ -393,7 +399,7 @@
     "confirm_password": "Confirm Password",
     "password_requirements": "Password requirements",
     "password_requirements_detail": "To create a new password, you have to meet all of the following requirements:",
-    "password_not_same": "Can’t be the same as a previous password",
+    "password_not_same": "Can't be the same as a previous password",
     "save": "Save Profile",
     "error": "An error occurred while updating your settings."
   },
@@ -600,5 +606,26 @@
       "Blood Cursed": "Blood Cursed",
       "Circle": "Circle"
     }
+  },
+  "limited_format": {
+    "title": "Limited Format",
+    "predefined_formats": "Predefined Formats",
+    "create_custom": "Create Custom Format",
+    "back": "Back",
+    "export": "Export",
+    "import": "Import",
+    "format_name": "Format Name",
+    "format_name_placeholder": "Enter format name",
+    "card_limits": "Card Limits",
+    "crypt_cards": "Crypt Cards",
+    "library_cards": "Library Cards",
+    "min_cards": "Minimum Cards",
+    "max_cards": "Maximum Cards",
+    "sets": "Sets",
+    "allowed_cards": "Allowed Cards",
+    "banned_cards": "Banned Cards",
+    "cancel": "Cancel",
+    "save": "Save",
+    "remove": "Remove"
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { ApiLibrary } from '../../models/api-library'
 import { isCrypt, isLibrary, roundNumber } from '../../utils/vtes-utils'
@@ -231,6 +232,14 @@ export class DeckBuilderQuery {
     return this.cryptQuery.getDisciplines(
       this.store.getValue().cards.filter(isCrypt),
     )
+  }
+
+  getLimitedFormat(): ApiDeckLimitedFormat | undefined {
+    return this.store.getValue().extra?.limitedFormat
+  }
+
+  selectLimitedFormat(): Observable<ApiDeckLimitedFormat | undefined> {
+    return this.store.select((state) => state.extra?.limitedFormat)
   }
 
   isValidDeck(): boolean {

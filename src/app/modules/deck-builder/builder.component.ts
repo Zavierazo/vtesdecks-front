@@ -30,6 +30,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
@@ -51,6 +52,7 @@ import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
 import { ImportVdbComponent } from './import-vdb/import-vdb.component'
 import { LibraryBuilderComponent } from './library-builder/library-builder.component'
+import { LimitedFormatModalComponent } from './limited-format-modal/limited-format-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -95,6 +97,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   cryptErrors$!: Observable<string[]>
   libraryErrors$!: Observable<string[]>
   saved$!: Observable<boolean>
+  limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
 
   constructor(
     private readonly router: Router,
@@ -448,5 +451,29 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .get('published')
       ?.patchValue(this.deckBuilderQuery.getPublished(), { emitEvent: false })
     this.changeDetector.markForCheck()
+  }
+
+  openLimitedFormatModal(): void {
+    const currentFormat = this.deckBuilderQuery.getLimitedFormat()
+    const modalRef = this.modalService.open(LimitedFormatModalComponent, {
+      size: 'lg',
+      centered: true,
+    })
+    modalRef.componentInstance.previousFormat = currentFormat
+    modalRef.closed.subscribe((result: ApiDeckLimitedFormat | undefined) => {
+      if (result) {
+        if (
+          Object.keys(result.sets).length > 0 ||
+          Object.keys(result.allowed.crypt).length > 0 ||
+          Object.keys(result.allowed.library).length > 0 ||
+          Object.keys(result.banned.crypt).length > 0 ||
+          Object.keys(result.banned.library).length > 0
+        ) {
+          this.deckBuilderService.setLimitedFormat(result)
+        } else {
+          this.deckBuilderService.setLimitedFormat()
+        }
+      }
+    })
   }
 }
