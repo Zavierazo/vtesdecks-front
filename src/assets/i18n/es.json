@@ -286,7 +286,8 @@
     "newest_community": "Comunidad Nuevos",
     "see_more": "Ver más...",
     "buy_me_a_coffee": "Invítame a un café",
-    "contact_support": "Contactar Soporte"
+    "contact_support": "Contactar Soporte",
+    "whats_new": "Novedades en v{{ version }} ({{ date }})"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",

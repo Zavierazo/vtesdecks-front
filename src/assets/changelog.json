@@ -3,7 +3,8 @@
     "version": "2.40.0",
     "date": "17th May, 2025",
     "changes": [
-      "Add Limited Format to Deck Builder"
+      "New Feature: Limited Format Decks",
+      "Add Two Player Limited Format"
     ]
   },
   {

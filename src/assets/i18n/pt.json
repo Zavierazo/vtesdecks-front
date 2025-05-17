@@ -265,7 +265,8 @@
     "logout": "Sair",
     "theme": "Tema",
     "notifications": "Notificações",
-    "unread_notifications": "notificações não lidas"
+    "unread_notifications": "notificações não lidas",
+    "whats_new": "Novidades em v{{ version }} ({{ date }})"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
