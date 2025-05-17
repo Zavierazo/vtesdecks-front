@@ -344,6 +344,12 @@ export class ApiDataService {
     )
   }
 
+  getSets(): Observable<ApiSet[]> {
+    return this.httpClient.get<ApiSet[]>(
+      `${environment.api.baseUrl}${this.setsPath}`,
+    )
+  }
+
   getSet(abbrev: string): Observable<ApiSet> {
     return this.httpClient.get<ApiSet>(
       `${environment.api.baseUrl}${this.setsPath}`,

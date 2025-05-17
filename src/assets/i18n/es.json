@@ -41,7 +41,8 @@
     "capacity": "Capacidad",
     "title": "Título",
     "sect": "Secta",
-    "taints": "Características"
+    "taints": "Características",
+    "limited_format": "Formato Limitado"
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -77,6 +78,7 @@
     "add_to_bookmarks": "Añadir a favoritos",
     "created_by": "Creado por",
     "tournament": "Torneo",
+    "limited_format": "Formato Limitado",
     "players": "{{ count }} jugadores",
     "buy_dtc": "Comprar en DriveThruCards",
     "source": "Fuente",
@@ -110,7 +112,7 @@
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
     "already_saved": "¡Mazo ya guardado!",
     "name_required": "El nombre del mazo es obligatorio",
-    "invalid_public_deck": "Mazo no válido, los mazos públicos requieren una composición de mazo válida (más de 12 cartas de cripta, entre 60 y 90 cartas de biblioteca y grupos de cripta válidos)",
+    "invalid_public_deck": "Mazo no válido, los mazos públicos requieren una composición de mazo válida",
     "deck_saved": "¡Mazo guardado exitosamente! Ahora puedes compartirlo con tus amigos!",
     "link_copied": "Enlace copiado al portapapeles",
     "delete_title": "¿Eliminar este mazo?",
@@ -139,15 +141,18 @@
     "export": "Exportar",
     "clipboard": "Portapapeles",
     "file": "Archivo",
+    "limited_format": "Formato Limitado",
     "deck_copied": "Lista copiada al portapapeles"
   },
   "deck_builder_service": {
-    "min_crypt_cards": "La cripta debe tener al menos 12 cartas.",
+    "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",
+    "max_crypt_cards": "La cripta debe tener como máximo {{ maxCrypt }} cartas.",
     "banned_card": "La carta {{ name }} está prohibida",
     "invalid_crypt_group": "La cripta debe tener como máximo 2 grupos de cripta.",
     "consecutive_crypt_group": "La cripta debe tener grupos de cripta consecutivos.",
-    "min_library_cards": "La biblioteca debe tener al menos 60 cartas.",
-    "max_library_cards": "La biblioteca debe tener como máximo 90 cartas."
+    "min_library_cards": "La biblioteca debe tener al menos {{ minLibrary}} cartas.",
+    "max_library_cards": "La biblioteca debe tener como máximo {{ maxLibrary }} cartas.",
+    "limited_format_not_allowed": "{{ name }} no está permitido en este formato"
   },
   "deck_shared": {
     "banned": "Prohibida",
@@ -306,7 +311,8 @@
     "title": "Título",
     "blood_cost": "Coste de sangre",
     "pool_cost": "Coste de vida",
-    "taints": "Características"
+    "taints": "Características",
+    "limited_format": "Formato Limitado"
   },
   "library_section": {
     "card_name": "Nombre de carta",
@@ -600,5 +606,26 @@
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo"
     }
+  },
+  "limited_format": {
+    "title": "Formato Limitado",
+    "predefined_formats": "Formatos Predefinidos",
+    "create_custom": "Crear Formato Personalizado",
+    "back": "Volver",
+    "export": "Exportar",
+    "import": "Importar",
+    "format_name": "Nombre del Formato",
+    "format_name_placeholder": "Introduce el nombre del formato...",
+    "card_limits": "Límites de Cartas",
+    "crypt_cards": "Cartas de Cripta",
+    "library_cards": "Cartas de Biblioteca",
+    "min_cards": "Mínimo de Cartas",
+    "max_cards": "Máximo de Cartas",
+    "sets": "Expansiones",
+    "allowed_cards": "Cartas Permitidas",
+    "banned_cards": "Cartas Prohibidas",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "remove": "Eliminar"
   }
 }

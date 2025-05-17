@@ -1,4 +1,11 @@
 <ng-container *transloco="let t; read: 'library_builder_filter'">
+  <div class="row g-1 mb-2 items-center" *ngIf=" limitedFormat !==undefined">
+    <div class="form-check form-switch form-check-inline">
+      <input class="form-check-input" type="checkbox" role="switch" id="limitedFormatCheck"
+        [formControl]="limitedFormatControl" />
+      <label class="form-check-label" for="limitedFormatCheck">{{ t('limited_format') }}</label>
+    </div>
+  </div>
   <div class="row g-1 mb-2 items-center" *ngIf=" printOnDemand !==undefined">
     <div class="form-check form-switch form-check-inline">
       <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"

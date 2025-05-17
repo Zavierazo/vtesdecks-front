@@ -1,4 +1,5 @@
 import { ApiCard } from './api-card'
+import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
 import { ApiErrata } from './api-errata'
 
@@ -18,6 +19,7 @@ export interface ApiDeck {
   url?: string
   source?: string
   description?: string
+  limitedFormat?: string
   published?: boolean
   crypt?: ApiCard[]
   library?: ApiCard[]
@@ -31,4 +33,5 @@ export interface ApiDeck {
   tags?: string[]
   creationDate: Date
   modifyDate: Date
+  extra?: ApiDeckExtra
 }

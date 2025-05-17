@@ -70,6 +70,13 @@
 
     <!-- Bottom Section -->
     <div class="deck-content px-3">
+      @if (deck.limitedFormat) {
+      <div class="tournament-info text-center">
+        <span class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center">
+          <i class="bi bi-funnel-fill me-1"></i>{{ deck.limitedFormat }}
+        </span>
+      </div>
+      }
       @if (deck.tournament) {
       <div class="tournament-info text-center">
         <span class="badge bg-warning text-dark small shadow-sm">

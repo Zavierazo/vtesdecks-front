@@ -1,5 +1,5 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { NgxSliderModule } from '@angular-slider/ngx-slider'
+import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,25 +9,40 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
+import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { LibraryQuery } from '../../../state/library/library.query'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component';
-import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
-import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback';
+import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
+import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-builder-filter',
-    templateUrl: './library-builder-filter.component.html',
-    styleUrls: ['./library-builder-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, LibraryTypeFilterComponent, DisciplineFilterComponent, ClanFilterComponent, NgFor, NgxSliderModule, AsyncPipe, TitleCasePipe, TranslocoFallbackPipe, TranslocoPipe]
+  selector: 'app-library-builder-filter',
+  templateUrl: './library-builder-filter.component.html',
+  styleUrls: ['./library-builder-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgIf,
+    ReactiveFormsModule,
+    LibraryTypeFilterComponent,
+    DisciplineFilterComponent,
+    ClanFilterComponent,
+    NgFor,
+    NgxSliderModule,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslocoFallbackPipe,
+    TranslocoPipe,
+  ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
+  @Input() limitedFormat?: boolean
+  @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
   @Input() printOnDemand?: boolean
   @Output() printOnDemandChange: EventEmitter<boolean> = new EventEmitter()
   @Input() types!: string[]
@@ -48,6 +63,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   @Output() taintsChange: EventEmitter<string[]> = new EventEmitter()
 
   printOnDemandControl!: FormControl
+  limitedFormatControl!: FormControl
   sectControl!: FormControl
   titleControl!: FormControl
   bloodCostSliderControl!: FormControl
@@ -75,6 +91,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
+    this.onChangeLimitedFormat()
     this.onChangeSect()
     this.onChangeTitle()
     this.onChangeBloodCostSlider()
@@ -105,6 +122,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.printOnDemand = value
           this.printOnDemandChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeLimitedFormat() {
+    this.limitedFormatControl = new FormControl(this.limitedFormat)
+    this.limitedFormatControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.limitedFormat = value
+          this.limitedFormatChange.emit(value)
         }),
       )
       .subscribe()

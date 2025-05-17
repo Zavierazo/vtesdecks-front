@@ -1,0 +1,293 @@
+<ng-container *transloco="let t; read: 'limited_format'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('title') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="formatForm">
+      <!-- Predefined Formats -->
+      @if(!isCustomFormat){
+      <div class="mb-3">
+        <div class="text-primary fw-bold mb-3">{{ t('predefined_formats') }}</div>
+        <div class="list-group">
+          @for(format of predefinedFormats; track format.id){
+          <div class="list-group-item" (click)="onFormatSelect($event, format.id)">
+            <div class="form-check d-flex align-items-start mb-0">
+              <input class="form-check-input" type="radio" [id]="'format-' + format.id" [value]="format.id"
+                name="format" [checked]="selectedFormat?.id === format.id" />
+              <label class="form-check-label ms-2" [for]="'format-' + format.id">
+                {{ format.name }}
+              </label>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Custom Format -->
+      <div class="mb-3">
+        @if(!isCustomFormat){
+        <button type="button" class="btn btn-outline-primary" (click)="onCreateCustom()">
+          {{ t('create_custom') }}
+        </button>
+        }
+
+        @if(isCustomFormat){
+        <div class="d-flex align-items-center mb-3">
+          <button type="button" class="btn btn-outline-secondary me-2" (click)="onBackToPredefined()">
+            <i class="bi bi-arrow-left"></i> {{ t('back') }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary me-2" (click)="onExport()"
+            [disabled]="!formatForm.valid">
+            <i class="bi bi-download"></i>
+            {{ t('export') }}
+          </button>
+          <label class="btn btn-outline-secondary">
+            <i class="bi bi-upload"></i>
+            {{ t('import') }}
+            <input type="file" accept=".json" class="d-none" (change)="onImport($event)" />
+          </label>
+        </div>
+        <div class="mb-3">
+          <label for="formatName" class="form-label text-primary fw-bold">{{ t('format_name') }}</label>
+          <input type="text" class="form-control" id="formatName" formControlName="name"
+            [placeholder]="t('format_name_placeholder')" />
+        </div>
+
+        <!-- Card Limits -->
+        <div class="mb-3">
+          <div class="text-primary fw-bold mb-3">{{ t('card_limits') }}</div>
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header bg-primary text-white">
+                  <i class="bi bi-person-fill me-2"></i>
+                  {{ t('crypt_cards') }}
+                </div>
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-6">
+                      <label for="minCrypt" class="form-label">{{ t('min_cards') }}</label>
+                      <input type="number" class="form-control" id="minCrypt" formControlName="minCrypt" min="0" />
+                    </div>
+                    <div class="col-6">
+                      <label for="maxCrypt" class="form-label">{{ t('max_cards') }}</label>
+                      <input type="number" class="form-control" id="maxCrypt" formControlName="maxCrypt" min="0" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header bg-primary text-white">
+                  <i class="bi bi-book-fill me-2"></i>
+                  {{ t('library_cards') }}
+                </div>
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-6">
+                      <label for="minLibrary" class="form-label">{{ t('min_cards') }}</label>
+                      <input type="number" class="form-control" id="minLibrary" formControlName="minLibrary" min="0" />
+                    </div>
+                    <div class="col-6">
+                      <label for="maxLibrary" class="form-label">{{ t('max_cards') }}</label>
+                      <input type="number" class="form-control" id="maxLibrary" formControlName="maxLibrary" min="0" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sets -->
+        <div class="mb-3">
+          <div class="text-primary fw-bold mb-3">{{ t('sets') }}</div>
+          <div class="row g-2">
+            @for(set of availableSets; track set.abbrev){
+            <div class="col-12 col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [id]="'set-' + set.abbrev"
+                  [formControl]="getSetControl(set.abbrev)" />
+                <label class="form-check-label" [for]="'set-' + set.abbrev">
+                  {{ set.fullName }} ({{ set.abbrev }})
+                </label>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Card Filters -->
+        <ng-template #cryptTemplate let-r="result" let-t="term">
+          <i class="vtes" [class]="r['clanIcon']"></i>
+          <i class="vtes advanced" *ngIf="r.adv"></i>
+          <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <ng-template #libraryTemplate let-r="result" let-t="term">
+          <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of r['typeIcons']"></i>
+          <ngb-highlight class="align-top ms-2" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <ng-template #imgPopover let-card='card'>
+          @if( card.i18n && card.i18n.image ){
+          <img #i18nImage [ngClass]="{
+            'img-popover': !(isMobile$ | async)!,
+            'img-popover-mobile': (isMobile$ | async)!
+          }" [src]="'/assets' +card.i18n.image" [alt]="card.i18n.name"
+            (error)="i18nImage.src='/assets' + card.image" />
+          }
+          @else{
+          <img [ngClass]="{
+            'img-popover': !(isMobile$ | async)!,
+            'img-popover-mobile': (isMobile$ | async)!
+          }" [src]="'/assets' + card.image" [alt]="card.name" />
+          }
+        </ng-template>
+
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <div class="text-success fw-bold mb-0">{{ t('allowed_cards') }}</div>
+          </div>
+          <div class="border border-success rounded p-3 bg-light">
+            <div class="mb-3 row">
+              <label for="crypt" class="col-12 col-form-label text-primary fw-bold">{{ t('crypt_cards') }}</label>
+              <div class="col-12">
+                <input #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+                  [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+                  (selectItem)="selectAllowedCryptItem($event, cryptInput)" />
+              </div>
+              <div class="col-12 mt-2">
+                <div class="list-group">
+                  @for(card of allowedCryptCards.controls | keyvalue; track card.key){
+                  <div #popover="ngbPopover" class="list-group-item d-flex justify-content-between align-items-center"
+                    [ngbPopover]="imgPopover" [popoverContext]="{ card: card.value.value }" container="body"
+                    triggers="mouseenter:mouseleave" (click)="popover.open()">
+                    <div class="d-flex align-items-center">
+                      <i class="vtes" [class]="card.value.value.clanIcon"></i>
+                      <i class="vtes advanced" *ngIf="card.value.value.adv"></i>
+                      <span class="ms-1">{{ card.value.value.i18n?.name ?? card.value.value.name }}</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeAllowedCryptCard(card.key)">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="library" class="col-12 col-form-label text-primary fw-bold">{{ t('library_cards') }}</label>
+              <div class="col-12">
+                <input #libraryInput id="library" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
+                  [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
+                  (selectItem)="selectAllowedLibraryItem($event, libraryInput)" />
+              </div>
+              <div class="col-12 mt-2">
+                <div class="list-group">
+                  @for(card of allowedLibraryCards.controls | keyvalue; track card.key){
+                  <div #popover="ngbPopover" class="list-group-item d-flex justify-content-between align-items-center"
+                    [ngbPopover]="imgPopover" [popoverContext]="{ card: card.value.value }" container="body"
+                    triggers="mouseenter:mouseleave" (click)="popover.open()">
+                    <div>
+                      <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of card.value.value.typeIcons"></i>
+                      <span class="ms-2">{{ card.value.value.i18n?.name ?? card.value.value.name }}</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeAllowedLibraryCard(card.key)">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+            <div class="text-danger fw-bold mb-0">{{ t('banned_cards') }}</div>
+          </div>
+          <div class="border border-danger rounded p-3 bg-light">
+            <div class="mb-3 row">
+              <label for="crypt" class="col-12 col-form-label text-primary fw-bold">{{ t('crypt_cards') }}</label>
+              <div class="col-12">
+                <input #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+                  [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+                  (selectItem)="selectBannedCryptItem($event, cryptInput)" />
+              </div>
+              <div class="col-12 mt-2">
+                <div class="list-group">
+                  @for(card of bannedCryptCards.controls | keyvalue; track card.key){
+                  <div #popover="ngbPopover" class="list-group-item d-flex justify-content-between align-items-center"
+                    [ngbPopover]="imgPopover" [popoverContext]="{ card: card.value.value }" container="body"
+                    triggers="mouseenter:mouseleave" (click)="popover.open()">
+                    <div class="d-flex align-items-center">
+                      <i class="vtes" [class]="card.value.value.clanIcon"></i>
+                      <i class="vtes advanced" *ngIf="card.value.value.adv"></i>
+                      <span class="ms-1">{{ card.value.value.i18n?.name ?? card.value.value.name }}</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeBannedCryptCard(card.key)">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="library" class="col-12 col-form-label text-primary fw-bold">{{ t('library_cards') }}</label>
+              <div class="col-12">
+                <input #libraryInput id="library" type="text" class="form-control col" [ngbTypeahead]="searchLibrary"
+                  [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
+                  (selectItem)="selectBannedLibraryItem($event, libraryInput)" />
+              </div>
+              <div class="col-12 mt-2">
+                <div class="list-group">
+                  @for(card of bannedLibraryCards.controls | keyvalue; track card.key){
+                  <div #popover="ngbPopover" class="list-group-item d-flex justify-content-between align-items-center"
+                    [ngbPopover]="imgPopover" [popoverContext]="{ card: card.value.value }" container="body"
+                    triggers="mouseenter:mouseleave" (click)="popover.open()">
+                    <div>
+                      <i class="vtes" [class]="typeIcon" *ngFor="let typeIcon of card.value.value.typeIcons"></i>
+                      <span class="ms-2">{{ card.value.value.i18n?.name ?? card.value.value.name }}</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeBannedLibraryCard(card.key)">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    @if(previousFormat){
+    <div class="me-auto">
+      <button type="button" class="btn btn-danger" (click)="onRemove()">
+        {{ t('remove') }}
+      </button>
+    </div>
+    }
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      {{ t('cancel') }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isCustomFormat && !formatForm.valid">
+      {{ t('save') }}
+    </button>
+  </div>
+</ng-container>

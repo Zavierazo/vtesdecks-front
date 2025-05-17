@@ -3,6 +3,7 @@ import { TranslocoService } from '@jsverse/transloco'
 import { Observable, of, tap } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
+import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { LibraryQuery } from '../library/library.query'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckBuilderQuery } from './deck-builder.query'
@@ -29,6 +30,7 @@ export class DeckBuilderService {
             description: deck.description,
             cards: deck.cards ?? [],
             published: deck.published ?? false,
+            extra: deck.extra,
             saved: true,
           }))
           this.validateDeck()
@@ -38,6 +40,7 @@ export class DeckBuilderService {
       this.store.update((state) => ({
         ...state,
         name: '[COPY] ' + cloneDeck.name,
+        extra: cloneDeck.extra,
         cards: [...cloneDeck.crypt!, ...cloneDeck.library!],
         published: false,
         saved: false,
@@ -49,12 +52,13 @@ export class DeckBuilderService {
   }
 
   clone(): void {
-    const { name, description, cards } = this.store.getValue()
+    const { name, description, extra, cards } = this.store.getValue()
     this.store.reset()
     this.store.update((state) => ({
       ...state,
       name: '[COPY] ' + name,
       description,
+      extra,
       cards: [...cards],
       published: false,
       saved: false,
@@ -89,6 +93,7 @@ export class DeckBuilderService {
         description: deck.description,
         cards: deck.cards,
         published: deck.published,
+        extra: deck.extra,
       } as ApiDeckBuilder)
       .pipe(
         tap((deck) => {
@@ -98,6 +103,7 @@ export class DeckBuilderService {
             name: deck.name,
             description: deck.description,
             cards: deck.cards ?? [],
+            extra: deck.extra,
             published: deck.published ?? false,
             saved: true,
           }))
@@ -144,16 +150,39 @@ export class DeckBuilderService {
     this.store.setSaved(false)
   }
 
+  setLimitedFormat(format?: ApiDeckLimitedFormat) {
+    this.store.setLimitedFormat(format)
+    this.validateDeck()
+    this.store.setSaved(false)
+  }
+
   validateDeck(): boolean {
     let isValid = true
+    const limitedFormat = this.query.getLimitedFormat()
     const cryptErrors = []
 
-    if (this.query.getCryptSize() < 12) {
+    const cryptSize = this.query.getCryptSize()
+    const minCrypt = limitedFormat?.minCrypt ?? 12
+    const maxCrypt = limitedFormat?.maxCrypt
+    if (cryptSize < minCrypt) {
       cryptErrors.push(
-        this.translocoService.translate('deck_builder_service.min_crypt_cards'),
+        this.translocoService.translate(
+          'deck_builder_service.min_crypt_cards',
+          { minCrypt },
+        ),
       )
       isValid = false
     }
+    if (maxCrypt && cryptSize > maxCrypt) {
+      cryptErrors.push(
+        this.translocoService.translate(
+          'deck_builder_service.max_crypt_cards',
+          { maxCrypt },
+        ),
+      )
+      isValid = false
+    }
+
     const groups = new Set<number>()
     for (let crypt of this.query.getCrypt()) {
       if (crypt.banned) {
@@ -161,6 +190,23 @@ export class DeckBuilderService {
           this.translocoService.translate('deck_builder_service.banned_card', {
             name: crypt.name,
           }),
+        )
+        isValid = false
+      } else if (
+        limitedFormat &&
+        !limitedFormat.allowed.crypt[crypt.id] &&
+        (limitedFormat.banned.crypt[crypt.id] ||
+          !Object.keys(limitedFormat.sets).some((set) =>
+            crypt.sets.some((cryptSet) => cryptSet.split(':')[0] === set),
+          ))
+      ) {
+        cryptErrors.push(
+          this.translocoService.translate(
+            'deck_builder_service.limited_format_not_allowed',
+            {
+              name: crypt.name,
+            },
+          ),
         )
         isValid = false
       }
@@ -190,18 +236,22 @@ export class DeckBuilderService {
 
     const libraryErrors = []
     const librarySize = this.query.getLibrarySize()
-    if (librarySize < 60) {
+    const minLibrary = limitedFormat?.minLibrary ?? 60
+    const maxLibrary = limitedFormat?.maxLibrary ?? 90
+    if (librarySize < minLibrary) {
       libraryErrors.push(
         this.translocoService.translate(
           'deck_builder_service.min_library_cards',
+          { minLibrary },
         ),
       )
       isValid = false
     }
-    if (librarySize > 90) {
+    if (librarySize > maxLibrary) {
       libraryErrors.push(
         this.translocoService.translate(
           'deck_builder_service.max_library_cards',
+          { maxLibrary },
         ),
       )
       isValid = false
@@ -212,6 +262,23 @@ export class DeckBuilderService {
           this.translocoService.translate('deck_builder_service.banned_card', {
             name: library.name,
           }),
+        )
+        isValid = false
+      } else if (
+        limitedFormat &&
+        !limitedFormat.allowed.library[library.id] &&
+        (limitedFormat.banned.library[library.id] ||
+          !Object.keys(limitedFormat.sets).some((set) =>
+            library.sets.some((librarySet) => librarySet.split(':')[0] === set),
+          ))
+      ) {
+        libraryErrors.push(
+          this.translocoService.translate(
+            'deck_builder_service.limited_format_not_allowed',
+            {
+              name: library.name,
+            },
+          ),
         )
         isValid = false
       }

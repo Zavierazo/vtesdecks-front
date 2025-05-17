@@ -38,6 +38,8 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
   ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
+  @Input() limitedFormat?: boolean
+  @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
   @Input() printOnDemand?: boolean
   @Output() printOnDemandChange: EventEmitter<boolean> = new EventEmitter()
   @Input() clans!: string[]
@@ -59,6 +61,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   @Output() taintsChange: EventEmitter<string[]> = new EventEmitter()
 
   printOnDemandControl!: FormControl
+  limitedFormatControl!: FormControl
   groupSliderControl!: FormControl
   capacitySliderControl!: FormControl
   titleControl!: FormControl
@@ -88,6 +91,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
+    this.onChangeLimitedFormat()
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
     this.onChangeTitle()
@@ -118,6 +122,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.printOnDemand = value
           this.printOnDemandChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeLimitedFormat() {
+    this.limitedFormatControl = new FormControl(this.limitedFormat)
+    this.limitedFormatControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.limitedFormat = value
+          this.limitedFormatChange.emit(value)
         }),
       )
       .subscribe()

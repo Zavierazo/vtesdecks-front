@@ -47,6 +47,15 @@
                       <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
                     </ng-container>
                   </p>
+
+                  <p *ngIf="deck.limitedFormat" class="mb-1">
+                    <b>{{ t('limited_format') }}: </b>
+                    <span class="tournament-info text-center">
+                      <span class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center">
+                        <i class="bi bi-funnel-fill me-1"></i>{{ deck.limitedFormat }}
+                      </span>
+                    </span>
+                  </p>
                   <p *ngIf="deck.type==='PRECONSTRUCTED' && deck.url" class="mb-1">
                     <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
                       gaEvent="purchase" gaCategory="dtc" [gaLabel]="deck.name">

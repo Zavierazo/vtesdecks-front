@@ -92,7 +92,8 @@
   </ng-template>
 
   <ng-template #filter>
-    <app-crypt-builder-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
+    <app-crypt-builder-filter [(limitedFormat)]="limitedFormat" (limitedFormatChange)="onChangeLimitedFormat($event)"
+      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
       (disciplinesChange)="onChangeDisciplineFilter($event)" [(superiorDisciplines)]="superiorDisciplines"
       (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" [(groupSlider)]="groupSlider"
       (groupSliderChange)="onChangeGroupSliderFilter($event)" [(capacitySlider)]="capacitySlider"

@@ -85,10 +85,11 @@
   </ng-template>
 
   <ng-template #filter>
-    <app-library-builder-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)"
-      [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect"
-      (sectChange)="onChangeSectFilter($event)" [(taints)]="taints" (taintsChange)="onChangeTaintsFilter($event)"
-      [(types)]="types" (typesChange)="onChangeTypesFilter($event)" [(bloodCostSlider)]="bloodCostSlider"
+    <app-library-builder-filter [(limitedFormat)]="limitedFormat" (limitedFormatChange)="onChangeLimitedFormat($event)"
+      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
+      (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
+      [(taints)]="taints" (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types"
+      (typesChange)="onChangeTypesFilter($event)" [(bloodCostSlider)]="bloodCostSlider"
       (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)" [(poolCostSlider)]="poolCostSlider"
       (poolCostSliderChange)="onChangePoolCostSliderFilter($event)" [(title)]="title"
       (titleChange)="onChangeTitleFilter($event)">
