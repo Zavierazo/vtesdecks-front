@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard'
 import { CommonModule } from '@angular/common'
 import { Component, OnInit, ViewChild } from '@angular/core'
 import {
@@ -26,6 +27,7 @@ import {
   OperatorFunction,
   switchMap,
 } from 'rxjs'
+import { environment } from '../../../../environments/environment'
 import { ApiCrypt } from '../../../models/api-crypt'
 import { ApiDeckLimitedFormat } from '../../../models/api-deck-limited-format'
 import { ApiDeckLimitedFormatFilter } from '../../../models/api-deck-limited-format-filter'
@@ -37,8 +39,8 @@ import { ToastService } from '../../../services/toast.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { CardFilterComponent } from '../../decks/filter/card-filter/card-filter.component'
+import { toUrl } from './limited-format-utils'
 import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
-
 @UntilDestroy()
 @Component({
   selector: 'app-limited-format-modal',
@@ -76,6 +78,7 @@ export class LimitedFormatModalComponent implements OnInit {
     private readonly mediaService: MediaService,
     private readonly toastService: ToastService,
     private readonly translocoService: TranslocoService,
+    private readonly clipboard: Clipboard,
   ) {
     this.formatForm = this.fb.group({
       name: ['', Validators.required],
@@ -361,7 +364,6 @@ export class LimitedFormatModalComponent implements OnInit {
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
       this.toastService.show(
         this.translocoService.translate('deck_builder.export_success'),
         { classname: 'bg-success text-light', delay: 3000 },
@@ -489,7 +491,7 @@ export class LimitedFormatModalComponent implements OnInit {
     this.activeModal.close(this.predefinedFormats[0])
   }
 
-  private convertToDeckLimitedFormat(form: FormGroup) {
+  private convertToDeckLimitedFormat(form: FormGroup): ApiDeckLimitedFormat {
     const formValue = form.value
     return {
       name: formValue.name,
@@ -519,5 +521,18 @@ export class LimitedFormatModalComponent implements OnInit {
       }
     })
     return filter
+  }
+
+  onCopyFormatUrl(): void {
+    const format = this.convertToDeckLimitedFormat(this.formatForm)
+    const formatJson = toUrl(format)
+    const encodedFormat = encodeURIComponent(formatJson)
+    this.clipboard.copy(
+      `https://${environment.domain}/decks/builder?limitedFormat=${encodedFormat}`,
+    )
+    this.toastService.show(
+      this.translocoService.translate('deck_builder.link_copied'),
+      { classname: 'bg-success text-light', delay: 5000 },
+    )
   }
 }

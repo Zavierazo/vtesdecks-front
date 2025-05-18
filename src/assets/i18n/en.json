@@ -623,10 +623,12 @@
     "min_cards": "Minimum Cards",
     "max_cards": "Maximum Cards",
     "sets": "Sets",
-    "allowed_cards": "Allowed Cards",
-    "banned_cards": "Banned Cards",
+    "allowed_cards": "Allowed Cards (in addition to Set selection)",
+    "banned_cards": "Banned Cards (override all)",
     "cancel": "Cancel",
     "save": "Save",
-    "remove": "Remove"
+    "remove": "Remove",
+    "copy_format_url": "Copy Format URL",
+    "format_url_copied": "Format URL copied to clipboard"
   }
 }

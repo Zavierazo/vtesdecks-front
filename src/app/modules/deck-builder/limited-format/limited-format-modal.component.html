@@ -283,6 +283,10 @@
       </button>
     </div>
     }
+    <button type="button" class="btn btn-outline-primary me-2" (click)="onCopyFormatUrl()"
+      [disabled]="!formatForm.valid">
+      <i class="bi bi-link-45deg"></i> {{ t('copy_format_url') }}
+    </button>
     <button type="button" class="btn btn-secondary" (click)="onCancel()">
       {{ t('cancel') }}
     </button>
