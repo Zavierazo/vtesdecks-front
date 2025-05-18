@@ -622,11 +622,13 @@
     "library_cards": "Cartas da Biblioteca",
     "min_cards": "Mínimo de Cartas",
     "max_cards": "Máximo de Cartas",
-    "sets": "Conjuntos",
-    "allowed_cards": "Cartas Permitidas",
-    "banned_cards": "Cartas Proibidas",
+    "sets": "Expansões",
+    "allowed_cards": "Cartas Permitidas (em adição à seleção de Expansões)",
+    "banned_cards": "Cartas Proibidas (substitui tudo)",
     "cancel": "Cancelar",
     "save": "Salvar",
-    "remove": "Remover"
+    "remove": "Remover",
+    "copy_format_url": "Copiar URL do Formato",
+    "format_url_copied": "Formato URL copiado para a área de transferência"
   }
 }

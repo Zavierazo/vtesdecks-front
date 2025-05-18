@@ -52,7 +52,8 @@ import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
 import { ImportVdbComponent } from './import-vdb/import-vdb.component'
 import { LibraryBuilderComponent } from './library-builder/library-builder.component'
-import { LimitedFormatModalComponent } from './limited-format-modal/limited-format-modal.component'
+import { LimitedFormatModalComponent } from './limited-format/limited-format-modal.component'
+import { fromUrl } from './limited-format/limited-format-utils'
 
 @UntilDestroy()
 @Component({
@@ -450,6 +451,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     this.form
       .get('published')
       ?.patchValue(this.deckBuilderQuery.getPublished(), { emitEvent: false })
+    const limitedFormat = this.route.snapshot.queryParams['limitedFormat']
+    if (limitedFormat) {
+      this.deckBuilderService.setLimitedFormat(fromUrl(limitedFormat))
+    }
     this.changeDetector.markForCheck()
   }
 

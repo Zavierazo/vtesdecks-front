@@ -623,10 +623,12 @@
     "min_cards": "Mínimo de Cartas",
     "max_cards": "Máximo de Cartas",
     "sets": "Expansiones",
-    "allowed_cards": "Cartas Permitidas",
-    "banned_cards": "Cartas Prohibidas",
+    "allowed_cards": "Cartas Permitidas (además de la selección de Expansiones)",
+    "banned_cards": "Cartas Prohibidas (sobreescribe todo)",
     "cancel": "Cancelar",
     "save": "Guardar",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "copy_format_url": "Copiar URL de Formato",
+    "format_url_copied": "URL de Formato copiado al portapapeles"
   }
 }

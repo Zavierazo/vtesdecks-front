@@ -4,8 +4,16 @@ export function isCrypt(value: ApiCard): boolean {
   return value.id >= 200000
 }
 
+export function isCryptId(id: number): boolean {
+  return id >= 200000
+}
+
 export function isLibrary(value: ApiCard): boolean {
   return value.id < 200000
+}
+
+export function isLibraryId(id: number): boolean {
+  return id < 200000
 }
 
 export function roundNumber(value: number, decimals: number): number {
