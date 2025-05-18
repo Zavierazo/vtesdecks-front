@@ -527,12 +527,17 @@ export class LimitedFormatModalComponent implements OnInit {
     const format = this.convertToDeckLimitedFormat(this.formatForm)
     const formatJson = toUrl(format)
     const encodedFormat = encodeURIComponent(formatJson)
-    this.clipboard.copy(
-      `https://${environment.domain}/decks/builder?limitedFormat=${encodedFormat}`,
-    )
-    this.toastService.show(
-      this.translocoService.translate('deck_builder.link_copied'),
-      { classname: 'bg-success text-light', delay: 5000 },
-    )
+    const url = `https://${environment.domain}/decks/builder?limitedFormat=${encodedFormat}`
+    if (window.navigator.share) {
+      window.navigator.share({
+        url: url,
+      })
+    } else {
+      this.clipboard.copy(url)
+      this.toastService.show(
+        this.translocoService.translate('deck_builder.link_copied'),
+        { classname: 'bg-success text-light', delay: 5000 },
+      )
+    }
   }
 }

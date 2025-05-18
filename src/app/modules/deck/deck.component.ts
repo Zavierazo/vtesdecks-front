@@ -244,11 +244,18 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onShare(): void {
-    this.clipboard.copy(`https://${environment.domain}/deck/${this.id}`)
-    this.toastService.show(
-      this.translocoService.translate('deck.link_copied'),
-      { classname: 'bg-success text-light', delay: 5000 },
-    )
+    const url = `https://${environment.domain}/deck/${this.id}`
+    if (window.navigator.share) {
+      window.navigator.share({
+        url: url,
+      })
+    } else {
+      this.clipboard.copy(url)
+      this.toastService.show(
+        this.translocoService.translate('deck.link_copied'),
+        { classname: 'bg-success text-light', delay: 5000 },
+      )
+    }
   }
 
   onTag(tag: string): void {
