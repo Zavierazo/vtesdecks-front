@@ -219,11 +219,18 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   shareDeck() {
     const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
-      this.clipboard.copy(`https://${environment.domain}/deck/${deckId}`)
-      this.toastService.show(
-        this.translocoService.translate('deck_builder.link_copied'),
-        { classname: 'bg-success text-light', delay: 5000 },
-      )
+      const url = `https://${environment.domain}/deck/${deckId}`
+      if (window.navigator.share) {
+        window.navigator.share({
+          url: url,
+        })
+      } else {
+        this.clipboard.copy(url)
+        this.toastService.show(
+          this.translocoService.translate('deck_builder.link_copied'),
+          { classname: 'bg-success text-light', delay: 5000 },
+        )
+      }
     }
   }
 
