@@ -36,6 +36,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/robots.txt",
+              "src/ads.txt",
               "src/manifest.webmanifest"
             ],
             "styles": [
@@ -109,6 +110,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/robots.txt",
+              "src/ads.txt",
               "src/manifest.webmanifest"
             ],
             "styles": [
