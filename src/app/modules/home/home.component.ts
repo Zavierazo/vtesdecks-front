@@ -64,8 +64,13 @@ export class HomeComponent implements OnInit {
         .pipe(
           tap((changelogs) => {
             if (changelogs && changelogs.length > 0) {
-              const entry = changelogs.find(
-                (c) => c.version === this.appVersion,
+              let entry = changelogs.find((c) => c.version === this.appVersion)
+              // If no entry found, try to find a older minor version
+              entry ??= changelogs.find(
+                (c) =>
+                  c.version.split('.')[0] === this.appVersion.split('.')[0] &&
+                  c.version.split('.')[1] === this.appVersion.split('.')[1] &&
+                  c.version !== lastAppVersionSeen,
               )
               if (entry) {
                 this.changelogAlert = entry
