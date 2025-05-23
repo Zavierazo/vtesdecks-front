@@ -104,16 +104,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Buy me a coffee button -->
+    <div class="container text-center mt-5">
+      <a class="text-decoration-none" href="https://www.buymeacoffee.com/zavierazo" target="_blank">
+        <img width="235" height="50"
+          [src]="'https://img.buymeacoffee.com/button-api/?text=' + t('buy_me_a_coffee') + '&emoji=☕&slug=zavierazo&button_colour=BD5FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00'"
+          [alt]="t('buy_me_a_coffee')" />
+      </a>
+      <p class="text-center mt-2 h6" [innerHTML]="t('buy_me_a_coffee_message')">
+      </p>
+    </div>
   </section>
 
-  <!-- Buy me a coffee button -->
-  <div class="container text-center mb-4">
-    <a class="text-decoration-none" href="https://www.buymeacoffee.com/zavierazo" target="_blank">
-      <img width="235" height="50"
-        [src]="'https://img.buymeacoffee.com/button-api/?text=' + t('buy_me_a_coffee') + '&emoji=☕&slug=zavierazo&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00'"
-        alt="Buy me a coffee" />
-    </a>
-  </div>
 
   <!-- Popular and Newest Decks -->
   <div class="row mt-3">
