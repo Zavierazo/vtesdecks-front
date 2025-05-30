@@ -17,60 +17,59 @@
     <div id="tags" class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
         <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)"
-        [term]="t"></ngb-highlight>
+          [term]="t"></ngb-highlight>
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
         [editable]="false" (selectItem)="onSelectTagItem($event, tagsInput)"
         (focus)="tagFocus$.next($any($event).target.value)" (click)="tagClick$.next($any($event).target.value)" />
-        @if (tags) {
-          <div class="d-flex flex-wrap justify-content-start gap-2 my-2">
-            @for (tag of tags; track tag) {
-              <span class="badge rounded-pill text-bg-primary btn-badge"
-                (click)="onDeselectTag(tag)">
-                #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
-              </span>
-            }
-          </div>
+      @if (tags) {
+      <div class="d-flex flex-wrap justify-content-start gap-2 my-2">
+        @for (tag of tags; track tag) {
+        <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onDeselectTag(tag)">
+          #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+        </span>
         }
       </div>
-      <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
-      <div class="form-check form-switch d-inline-block ms-2">
-        <input class="form-check-input" type="checkbox" role="switch" id="singleClanCheck" formControlName="singleClan" />
-        <label class="form-check-label" for="singleClanCheck">{{ t('single_clan') }}</label>
+      }
+    </div>
+    <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
+    <div class="form-check form-switch d-inline-block ms-2">
+      <input class="form-check-input" type="checkbox" role="switch" id="singleClanCheck" formControlName="singleClan" />
+      <label class="form-check-label" for="singleClanCheck">{{ t('single_clan') }}</label>
+    </div>
+    <div id="clans" class="user-select-none mb-2">
+      <app-clan-filter [(clans)]="clans" (clansChange)="changeClanFilter()">
+      </app-clan-filter>
+    </div>
+    <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
+    <div class="form-check form-switch d-inline-block ms-2">
+      <input class="form-check-input" type="checkbox" role="switch" id="singleDisciplineCheck"
+        formControlName="singleDiscipline" />
+      <label class="form-check-label" for="singleDisciplineCheck">{{ t('single_discipline') }}</label>
+    </div>
+    <div id="disciplines" class="user-select-none mb-2">
+      <app-discipline-filter [(disciplines)]="disciplines" [showSuperior]="false"
+        (disciplinesChange)="changeDisciplineFilter()">
+      </app-discipline-filter>
+    </div>
+    <app-card-filter #cardFilter></app-card-filter>
+    <label class="form-label text-primary fw-bold">
+      <i class="bi bi-pie-chart me-2"></i>{{ t('composition') }}
+    </label>
+    <div class="row g-1 mb-2">
+      <div class="col-12">
+        <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
+        <ngx-slider id="librarySize" [options]="{ floor: 40, ceil: 90, step: 1 }" formControlName="librarySize">
+        </ngx-slider>
       </div>
-      <div id="clans" class="user-select-none mb-2">
-        <app-clan-filter [(clans)]="clans" (clansChange)="changeClanFilter()">
-        </app-clan-filter>
+      <div class="col-12 mb-2">
+        <label for="cryptSize" class="form-label text-secondary fw-bold">{{ t('crypt') }}</label>
+        <ngx-slider id="cryptSize" [options]="{ floor: 12, ceil: 40, step: 1 }" formControlName="cryptSize">
+        </ngx-slider>
       </div>
-      <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
-      <div class="form-check form-switch d-inline-block ms-2">
-        <input class="form-check-input" type="checkbox" role="switch" id="singleDisciplineCheck"
-          formControlName="singleDiscipline" />
-          <label class="form-check-label" for="singleDisciplineCheck">{{ t('single_discipline') }}</label>
-        </div>
-        <div id="disciplines" class="user-select-none mb-2">
-          <app-discipline-filter [(disciplines)]="disciplines" [showSuperior]="false"
-            (disciplinesChange)="changeDisciplineFilter()">
-          </app-discipline-filter>
-        </div>
-        <app-card-filter #cardFilter></app-card-filter>
-        <label class="form-label text-primary fw-bold">
-          <i class="bi bi-pie-chart me-2"></i>{{ t('composition') }}
-        </label>
-        <div class="row g-1 mb-2">
-          <div class="col-12">
-            <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
-            <ngx-slider id="librarySize" [options]="{ floor: 60, ceil: 90, step: 1 }" formControlName="librarySize">
-            </ngx-slider>
-          </div>
-          <div class="col-12 mb-2">
-            <label for="cryptSize" class="form-label text-secondary fw-bold">{{ t('crypt') }}</label>
-            <ngx-slider id="cryptSize" [options]="{ floor: 12, ceil: 40, step: 1 }" formControlName="cryptSize">
-            </ngx-slider>
-          </div>
-          <div class="col-12 mb-2">
-            <label for="group" class="form-label text-secondary fw-bold">{{ t('group') }}</label>
+      <div class="col-12 mb-2">
+        <label for="group" class="form-label text-secondary fw-bold">{{ t('group') }}</label>
         <ngx-slider id="group" [options]="{
               floor: 0,
               ceil: 7,
@@ -79,99 +78,99 @@
               showTicksValues: true,
               translate: translateGroupSlider
             }" formControlName="group">
-            </ngx-slider>
-          </div>
-          <div class="col-12 mb-2">
-            <label for="year" class="form-label text-secondary fw-bold">{{ t('year') }}</label>
-            <ngx-slider id="year" [options]="{ floor: 1998, ceil: getCurrentYear(), step: 1 }" formControlName="year">
-            </ngx-slider>
-          </div>
-          <div class="col-12 mb-2">
-            <label for="players" class="form-label text-secondary fw-bold">{{ t('players') }}</label>
-            <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players">
-            </ngx-slider>
-          </div>
+        </ngx-slider>
+      </div>
+      <div class="col-12 mb-2">
+        <label for="year" class="form-label text-secondary fw-bold">{{ t('year') }}</label>
+        <ngx-slider id="year" [options]="{ floor: 1998, ceil: getCurrentYear(), step: 1 }" formControlName="year">
+        </ngx-slider>
+      </div>
+      <div class="col-12 mb-2">
+        <label for="players" class="form-label text-secondary fw-bold">{{ t('players') }}</label>
+        <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players">
+        </ngx-slider>
+      </div>
+    </div>
+    <label class="form-label text-secondary fw-bold">{{ t('library_cards') }}</label>
+    <div class="row d-inline-block ms-1" [ngbTooltip]="t('library_distribution_tooltip')">
+      <div class="col">
+        <div class="d-inline-block me-1">%</div>
+        <div class="form-check form-switch d-inline-block">
+          <input class="form-check-input" type="checkbox" role="switch" id="absoluteProportion"
+            formControlName="absoluteProportion" />
+          <label for="absoluteProportion" class="form-check-label">#</label>
         </div>
-        <label class="form-label text-secondary fw-bold">{{ t('library_cards') }}</label>
-        <div class="row d-inline-block ms-1" [ngbTooltip]="t('library_distribution_tooltip')">
-          <div class="col">
-            <div class="d-inline-block me-1">%</div>
-            <div class="form-check form-switch d-inline-block">
-              <input class="form-check-input" type="checkbox" role="switch" id="absoluteProportion"
-                formControlName="absoluteProportion" />
-                <label for="absoluteProportion" class="form-check-label">#</label>
-              </div>
-            </div>
-          </div>
-          <div class="form-check d-inline-block ms-3" [ngbTooltip]="t('card_proportion_tooltip')">
-            <input class="form-check-input" type="checkbox" role="switch" id="customProportionCheck"
-              formControlName="customProportion" />
-              <label class="form-check-label" for="customProportionCheck">{{ t('custom') }}</label>
-            </div>
-            <div class="row g-2 mb-2">
-              <div class="col-6">
-                <app-card-proportion controlName="master" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('master')"
-                (valueChanges)="onProportionChange('master',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="action" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('action')"
-                (valueChanges)="onProportionChange('action',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="political" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('political')"
-                (valueChanges)="onProportionChange('political',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="retainer" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('retainer')"
-                (valueChanges)="onProportionChange('retainer',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="equipment" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('equipment')"
-                (valueChanges)="onProportionChange('equipment',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="ally" [absolute]="absoluteProportion" [custom]="customProportion"
-                [value]="getProportionValue('ally')" (valueChanges)="onProportionChange('ally',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="modifier" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('modifier')"
-                (valueChanges)="onProportionChange('modifier',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="combat" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('combat')"
-                (valueChanges)="onProportionChange('combat',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="reaction" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('reaction')"
-                (valueChanges)="onProportionChange('reaction',$event)"></app-card-proportion>
-              </div>
-              <div class="col-6">
-                <app-card-proportion controlName="event" [absolute]="absoluteProportion" [custom]="customProportion"
-                  [value]="getProportionValue('event')"
-                (valueChanges)="onProportionChange('event',$event)"></app-card-proportion>
-              </div>
-            </div>
-            <label class="form-label text-primary fw-bold">{{ t('other_filters') }}</label>
-            <div class="form-floating mb-2">
-              <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
-              <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
-            </div>
-            <div class="form-floating mb-2">
-              <input type="text" class="form-control" id="deckAuthor" [placeholder]="t('author')" formControlName="author" />
-              <label for="deckAuthor" class="text-primary"><i class="bi bi-person me-2"></i>{{ t('author') }}</label>
-            </div>
-            <div class="form-floating">
-              <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text')"
-                formControlName="cardText" />
-                <label for="deckCardText" class="text-primary"><i class="bi bi-card-text me-2"></i>{{ t('card_text') }}</label>
-              </div>
-            </form>
-          </div>
+      </div>
+    </div>
+    <div class="form-check d-inline-block ms-3" [ngbTooltip]="t('card_proportion_tooltip')">
+      <input class="form-check-input" type="checkbox" role="switch" id="customProportionCheck"
+        formControlName="customProportion" />
+      <label class="form-check-label" for="customProportionCheck">{{ t('custom') }}</label>
+    </div>
+    <div class="row g-2 mb-2">
+      <div class="col-6">
+        <app-card-proportion controlName="master" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('master')"
+          (valueChanges)="onProportionChange('master',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="action" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('action')"
+          (valueChanges)="onProportionChange('action',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="political" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('political')"
+          (valueChanges)="onProportionChange('political',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="retainer" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('retainer')"
+          (valueChanges)="onProportionChange('retainer',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="equipment" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('equipment')"
+          (valueChanges)="onProportionChange('equipment',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="ally" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('ally')" (valueChanges)="onProportionChange('ally',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="modifier" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('modifier')"
+          (valueChanges)="onProportionChange('modifier',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="combat" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('combat')"
+          (valueChanges)="onProportionChange('combat',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="reaction" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('reaction')"
+          (valueChanges)="onProportionChange('reaction',$event)"></app-card-proportion>
+      </div>
+      <div class="col-6">
+        <app-card-proportion controlName="event" [absolute]="absoluteProportion" [custom]="customProportion"
+          [value]="getProportionValue('event')"
+          (valueChanges)="onProportionChange('event',$event)"></app-card-proportion>
+      </div>
+    </div>
+    <label class="form-label text-primary fw-bold">{{ t('other_filters') }}</label>
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
+      <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="deckAuthor" [placeholder]="t('author')" formControlName="author" />
+      <label for="deckAuthor" class="text-primary"><i class="bi bi-person me-2"></i>{{ t('author') }}</label>
+    </div>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text')"
+        formControlName="cardText" />
+      <label for="deckCardText" class="text-primary"><i class="bi bi-card-text me-2"></i>{{ t('card_text') }}</label>
+    </div>
+  </form>
+</div>
