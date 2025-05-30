@@ -1,18 +1,22 @@
 <div class="row" *transloco="let t; read: 'deck_shared'">
-  <ul *ngFor="let libraryType of libraryTypes; trackBy: trackByIndexFn"
-    class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-    <li class="list-group-item list-group-item-primary">
-      {{ librarySizeByType(libraryType) }}&nbsp;{{ libraryType | libraryTypeTransloco }}
-      <ng-container *ngIf="libraryType === 'Master' && masterTrifle > 0">
-        &nbsp;-&nbsp;{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
-      </ng-container>
-      <span class="float-end"> {{ percentageSize(libraryType) }}% </span>
-    </li>
-    <div *ngFor="let library of libraryCards(libraryType); trackBy: trackByFn">
-      <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
-        (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-        (click)="openCryptCard(library, libraryList!)" [disablePopover]="(isMobileOrTablet$ | async)!"
-        [disableClickPopover]="true"></app-library>
-    </div>
-  </ul>
+  @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
+    <ul
+      class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
+      <li class="list-group-item list-group-item-primary">
+        {{ librarySizeByType(libraryType) }}&nbsp;{{ libraryType | libraryTypeTransloco }}
+        @if (libraryType === 'Master' && masterTrifle > 0) {
+          &nbsp;-&nbsp;{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
+        }
+        <span class="float-end"> {{ percentageSize(libraryType) }}% </span>
+      </li>
+      @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
+        <div>
+          <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
+            (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
+            (click)="openCryptCard(library, libraryList!)" [disablePopover]="(isMobileOrTablet$ | async)!"
+          [disableClickPopover]="true"></app-library>
+        </div>
+      }
+    </ul>
+  }
 </div>

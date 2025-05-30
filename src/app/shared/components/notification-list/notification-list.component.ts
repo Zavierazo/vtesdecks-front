@@ -6,7 +6,7 @@ import { ApiUserNotification } from '../../../models/api-user-notification'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { AuthService } from '../../../state/auth/auth.service'
 import { TranslocoDirective } from '@jsverse/transloco';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DateAsAgoPipe } from '../../pipes/date-ago.pipe';
 
@@ -16,7 +16,7 @@ import { DateAsAgoPipe } from '../../pipes/date-ago.pipe';
     templateUrl: './notification-list.component.html',
     styleUrls: ['./notification-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgFor, NgClass, RouterLink, AsyncPipe, DateAsAgoPipe]
+    imports: [TranslocoDirective, NgClass, RouterLink, AsyncPipe, DateAsAgoPipe]
 })
 export class NotificationListComponent implements OnInit {
   notifications$!: Observable<ApiUserNotification[]>

@@ -3,92 +3,112 @@
     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
       <img class="rounded-circle mt-5" width="150px" [src]="profileImage$ | async" [alt]="displayName$ | async"
         onerror="this.src='/assets/img/default_user.png'">
-      <span class="fw-bold">
-        {{ displayName$ | async }}
-      </span>
-      <span class="text-black-50">
-        {{ email$ | async }}
-      </span>
+        <span class="fw-bold">
+          {{ displayName$ | async }}
+        </span>
+        <span class="text-black-50">
+          {{ email$ | async }}
+        </span>
+      </div>
     </div>
-  </div>
-  <div class="col-md-9 border-right">
-    <form class="p-3 py-5" [formGroup]="form" (ngSubmit)="submit()">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="text-right">{{ t('settings') }}</h4>
-      </div>
-      <div class="row">
-        <ngb-alert type="warning" [dismissible]="false" [innerHTML]="t('profile_image_alert')" />
-      </div>
-      <div class="row mt-2">
-        <div class="col-md-12">
-          <label class="labels">{{ t('display_name') }}</label>
-          <input type="text" class="form-control" [placeholder]="t('display_name') + '...'"
-            formControlName="displayName" autocomplete="nickname">
-          <div *ngIf="displayName?.invalid && (displayName?.dirty || displayName?.touched)">
-            <div class="invalid-feedback d-block" *ngIf="displayName?.hasError('required')">
-              <i class="bi bi-x-circle-fill"></i> {{ 'shared.field_required' | transloco:{ field: t('display_name') } }}
+    <div class="col-md-9 border-right">
+      <form class="p-3 py-5" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="text-right">{{ t('settings') }}</h4>
+        </div>
+        <div class="row">
+          <ngb-alert type="warning" [dismissible]="false" [innerHTML]="t('profile_image_alert')" />
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label class="labels">{{ t('display_name') }}</label>
+            <input type="text" class="form-control" [placeholder]="t('display_name') + '...'"
+              formControlName="displayName" autocomplete="nickname">
+              @if (displayName?.invalid && (displayName?.dirty || displayName?.touched)) {
+                <div>
+                  @if (displayName?.hasError('required')) {
+                    <div class="invalid-feedback d-block">
+                      <i class="bi bi-x-circle-fill"></i> {{ 'shared.field_required' | transloco:{ field: t('display_name') } }}
+                    </div>
+                  }
+                </div>
+              }
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row mb-4 mt-2">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="inputPassword4">{{ t('old_password') }}</label>
-            <input type="password" class="form-control" id="inputPassword4" formControlName="password"
-              autocomplete="current-password" [placeholder]="t('old_password_placeholder')">
-          </div>
-          <div class="form-group">
-            <label for="inputPassword5">{{ t('new_password') }}</label>
-            <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword"
-              autocomplete="new-password">
-            <div *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)">
-              <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('hasNumber')">
-                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
-              </div>
-              <div class="invalid-feedback d-block" *ngIf="newPassword?.hasError('minlength')">
-                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
-              </div>
+          <div class="row mb-4 mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="inputPassword4">{{ t('old_password') }}</label>
+                <input type="password" class="form-control" id="inputPassword4" formControlName="password"
+                  autocomplete="current-password" [placeholder]="t('old_password_placeholder')">
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword5">{{ t('new_password') }}</label>
+                  <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword"
+                    autocomplete="new-password">
+                    @if (newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)) {
+                      <div>
+                        @if (newPassword?.hasError('hasNumber')) {
+                          <div class="invalid-feedback d-block">
+                            <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
+                          </div>
+                        }
+                        @if (newPassword?.hasError('minlength')) {
+                          <div class="invalid-feedback d-block">
+                            <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword6">{{ t('confirm_password') }}</label>
+                    <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword"
+                      autocomplete="new-password">
+                      @if (confirmNewPassword?.invalid && (confirmNewPassword?.dirty || confirmNewPassword?.touched)) {
+                        <div>
+                          @if (confirmNewPassword?.hasError('hasNumber')) {
+                            <div class="invalid-feedback d-block">
+                              <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
+                            </div>
+                          }
+                          @if (confirmNewPassword?.hasError('minlength')) {
+                            <div class="invalid-feedback d-block">
+                              <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
+                            </div>
+                          }
+                          @if (confirmNewPassword?.hasError('noPasswordMatch')) {
+                            <div class="invalid-feedback d-block">
+                              <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_match' | transloco}}
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-2">{{ t('password_requirements') }}</p>
+                    <p class="small text-muted mb-2">
+                      {{ t('password_requirements_detail') }}
+                    </p>
+                    <ul class="small text-muted pl-4 mb-0">
+                      <li>{{ 'login_modal.must_8_characters' | transloco }}</li>
+                      <li>{{ 'login_modal.must_one_number' | transloco }}</li>
+                      <li>{{ t('password_not_same') }}</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="mt-5 text-center">
+                  @if (message) {
+                    <div class="text-center mb-3 text-success"
+                      [ngClass]="{'text-success': successful,'text-danger': !successful}">
+                      {{ message }}
+                    </div>
+                  }
+                  <button class="btn btn-primary profile-button" type="submit" [disabled]="form.invalid">
+                    {{ t('save') }}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-          <div class="form-group">
-            <label for="inputPassword6">{{ t('confirm_password') }}</label>
-            <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword"
-              autocomplete="new-password">
-            <div *ngIf="confirmNewPassword?.invalid && (confirmNewPassword?.dirty || confirmNewPassword?.touched)">
-              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('hasNumber')">
-                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_one_number' | transloco }}
-              </div>
-              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('minlength')">
-                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
-              </div>
-              <div class="invalid-feedback d-block" *ngIf="confirmNewPassword?.hasError('noPasswordMatch')">
-                <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_match' | transloco}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <p class="mb-2">{{ t('password_requirements') }}</p>
-          <p class="small text-muted mb-2">
-            {{ t('password_requirements_detail') }}
-          </p>
-          <ul class="small text-muted pl-4 mb-0">
-            <li>{{ 'login_modal.must_8_characters' | transloco }}</li>
-            <li>{{ 'login_modal.must_one_number' | transloco }}</li>
-            <li>{{ t('password_not_same') }}</li>
-          </ul>
-        </div>
-      </div>
-      <div class="mt-5 text-center">
-        <div *ngIf="message" class="text-center mb-3 text-success"
-          [ngClass]="{'text-success': successful,'text-danger': !successful}">
-          {{ message }}
-        </div>
-        <button class="btn btn-primary profile-button" type="submit" [disabled]="form.invalid">
-          {{ t('save') }}
-        </button>
-      </div>
-    </form>
-  </div>
-</div>

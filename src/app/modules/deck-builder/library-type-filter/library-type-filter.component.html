@@ -1,8 +1,8 @@
-<ng-container *ngFor="let type of typeList">
+@for (type of typeList; track type) {
   <span (click)="toggle(type.name)" [title]="type.label | transloco">
     <i class="btn-icon vtes-big" [class]="type.icon" [ngClass]="{
         'non-selected': !isSelected(type.name),
         'bg-dark': isSelected(type.name)
       }"></i>
   </span>
-</ng-container>
+}

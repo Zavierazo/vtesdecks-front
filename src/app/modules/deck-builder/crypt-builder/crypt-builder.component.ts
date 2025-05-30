@@ -1,10 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgTemplateOutlet,
-} from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -51,15 +45,13 @@ import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.s
     NgbDropdownMenu,
     NgbDropdownButtonItem,
     NgbDropdownItem,
-    NgIf,
     NgTemplateOutlet,
     InfiniteScrollDirective,
-    NgFor,
     CryptComponent,
     CryptBuilderFilterComponent,
     AsyncPipe,
-    TranslocoPipe,
-  ],
+    TranslocoPipe
+],
 })
 export class CryptBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20

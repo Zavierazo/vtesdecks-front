@@ -27,7 +27,7 @@ import { DecksQuery } from '../../../state/decks/decks.query'
 import { CardFilterComponent } from './card-filter/card-filter.component'
 import { TranslocoDirective } from '@jsverse/transloco';
 import { IsLoggedDirective } from '../../../shared/directives/is-logged.directive';
-import { NgIf, NgFor } from '@angular/common';
+
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
@@ -40,7 +40,7 @@ import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
     templateUrl: './deck-filters.component.html',
     styleUrls: ['./deck-filters.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, NgbHighlight, NgbTypeahead, NgIf, NgFor, ClanFilterComponent, DisciplineFilterComponent, CardFilterComponent, NgxSliderModule, NgbTooltip, CardProportionComponent, TranslocoFallbackPipe]
+    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, NgbHighlight, NgbTypeahead, ClanFilterComponent, DisciplineFilterComponent, CardFilterComponent, NgxSliderModule, NgbTooltip, CardProportionComponent, TranslocoFallbackPipe]
 })
 export class DeckFiltersComponent implements OnInit {
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()

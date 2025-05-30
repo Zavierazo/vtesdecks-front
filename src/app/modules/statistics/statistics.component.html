@@ -20,14 +20,22 @@
         </ngx-slider>
       </div>
     </form>
-    <div class="row row-cols-1 g-4 mt-4" *ngIf="rangeBehavior|async as range">
-      <app-line-chart *ngIf="disciplineStatistics$ | async as disciplines" class="col" [title]="t('disciplines')"
-        [range]="range" [labels]="years" [statistics]="disciplines"></app-line-chart>
-      <app-line-chart *ngIf="clanStatistics$ | async as clans" class="col" [title]="t('clans')" [range]="range"
-        [labels]="years" [statistics]="clans"></app-line-chart>
-      <app-line-chart *ngIf="tagStatistics$ | async as tags" class="col" [title]="t('playstyle')" [range]="range"
-        [labels]="years" [statistics]="tags"></app-line-chart>
-    </div>
+    @if (rangeBehavior|async; as range) {
+      <div class="row row-cols-1 g-4 mt-4">
+        @if (disciplineStatistics$ | async; as disciplines) {
+          <app-line-chart class="col" [title]="t('disciplines')"
+          [range]="range" [labels]="years" [statistics]="disciplines"></app-line-chart>
+        }
+        @if (clanStatistics$ | async; as clans) {
+          <app-line-chart class="col" [title]="t('clans')" [range]="range"
+          [labels]="years" [statistics]="clans"></app-line-chart>
+        }
+        @if (tagStatistics$ | async; as tags) {
+          <app-line-chart class="col" [title]="t('playstyle')" [range]="range"
+          [labels]="years" [statistics]="tags"></app-line-chart>
+        }
+      </div>
+    }
   </div>
 
   <h1>{{ t('statistics_by_year') }}</h1>
@@ -37,15 +45,19 @@
         <i class="bi bi-calendar-event" aria-hidden="true"></i>
       </label>
       <select class="form-select" id="yearSelect" aria-labelledby="yearSelect" formControlName="year">
-        <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+        @for (year of years; track year) {
+          <option value="{{ year }}">{{ year }}</option>
+        }
       </select>
     </div>
   </form>
   <div class="container p-4">
-    <div class="row row-cols-1 row-cols-lg-2 g-4" *ngIf="statistics$ | async as statistics">
-      <app-bar-chart class="col" [title]="t('disciplines')" [labels]="disciplines"
+    @if (statistics$ | async; as statistics) {
+      <div class="row row-cols-1 row-cols-lg-2 g-4">
+        <app-bar-chart class="col" [title]="t('disciplines')" [labels]="disciplines"
         [statistics]="statistics.disciplines"></app-bar-chart>
-      <app-bar-chart class="col" [title]="t('clans')" [labels]="clans" [statistics]="statistics.clans"></app-bar-chart>
-      <app-radar-chart class="col" [title]="t('playstyle')" [statistics]="statistics.tags"></app-radar-chart>
-    </div>
+        <app-bar-chart class="col" [title]="t('clans')" [labels]="clans" [statistics]="statistics.clans"></app-bar-chart>
+        <app-radar-chart class="col" [title]="t('playstyle')" [statistics]="statistics.tags"></app-radar-chart>
+      </div>
+    }
   </div>

@@ -2,19 +2,29 @@
   <label class="input-group-text p-1 proportion-label" for="proportion">
     <i class="vtes" [ngClass]="controlName"></i>
   </label>
-  <ng-container *ngIf="custom">
+  @if (custom) {
     <input type="number" class="form-control ps-2 pe-0" aria-label="Min" [formControl]="min">
     <input type="number" class="form-control ps-2 pe-0" aria-label="Max" [formControl]="max">
-  </ng-container>
-  <ng-container *ngIf="!custom">
+  }
+  @if (!custom) {
     <select id="proportion" class="form-select" [formControlName]="controlName">
       <option value="any">{{ t('any') }}</option>
       <option value="0,0">{{ t('none') }}</option>
-      <option value="0,5">&lt;5<span *ngIf="!absolute">%</span></option>
-      <option value="5,10">5-10<span *ngIf="!absolute">%</span></option>
-      <option value="10,20">10-20<span *ngIf="!absolute">%</span></option>
-      <option value="20,30">20-30<span *ngIf="!absolute">%</span></option>
-      <option value="30,100">&gt;30<span *ngIf="!absolute">%</span></option>
+      <option value="0,5">&lt;5@if (!absolute) {
+        <span>%</span>
+      }</option>
+      <option value="5,10">5-10@if (!absolute) {
+        <span>%</span>
+      }</option>
+      <option value="10,20">10-20@if (!absolute) {
+        <span>%</span>
+      }</option>
+      <option value="20,30">20-30@if (!absolute) {
+        <span>%</span>
+      }</option>
+      <option value="30,100">&gt;30@if (!absolute) {
+        <span>%</span>
+      }</option>
     </select>
-  </ng-container>
+  }
 </div>

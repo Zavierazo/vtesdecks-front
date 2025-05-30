@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
@@ -15,7 +15,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
     templateUrl: './discipline-filter.component.html',
     styleUrls: ['./discipline-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgClass, NgFor, TranslocoPipe]
+    imports: [NgClass, TranslocoPipe]
 })
 export class DisciplineFilterComponent {
   @Input() showNotRequired: boolean = false
