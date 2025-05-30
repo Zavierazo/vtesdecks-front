@@ -32,14 +32,14 @@ export class AppComponent implements OnInit {
   versionAvailable = false
 
   constructor(
-    private authService: AuthService,
-    private cookieConsentService: NgcCookieConsentService,
-    private router: Router,
-    private swUpdate: SwUpdate,
-    private modalService: NgbModal,
-    private apiDataService: ApiDataService,
-    private colorThemeService: ColorThemeService,
-    private googleAnalyticsService: GoogleAnalyticsService,
+    private readonly authService: AuthService,
+    private readonly cookieConsentService: NgcCookieConsentService,
+    private readonly router: Router,
+    private readonly swUpdate: SwUpdate,
+    private readonly modalService: NgbModal,
+    private readonly apiDataService: ApiDataService,
+    private readonly colorThemeService: ColorThemeService,
+    private readonly googleAnalyticsService: GoogleAnalyticsService,
   ) {
     this.colorThemeService.load()
   }
