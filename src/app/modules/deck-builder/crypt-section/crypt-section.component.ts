@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller, NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -37,7 +37,7 @@ import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-build
     templateUrl: './crypt-section.component.html',
     styleUrls: ['./crypt-section.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, CryptComponent, NgbTooltip, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
+    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgTemplateOutlet, InfiniteScrollDirective, CryptComponent, NgbTooltip, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
 })
 export class CryptSectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

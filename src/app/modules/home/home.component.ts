@@ -64,17 +64,20 @@ export class HomeComponent implements OnInit {
         .pipe(
           tap((changelogs) => {
             if (changelogs && changelogs.length > 0) {
-              let entry = changelogs.find((c) => c.version === this.appVersion)
-              // If no entry found, try to find a older minor version
-              entry ??= changelogs.find(
-                (c) =>
-                  c.version.split('.')[0] === this.appVersion.split('.')[0] &&
-                  c.version.split('.')[1] === this.appVersion.split('.')[1] &&
-                  c.version !== lastAppVersionSeen,
-              )
+              const appVersionSplit = this.appVersion.split('.')
+              let entry = changelogs.find((changelog) => {
+                const versionSplit = changelog.version.split('.')
+                return (
+                  versionSplit[0] === appVersionSplit[0] &&
+                  versionSplit[1] === appVersionSplit[1]
+                )
+              })
               if (entry) {
+                const lastVersionSeenSplit = lastAppVersionSeen?.split('.')
                 this.changelogAlert = entry
-                this.showChangelogAlert = true
+                this.showChangelogAlert =
+                  appVersionSplit[0] !== lastVersionSeenSplit?.[0] ||
+                  appVersionSplit[1] !== lastVersionSeenSplit?.[1]
                 this.changeDetector.markForCheck()
               }
             }

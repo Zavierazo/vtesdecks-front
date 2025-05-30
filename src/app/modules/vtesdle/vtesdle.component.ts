@@ -25,7 +25,7 @@ import { ActivatedRoute } from '@angular/router'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiCardToday } from '../../models/api-card-today'
 import { TranslocoDirective } from '@jsverse/transloco';
-import { NgIf } from '@angular/common';
+
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @UntilDestroy()
@@ -34,7 +34,7 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
     templateUrl: './vtesdle.component.html',
     styleUrls: ['./vtesdle.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgbTooltip, LoadingComponent, NgbHighlight, NgbTypeahead, NgbRating]
+    imports: [TranslocoDirective, NgbTooltip, LoadingComponent, NgbHighlight, NgbTypeahead, NgbRating]
 })
 export class VtesdleComponent implements OnInit {
   maxLives = 6

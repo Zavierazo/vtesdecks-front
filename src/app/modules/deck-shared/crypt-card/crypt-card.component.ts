@@ -18,7 +18,7 @@ import { ApiCrypt } from './../../../models/api-crypt'
 import { ApiDataService } from './../../../services/api.data.service'
 import { MediaService } from './../../../services/media.service'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component';
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
@@ -30,7 +30,7 @@ import { RouterLink } from '@angular/router';
     templateUrl: './crypt-card.component.html',
     styleUrls: ['./crypt-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgIf, NgClass, NgFor, NgbTooltip, SetTooltipComponent, RulingTextComponent, NgxGoogleAnalyticsModule, RouterLink, AsyncPipe, TranslocoPipe]
+    imports: [TranslocoDirective, NgClass, NgbTooltip, SetTooltipComponent, RulingTextComponent, NgxGoogleAnalyticsModule, RouterLink, AsyncPipe, TranslocoPipe]
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
   readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'

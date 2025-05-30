@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common'
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,13 +26,11 @@ import { LibraryComponent } from '../library/library.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
-    NgFor,
-    NgIf,
     LibraryComponent,
     AsyncPipe,
     TranslocoPipe,
-    LibraryTypeTranslocoPipe,
-  ],
+    LibraryTypeTranslocoPipe
+],
 })
 export class LibraryListComponent implements OnInit {
   static readonly libraryTypeOrder = [

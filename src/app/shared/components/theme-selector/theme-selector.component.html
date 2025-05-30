@@ -1,8 +1,10 @@
 <div class="theme-selector nav-item nav-link" [ngClass]="theme" [attr.aria-label]="theme" (click)="toggleTheme()"
   *transloco="let t; read: 'header'">
-  <span *ngIf="isMobile$ | async" class="theme-selector__text me-1">
-    {{ t('theme') }}
-  </span>
+  @if (isMobile$ | async) {
+    <span class="theme-selector__text me-1">
+      {{ t('theme') }}
+    </span>
+  }
   <i class="bi bi-fs-1_2x fw-bold theme-selector__icon"
-    [ngClass]="theme === Theme.Dark ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
+  [ngClass]="theme === Theme.Dark ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
 </div>

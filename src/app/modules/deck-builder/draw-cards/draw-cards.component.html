@@ -4,7 +4,7 @@
       {{ t('title') }}
     </h4>
     <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-      (click)="modal.dismiss('Cross click')"></button>
+    (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -14,15 +14,17 @@
           cryptDrawn() }} {{ t('remaining') }} )
           <span class="float-end">
             <i class="bi bi-fs-1_2x" [ngClass]="cryptUnique() <= 9 ? 'bi-' + cryptUnique() + '-circle': ''"
-              [title]="t('unique_crypt')"></i>
+            [title]="t('unique_crypt')"></i>
             <i class="btn-icon bi bi-dash-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="decreaseCryptDrawn()"></i>
             <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" (click)="shuffleCrypt()"></i>
             <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="increaseCryptDrawn()"></i>
           </span>
         </li>
-        <div *ngFor="let crypt of cryptList()| slice:0:cryptDrawn()">
-          <app-crypt [card]="crypt" [cryptSize]="cryptList().length" [withDrawProbability]="true"></app-crypt>
-        </div>
+        @for (crypt of cryptList()| slice:0:cryptDrawn(); track crypt) {
+          <div>
+            <app-crypt [card]="crypt" [cryptSize]="cryptList().length" [withDrawProbability]="true"></app-crypt>
+          </div>
+        }
       </ul>
       <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
         <li class="list-group-item list-group-item-primary">
@@ -34,9 +36,11 @@
             <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="increaseLibraryDrawn()"></i>
           </span>
         </li>
-        <div *ngFor="let library of libraryList()| slice:0:libraryDrawn()">
-          <app-library [card]="library" [librarySize]="libraryList().length" [withDrawProbability]="true"></app-library>
-        </div>
+        @for (library of libraryList()| slice:0:libraryDrawn(); track library) {
+          <div>
+            <app-library [card]="library" [librarySize]="libraryList().length" [withDrawProbability]="true"></app-library>
+          </div>
+        }
       </ul>
     </div>
   </div>

@@ -1,54 +1,62 @@
 <ng-container *transloco="let t; read: 'library_builder_filter'">
-  <div class="row g-1 mb-2 items-center" *ngIf=" limitedFormat !==undefined">
-    <div class="form-check form-switch form-check-inline">
-      <input class="form-check-input" type="checkbox" role="switch" id="limitedFormatCheck"
-        [formControl]="limitedFormatControl" />
-      <label class="form-check-label" for="limitedFormatCheck">{{ t('limited_format') }}</label>
-    </div>
-  </div>
-  <div class="row g-1 mb-2 items-center" *ngIf=" printOnDemand !==undefined">
-    <div class="form-check form-switch form-check-inline">
-      <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"
-        [formControl]="printOnDemandControl" />
-      <label class="form-check-label" for="printOnDemandCheck">{{ t('print_on_demand') }}</label>
-    </div>
-  </div>
-  <label for="type" class="form-label text-primary fw-bold">{{ t('type') }}</label>
-  <div id="type" class="row g-1">
-    <app-library-type-filter [(types)]="types" (typesChange)="onChangeTypeFilter($event)"> </app-library-type-filter>
-  </div>
-  <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
-  <div id="disciplines" class="row g-1">
-    <app-discipline-filter [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
-      [showNotRequired]="true" [showSuperior]="false"></app-discipline-filter>
-  </div>
-  <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
-  <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true">
-    </app-clan-filter>
-  </div>
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="sect" [formControl]="sectControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }} </option>
-      <option *ngFor="let sect of (sects$ | async)" [value]="sect">
-        {{ sect | titlecase }}
-      </option>
-    </select>
-    <label for="sect">{{ t('sect') }}</label>
-  </div>
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="title" [formControl]="titleControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }} </option>
-      <option *ngFor="let title of (titles$ | async)" [value]="title">
-        {{ title | titlecase }}
-      </option>
-    </select>
-    <label for="title">{{ t('title') }}</label>
-  </div>
-  <div class="row g-1 mt-2">
-    <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>
+  @if ( limitedFormat !==undefined) {
+    <div class="row g-1 mb-2 items-center">
+      <div class="form-check form-switch form-check-inline">
+        <input class="form-check-input" type="checkbox" role="switch" id="limitedFormatCheck"
+          [formControl]="limitedFormatControl" />
+          <label class="form-check-label" for="limitedFormatCheck">{{ t('limited_format') }}</label>
+        </div>
+      </div>
+    }
+    @if ( printOnDemand !==undefined) {
+      <div class="row g-1 mb-2 items-center">
+        <div class="form-check form-switch form-check-inline">
+          <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"
+            [formControl]="printOnDemandControl" />
+            <label class="form-check-label" for="printOnDemandCheck">{{ t('print_on_demand') }}</label>
+          </div>
+        </div>
+      }
+      <label for="type" class="form-label text-primary fw-bold">{{ t('type') }}</label>
+      <div id="type" class="row g-1">
+        <app-library-type-filter [(types)]="types" (typesChange)="onChangeTypeFilter($event)"> </app-library-type-filter>
+      </div>
+      <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
+      <div id="disciplines" class="row g-1">
+        <app-discipline-filter [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
+        [showNotRequired]="true" [showSuperior]="false"></app-discipline-filter>
+      </div>
+      <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
+      <div id="clans" class="row g-1">
+        <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true">
+        </app-clan-filter>
+      </div>
+      <div class="row g-1 form-floating mt-2">
+        <select class="form-select" id="sect" [formControl]="sectControl">
+          <option selected></option>
+          <option value="none">{{ 'shared.not_required' | transloco }} </option>
+          @for (sect of (sects$ | async); track sect) {
+            <option [value]="sect">
+              {{ sect | titlecase }}
+            </option>
+          }
+        </select>
+        <label for="sect">{{ t('sect') }}</label>
+      </div>
+      <div class="row g-1 form-floating mt-2">
+        <select class="form-select" id="title" [formControl]="titleControl">
+          <option selected></option>
+          <option value="none">{{ 'shared.not_required' | transloco }} </option>
+          @for (title of (titles$ | async); track title) {
+            <option [value]="title">
+              {{ title | titlecase }}
+            </option>
+          }
+        </select>
+        <label for="title">{{ t('title') }}</label>
+      </div>
+      <div class="row g-1 mt-2">
+        <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>
     <ngx-slider id="bloodCost" [options]="{
         floor: 0,
         ceil: 4,
@@ -56,10 +64,10 @@
         showTicks: true,
         showTicksValues: true
       }" [formControl]="bloodCostSliderControl">
-    </ngx-slider>
-  </div>
-  <div class="row g-1 mt-2">
-    <label for="poolCost" class="form-label text-primary fw-bold">{{ t('pool_cost') }}</label>
+        </ngx-slider>
+      </div>
+      <div class="row g-1 mt-2">
+        <label for="poolCost" class="form-label text-primary fw-bold">{{ t('pool_cost') }}</label>
     <ngx-slider id="poolCost" [options]="{
         floor: 0,
         ceil: 6,
@@ -67,15 +75,17 @@
         showTicks: true,
         showTicksValues: true
       }" [formControl]="poolCostSliderControl">
-    </ngx-slider>
-  </div>
-  <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
-  <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">
-    <div class="col-6 form-check" *ngFor="let taint of (taints$ | async)">
-      <input class="form-check-input" type="checkbox" [id]="taint" [formControlName]="taint">
-      <label class="form-check-label" [for]="taint">
-        {{ 'vtes.taints.' + taint | translocoFallback: taint | titlecase }}
-      </label>
-    </div>
-  </form>
-</ng-container>
+        </ngx-slider>
+      </div>
+      <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
+      <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">
+        @for (taint of (taints$ | async); track taint) {
+          <div class="col-6 form-check">
+            <input class="form-check-input" type="checkbox" [id]="taint" [formControlName]="taint">
+            <label class="form-check-label" [for]="taint">
+              {{ 'vtes.taints.' + taint | translocoFallback: taint | titlecase }}
+            </label>
+          </div>
+        }
+      </form>
+    </ng-container>

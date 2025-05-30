@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,16 +26,14 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
-    NgIf,
     ReactiveFormsModule,
     ClanFilterComponent,
     DisciplineFilterComponent,
     NgxSliderModule,
-    NgFor,
     AsyncPipe,
     TitleCasePipe,
-    TranslocoFallbackPipe,
-  ],
+    TranslocoFallbackPipe
+],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   @Input() limitedFormat?: boolean

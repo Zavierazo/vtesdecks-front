@@ -12,7 +12,7 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { debounceTime, tap } from 'rxjs'
 import { LocalStorageService } from '../../../services/local-storage.service'
 import { SessionStorageService } from '../../../services/session-storage.service'
-import { NgFor, NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -21,12 +21,10 @@ import { NgFor, NgClass, NgIf } from '@angular/common';
     styleUrls: ['./table-seating.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        TranslocoDirective,
-        ReactiveFormsModule,
-        NgFor,
-        NgClass,
-        NgIf,
-    ],
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgClass
+],
 })
 export class TableSeatingComponent implements OnInit {
   static readonly storeName = 'table-seating'

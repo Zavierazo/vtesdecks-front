@@ -14,22 +14,22 @@
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color justify-content-center" *isLogged="false">
     {{ t('must_logged') }}
   </div>
-  <ng-container *ngIf="(comments$ | async)! as comments; else loading">
-    <ng-container *ngIf="comments.length > 0; else noComments">
-      <div class="mt-2 mb-4">
-        <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>
-      </div>
-    </ng-container>
-    <ng-template #noComments>
-      <div class="row d-flex justify-content-center no-comments">
-        <span class="col-12">
-          <i class="bi bi-chat bi-fs-2x" aria-hidden="true"></i>
-        </span>
-        <span class="col-12">{{ t('no_comments') }}</span>
-      </div>
-    </ng-template>
-  </ng-container>
-  <ng-template #loading>
-    <app-loading></app-loading>
-  </ng-template>
+  @if ((comments$ | async)!; as comments){
+  @if(comments.length > 0){
+  <div class="mt-2 mb-4">
+    @for(comment of comments; track comment.id){
+    <app-comment [comment]="comment"></app-comment>
+    }
+  </div>
+  }@else{
+  <div class="row d-flex justify-content-center no-comments">
+    <span class="col-12">
+      <i class="bi bi-chat bi-fs-2x" aria-hidden="true"></i>
+    </span>
+    <span class="col-12">{{ t('no_comments') }}</span>
+  </div>
+  }
+  }@else {
+  <app-loading></app-loading>
+  }
 </ng-container>

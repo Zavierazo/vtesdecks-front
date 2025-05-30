@@ -1,10 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgTemplateOutlet,
-} from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -51,15 +45,13 @@ import { searchIncludes } from './../../../utils/vtes-utils'
     NgbDropdownMenu,
     NgbDropdownButtonItem,
     NgbDropdownItem,
-    NgIf,
     NgTemplateOutlet,
     InfiniteScrollDirective,
-    NgFor,
     LibraryComponent,
     LibraryBuilderFilterComponent,
     AsyncPipe,
-    TranslocoPipe,
-  ],
+    TranslocoPipe
+],
 })
 export class LibraryBuilderComponent implements OnInit {
   private static readonly PAGE_SIZE = 20

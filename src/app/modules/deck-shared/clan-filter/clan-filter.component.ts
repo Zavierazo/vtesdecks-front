@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core'
 import { CLAN_LIST } from '../../../utils/clans'
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
@@ -15,7 +15,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
     templateUrl: './clan-filter.component.html',
     styleUrls: ['./clan-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgClass, NgFor, TranslocoPipe]
+    imports: [NgClass, TranslocoPipe]
 })
 export class ClanFilterComponent {
   @Input() showNotRequired: boolean = false

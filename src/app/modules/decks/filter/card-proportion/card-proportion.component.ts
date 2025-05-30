@@ -12,7 +12,7 @@ import { ControlContainer, FormControl, FormGroupDirective, ReactiveFormsModule 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, tap } from 'rxjs'
 import { TranslocoDirective } from '@jsverse/transloco';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +23,7 @@ import { NgClass, NgIf } from '@angular/common';
     viewProviders: [
         { provide: ControlContainer, useExisting: FormGroupDirective },
     ],
-    imports: [TranslocoDirective, NgClass, NgIf, ReactiveFormsModule]
+    imports: [TranslocoDirective, NgClass, ReactiveFormsModule]
 })
 export class CardProportionComponent implements OnInit, OnChanges {
   private static readonly ABSOLUTE_MAX = 90

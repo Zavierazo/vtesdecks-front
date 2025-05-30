@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,30 +6,28 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { filter, Observable, switchMap } from 'rxjs'
 import { ApiComment } from '../../../models/api-comment'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
+import { DateAsAgoPipe } from '../../../shared/pipes/date-ago.pipe'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { CommentsService } from '../../../state/comments/comments.service'
-import { NgClass, NgIf, AsyncPipe } from '@angular/common';
-import { DateAsAgoPipe } from '../../../shared/pipes/date-ago.pipe';
 @UntilDestroy()
 @Component({
-    selector: 'app-comment',
-    templateUrl: './comment.component.html',
-    styleUrls: ['./comment.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        TranslocoDirective,
-        NgClass,
-        NgIf,
-        ReactiveFormsModule,
-        AsyncPipe,
-        DateAsAgoPipe,
-    ],
+  selector: 'app-comment',
+  templateUrl: './comment.component.html',
+  styleUrls: ['./comment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgClass,
+    ReactiveFormsModule,
+    AsyncPipe,
+    DateAsAgoPipe,
+  ],
 })
 export class CommentComponent implements OnInit {
   @Input() comment!: ApiComment
@@ -40,10 +39,10 @@ export class CommentComponent implements OnInit {
   isEditing = false
 
   constructor(
-    private authQuery: AuthQuery,
-    private commentsService: CommentsService,
-    private modalService: NgbModal,
-    private translocoService: TranslocoService,
+    private readonly authQuery: AuthQuery,
+    private readonly commentsService: CommentsService,
+    private readonly modalService: NgbModal,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {

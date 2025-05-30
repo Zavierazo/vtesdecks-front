@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller, NgClass, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -37,7 +37,7 @@ import { LibraryBuilderFilterComponent } from '../library-builder-filter/library
     templateUrl: './library-section.component.html',
     styleUrls: ['./library-section.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgIf, NgTemplateOutlet, InfiniteScrollDirective, NgFor, LibraryComponent, NgbTooltip, LibraryBuilderFilterComponent, AsyncPipe, TranslocoPipe]
+    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgTemplateOutlet, InfiniteScrollDirective, LibraryComponent, NgbTooltip, LibraryBuilderFilterComponent, AsyncPipe, TranslocoPipe]
 })
 export class LibrarySectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 40

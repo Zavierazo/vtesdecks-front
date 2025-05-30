@@ -1,22 +1,26 @@
-import { ApiDataService } from './../../services/api.data.service'
-import { AuthQuery } from './../../state/auth/auth.query'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core'
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiContact } from '../../models/api-contact'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf } from '@angular/common';
+import { ApiDataService } from './../../services/api.data.service'
+import { AuthQuery } from './../../state/auth/auth.query'
 
 @Component({
-    selector: 'app-contact',
-    templateUrl: './contact.component.html',
-    styleUrls: ['./contact.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgIf, TranslocoPipe]
+  selector: 'app-contact',
+  templateUrl: './contact.component.html',
+  styleUrls: ['./contact.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoDirective, ReactiveFormsModule, TranslocoPipe],
 })
 export class ContactComponent implements OnInit {
   form!: FormGroup
@@ -26,9 +30,9 @@ export class ContactComponent implements OnInit {
   successful = false
 
   constructor(
-    private authQuery: AuthQuery,
-    private apiDataService: ApiDataService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private readonly authQuery: AuthQuery,
+    private readonly apiDataService: ApiDataService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {

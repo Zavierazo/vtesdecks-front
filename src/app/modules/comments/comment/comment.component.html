@@ -7,15 +7,20 @@
         <span class="me-2" [ngClass]="{ 'fw-bold' : comment.createdByCurrentUser}">
           {{ comment.fullName }}
         </span>
-        <small class="badge bg-primary ms-2" *ngIf="comment.createdByAdmin">
+        @if(comment.createdByAdmin){
+        <small class="badge bg-primary ms-2">
           {{ t('admin') }}
         </small>
+        }
       </div> <small>{{ comment.modified | dateAsAgo }}</small>
     </div>
-    <p class="text-justify comment-text mb-0" *ngIf="!isEditing">
+    @if (!isEditing){
+    <p class="text-justify comment-text mb-0">
       {{ comment.content }}
     </p>
-    <form class="comment-form" [formGroup]="form" (ngSubmit)="editComment()" *ngIf="isEditing">
+    }
+    @if (isEditing){
+    <form class="comment-form" [formGroup]="form" (ngSubmit)="editComment()">
       <div class="input-group mb-3">
         <input type="text" formControlName="comment" class="form-control" [placeholder]="t('edit_placeholder')">
         <button type="button" class="btn btn-outline-primary" (click)="editComment()" [title]="t('edit_title')">
@@ -23,15 +28,19 @@
         </button>
       </div>
     </form>
-    <div class="d-flex flex-row user-feed" *ngIf="comment.createdByCurrentUser || (isAdmin$ | async)!">
-      <a class="text-decoration-none" href="javascript:void(0)" (click)="switchEditComment()" *ngIf="!isEditing"
-        [title]="t('edit_title')">
+    }
+    @if (comment.createdByCurrentUser || (isAdmin$ | async)!){
+    <div class="d-flex flex-row user-feed">
+      @if (!isEditing){
+      <a class="text-decoration-none" href="javascript:void(0)" (click)="switchEditComment()" [title]="t('edit_title')">
         <i class="bi bi-pencil-fill me-1"></i>{{ t('edit') }}
       </a>
+      }
       <a class="text-decoration-none ms-2" href="javascript:void(0)" (click)="deleteComment()"
         [title]="t('delete_title')">
         <i class="bi bi-trash-fill me-1"></i>{{ t('delete') }}
       </a>
     </div>
+    }
   </div>
 </div>

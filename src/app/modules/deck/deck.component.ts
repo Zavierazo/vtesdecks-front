@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, NgClass, TitleCasePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -61,7 +61,6 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     LoadingComponent,
     TranslocoDirective,
     NgbDropdown,
@@ -72,7 +71,6 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     NgClass,
     RouterLink,
     NgxGoogleAnalyticsModule,
-    NgFor,
     AnimatedDigitComponent,
     NgbRating,
     IsLoggedDirective,
@@ -86,8 +84,8 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     DisciplineTranslocoPipe,
     ClanTranslocoPipe,
     TranslocoPipe,
-    TranslocoDatePipe,
-  ],
+    TranslocoDatePipe
+],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
   id!: string

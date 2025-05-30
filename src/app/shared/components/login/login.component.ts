@@ -16,7 +16,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ToastService } from '../../../services/toast.service'
 import { ApiResponse } from '../../../models/api-response'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 export enum Tabs {
   Login,
@@ -28,7 +28,7 @@ export enum Tabs {
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [TranslocoDirective, NgIf, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
+    imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
