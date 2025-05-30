@@ -7,7 +7,7 @@ import { switchMap, take } from 'rxjs'
 import { ApiResponse } from '../../models/api-response'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
-import { NgIf } from '@angular/common';
+
 
 @UntilDestroy()
 @Component({
@@ -15,11 +15,10 @@ import { NgIf } from '@angular/common';
     templateUrl: './reset-password.component.html',
     styleUrls: ['./reset-password.component.scss'],
     imports: [
-        TranslocoDirective,
-        ReactiveFormsModule,
-        NgIf,
-        TranslocoPipe,
-    ],
+    TranslocoDirective,
+    ReactiveFormsModule,
+    TranslocoPipe
+],
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm = new FormGroup(

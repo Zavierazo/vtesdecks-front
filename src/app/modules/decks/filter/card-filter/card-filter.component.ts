@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common'
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -44,9 +44,7 @@ import { LibraryService } from './../../../../state/library/library.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
-    NgIf,
     NgbHighlight,
-    NgFor,
     NgbTypeahead,
     NgClass,
     NgbPopover,
@@ -64,15 +62,15 @@ export class CardFilterComponent implements OnInit {
   form!: FormGroup
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private decksQuery: DecksQuery,
-    private cryptService: CryptService,
-    private cryptQuery: CryptQuery,
-    private libraryService: LibraryService,
-    private libraryQuery: LibraryQuery,
-    private changeDetectorRef: ChangeDetectorRef,
-    private mediaService: MediaService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly decksQuery: DecksQuery,
+    private readonly cryptService: CryptService,
+    private readonly cryptQuery: CryptQuery,
+    private readonly libraryService: LibraryService,
+    private readonly libraryQuery: LibraryQuery,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly mediaService: MediaService,
   ) {}
 
   ngOnInit() {
@@ -196,7 +194,7 @@ export class CardFilterComponent implements OnInit {
           this.router.navigate([], {
             relativeTo: this.route,
             queryParams: {
-              starVampire: value ? value : undefined,
+              starVampire: value ?? undefined,
             },
             queryParamsHandling: 'merge',
           }),

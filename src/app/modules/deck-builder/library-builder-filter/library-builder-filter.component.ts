@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,18 +27,16 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
-    NgIf,
     ReactiveFormsModule,
     LibraryTypeFilterComponent,
     DisciplineFilterComponent,
     ClanFilterComponent,
-    NgFor,
     NgxSliderModule,
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe,
-  ],
+    TranslocoPipe
+],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   @Input() limitedFormat?: boolean

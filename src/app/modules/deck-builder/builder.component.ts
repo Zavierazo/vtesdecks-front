@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common'
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -69,16 +69,14 @@ import { fromUrl } from './limited-format/limited-format-utils'
     NgbDropdownMenu,
     NgbDropdownButtonItem,
     NgbDropdownItem,
-    NgIf,
     RouterLink,
     NgbTooltip,
-    NgFor,
     NgClass,
     CryptComponent,
     LibraryListComponent,
     AsyncPipe,
-    TranslocoPipe,
-  ],
+    TranslocoPipe
+],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   form!: FormGroup

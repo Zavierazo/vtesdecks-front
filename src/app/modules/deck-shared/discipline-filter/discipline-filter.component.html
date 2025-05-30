@@ -1,12 +1,14 @@
-<span *ngIf="showNotRequired" (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
+@if (showNotRequired) {
+  <span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
   <i class="btn-icon vtes-big nodiscipline" [ngClass]="{
     'non-selected': !isSelected('none')
   }"></i>
-</span>
-<ng-container *ngFor="let discipline of disciplineList">
+  </span>
+}
+@for (discipline of disciplineList; track discipline) {
   <span (click)="toggle(discipline)" [title]="discipline.label | transloco">
     <i class="btn-icon vtes-big" [class]="getIcon(discipline)" [ngClass]="{
         'non-selected': !isSelected(discipline.name)
       }"></i>
   </span>
-</ng-container>
+}

@@ -1,10 +1,12 @@
-<div class="alert alert-light" *ngIf="isLoading$ | async">
+@if (isLoading$ | async) {
+<div class="alert alert-light">
   <app-loading [size]="10"></app-loading>
   <div style="height: 100vw"></div>
 </div>
+}
 <ng-container *transloco="let t; read: 'deck'">
-  <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main"
-    *ngIf="(deck$ | async)! as deck">
+  @if ((deck$ | async)!; as deck) {
+  <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main">
     <div class="row">
       <section class="dark-grey-text col-12">
         <div class="mb-2 bg-light rounded-3">
@@ -34,21 +36,23 @@
                       {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
                     </span>
                   </p>
-                  <p *ngIf="deck.tournament" class="mb-1">
+                  @if (deck.tournament) {
+                  <p class="mb-1">
                     <b>{{ t('tournament') }}: </b>
-                    <a *ngIf="deck.url; else noUrlTournament" class="text-decoration-none" [href]="deck.url"
-                      target="_blank">
+                    @if (deck.url) {
+                    <a class="text-decoration-none" [href]="deck.url" target="_blank">
                       {{ deck.tournament }}
                     </a>
-                    <ng-template #noUrlTournament>
-                      {{ deck.tournament }}
-                    </ng-template>
-                    <ng-container *ngIf="deck.players">
-                      <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
-                    </ng-container>
+                    } @else {
+                    {{ deck.tournament }}
+                    }
+                    @if (deck.players) {
+                    <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
+                    }
                   </p>
-
-                  <p *ngIf="deck.limitedFormat" class="mb-1">
+                  }
+                  @if (deck.limitedFormat) {
+                  <p class="mb-1">
                     <b>{{ t('limited_format') }}: </b>
                     <span class="tournament-info text-center">
                       <span class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center">
@@ -56,16 +60,21 @@
                       </span>
                     </span>
                   </p>
-                  <p *ngIf="deck.type==='PRECONSTRUCTED' && deck.url" class="mb-1">
+                  }
+                  @if (deck.type==='PRECONSTRUCTED' && deck.url) {
+                  <p class="mb-1">
                     <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
                       gaEvent="purchase" gaCategory="dtc" [gaLabel]="deck.name">
                       <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
                     </a>
                   </p>
-                  <p *ngIf="deck.source" class="mb-1">
+                  }
+                  @if (deck.source) {
+                  <p class="mb-1">
                     <b>{{ t('source') }}: </b>
                     <a class="text-decoration-none" [href]="deck.source" target="_blank">{{ t('twda') }}</a>
                   </p>
+                  }
                 </div>
               </div>
               <div class="col-12 col-md-4 mt-3 mt-md-0">
@@ -102,7 +111,6 @@
                 </div>
               </div>
             </div>
-
             <div class="row mt-3">
               <div class="col-12">
                 <div class="deck-actions d-flex flex-wrap justify-content-center gap-2">
@@ -161,43 +169,47 @@
                 </div>
               </div>
             </div>
-
-            <div class="row mt-3" *ngIf="deck.tags">
+            @if (deck.tags) {
+            <div class="row mt-3">
               <div class="col-12">
                 <div class="d-flex flex-wrap justify-content-center gap-2">
-                  <span *ngFor="let tag of deck.tags" class="badge rounded-pill text-bg-primary btn-badge"
-                    (click)="onTag(tag)">
+                  @for (tag of deck.tags; track tag) {
+                  <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onTag(tag)">
                     #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
                   </span>
+                  }
                 </div>
               </div>
             </div>
+            }
           </div>
         </div>
-        <ng-container *ngIf="deck.description">
-          <div class="mt-3" [innerHTML]="deck.description"></div>
-          <hr class="mb-4 mt-3" />
-        </ng-container>
-        <ng-container *ngIf="deck.erratas && deck.erratas.length > 0">
-          <div class="alert alert-warning my-3" role="alert">
-            <h3><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ t('errata') }}</h3>
-            <p *ngFor="let errata of deck.erratas">
-              <strong #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-                (click)="popover.open()">
-                {{ errata.name }}
-              </strong>
-              {{ t('errata_modified') }}
-              {{ errata.effectiveDate | translocoDate: { dateStyle: 'long' } }}.
-              {{ errata.description }}
-              <ng-template #imgPopover>
-                <img [ngClass]="{
+        @if (deck.description) {
+        <div class="mt-3" [innerHTML]="deck.description"></div>
+        <hr class="mb-4 mt-3" />
+        }
+        @if (deck.erratas && deck.erratas.length > 0) {
+        <div class="alert alert-warning my-3" role="alert">
+          <h3><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ t('errata') }}</h3>
+          @for (errata of deck.erratas; track errata) {
+          <p>
+            <strong #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+              (click)="popover.open()">
+              {{ errata.name }}
+            </strong>
+            {{ t('errata_modified') }}
+            {{ errata.effectiveDate | translocoDate: { dateStyle: 'long' } }}.
+            {{ errata.description }}
+            <ng-template #imgPopover>
+              <img [ngClass]="{
               'img-popover': !(isMobile$ | async)!,
               'img-popover-mobile': (isMobile$ | async)!
             }" [src]="'/assets/img/cards/' + errata.id + '.jpg'" [alt]="errata.name" />
-              </ng-template>
-            </p>
-          </div>
-        </ng-container>
+            </ng-template>
+          </p>
+          }
+        </div>
+        }
       </section>
     </div>
     <div class="col-12 d-flex justify-content-center mt-3">
@@ -208,19 +220,23 @@
     </div>
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
-        <h5 class="col-auto d-flex justify-content-center" *ngFor="let disciplineStat of deck.stats.cryptDisciplines"
+        @for (disciplineStat of deck.stats.cryptDisciplines; track disciplineStat) {
+        <h5 class="col-auto d-flex justify-content-center"
           [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
           <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
           &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
         </h5>
+        }
       </div>
     </div>
     <div class="col-12 mt-3">
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-        <ul class="col list-group" *ngFor="let crypt of deck.crypt">
+        @for (crypt of deck.crypt; track crypt) {
+        <ul class="col list-group">
           <app-crypt [card]="crypt" [cryptSize]="deck.stats.crypt" (click)="openCryptCard(crypt, deck.crypt!)"
             [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-crypt>
         </ul>
+        }
       </div>
     </div>
     <div class="col-12 text-center mt-3">
@@ -255,28 +271,40 @@
     </div>
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
-        <h5 class="col-auto d-flex justify-content-center" *ngFor="let disciplineStat of deck.stats.libraryDisciplines">
-          <span *ngIf="disciplineStat.disciplines.length === 0" [title]="t('no_discipline')">
+        @for (disciplineStat of deck.stats.libraryDisciplines; track disciplineStat) {
+        <h5 class="col-auto d-flex justify-content-center">
+          @if (disciplineStat.disciplines.length === 0) {
+          <span [title]="t('no_discipline')">
             <i class="bi bi-square" style="font-size: 32px;"></i>
           </span>
-          <ng-container *ngFor="let discipline of disciplineStat.disciplines; let isFirst = first">
-            <span *ngIf="!isFirst">+</span>
-            <i class="vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!"
-              [title]="discipline  |disciplineTransloco"></i>
-          </ng-container>
+          }
+          @for (discipline of disciplineStat.disciplines; track discipline; let isFirst = $first) {
+          @if (!isFirst) {
+          <span>+</span>
+          }
+          <i class="vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!"
+            [title]="discipline  |disciplineTransloco"></i>
+          }
           <span class="pt-1">&nbsp;{{ disciplineStat.inferior }}</span>
         </h5>
-        <h5 class="col-auto d-flex justify-content-center" *ngFor="let clanStat of deck.stats.libraryClans">
-          <ng-container *ngFor="let clan of clanStat.clans; let isFirst = first">
-            <span *ngIf="!isFirst">/</span>
-            <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
-          </ng-container>
+        }
+        @for (clanStat of deck.stats.libraryClans; track clanStat) {
+        <h5 class="col-auto d-flex justify-content-center">
+          @for (clan of clanStat.clans; track clan; let isFirst = $first) {
+          @if (!isFirst) {
+          <span>/</span>
+          }
+          <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
+          }
           <span class="pt-1">&nbsp;{{ clanStat.number }}</span>
         </h5>
+        }
       </div>
     </div>
     <div class="col-12 mt-3">
-      <app-library-list *ngIf="deck.library" [libraryList]="deck.library"></app-library-list>
+      @if (deck.library) {
+      <app-library-list [libraryList]="deck.library"></app-library-list>
+      }
     </div>
     <!-- Adsense VtesDecks Deck Footer Responsive -->
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7379021241824282" data-ad-slot="8573339569"
@@ -290,4 +318,5 @@
       <app-comments [deckId]="id"></app-comments>
     </div>
   </main>
+  }
 </ng-container>

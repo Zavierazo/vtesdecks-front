@@ -13,7 +13,7 @@ import { ApiResponse } from './../../../models/api-response'
 import { AuthQuery } from './../../../state/auth/auth.query'
 import { AuthService } from './../../../state/auth/auth.service'
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -22,14 +22,13 @@ import { NgIf, NgClass, AsyncPipe } from '@angular/common';
     styleUrls: ['./profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        TranslocoDirective,
-        ReactiveFormsModule,
-        NgbAlert,
-        NgIf,
-        NgClass,
-        AsyncPipe,
-        TranslocoPipe,
-    ],
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgbAlert,
+    NgClass,
+    AsyncPipe,
+    TranslocoPipe
+],
 })
 export class ProfileComponent implements OnInit {
   email$!: Observable<string | undefined>

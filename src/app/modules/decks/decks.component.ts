@@ -1,4 +1,4 @@
-import { DOCUMENT, ViewportScroller, NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common'
+import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -39,7 +39,7 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
     templateUrl: './decks.component.html',
     styleUrls: ['./decks.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, NgIf, DeckFiltersComponent, NgClass, InfiniteScrollDirective, NgFor, DeckCardComponent, DeckRestorableCardComponent, LoadingComponent, NgbTooltip, AsyncPipe]
+    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, DeckFiltersComponent, NgClass, InfiniteScrollDirective, DeckCardComponent, DeckRestorableCardComponent, LoadingComponent, NgbTooltip, AsyncPipe]
 })
 export class DecksComponent implements OnInit {
   decks$!: Observable<ApiDeck[]>

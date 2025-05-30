@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, NgFor, NgIf } from '@angular/common'
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import {
   FormBuilder,
@@ -29,13 +29,11 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component'
     TranslocoDirective,
     ReactiveFormsModule,
     NgxSliderModule,
-    NgIf,
     LineChartComponent,
-    NgFor,
     BarChartComponent,
     RadarChartComponent,
-    AsyncPipe,
-  ],
+    AsyncPipe
+],
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class StatisticsComponent implements OnInit {

@@ -7,9 +7,20 @@ import {
   Output,
   ViewChild,
 } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { NgbTypeahead, NgbTypeaheadSelectItemEvent, NgbHighlight, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoDirective } from '@jsverse/transloco'
+import {
+  NgbHighlight,
+  NgbTooltip,
+  NgbTypeahead,
+  NgbTypeaheadSelectItemEvent,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   Observable,
@@ -23,24 +34,36 @@ import {
   tap,
 } from 'rxjs'
 import { ApiDataService } from '../../../services/api.data.service'
+import { IsLoggedDirective } from '../../../shared/directives/is-logged.directive'
 import { DecksQuery } from '../../../state/decks/decks.query'
 import { CardFilterComponent } from './card-filter/card-filter.component'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { IsLoggedDirective } from '../../../shared/directives/is-logged.directive';
-import { NgIf, NgFor } from '@angular/common';
-import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component';
-import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { CardProportionComponent } from './card-proportion/card-proportion.component';
-import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback';
+
+import { NgxSliderModule } from '@angular-slider/ngx-slider'
+import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
+import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
+import { CardProportionComponent } from './card-proportion/card-proportion.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck-filters',
-    templateUrl: './deck-filters.component.html',
-    styleUrls: ['./deck-filters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, NgbHighlight, NgbTypeahead, NgIf, NgFor, ClanFilterComponent, DisciplineFilterComponent, CardFilterComponent, NgxSliderModule, NgbTooltip, CardProportionComponent, TranslocoFallbackPipe]
+  selector: 'app-deck-filters',
+  templateUrl: './deck-filters.component.html',
+  styleUrls: ['./deck-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    IsLoggedDirective,
+    NgbHighlight,
+    NgbTypeahead,
+    ClanFilterComponent,
+    DisciplineFilterComponent,
+    CardFilterComponent,
+    NgxSliderModule,
+    NgbTooltip,
+    CardProportionComponent,
+    TranslocoFallbackPipe,
+  ],
 })
 export class DeckFiltersComponent implements OnInit {
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()
@@ -56,12 +79,12 @@ export class DeckFiltersComponent implements OnInit {
   @ViewChild('tagsTypeahead') tagsTypeahead!: NgbTypeahead
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private decksQuery: DecksQuery,
-    private formBuilder: FormBuilder,
-    private changeDetector: ChangeDetectorRef,
-    private apiDataService: ApiDataService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly decksQuery: DecksQuery,
+    private readonly formBuilder: FormBuilder,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly apiDataService: ApiDataService,
   ) {}
 
   ngOnInit() {
@@ -88,7 +111,7 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('singleClan')?.patchValue(false, { emitEvent: false })
     this.filterForm
       .get('librarySize')
-      ?.patchValue([60, 90], { emitEvent: false })
+      ?.patchValue([40, 90], { emitEvent: false })
     this.filterForm.get('cryptSize')?.patchValue([12, 40], { emitEvent: false })
     this.filterForm.get('group')?.patchValue([0, 7], { emitEvent: false })
     this.filterForm.get('players')?.patchValue([10, 200], { emitEvent: false })
@@ -189,7 +212,7 @@ export class DeckFiltersComponent implements OnInit {
     this.listenAndNavigateString(this.filterForm, 'cardText', '', 500)
     this.listenAndNavigateBoolean(this.filterForm, 'singleDiscipline', false)
     this.listenAndNavigateBoolean(this.filterForm, 'singleClan', false)
-    this.listenAndNavigateSlider(this.filterForm, 'librarySize', 60, 90, 500)
+    this.listenAndNavigateSlider(this.filterForm, 'librarySize', 40, 90, 500)
     this.listenAndNavigateSlider(this.filterForm, 'cryptSize', 12, 40, 500)
     this.listenAndNavigateSlider(this.filterForm, 'group', 0, 7, 500)
     this.listenAndNavigateSlider(this.filterForm, 'players', 10, 200, 500)

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, SlicePipe } from '@angular/common'
+import { NgClass, SlicePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,13 +24,12 @@ import { LibraryComponent } from '../../deck-shared/library/library.component'
   imports: [
     TranslocoDirective,
     NgClass,
-    NgFor,
     SlicePipe,
     NgxGoogleAnalyticsModule,
     TranslocoPipe,
     CryptComponent,
-    LibraryComponent,
-  ],
+    LibraryComponent
+],
 })
 export class DrawCardsComponent implements OnInit {
   @Input() cards!: ApiCard[]

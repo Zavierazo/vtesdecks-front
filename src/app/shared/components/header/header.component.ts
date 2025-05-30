@@ -14,7 +14,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IsLoggedDirective } from '../../directives/is-logged.directive';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component';
 
 @Component({
@@ -22,7 +22,7 @@ import { ThemeSelectorComponent } from '../theme-selector/theme-selector.compone
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, RouterLink, NgbCollapse, RouterLinkActive, IsLoggedDirective, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgxGoogleAnalyticsModule, NgbDropdownButtonItem, LangSelectorComponent, NgIf, ThemeSelectorComponent, AsyncPipe]
+    imports: [TranslocoDirective, RouterLink, NgbCollapse, RouterLinkActive, IsLoggedDirective, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgxGoogleAnalyticsModule, NgbDropdownButtonItem, LangSelectorComponent, ThemeSelectorComponent, AsyncPipe]
 })
 export class HeaderComponent implements OnInit {
   isCollapsed = true

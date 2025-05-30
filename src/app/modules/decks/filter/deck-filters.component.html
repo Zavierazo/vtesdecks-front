@@ -23,12 +23,15 @@
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
         [editable]="false" (selectItem)="onSelectTagItem($event, tagsInput)"
         (focus)="tagFocus$.next($any($event).target.value)" (click)="tagClick$.next($any($event).target.value)" />
-      <div *ngIf="tags" class="d-flex flex-wrap justify-content-start gap-2 my-2">
-        <span *ngFor="let tag of tags" class="badge rounded-pill text-bg-primary btn-badge"
-          (click)="onDeselectTag(tag)">
+      @if (tags) {
+      <div class="d-flex flex-wrap justify-content-start gap-2 my-2">
+        @for (tag of tags; track tag) {
+        <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onDeselectTag(tag)">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
+        }
       </div>
+      }
     </div>
     <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
     <div class="form-check form-switch d-inline-block ms-2">
@@ -57,7 +60,7 @@
     <div class="row g-1 mb-2">
       <div class="col-12">
         <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
-        <ngx-slider id="librarySize" [options]="{ floor: 60, ceil: 90, step: 1 }" formControlName="librarySize">
+        <ngx-slider id="librarySize" [options]="{ floor: 40, ceil: 90, step: 1 }" formControlName="librarySize">
         </ngx-slider>
       </div>
       <div class="col-12 mb-2">

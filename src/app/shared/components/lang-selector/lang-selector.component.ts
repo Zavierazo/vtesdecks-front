@@ -6,7 +6,7 @@ import { CryptService } from '../../../state/crypt/crypt.service'
 import { LibraryService } from '../../../state/library/library.service'
 import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -15,17 +15,15 @@ import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
     styleUrls: ['./lang-selector.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        TranslocoDirective,
-        NgbDropdown,
-        NgbDropdownToggle,
-        NgIf,
-        NgbDropdownMenu,
-        NgFor,
-        NgbDropdownButtonItem,
-        NgbDropdownItem,
-        NgClass,
-        AsyncPipe,
-    ],
+    TranslocoDirective,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgClass,
+    AsyncPipe
+],
 })
 export class LangSelectorComponent {
   isMobile$ = this.mediaService.observeMobileOrTablet()
