@@ -46,10 +46,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Init GA consent
-    this.googleAnalyticsConsentUpdate()
+    this.googleTagConsentDefault()
     // Update GA consent
     this.cookieConsentService.statusChange$.subscribe(() =>
-      this.googleAnalyticsConsentUpdate(),
+      this.googleTagConsentUpdate(),
     )
     // Check expired session
     this.authService.refreshToken().subscribe()
@@ -138,12 +138,23 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private googleAnalyticsConsentUpdate() {
+  private googleTagConsentDefault() {
+    this.googleAnalyticsService.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+    })
+  }
+
+  private googleTagConsentUpdate() {
     const status = this.cookieConsentService.hasConsented()
       ? 'granted'
       : 'denied'
     this.googleAnalyticsService.gtag('consent', 'update', {
       ad_storage: status,
+      ad_user_data: status,
+      ad_personalization: status,
       analytics_storage: status,
     })
   }
