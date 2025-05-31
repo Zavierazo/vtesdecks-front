@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, NgClass, TitleCasePipe } from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -38,6 +38,7 @@ import { PreviousRouteService } from '../../services/previous-route-service'
 import { ToastService } from '../../services/toast.service'
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { AdDirective } from '../../shared/directives/ad.directive'
 import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
@@ -84,8 +85,9 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     DisciplineTranslocoPipe,
     ClanTranslocoPipe,
     TranslocoPipe,
-    TranslocoDatePipe
-],
+    TranslocoDatePipe,
+    AdDirective,
+  ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
   id!: string
