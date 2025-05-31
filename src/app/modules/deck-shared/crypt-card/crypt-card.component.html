@@ -1,38 +1,38 @@
 <ng-container *transloco="let t; read: 'deck_shared'">
   @if (cardList[index]; as card) {
-  <div class="crypt-card">
-    <div class="row">
-      <div class="col-sm-12 col-md-5 pe-0 bg-black">
-        @if( card.i18n && card.i18n.image ){
-        <img #i18nImage class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.i18n.image"
-          [alt]="card.i18n.name" (error)="i18nImage.src='/assets' + card.image" />
-        }
-        @else {
-        <img class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.image" [alt]="card.name" />
-        }
-      </div>
-      <div class="col-sm-12 col-md-7 ps-0">
-        <div class="modal-header">
-          <h4 class="modal-title d-flex align-items-center">
-            <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>
-            <span class="d-flex flex-column">
-              @if( card.i18n && card.i18n.name !== card.name ){
-              <span>
-                {{ card.i18n.name }}
-              </span>
-              <span class="text-muted default-locale-name">
-                {{ card.name }}
-              </span>
-              }
-              @else{
-              <span>
-                {{ card.name }}
-              </span>
-              @if(card.aka && card.aka !== card.name){
-              <span class="text-muted default-locale-name">
-                {{ card.aka }}
-              </span>
-              }
+    <div class="crypt-card">
+      <div class="row">
+        <div class="col-sm-12 col-md-5 pe-0 bg-black">
+          @if( card.i18n && card.i18n.image ){
+            <img #i18nImage class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.i18n.image"
+              [alt]="card.i18n.name" (error)="i18nImage.src='/assets' + card.image" />
+            }
+            @else {
+            <img class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.image" [alt]="card.name" />
+          }
+        </div>
+        <div class="col-sm-12 col-md-7 ps-0">
+          <div class="modal-header">
+            <h4 class="modal-title d-flex align-items-center">
+              <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>
+              <span class="d-flex flex-column">
+                @if( card.i18n && card.i18n.name !== card.name ){
+                  <span>
+                    {{ card.i18n.name }}
+                  </span>
+                  <span class="text-muted default-locale-name">
+                    {{ card.name }}
+                  </span>
+                }
+                @else{
+                <span>
+                  {{ card.name }}
+                </span>
+                @if(card.aka && card.aka !== card.name){
+                  <span class="text-muted default-locale-name">
+                    {{ card.aka }}
+                  </span>
+                }
               }
             </span>
             <small class="float-start ms-1 d-none d-sm-inline">
@@ -42,15 +42,15 @@
             </small>
           </h4>
           <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-            (click)="modal.dismiss('Cross click')"></button>
+          (click)="modal.dismiss('Cross click')"></button>
         </div>
         <div class="modal-body flex-wrap">
           <p>
             @for (discipline of card.disciplineIcons; track discipline) {
-            <i class="vtes" [ngClass]="discipline"></i>
+              <i class="vtes" [ngClass]="discipline"></i>
             }
             @if (card.adv) {
-            <i class="vtes float-end advanced"></i>
+              <i class="vtes float-end advanced"></i>
             }
             <span class="badge rounded-pill bg-danger float-end">
               {{ card.capacity }}
@@ -58,98 +58,100 @@
           </p>
           <hr />
           <p><strong>{{ t('sets') }}:&nbsp;</strong>
-            @for (set of card.sets; track set) {
-            <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent"
-              triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()">
+          @for (set of card.sets; track set) {
+            <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip"
+              [ngbTooltip]="setContent" triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()">
               {{ set }}&nbsp;
               <ng-template #setContent>
                 <app-set-tooltip [cardId]="card.id" [set]="set"></app-set-tooltip>
               </ng-template>
             </span>
-            }
-          </p>
-          <p>
-            <strong>{{ t('artist') }}: </strong>{{ card.artist }}
-            <!--TODO: Implement artist filter-->
-            <!--a class="text-decoration-none" routerLink="/cards/crypt"
+          }
+        </p>
+        <p>
+          <strong>{{ t('artist') }}: </strong>{{ card.artist }}
+          <!--TODO: Implement artist filter-->
+          <!--a class="text-decoration-none" routerLink="/cards/crypt"
           [queryParams]="{ artist: card.artist }" (click)="modal.dismiss('Link click')">
           {{ card.artist }}
         </a-->
-          </p>
-          @if ((krcgCard$ | async)?.rulings; as krcgRulings) {
-          <strong>{{ t('rulings') }}</strong>
-          <ul>
-            @for (ruling of krcgRulings; track ruling) {
+      </p>
+      @if ((krcgCard$ | async)?.rulings; as krcgRulings) {
+        <strong>{{ t('rulings') }}</strong>
+        <ul>
+          @for (ruling of krcgRulings; track ruling) {
             <li>
               <app-ruling-text [ruling]="ruling"></app-ruling-text>
             </li>
-            }
-          </ul>
           }
-          @if ((preconstructedDecks$ | async)?.decks; as decks) {
-          @if (card.printOnDemand || decks.length > 0) {
+        </ul>
+      }
+      @if ((preconstructedDecks$ | async)?.decks; as decks) {
+        @if (card.printOnDemand || decks.length > 0) {
           <strong>{{ t('where_find') }}</strong>
           <ul>
             @for (shop of (shops$ | async)!; track shop) {
-            <li>
-              @if (getShopInfo(shop.platform); as shopInfo) {
-              <a class="text-decoration-none" [href]="shop.link" target="_blank" gaEvent="purchase"
-                [gaCategory]="shop.platform" [gaLabel]="card.name">
-                {{ shopInfo.name }} ({{ shop.price | currency:shop.currency }})
-              </a>
-              }
-            </li>
+              <li>
+                @if (getShopInfo(shop.platform); as shopInfo) {
+                  <a class="text-decoration-none" [href]="shop.link" target="_blank" gaEvent="purchase"
+                    [gaCategory]="shop.platform" [gaLabel]="card.name">
+                    {{ shopInfo.name }}
+                  </a>
+                }
+              </li>
             }
             @for (deck of decks; track deck) {
-            <li>
-              <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
-                {{ deck.name }} ({{ deck.year }})
-              </a>
-            </li>
+              <li>
+                <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
+                  {{ deck.name }} ({{ deck.year }})
+                </a>
+              </li>
             }
           </ul>
-          }
-          }
-        </div>
-        <div class="modal-footer align-self-end">
-          <div class="row justify-content-between w-100">
-            <button type="button" class="btn btn-primary col-auto me-auto" [title]="t('search_title')"
-              routerLink="/decks" [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
-              <i class="bi bi-stack"></i> {{ t('search') }}
-            </button>
-            @for (shop of (shops$ | async)!; track shop) {
-            @if (getShopInfo(shop.platform); as shopInfo) {
+        }
+      }
+    </div>
+    <div class="modal-footer align-self-end">
+      <div class="row justify-content-between w-100">
+        <button type="button" class="btn btn-primary col-auto me-auto" [title]="t('search_title')"
+          routerLink="/decks" [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
+          <i class="bi bi-stack"></i> {{ t('search') }}
+        </button>
+        @for (shop of (shops$ | async)!; track shop) {
+          @if (getShopInfo(shop.platform); as shopInfo) {
             <a type="button" class="btn btn-success col-auto me-auto" [title]="t('buy', { name: shopInfo.name })"
-              [href]="shop.link" target="_blank" gaEvent="purchase" [gaCategory]="shop.platform" [gaLabel]="card.name">
+              [href]="shop.link" target="_blank" gaEvent="purchase" [gaCategory]="shop.platform"
+              [gaLabel]="card.name">
               <i class="bi bi-cart4"></i>
               @if (!(isMobile$ | async)!) {
-              <span>&nbsp;{{ shopInfo.name }}</span><br />{{ shop.price | currency:shop.currency }}
+                <span>&nbsp;{{ shopInfo.name }}</span>
               }
               @if ((isMobile$ | async)!) {
-              <span>&nbsp;{{ shopInfo.abbr }}</span>
+                <span>&nbsp;{{ shopInfo.abbr }}</span>
               }
             </a>
-            }
-            }
-            <small class="col-auto text-muted mt-2">#{{card.id}}</small>
-          </div>
-        </div>
+          }
+        }
+        <small class="col-auto text-muted mt-2">#{{card.id}}</small>
       </div>
     </div>
   </div>
-  }
-  @if (hasMore) {
-  <div class="card-button card-button-previous text-light ps-0 ps-md-5" [title]="t('previous_card')" [ngClass]="{
+</div>
+</div>
+}
+@if (hasMore) {
+  <div class="card-button card-button-previous text-light ps-0 ps-md-5" [title]="t('previous_card')"
+    [ngClass]="{
   'opacity-75 card-button-mobile':(isMobile$ | async)!
 }" (click)="previousCard()">
     <i class="bi bi-fs-5x bi-caret-left-fill"></i>
   </div>
-  }
-  @if (hasMore) {
-  <div class="card-button card-button-next text-light pe-0 pe-md-5" [title]="t('next_card')" [ngClass]="{
+}
+@if (hasMore) {
+<div class="card-button card-button-next text-light pe-0 pe-md-5" [title]="t('next_card')" [ngClass]="{
   'opacity-75 card-button-mobile':(isMobile$ | async)!
 }" (click)="nextCard()">
     <i class="bi bi-fs-5x bi-caret-right-fill"></i>
   </div>
-  }
+}
 </ng-container>
