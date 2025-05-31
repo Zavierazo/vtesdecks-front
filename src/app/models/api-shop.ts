@@ -4,4 +4,5 @@ export interface ApiShop {
   set: string
   link: string
   price: number
+  currency: string
 }
