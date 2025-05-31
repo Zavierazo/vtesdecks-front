@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,8 +39,9 @@ import { MediaService } from './../../../services/media.service'
     NgxGoogleAnalyticsModule,
     RouterLink,
     AsyncPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+    CurrencyPipe,
+  ],
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
   @Input() cardList!: ApiLibrary[]

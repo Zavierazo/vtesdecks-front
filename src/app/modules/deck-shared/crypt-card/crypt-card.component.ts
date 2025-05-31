@@ -1,3 +1,4 @@
+import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,30 +8,40 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
+import { RouterLink } from '@angular/router'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { Shop, getShop } from '../../../utils/shops'
+import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
+import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 import { ApiCrypt } from './../../../models/api-crypt'
 import { ApiDataService } from './../../../services/api.data.service'
 import { MediaService } from './../../../services/media.service'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component';
-import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
-import { RouterLink } from '@angular/router';
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-card',
-    templateUrl: './crypt-card.component.html',
-    styleUrls: ['./crypt-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgClass, NgbTooltip, SetTooltipComponent, RulingTextComponent, NgxGoogleAnalyticsModule, RouterLink, AsyncPipe, TranslocoPipe]
+  selector: 'app-crypt-card',
+  templateUrl: './crypt-card.component.html',
+  styleUrls: ['./crypt-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgClass,
+    NgbTooltip,
+    SetTooltipComponent,
+    RulingTextComponent,
+    NgxGoogleAnalyticsModule,
+    RouterLink,
+    AsyncPipe,
+    TranslocoPipe,
+    CurrencyPipe,
+  ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
   readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'
@@ -44,9 +55,9 @@ export class CryptCardComponent implements OnInit, OnDestroy {
 
   constructor(
     public modal: NgbActiveModal,
-    private apiDataService: ApiDataService,
-    private mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private readonly apiDataService: ApiDataService,
+    private readonly mediaService: MediaService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
