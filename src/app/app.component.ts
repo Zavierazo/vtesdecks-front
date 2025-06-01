@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
     // Init GA consent
     this.googleTagConsentDefault()
     // Update GA consent
+    this.googleTagConsentUpdate()
     this.cookieConsentService.statusChange$.subscribe(() =>
       this.googleTagConsentUpdate(),
     )
