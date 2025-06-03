@@ -45,9 +45,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Init GA consent
-    this.googleTagConsentDefault()
     // Update GA consent
+    this.googleTagConsentUpdate()
     this.cookieConsentService.statusChange$.subscribe(() =>
       this.googleTagConsentUpdate(),
     )
@@ -136,15 +135,6 @@ export class AppComponent implements OnInit {
         window.location.reload()
       }
     }
-  }
-
-  private googleTagConsentDefault() {
-    this.googleAnalyticsService.gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
-    })
   }
 
   private googleTagConsentUpdate() {
