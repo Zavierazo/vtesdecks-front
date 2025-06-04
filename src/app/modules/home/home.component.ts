@@ -15,6 +15,7 @@ import { ApiChangelog } from '../../models/api-changelog'
 import { ApiHome } from '../../models/api-home'
 import { ApiDataService } from '../../services/api.data.service'
 import { LocalStorageService } from '../../services/local-storage.service'
+import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoginComponent } from '../../shared/components/login/login.component'
 import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
@@ -35,6 +36,7 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     NgTemplateOutlet,
     HomeSectionComponent,
     TranslocoPipe,
+    AdSenseComponent,
   ],
 })
 export class HomeComponent implements OnInit {

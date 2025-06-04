@@ -1,11 +1,13 @@
 import { DOCUMENT } from '@angular/common'
 import { AfterViewInit, Directive, ElementRef, Inject } from '@angular/core'
 
+let uniqueId = 0
+
 @Directive({
   selector: '[adSense]',
   standalone: true,
 })
-export class AdDirective implements AfterViewInit {
+export class AdSenseDirective implements AfterViewInit {
   constructor(
     private readonly el: ElementRef<HTMLElement>,
     @Inject(DOCUMENT) private readonly document: Document,
@@ -22,7 +24,7 @@ export class AdDirective implements AfterViewInit {
   private replaceDivWithScript(hostElement: HTMLElement) {
     const script = this.document.createElement('script')
     script.type = 'text/javascript'
-    script.id = 'your-random-script-id' // Use a unique ID to avoid conflicts.
+    script.id = `adsbygoogle-push-script-${uniqueId++}`
     script.text = `(adsbygoogle = window.adsbygoogle || []).push({});`
 
     const parent = hostElement.parentNode
