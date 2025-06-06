@@ -39,5 +39,22 @@ module.exports = function (config) {
     restartOnFileChange: true,
   })
 }
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="fceb615e-c005-5248-99b1-6ac18b988a8c")}catch(e){}}();
+!(function () {
+  try {
+    var e =
+        'undefined' != typeof window
+          ? window
+          : 'undefined' != typeof global
+            ? global
+            : 'undefined' != typeof globalThis
+              ? globalThis
+              : 'undefined' != typeof self
+                ? self
+                : {},
+      n = new e.Error().stack
+    n &&
+      ((e._sentryDebugIds = e._sentryDebugIds || {}),
+      (e._sentryDebugIds[n] = 'fceb615e-c005-5248-99b1-6ac18b988a8c'))
+  } catch (e) {}
+})()
 //# debugId=fceb615e-c005-5248-99b1-6ac18b988a8c

@@ -1,9 +1,9 @@
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 
 @Pipe({ name: 'dateAsAgo' })
 export class DateAsAgoPipe implements PipeTransform {
-  constructor(private translocoService: TranslocoService) {}
+  private translocoService = inject(TranslocoService)
 
   transform(value: any): string {
     if (!value) {

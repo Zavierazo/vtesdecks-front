@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Params } from '@angular/router'
 import { Observable } from 'rxjs'
 import { ApiDeck } from './../../models/api-deck'
@@ -7,7 +7,7 @@ import { DecksState, DecksStore } from './decks.store'
   providedIn: 'root',
 })
 export class DecksQuery {
-  constructor(private readonly store: DecksStore) {}
+  private readonly store = inject(DecksStore)
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

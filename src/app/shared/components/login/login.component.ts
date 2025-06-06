@@ -8,15 +8,24 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  inject,
 } from '@angular/core'
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { switchMap, Observable } from 'rxjs'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ToastService } from '../../../services/toast.service'
 import { ApiResponse } from '../../../models/api-response'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { AsyncPipe } from '@angular/common';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { AsyncPipe } from '@angular/common'
 
 export enum Tabs {
   Login,
@@ -25,12 +34,18 @@ export enum Tabs {
 }
 @UntilDestroy()
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe],
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  activeModal = inject(NgbActiveModal)
+  private recaptchaV3Service = inject(ReCaptchaV3Service)
+  private authService = inject(AuthService)
+  private authQuery = inject(AuthQuery)
+  private toastService = inject(ToastService)
+
   @Input()
   tab = Tabs.Login
 
@@ -68,14 +83,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   forgotPasswordForm = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
   })
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private recaptchaV3Service: ReCaptchaV3Service,
-    private authService: AuthService,
-    private authQuery: AuthQuery,
-    private toastService: ToastService,
-  ) {}
 
   ngOnInit() {
     this.isLoading$ = this.authQuery.selectLoading()

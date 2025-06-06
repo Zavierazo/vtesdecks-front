@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { Observable } from 'rxjs'
 import { ApiChangelog } from '../../models/api-changelog'
@@ -12,9 +12,9 @@ import { ApiDataService } from './../../services/api.data.service'
   imports: [TranslocoDirective, AsyncPipe],
 })
 export class ChangelogComponent implements OnInit {
-  changelog$!: Observable<ApiChangelog[]>
+  private readonly apiDataService = inject(ApiDataService)
 
-  constructor(private readonly apiDataService: ApiDataService) {}
+  changelog$!: Observable<ApiChangelog[]>
 
   ngOnInit() {
     this.changelog$ = this.apiDataService.getChangelog()

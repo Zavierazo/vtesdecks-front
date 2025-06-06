@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   OnInit,
+  inject,
 } from '@angular/core'
 import {
   FormControl,
@@ -38,6 +39,10 @@ import { CommentComponent } from './comment/comment.component'
   ],
 })
 export class CommentsComponent implements OnInit {
+  private readonly authQuery = inject(AuthQuery)
+  private readonly commentsQuery = inject(CommentsQuery)
+  private readonly commentsService = inject(CommentsService)
+
   @Input() deckId!: string
 
   isLoading$!: Observable<boolean>
@@ -47,12 +52,6 @@ export class CommentsComponent implements OnInit {
   profileImage$!: Observable<string | undefined>
 
   form!: FormGroup
-
-  constructor(
-    private readonly authQuery: AuthQuery,
-    private readonly commentsQuery: CommentsQuery,
-    private readonly commentsService: CommentsService,
-  ) {}
 
   ngOnInit() {
     this.commentsService

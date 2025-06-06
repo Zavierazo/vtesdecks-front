@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router'
-import { DeckComponent } from './deck.component'
+
 import { deckResolver } from './deck.resolver'
 
 export const DECK_ROUTES: Routes = [
   {
     path: '',
-    component: DeckComponent,
+    loadComponent: () =>
+      import('./deck.component').then((m) => m.DeckComponent),
     pathMatch: 'full',
     title: 'VTES Decks - Deck',
     resolve: { deck: deckResolver },

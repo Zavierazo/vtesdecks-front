@@ -5,6 +5,7 @@ import {
   Input,
   TemplateRef,
   ViewContainerRef,
+  inject,
 } from '@angular/core'
 import { tap } from 'rxjs'
 import { AuthQuery } from '../../state/auth/auth.query'
@@ -12,14 +13,12 @@ import { AuthQuery } from '../../state/auth/auth.query'
 @UntilDestroy()
 @Directive({ selector: '[isLogged]' })
 export class IsLoggedDirective {
-  private hasView = false
+  private authQuery = inject(AuthQuery)
+  private templateRef = inject<TemplateRef<unknown>>(TemplateRef)
+  private viewContainer = inject(ViewContainerRef)
+  private changes = inject(ChangeDetectorRef)
 
-  constructor(
-    private authQuery: AuthQuery,
-    private templateRef: TemplateRef<unknown>,
-    private viewContainer: ViewContainerRef,
-    private changes: ChangeDetectorRef,
-  ) {}
+  private hasView = false
 
   @Input() set isLogged(logged: boolean) {
     this.authQuery

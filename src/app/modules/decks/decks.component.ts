@@ -1,13 +1,18 @@
-import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common';
+import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
   OnInit,
   TemplateRef,
-  ViewChild,
+  inject,
+  viewChild,
 } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -26,22 +31,44 @@ import { DecksService } from '../../state/decks/decks.service'
 import { MediaService } from './../../services/media.service'
 import { DecksQuery } from './../../state/decks/decks.query'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { DeckCardComponent } from '../deck-card/deck-card.component';
-import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component';
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { TranslocoDirective } from '@jsverse/transloco'
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
+import { DeckCardComponent } from '../deck-card/deck-card.component'
+import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
+import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-decks',
-    templateUrl: './decks.component.html',
-    styleUrls: ['./decks.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, DeckFiltersComponent, NgClass, InfiniteScrollDirective, DeckCardComponent, DeckRestorableCardComponent, LoadingComponent, NgbTooltip, AsyncPipe]
+  selector: 'app-decks',
+  templateUrl: './decks.component.html',
+  styleUrls: ['./decks.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    IsLoggedDirective,
+    DeckFiltersComponent,
+    NgClass,
+    InfiniteScrollDirective,
+    DeckCardComponent,
+    DeckRestorableCardComponent,
+    LoadingComponent,
+    NgbTooltip,
+    AsyncPipe,
+  ],
 })
 export class DecksComponent implements OnInit {
+  private document = inject<Document>(DOCUMENT)
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
+  private decksQuery = inject(DecksQuery)
+  private decksService = inject(DecksService)
+  private viewportService = inject(ViewportScroller)
+  private formBuilder = inject(FormBuilder)
+  private mediaService = inject(MediaService)
+  private offcanvasService = inject(NgbOffcanvas)
+
   decks$!: Observable<ApiDeck[]>
   restorableDecks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
@@ -50,19 +77,7 @@ export class DecksComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
   mainForm!: FormGroup
 
-  @ViewChild('filters') filters!: DeckFiltersComponent
-
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute,
-    private router: Router,
-    private decksQuery: DecksQuery,
-    private decksService: DecksService,
-    private viewportService: ViewportScroller,
-    private formBuilder: FormBuilder,
-    private mediaService: MediaService,
-    private offcanvasService: NgbOffcanvas,
-  ) {}
+  readonly filters = viewChild.required<DeckFiltersComponent>('filters')
 
   ngOnInit() {
     this.isLoading$ = this.decksQuery.selectLoading()
@@ -114,12 +129,12 @@ export class DecksComponent implements OnInit {
   }
 
   resetFilters(): void {
-    this.filters?.reset()
+    this.filters()?.reset()
     this.reset()
   }
 
   onTagClick(tag: string): void {
-    this.filters?.onSelectTag(tag)
+    this.filters()?.onSelectTag(tag)
   }
 
   private listenScroll() {

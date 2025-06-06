@@ -4,33 +4,34 @@ import {
   Input,
   OnChanges,
   OnInit,
+  inject,
 } from '@angular/core'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ChartConfiguration, ChartData } from 'chart.js'
 import { tap } from 'rxjs'
 import { ApiHistoricStatistic } from '../../../models/api-historic-statistic'
 import { MediaService } from '../../../services/media.service'
-import { BaseChartDirective } from 'ng2-charts';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { NgClass } from '@angular/common';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { BaseChartDirective } from 'ng2-charts'
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap'
+import { NgClass } from '@angular/common'
+import { TranslocoPipe } from '@jsverse/transloco'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-line-chart',
-    templateUrl: './line-chart.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [BaseChartDirective, NgbCollapse, NgClass, TranslocoPipe]
+  selector: 'app-line-chart',
+  templateUrl: './line-chart.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [BaseChartDirective, NgbCollapse, NgClass, TranslocoPipe],
 })
 export class LineChartComponent implements OnInit, OnChanges {
+  private readonly mediaService = inject(MediaService)
+
   @Input() title!: string
   @Input() labels: number[] = []
   @Input() range: number[] = [0, 0]
   @Input() statistics!: ApiHistoricStatistic[]
 
   isTableCollapsed = true
-
-  constructor(private readonly mediaService: MediaService) {}
 
   data: ChartData<'line', number[], string | string[]> = {
     labels: [],

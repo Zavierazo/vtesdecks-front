@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
@@ -15,11 +15,9 @@ import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
   providedIn: 'root',
 })
 export class DeckBuilderQuery {
-  constructor(
-    private readonly store: DeckBuilderStore,
-    private libraryQuery: LibraryQuery,
-    private cryptQuery: CryptQuery,
-  ) {}
+  private readonly store = inject(DeckBuilderStore)
+  private libraryQuery = inject(LibraryQuery)
+  private cryptQuery = inject(CryptQuery)
 
   selectDeckId(): Observable<string | undefined> {
     return this.store.select((state) => state.id)

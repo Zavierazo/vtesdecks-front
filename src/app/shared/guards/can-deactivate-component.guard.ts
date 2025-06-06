@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
@@ -12,10 +12,8 @@ export interface ComponentCanDeactivate {
   providedIn: 'root',
 })
 export class CanDeactivateComponent {
-  constructor(
-    private readonly modalService: NgbModal,
-    private readonly translocoService: TranslocoService,
-  ) {}
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
 
   canDeactivate(
     component: ComponentCanDeactivate,

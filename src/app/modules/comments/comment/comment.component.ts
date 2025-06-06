@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   OnInit,
+  inject,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
@@ -30,6 +31,11 @@ import { CommentsService } from '../../../state/comments/comments.service'
   ],
 })
 export class CommentComponent implements OnInit {
+  private readonly authQuery = inject(AuthQuery)
+  private readonly commentsService = inject(CommentsService)
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
+
   @Input() comment!: ApiComment
 
   isAdmin$!: Observable<boolean>
@@ -37,13 +43,6 @@ export class CommentComponent implements OnInit {
   form!: FormGroup
 
   isEditing = false
-
-  constructor(
-    private readonly authQuery: AuthQuery,
-    private readonly commentsService: CommentsService,
-    private readonly modalService: NgbModal,
-    private readonly translocoService: TranslocoService,
-  ) {}
 
   ngOnInit() {
     this.isAdmin$ = this.authQuery.selectAdmin()

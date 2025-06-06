@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -8,32 +8,25 @@ import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
-import { TitleCasePipe } from '@angular/common';
-import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
+import { TitleCasePipe } from '@angular/common'
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
+import { TranslocoDatePipe } from '@jsverse/transloco-locale'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck-restorable-card',
-    templateUrl: './deck-restorable-card.component.html',
-    styleUrls: ['./deck-restorable-card.component.scss'],
-    imports: [
-        TitleCasePipe,
-        TruncatePipe,
-        TranslocoPipe,
-        TranslocoDatePipe,
-    ],
+  selector: 'app-deck-restorable-card',
+  templateUrl: './deck-restorable-card.component.html',
+  styleUrls: ['./deck-restorable-card.component.scss'],
+  imports: [TitleCasePipe, TruncatePipe, TranslocoPipe, TranslocoDatePipe],
 })
 export class DeckRestorableCardComponent {
-  @Input() deck!: ApiDeck
+  private readonly router = inject(Router)
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly toastService = inject(ToastService)
 
-  constructor(
-    private readonly router: Router,
-    private readonly modalService: NgbModal,
-    private readonly translocoService: TranslocoService,
-    private readonly apiDataService: ApiDataService,
-    private readonly toastService: ToastService,
-  ) {}
+  @Input() deck!: ApiDeck
 
   restoreDeck() {
     const id = this.deck.id

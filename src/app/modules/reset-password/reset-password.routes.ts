@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router'
-import { ResetPasswordComponent } from './reset-password.component'
 
 export const RESET_PASSWORD_ROUTES: Routes = [
   {
     path: '',
-    component: ResetPasswordComponent,
+    loadComponent: () =>
+      import('./reset-password.component').then(
+        (m) => m.ResetPasswordComponent,
+      ),
     pathMatch: 'full',
     title: 'VTES Decks - Reset Password',
   },

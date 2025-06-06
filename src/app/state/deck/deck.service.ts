@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable, tap } from 'rxjs'
 import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from './../../services/api.data.service'
@@ -7,12 +7,10 @@ import { DeckStore } from './deck.store'
   providedIn: 'root',
 })
 export class DeckService {
-  static readonly limit = 10
+  private readonly deckStore = inject(DeckStore)
+  private readonly apiDataService = inject(ApiDataService)
 
-  constructor(
-    private readonly deckStore: DeckStore,
-    private readonly apiDataService: ApiDataService,
-  ) {}
+  static readonly limit = 10
 
   getDeck(id: string): Observable<ApiDeck> {
     this.deckStore.reset()

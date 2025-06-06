@@ -4,14 +4,14 @@
     @if(r.adv){
     <i class="vtes advanced"></i>
     }
-    <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
+    <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name || r.name" [term]="t" />
   </ng-template>
 
   <ng-template #libraryTemplate let-r="result" let-t="term">
     @for(typeIcon of r['typeIcons']; track typeIcon){
     <i class="vtes" [class]="typeIcon"></i>
     }
-    <ngb-highlight class="align-top ms-2" [result]="r.i18n?.name || r.name" [term]="t"></ngb-highlight>
+    <ngb-highlight class="align-top ms-2" [result]="r.i18n?.name || r.name" [term]="t" />
   </ng-template>
 
   <div class="mb-3 row">

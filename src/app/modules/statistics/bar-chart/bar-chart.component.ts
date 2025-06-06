@@ -6,13 +6,13 @@ import {
 } from '@angular/core'
 import { ChartConfiguration, ChartData } from 'chart.js'
 import { ApiStatistic } from '../../../models/api-statistic'
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts'
 
 @Component({
-    selector: 'app-bar-chart',
-    templateUrl: './bar-chart.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [BaseChartDirective]
+  selector: 'app-bar-chart',
+  templateUrl: './bar-chart.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [BaseChartDirective],
 })
 export class BarChartComponent implements OnInit {
   @Input() title!: string

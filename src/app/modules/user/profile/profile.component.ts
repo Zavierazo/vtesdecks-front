@@ -3,34 +3,52 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  inject,
 } from '@angular/core'
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms'
+import {
+  TranslocoService,
+  TranslocoDirective,
+  TranslocoPipe,
+} from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
 import { ApiUserSettings } from '../../../models/api-user-settings'
 import { ApiResponse } from './../../../models/api-response'
 import { AuthQuery } from './../../../state/auth/auth.query'
 import { AuthService } from './../../../state/auth/auth.service'
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap'
+import { NgClass, AsyncPipe } from '@angular/common'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
     TranslocoDirective,
     ReactiveFormsModule,
     NgbAlert,
     NgClass,
     AsyncPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class ProfileComponent implements OnInit {
+  private authQuery = inject(AuthQuery)
+  private authService = inject(AuthService)
+  private changeDetectorRef = inject(ChangeDetectorRef)
+  private translocoService = inject(TranslocoService)
+
   email$!: Observable<string | undefined>
 
   displayName$!: Observable<string | undefined>
@@ -42,13 +60,6 @@ export class ProfileComponent implements OnInit {
   message!: string | undefined
 
   successful!: boolean
-
-  constructor(
-    private authQuery: AuthQuery,
-    private authService: AuthService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private translocoService: TranslocoService,
-  ) {}
 
   ngOnInit() {
     this.email$ = this.authQuery.selectEmail()

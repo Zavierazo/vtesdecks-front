@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core'
+import { Injectable, signal, inject } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiClanStat } from '../../models/api-clan-stat'
@@ -25,6 +25,8 @@ const initialState: LibraryState = {}
   providedIn: 'root',
 })
 export class LibraryStore {
+  private readonly localStorage = inject(LocalStorageService)
+
   static readonly stateStoreName = 'library_v1_state'
   static readonly entitiesStoreName = 'library_v1_entities'
   private readonly state = signal<LibraryState>(initialState)
@@ -34,7 +36,7 @@ export class LibraryStore {
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
-  constructor(private readonly localStorage: LocalStorageService) {
+  constructor() {
     // Restore entities from local storage
     const previousLocalEntities = this.localStorage.getValue<ApiLibrary[]>(
       LibraryStore.entitiesStoreName,

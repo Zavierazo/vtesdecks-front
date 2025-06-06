@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common'
-import { AfterViewInit, Directive, ElementRef, Inject } from '@angular/core'
+import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core'
 
 let uniqueId = 0
 
@@ -8,10 +8,8 @@ let uniqueId = 0
   standalone: true,
 })
 export class AdSenseDirective implements AfterViewInit {
-  constructor(
-    private readonly el: ElementRef<HTMLElement>,
-    @Inject(DOCUMENT) private readonly document: Document,
-  ) {}
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly document = inject<Document>(DOCUMENT)
 
   ngAfterViewInit() {
     const hostElement = this.el.nativeElement

@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router'
-import { VtesdleComponent } from './vtesdle.component'
 
 export const VTESDLE_ROUTES: Routes = [
   {
     path: '',
-    component: VtesdleComponent,
+    loadComponent: () =>
+      import('./vtesdle.component').then((m) => m.VtesdleComponent),
     pathMatch: 'full',
     title: 'VTES Decks - VTESDLE',
   },

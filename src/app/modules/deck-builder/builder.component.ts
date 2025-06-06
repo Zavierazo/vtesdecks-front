@@ -1,10 +1,11 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
+  inject,
 } from '@angular/core'
 import {
   FormControl,
@@ -75,10 +76,23 @@ import { fromUrl } from './limited-format/limited-format-utils'
     CryptComponent,
     LibraryListComponent,
     AsyncPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
+  private readonly router = inject(Router)
+  private readonly route = inject(ActivatedRoute)
+  private readonly deckBuilderQuery = inject(DeckBuilderQuery)
+  private readonly deckBuilderService = inject(DeckBuilderService)
+  private readonly libraryService = inject(LibraryService)
+  private readonly cryptService = inject(CryptService)
+  private readonly toastService = inject(ToastService)
+  private readonly modalService = inject(NgbModal)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly clipboard = inject(Clipboard)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly apiDataService = inject(ApiDataService)
+
   form!: FormGroup
   deckId$!: Observable<string | undefined>
   cryptList$!: Observable<ApiCard[]>
@@ -97,21 +111,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   libraryErrors$!: Observable<string[]>
   saved$!: Observable<boolean>
   limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
-
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly deckBuilderQuery: DeckBuilderQuery,
-    private readonly deckBuilderService: DeckBuilderService,
-    private readonly libraryService: LibraryService,
-    private readonly cryptService: CryptService,
-    private readonly toastService: ToastService,
-    private readonly modalService: NgbModal,
-    private readonly changeDetector: ChangeDetectorRef,
-    private readonly clipboard: Clipboard,
-    private readonly translocoService: TranslocoService,
-    private readonly apiDataService: ApiDataService,
-  ) {}
 
   ngOnInit() {
     this.cryptList$ = this.deckBuilderQuery.selectCrypt()

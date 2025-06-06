@@ -1,26 +1,24 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '../../services/toast.service'
 import { ApiDataService } from './../../services/api.data.service'
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-verify-account',
-    templateUrl: './verify-account.component.html',
-    styleUrls: ['./verify-account.component.scss'],
-    imports: [LoadingComponent],
+  selector: 'app-verify-account',
+  templateUrl: './verify-account.component.html',
+  styleUrls: ['./verify-account.component.scss'],
+  imports: [LoadingComponent],
 })
 export class VerifyAccountComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private apiDataService: ApiDataService,
-    private toastService: ToastService,
-    private translocoService: TranslocoService,
-  ) {}
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
+  private apiDataService = inject(ApiDataService)
+  private toastService = inject(ToastService)
+  private translocoService = inject(TranslocoService)
 
   ngOnInit() {
     this.route.queryParams.pipe(untilDestroyed(this)).subscribe((params) => {

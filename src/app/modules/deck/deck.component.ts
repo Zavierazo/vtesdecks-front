@@ -7,6 +7,7 @@ import {
   Component,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
@@ -90,6 +91,21 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
+  private readonly route = inject(ActivatedRoute)
+  private readonly titleService = inject(Title)
+  private readonly deckQuery = inject(DeckQuery)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly toastService = inject(ToastService)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly previousRouteService = inject(PreviousRouteService)
+  private readonly mediaService = inject(MediaService)
+  private readonly modalService = inject(NgbModal)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly router = inject(Router)
+  private readonly clipboard = inject(Clipboard)
+  private readonly translocoService = inject(TranslocoService)
+
   id!: string
 
   isLoading$!: Observable<boolean>
@@ -107,23 +123,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   isBookmarked = false
 
   isRated = false
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly titleService: Title,
-    private readonly deckQuery: DeckQuery,
-    private readonly authQuery: AuthQuery,
-    private readonly toastService: ToastService,
-    private readonly apiDataService: ApiDataService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly previousRouteService: PreviousRouteService,
-    private readonly mediaService: MediaService,
-    private readonly modalService: NgbModal,
-    private readonly cryptQuery: CryptQuery,
-    private readonly router: Router,
-    private readonly clipboard: Clipboard,
-    private readonly translocoService: TranslocoService,
-  ) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!

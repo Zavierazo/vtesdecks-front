@@ -1,13 +1,13 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
+  inject,
+  output,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -35,30 +35,32 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
+  private libraryQuery = inject(LibraryQuery)
+
   @Input() limitedFormat?: boolean
-  @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
+  readonly limitedFormatChange = output<boolean>()
   @Input() printOnDemand?: boolean
-  @Output() printOnDemandChange: EventEmitter<boolean> = new EventEmitter()
+  readonly printOnDemandChange = output<boolean>()
   @Input() types!: string[]
-  @Output() typesChange: EventEmitter<string[]> = new EventEmitter()
+  readonly typesChange = output<string[]>()
   @Input() clans!: string[]
-  @Output() clansChange: EventEmitter<string[]> = new EventEmitter()
+  readonly clansChange = output<string[]>()
   @Input() disciplines!: string[]
-  @Output() disciplinesChange: EventEmitter<string[]> = new EventEmitter()
+  readonly disciplinesChange = output<string[]>()
   @Input() sect!: string
-  @Output() sectChange: EventEmitter<string> = new EventEmitter()
+  readonly sectChange = output<string>()
   @Input() title!: string
-  @Output() titleChange: EventEmitter<string> = new EventEmitter()
+  readonly titleChange = output<string>()
   @Input() bloodCostSlider!: number[]
-  @Output() bloodCostSliderChange: EventEmitter<number[]> = new EventEmitter()
+  readonly bloodCostSliderChange = output<number[]>()
   @Input() poolCostSlider!: number[]
-  @Output() poolCostSliderChange: EventEmitter<number[]> = new EventEmitter()
+  readonly poolCostSliderChange = output<number[]>()
   @Input() taints!: string[]
-  @Output() taintsChange: EventEmitter<string[]> = new EventEmitter()
+  readonly taintsChange = output<string[]>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
@@ -73,8 +75,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   taints$!: Observable<string[]>
   maxCapacity!: number
   maxGroup!: number
-
-  constructor(private libraryQuery: LibraryQuery) {}
 
   ngOnInit() {
     this.sects$ = this.libraryQuery.selectSects()

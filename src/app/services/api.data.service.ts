@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { ApiAiAskRequest } from '../models/api-ai-ask-request'
@@ -32,6 +32,9 @@ import { SessionStorageService } from './session-storage.service'
   providedIn: 'root',
 })
 export class ApiDataService {
+  private httpClient = inject(HttpClient)
+  private sessionStorageService = inject(SessionStorageService)
+
   private readonly loginPath = '/auth/login'
   private readonly registerPath = '/auth/create'
   private readonly forgotPasswordPath = '/auth/forgot-password'
@@ -64,11 +67,6 @@ export class ApiDataService {
   private readonly aiAskPath = '/ai/ask'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
-
-  constructor(
-    private httpClient: HttpClient,
-    private sessionStorageService: SessionStorageService,
-  ) {}
 
   login(
     username: string,

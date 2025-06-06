@@ -1,4 +1,4 @@
-import { NgClass, SlicePipe } from '@angular/common';
+import { NgClass, SlicePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +7,7 @@ import {
   OnInit,
   Signal,
   signal,
+  inject,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
@@ -28,10 +29,12 @@ import { LibraryComponent } from '../../deck-shared/library/library.component'
     NgxGoogleAnalyticsModule,
     TranslocoPipe,
     CryptComponent,
-    LibraryComponent
-],
+    LibraryComponent,
+  ],
 })
 export class DrawCardsComponent implements OnInit {
+  modal = inject(NgbActiveModal)
+
   @Input() cards!: ApiCard[]
   cryptList = signal<ApiCard[]>([])
   cryptDrawn = signal<number>(4)
@@ -45,8 +48,6 @@ export class DrawCardsComponent implements OnInit {
   )
   libraryList = signal<ApiCard[]>([])
   libraryDrawn = signal<number>(7)
-
-  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {
     const crypt: ApiCard[] = []

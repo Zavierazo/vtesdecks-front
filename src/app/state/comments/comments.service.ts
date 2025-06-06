@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { filter, Observable, tap } from 'rxjs'
 import { ApiComment } from './../../models/api-comment'
 import { ApiDataService } from './../../services/api.data.service'
@@ -7,12 +7,10 @@ import { CommentsStore } from './comments.store'
   providedIn: 'root',
 })
 export class CommentsService {
-  static readonly limit = 10
+  private readonly commentsStore = inject(CommentsStore)
+  private readonly apiDataService = inject(ApiDataService)
 
-  constructor(
-    private readonly commentsStore: CommentsStore,
-    private readonly apiDataService: ApiDataService,
-  ) {}
+  static readonly limit = 10
 
   getComments(id: string): Observable<ApiComment[]> {
     this.commentsStore.reset()

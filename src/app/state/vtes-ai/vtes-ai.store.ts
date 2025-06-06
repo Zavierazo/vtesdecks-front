@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core'
+import { Injectable, signal, inject } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiAiMessage } from '../../models/api-ai-message'
@@ -14,6 +14,8 @@ export interface AiChat {
   providedIn: 'root',
 })
 export class VtesAiStore {
+  private readonly localStorage = inject(LocalStorageService)
+
   static readonly stateStoreName = 'vtes_ai_v1_state'
   static readonly chat_history_limit = 5
   private readonly state = signal<AiChat[]>([])
@@ -23,7 +25,7 @@ export class VtesAiStore {
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
-  constructor(private readonly localStorage: LocalStorageService) {
+  constructor() {
     const previousState = this.localStorage.getValue<AiChat[]>(
       VtesAiStore.stateStoreName,
     )

@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core'
+import { Injectable, signal, inject } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
@@ -12,6 +12,10 @@ const initialState: ApiUser = {}
   providedIn: 'root',
 })
 export class AuthStore {
+  private readonly localStorage = inject(LocalStorageService)
+  private readonly sessionStorage = inject(SessionStorageService)
+  private readonly cookieConsentService = inject(NgcCookieConsentService)
+
   static readonly storeName = 'auth'
   private readonly state = signal<ApiUser>(initialState)
   private readonly state$ = toObservable(this.state)
@@ -20,11 +24,7 @@ export class AuthStore {
   private readonly error = signal<string | null | undefined>(null)
   private readonly error$ = toObservable(this.error)
 
-  constructor(
-    private readonly localStorage: LocalStorageService,
-    private readonly sessionStorage: SessionStorageService,
-    private readonly cookieConsentService: NgcCookieConsentService,
-  ) {
+  constructor() {
     const previousState = this.sessionStorage.getValue<ApiUser>(
       AuthStore.storeName,
     )

@@ -3,28 +3,29 @@ import {
   Component,
   Input,
   OnInit,
+  inject,
 } from '@angular/core'
 import { ApiKrcgRuling } from '../../../../models/krcg/api-krcg-ruling'
 import { RulingText } from '../../../../models/ruling-text'
 import { MediaService } from '../../../../services/media.service'
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { NgClass, AsyncPipe } from '@angular/common'
 
 @Component({
-    selector: 'app-ruling-text',
-    templateUrl: './ruling-text.component.html',
-    styleUrls: ['./ruling-text.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgbPopover, NgClass, AsyncPipe]
+  selector: 'app-ruling-text',
+  templateUrl: './ruling-text.component.html',
+  styleUrls: ['./ruling-text.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgbPopover, NgClass, AsyncPipe],
 })
 export class RulingTextComponent implements OnInit {
+  private mediaService = inject(MediaService)
+
   @Input() ruling!: ApiKrcgRuling
 
   rulingsText: RulingText[] = []
 
   isMobile$ = this.mediaService.observeMobile()
-
-  constructor(private mediaService: MediaService) {}
 
   ngOnInit() {
     let currentPart = ''

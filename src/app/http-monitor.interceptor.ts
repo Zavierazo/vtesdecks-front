@@ -5,7 +5,7 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { Observable, retry, timer } from 'rxjs'
 import { environment } from '../environments/environment'
@@ -16,10 +16,8 @@ export const retryWaitMilliSeconds = 5000
 
 @Injectable()
 export class HttpMonitorInterceptor implements HttpInterceptor {
-  constructor(
-    private toastService: ToastService,
-    private translocoService: TranslocoService,
-  ) {}
+  private toastService = inject(ToastService)
+  private translocoService = inject(TranslocoService)
 
   intercept(
     request: HttpRequest<unknown>,

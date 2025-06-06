@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthQuery } from '../../state/auth/auth.query'
 
@@ -6,10 +6,8 @@ import { AuthQuery } from '../../state/auth/auth.query'
   providedIn: 'root',
 })
 export class CanActivateUser {
-  constructor(
-    private readonly authQuery: AuthQuery,
-    private readonly router: Router,
-  ) {}
+  private readonly authQuery = inject(AuthQuery)
+  private readonly router = inject(Router)
 
   canActivate(): boolean {
     if (this.authQuery.isAuthenticated()) {

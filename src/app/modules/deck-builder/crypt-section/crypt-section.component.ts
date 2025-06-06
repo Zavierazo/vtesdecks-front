@@ -1,14 +1,28 @@
-import { DOCUMENT, ViewportScroller, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import {
+  DOCUMENT,
+  ViewportScroller,
+  NgClass,
+  NgTemplateOutlet,
+  AsyncPipe,
+} from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnInit,
   TemplateRef,
+  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import {
+  NgbModal,
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   BehaviorSubject,
@@ -26,20 +40,43 @@ import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component';
-import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
+import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
+import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-crypt-section',
-    templateUrl: './crypt-section.component.html',
-    styleUrls: ['./crypt-section.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgTemplateOutlet, InfiniteScrollDirective, CryptComponent, NgbTooltip, CryptBuilderFilterComponent, AsyncPipe, TranslocoPipe]
+  selector: 'app-crypt-section',
+  templateUrl: './crypt-section.component.html',
+  styleUrls: ['./crypt-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgClass,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgTemplateOutlet,
+    InfiniteScrollDirective,
+    CryptComponent,
+    NgbTooltip,
+    CryptBuilderFilterComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class CryptSectionComponent implements OnInit {
+  private readonly document = inject<Document>(DOCUMENT)
+  private readonly viewportService = inject(ViewportScroller)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly mediaService = inject(MediaService)
+  private readonly modalService = inject(NgbModal)
+
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
@@ -60,15 +97,6 @@ export class CryptSectionComponent implements OnInit {
   title!: string
   sect!: string
   taints: string[] = []
-
-  constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly viewportService: ViewportScroller,
-    private readonly changeDetector: ChangeDetectorRef,
-    private readonly cryptQuery: CryptQuery,
-    private readonly mediaService: MediaService,
-    private readonly modalService: NgbModal,
-  ) {}
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

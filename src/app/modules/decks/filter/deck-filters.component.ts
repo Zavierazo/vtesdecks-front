@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   OnInit,
-  Output,
-  ViewChild,
+  inject,
+  output,
+  viewChild,
 } from '@angular/core'
 import {
   FormBuilder,
@@ -66,7 +66,14 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
   ],
 })
 export class DeckFiltersComponent implements OnInit {
-  @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly formBuilder = inject(FormBuilder)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly apiDataService = inject(ApiDataService)
+
+  readonly resetFilters = output<void>()
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
@@ -75,17 +82,8 @@ export class DeckFiltersComponent implements OnInit {
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
 
-  @ViewChild('cardFilter') cardFilter!: CardFilterComponent
-  @ViewChild('tagsTypeahead') tagsTypeahead!: NgbTypeahead
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly decksQuery: DecksQuery,
-    private readonly formBuilder: FormBuilder,
-    private readonly changeDetector: ChangeDetectorRef,
-    private readonly apiDataService: ApiDataService,
-  ) {}
+  readonly cardFilter = viewChild.required<CardFilterComponent>('cardFilter')
+  readonly tagsTypeahead = viewChild.required<NgbTypeahead>('tagsTypeahead')
 
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()
@@ -138,7 +136,8 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('favorite')?.patchValue(false, { emitEvent: false })
     this.clans = []
     this.disciplines = []
-    this.cardFilter.reset()
+    this.cardFilter().reset()
+    // TODO: The 'emit' function requires a mandatory void argument
     this.resetFilters.emit()
   }
 
@@ -344,7 +343,7 @@ export class DeckFiltersComponent implements OnInit {
   ) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged())
     const clicksWithClosedPopup$ = this.tagClick$.pipe(
-      filter(() => !this.tagsTypeahead.isPopupOpen()),
+      filter(() => !this.tagsTypeahead().isPopupOpen()),
     )
     const inputFocus$ = this.tagFocus$
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(

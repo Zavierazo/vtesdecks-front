@@ -5,6 +5,7 @@ import {
   Component,
   Input,
   OnInit,
+  inject,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -53,6 +54,16 @@ import { LibraryService } from './../../../../state/library/library.service'
   ],
 })
 export class CardFilterComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly cryptService = inject(CryptService)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryService = inject(LibraryService)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly mediaService = inject(MediaService)
+
   @Input() showStarVampireFilter = true
 
   cards: CardFilter[] = []
@@ -60,18 +71,6 @@ export class CardFilterComponent implements OnInit {
   isMobile$!: Observable<boolean>
 
   form!: FormGroup
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly decksQuery: DecksQuery,
-    private readonly cryptService: CryptService,
-    private readonly cryptQuery: CryptQuery,
-    private readonly libraryService: LibraryService,
-    private readonly libraryQuery: LibraryQuery,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly mediaService: MediaService,
-  ) {}
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from './../../models/api-clan-stat'
@@ -9,7 +9,7 @@ import { LibraryStats, LibraryStore } from './library.store'
   providedIn: 'root',
 })
 export class LibraryQuery {
-  constructor(private readonly store: LibraryStore) {}
+  private readonly store = inject(LibraryStore)
 
   selectEntity(id: number): Observable<ApiLibrary | undefined> {
     return this.store.selectEntity(id)

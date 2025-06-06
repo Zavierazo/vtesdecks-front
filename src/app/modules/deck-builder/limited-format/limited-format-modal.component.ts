@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -38,7 +38,6 @@ import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
-import { CardFilterComponent } from '../../decks/filter/card-filter/card-filter.component'
 import { toUrl } from './limited-format-utils'
 import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
 @UntilDestroy()
@@ -58,6 +57,16 @@ import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
   ],
 })
 export class LimitedFormatModalComponent implements OnInit {
+  private readonly fb = inject(FormBuilder)
+  readonly activeModal = inject(NgbActiveModal)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly mediaService = inject(MediaService)
+  private readonly toastService = inject(ToastService)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly clipboard = inject(Clipboard)
+
   previousFormat: ApiDeckLimitedFormat | null = null
   isMobile$ = this.mediaService.observeMobile()
   formatForm: FormGroup
@@ -66,20 +75,7 @@ export class LimitedFormatModalComponent implements OnInit {
   isCustomFormat = false
   availableSets: ApiSet[] = []
 
-  @ViewChild('allowedCryptFilter') allowedCryptFilter!: CardFilterComponent
-  @ViewChild('bannedCryptFilter') bannedCryptFilter!: CardFilterComponent
-
-  constructor(
-    private readonly fb: FormBuilder,
-    public readonly activeModal: NgbActiveModal,
-    private readonly apiDataService: ApiDataService,
-    private readonly cryptQuery: CryptQuery,
-    private readonly libraryQuery: LibraryQuery,
-    private readonly mediaService: MediaService,
-    private readonly toastService: ToastService,
-    private readonly translocoService: TranslocoService,
-    private readonly clipboard: Clipboard,
-  ) {
+  constructor() {
     this.formatForm = this.fb.group({
       name: ['', Validators.required],
       sets: this.fb.group({}),

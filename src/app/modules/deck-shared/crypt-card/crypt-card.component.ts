@@ -7,6 +7,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -44,6 +45,11 @@ import { MediaService } from './../../../services/media.service'
   ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
+  modal = inject(NgbActiveModal)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly mediaService = inject(MediaService)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+
   readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'
   @Input() cardList!: ApiCrypt[]
   @Input() index!: number
@@ -52,13 +58,6 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   isMobile$!: Observable<boolean>
   shops$!: Observable<ApiShop[]>
   defaultTouch = { x: 0, y: 0, time: 0 }
-
-  constructor(
-    public modal: NgbActiveModal,
-    private readonly apiDataService: ApiDataService,
-    private readonly mediaService: MediaService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

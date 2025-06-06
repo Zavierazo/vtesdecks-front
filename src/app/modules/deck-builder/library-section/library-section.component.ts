@@ -1,14 +1,28 @@
-import { DOCUMENT, ViewportScroller, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import {
+  DOCUMENT,
+  ViewportScroller,
+  NgClass,
+  NgTemplateOutlet,
+  AsyncPipe,
+} from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnInit,
   TemplateRef,
+  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { NgbModal, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import {
+  NgbModal,
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   BehaviorSubject,
@@ -26,20 +40,43 @@ import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { LibraryComponent } from '../../deck-shared/library/library.component';
-import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
+import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-library-section',
-    templateUrl: './library-section.component.html',
-    styleUrls: ['./library-section.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, ReactiveFormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem, NgTemplateOutlet, InfiniteScrollDirective, LibraryComponent, NgbTooltip, LibraryBuilderFilterComponent, AsyncPipe, TranslocoPipe]
+  selector: 'app-library-section',
+  templateUrl: './library-section.component.html',
+  styleUrls: ['./library-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    NgClass,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgTemplateOutlet,
+    InfiniteScrollDirective,
+    LibraryComponent,
+    NgbTooltip,
+    LibraryBuilderFilterComponent,
+    AsyncPipe,
+    TranslocoPipe,
+  ],
 })
 export class LibrarySectionComponent implements OnInit {
+  private document = inject<Document>(DOCUMENT)
+  private viewportService = inject(ViewportScroller)
+  private changeDetector = inject(ChangeDetectorRef)
+  private libraryQuery = inject(LibraryQuery)
+  private mediaService = inject(MediaService)
+  private modalService = inject(NgbModal)
+
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
   library$!: Observable<ApiLibrary[]>
@@ -60,15 +97,6 @@ export class LibrarySectionComponent implements OnInit {
   poolCostSlider: number[] = [0, 6]
   title!: string
   taints: string[] = []
-
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private viewportService: ViewportScroller,
-    private changeDetector: ChangeDetectorRef,
-    private libraryQuery: LibraryQuery,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-  ) {}
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

@@ -2,11 +2,11 @@ import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   HostListener,
   Input,
   OnInit,
-  Output,
+  inject,
+  output,
 } from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
@@ -36,6 +36,10 @@ import drawProbability from '../../../utils/draw-probability'
   ],
 })
 export class CryptComponent implements OnInit {
+  private cryptQuery = inject(CryptQuery)
+  private cryptService = inject(CryptService)
+  private mediaService = inject(MediaService)
+
   @Input() card!: ApiCard
 
   @Input() cryptSize?: number
@@ -52,19 +56,13 @@ export class CryptComponent implements OnInit {
 
   @Input() overrideImage?: string | null
 
-  @Output() cardAdded = new EventEmitter<number>()
+  readonly cardAdded = output<number>()
 
-  @Output() cardRemoved = new EventEmitter<number>()
+  readonly cardRemoved = output<number>()
 
   crypt$!: Observable<ApiCrypt | undefined>
 
   isMobile$!: Observable<boolean>
-
-  constructor(
-    private cryptQuery: CryptQuery,
-    private cryptService: CryptService,
-    private mediaService: MediaService,
-  ) {}
 
   ngOnInit() {
     if (!this.cryptQuery.getEntity(this.card.id)) {

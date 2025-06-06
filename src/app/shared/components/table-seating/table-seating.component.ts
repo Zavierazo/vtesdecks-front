@@ -3,8 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  inject,
 } from '@angular/core'
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -12,34 +18,28 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { debounceTime, tap } from 'rxjs'
 import { LocalStorageService } from '../../../services/local-storage.service'
 import { SessionStorageService } from '../../../services/session-storage.service'
-import { NgClass } from '@angular/common';
+import { NgClass } from '@angular/common'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-table-seating',
-    templateUrl: './table-seating.component.html',
-    styleUrls: ['./table-seating.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-    TranslocoDirective,
-    ReactiveFormsModule,
-    NgClass
-],
+  selector: 'app-table-seating',
+  templateUrl: './table-seating.component.html',
+  styleUrls: ['./table-seating.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoDirective, ReactiveFormsModule, NgClass],
 })
 export class TableSeatingComponent implements OnInit {
+  activeModal = inject(NgbActiveModal)
+  private readonly localStorage = inject(LocalStorageService)
+  private readonly sessionStorage = inject(SessionStorageService)
+  private readonly cookieConsentService = inject(NgcCookieConsentService)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly fb = inject(FormBuilder)
+  private readonly cd = inject(ChangeDetectorRef)
+
   static readonly storeName = 'table-seating'
   form!: FormGroup
   tables: Array<Array<string>> = []
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private readonly localStorage: LocalStorageService,
-    private readonly sessionStorage: SessionStorageService,
-    private readonly cookieConsentService: NgcCookieConsentService,
-    private readonly translocoService: TranslocoService,
-    private readonly fb: FormBuilder,
-    private readonly cd: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({ players: this.fb.array([]) })

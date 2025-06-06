@@ -1,29 +1,33 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
+  output,
 } from '@angular/core'
-import { ControlContainer, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms'
+import {
+  ControlContainer,
+  FormControl,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, tap } from 'rxjs'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { NgClass } from '@angular/common';
+import { TranslocoDirective } from '@jsverse/transloco'
+import { NgClass } from '@angular/common'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-card-proportion',
-    templateUrl: './card-proportion.component.html',
-    styleUrls: ['./card-proportion.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    viewProviders: [
-        { provide: ControlContainer, useExisting: FormGroupDirective },
-    ],
-    imports: [TranslocoDirective, NgClass, ReactiveFormsModule]
+  selector: 'app-card-proportion',
+  templateUrl: './card-proportion.component.html',
+  styleUrls: ['./card-proportion.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
+  imports: [TranslocoDirective, NgClass, ReactiveFormsModule],
 })
 export class CardProportionComponent implements OnInit, OnChanges {
   private static readonly ABSOLUTE_MAX = 90
@@ -37,7 +41,7 @@ export class CardProportionComponent implements OnInit, OnChanges {
 
   @Input() value!: string
 
-  @Output() valueChanges: EventEmitter<string> = new EventEmitter()
+  readonly valueChanges = output<string>()
 
   min = new FormControl<number>(0)
   max = new FormControl<number>(0)
