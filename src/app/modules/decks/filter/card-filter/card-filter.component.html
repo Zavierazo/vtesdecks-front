@@ -42,7 +42,7 @@
           <i class="bi bi-plus-lg" aria-hidden="true"></i>
         </button>
       </div>
-      <ng-template #imgPopover>
+      <ng-template #cryptImgPopover>
         @if( crypt.i18n && crypt.i18n.image ){
         <img #i18nImage [ngClass]="{
           'img-popover': !(isMobile$ | async)!,
@@ -61,7 +61,7 @@
       @if(crypt.adv){
       <i class="vtes advanced"></i>
       }
-      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
+      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="cryptImgPopover"
         triggers="mouseenter:mouseleave" (click)="popover.open()">
         @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
         {{ crypt.i18n.name }}
@@ -111,7 +111,7 @@
           <i class="bi bi-plus-lg" aria-hidden="true"></i>
         </button>
       </div>
-      <ng-template #imgPopover>
+      <ng-template #libraryImgPopover>
         @if( library.i18n && library.i18n.image ){
         <img #i18nImage [ngClass]="{
       'img-popover': !(isMobile$ | async)!,
@@ -129,7 +129,7 @@
       @for(typeIcon of library.typeIcons; track typeIcon){
       <i class="vtes" [class]="typeIcon"></i>
       }
-      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="imgPopover"
+      <span #popover="ngbPopover" class="text-primary ms-1" value="name" [ngbPopover]="libraryImgPopover"
         triggers="mouseenter:mouseleave" (click)="popover.open()">
         @if( library.i18n && library.i18n.name !== library.name ){
         {{ library.i18n.name }}
