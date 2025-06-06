@@ -14,7 +14,7 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap';
         (hidden)="toastService.remove(toast)"
         >
         @if (isTemplate(toast)) {
-          <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+          <ng-template [ngTemplateOutlet]="toast.textOrTpl" />
         } @else {
           {{ toast.textOrTpl }}
         }
