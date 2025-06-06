@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, ViewChild, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -38,7 +38,6 @@ import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
-import { CardFilterComponent } from '../../decks/filter/card-filter/card-filter.component'
 import { toUrl } from './limited-format-utils'
 import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
 @UntilDestroy()
@@ -58,15 +57,15 @@ import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
   ],
 })
 export class LimitedFormatModalComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  readonly activeModal = inject(NgbActiveModal);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly cryptQuery = inject(CryptQuery);
-  private readonly libraryQuery = inject(LibraryQuery);
-  private readonly mediaService = inject(MediaService);
-  private readonly toastService = inject(ToastService);
-  private readonly translocoService = inject(TranslocoService);
-  private readonly clipboard = inject(Clipboard);
+  private readonly fb = inject(FormBuilder)
+  readonly activeModal = inject(NgbActiveModal)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly mediaService = inject(MediaService)
+  private readonly toastService = inject(ToastService)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly clipboard = inject(Clipboard)
 
   previousFormat: ApiDeckLimitedFormat | null = null
   isMobile$ = this.mediaService.observeMobile()
@@ -75,9 +74,6 @@ export class LimitedFormatModalComponent implements OnInit {
   selectedFormat: ApiDeckLimitedFormat | null = null
   isCustomFormat = false
   availableSets: ApiSet[] = []
-
-  @ViewChild('allowedCryptFilter') allowedCryptFilter!: CardFilterComponent
-  @ViewChild('bannedCryptFilter') bannedCryptFilter!: CardFilterComponent
 
   constructor() {
     this.formatForm = this.fb.group({

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject, output } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, output, viewChild } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -74,8 +74,8 @@ export class DeckFiltersComponent implements OnInit {
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
 
-  @ViewChild('cardFilter') cardFilter!: CardFilterComponent
-  @ViewChild('tagsTypeahead') tagsTypeahead!: NgbTypeahead
+  readonly cardFilter = viewChild.required<CardFilterComponent>('cardFilter');
+  readonly tagsTypeahead = viewChild.required<NgbTypeahead>('tagsTypeahead');
 
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()
@@ -128,7 +128,7 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('favorite')?.patchValue(false, { emitEvent: false })
     this.clans = []
     this.disciplines = []
-    this.cardFilter.reset()
+    this.cardFilter().reset()
     // TODO: The 'emit' function requires a mandatory void argument
     this.resetFilters.emit()
   }
@@ -335,7 +335,7 @@ export class DeckFiltersComponent implements OnInit {
   ) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged())
     const clicksWithClosedPopup$ = this.tagClick$.pipe(
-      filter(() => !this.tagsTypeahead.isPopupOpen()),
+      filter(() => !this.tagsTypeahead().isPopupOpen()),
     )
     const inputFocus$ = this.tagFocus$
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(

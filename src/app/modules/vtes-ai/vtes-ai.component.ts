@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, inject } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChildren, inject, viewChild } from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -43,12 +43,12 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
     question: new FormControl('', Validators.minLength(3)),
   })
 
-  @ViewChild('scrollFrame', { static: false }) scrollFrame!: ElementRef
+  readonly scrollFrame = viewChild.required<ElementRef>('scrollFrame');
   @ViewChildren('item') itemElements!: QueryList<any>
   private scrollContainer: any
 
   ngAfterViewInit() {
-    this.scrollContainer = this.scrollFrame.nativeElement
+    this.scrollContainer = this.scrollFrame().nativeElement
     this.itemElements.changes.subscribe((_) => this.onItemElementsChanged())
   }
   private onItemElementsChanged(): void {

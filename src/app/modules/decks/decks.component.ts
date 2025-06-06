@@ -1,5 +1,5 @@
 import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, inject, viewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
@@ -53,7 +53,7 @@ export class DecksComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
   mainForm!: FormGroup
 
-  @ViewChild('filters') filters!: DeckFiltersComponent
+  readonly filters = viewChild.required<DeckFiltersComponent>('filters');
 
   ngOnInit() {
     this.isLoading$ = this.decksQuery.selectLoading()
@@ -105,12 +105,12 @@ export class DecksComponent implements OnInit {
   }
 
   resetFilters(): void {
-    this.filters?.reset()
+    this.filters()?.reset()
     this.reset()
   }
 
   onTagClick(tag: string): void {
-    this.filters?.onSelectTag(tag)
+    this.filters()?.onSelectTag(tag)
   }
 
   private listenScroll() {
