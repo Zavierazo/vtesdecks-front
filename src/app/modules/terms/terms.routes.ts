@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router'
-import { TermsComponent } from './terms.component'
+
 
 export const TERMS_ROUTES: Routes = [
   {
     path: '',
-    component: TermsComponent,
+    loadComponent: () => import('./terms.component').then(m => m.TermsComponent),
     pathMatch: 'full',
     title: 'VTES Decks - Terms',
   },

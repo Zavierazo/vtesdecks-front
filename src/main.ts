@@ -39,7 +39,7 @@ import { MarkdownModule } from 'ngx-markdown'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { GlobalErrorHandler } from './app/services/global-error.handler'
-import { PageNotFoundComponent } from './app/shared/components/page-not-found/page-not-found.component'
+
 import { AuthQuery } from './app/state/auth/auth.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
@@ -167,7 +167,7 @@ const routes: Routes = [
         (m) => m.VTES_AI_ROUTES,
       ),
   },
-  { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
+  { path: '**', loadComponent: () => import('./app/shared/components/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }, // Wildcard route for a 404 page
 ]
 
 if (environment.production) {

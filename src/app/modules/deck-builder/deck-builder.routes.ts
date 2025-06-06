@@ -1,16 +1,16 @@
 import { Routes } from '@angular/router'
 import { CanActivateUser } from '../../shared/guards/can-activate-user.guard'
 import { CanDeactivateComponent } from '../../shared/guards/can-deactivate-component.guard'
-import { BuilderComponent } from './builder.component'
-import { CryptSectionComponent } from './crypt-section/crypt-section.component'
+
+
 import { cryptSectionResolver } from './crypt-section/crypt-section.resolver'
-import { LibrarySectionComponent } from './library-section/library-section.component'
+
 import { librarySectionResolver } from './library-section/library-section.resolver'
 
 export const DECK_BUILDER_ROUTES: Routes = [
   {
     path: '',
-    component: BuilderComponent,
+    loadComponent: () => import('./builder.component').then(m => m.BuilderComponent),
     pathMatch: 'full',
     canActivate: [CanActivateUser],
     canDeactivate: [CanDeactivateComponent],
@@ -18,13 +18,13 @@ export const DECK_BUILDER_ROUTES: Routes = [
   },
   {
     path: 'crypt',
-    component: CryptSectionComponent,
+    loadComponent: () => import('./crypt-section/crypt-section.component').then(m => m.CryptSectionComponent),
     title: 'VTES Decks - Crypt',
     resolve: { crypt: cryptSectionResolver },
   },
   {
     path: 'library',
-    component: LibrarySectionComponent,
+    loadComponent: () => import('./library-section/library-section.component').then(m => m.LibrarySectionComponent),
     title: 'VTES Decks - Library',
     resolve: { library: librarySectionResolver },
   },
