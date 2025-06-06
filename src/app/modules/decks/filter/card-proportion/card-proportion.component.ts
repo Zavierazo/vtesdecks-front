@@ -1,12 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
+  output
 } from '@angular/core'
 import { ControlContainer, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -37,7 +36,7 @@ export class CardProportionComponent implements OnInit, OnChanges {
 
   @Input() value!: string
 
-  @Output() valueChanges: EventEmitter<string> = new EventEmitter()
+  readonly valueChanges = output<string>();
 
   min = new FormControl<number>(0)
   max = new FormControl<number>(0)

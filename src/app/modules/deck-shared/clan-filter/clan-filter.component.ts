@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Output, EventEmitter, Input, ChangeDetectorRef, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, inject, output } from '@angular/core'
 import { CLAN_LIST } from '../../../utils/clans'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -15,7 +15,7 @@ export class ClanFilterComponent {
 
   @Input() showNotRequired: boolean = false
   @Input() clans: string[] = []
-  @Output() clansChange: EventEmitter<string[]> = new EventEmitter()
+  readonly clansChange = output<string[]>();
 
   clansList = CLAN_LIST
 

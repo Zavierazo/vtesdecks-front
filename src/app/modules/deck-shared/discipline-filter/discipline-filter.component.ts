@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject, output } from '@angular/core'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -16,10 +16,9 @@ export class DisciplineFilterComponent {
   @Input() showNotRequired: boolean = false
   @Input() showSuperior: boolean = true
   @Input() disciplines: string[] = []
-  @Output() disciplinesChange: EventEmitter<string[]> = new EventEmitter()
+  readonly disciplinesChange = output<string[]>();
   @Input() superiorDisciplines: string[] = []
-  @Output() superiorDisciplinesChange: EventEmitter<string[]> =
-    new EventEmitter()
+  readonly superiorDisciplinesChange = output<string[]>();
 
   disciplineList = DISCIPLINE_LIST
 

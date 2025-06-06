@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject, output } from '@angular/core'
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -14,7 +14,7 @@ export class LibraryTypeFilterComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   @Input() types: string[] = []
-  @Output() typesChange: EventEmitter<string[]> = new EventEmitter()
+  readonly typesChange = output<string[]>();
 
   typeList = LIBRARY_TYPE_LIST
 

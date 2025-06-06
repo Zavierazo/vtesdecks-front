@@ -1,6 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, inject, output } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -31,26 +31,25 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery);
 
   @Input() limitedFormat?: boolean
-  @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
+  readonly limitedFormatChange = output<boolean>();
   @Input() printOnDemand?: boolean
-  @Output() printOnDemandChange: EventEmitter<boolean> = new EventEmitter()
+  readonly printOnDemandChange = output<boolean>();
   @Input() clans!: string[]
-  @Output() clansChange: EventEmitter<string[]> = new EventEmitter()
+  readonly clansChange = output<string[]>();
   @Input() disciplines!: string[]
-  @Output() disciplinesChange: EventEmitter<string[]> = new EventEmitter()
+  readonly disciplinesChange = output<string[]>();
   @Input() superiorDisciplines!: string[]
-  @Output() superiorDisciplinesChange: EventEmitter<string[]> =
-    new EventEmitter()
+  readonly superiorDisciplinesChange = output<string[]>();
   @Input() groupSlider!: number[]
-  @Output() groupSliderChange: EventEmitter<number[]> = new EventEmitter()
+  readonly groupSliderChange = output<number[]>();
   @Input() capacitySlider!: number[]
-  @Output() capacitySliderChange: EventEmitter<number[]> = new EventEmitter()
+  readonly capacitySliderChange = output<number[]>();
   @Input() title!: string
-  @Output() titleChange: EventEmitter<string> = new EventEmitter()
+  readonly titleChange = output<string>();
   @Input() sect!: string
-  @Output() sectChange: EventEmitter<string> = new EventEmitter()
+  readonly sectChange = output<string>();
   @Input() taints!: string[]
-  @Output() taintsChange: EventEmitter<string[]> = new EventEmitter()
+  readonly taintsChange = output<string[]>();
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl

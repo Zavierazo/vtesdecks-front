@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
-import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit, inject, output } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -49,9 +49,9 @@ export class LibraryComponent implements OnInit {
 
   @Input() overrideImage?: string
 
-  @Output() cardAdded = new EventEmitter<number>()
+  readonly cardAdded = output<number>();
 
-  @Output() cardRemoved = new EventEmitter<number>()
+  readonly cardRemoved = output<number>();
 
   library$!: Observable<ApiLibrary | undefined>
 

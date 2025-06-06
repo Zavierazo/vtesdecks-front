@@ -1,5 +1,5 @@
 import { NgClass, NgStyle, TitleCasePipe } from '@angular/common'
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core'
+import { Component, Input, OnInit, inject, output } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
@@ -32,7 +32,7 @@ export class DeckCardComponent implements OnInit {
   @Input() deck!: ApiDeck
   @Input() height = 'auto'
 
-  @Output() tagClick: EventEmitter<string> = new EventEmitter()
+  readonly tagClick = output<string>();
 
   isMobileOrTablet = false
 

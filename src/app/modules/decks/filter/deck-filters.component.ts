@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild, inject } from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject, output } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -65,7 +65,7 @@ export class DeckFiltersComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly apiDataService = inject(ApiDataService);
 
-  @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()
+  readonly resetFilters = output<void>();
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
@@ -129,6 +129,7 @@ export class DeckFiltersComponent implements OnInit {
     this.clans = []
     this.disciplines = []
     this.cardFilter.reset()
+    // TODO: The 'emit' function requires a mandatory void argument
     this.resetFilters.emit()
   }
 
