@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Params } from '@angular/router'
 import { EMPTY, Observable, tap } from 'rxjs'
 import { ApiDecks } from './../../models/api-decks'
@@ -8,13 +8,11 @@ import { DecksState, DecksStore } from './decks.store'
   providedIn: 'root',
 })
 export class DecksService {
+  private readonly decksStore = inject(DecksStore);
+  private readonly apiDataService = inject(ApiDataService);
+
   static readonly initLimit = 20
   static readonly limit = 10
-
-  constructor(
-    private readonly decksStore: DecksStore,
-    private readonly apiDataService: ApiDataService,
-  ) {}
 
   init(params: Params) {
     this.decksStore.remove()

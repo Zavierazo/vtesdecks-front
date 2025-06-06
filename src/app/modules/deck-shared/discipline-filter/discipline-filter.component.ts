@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -18,6 +11,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
     imports: [NgClass, TranslocoPipe]
 })
 export class DisciplineFilterComponent {
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
   @Input() showNotRequired: boolean = false
   @Input() showSuperior: boolean = true
   @Input() disciplines: string[] = []
@@ -27,8 +22,6 @@ export class DisciplineFilterComponent {
     new EventEmitter()
 
   disciplineList = DISCIPLINE_LIST
-
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   toggleNotRequired() {
     if (!this.isSelected('none')) {

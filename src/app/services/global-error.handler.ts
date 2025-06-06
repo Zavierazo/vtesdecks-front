@@ -1,19 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { ErrorHandler, Injectable, Injector } from '@angular/core'
+import { ErrorHandler, Injectable, Injector, inject } from '@angular/core'
 import * as Sentry from '@sentry/angular'
 import { AuthQuery } from '../state/auth/auth.query'
 import { ApiDataService } from './api.data.service'
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
+  private readonly injector = inject(Injector);
+
   // Sentry Error Handler
   private readonly sentryErrorHandler = Sentry.createErrorHandler({
     showDialog: false,
   })
-
-  // Error handling is important and needs to be loaded first.
-  // Because of this we should manually inject the services with Injector.
-  constructor(private readonly injector: Injector) {}
 
   handleError(error: Error | HttpErrorResponse) {
     this.sentryErrorHandler.handleError(error)

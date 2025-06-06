@@ -1,14 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, inject } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -36,6 +28,8 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
 ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
+  private cryptQuery = inject(CryptQuery);
+
   @Input() limitedFormat?: boolean
   @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
   @Input() printOnDemand?: boolean
@@ -71,8 +65,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   taints$!: Observable<string[]>
   maxCapacity!: number
   maxGroup!: number
-
-  constructor(private cryptQuery: CryptQuery) {}
 
   ngOnInit() {
     this.maxCapacity = this.cryptQuery.getMaxCapacity()

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '../../../services/media.service'
@@ -26,16 +26,14 @@ import { NgClass, AsyncPipe } from '@angular/common';
 ],
 })
 export class LangSelectorComponent {
+  private translocoService = inject(TranslocoService);
+  private mediaService = inject(MediaService);
+  private libraryService = inject(LibraryService);
+  private cryptService = inject(CryptService);
+
   isMobile$ = this.mediaService.observeMobileOrTablet()
 
   languages = SUPPORTED_LANGUAGES
-
-  constructor(
-    private translocoService: TranslocoService,
-    private mediaService: MediaService,
-    private libraryService: LibraryService,
-    private cryptService: CryptService,
-  ) {}
 
   isActive(code: string): boolean {
     return code === this.translocoService.getActiveLang()

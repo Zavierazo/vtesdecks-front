@@ -1,10 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common'
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -40,20 +35,18 @@ import { HomeSectionComponent } from './home-section/home-section.component'
   ],
 })
 export class HomeComponent implements OnInit {
+  private readonly modalService = inject(NgbModal);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly authQuery = inject(AuthQuery);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly localStorage = inject(LocalStorageService);
+
   private static readonly CHANGELOG_ALERT_KEY = 'changelog_alert_version'
   private readonly appVersion = environment.appVersion
 
   deckHome?: ApiHome
   changelogAlert?: ApiChangelog
   showChangelogAlert = false
-
-  constructor(
-    private readonly modalService: NgbModal,
-    private readonly apiDataService: ApiDataService,
-    private readonly authQuery: AuthQuery,
-    private readonly changeDetector: ChangeDetectorRef,
-    private readonly localStorage: LocalStorageService,
-  ) {}
 
   ngOnInit() {
     // Fetch changelog for alert

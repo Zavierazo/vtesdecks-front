@@ -1,11 +1,5 @@
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, inject } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
@@ -54,6 +48,14 @@ import { searchIncludes } from './../../../utils/vtes-utils'
 ],
 })
 export class LibraryBuilderComponent implements OnInit {
+  modal = inject(NgbActiveModal);
+  private readonly libraryQuery = inject(LibraryQuery);
+  private readonly deckBuilderQuery = inject(DeckBuilderQuery);
+  private readonly deckBuilderService = inject(DeckBuilderService);
+  private readonly mediaService = inject(MediaService);
+  private readonly modalService = inject(NgbModal);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+
   private static readonly PAGE_SIZE = 20
   nameFormControl = new FormControl('')
   library$!: Observable<ApiLibrary[]>
@@ -73,16 +75,6 @@ export class LibraryBuilderComponent implements OnInit {
   poolCostSlider!: number[]
   title!: string
   taints!: string[]
-
-  constructor(
-    public modal: NgbActiveModal,
-    private readonly libraryQuery: LibraryQuery,
-    private readonly deckBuilderQuery: DeckBuilderQuery,
-    private readonly deckBuilderService: DeckBuilderService,
-    private readonly mediaService: MediaService,
-    private readonly modalService: NgbModal,
-    private readonly changeDetector: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()

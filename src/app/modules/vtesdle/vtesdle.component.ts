@@ -1,11 +1,6 @@
 import { ApiDataService } from './../../services/api.data.service'
 import { LocalStorageService } from './../../services/local-storage.service'
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
 import { NgbTypeaheadSelectItemEvent, NgbTooltip, NgbHighlight, NgbTypeahead, NgbRating } from '@ng-bootstrap/ng-bootstrap'
 import {
   combineLatest,
@@ -37,20 +32,18 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
     imports: [TranslocoDirective, NgbTooltip, LoadingComponent, NgbHighlight, NgbTypeahead, NgbRating]
 })
 export class VtesdleComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private localStorageService = inject(LocalStorageService);
+  private apiDataService = inject(ApiDataService);
+  private cryptService = inject(CryptService);
+  private cryptQuery = inject(CryptQuery);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
   maxLives = 6
   infiniteMode = false
   cardId!: number
   lives = this.maxLives
   guessed = false
-
-  constructor(
-    private route: ActivatedRoute,
-    private localStorageService: LocalStorageService,
-    private apiDataService: ApiDataService,
-    private cryptService: CryptService,
-    private cryptQuery: CryptQuery,
-    private changeDetectorRef: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.route.queryParams

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -21,6 +21,12 @@ import { ToastService } from '../../services/toast.service'
 ],
 })
 export class ResetPasswordComponent implements OnInit {
+  private apiDataService = inject(ApiDataService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private toastService = inject(ToastService);
+  private translocoService = inject(TranslocoService);
+
   resetPasswordForm = new FormGroup(
     {
       password: new FormControl(null, [
@@ -36,14 +42,6 @@ export class ResetPasswordComponent implements OnInit {
     },
     { validators: this.passwordMatchValidator },
   )
-
-  constructor(
-    private apiDataService: ApiDataService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private translocoService: TranslocoService,
-  ) {}
 
   ngOnInit() {}
 

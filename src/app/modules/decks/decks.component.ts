@@ -1,12 +1,5 @@
 import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
@@ -42,6 +35,16 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
     imports: [TranslocoDirective, ReactiveFormsModule, IsLoggedDirective, DeckFiltersComponent, NgClass, InfiniteScrollDirective, DeckCardComponent, DeckRestorableCardComponent, LoadingComponent, NgbTooltip, AsyncPipe]
 })
 export class DecksComponent implements OnInit {
+  private document = inject<Document>(DOCUMENT);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private decksQuery = inject(DecksQuery);
+  private decksService = inject(DecksService);
+  private viewportService = inject(ViewportScroller);
+  private formBuilder = inject(FormBuilder);
+  private mediaService = inject(MediaService);
+  private offcanvasService = inject(NgbOffcanvas);
+
   decks$!: Observable<ApiDeck[]>
   restorableDecks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
@@ -51,18 +54,6 @@ export class DecksComponent implements OnInit {
   mainForm!: FormGroup
 
   @ViewChild('filters') filters!: DeckFiltersComponent
-
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute,
-    private router: Router,
-    private decksQuery: DecksQuery,
-    private decksService: DecksService,
-    private viewportService: ViewportScroller,
-    private formBuilder: FormBuilder,
-    private mediaService: MediaService,
-    private offcanvasService: NgbOffcanvas,
-  ) {}
 
   ngOnInit() {
     this.isLoading$ = this.decksQuery.selectLoading()

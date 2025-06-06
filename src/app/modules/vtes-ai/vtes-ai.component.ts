@@ -1,14 +1,5 @@
 import { AsyncPipe } from '@angular/common'
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  TemplateRef,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, inject } from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -38,6 +29,11 @@ import { VtesAiService } from '../../state/vtes-ai/vtes-ai.service'
   ],
 })
 export class VtesAiComponent implements OnInit, AfterViewInit {
+  private readonly service = inject(VtesAiService);
+  private readonly query = inject(VtesAiQuery);
+  private readonly offcanvasService = inject(NgbOffcanvas);
+  private readonly mediaService = inject(MediaService);
+
   chats$ = this.query.selectEntities()
   activeChat$ = this.query.selectActiveChat()
   loading$ = this.query.selectLoading()
@@ -50,13 +46,6 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollFrame', { static: false }) scrollFrame!: ElementRef
   @ViewChildren('item') itemElements!: QueryList<any>
   private scrollContainer: any
-
-  constructor(
-    private readonly service: VtesAiService,
-    private readonly query: VtesAiQuery,
-    private readonly offcanvasService: NgbOffcanvas,
-    private readonly mediaService: MediaService,
-  ) {}
 
   ngAfterViewInit() {
     this.scrollContainer = this.scrollFrame.nativeElement

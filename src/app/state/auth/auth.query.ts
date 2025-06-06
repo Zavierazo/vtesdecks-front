@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ApiUser } from '../../models/api-user'
 import { AuthStore } from './auth.store'
@@ -7,7 +7,8 @@ import { AuthStore } from './auth.store'
   providedIn: 'root',
 })
 export class AuthQuery {
-  constructor(private readonly store: AuthStore) {}
+  private readonly store = inject(AuthStore);
+
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

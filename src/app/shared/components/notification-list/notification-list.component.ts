@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService } from '../../../services/api.data.service'
 import { Observable, of, tap } from 'rxjs'
@@ -19,13 +19,11 @@ import { DateAsAgoPipe } from '../../pipes/date-ago.pipe';
     imports: [TranslocoDirective, NgClass, RouterLink, AsyncPipe, DateAsAgoPipe]
 })
 export class NotificationListComponent implements OnInit {
-  notifications$!: Observable<ApiUserNotification[]>
+  offcanvas = inject(NgbActiveOffcanvas);
+  private apiDataService = inject(ApiDataService);
+  private authService = inject(AuthService);
 
-  constructor(
-    public offcanvas: NgbActiveOffcanvas,
-    private apiDataService: ApiDataService,
-    private authService: AuthService,
-  ) {}
+  notifications$!: Observable<ApiUserNotification[]>
 
   ngOnInit() {
     this.notifications$ = this.apiDataService.getNotifications()

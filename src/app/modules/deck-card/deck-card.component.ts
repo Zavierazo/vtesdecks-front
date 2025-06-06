@@ -1,5 +1,5 @@
 import { NgClass, NgStyle, TitleCasePipe } from '@angular/common'
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
@@ -27,14 +27,14 @@ import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
   ],
 })
 export class DeckCardComponent implements OnInit {
+  private mediaService = inject(MediaService);
+
   @Input() deck!: ApiDeck
   @Input() height = 'auto'
 
   @Output() tagClick: EventEmitter<string> = new EventEmitter()
 
   isMobileOrTablet = false
-
-  constructor(private mediaService: MediaService) {}
 
   ngOnInit(): void {
     this.mediaService

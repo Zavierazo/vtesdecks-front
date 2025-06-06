@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable, switchMap } from 'rxjs'
 import { AiChat, VtesAiStore } from './vtes-ai.store'
 @Injectable({
   providedIn: 'root',
 })
 export class VtesAiQuery {
-  constructor(private readonly store: VtesAiStore) {}
+  private readonly store = inject(VtesAiStore);
+
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

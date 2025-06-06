@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { ApiDeck } from '../../../models/api-deck'
 import { TitleCasePipe } from '@angular/common';
@@ -19,14 +14,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
     imports: [DeckCardComponent, LoadingComponent, RouterLink, TitleCasePipe, TranslocoPipe]
 })
 export class HomeSectionComponent {
+  private router = inject(Router);
+
   @Input()
   title!: string
   @Input()
   decks?: ApiDeck[]
   @Input()
   deckParams!: { [key: string]: any }
-
-  constructor(private router: Router) {}
 
   onTagClick(tag: string): void {
     this.router.navigate(['/decks'], {

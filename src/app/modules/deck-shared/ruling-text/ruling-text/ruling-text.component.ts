@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core'
 import { ApiKrcgRuling } from '../../../../models/krcg/api-krcg-ruling'
 import { RulingText } from '../../../../models/ruling-text'
 import { MediaService } from '../../../../services/media.service'
@@ -18,13 +13,13 @@ import { NgClass, AsyncPipe } from '@angular/common';
     imports: [NgbPopover, NgClass, AsyncPipe]
 })
 export class RulingTextComponent implements OnInit {
+  private mediaService = inject(MediaService);
+
   @Input() ruling!: ApiKrcgRuling
 
   rulingsText: RulingText[] = []
 
   isMobile$ = this.mediaService.observeMobile()
-
-  constructor(private mediaService: MediaService) {}
 
   ngOnInit() {
     let currentPart = ''

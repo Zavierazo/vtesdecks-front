@@ -1,6 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -37,6 +37,9 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component'
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class StatisticsComponent implements OnInit {
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly formBuilder = inject(FormBuilder);
+
   currentYear = new Date().getFullYear()
   years = this.range(1998, this.currentYear)
   disciplines: string[] = DISCIPLINE_LIST.map((d) => d.name)
@@ -48,11 +51,6 @@ export class StatisticsComponent implements OnInit {
   rangeBehavior: BehaviorSubject<number[]> = new BehaviorSubject([0, 0])
   globalForm!: FormGroup
   yearForm!: FormGroup
-
-  constructor(
-    private readonly apiDataService: ApiDataService,
-    private readonly formBuilder: FormBuilder,
-  ) {}
 
   ngOnInit() {
     this.globalForm = this.formBuilder.group({

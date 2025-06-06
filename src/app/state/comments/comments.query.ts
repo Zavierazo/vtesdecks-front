@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiComment } from '../../models/api-comment'
 import { CommentsStore } from './comments.store'
@@ -6,7 +6,8 @@ import { CommentsStore } from './comments.store'
   providedIn: 'root',
 })
 export class CommentsQuery {
-  constructor(private readonly store: CommentsStore) {}
+  private readonly store = inject(CommentsStore);
+
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

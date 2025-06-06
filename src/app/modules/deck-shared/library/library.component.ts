@@ -1,13 +1,5 @@
 import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output, inject } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -37,6 +29,10 @@ import drawProbability from '../../../utils/draw-probability'
   ],
 })
 export class LibraryComponent implements OnInit {
+  private readonly libraryQuery = inject(LibraryQuery);
+  private readonly libraryService = inject(LibraryService);
+  private readonly mediaService = inject(MediaService);
+
   @Input() card!: ApiCard
 
   @Input() librarySize?: number
@@ -60,12 +56,6 @@ export class LibraryComponent implements OnInit {
   library$!: Observable<ApiLibrary | undefined>
 
   isMobile$!: Observable<boolean>
-
-  constructor(
-    private readonly libraryQuery: LibraryQuery,
-    private readonly libraryService: LibraryService,
-    private readonly mediaService: MediaService,
-  ) {}
 
   ngOnInit() {
     if (!this.libraryQuery.getEntity(this.card.id)) {

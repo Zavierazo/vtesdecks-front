@@ -1,4 +1,4 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core'
+import { Injectable, Renderer2, RendererFactory2, inject } from '@angular/core'
 import { Theme } from '../models/theme'
 
 @Injectable({
@@ -10,7 +10,9 @@ export class ColorThemeService {
   private colorTheme!: Theme
   enabled = true
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor() {
+    const rendererFactory = inject(RendererFactory2);
+
     this.renderer = rendererFactory.createRenderer(null, null)
   }
 

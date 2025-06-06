@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { catchError, finalize, Observable, of, tap } from 'rxjs'
 import { ApiAiAskRequest } from '../../models/api-ai-ask-request'
 import { ApiAiAskResponse } from '../../models/api-ai-ask-response'
@@ -8,10 +8,9 @@ import { VtesAiStore } from './vtes-ai.store'
   providedIn: 'root',
 })
 export class VtesAiService {
-  constructor(
-    private readonly store: VtesAiStore,
-    private readonly apiDataService: ApiDataService,
-  ) {}
+  private readonly store = inject(VtesAiStore);
+  private readonly apiDataService = inject(ApiDataService);
+
 
   init() {
     this.store.setLoading()

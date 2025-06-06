@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -25,15 +25,13 @@ import { TranslocoDatePipe } from '@jsverse/transloco-locale';
     ],
 })
 export class DeckRestorableCardComponent {
-  @Input() deck!: ApiDeck
+  private readonly router = inject(Router);
+  private readonly modalService = inject(NgbModal);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly toastService = inject(ToastService);
 
-  constructor(
-    private readonly router: Router,
-    private readonly modalService: NgbModal,
-    private readonly translocoService: TranslocoService,
-    private readonly apiDataService: ApiDataService,
-    private readonly toastService: ToastService,
-  ) {}
+  @Input() deck!: ApiDeck
 
   restoreDeck() {
     const id = this.deck.id

@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild, inject } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -66,6 +58,13 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
   ],
 })
 export class DeckFiltersComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly decksQuery = inject(DecksQuery);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly apiDataService = inject(ApiDataService);
+
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>()
   filterForm!: FormGroup
   disciplines!: string[]
@@ -77,15 +76,6 @@ export class DeckFiltersComponent implements OnInit {
 
   @ViewChild('cardFilter') cardFilter!: CardFilterComponent
   @ViewChild('tagsTypeahead') tagsTypeahead!: NgbTypeahead
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly decksQuery: DecksQuery,
-    private readonly formBuilder: FormBuilder,
-    private readonly changeDetector: ChangeDetectorRef,
-    private readonly apiDataService: ApiDataService,
-  ) {}
 
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()

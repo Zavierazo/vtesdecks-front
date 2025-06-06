@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Output,
-  EventEmitter,
-  Input,
-  ChangeDetectorRef,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, Output, EventEmitter, Input, ChangeDetectorRef, inject } from '@angular/core'
 import { CLAN_LIST } from '../../../utils/clans'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -18,13 +11,13 @@ import { TranslocoPipe } from '@jsverse/transloco';
     imports: [NgClass, TranslocoPipe]
 })
 export class ClanFilterComponent {
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
   @Input() showNotRequired: boolean = false
   @Input() clans: string[] = []
   @Output() clansChange: EventEmitter<string[]> = new EventEmitter()
 
   clansList = CLAN_LIST
-
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   toggleNotRequired() {
     if (!this.isSelected('none')) {

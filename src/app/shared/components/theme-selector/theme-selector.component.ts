@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import { MediaService } from '../../../services/media.service'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { Theme } from '../../../models/theme'
@@ -13,14 +13,12 @@ import { NgClass, AsyncPipe } from '@angular/common';
     imports: [TranslocoDirective, NgClass, AsyncPipe]
 })
 export class ThemeSelectorComponent {
+  private colorThemeService = inject(ColorThemeService);
+  private mediaService = inject(MediaService);
+
   isMobile$ = this.mediaService.observeMobileOrTablet()
   theme = this.colorThemeService.currentTheme()
   Theme = Theme
-
-  constructor(
-    private colorThemeService: ColorThemeService,
-    private mediaService: MediaService,
-  ) {}
 
   toggleTheme(): void {
     if (this.colorThemeService.currentTheme() === Theme.Dark) {

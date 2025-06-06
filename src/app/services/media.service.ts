@@ -1,21 +1,21 @@
 import { MediaMatcher } from '@angular/cdk/layout'
-import { Injectable, NgZone } from '@angular/core'
+import { Injectable, NgZone, inject } from '@angular/core'
 import { map, merge, Observable, Observer, startWith } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
+  private media = inject(MediaMatcher);
+  private zone = inject(NgZone);
+
   private readonly mobileMediaQuery = '(max-width: 767px)'
   private readonly tabletMediaQuery = '(max-width: 1023px)'
 
   private mobileQuery!: MediaQueryList
   private tabletQuery!: MediaQueryList
 
-  constructor(
-    private media: MediaMatcher,
-    private zone: NgZone,
-  ) {
+  constructor() {
     this.mobileQuery = this.media.matchMedia(this.mobileMediaQuery)
     this.tabletQuery = this.media.matchMedia(this.tabletMediaQuery)
   }

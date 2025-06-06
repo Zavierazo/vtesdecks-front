@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core'
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -18,12 +11,12 @@ import { TranslocoPipe } from '@jsverse/transloco';
     imports: [NgClass, TranslocoPipe]
 })
 export class LibraryTypeFilterComponent {
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
   @Input() types: string[] = []
   @Output() typesChange: EventEmitter<string[]> = new EventEmitter()
 
   typeList = LIBRARY_TYPE_LIST
-
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   toggle(name: string) {
     if (!this.isSelected(name)) {

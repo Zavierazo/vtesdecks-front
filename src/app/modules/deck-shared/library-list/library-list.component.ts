@@ -1,12 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
@@ -33,6 +26,10 @@ import { LibraryComponent } from '../library/library.component'
 ],
 })
 export class LibraryListComponent implements OnInit {
+  private libraryQuery = inject(LibraryQuery);
+  private mediaService = inject(MediaService);
+  private modalService = inject(NgbModal);
+
   static readonly libraryTypeOrder = [
     'Master',
     'Conviction',
@@ -64,12 +61,6 @@ export class LibraryListComponent implements OnInit {
   @Output() cardRemoved = new EventEmitter<number>()
 
   isMobileOrTablet$!: Observable<boolean>
-
-  constructor(
-    private libraryQuery: LibraryQuery,
-    private mediaService: MediaService,
-    private modalService: NgbModal,
-  ) {}
 
   ngOnInit() {
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()

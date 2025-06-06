@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, inject } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoDirective } from '@jsverse/transloco';
 
@@ -9,12 +9,12 @@ import { TranslocoDirective } from '@jsverse/transloco';
     imports: [TranslocoDirective]
 })
 export class ConfirmDialogComponent implements OnInit {
+  modal = inject(NgbActiveModal);
+
   @Input() title!: string
   @Input() message!: string
   @Input() okLabel = 'shared.ok'
   @Input() cancelLabel = 'shared.cancel'
-
-  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {}
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import { NgbModal, NgbOffcanvas, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem } from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
 import { ColorThemeService } from '../../../services/color-theme.service'
@@ -25,6 +25,13 @@ import { ThemeSelectorComponent } from '../theme-selector/theme-selector.compone
     imports: [TranslocoDirective, RouterLink, NgbCollapse, RouterLinkActive, IsLoggedDirective, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgxGoogleAnalyticsModule, NgbDropdownButtonItem, LangSelectorComponent, ThemeSelectorComponent, AsyncPipe]
 })
 export class HeaderComponent implements OnInit {
+  private modalService = inject(NgbModal);
+  private authQuery = inject(AuthQuery);
+  private authService = inject(AuthService);
+  private colorThemeService = inject(ColorThemeService);
+  private mediaService = inject(MediaService);
+  private offcanvasService = inject(NgbOffcanvas);
+
   isCollapsed = true
 
   displayName$!: Observable<string | undefined>
@@ -34,15 +41,6 @@ export class HeaderComponent implements OnInit {
   notificationUnreadCount$!: Observable<number | undefined>
 
   isMobile$ = this.mediaService.observeMobileOrTablet()
-
-  constructor(
-    private modalService: NgbModal,
-    private authQuery: AuthQuery,
-    private authService: AuthService,
-    private colorThemeService: ColorThemeService,
-    private mediaService: MediaService,
-    private offcanvasService: NgbOffcanvas,
-  ) {}
 
   ngOnInit(): void {
     this.displayName$ = this.authQuery.selectDisplayName()

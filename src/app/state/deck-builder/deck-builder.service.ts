@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { Observable, of, tap } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
@@ -10,13 +10,12 @@ import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
 @Injectable({ providedIn: 'root' })
 export class DeckBuilderService {
-  constructor(
-    private readonly store: DeckBuilderStore,
-    private readonly query: DeckBuilderQuery,
-    private readonly libraryQuery: LibraryQuery,
-    private readonly apiDataService: ApiDataService,
-    private readonly translocoService: TranslocoService,
-  ) {}
+  private readonly store = inject(DeckBuilderStore);
+  private readonly query = inject(DeckBuilderQuery);
+  private readonly libraryQuery = inject(LibraryQuery);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly translocoService = inject(TranslocoService);
+
 
   init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {
     this.store.reset()

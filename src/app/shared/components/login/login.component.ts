@@ -2,13 +2,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { ApiUser } from '../../../models/api-user'
 import { AuthService } from '../../../state/auth/auth.service'
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core'
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, inject } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { switchMap, Observable } from 'rxjs'
@@ -31,6 +25,12 @@ export enum Tabs {
     imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  activeModal = inject(NgbActiveModal);
+  private recaptchaV3Service = inject(ReCaptchaV3Service);
+  private authService = inject(AuthService);
+  private authQuery = inject(AuthQuery);
+  private toastService = inject(ToastService);
+
   @Input()
   tab = Tabs.Login
 
@@ -68,14 +68,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   forgotPasswordForm = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
   })
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private recaptchaV3Service: ReCaptchaV3Service,
-    private authService: AuthService,
-    private authQuery: AuthQuery,
-    private toastService: ToastService,
-  ) {}
 
   ngOnInit() {
     this.isLoading$ = this.authQuery.selectLoading()

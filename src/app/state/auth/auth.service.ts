@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
 import { Observable, catchError, of, switchMap, tap } from 'rxjs'
 import { ApiResponse } from '../../models/api-response'
@@ -11,11 +11,10 @@ import { AuthStore } from './auth.store'
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private readonly authStore: AuthStore,
-    private readonly apiDataService: ApiDataService,
-    private readonly jwtHelper: JwtHelperService,
-  ) {}
+  private readonly authStore = inject(AuthStore);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly jwtHelper = inject(JwtHelperService);
+
 
   readNotification(all?: boolean): void {
     const notificationCount = this.authStore.getValue().notificationCount

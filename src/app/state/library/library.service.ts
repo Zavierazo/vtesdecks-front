@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
@@ -15,14 +15,12 @@ import { LibraryQuery } from './library.query'
 import { LibraryState, LibraryStore } from './library.store'
 @Injectable({ providedIn: 'root' })
 export class LibraryService {
-  static readonly limit = 10
+  private readonly libraryQuery = inject(LibraryQuery);
+  private readonly libraryStore = inject(LibraryStore);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly translocoService = inject(TranslocoService);
 
-  constructor(
-    private readonly libraryQuery: LibraryQuery,
-    private readonly libraryStore: LibraryStore,
-    private readonly apiDataService: ApiDataService,
-    private readonly translocoService: TranslocoService,
-  ) {}
+  static readonly limit = 10
 
   getLibraryCards(): Observable<ApiLibrary[]> {
     const locale = this.translocoService.getActiveLang()

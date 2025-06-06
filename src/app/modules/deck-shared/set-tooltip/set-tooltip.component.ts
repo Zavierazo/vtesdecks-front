@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common'
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
@@ -15,18 +15,16 @@ import { ApiDataService } from './../../../services/api.data.service'
   imports: [NgClass, AsyncPipe],
 })
 export class SetTooltipComponent implements OnInit {
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly mediaService = inject(MediaService);
+
   @Input() cardId!: number
   @Input() set!: string
   @Input() proxySetOption$!: Observable<ApiProxyCardOption>
   isMobile$ = this.mediaService.observeMobile()
   name!: string
   releaseYear!: number
-
-  constructor(
-    private readonly apiDataService: ApiDataService,
-    private readonly translocoService: TranslocoService,
-    private readonly mediaService: MediaService,
-  ) {}
 
   ngOnInit() {
     const abbrev = this.set.split(':')[0]

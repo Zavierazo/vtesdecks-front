@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable, map } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from '../../models/api-clan-stat'
@@ -9,7 +9,8 @@ import { CryptStats, CryptStore } from './crypt.store'
   providedIn: 'root',
 })
 export class CryptQuery {
-  constructor(private readonly store: CryptStore) {}
+  private readonly store = inject(CryptStore);
+
 
   selectEntity(id: number): Observable<ApiCrypt | undefined> {
     return this.store.selectEntity(id)

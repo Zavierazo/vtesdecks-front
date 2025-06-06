@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
@@ -27,19 +22,17 @@ import { NgClass } from '@angular/common';
 ],
 })
 export class TableSeatingComponent implements OnInit {
+  activeModal = inject(NgbActiveModal);
+  private readonly localStorage = inject(LocalStorageService);
+  private readonly sessionStorage = inject(SessionStorageService);
+  private readonly cookieConsentService = inject(NgcCookieConsentService);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly fb = inject(FormBuilder);
+  private readonly cd = inject(ChangeDetectorRef);
+
   static readonly storeName = 'table-seating'
   form!: FormGroup
   tables: Array<Array<string>> = []
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private readonly localStorage: LocalStorageService,
-    private readonly sessionStorage: SessionStorageService,
-    private readonly cookieConsentService: NgcCookieConsentService,
-    private readonly translocoService: TranslocoService,
-    private readonly fb: FormBuilder,
-    private readonly cd: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({ players: this.fb.array([]) })

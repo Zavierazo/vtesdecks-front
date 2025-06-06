@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import {
   NavigationEnd,
   NavigationError,
@@ -27,20 +27,20 @@ import { isChristmas } from './utils/vtes-utils'
   imports: [HeaderComponent, RouterOutlet, FooterComponent, ToastsContainer],
 })
 export class AppComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly cookieConsentService = inject(NgcCookieConsentService);
+  private readonly router = inject(Router);
+  private readonly swUpdate = inject(SwUpdate);
+  private readonly modalService = inject(NgbModal);
+  private readonly apiDataService = inject(ApiDataService);
+  private readonly colorThemeService = inject(ColorThemeService);
+  private readonly googleAnalyticsService = inject(GoogleAnalyticsService);
+
   title = 'VTES Decks'
 
   versionAvailable = false
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly cookieConsentService: NgcCookieConsentService,
-    private readonly router: Router,
-    private readonly swUpdate: SwUpdate,
-    private readonly modalService: NgbModal,
-    private readonly apiDataService: ApiDataService,
-    private readonly colorThemeService: ColorThemeService,
-    private readonly googleAnalyticsService: GoogleAnalyticsService,
-  ) {
+  constructor() {
     this.colorThemeService.load()
   }
 

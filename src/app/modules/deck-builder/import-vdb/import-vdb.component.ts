@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
@@ -11,9 +11,9 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
     imports: [TranslocoDirective, ReactiveFormsModule, TranslocoPipe]
 })
 export class ImportVdbComponent implements OnInit {
-  form!: FormGroup
+  modal = inject(NgbActiveModal);
 
-  constructor(public modal: NgbActiveModal) {}
+  form!: FormGroup
 
   ngOnInit() {
     this.form = new FormGroup({

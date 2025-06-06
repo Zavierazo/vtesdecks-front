@@ -1,11 +1,5 @@
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, inject } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
@@ -54,6 +48,14 @@ import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.s
 ],
 })
 export class CryptBuilderComponent implements OnInit {
+  modal = inject(NgbActiveModal);
+  private readonly cryptQuery = inject(CryptQuery);
+  private readonly deckBuilderQuery = inject(DeckBuilderQuery);
+  private readonly deckBuilderService = inject(DeckBuilderService);
+  private readonly mediaService = inject(MediaService);
+  private readonly modalService = inject(NgbModal);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+
   private static readonly PAGE_SIZE = 20
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
@@ -73,16 +75,6 @@ export class CryptBuilderComponent implements OnInit {
   title!: string
   sect!: string
   taints!: string[]
-
-  constructor(
-    public modal: NgbActiveModal,
-    private readonly cryptQuery: CryptQuery,
-    private readonly deckBuilderQuery: DeckBuilderQuery,
-    private readonly deckBuilderService: DeckBuilderService,
-    private readonly mediaService: MediaService,
-    private readonly modalService: NgbModal,
-    private readonly changeDetector: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()

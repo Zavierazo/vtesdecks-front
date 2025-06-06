@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoService, TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -31,6 +26,11 @@ import { NgClass, AsyncPipe } from '@angular/common';
 ],
 })
 export class ProfileComponent implements OnInit {
+  private authQuery = inject(AuthQuery);
+  private authService = inject(AuthService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private translocoService = inject(TranslocoService);
+
   email$!: Observable<string | undefined>
 
   displayName$!: Observable<string | undefined>
@@ -42,13 +42,6 @@ export class ProfileComponent implements OnInit {
   message!: string | undefined
 
   successful!: boolean
-
-  constructor(
-    private authQuery: AuthQuery,
-    private authService: AuthService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private translocoService: TranslocoService,
-  ) {}
 
   ngOnInit() {
     this.email$ = this.authQuery.selectEmail()

@@ -1,14 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, inject } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -39,6 +31,8 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
 ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
+  private libraryQuery = inject(LibraryQuery);
+
   @Input() limitedFormat?: boolean
   @Output() limitedFormatChange: EventEmitter<boolean> = new EventEmitter()
   @Input() printOnDemand?: boolean
@@ -73,8 +67,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   taints$!: Observable<string[]>
   maxCapacity!: number
   maxGroup!: number
-
-  constructor(private libraryQuery: LibraryQuery) {}
 
   ngOnInit() {
     this.sects$ = this.libraryQuery.selectSects()

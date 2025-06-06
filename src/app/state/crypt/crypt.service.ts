@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
@@ -15,14 +15,12 @@ import { CryptQuery } from './crypt.query'
 import { CryptState, CryptStore } from './crypt.store'
 @Injectable({ providedIn: 'root' })
 export class CryptService {
-  static readonly limit = 10
+  private cryptQuery = inject(CryptQuery);
+  private cryptStore = inject(CryptStore);
+  private apiDataService = inject(ApiDataService);
+  private translocoService = inject(TranslocoService);
 
-  constructor(
-    private cryptQuery: CryptQuery,
-    private cryptStore: CryptStore,
-    private apiDataService: ApiDataService,
-    private translocoService: TranslocoService,
-  ) {}
+  static readonly limit = 10
 
   getCryptCards(): Observable<ApiCrypt[]> {
     const locale = this.translocoService.getActiveLang()

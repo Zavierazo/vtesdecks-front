@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, inject } from '@angular/core'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ChartConfiguration, ChartData } from 'chart.js'
 import { tap } from 'rxjs'
@@ -23,14 +17,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
     imports: [BaseChartDirective, NgbCollapse, NgClass, TranslocoPipe]
 })
 export class LineChartComponent implements OnInit, OnChanges {
+  private readonly mediaService = inject(MediaService);
+
   @Input() title!: string
   @Input() labels: number[] = []
   @Input() range: number[] = [0, 0]
   @Input() statistics!: ApiHistoricStatistic[]
 
   isTableCollapsed = true
-
-  constructor(private readonly mediaService: MediaService) {}
 
   data: ChartData<'line', number[], string | string[]> = {
     labels: [],
