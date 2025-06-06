@@ -1,6 +1,11 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
+import { AsyncPipe } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -32,13 +37,13 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component'
     LineChartComponent,
     BarChartComponent,
     RadarChartComponent,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class StatisticsComponent implements OnInit {
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly formBuilder = inject(FormBuilder)
 
   currentYear = new Date().getFullYear()
   years = this.range(1998, this.currentYear)

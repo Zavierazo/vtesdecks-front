@@ -1,5 +1,12 @@
-import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, inject } from '@angular/core'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  inject,
+} from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
@@ -44,17 +51,17 @@ import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.s
     CryptComponent,
     CryptBuilderFilterComponent,
     AsyncPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class CryptBuilderComponent implements OnInit {
-  modal = inject(NgbActiveModal);
-  private readonly cryptQuery = inject(CryptQuery);
-  private readonly deckBuilderQuery = inject(DeckBuilderQuery);
-  private readonly deckBuilderService = inject(DeckBuilderService);
-  private readonly mediaService = inject(MediaService);
-  private readonly modalService = inject(NgbModal);
-  private readonly changeDetector = inject(ChangeDetectorRef);
+  modal = inject(NgbActiveModal)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly deckBuilderQuery = inject(DeckBuilderQuery)
+  private readonly deckBuilderService = inject(DeckBuilderService)
+  private readonly mediaService = inject(MediaService)
+  private readonly modalService = inject(NgbModal)
+  private readonly changeDetector = inject(ChangeDetectorRef)
 
   private static readonly PAGE_SIZE = 20
   nameFormControl = new FormControl('')

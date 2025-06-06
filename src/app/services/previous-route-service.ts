@@ -6,13 +6,13 @@ import { Router, NavigationEnd } from '@angular/router'
   providedIn: 'root',
 })
 export class PreviousRouteService {
-  private router = inject(Router);
-  private _document = inject(DOCUMENT);
+  private router = inject(Router)
+  private _document = inject(DOCUMENT)
 
   private history: string[] = []
 
   constructor() {
-    const router = this.router;
+    const router = this.router
 
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

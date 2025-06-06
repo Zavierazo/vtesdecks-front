@@ -2,15 +2,30 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { ApiUser } from '../../../models/api-user'
 import { AuthService } from '../../../state/auth/auth.service'
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, inject } from '@angular/core'
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms'
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core'
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { switchMap, Observable } from 'rxjs'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ToastService } from '../../../services/toast.service'
 import { ApiResponse } from '../../../models/api-response'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { AsyncPipe } from '@angular/common';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { AsyncPipe } from '@angular/common'
 
 export enum Tabs {
   Login,
@@ -19,17 +34,17 @@ export enum Tabs {
 }
 @UntilDestroy()
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe],
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
-  activeModal = inject(NgbActiveModal);
-  private recaptchaV3Service = inject(ReCaptchaV3Service);
-  private authService = inject(AuthService);
-  private authQuery = inject(AuthQuery);
-  private toastService = inject(ToastService);
+  activeModal = inject(NgbActiveModal)
+  private recaptchaV3Service = inject(ReCaptchaV3Service)
+  private authService = inject(AuthService)
+  private authQuery = inject(AuthQuery)
+  private toastService = inject(ToastService)
 
   @Input()
   tab = Tabs.Login

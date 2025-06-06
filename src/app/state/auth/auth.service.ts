@@ -11,10 +11,9 @@ import { AuthStore } from './auth.store'
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly authStore = inject(AuthStore);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly jwtHelper = inject(JwtHelperService);
-
+  private readonly authStore = inject(AuthStore)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly jwtHelper = inject(JwtHelperService)
 
   readNotification(all?: boolean): void {
     const notificationCount = this.authStore.getValue().notificationCount

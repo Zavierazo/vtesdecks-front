@@ -15,9 +15,9 @@ import { ApiDataService } from './../../../services/api.data.service'
   imports: [NgClass, AsyncPipe],
 })
 export class SetTooltipComponent implements OnInit {
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly translocoService = inject(TranslocoService);
-  private readonly mediaService = inject(MediaService);
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly mediaService = inject(MediaService)
 
   @Input() cardId!: number
   @Input() set!: string

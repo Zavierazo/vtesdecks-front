@@ -7,8 +7,7 @@ import { AuthStore } from './auth.store'
   providedIn: 'root',
 })
 export class AuthQuery {
-  private readonly store = inject(AuthStore);
-
+  private readonly store = inject(AuthStore)
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

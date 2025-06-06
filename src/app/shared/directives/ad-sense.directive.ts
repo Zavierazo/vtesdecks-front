@@ -8,9 +8,8 @@ let uniqueId = 0
   standalone: true,
 })
 export class AdSenseDirective implements AfterViewInit {
-  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly document = inject<Document>(DOCUMENT);
-
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly document = inject<Document>(DOCUMENT)
 
   ngAfterViewInit() {
     const hostElement = this.el.nativeElement

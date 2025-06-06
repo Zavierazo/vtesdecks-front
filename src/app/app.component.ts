@@ -27,14 +27,14 @@ import { isChristmas } from './utils/vtes-utils'
   imports: [HeaderComponent, RouterOutlet, FooterComponent, ToastsContainer],
 })
 export class AppComponent implements OnInit {
-  private readonly authService = inject(AuthService);
-  private readonly cookieConsentService = inject(NgcCookieConsentService);
-  private readonly router = inject(Router);
-  private readonly swUpdate = inject(SwUpdate);
-  private readonly modalService = inject(NgbModal);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly colorThemeService = inject(ColorThemeService);
-  private readonly googleAnalyticsService = inject(GoogleAnalyticsService);
+  private readonly authService = inject(AuthService)
+  private readonly cookieConsentService = inject(NgcCookieConsentService)
+  private readonly router = inject(Router)
+  private readonly swUpdate = inject(SwUpdate)
+  private readonly modalService = inject(NgbModal)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly colorThemeService = inject(ColorThemeService)
+  private readonly googleAnalyticsService = inject(GoogleAnalyticsService)
 
   title = 'VTES Decks'
 

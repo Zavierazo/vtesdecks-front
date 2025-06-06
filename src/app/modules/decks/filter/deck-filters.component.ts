@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, output, viewChild } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+  output,
+  viewChild,
+} from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -58,14 +66,14 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
   ],
 })
 export class DeckFiltersComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly decksQuery = inject(DecksQuery);
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly changeDetector = inject(ChangeDetectorRef);
-  private readonly apiDataService = inject(ApiDataService);
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly formBuilder = inject(FormBuilder)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly apiDataService = inject(ApiDataService)
 
-  readonly resetFilters = output<void>();
+  readonly resetFilters = output<void>()
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
@@ -74,8 +82,8 @@ export class DeckFiltersComponent implements OnInit {
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
 
-  readonly cardFilter = viewChild.required<CardFilterComponent>('cardFilter');
-  readonly tagsTypeahead = viewChild.required<NgbTypeahead>('tagsTypeahead');
+  readonly cardFilter = viewChild.required<CardFilterComponent>('cardFilter')
+  readonly tagsTypeahead = viewChild.required<NgbTypeahead>('tagsTypeahead')
 
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()

@@ -15,10 +15,9 @@ import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
   providedIn: 'root',
 })
 export class DeckBuilderQuery {
-  private readonly store = inject(DeckBuilderStore);
-  private libraryQuery = inject(LibraryQuery);
-  private cryptQuery = inject(CryptQuery);
-
+  private readonly store = inject(DeckBuilderStore)
+  private libraryQuery = inject(LibraryQuery)
+  private cryptQuery = inject(CryptQuery)
 
   selectDeckId(): Observable<string | undefined> {
     return this.store.select((state) => state.id)

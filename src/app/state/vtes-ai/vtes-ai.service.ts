@@ -8,9 +8,8 @@ import { VtesAiStore } from './vtes-ai.store'
   providedIn: 'root',
 })
 export class VtesAiService {
-  private readonly store = inject(VtesAiStore);
-  private readonly apiDataService = inject(ApiDataService);
-
+  private readonly store = inject(VtesAiStore)
+  private readonly apiDataService = inject(ApiDataService)
 
   init() {
     this.store.setLoading()

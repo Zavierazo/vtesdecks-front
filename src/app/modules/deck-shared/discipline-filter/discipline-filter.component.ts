@@ -1,24 +1,31 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject, output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  inject,
+  output,
+} from '@angular/core'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
-import { NgClass } from '@angular/common';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { NgClass } from '@angular/common'
+import { TranslocoPipe } from '@jsverse/transloco'
 
 @Component({
-    selector: 'app-discipline-filter',
-    templateUrl: './discipline-filter.component.html',
-    styleUrls: ['./discipline-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, TranslocoPipe]
+  selector: 'app-discipline-filter',
+  templateUrl: './discipline-filter.component.html',
+  styleUrls: ['./discipline-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, TranslocoPipe],
 })
 export class DisciplineFilterComponent {
-  private changeDetectorRef = inject(ChangeDetectorRef);
+  private changeDetectorRef = inject(ChangeDetectorRef)
 
   @Input() showNotRequired: boolean = false
   @Input() showSuperior: boolean = true
   @Input() disciplines: string[] = []
-  readonly disciplinesChange = output<string[]>();
+  readonly disciplinesChange = output<string[]>()
   @Input() superiorDisciplines: string[] = []
-  readonly superiorDisciplinesChange = output<string[]>();
+  readonly superiorDisciplinesChange = output<string[]>()
 
   disciplineList = DISCIPLINE_LIST
 

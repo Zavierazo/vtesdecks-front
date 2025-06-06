@@ -4,8 +4,7 @@ import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 
 @Pipe({ name: 'libraryTypeTransloco' })
 export class LibraryTypeTranslocoPipe implements PipeTransform {
-  private translocoService = inject(TranslocoService);
-
+  private translocoService = inject(TranslocoService)
 
   transform(type: string): string {
     return type

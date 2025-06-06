@@ -1,20 +1,25 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
 import { MediaService } from '../../../services/media.service'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { Theme } from '../../../models/theme'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { TranslocoDirective } from '@jsverse/transloco'
+import { NgClass, AsyncPipe } from '@angular/common'
 
 @Component({
-    selector: 'app-theme-selector',
-    templateUrl: './theme-selector.component.html',
-    styleUrls: ['./theme-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgClass, AsyncPipe]
+  selector: 'app-theme-selector',
+  templateUrl: './theme-selector.component.html',
+  styleUrls: ['./theme-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoDirective, NgClass, AsyncPipe],
 })
 export class ThemeSelectorComponent {
-  private colorThemeService = inject(ColorThemeService);
-  private mediaService = inject(MediaService);
+  private colorThemeService = inject(ColorThemeService)
+  private mediaService = inject(MediaService)
 
   isMobile$ = this.mediaService.observeMobileOrTablet()
   theme = this.colorThemeService.currentTheme()

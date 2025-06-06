@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -18,9 +24,9 @@ import { AuthQuery } from './../../state/auth/auth.query'
   imports: [TranslocoDirective, ReactiveFormsModule, TranslocoPipe],
 })
 export class ContactComponent implements OnInit {
-  private readonly authQuery = inject(AuthQuery);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly authQuery = inject(AuthQuery)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
   form!: FormGroup
 

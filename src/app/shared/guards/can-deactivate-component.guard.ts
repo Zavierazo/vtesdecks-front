@@ -12,9 +12,8 @@ export interface ComponentCanDeactivate {
   providedIn: 'root',
 })
 export class CanDeactivateComponent {
-  private readonly modalService = inject(NgbModal);
-  private readonly translocoService = inject(TranslocoService);
-
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
 
   canDeactivate(
     component: ComponentCanDeactivate,

@@ -3,8 +3,7 @@ import { TranslocoService } from '@jsverse/transloco'
 
 @Pipe({ name: 'dateAsAgo' })
 export class DateAsAgoPipe implements PipeTransform {
-  private translocoService = inject(TranslocoService);
-
+  private translocoService = inject(TranslocoService)
 
   transform(value: any): string {
     if (!value) {

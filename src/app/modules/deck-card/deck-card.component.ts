@@ -27,12 +27,12 @@ import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
   ],
 })
 export class DeckCardComponent implements OnInit {
-  private mediaService = inject(MediaService);
+  private mediaService = inject(MediaService)
 
   @Input() deck!: ApiDeck
   @Input() height = 'auto'
 
-  readonly tagClick = output<string>();
+  readonly tagClick = output<string>()
 
   isMobileOrTablet = false
 

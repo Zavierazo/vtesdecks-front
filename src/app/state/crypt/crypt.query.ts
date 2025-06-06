@@ -9,8 +9,7 @@ import { CryptStats, CryptStore } from './crypt.store'
   providedIn: 'root',
 })
 export class CryptQuery {
-  private readonly store = inject(CryptStore);
-
+  private readonly store = inject(CryptStore)
 
   selectEntity(id: number): Observable<ApiCrypt | undefined> {
     return this.store.selectEntity(id)

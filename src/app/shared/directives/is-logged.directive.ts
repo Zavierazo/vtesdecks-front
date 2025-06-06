@@ -1,15 +1,22 @@
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy'
-import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core'
+import {
+  ChangeDetectorRef,
+  Directive,
+  Input,
+  TemplateRef,
+  ViewContainerRef,
+  inject,
+} from '@angular/core'
 import { tap } from 'rxjs'
 import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
 @Directive({ selector: '[isLogged]' })
 export class IsLoggedDirective {
-  private authQuery = inject(AuthQuery);
-  private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
-  private viewContainer = inject(ViewContainerRef);
-  private changes = inject(ChangeDetectorRef);
+  private authQuery = inject(AuthQuery)
+  private templateRef = inject<TemplateRef<unknown>>(TemplateRef)
+  private viewContainer = inject(ViewContainerRef)
+  private changes = inject(ChangeDetectorRef)
 
   private hasView = false
 

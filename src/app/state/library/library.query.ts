@@ -9,8 +9,7 @@ import { LibraryStats, LibraryStore } from './library.store'
   providedIn: 'root',
 })
 export class LibraryQuery {
-  private readonly store = inject(LibraryStore);
-
+  private readonly store = inject(LibraryStore)
 
   selectEntity(id: number): Observable<ApiLibrary | undefined> {
     return this.store.selectEntity(id)

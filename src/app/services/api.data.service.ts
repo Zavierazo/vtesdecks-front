@@ -32,8 +32,8 @@ import { SessionStorageService } from './session-storage.service'
   providedIn: 'root',
 })
 export class ApiDataService {
-  private httpClient = inject(HttpClient);
-  private sessionStorageService = inject(SessionStorageService);
+  private httpClient = inject(HttpClient)
+  private sessionStorageService = inject(SessionStorageService)
 
   private readonly loginPath = '/auth/login'
   private readonly registerPath = '/auth/create'

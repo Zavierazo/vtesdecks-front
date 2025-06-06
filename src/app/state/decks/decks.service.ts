@@ -8,8 +8,8 @@ import { DecksState, DecksStore } from './decks.store'
   providedIn: 'root',
 })
 export class DecksService {
-  private readonly decksStore = inject(DecksStore);
-  private readonly apiDataService = inject(ApiDataService);
+  private readonly decksStore = inject(DecksStore)
+  private readonly apiDataService = inject(ApiDataService)
 
   static readonly initLimit = 20
   static readonly limit = 10

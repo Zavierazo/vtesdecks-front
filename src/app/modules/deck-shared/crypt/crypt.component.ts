@@ -1,5 +1,13 @@
 import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
-import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit, inject, output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  inject,
+  output,
+} from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -28,9 +36,9 @@ import drawProbability from '../../../utils/draw-probability'
   ],
 })
 export class CryptComponent implements OnInit {
-  private cryptQuery = inject(CryptQuery);
-  private cryptService = inject(CryptService);
-  private mediaService = inject(MediaService);
+  private cryptQuery = inject(CryptQuery)
+  private cryptService = inject(CryptService)
+  private mediaService = inject(MediaService)
 
   @Input() card!: ApiCard
 
@@ -48,9 +56,9 @@ export class CryptComponent implements OnInit {
 
   @Input() overrideImage?: string | null
 
-  readonly cardAdded = output<number>();
+  readonly cardAdded = output<number>()
 
-  readonly cardRemoved = output<number>();
+  readonly cardRemoved = output<number>()
 
   crypt$!: Observable<ApiCrypt | undefined>
 

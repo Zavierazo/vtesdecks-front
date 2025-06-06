@@ -25,7 +25,7 @@ const initialState: LibraryState = {}
   providedIn: 'root',
 })
 export class LibraryStore {
-  private readonly localStorage = inject(LocalStorageService);
+  private readonly localStorage = inject(LocalStorageService)
 
   static readonly stateStoreName = 'library_v1_state'
   static readonly entitiesStoreName = 'library_v1_entities'

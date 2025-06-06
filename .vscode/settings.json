@@ -15,5 +15,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.requireConfig": true,
-  "prettier.ignorePath": ".gitignore",
+  "prettier.ignorePath": ".gitignore"
 }

@@ -1,7 +1,19 @@
 import { ApiDataService } from './../../services/api.data.service'
 import { LocalStorageService } from './../../services/local-storage.service'
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
-import { NgbTypeaheadSelectItemEvent, NgbTooltip, NgbHighlight, NgbTypeahead, NgbRating } from '@ng-bootstrap/ng-bootstrap'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
+import {
+  NgbTypeaheadSelectItemEvent,
+  NgbTooltip,
+  NgbHighlight,
+  NgbTypeahead,
+  NgbRating,
+} from '@ng-bootstrap/ng-bootstrap'
 import {
   combineLatest,
   distinctUntilChanged,
@@ -19,25 +31,32 @@ import { CryptService } from '../../state/crypt/crypt.service'
 import { ActivatedRoute } from '@angular/router'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiCardToday } from '../../models/api-card-today'
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco'
 
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-vtesdle',
-    templateUrl: './vtesdle.component.html',
-    styleUrls: ['./vtesdle.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, NgbTooltip, LoadingComponent, NgbHighlight, NgbTypeahead, NgbRating]
+  selector: 'app-vtesdle',
+  templateUrl: './vtesdle.component.html',
+  styleUrls: ['./vtesdle.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    NgbTooltip,
+    LoadingComponent,
+    NgbHighlight,
+    NgbTypeahead,
+    NgbRating,
+  ],
 })
 export class VtesdleComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private localStorageService = inject(LocalStorageService);
-  private apiDataService = inject(ApiDataService);
-  private cryptService = inject(CryptService);
-  private cryptQuery = inject(CryptQuery);
-  private changeDetectorRef = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute)
+  private localStorageService = inject(LocalStorageService)
+  private apiDataService = inject(ApiDataService)
+  private cryptService = inject(CryptService)
+  private cryptQuery = inject(CryptQuery)
+  private changeDetectorRef = inject(ChangeDetectorRef)
 
   maxLives = 6
   infiniteMode = false

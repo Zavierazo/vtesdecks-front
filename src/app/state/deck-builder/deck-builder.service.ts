@@ -10,12 +10,11 @@ import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
 @Injectable({ providedIn: 'root' })
 export class DeckBuilderService {
-  private readonly store = inject(DeckBuilderStore);
-  private readonly query = inject(DeckBuilderQuery);
-  private readonly libraryQuery = inject(LibraryQuery);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly translocoService = inject(TranslocoService);
-
+  private readonly store = inject(DeckBuilderStore)
+  private readonly query = inject(DeckBuilderQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly translocoService = inject(TranslocoService)
 
   init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {
     this.store.reset()

@@ -7,8 +7,7 @@ import { DeckState, DeckStore } from './deck.store'
   providedIn: 'root',
 })
 export class DeckQuery {
-  private readonly store = inject(DeckStore);
-
+  private readonly store = inject(DeckStore)
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

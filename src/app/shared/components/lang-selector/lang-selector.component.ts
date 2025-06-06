@@ -5,16 +5,22 @@ import { MediaService } from '../../../services/media.service'
 import { CryptService } from '../../../state/crypt/crypt.service'
 import { LibraryService } from '../../../state/library/library.service'
 import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
-import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownButtonItem, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap';
-import { NgClass, AsyncPipe } from '@angular/common';
+import {
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+} from '@ng-bootstrap/ng-bootstrap'
+import { NgClass, AsyncPipe } from '@angular/common'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-lang-selector',
-    templateUrl: './lang-selector.component.html',
-    styleUrls: ['./lang-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
+  selector: 'app-lang-selector',
+  templateUrl: './lang-selector.component.html',
+  styleUrls: ['./lang-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
     TranslocoDirective,
     NgbDropdown,
     NgbDropdownToggle,
@@ -22,14 +28,14 @@ import { NgClass, AsyncPipe } from '@angular/common';
     NgbDropdownButtonItem,
     NgbDropdownItem,
     NgClass,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
 export class LangSelectorComponent {
-  private translocoService = inject(TranslocoService);
-  private mediaService = inject(MediaService);
-  private libraryService = inject(LibraryService);
-  private cryptService = inject(CryptService);
+  private translocoService = inject(TranslocoService)
+  private mediaService = inject(MediaService)
+  private libraryService = inject(LibraryService)
+  private cryptService = inject(CryptService)
 
   isMobile$ = this.mediaService.observeMobileOrTablet()
 

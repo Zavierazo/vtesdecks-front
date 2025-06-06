@@ -1,6 +1,14 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, inject, output } from '@angular/core'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  inject,
+  output,
+} from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -27,32 +35,32 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
-  private libraryQuery = inject(LibraryQuery);
+  private libraryQuery = inject(LibraryQuery)
 
   @Input() limitedFormat?: boolean
-  readonly limitedFormatChange = output<boolean>();
+  readonly limitedFormatChange = output<boolean>()
   @Input() printOnDemand?: boolean
-  readonly printOnDemandChange = output<boolean>();
+  readonly printOnDemandChange = output<boolean>()
   @Input() types!: string[]
-  readonly typesChange = output<string[]>();
+  readonly typesChange = output<string[]>()
   @Input() clans!: string[]
-  readonly clansChange = output<string[]>();
+  readonly clansChange = output<string[]>()
   @Input() disciplines!: string[]
-  readonly disciplinesChange = output<string[]>();
+  readonly disciplinesChange = output<string[]>()
   @Input() sect!: string
-  readonly sectChange = output<string>();
+  readonly sectChange = output<string>()
   @Input() title!: string
-  readonly titleChange = output<string>();
+  readonly titleChange = output<string>()
   @Input() bloodCostSlider!: number[]
-  readonly bloodCostSliderChange = output<number[]>();
+  readonly bloodCostSliderChange = output<number[]>()
   @Input() poolCostSlider!: number[]
-  readonly poolCostSliderChange = output<number[]>();
+  readonly poolCostSliderChange = output<number[]>()
   @Input() taints!: string[]
-  readonly taintsChange = output<string[]>();
+  readonly taintsChange = output<string[]>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl

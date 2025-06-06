@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, signal, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  signal,
+  inject,
+} from '@angular/core'
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import {
   TranslocoDirective,
@@ -45,10 +52,10 @@ export interface ApiProxyItem {
   ],
 })
 export class PrintProxyComponent implements OnInit {
-  modal = inject(NgbActiveModal);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly toastService = inject(ToastService);
-  private readonly translocoService = inject(TranslocoService);
+  modal = inject(NgbActiveModal)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly toastService = inject(ToastService)
+  private readonly translocoService = inject(TranslocoService)
 
   @Input() title?: string
   @Input() cards!: ApiCard[]

@@ -1,6 +1,12 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'
+import { AsyncPipe, NgClass } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -70,22 +76,22 @@ import { fromUrl } from './limited-format/limited-format-utils'
     CryptComponent,
     LibraryListComponent,
     AsyncPipe,
-    TranslocoPipe
-],
+    TranslocoPipe,
+  ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-  private readonly deckBuilderQuery = inject(DeckBuilderQuery);
-  private readonly deckBuilderService = inject(DeckBuilderService);
-  private readonly libraryService = inject(LibraryService);
-  private readonly cryptService = inject(CryptService);
-  private readonly toastService = inject(ToastService);
-  private readonly modalService = inject(NgbModal);
-  private readonly changeDetector = inject(ChangeDetectorRef);
-  private readonly clipboard = inject(Clipboard);
-  private readonly translocoService = inject(TranslocoService);
-  private readonly apiDataService = inject(ApiDataService);
+  private readonly router = inject(Router)
+  private readonly route = inject(ActivatedRoute)
+  private readonly deckBuilderQuery = inject(DeckBuilderQuery)
+  private readonly deckBuilderService = inject(DeckBuilderService)
+  private readonly libraryService = inject(LibraryService)
+  private readonly cryptService = inject(CryptService)
+  private readonly toastService = inject(ToastService)
+  private readonly modalService = inject(NgbModal)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly clipboard = inject(Clipboard)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly apiDataService = inject(ApiDataService)
 
   form!: FormGroup
   deckId$!: Observable<string | undefined>

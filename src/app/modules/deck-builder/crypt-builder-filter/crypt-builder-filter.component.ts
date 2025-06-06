@@ -1,6 +1,14 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, inject, output } from '@angular/core'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  inject,
+  output,
+} from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -24,32 +32,32 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
     NgxSliderModule,
     AsyncPipe,
     TitleCasePipe,
-    TranslocoFallbackPipe
-],
+    TranslocoFallbackPipe,
+  ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
-  private cryptQuery = inject(CryptQuery);
+  private cryptQuery = inject(CryptQuery)
 
   @Input() limitedFormat?: boolean
-  readonly limitedFormatChange = output<boolean>();
+  readonly limitedFormatChange = output<boolean>()
   @Input() printOnDemand?: boolean
-  readonly printOnDemandChange = output<boolean>();
+  readonly printOnDemandChange = output<boolean>()
   @Input() clans!: string[]
-  readonly clansChange = output<string[]>();
+  readonly clansChange = output<string[]>()
   @Input() disciplines!: string[]
-  readonly disciplinesChange = output<string[]>();
+  readonly disciplinesChange = output<string[]>()
   @Input() superiorDisciplines!: string[]
-  readonly superiorDisciplinesChange = output<string[]>();
+  readonly superiorDisciplinesChange = output<string[]>()
   @Input() groupSlider!: number[]
-  readonly groupSliderChange = output<number[]>();
+  readonly groupSliderChange = output<number[]>()
   @Input() capacitySlider!: number[]
-  readonly capacitySliderChange = output<number[]>();
+  readonly capacitySliderChange = output<number[]>()
   @Input() title!: string
-  readonly titleChange = output<string>();
+  readonly titleChange = output<string>()
   @Input() sect!: string
-  readonly sectChange = output<string>();
+  readonly sectChange = output<string>()
   @Input() taints!: string[]
-  readonly taintsChange = output<string[]>();
+  readonly taintsChange = output<string[]>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl

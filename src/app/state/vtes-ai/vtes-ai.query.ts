@@ -5,8 +5,7 @@ import { AiChat, VtesAiStore } from './vtes-ai.store'
   providedIn: 'root',
 })
 export class VtesAiQuery {
-  private readonly store = inject(VtesAiStore);
-
+  private readonly store = inject(VtesAiStore)
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

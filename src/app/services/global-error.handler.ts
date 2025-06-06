@@ -6,7 +6,7 @@ import { ApiDataService } from './api.data.service'
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private readonly injector = inject(Injector);
+  private readonly injector = inject(Injector)
 
   // Sentry Error Handler
   private readonly sentryErrorHandler = Sentry.createErrorHandler({

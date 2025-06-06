@@ -12,7 +12,7 @@ import { ApiDataService } from './../../services/api.data.service'
   imports: [TranslocoDirective, AsyncPipe],
 })
 export class ChangelogComponent implements OnInit {
-  private readonly apiDataService = inject(ApiDataService);
+  private readonly apiDataService = inject(ApiDataService)
 
   changelog$!: Observable<ApiChangelog[]>
 

@@ -1,5 +1,15 @@
 import { AsyncPipe } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChildren, inject, viewChild } from '@angular/core'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  TemplateRef,
+  ViewChildren,
+  inject,
+  viewChild,
+} from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -29,10 +39,10 @@ import { VtesAiService } from '../../state/vtes-ai/vtes-ai.service'
   ],
 })
 export class VtesAiComponent implements OnInit, AfterViewInit {
-  private readonly service = inject(VtesAiService);
-  private readonly query = inject(VtesAiQuery);
-  private readonly offcanvasService = inject(NgbOffcanvas);
-  private readonly mediaService = inject(MediaService);
+  private readonly service = inject(VtesAiService)
+  private readonly query = inject(VtesAiQuery)
+  private readonly offcanvasService = inject(NgbOffcanvas)
+  private readonly mediaService = inject(MediaService)
 
   chats$ = this.query.selectEntities()
   activeChat$ = this.query.selectActiveChat()
@@ -43,7 +53,7 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
     question: new FormControl('', Validators.minLength(3)),
   })
 
-  readonly scrollFrame = viewChild.required<ElementRef>('scrollFrame');
+  readonly scrollFrame = viewChild.required<ElementRef>('scrollFrame')
   @ViewChildren('item') itemElements!: QueryList<any>
   private scrollContainer: any
 

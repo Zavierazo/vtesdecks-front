@@ -6,8 +6,8 @@ import { map, merge, Observable, Observer, startWith } from 'rxjs'
   providedIn: 'root',
 })
 export class MediaService {
-  private media = inject(MediaMatcher);
-  private zone = inject(NgZone);
+  private media = inject(MediaMatcher)
+  private zone = inject(NgZone)
 
   private readonly mobileMediaQuery = '(max-width: 767px)'
   private readonly tabletMediaQuery = '(max-width: 1023px)'

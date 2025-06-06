@@ -1,5 +1,11 @@
 import { AsyncPipe } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -33,9 +39,9 @@ import { CommentComponent } from './comment/comment.component'
   ],
 })
 export class CommentsComponent implements OnInit {
-  private readonly authQuery = inject(AuthQuery);
-  private readonly commentsQuery = inject(CommentsQuery);
-  private readonly commentsService = inject(CommentsService);
+  private readonly authQuery = inject(AuthQuery)
+  private readonly commentsQuery = inject(CommentsQuery)
+  private readonly commentsService = inject(CommentsService)
 
   @Input() deckId!: string
 

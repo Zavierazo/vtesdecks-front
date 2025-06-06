@@ -11,7 +11,7 @@ export class ColorThemeService {
   enabled = true
 
   constructor() {
-    const rendererFactory = inject(RendererFactory2);
+    const rendererFactory = inject(RendererFactory2)
 
     this.renderer = rendererFactory.createRenderer(null, null)
   }

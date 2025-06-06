@@ -6,8 +6,7 @@ import { CommentsStore } from './comments.store'
   providedIn: 'root',
 })
 export class CommentsQuery {
-  private readonly store = inject(CommentsStore);
-
+  private readonly store = inject(CommentsStore)
 
   selectLoading(): Observable<boolean> {
     return this.store.selectLoading()

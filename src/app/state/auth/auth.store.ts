@@ -12,9 +12,9 @@ const initialState: ApiUser = {}
   providedIn: 'root',
 })
 export class AuthStore {
-  private readonly localStorage = inject(LocalStorageService);
-  private readonly sessionStorage = inject(SessionStorageService);
-  private readonly cookieConsentService = inject(NgcCookieConsentService);
+  private readonly localStorage = inject(LocalStorageService)
+  private readonly sessionStorage = inject(SessionStorageService)
+  private readonly cookieConsentService = inject(NgcCookieConsentService)
 
   static readonly storeName = 'auth'
   private readonly state = signal<ApiUser>(initialState)

@@ -4,8 +4,7 @@ import { CLAN_LIST } from '../../../utils/clans'
 
 @Pipe({ name: 'clanTransloco' })
 export class ClanTranslocoPipe implements PipeTransform {
-  private translocoService = inject(TranslocoService);
-
+  private translocoService = inject(TranslocoService)
 
   transform(value: string): string {
     const clan = CLAN_LIST.find((d) => d.name === value)

@@ -1,5 +1,12 @@
 import { AsyncPipe, NgClass } from '@angular/common'
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
@@ -47,15 +54,15 @@ import { LibraryService } from './../../../../state/library/library.service'
   ],
 })
 export class CardFilterComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly decksQuery = inject(DecksQuery);
-  private readonly cryptService = inject(CryptService);
-  private readonly cryptQuery = inject(CryptQuery);
-  private readonly libraryService = inject(LibraryService);
-  private readonly libraryQuery = inject(LibraryQuery);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  private readonly mediaService = inject(MediaService);
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly cryptService = inject(CryptService)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryService = inject(LibraryService)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly mediaService = inject(MediaService)
 
   @Input() showStarVampireFilter = true
 

@@ -15,10 +15,10 @@ import { LibraryQuery } from './library.query'
 import { LibraryState, LibraryStore } from './library.store'
 @Injectable({ providedIn: 'root' })
 export class LibraryService {
-  private readonly libraryQuery = inject(LibraryQuery);
-  private readonly libraryStore = inject(LibraryStore);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly translocoService = inject(TranslocoService);
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly libraryStore = inject(LibraryStore)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly translocoService = inject(TranslocoService)
 
   static readonly limit = 10
 

@@ -167,7 +167,13 @@ const routes: Routes = [
         (m) => m.VTES_AI_ROUTES,
       ),
   },
-  { path: '**', loadComponent: () => import('./app/shared/components/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }, // Wildcard route for a 404 page
+  {
+    path: '**',
+    loadComponent: () =>
+      import(
+        './app/shared/components/page-not-found/page-not-found.component'
+      ).then((m) => m.PageNotFoundComponent),
+  }, // Wildcard route for a 404 page
 ]
 
 if (environment.production) {

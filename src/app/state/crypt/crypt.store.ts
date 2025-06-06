@@ -25,7 +25,7 @@ const initialState: CryptState = {}
   providedIn: 'root',
 })
 export class CryptStore {
-  private readonly localStorage = inject(LocalStorageService);
+  private readonly localStorage = inject(LocalStorageService)
 
   static readonly stateStoreName = 'crypt_v1_state'
   static readonly entitiesStoreName = 'crypt_v1_entities'

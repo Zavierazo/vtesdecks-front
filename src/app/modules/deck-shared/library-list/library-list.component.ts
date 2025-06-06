@@ -1,5 +1,12 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject, output } from '@angular/core'
+import { AsyncPipe } from '@angular/common'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+  output,
+} from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
@@ -22,13 +29,13 @@ import { LibraryComponent } from '../library/library.component'
     LibraryComponent,
     AsyncPipe,
     TranslocoPipe,
-    LibraryTypeTranslocoPipe
-],
+    LibraryTypeTranslocoPipe,
+  ],
 })
 export class LibraryListComponent implements OnInit {
-  private libraryQuery = inject(LibraryQuery);
-  private mediaService = inject(MediaService);
-  private modalService = inject(NgbModal);
+  private libraryQuery = inject(LibraryQuery)
+  private mediaService = inject(MediaService)
+  private modalService = inject(NgbModal)
 
   static readonly libraryTypeOrder = [
     'Master',
@@ -56,9 +63,9 @@ export class LibraryListComponent implements OnInit {
 
   @Input() withControls = false
 
-  readonly cardAdded = output<number>();
+  readonly cardAdded = output<number>()
 
-  readonly cardRemoved = output<number>();
+  readonly cardRemoved = output<number>()
 
   isMobileOrTablet$!: Observable<boolean>
 

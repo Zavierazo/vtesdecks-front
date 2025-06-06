@@ -6,9 +6,8 @@ import { AuthQuery } from '../../state/auth/auth.query'
   providedIn: 'root',
 })
 export class CanActivateUser {
-  private readonly authQuery = inject(AuthQuery);
-  private readonly router = inject(Router);
-
+  private readonly authQuery = inject(AuthQuery)
+  private readonly router = inject(Router)
 
   canActivate(): boolean {
     if (this.authQuery.isAuthenticated()) {

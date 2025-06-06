@@ -1,5 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
-import { NgbModal, NgbOffcanvas, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem } from '@ng-bootstrap/ng-bootstrap'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core'
+import {
+  NgbModal,
+  NgbOffcanvas,
+  NgbCollapse,
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownItem,
+  NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap'
 import { Observable } from 'rxjs'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { MediaService } from '../../../services/media.service'
@@ -9,28 +23,43 @@ import { isChristmas } from '../../../utils/vtes-utils'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
 import { TableSeatingComponent } from '../table-seating/table-seating.component'
-import { TranslocoDirective } from '@jsverse/transloco';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IsLoggedDirective } from '../../directives/is-logged.directive';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
-import { LangSelectorComponent } from '../lang-selector/lang-selector.component';
-import { AsyncPipe } from '@angular/common';
-import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component';
+import { TranslocoDirective } from '@jsverse/transloco'
+import { RouterLink, RouterLinkActive } from '@angular/router'
+import { IsLoggedDirective } from '../../directives/is-logged.directive'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
+import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
+import { AsyncPipe } from '@angular/common'
+import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component'
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TranslocoDirective, RouterLink, NgbCollapse, RouterLinkActive, IsLoggedDirective, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgxGoogleAnalyticsModule, NgbDropdownButtonItem, LangSelectorComponent, ThemeSelectorComponent, AsyncPipe]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TranslocoDirective,
+    RouterLink,
+    NgbCollapse,
+    RouterLinkActive,
+    IsLoggedDirective,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    NgxGoogleAnalyticsModule,
+    NgbDropdownButtonItem,
+    LangSelectorComponent,
+    ThemeSelectorComponent,
+    AsyncPipe,
+  ],
 })
 export class HeaderComponent implements OnInit {
-  private modalService = inject(NgbModal);
-  private authQuery = inject(AuthQuery);
-  private authService = inject(AuthService);
-  private colorThemeService = inject(ColorThemeService);
-  private mediaService = inject(MediaService);
-  private offcanvasService = inject(NgbOffcanvas);
+  private modalService = inject(NgbModal)
+  private authQuery = inject(AuthQuery)
+  private authService = inject(AuthService)
+  private colorThemeService = inject(ColorThemeService)
+  private mediaService = inject(MediaService)
+  private offcanvasService = inject(NgbOffcanvas)
 
   isCollapsed = true
 

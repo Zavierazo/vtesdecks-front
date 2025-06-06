@@ -1,5 +1,11 @@
 import { AsyncPipe, NgClass } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -25,10 +31,10 @@ import { CommentsService } from '../../../state/comments/comments.service'
   ],
 })
 export class CommentComponent implements OnInit {
-  private readonly authQuery = inject(AuthQuery);
-  private readonly commentsService = inject(CommentsService);
-  private readonly modalService = inject(NgbModal);
-  private readonly translocoService = inject(TranslocoService);
+  private readonly authQuery = inject(AuthQuery)
+  private readonly commentsService = inject(CommentsService)
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
 
   @Input() comment!: ApiComment
 

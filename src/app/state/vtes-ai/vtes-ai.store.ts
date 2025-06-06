@@ -14,7 +14,7 @@ export interface AiChat {
   providedIn: 'root',
 })
 export class VtesAiStore {
-  private readonly localStorage = inject(LocalStorageService);
+  private readonly localStorage = inject(LocalStorageService)
 
   static readonly stateStoreName = 'vtes_ai_v1_state'
   static readonly chat_history_limit = 5

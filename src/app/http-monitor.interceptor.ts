@@ -16,9 +16,8 @@ export const retryWaitMilliSeconds = 5000
 
 @Injectable()
 export class HttpMonitorInterceptor implements HttpInterceptor {
-  private toastService = inject(ToastService);
-  private translocoService = inject(TranslocoService);
-
+  private toastService = inject(ToastService)
+  private translocoService = inject(TranslocoService)
 
   intercept(
     request: HttpRequest<unknown>,

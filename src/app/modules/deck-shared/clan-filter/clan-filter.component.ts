@@ -1,21 +1,28 @@
-import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, inject, output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ChangeDetectorRef,
+  inject,
+  output,
+} from '@angular/core'
 import { CLAN_LIST } from '../../../utils/clans'
-import { NgClass } from '@angular/common';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { NgClass } from '@angular/common'
+import { TranslocoPipe } from '@jsverse/transloco'
 
 @Component({
-    selector: 'app-clan-filter',
-    templateUrl: './clan-filter.component.html',
-    styleUrls: ['./clan-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, TranslocoPipe]
+  selector: 'app-clan-filter',
+  templateUrl: './clan-filter.component.html',
+  styleUrls: ['./clan-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, TranslocoPipe],
 })
 export class ClanFilterComponent {
-  private changeDetectorRef = inject(ChangeDetectorRef);
+  private changeDetectorRef = inject(ChangeDetectorRef)
 
   @Input() showNotRequired: boolean = false
   @Input() clans: string[] = []
-  readonly clansChange = output<string[]>();
+  readonly clansChange = output<string[]>()
 
   clansList = CLAN_LIST
 

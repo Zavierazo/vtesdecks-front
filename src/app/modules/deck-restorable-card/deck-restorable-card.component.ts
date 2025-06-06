@@ -8,28 +8,23 @@ import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
-import { TitleCasePipe } from '@angular/common';
-import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
+import { TitleCasePipe } from '@angular/common'
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
+import { TranslocoDatePipe } from '@jsverse/transloco-locale'
 
 @UntilDestroy()
 @Component({
-    selector: 'app-deck-restorable-card',
-    templateUrl: './deck-restorable-card.component.html',
-    styleUrls: ['./deck-restorable-card.component.scss'],
-    imports: [
-        TitleCasePipe,
-        TruncatePipe,
-        TranslocoPipe,
-        TranslocoDatePipe,
-    ],
+  selector: 'app-deck-restorable-card',
+  templateUrl: './deck-restorable-card.component.html',
+  styleUrls: ['./deck-restorable-card.component.scss'],
+  imports: [TitleCasePipe, TruncatePipe, TranslocoPipe, TranslocoDatePipe],
 })
 export class DeckRestorableCardComponent {
-  private readonly router = inject(Router);
-  private readonly modalService = inject(NgbModal);
-  private readonly translocoService = inject(TranslocoService);
-  private readonly apiDataService = inject(ApiDataService);
-  private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router)
+  private readonly modalService = inject(NgbModal)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly toastService = inject(ToastService)
 
   @Input() deck!: ApiDeck
 

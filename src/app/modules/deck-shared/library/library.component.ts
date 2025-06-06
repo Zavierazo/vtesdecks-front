@@ -1,5 +1,13 @@
 import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
-import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit, inject, output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  inject,
+  output,
+} from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -29,9 +37,9 @@ import drawProbability from '../../../utils/draw-probability'
   ],
 })
 export class LibraryComponent implements OnInit {
-  private readonly libraryQuery = inject(LibraryQuery);
-  private readonly libraryService = inject(LibraryService);
-  private readonly mediaService = inject(MediaService);
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly libraryService = inject(LibraryService)
+  private readonly mediaService = inject(MediaService)
 
   @Input() card!: ApiCard
 
@@ -49,9 +57,9 @@ export class LibraryComponent implements OnInit {
 
   @Input() overrideImage?: string
 
-  readonly cardAdded = output<number>();
+  readonly cardAdded = output<number>()
 
-  readonly cardRemoved = output<number>();
+  readonly cardRemoved = output<number>()
 
   library$!: Observable<ApiLibrary | undefined>
 

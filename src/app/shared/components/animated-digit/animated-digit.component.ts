@@ -5,19 +5,19 @@ import {
   AfterViewInit,
   OnChanges,
   SimpleChanges,
-  viewChild
+  viewChild,
 } from '@angular/core'
 
 @Component({
-    selector: 'animated-digit',
-    templateUrl: 'animated-digit.component.html',
-    styleUrls: ['animated-digit.component.scss']
+  selector: 'animated-digit',
+  templateUrl: 'animated-digit.component.html',
+  styleUrls: ['animated-digit.component.scss'],
 })
 export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
   @Input() duration!: number
   @Input() digit!: number
   @Input() steps!: number
-  readonly animatedDigit = viewChild.required<ElementRef>('animatedDigit');
+  readonly animatedDigit = viewChild.required<ElementRef>('animatedDigit')
 
   animateCount() {
     if (!this.duration) {

@@ -7,8 +7,8 @@ import { CommentsStore } from './comments.store'
   providedIn: 'root',
 })
 export class CommentsService {
-  private readonly commentsStore = inject(CommentsStore);
-  private readonly apiDataService = inject(ApiDataService);
+  private readonly commentsStore = inject(CommentsStore)
+  private readonly apiDataService = inject(ApiDataService)
 
   static readonly limit = 10
 

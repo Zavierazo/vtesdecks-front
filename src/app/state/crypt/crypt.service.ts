@@ -15,10 +15,10 @@ import { CryptQuery } from './crypt.query'
 import { CryptState, CryptStore } from './crypt.store'
 @Injectable({ providedIn: 'root' })
 export class CryptService {
-  private cryptQuery = inject(CryptQuery);
-  private cryptStore = inject(CryptStore);
-  private apiDataService = inject(ApiDataService);
-  private translocoService = inject(TranslocoService);
+  private cryptQuery = inject(CryptQuery)
+  private cryptStore = inject(CryptStore)
+  private apiDataService = inject(ApiDataService)
+  private translocoService = inject(TranslocoService)
 
   static readonly limit = 10
 
