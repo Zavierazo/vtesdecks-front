@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { GoogleAnalyticsService } from 'ngx-google-analytics'
 import { distinct, filter, switchMap, tap } from 'rxjs'
+import { environment } from '../environments/environment'
 import { ApiChangelog } from './models/api-changelog'
 import { ApiDataService } from './services/api.data.service'
 import { ColorThemeService } from './services/color-theme.service'
@@ -112,6 +113,13 @@ export class AppComponent implements OnInit {
         )
         .subscribe()
     }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready
+        .then(() => this.addAdSenseScript())
+        .catch(() => this.addAdSenseScript())
+    } else {
+      this.addAdSenseScript()
+    }
   }
 
   private handleNavigationEnd(evt: NavigationEnd) {
@@ -147,5 +155,14 @@ export class AppComponent implements OnInit {
       ad_personalization: status,
       analytics_storage: status,
     })
+  }
+
+  private addAdSenseScript() {
+    console.log('Init AdSense script')
+    const adSenseScript: HTMLScriptElement = document.createElement('script')
+    adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${environment.googleAdSense.clientId}`
+    adSenseScript.async = true
+    adSenseScript.crossOrigin = 'anonymous'
+    document.head.appendChild(adSenseScript)
   }
 }
