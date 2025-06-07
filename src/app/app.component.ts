@@ -113,7 +113,13 @@ export class AppComponent implements OnInit {
         )
         .subscribe()
     }
-    setTimeout(this.addAdSenseScript, 1000)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready
+        .then(() => this.addAdSenseScript())
+        .catch(() => this.addAdSenseScript())
+    } else {
+      this.addAdSenseScript()
+    }
   }
 
   private handleNavigationEnd(evt: NavigationEnd) {
