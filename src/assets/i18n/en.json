@@ -8,7 +8,9 @@
   },
   "comments": {
     "profile_image": "Profile image",
+    "comment": "Comment",
     "comment_placeholder": "Enter your comment...",
+    "post_comment": "Post Comment",
     "must_logged": "You must be logged in to post a comment.",
     "no_comments": "No comments",
     "admin": "Admin",

@@ -3,7 +3,8 @@
     "version": "2.42.0",
     "date": "07th June, 2025",
     "changes": [
-      "Add Markdown support for deck descriptions"
+      "Add Markdown support for deck descriptions",
+      "Add Markdown support for comments"
     ]
   },
   {

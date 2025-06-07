@@ -54,7 +54,7 @@ export class MarkdownTextareaComponent {
   }
 
   onImage(): void {
-    this.applyStyle('![', '](https://vtesdecks.com/images/logo.png)')
+    this.applyStyle('![', '](https://vtesdecks.com/assets/img/logo.png)')
   }
 
   onList(numeric: boolean): void {

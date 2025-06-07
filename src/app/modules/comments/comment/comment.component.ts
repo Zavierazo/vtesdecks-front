@@ -2,20 +2,22 @@ import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
   OnInit,
-  inject,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MarkdownComponent } from 'ngx-markdown'
 import { filter, Observable, switchMap } from 'rxjs'
 import { ApiComment } from '../../../models/api-comment'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { DateAsAgoPipe } from '../../../shared/pipes/date-ago.pipe'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { CommentsService } from '../../../state/comments/comments.service'
+import { MarkdownTextareaComponent } from './../../../shared/components/markdown-textarea/markdown-textarea.component'
 @UntilDestroy()
 @Component({
   selector: 'app-comment',
@@ -28,6 +30,8 @@ import { CommentsService } from '../../../state/comments/comments.service'
     ReactiveFormsModule,
     AsyncPipe,
     DateAsAgoPipe,
+    MarkdownTextareaComponent,
+    MarkdownComponent,
   ],
 })
 export class CommentComponent implements OnInit {
@@ -51,8 +55,8 @@ export class CommentComponent implements OnInit {
     })
   }
 
-  get formComment() {
-    return this.form.get('comment')
+  get commentControl(): FormControl<string> {
+    return this.form.get('comment') as FormControl<string>
   }
 
   deleteComment(): void {
@@ -82,7 +86,7 @@ export class CommentComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
-    const commentValue = this.formComment?.value
+    const commentValue = this.commentControl?.value
     if (commentValue !== this.comment.content) {
       const comment = {
         id: this.comment.id,
