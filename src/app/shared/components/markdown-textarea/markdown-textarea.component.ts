@@ -18,7 +18,7 @@ import { MarkdownComponent } from 'ngx-markdown'
   imports: [TranslocoDirective, ReactiveFormsModule, MarkdownComponent],
 })
 export class MarkdownTextareaComponent {
-  formControl = input.required<FormControl>()
+  control = input.required<FormControl>()
   placeholder = input.required<string>()
   label = input.required<string>()
 
@@ -26,7 +26,7 @@ export class MarkdownTextareaComponent {
   @ViewChild('ref', { read: ElementRef }) textAreaRef!: ElementRef
 
   get description(): string | undefined {
-    return this.formControl()?.value
+    return this.control()?.value
   }
 
   onPreviewDescription(): void {
@@ -75,13 +75,13 @@ export class MarkdownTextareaComponent {
       const before = textArea.value.substring(0, start)
       const selected = `${numeric ? '1.' : '-'} list text here`
       const after = textArea.value.substring(end)
-      this.formControl()?.setValue(`${before}${selected}${after}`)
+      this.control()?.setValue(`${before}${selected}${after}`)
       textArea.setSelectionRange(start, start + selected.length)
     } else {
       const before = textArea.value.substring(0, start)
       const selected = textArea.value.substring(start, end)
       const after = textArea.value.substring(end)
-      this.formControl()?.setValue(
+      this.control()?.setValue(
         `${before}${numeric ? '1.' : '-'} ${selected}${after}`,
       )
       const listLength = numeric ? 3 : 2
@@ -110,7 +110,7 @@ export class MarkdownTextareaComponent {
     const table = `| Syntax      | Description |\n| ----------- | ----------- |\n| Header      | Title       |\n| Paragraph   | Text        |`
     const after = textArea.value.substring(end)
 
-    this.formControl()?.setValue(`${before}${table}${after}`)
+    this.control()?.setValue(`${before}${table}${after}`)
     textArea.setSelectionRange(start, start + table.length)
   }
 
@@ -132,9 +132,7 @@ export class MarkdownTextareaComponent {
       const before = textArea.value.substring(0, start)
       const selected = noSelectionText
       const after = textArea.value.substring(end)
-      this.formControl()?.setValue(
-        `${before}${prefix}${selected}${suffix}${after}`,
-      )
+      this.control()?.setValue(`${before}${prefix}${selected}${suffix}${after}`)
       textArea.setSelectionRange(
         start + prefixLength,
         start + prefixLength + selected.length,
@@ -143,7 +141,7 @@ export class MarkdownTextareaComponent {
       const before = textArea.value.substring(0, start - prefixLength)
       const selected = textArea.value.substring(start, end)
       const after = textArea.value.substring(end + suffixLength)
-      this.formControl()?.setValue(`${before}${selected}${after}`)
+      this.control()?.setValue(`${before}${selected}${after}`)
       textArea.setSelectionRange(
         start - prefixLength,
         start - prefixLength + selected.length,
@@ -152,9 +150,7 @@ export class MarkdownTextareaComponent {
       const before = textArea.value.substring(0, start)
       const selected = textArea.value.substring(start, end)
       const after = textArea.value.substring(end)
-      this.formControl()?.setValue(
-        `${before}${prefix}${selected}${suffix}${after}`,
-      )
+      this.control()?.setValue(`${before}${prefix}${selected}${suffix}${after}`)
       textArea.setSelectionRange(
         start + prefixLength,
         start + prefixLength + selected.length,
