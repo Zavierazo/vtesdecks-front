@@ -83,6 +83,7 @@ export const PREDEFINED_LIMITED_FORMATS = [
         '201680': true,
         '201685': true,
         '201686': true,
+        '201690': true,
         '201694': true,
         '201697': true,
         '201698': true,
