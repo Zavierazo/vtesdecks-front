@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
   private addAdSenseScript() {
     console.log('Init AdSense script')
     const adSenseScript: HTMLScriptElement = document.createElement('script')
-    adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${environment.googleAdSense.clientId}`
+    adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${environment.googleAdSense.clientId}&v=${environment.appVersion}`
     adSenseScript.async = true
     adSenseScript.crossOrigin = 'anonymous'
     document.head.appendChild(adSenseScript)
