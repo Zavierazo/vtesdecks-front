@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common'
 import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core'
+import { AuthQuery } from '../../state/auth/auth.query'
 
 let uniqueId = 0
 
@@ -10,10 +11,13 @@ let uniqueId = 0
 export class AdSenseDirective implements AfterViewInit {
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly document = inject<Document>(DOCUMENT)
+  private readonly authQuery = inject(AuthQuery)
 
   ngAfterViewInit() {
+    if (this.authQuery.isSupporter()) {
+      return
+    }
     const hostElement = this.el.nativeElement
-
     if (hostElement) {
       this.replaceDivWithScript(hostElement)
     }

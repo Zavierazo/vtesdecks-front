@@ -56,4 +56,8 @@ export class AuthQuery {
   getEmail(): string | undefined {
     return this.store.getValue().email
   }
+
+  isSupporter(): boolean {
+    return this.store.getValue().roles?.includes('supporter') ?? false
+  }
 }

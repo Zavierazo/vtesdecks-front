@@ -18,6 +18,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { FooterComponent } from './shared/components/footer/footer.component'
 import { HeaderComponent } from './shared/components/header/header.component'
 import { ToastsContainer } from './shared/components/toast-container/toast-container.component'
+import { AuthQuery } from './state/auth/auth.query'
 import { AuthService } from './state/auth/auth.service'
 import { isChristmas } from './utils/vtes-utils'
 
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
   private readonly colorThemeService = inject(ColorThemeService)
   private readonly googleAnalyticsService = inject(GoogleAnalyticsService)
+  private readonly authQuery = inject(AuthQuery)
 
   title = 'VTES Decks'
 
@@ -113,7 +115,7 @@ export class AppComponent implements OnInit {
         )
         .subscribe()
     }
-    if ('serviceWorker' in navigator) {
+    if (this.swUpdate.isEnabled && 'serviceWorker' in navigator) {
       navigator.serviceWorker.ready
         .then(() => this.addAdSenseScript())
         .catch(() => this.addAdSenseScript())
@@ -158,6 +160,9 @@ export class AppComponent implements OnInit {
   }
 
   private addAdSenseScript() {
+    if (this.authQuery.isSupporter()) {
+      return
+    }
     console.log('Init AdSense script')
     const adSenseScript: HTMLScriptElement = document.createElement('script')
     adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${environment.googleAdSense.clientId}&v=${environment.appVersion}`

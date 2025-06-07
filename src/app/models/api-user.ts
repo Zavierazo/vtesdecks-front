@@ -6,6 +6,6 @@ export interface ApiUser {
   displayName?: string
   profileImage?: string
   admin?: boolean
-  tester?: boolean
+  roles?: string[]
   notificationCount?: number
 }
