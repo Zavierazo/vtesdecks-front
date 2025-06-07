@@ -152,3 +152,11 @@ blockquote:before {
 blockquote p {
   display: inline;
 }
+
+/** Form floating placeholder **/
+
+.form-floating > .form-control:focus::placeholder,
+.form-floating > .form-control-plaintext:focus::placeholder {
+  color: var(--bs-secondary-color);
+  opacity: 0.5;
+}

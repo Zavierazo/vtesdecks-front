@@ -122,7 +122,7 @@
     "delete_successful": "Deck deleted",
     "name": "Name",
     "description": "Description",
-    "description_placeholder": "Explains in a few lines how the deck works and what is the synergy between the cards. (optional)",
+    "description_placeholder": "Explains in a few lines how the deck works and what is the synergy between the cards. Markdown format is supported.",
     "import": "Import",
     "view": "View",
     "share": "Share",

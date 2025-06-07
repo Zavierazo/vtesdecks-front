@@ -122,7 +122,7 @@
     "delete_successful": "Mazo eliminado",
     "name": "Nome",
     "description": "Descrição",
-    "description_placeholder": "Explique em poucas linhas como funciona o mazo e o que é o sinergia entre os cartões. (opcional)",
+    "description_placeholder": "Explique em poucas linhas como funciona o mazo e o que é o sinergia entre os cartões. Formato de Markdown suportado.",
     "import": "Importar",
     "view": "Visualizar",
     "share": "Compartilhar",

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -8,8 +9,20 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MarkdownComponent } from 'ngx-markdown'
+import { tap } from 'rxjs'
 
+const MARKDOWN_EXAMPLE = `
+# Heading
+**bold**
+*emphasized*
+~~strikethrough~~
+[link](https://vtesdecks.com)
+![image](https://vtesdecks.com/assets/img/logo.png)
+- list
+`
+@UntilDestroy()
 @Component({
   selector: 'app-markdown-textarea',
   templateUrl: './markdown-textarea.component.html',
@@ -17,7 +30,7 @@ import { MarkdownComponent } from 'ngx-markdown'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, ReactiveFormsModule, MarkdownComponent],
 })
-export class MarkdownTextareaComponent {
+export class MarkdownTextareaComponent implements AfterViewInit {
   control = input.required<FormControl>()
   placeholder = input.required<string>()
   label = input.required<string>()
@@ -25,12 +38,38 @@ export class MarkdownTextareaComponent {
   previewDescription = signal(false)
   @ViewChild('ref', { read: ElementRef }) textAreaRef!: ElementRef
 
+  ngAfterViewInit(): void {
+    this.control()
+      .valueChanges.pipe(
+        untilDestroyed(this),
+        tap(() => {
+          this.textArea.style.height = 'auto'
+          this.textArea.style.height = this.textArea.scrollHeight + 'px'
+        }),
+      )
+      .subscribe()
+  }
+
   get description(): string | undefined {
     return this.control()?.value
   }
 
+  get placeholderWithExample(): string {
+    return this.placeholder() + '\n' + MARKDOWN_EXAMPLE
+  }
+
+  get textArea(): HTMLTextAreaElement {
+    return this.textAreaRef.nativeElement
+  }
+
   onPreviewDescription(): void {
     this.previewDescription.set(!this.previewDescription())
+    if (!this.previewDescription()) {
+      setTimeout(() => {
+        this.textArea.style.height = 'auto'
+        this.textArea.style.height = this.textArea.scrollHeight + 'px'
+      }, 100)
+    }
   }
 
   onBold(): void {
@@ -66,7 +105,7 @@ export class MarkdownTextareaComponent {
   }
 
   onList(numeric: boolean): void {
-    const textArea = this.textAreaRef.nativeElement
+    const textArea = this.textArea
 
     const start = textArea.selectionStart
     const end = textArea.selectionEnd
@@ -101,7 +140,7 @@ export class MarkdownTextareaComponent {
   }
 
   onTable(): void {
-    const textArea = this.textAreaRef.nativeElement
+    const textArea = this.textArea
 
     const start = textArea.selectionStart
     const end = textArea.selectionEnd
@@ -119,7 +158,7 @@ export class MarkdownTextareaComponent {
     suffix: string,
     noSelectionText: string,
   ): void {
-    const textArea = this.textAreaRef.nativeElement
+    const textArea = this.textArea
 
     const start = textArea.selectionStart
     const end = textArea.selectionEnd
