@@ -12,7 +12,4 @@ export const environment = {
   googleAnalytics: {
     trackingId: 'G-87D9C3V6CL',
   },
-  googleAdSense: {
-    clientId: 'ca-pub-7379021241824282',
-  },
 }
