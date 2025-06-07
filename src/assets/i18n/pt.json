@@ -8,7 +8,9 @@
   },
   "comments": {
     "profile_image": "Imagem de perfil",
+    "comment": "Comentário",
     "comment_placeholder": "Digite seu comentário...",
+    "post_comment": "Postar Comentário",
     "must_logged": "Você deve estar logado para postar um comentário.",
     "no_comments": "Sem comentários",
     "admin": "Admin",
@@ -631,5 +633,20 @@
     "remove": "Remover",
     "copy_format_url": "Copiar URL do Formato",
     "format_url_copied": "Formato URL copiado para a área de transferência"
+  },
+  "markdown-textarea": {
+    "preview": "Pré-visualizar",
+    "bold": "Negrito",
+    "italic": "Itálico",
+    "strikethrough": "Riscado",
+    "title": "Título",
+    "link": "Link",
+    "image": "Imagem",
+    "number_list": "Lista Numerada",
+    "dot_list": "Lista Pontilhada",
+    "code": "Código",
+    "quote": "Citar",
+    "table": "Tabela",
+    "help": "Ajuda"
   }
 }

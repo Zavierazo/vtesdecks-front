@@ -1,0 +1,64 @@
+<ng-container *transloco="let t; read:'markdown-textarea'">
+  <div>
+    <div class="btn-group flex-wrap me-2">
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('bold')" (click)="onBold()">
+        <i class="btn-icon bi bi-type-bold bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('italic')"
+        (click)="onItalic()">
+        <i class="btn-icon bi bi-type-italic bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('strikethrough')"
+        (click)="onStrikethrough()">
+        <i class="btn-icon bi bi-type-strikethrough bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('title')"
+        (click)="onTitle()">
+        <i class="btn-icon bi bi-type-h1 bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('link')" (click)="onLink()">
+        <i class="btn-icon bi bi-link-45deg bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('image')"
+        (click)="onImage()">
+        <i class="btn-icon bi bi-image bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('number_list')"
+        (click)="onList(true)">
+        <i class="btn-icon bi bi-list-ol bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('dot_list')"
+        (click)="onList(false)">
+        <i class="btn-icon bi bi-list-task bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('code')" (click)="onCode()">
+        <i class="btn-icon bi bi-code bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('quote')"
+        (click)="onQuote()">
+        <i class="btn-icon bi bi-quote bi-fs-1_2x"></i>
+      </button>
+      <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('table')"
+        (click)="onTable()">
+        <i class="btn-icon bi bi-table bi-fs-1_2x"></i>
+      </button>
+      <a type="button" class="btn btn-sm" [title]="t('help')" target="_blank"
+        href="https://www.markdownguide.org/cheat-sheet/">
+        <i class="btn-icon bi bi-question-lg bi-fs-1_2x"></i>
+      </a>
+    </div>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onPreviewDescription()">
+      <i class="bi bi-search me-2"></i>
+      {{ t('preview') }}
+    </button>
+  </div>
+  @if(previewDescription()){
+  <markdown [data]="description" emoji />
+  } @else{
+  <div class="form-floating">
+    <textarea #ref class="form-control w-vw-100" id="description" type="text" [placeholder]="placeholder()"
+      style="height: 12rem;" [formControl]="formControl()"></textarea>
+    <label for="description">{{ label() }}</label>
+  </div>
+  }
+</ng-container>

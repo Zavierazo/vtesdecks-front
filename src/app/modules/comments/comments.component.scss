@@ -1,34 +1,11 @@
-.no-comments{
-  display:inherit;
+.no-comments {
+  display: inherit;
   margin: 1em;
   text-align: center;
   font-size: 1.5em;
-  color: #CCC;
+  color: #ccc;
 }
 
 .comment-form {
   width: 100%;
-}
-
-.input-group{
-  .form-control {
-    height: 48px;
-    border-radius: 25px;
-  }
-
-  .form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #35b69f;
-    outline: 0;
-    box-shadow: none;
-    text-indent: 10px
-  }
-
-  .btn {
-    padding-right: 20px;
-    padding-left: 15px;
-    border-radius: 25px;
-  }
-
 }

@@ -8,7 +8,9 @@
   },
   "comments": {
     "profile_image": "Profile image",
+    "comment": "Comment",
     "comment_placeholder": "Enter your comment...",
+    "post_comment": "Post Comment",
     "must_logged": "You must be logged in to post a comment.",
     "no_comments": "No comments",
     "admin": "Admin",
@@ -631,5 +633,20 @@
     "remove": "Remove",
     "copy_format_url": "Copy Format URL",
     "format_url_copied": "Format URL copied to clipboard"
+  },
+  "markdown-textarea": {
+    "preview": "Preview",
+    "bold": "Bold",
+    "italic": "Italic",
+    "strikethrough": "Strikethrough",
+    "title": "Title",
+    "link": "Link",
+    "image": "Image",
+    "number_list": "Numbered List",
+    "dot_list": "Dot List",
+    "code": "Code",
+    "quote": "Quote",
+    "table": "Table",
+    "help": "Help"
   }
 }

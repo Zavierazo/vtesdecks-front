@@ -4,8 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core'
 import {
   FormControl,
@@ -36,6 +36,7 @@ import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
+import { MarkdownTextareaComponent } from '../../shared/components/markdown-textarea/markdown-textarea.component'
 import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
 import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
 import { getClanIcon } from '../../utils/clans'
@@ -77,6 +78,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
     LibraryListComponent,
     AsyncPipe,
     TranslocoPipe,
+    MarkdownTextareaComponent,
   ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
@@ -406,10 +408,14 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     )
   }
 
+  get descriptionControl(): FormControl<string> {
+    return this.form.get('description') as FormControl<string>
+  }
+
   private initForm() {
     this.form = new FormGroup({
       name: new FormControl(undefined, Validators.required),
-      description: new FormControl(undefined),
+      description: new FormControl<string>(''),
       published: new FormControl(true),
     })
     this.form

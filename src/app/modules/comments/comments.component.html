@@ -2,14 +2,17 @@
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color" *isLogged="true">
     <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')"
       onerror="this.src='/assets/img/default_user.png'">
-    <form class="comment-form" [formGroup]="form" (ngSubmit)="addComment()">
-      <div class="input-group mb-3">
-        <input type="text" formControlName="comment" class="form-control" [placeholder]="t('comment_placeholder')">
-        <button type="button" class="btn btn-outline-primary" (click)="addComment()" title="Send comment">
-          <i class="bi bi-send-fill"></i>
+    <div class="d-flex flex-column w-100 justify-content-center align-self-center">
+      <div class="w-100 justify-content-center align-self-center text-start">
+        <app-markdown-textarea [formControl]="commentControl" [placeholder]="t('comment_placeholder')"
+          [label]="t('comment')"></app-markdown-textarea>
+      </div>
+      <div class="mt-2">
+        <button type="button" class="btn btn-outline-primary" (click)="addComment()" [title]="t('post_comment')">
+          <i class="bi bi-send-fill me-2"></i>{{ t('post_comment') }}
         </button>
       </div>
-    </form>
+    </div>
   </div>
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color justify-content-center" *isLogged="false">
     {{ t('must_logged') }}

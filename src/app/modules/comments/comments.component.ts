@@ -21,6 +21,7 @@ import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { CommentsQuery } from '../../state/comments/comments.query'
 import { CommentsService } from '../../state/comments/comments.service'
+import { MarkdownTextareaComponent } from './../../shared/components/markdown-textarea/markdown-textarea.component'
 import { CommentComponent } from './comment/comment.component'
 
 @UntilDestroy()
@@ -36,6 +37,7 @@ import { CommentComponent } from './comment/comment.component'
     CommentComponent,
     LoadingComponent,
     AsyncPipe,
+    MarkdownTextareaComponent,
   ],
 })
 export class CommentsComponent implements OnInit {
@@ -69,8 +71,8 @@ export class CommentsComponent implements OnInit {
     })
   }
 
-  get comment() {
-    return this.form.get('comment')
+  get commentControl(): FormControl<string> {
+    return this.form.get('comment') as FormControl<string>
   }
 
   addComment(): void {
@@ -79,7 +81,7 @@ export class CommentsComponent implements OnInit {
     }
     const comment = {
       deckId: this.deckId,
-      content: this.comment?.value,
+      content: this.commentControl?.value,
     } as ApiComment
     this.commentsService
       .addComment(comment)
