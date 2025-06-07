@@ -8,153 +8,146 @@
             <div class="form-floating">
               <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('name')"
                 formControlName="name">
-                <label for="name">{{ t('name') }}</label>
-              </div>
+              <label for="name">{{ t('name') }}</label>
             </div>
-            <div class="justify-content-center align-self-center text-start p-2">
-              <div class="form-floating">
-                <textarea class="form-control w-vw-100" id="description" type="text"
-                  [placeholder]="t('description_placeholder')" style="height: 10rem;"
-                formControlName="description"></textarea>
-                <label for="description">{{ t('description') }}</label>
-              </div>
-            </div>
-
-            <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
-              @if ((deckId$ | async)!!) {
-                <a type="button" class="btn btn-primary m-2"
-                  [routerLink]="'/deck/' + (deckId$ | async)!!">
-                  <i class="bi bi-eye"></i>
-                  {{ t('view') }}
-                </a>
-              }
-              <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
-                (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
-                <i class="bi bi-copy me-2"></i>
-                {{ t('clone') }}
-              </button>
-              <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
-                (click)="shareDeck()">
-                <i class="bi bi-share"></i>
-                {{ t('share') }}
-              </button>
-              <button type="button" class="btn btn-outline-primary m-2" (click)="onDraw()" gaEvent="click"
-                gaCategory="clone_in_builder">
-                <i class="bi bi-shuffle me-2"></i>
-                {{ t('draw') }}
-              </button>
-              <button type="button" class="btn btn-outline-primary m-2" (click)="onPrint()" gaEvent="click"
-                gaCategory="clone_in_builder">
-                <i class="bi bi-printer me-2"></i>
-                {{ 'deck_shared.print' | transloco }}
-              </button>
+          </div>
+          <div class="justify-content-center align-self-center text-start p-2">
+            <app-markdown-textarea [formControl]="descriptionControl" [placeholder]="t('description_placeholder')"
+              [label]="t('description')"></app-markdown-textarea>
+          </div>
+          <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
+            @if ((deckId$ | async)!!) {
+            <a type="button" class="btn btn-primary m-2" [routerLink]="'/deck/' + (deckId$ | async)!!">
+              <i class="bi bi-eye"></i>
+              {{ t('view') }}
+            </a>
+            }
+            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
+              <i class="bi bi-copy me-2"></i>
+              {{ t('clone') }}
+            </button>
+            <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
+              (click)="shareDeck()">
+              <i class="bi bi-share"></i>
+              {{ t('share') }}
+            </button>
+            <button type="button" class="btn btn-outline-primary m-2" (click)="onDraw()" gaEvent="click"
+              gaCategory="clone_in_builder">
+              <i class="bi bi-shuffle me-2"></i>
+              {{ t('draw') }}
+            </button>
+            <button type="button" class="btn btn-outline-primary m-2" (click)="onPrint()" gaEvent="click"
+              gaCategory="clone_in_builder">
+              <i class="bi bi-printer me-2"></i>
+              {{ 'deck_shared.print' | transloco }}
+            </button>
             <button type="button" class="btn btn-outline-primary m-2" [ngClass]="{
               'btn-primary': limitedFormat$ | async,
               'btn-outline-primary': !(limitedFormat$ | async)
             }" (click)="openLimitedFormatModal()">
-                <i class="bi bi-funnel"></i>
-                {{ t('limited_format') }}
+              <i class="bi bi-funnel"></i>
+              {{ t('limited_format') }}
+            </button>
+            <div ngbDropdown class="d-inline-block m-2">
+              <button id="dropdownImport" type="button" class="btn btn-outline-primary" ngbDropdownToggle>
+                <i class="bi bi-cloud-plus-fill"></i>
+                {{ t('import') }}
               </button>
-              <div ngbDropdown class="d-inline-block m-2">
-                <button id="dropdownImport" type="button" class="btn btn-outline-primary" ngbDropdownToggle>
-                  <i class="bi bi-cloud-plus-fill"></i>
-                  {{ t('import') }}
-                </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownImport">
-                  <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
-                  <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
-                </div>
-              </div>
-              <div ngbDropdown class="d-inline-block m-2">
-                <button id="dropdownExport" type="button" class="btn btn-outline-primary" ngbDropdownToggle
-                  [disabled]="!(saved$ | async)! || !(deckId$ | async)!">
-                  <i class="bi bi-download"></i>
-                  {{ t('export') }}
-                </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownExport">
-                  <div class="dropdown-header">{{ t('file') }}</div>
-                  <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank">
-                    <i class="bi bi-file-earmark me-2"></i>LACKEY
-                  </a>
-                  <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank">
-                    <i class="bi bi-file-earmark me-2"></i>JOL
-                  </a>
-                  <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank">
-                    <i class="bi bi-file-earmark me-2"></i>TWD
-                  </a>
-                  <hr class="dropdown-divider">
-                  <div class="dropdown-header">{{ t('clipboard') }}</div>
-                  <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')">
-                    <i class="bi bi-clipboard me-2"></i>LACKEY
-                  </button>
-                  <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')">
-                    <i class="bi bi-clipboard me-2"></i>JOL
-                  </button>
-                  <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')">
-                    <i class="bi bi-clipboard me-2"></i>TWD
-                  </button>
-
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
-                <i class="bi bi-save-fill"></i>
-                {{ t('save') }}
-              </button>
-              @if ((deckId$ | async)!!) {
-                <button type="button" class="btn btn-primary m-2" (click)="deleteDeck()">
-                  <i class="bi bi-trash-fill"></i>
-                  {{ t('delete') }}
-                </button>
-              }
-              <div class="d-flex justify-content-end form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="published" formControlName="published">
-                <label class="ms-1 form-check-label" for="published">{{ t('published') }}</label>
-                <span [ngbTooltip]="t('published_tooltip')">
-                  <i class="ms-1 bi bi-question-circle"></i>
-                </span>
+              <div ngbDropdownMenu aria-labelledby="dropdownImport">
+                <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
+                <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
               </div>
             </div>
-          </form>
-        </div>
-      </section>
-    </div>
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
-      <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
-      <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
-        {{ (cryptSize$ | async)! }}
-      </span>
-      @if ((cryptErrors$ | async)!.length > 0) {
-        <ul class="ms-3 list-unstyled text-danger">
-          @for (error of (cryptErrors$ | async)!; track error) {
-            <li class="fw-bold"><i
-            class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-          </li>
-        }
-      </ul>
+            <div ngbDropdown class="d-inline-block m-2">
+              <button id="dropdownExport" type="button" class="btn btn-outline-primary" ngbDropdownToggle
+                [disabled]="!(saved$ | async)! || !(deckId$ | async)!">
+                <i class="bi bi-download"></i>
+                {{ t('export') }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownExport">
+                <div class="dropdown-header">{{ t('file') }}</div>
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>LACKEY
+                </a>
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>JOL
+                </a>
+                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank">
+                  <i class="bi bi-file-earmark me-2"></i>TWD
+                </a>
+                <hr class="dropdown-divider">
+                <div class="dropdown-header">{{ t('clipboard') }}</div>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')">
+                  <i class="bi bi-clipboard me-2"></i>LACKEY
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')">
+                  <i class="bi bi-clipboard me-2"></i>JOL
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')">
+                  <i class="bi bi-clipboard me-2"></i>TWD
+                </button>
+
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
+              <i class="bi bi-save-fill"></i>
+              {{ t('save') }}
+            </button>
+            @if ((deckId$ | async)!!) {
+            <button type="button" class="btn btn-primary m-2" (click)="deleteDeck()">
+              <i class="bi bi-trash-fill"></i>
+              {{ t('delete') }}
+            </button>
+            }
+            <div class="d-flex justify-content-end form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="published" formControlName="published">
+              <label class="ms-1 form-check-label" for="published">{{ t('published') }}</label>
+              <span [ngbTooltip]="t('published_tooltip')">
+                <i class="ms-1 bi bi-question-circle"></i>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+  <div class="col-12 d-flex justify-content-center mt-3">
+    <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+    <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
+    <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
+      {{ (cryptSize$ | async)! }}
+    </span>
+    @if ((cryptErrors$ | async)!.length > 0) {
+    <ul class="ms-3 list-unstyled text-danger">
+      @for (error of (cryptErrors$ | async)!; track error) {
+      <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+      </li>
+      }
+    </ul>
     }
   </div>
   <div class="col-12 text-center mt-2">
     <div class="row justify-content-center">
       @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat) {
-        <h5 class="col-auto d-flex justify-content-center"
-          [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
-          <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-          &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
-        </h5>
+      <h5 class="col-auto d-flex justify-content-center"
+        [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
+        <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
+        &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
+      </h5>
       }
     </div>
   </div>
   <div class="col-12 mt-3">
     @if ((cryptList$ | async)!; as cryptList) {
-      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-        @for (crypt of cryptList; track trackByFn($index, crypt)) {
-          <ul class="col list-group">
-            <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-            (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
-          </ul>
-        }
-      </div>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+      @for (crypt of cryptList; track trackByFn($index, crypt)) {
+      <ul class="col list-group">
+        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
+      </ul>
+      }
+    </div>
     }
   </div>
   <div class="col-12 text-center mt-3">
@@ -188,52 +181,50 @@
       </div>
     </div>
     @if ((libraryErrors$ | async)!.length > 0) {
-      <ul class="ms-3 list-unstyled text-danger">
-        @for (error of (libraryErrors$ | async)!; track error) {
-          <li class="fw-bold"><i
-          class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-        </li>
+    <ul class="ms-3 list-unstyled text-danger">
+      @for (error of (libraryErrors$ | async)!; track error) {
+      <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+      </li>
       }
     </ul>
-  }
-</div>
-<div class="col-12 text-center mt-2">
-  <div class="row justify-content-center">
-    @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline) {
-      <h5 class="col-auto d-flex justify-content-center"
-        >
+    }
+  </div>
+  <div class="col-12 text-center mt-2">
+    <div class="row justify-content-center">
+      @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline) {
+      <h5 class="col-auto d-flex justify-content-center">
         @if (libraryDiscipline.disciplines.length === 0) {
-          <span [title]="'deck.no_discipline' | transloco">
-            <i class="bi bi-square" style="font-size: 26px;"></i>
-          </span>
+        <span [title]="'deck.no_discipline' | transloco">
+          <i class="bi bi-square" style="font-size: 26px;"></i>
+        </span>
         }
         @for (disc of libraryDiscipline.disciplines; track disc; let isFirst = $first) {
-          @if (!isFirst) {
-            <span>+</span>
-          }
-          <i class="vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
+        @if (!isFirst) {
+        <span>+</span>
+        }
+        <i class="vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
         }
         <span class="pt-1">&nbsp;{{ libraryDiscipline.inferior }}</span>
       </h5>
-    }
-    @for (libraryClan of (libraryClans$ | async)!; track libraryClan) {
+      }
+      @for (libraryClan of (libraryClans$ | async)!; track libraryClan) {
       <h5 class="col-auto d-flex justify-content-center">
         @for (clan of libraryClan.clans; track clan; let isFirst = $first) {
-          @if (!isFirst) {
-            <span>/</span>
-          }
-          <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
+        @if (!isFirst) {
+        <span>/</span>
+        }
+        <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
         }
         <span class="pt-1">&nbsp;{{ libraryClan.number }}</span>
       </h5>
+      }
+    </div>
+  </div>
+  <div class="col-12 mt-3">
+    @if ((libraryList$ | async)!; as libraryList) {
+    <app-library-list [libraryList]="libraryList" [withControls]="true" (cardAdded)="addCard($event)"
+      (cardRemoved)="removeCard($event)">
+    </app-library-list>
     }
   </div>
-</div>
-<div class="col-12 mt-3">
-  @if ((libraryList$ | async)!; as libraryList) {
-    <app-library-list [libraryList]="libraryList" [withControls]="true"
-      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)">
-    </app-library-list>
-  }
-</div>
 </main>

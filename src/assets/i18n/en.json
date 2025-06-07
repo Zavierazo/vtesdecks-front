@@ -631,5 +631,20 @@
     "remove": "Remove",
     "copy_format_url": "Copy Format URL",
     "format_url_copied": "Format URL copied to clipboard"
+  },
+  "markdown-textarea": {
+    "preview": "Preview",
+    "bold": "Bold",
+    "italic": "Italic",
+    "strikethrough": "Strikethrough",
+    "title": "Title",
+    "link": "Link",
+    "image": "Image",
+    "number_list": "Numbered List",
+    "dot_list": "Dot List",
+    "code": "Code",
+    "quote": "Quote",
+    "table": "Table",
+    "help": "Help"
   }
 }

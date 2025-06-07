@@ -35,11 +35,11 @@ import {
   NgxGoogleAnalyticsModule,
   NgxGoogleAnalyticsRouterModule,
 } from 'ngx-google-analytics'
-import { MarkdownModule } from 'ngx-markdown'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { GlobalErrorHandler } from './app/services/global-error.handler'
 
+import { provideMarkdown } from 'ngx-markdown'
 import { AuthQuery } from './app/state/auth/auth.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
@@ -205,7 +205,6 @@ Sentry.init({
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      MarkdownModule.forRoot(),
       CommonModule,
       NgbModule,
       ReactiveFormsModule,
@@ -263,5 +262,6 @@ bootstrapApplication(AppComponent, {
       withInMemoryScrolling({ scrollPositionRestoration: 'disabled' }),
     ),
     provideAnimations(),
+    provideMarkdown(),
   ],
 }).catch((err) => console.error(err))

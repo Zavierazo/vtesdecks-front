@@ -29,6 +29,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
+import { MarkdownComponent, provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { ApiCard } from '../../models/api-card'
@@ -62,6 +63,7 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideMarkdown()],
   imports: [
     LoadingComponent,
     TranslocoDirective,
@@ -88,6 +90,7 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     TranslocoPipe,
     TranslocoDatePipe,
     AdSenseComponent,
+    MarkdownComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
