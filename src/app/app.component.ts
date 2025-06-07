@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { GoogleAnalyticsService } from 'ngx-google-analytics'
 import { distinct, filter, switchMap, tap } from 'rxjs'
+import { environment } from '../environments/environment'
 import { ApiChangelog } from './models/api-changelog'
 import { ApiDataService } from './services/api.data.service'
 import { ColorThemeService } from './services/color-theme.service'
@@ -50,6 +51,8 @@ export class AppComponent implements OnInit {
     this.cookieConsentService.statusChange$.subscribe(() =>
       this.googleTagConsentUpdate(),
     )
+    // Add adsense script
+    this.addAdSenseScript()
     // Check expired session
     this.authService.refreshToken().subscribe()
     // Navigation events
@@ -147,5 +150,14 @@ export class AppComponent implements OnInit {
       ad_personalization: status,
       analytics_storage: status,
     })
+  }
+
+  private addAdSenseScript() {
+    let adSenseScript: HTMLScriptElement = document.createElement('script')
+    adSenseScript.async = true
+    adSenseScript.src =
+      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
+      environment.googleAdSense.clientId
+    document.head.prepend(adSenseScript)
   }
 }
