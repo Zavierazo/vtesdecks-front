@@ -243,3 +243,13 @@ export function getDisciplineIcon(
     return DISCIPLINE_LIST.find((d) => d.name === discipline)?.icon
   }
 }
+
+export function getDisciplineMarkdown(
+  discipline: string,
+): Discipline | undefined {
+  return DISCIPLINE_LIST.find(
+    (c) =>
+      c.name.toLowerCase() === discipline.toLowerCase() ||
+      c.abbrev.toLowerCase() === discipline.toLowerCase(),
+  )
+}

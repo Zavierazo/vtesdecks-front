@@ -18,6 +18,8 @@ const MARKDOWN_EXAMPLE = `
 **bold**
 *emphasized*
 ~~strikethrough~~
+[[discipline:Animalism]]
+[[clan:Ventrue]]
 [link](https://vtesdecks.com)
 ![image](https://vtesdecks.com/assets/img/logo.png)
 - list
