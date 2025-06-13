@@ -1,6 +1,6 @@
 {
   "name": "vtes-decks-front",
-  "version": "2.42.3",
+  "version": "2.42.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
