@@ -1,6 +1,36 @@
 <ng-container *transloco="let t; read:'markdown-textarea'">
   <div>
-    <div class="btn-group flex-wrap me-2">
+    <div class="btn-group">
+      <div ngbDropdown class="btn-group">
+        <button type="button" class="btn btn-sm" id="disciplineDropdown" [disabled]="previewDescription()"
+          [title]="t('discipline')" ngbDropdownToggle>
+          <i class="vtes-small dominate"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="disciplineDropdown">
+          <div class="d-flex flex-row flex-wrap">
+            @for(discipline of disciplines; track discipline){
+            <button class="w-25 d-flex justify-content-center" ngbDropdownItem (click)="onDiscipline(discipline)">
+              <i class="vtes-small" [ngClass]="discipline.icon"></i>
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+      <div ngbDropdown class="btn-group">
+        <button type="button" class="btn btn-sm" id="clanDropdown" [disabled]="previewDescription()" [title]="t('clan')"
+          ngbDropdownToggle>
+          <i class="vtes-small gangrel"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="clanDropdown">
+          <div class="d-flex flex-row flex-wrap">
+            @for(clan of clans; track clan){
+            <button class="w-25 d-flex justify-content-center" ngbDropdownItem (click)="onClan(clan)">
+              <i class="vtes-small" [ngClass]="clan.icon"></i>
+            </button>
+            }
+          </div>
+        </div>
+      </div>
       <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('bold')" (click)="onBold()">
         <i class="btn-icon bi bi-type-bold bi-fs-1_2x"></i>
       </button>
@@ -19,6 +49,8 @@
       <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('link')" (click)="onLink()">
         <i class="btn-icon bi bi-link-45deg bi-fs-1_2x"></i>
       </button>
+    </div>
+    <div class="btn-group">
       <button type="button" class="btn btn-sm" [disabled]="previewDescription()" [title]="t('image')"
         (click)="onImage()">
         <i class="btn-icon bi bi-image bi-fs-1_2x"></i>

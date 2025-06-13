@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,20 +10,25 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
+import {
+  NgbDropdown,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MarkdownComponent } from 'ngx-markdown'
 import { tap } from 'rxjs'
+import { Clan, CLAN_LIST } from '../../../utils/clans'
+import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 
 const MARKDOWN_EXAMPLE = `
 # Heading
 **bold**
-*emphasized*
-~~strikethrough~~
 [[discipline:Animalism]]
 [[clan:Ventrue]]
 [link](https://vtesdecks.com)
 ![image](https://vtesdecks.com/assets/img/logo.png)
-- list
 `
 @UntilDestroy()
 @Component({
@@ -30,17 +36,32 @@ const MARKDOWN_EXAMPLE = `
   templateUrl: './markdown-textarea.component.html',
   styleUrls: ['./markdown-textarea.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, ReactiveFormsModule, MarkdownComponent],
+  imports: [
+    TranslocoDirective,
+    ReactiveFormsModule,
+    MarkdownComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    NgClass,
+  ],
 })
 export class MarkdownTextareaComponent implements AfterViewInit {
   control = input.required<FormControl>()
   placeholder = input.required<string>()
   label = input.required<string>()
 
+  disciplines: Discipline[] = DISCIPLINE_LIST
+  clans: Clan[] = CLAN_LIST
   previewDescription = signal(false)
   @ViewChild('ref', { read: ElementRef }) textAreaRef!: ElementRef
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.textArea.style.height = 'auto'
+      this.textArea.style.height = this.textArea.scrollHeight + 'px'
+    }, 500)
     this.control()
       .valueChanges.pipe(
         untilDestroyed(this),
@@ -153,6 +174,34 @@ export class MarkdownTextareaComponent implements AfterViewInit {
 
     this.control()?.setValue(`${before}${table}${after}`)
     textArea.setSelectionRange(start, start + table.length)
+  }
+
+  onDiscipline(discipline: Discipline): void {
+    const textArea = this.textArea
+
+    const start = textArea.selectionStart
+    const end = textArea.selectionEnd
+
+    const before = textArea.value.substring(0, start)
+    const disciplineText = `[[discipline:${discipline.name}]]`
+    const after = textArea.value.substring(end)
+
+    this.control()?.setValue(`${before}${disciplineText}${after}`)
+    textArea.setSelectionRange(start, start + disciplineText.length)
+  }
+
+  onClan(clan: Clan): void {
+    const textArea = this.textArea
+
+    const start = textArea.selectionStart
+    const end = textArea.selectionEnd
+
+    const before = textArea.value.substring(0, start)
+    const clanText = `[[clan:${clan.name}]]`
+    const after = textArea.value.substring(end)
+
+    this.control()?.setValue(`${before}${clanText}${after}`)
+    textArea.setSelectionRange(start, start + clanText.length)
   }
 
   private applyStyle(
