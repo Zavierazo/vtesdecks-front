@@ -121,69 +121,78 @@ export class LimitedFormatModalComponent implements OnInit {
     if (!format) {
       return
     }
-    // Always initialize as custom format
-    this.onCreateCustom()
-
-    // Set basic form values
-    this.formatForm.patchValue({
-      name: format.name,
-      minCrypt: format.minCrypt,
-      maxCrypt: format.maxCrypt,
-      minLibrary: format.minLibrary,
-      maxLibrary: format.maxLibrary,
-    })
-
-    // Set sets values
-    Object.entries(format.sets).forEach(([setAbbrev, isSelected]) => {
-      const control = this.getSetControl(setAbbrev)
-      if (control) {
-        control.setValue(isSelected)
+    if (format.id) {
+      const predefinedFormat = PREDEFINED_LIMITED_FORMATS.find(
+        (f) => f.id === format.id,
+      )
+      if (predefinedFormat) {
+        this.selectedFormat = predefinedFormat
       }
-    })
+    } else {
+      // Always initialize as custom format
+      this.onCreateCustom()
 
-    // Load and set allowed crypt cards
-    Object.entries(format.allowed.crypt).forEach(([cardId, isAllowed]) => {
-      if (isAllowed) {
-        this.cryptQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
-          if (card) {
-            this.allowedCryptCards.addControl(cardId, this.fb.control(card))
-          }
-        })
-      }
-    })
+      // Set basic form values
+      this.formatForm.patchValue({
+        name: format.name,
+        minCrypt: format.minCrypt,
+        maxCrypt: format.maxCrypt,
+        minLibrary: format.minLibrary,
+        maxLibrary: format.maxLibrary,
+      })
 
-    // Load and set allowed library cards
-    Object.entries(format.allowed.library).forEach(([cardId, isAllowed]) => {
-      if (isAllowed) {
-        this.libraryQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
-          if (card) {
-            this.allowedLibraryCards.addControl(cardId, this.fb.control(card))
-          }
-        })
-      }
-    })
+      // Set sets values
+      Object.entries(format.sets).forEach(([setAbbrev, isSelected]) => {
+        const control = this.getSetControl(setAbbrev)
+        if (control) {
+          control.setValue(isSelected)
+        }
+      })
 
-    // Load and set banned crypt cards
-    Object.entries(format.banned.crypt).forEach(([cardId, isBanned]) => {
-      if (isBanned) {
-        this.cryptQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
-          if (card) {
-            this.bannedCryptCards.addControl(cardId, this.fb.control(card))
-          }
-        })
-      }
-    })
+      // Load and set allowed crypt cards
+      Object.entries(format.allowed.crypt).forEach(([cardId, isAllowed]) => {
+        if (isAllowed) {
+          this.cryptQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
+            if (card) {
+              this.allowedCryptCards.addControl(cardId, this.fb.control(card))
+            }
+          })
+        }
+      })
 
-    // Load and set banned library cards
-    Object.entries(format.banned.library).forEach(([cardId, isBanned]) => {
-      if (isBanned) {
-        this.libraryQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
-          if (card) {
-            this.bannedLibraryCards.addControl(cardId, this.fb.control(card))
-          }
-        })
-      }
-    })
+      // Load and set allowed library cards
+      Object.entries(format.allowed.library).forEach(([cardId, isAllowed]) => {
+        if (isAllowed) {
+          this.libraryQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
+            if (card) {
+              this.allowedLibraryCards.addControl(cardId, this.fb.control(card))
+            }
+          })
+        }
+      })
+
+      // Load and set banned crypt cards
+      Object.entries(format.banned.crypt).forEach(([cardId, isBanned]) => {
+        if (isBanned) {
+          this.cryptQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
+            if (card) {
+              this.bannedCryptCards.addControl(cardId, this.fb.control(card))
+            }
+          })
+        }
+      })
+
+      // Load and set banned library cards
+      Object.entries(format.banned.library).forEach(([cardId, isBanned]) => {
+        if (isBanned) {
+          this.libraryQuery.selectEntity(parseInt(cardId)).subscribe((card) => {
+            if (card) {
+              this.bannedLibraryCards.addControl(cardId, this.fb.control(card))
+            }
+          })
+        }
+      })
+    }
   }
 
   private initializePredefinedFormats(): void {
