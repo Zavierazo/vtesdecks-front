@@ -9,7 +9,10 @@
     "test": "ng test",
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront && sentry-cli sourcemaps upload --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "wrangler:deploy": "wrangler deploy",
+    "wrangler:dev": "wrangler dev",
+    "wrangler:start": "wrangler dev"
   },
   "private": true,
   "dependencies": {
@@ -69,6 +72,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "8.33.1"
+    "typescript-eslint": "8.33.1",
+    "wrangler": "^4.20.0"
   }
 }
