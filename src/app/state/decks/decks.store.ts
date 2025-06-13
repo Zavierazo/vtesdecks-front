@@ -32,8 +32,6 @@ export class DecksStore {
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
-  constructor() {}
-
   updatePage(hasMore: boolean, offset: number) {
     this.update((state) => ({
       ...state,
@@ -101,6 +99,7 @@ export class DecksStore {
     this.entities.update(() => [])
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: DecksState) => any): Observable<any> {
     return this.state$.pipe(map(selector))
   }

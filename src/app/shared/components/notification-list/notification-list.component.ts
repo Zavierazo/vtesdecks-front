@@ -1,18 +1,18 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
 } from '@angular/core'
-import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
-import { ApiDataService } from '../../../services/api.data.service'
-import { Observable, of, tap } from 'rxjs'
-import { ApiUserNotification } from '../../../models/api-user-notification'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { AuthService } from '../../../state/auth/auth.service'
-import { TranslocoDirective } from '@jsverse/transloco'
-import { NgClass, AsyncPipe } from '@angular/common'
 import { RouterLink } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
+import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { Observable, tap } from 'rxjs'
+import { ApiUserNotification } from '../../../models/api-user-notification'
+import { ApiDataService } from '../../../services/api.data.service'
+import { AuthService } from '../../../state/auth/auth.service'
 import { DateAsAgoPipe } from '../../pipes/date-ago.pipe'
 
 @UntilDestroy()
@@ -25,8 +25,8 @@ import { DateAsAgoPipe } from '../../pipes/date-ago.pipe'
 })
 export class NotificationListComponent implements OnInit {
   offcanvas = inject(NgbActiveOffcanvas)
-  private apiDataService = inject(ApiDataService)
-  private authService = inject(AuthService)
+  private readonly apiDataService = inject(ApiDataService)
+  private readonly authService = inject(AuthService)
 
   notifications$!: Observable<ApiUserNotification[]>
 

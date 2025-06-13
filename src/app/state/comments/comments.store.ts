@@ -12,8 +12,6 @@ export class CommentsStore {
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
-  constructor() {}
-
   selectLoading(): Observable<boolean> {
     return this.loading$
   }

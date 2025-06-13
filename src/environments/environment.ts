@@ -1,4 +1,5 @@
 export const environment = {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   appVersion: require('../../package.json').version,
   domain: 'localhost',
   apiDomain: 'localhost:8080',

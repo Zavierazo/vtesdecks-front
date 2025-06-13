@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiClanStat } from '../../models/api-clan-stat'
@@ -269,6 +269,7 @@ export class LibraryStore {
     )
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private sort(a: any, b: any, order?: 'asc' | 'desc'): number {
     if (a === b) {
       return 0

@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
     // Add christmas effect
     if (isChristmas()) {
       //Add to head <script defer src="https://app.embed.im/snow.js"></script> only on christmas
-      let node = document.createElement('script')
+      const node = document.createElement('script')
       node.src = 'https://app.embed.im/snow.js'
       node.defer = true
       document.getElementsByTagName('head')[0].appendChild(node)

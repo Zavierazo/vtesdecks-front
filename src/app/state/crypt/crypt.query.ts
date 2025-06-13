@@ -57,7 +57,7 @@ export class CryptQuery {
     )
   }
 
-  selectByName(name: string, limit: number = 5): Observable<ApiCrypt[]> {
+  selectByName(name: string, limit = 5): Observable<ApiCrypt[]> {
     return this.store.selectEntities(
       limit,
       (entity) =>

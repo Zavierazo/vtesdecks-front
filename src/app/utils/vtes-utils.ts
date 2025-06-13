@@ -35,7 +35,7 @@ export const searchIncludes = (
   string: string,
   searchString: string,
 ): boolean => {
-  let collator = new Intl.Collator('en', { sensitivity: 'base' })
+  const collator = new Intl.Collator('en', { sensitivity: 'base' })
   const searchStringLength = searchString.length
   const lengthDiff = string.length - searchString.length
   for (let i = 0; i <= lengthDiff; i++) {

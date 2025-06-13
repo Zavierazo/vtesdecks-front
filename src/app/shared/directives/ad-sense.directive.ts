@@ -5,6 +5,7 @@ import { AuthQuery } from '../../state/auth/auth.query'
 let uniqueId = 0
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[adSense]',
   standalone: true,
 })

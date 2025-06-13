@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
@@ -72,6 +72,7 @@ export class AuthStore {
     this.sessionStorage.setValue(AuthStore.storeName, this.getValue())
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: ApiUser) => any): Observable<any> {
     return this.state$.pipe(map(selector))
   }

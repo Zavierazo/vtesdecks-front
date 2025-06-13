@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from './../../models/api-clan-stat'
@@ -57,7 +57,7 @@ export class LibraryQuery {
     )
   }
 
-  selectByName(name: string, limit: number = 5): Observable<ApiLibrary[]> {
+  selectByName(name: string, limit = 5): Observable<ApiLibrary[]> {
     return this.store.selectEntities(
       limit,
       (entity) =>

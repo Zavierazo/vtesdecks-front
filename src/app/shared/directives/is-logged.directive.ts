@@ -1,4 +1,3 @@
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy'
 import {
   ChangeDetectorRef,
   Directive,
@@ -7,10 +6,12 @@ import {
   ViewContainerRef,
   inject,
 } from '@angular/core'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { tap } from 'rxjs'
 import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[isLogged]' })
 export class IsLoggedDirective {
   private authQuery = inject(AuthQuery)

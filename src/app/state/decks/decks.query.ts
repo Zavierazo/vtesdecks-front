@@ -29,6 +29,7 @@ export class DecksQuery {
     return this.store.select((decks: DecksState) => decks.restorableDecks)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getParam(key: string): any {
     return this.store.getValue().params[key]
   }
