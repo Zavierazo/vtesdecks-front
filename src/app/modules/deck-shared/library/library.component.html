@@ -7,7 +7,7 @@
       'background-repeat': 'no-repeat',
       'background-position': 'right 33%',
       'background-size': '50%'
-    }" [autoClose]="false">
+    }" [autoClose]="withControls && (isMobile$ | async)!">
     <ng-template #imgPopover>
       @if( library.i18n && library.i18n.image ){
       <img #i18nImage [ngClass]="{
@@ -45,7 +45,7 @@
           'bi-square btn-transparent': card.number <= 0,
           'bi-x-square text-danger': card.number > 0 &&card.number <= 1,
           'bi-dash-square': card.number > 1
-          }" aria-hidden="true" (click)="removeCard()"></i>
+          }" aria-hidden="true" (click)="removeCard($event)"></i>
       </div>
       }
       @if (!withDrawProbability && (card.number || maxNumber)) {
@@ -57,7 +57,7 @@
       }
       @if (withControls) {
       <div class="col-auto">
-        <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
+        <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard($event)"></i>
       </div>
       }
       <div class="col" [ngClass]="{

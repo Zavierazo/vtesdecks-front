@@ -75,11 +75,13 @@ export class CryptComponent implements OnInit {
     this.isMobile$ = this.mediaService.observeMobile()
   }
 
-  addCard() {
+  addCard(event: MouseEvent) {
+    event.preventDefault()
     this.cardAdded.emit(this.card.id)
   }
 
-  removeCard() {
+  removeCard(event: MouseEvent) {
+    event.preventDefault()
     this.cardRemoved.emit(this.card.id)
   }
 
@@ -109,10 +111,10 @@ export class CryptComponent implements OnInit {
       }
       if (event.detail > 1) {
         if (event.button === 0) {
-          this.addCard()
+          this.addCard(event)
         }
         if (event.button === 2) {
-          this.removeCard()
+          this.removeCard(event)
         }
       }
     }

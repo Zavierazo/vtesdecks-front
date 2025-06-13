@@ -1,12 +1,12 @@
 @if(crypt$ | async; as crypt){
 <li class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
   [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-  (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="{
+  (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="{
     background: 'url(/assets' + crypt.cropImage + ') scroll',
     'background-repeat': 'no-repeat',
     'background-position': 'right 33%',
     'background-size': '50%'
-  }" [autoClose]="false">
+  }" [autoClose]="withControls && (isMobile$ | async)!">
   <ng-template #imgPopover>
     @if( crypt.i18n && crypt.i18n.image ){
     <img #i18nImage [ngClass]="{
@@ -46,7 +46,7 @@
               'bi-square btn-transparent': card.number <= 0,
               'bi-x-square text-danger': card.number > 0 &&card.number <= 1,
               'bi-dash-square': card.number > 1
-              }" aria-hidden="true" (click)="removeCard()"></i>
+              }" aria-hidden="true" (click)="removeCard($event)"></i>
         </div>
         }
         @if(!withDrawProbability && (card.number || maxNumber)){
@@ -58,7 +58,7 @@
         }
         @if(withControls){
         <div class="col-auto">
-          <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard()"></i>
+          <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard($event)"></i>
         </div>
         }
         <div class="col-9">
