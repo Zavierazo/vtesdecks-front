@@ -34,8 +34,6 @@ export class DeckBuilderStore {
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
-  constructor() {}
-
   updateName(name: string): void {
     this.update((state) => ({ ...state, name }))
   }
@@ -101,6 +99,7 @@ export class DeckBuilderStore {
     return this.state$
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: DeckBuilderState) => any): Observable<any> {
     return this.state$.pipe(map(selector))
   }

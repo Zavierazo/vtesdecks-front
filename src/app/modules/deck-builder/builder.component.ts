@@ -31,8 +31,10 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiCrypt } from '../../models/api-crypt'
+import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
-import { ApiDisciplineStat } from '../../models/api-discipline-stat'
+import { ApiLibrary } from '../../models/api-library'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
@@ -45,7 +47,6 @@ import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
 import { environment } from './../../../environments/environment'
-import { ApiClanStat } from './../../models/api-clan-stat'
 import { CryptService } from './../../state/crypt/crypt.service'
 import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
 import { LibraryService } from './../../state/library/library.service'
@@ -96,41 +97,26 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly apiDataService = inject(ApiDataService)
 
   form!: FormGroup
-  deckId$!: Observable<string | undefined>
-  cryptList$!: Observable<ApiCard[]>
-  cryptSize$!: Observable<number>
-  cryptDisciplines$!: Observable<ApiDisciplineStat[]>
-  minCrypt$!: Observable<number>
-  maxCrypt$!: Observable<number>
-  avgCrypt$!: Observable<number>
-  libraryList$!: Observable<ApiCard[]>
-  librarySize$!: Observable<number>
-  libraryPoolCost$!: Observable<number | undefined>
-  libraryBloodCost$!: Observable<number | undefined>
-  libraryClans$!: Observable<ApiClanStat[]>
-  libraryDisciplines$!: Observable<ApiDisciplineStat[]>
-  cryptErrors$!: Observable<string[]>
-  libraryErrors$!: Observable<string[]>
-  saved$!: Observable<boolean>
+  deckId$ = this.deckBuilderQuery.selectDeckId()
+  cryptList$ = this.deckBuilderQuery.selectCrypt()
+  cryptSize$ = this.deckBuilderQuery.selectCryptSize()
+  cryptDisciplines$ = this.deckBuilderQuery.selectCryptDisciplines()
+  minCrypt$ = this.deckBuilderQuery.selectMinCrypt()
+  maxCrypt$ = this.deckBuilderQuery.selectMaxCrypt()
+  avgCrypt$ = this.deckBuilderQuery.selectAvgCrypt()
+  libraryList$ = this.deckBuilderQuery.selectLibrary()
+  librarySize$ = this.deckBuilderQuery.selectLibrarySize()
+  libraryPoolCost$ = this.deckBuilderQuery.selectLibraryPoolCost()
+  libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
+  libraryClans$ = this.deckBuilderQuery.selectLibraryClans()
+  libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines()
+  cryptErrors$ = this.deckBuilderQuery.selectCryptErrors()
+  libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
+  saved$ = this.deckBuilderQuery.selectSaved()
   limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
+  loading$ = this.deckBuilderQuery.selectLoading()
 
   ngOnInit() {
-    this.cryptList$ = this.deckBuilderQuery.selectCrypt()
-    this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()
-    this.cryptDisciplines$ = this.deckBuilderQuery.selectCryptDisciplines()
-    this.minCrypt$ = this.deckBuilderQuery.selectMinCrypt()
-    this.maxCrypt$ = this.deckBuilderQuery.selectMaxCrypt()
-    this.avgCrypt$ = this.deckBuilderQuery.selectAvgCrypt()
-    this.libraryList$ = this.deckBuilderQuery.selectLibrary()
-    this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()
-    this.libraryPoolCost$ = this.deckBuilderQuery.selectLibraryPoolCost()
-    this.libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
-    this.libraryClans$ = this.deckBuilderQuery.selectLibraryClans()
-    this.libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines()
-    this.cryptErrors$ = this.deckBuilderQuery.selectCryptErrors()
-    this.libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
-    this.deckId$ = this.deckBuilderQuery.selectDeckId()
-    this.saved$ = this.deckBuilderQuery.selectSaved()
     this.initForm()
     this.initCards()
       .pipe(
@@ -148,14 +134,14 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       })
   }
 
-  private initCards(): Observable<any> {
+  private initCards(): Observable<[ApiCrypt[], ApiLibrary[]]> {
     return zip(
       this.cryptService.getCryptCards(),
       this.libraryService.getLibraryCards(),
     )
   }
 
-  initDeck(): Observable<any> {
+  initDeck(): Observable<ApiDeckBuilder> {
     const id = this.route.snapshot.queryParams['id']
     const cloneDeck = history.state?.deck
 
@@ -206,11 +192,21 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         tap(() => this.onDeckLoaded()),
       )
       .subscribe({
-        error: () => {
-          this.toastService.show(
-            this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
-          )
+        error: (error) => {
+          if (error.message) {
+            this.toastService.show(
+              this.translocoService.translate(
+                'shared.unexpected_error_with_message',
+                { message: error.message },
+              ),
+              { classname: 'bg-danger text-light', delay: 10000 },
+            )
+          } else {
+            this.toastService.show(
+              this.translocoService.translate('shared.unexpected_error'),
+              { classname: 'bg-danger text-light', delay: 10000 },
+            )
+          }
         },
       })
   }

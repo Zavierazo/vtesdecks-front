@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
@@ -238,6 +238,10 @@ export class DeckBuilderQuery {
 
   selectLimitedFormat(): Observable<ApiDeckLimitedFormat | undefined> {
     return this.store.select((state) => state.extra?.limitedFormat)
+  }
+
+  selectLoading(): Observable<boolean> {
+    return this.store.selectLoading()
   }
 
   isValidDeck(): boolean {

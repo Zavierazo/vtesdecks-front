@@ -382,6 +382,7 @@
     "crypt": "Crypt",
     "library": "Library",
     "unexpected_error": "Unexpected error. Please try again later.",
+    "unexpected_error_with_message": "{{ message }}. Please try again later.",
     "not_required": "Not Required"
   },
   "table_seating": {

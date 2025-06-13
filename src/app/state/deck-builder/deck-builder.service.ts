@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { Observable, of, tap } from 'rxjs'
+import { finalize, Observable, of, tap, throwError } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
@@ -83,7 +83,11 @@ export class DeckBuilderService {
   }
 
   saveDeck(): Observable<ApiDeckBuilder> {
+    if (this.store.getLoading()) {
+      return throwError(() => new Error('Another action in progress'))
+    }
     const deck = this.query.getValue()
+    this.store.setLoading(true)
     return this.apiDataService
       .saveDeckBuilder({
         id: deck.id,
@@ -107,6 +111,7 @@ export class DeckBuilderService {
           }))
           this.validateDeck()
         }),
+        finalize(() => this.store.setLoading(false)),
       )
   }
 
@@ -182,7 +187,7 @@ export class DeckBuilderService {
     }
 
     const groups = new Set<number>()
-    for (let crypt of this.query.getCrypt()) {
+    for (const crypt of this.query.getCrypt()) {
       if (crypt.banned) {
         cryptErrors.push(
           this.translocoService.translate('deck_builder_service.banned_card', {
@@ -254,7 +259,7 @@ export class DeckBuilderService {
       )
       isValid = false
     }
-    for (let library of this.query.getLibrary()) {
+    for (const library of this.query.getLibrary()) {
       if (library.banned) {
         libraryErrors.push(
           this.translocoService.translate('deck_builder_service.banned_card', {

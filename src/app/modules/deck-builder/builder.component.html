@@ -90,7 +90,8 @@
 
               </div>
             </div>
-            <button type="button" class="btn btn-primary m-2" [disabled]="(saved$ | async)!" (click)="saveDeck()">
+            <button type="button" class="btn btn-primary m-2" [disabled]="(loading$ | async)! || (saved$ | async)!"
+              (click)="saveDeck()">
               <i class="bi bi-save-fill"></i>
               {{ t('save') }}
             </button>

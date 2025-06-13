@@ -382,6 +382,7 @@
     "crypt": "Cripta",
     "library": "Biblioteca",
     "unexpected_error": "Error inesperado. Por favor, inténtelo de nuevo más tarde.",
+    "unexpected_error_with_message": "{{ message }}. Por favor, inténtelo de nuevo más tarde.",
     "not_required": "No requerido"
   },
   "table_seating": {
