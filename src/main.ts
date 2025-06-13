@@ -40,6 +40,7 @@ import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { GlobalErrorHandler } from './app/services/global-error.handler'
 
 import { provideMarkdown } from 'ngx-markdown'
+import { bracketsExtension } from './app/marked-extension'
 import { AuthQuery } from './app/state/auth/auth.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
@@ -262,6 +263,8 @@ bootstrapApplication(AppComponent, {
       withInMemoryScrolling({ scrollPositionRestoration: 'disabled' }),
     ),
     provideAnimations(),
-    provideMarkdown(),
+    provideMarkdown({
+      markedExtensions: [bracketsExtension()],
+    }),
   ],
 }).catch((err) => console.error(err))

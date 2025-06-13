@@ -63,3 +63,7 @@ export const CLAN_LIST = [
 export function getClanIcon(clan: string): string | undefined {
   return CLAN_LIST.find((c) => c.name === clan)?.icon
 }
+
+export function getClanMarkdown(clan: string): Clan | undefined {
+  return CLAN_LIST.find((c) => c.name.toLowerCase() === clan.toLowerCase())
+}
