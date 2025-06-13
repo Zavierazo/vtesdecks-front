@@ -647,6 +647,8 @@
     "code": "Código",
     "quote": "Cita",
     "table": "Tabla",
+    "discipline": "Disciplina",
+    "clan": "Clan",
     "help": "Ayuda"
   }
 }
