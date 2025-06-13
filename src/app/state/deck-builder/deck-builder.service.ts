@@ -3,7 +3,9 @@ import { TranslocoService } from '@jsverse/transloco'
 import { finalize, Observable, of, tap, throwError } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
+import { ApiDeckExtra } from '../../models/api-deck-extra'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
+import { PREDEFINED_LIMITED_FORMATS } from '../../modules/deck-builder/limited-format/limited-format.const'
 import { LibraryQuery } from '../library/library.query'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckBuilderQuery } from './deck-builder.query'
@@ -28,7 +30,7 @@ export class DeckBuilderService {
             description: deck.description,
             cards: deck.cards ?? [],
             published: deck.published ?? false,
-            extra: deck.extra,
+            extra: this.updatePredefinedFormat(deck.extra),
             saved: true,
           }))
           this.validateDeck()
@@ -289,5 +291,18 @@ export class DeckBuilderService {
     this.store.setLibraryErrors(libraryErrors)
 
     return isValid
+  }
+
+  private updatePredefinedFormat(
+    extra?: ApiDeckExtra,
+  ): ApiDeckExtra | undefined {
+    const formatId = extra?.limitedFormat?.id
+    if (formatId) {
+      const predefinedFormat = PREDEFINED_LIMITED_FORMATS.find(
+        (f) => f.id === formatId,
+      )
+      extra.limitedFormat = predefinedFormat
+    }
+    return extra
   }
 }
