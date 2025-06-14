@@ -1,0 +1,10 @@
+<span class="fw-semibold" #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave"
+  container="body">
+  <ng-template #imgPopover>
+    <img [ngClass]="{
+        'img-popover': !(isMobile$ | async)!,
+        'img-popover-mobile': (isMobile$ | async)!
+      }" [src]="'/assets' + image()" [alt]="name()" />
+  </ng-template>
+  {{ name() }}
+</span>

@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   input,
   signal,
   ViewChild,
@@ -15,16 +16,19 @@ import {
   NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
+  NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MarkdownComponent } from 'ngx-markdown'
 import { tap } from 'rxjs'
 import { Clan, CLAN_LIST } from '../../../utils/clans'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
+import { MarkdownHelpModalComponent } from '../markdown-help-modal/markdown-help-modal.component'
 
 const MARKDOWN_EXAMPLE = `
 # Heading
 **bold**
+[[card:Blood Doll]]
 [[discipline:Animalism]]
 [[clan:Ventrue]]
 [link](https://vtesdecks.com)
@@ -48,6 +52,8 @@ const MARKDOWN_EXAMPLE = `
   ],
 })
 export class MarkdownTextareaComponent implements AfterViewInit {
+  private readonly modalService = inject(NgbModal)
+
   control = input.required<FormControl>()
   placeholder = input.required<string>()
   label = input.required<string>()
@@ -78,7 +84,7 @@ export class MarkdownTextareaComponent implements AfterViewInit {
   }
 
   get placeholderWithExample(): string {
-    return this.placeholder() + '\n' + MARKDOWN_EXAMPLE
+    return this.placeholder() + MARKDOWN_EXAMPLE
   }
 
   get textArea(): HTMLTextAreaElement {
@@ -100,7 +106,7 @@ export class MarkdownTextareaComponent implements AfterViewInit {
   }
 
   onItalic(): void {
-    this.applyStyle('*', '*', 'emphasized')
+    this.applyStyle('_', '_', 'emphasized')
   }
 
   onStrikethrough(): void {
@@ -247,5 +253,12 @@ export class MarkdownTextareaComponent implements AfterViewInit {
       )
     }
     textArea.focus()
+  }
+
+  onHelp(): void {
+    this.modalService.open(MarkdownHelpModalComponent, {
+      size: 'lg',
+      centered: true,
+    })
   }
 }

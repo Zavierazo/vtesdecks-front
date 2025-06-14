@@ -74,10 +74,9 @@
         (click)="onTable()">
         <i class="btn-icon bi bi-table bi-fs-1_2x"></i>
       </button>
-      <a type="button" class="btn btn-sm" [title]="t('help')" target="_blank"
-        href="https://www.markdownguide.org/cheat-sheet/">
+      <button type="button" class="btn btn-sm" [title]="t('help')" (click)="onHelp()">
         <i class="btn-icon bi bi-question-lg bi-fs-1_2x"></i>
-      </a>
+      </button>
     </div>
     <button type="button" class="btn btn-primary btn-sm" (click)="onPreviewDescription()">
       <i class="bi bi-search me-2"></i>
@@ -85,7 +84,7 @@
     </button>
   </div>
   @if(previewDescription()){
-  <markdown [data]="description" emoji />
+  <markdown [data]="description" [disableSanitizer]="true" emoji />
   } @else{
   <div class="form-floating">
     <textarea #ref class="form-control w-vw-100 markdown-textarea" id="description" type="text"

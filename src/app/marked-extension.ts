@@ -1,8 +1,13 @@
 import type { TokenizerAndRendererExtension } from 'marked'
+import { CryptQuery } from './state/crypt/crypt.query'
+import { LibraryQuery } from './state/library/library.query'
 import { Clan, getClanMarkdown } from './utils/clans'
 import { Discipline, getDisciplineMarkdown } from './utils/disciplines'
 
-export function bracketsExtension() {
+export function bracketsExtension(
+  cryptQuery: CryptQuery,
+  libraryQuery: LibraryQuery,
+) {
   const cardBracketsExtension: TokenizerAndRendererExtension = {
     name: 'cardBrackets',
     level: 'inline',
@@ -23,8 +28,23 @@ export function bracketsExtension() {
       return undefined
     },
     renderer(token) {
-      //TODO fix
-      return `<span class="fw-semibold card-bracket" title="${token['text']}" tabindex="0">${token['text']}</span>`
+      const cardName = token['text']
+      const cryptCard = cryptQuery.getAll({
+        filterBy: (crypt) =>
+          crypt.name.toLowerCase() === cardName.toLowerCase(),
+      })
+
+      const libraryCard = libraryQuery.getAll({
+        filterBy: (card) => card.name.toLowerCase() === cardName.toLowerCase(),
+      })
+
+      if (cryptCard.length > 0) {
+        return `<app-markdown-card name="${cryptCard[0].name}" image="${cryptCard[0].image}"></app-markdown-card>`
+      } else if (libraryCard.length > 0) {
+        return `<app-markdown-card name="${libraryCard[0].name}" image="${libraryCard[0].image}"></app-markdown-card>`
+      } else {
+        return `<span class="fw-semibold">${cardName}</span>`
+      }
     },
   }
 

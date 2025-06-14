@@ -185,7 +185,7 @@
           </div>
         </div>
         @if (deck.description) {
-        <markdown class="mt-3" [data]="deck.description" emoji />
+        <markdown class="mt-3" [data]="deck.description" [disableSanitizer]="true" emoji />
         <hr class="mb-4 mt-3" />
         }
         @if (deck.erratas && deck.erratas.length > 0) {

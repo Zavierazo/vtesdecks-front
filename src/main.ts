@@ -4,6 +4,7 @@ import {
   importProvidersFrom,
   inject,
   provideAppInitializer,
+  SecurityContext,
 } from '@angular/core'
 
 import * as Sentry from '@sentry/angular'
@@ -39,9 +40,11 @@ import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { GlobalErrorHandler } from './app/services/global-error.handler'
 
-import { provideMarkdown } from 'ngx-markdown'
+import { MARKED_EXTENSIONS, provideMarkdown } from 'ngx-markdown'
 import { bracketsExtension } from './app/marked-extension'
 import { AuthQuery } from './app/state/auth/auth.query'
+import { CryptQuery } from './app/state/crypt/crypt.query'
+import { LibraryQuery } from './app/state/library/library.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -264,7 +267,15 @@ bootstrapApplication(AppComponent, {
     ),
     provideAnimations(),
     provideMarkdown({
-      markedExtensions: [bracketsExtension()],
+      sanitize: SecurityContext.NONE,
+      markedExtensions: [
+        {
+          provide: MARKED_EXTENSIONS,
+          useFactory: bracketsExtension,
+          deps: [CryptQuery, LibraryQuery],
+          multi: true,
+        },
+      ],
     }),
   ],
 }).catch((err) => console.error(err))

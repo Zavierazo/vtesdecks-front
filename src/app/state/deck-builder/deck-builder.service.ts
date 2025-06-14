@@ -1,4 +1,5 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Injectable, SecurityContext } from '@angular/core'
+import { DomSanitizer } from '@angular/platform-browser'
 import { TranslocoService } from '@jsverse/transloco'
 import { finalize, Observable, of, tap, throwError } from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
@@ -17,6 +18,7 @@ export class DeckBuilderService {
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly apiDataService = inject(ApiDataService)
   private readonly translocoService = inject(TranslocoService)
+  private readonly sanitizer = inject(DomSanitizer)
 
   init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {
     this.store.reset()
@@ -27,7 +29,7 @@ export class DeckBuilderService {
             ...state,
             id: deck.id,
             name: deck.name,
-            description: deck.description,
+            description: this.sanitizeDescription(deck.description),
             cards: deck.cards ?? [],
             published: deck.published ?? false,
             extra: this.updatePredefinedFormat(deck.extra),
@@ -40,6 +42,7 @@ export class DeckBuilderService {
       this.store.update((state) => ({
         ...state,
         name: '[COPY] ' + cloneDeck.name,
+        description: this.sanitizeDescription(cloneDeck.description),
         extra: cloneDeck.extra,
         cards: [...cloneDeck.crypt!, ...cloneDeck.library!],
         published: false,
@@ -57,7 +60,7 @@ export class DeckBuilderService {
     this.store.update((state) => ({
       ...state,
       name: '[COPY] ' + name,
-      description,
+      description: this.sanitizeDescription(description),
       extra,
       cards: [...cards],
       published: false,
@@ -133,7 +136,7 @@ export class DeckBuilderService {
   }
 
   updateDescription(description: string) {
-    this.store.updateDescription(description)
+    this.store.updateDescription(this.sanitizeDescription(description))
     this.store.setSaved(false)
   }
 
@@ -304,5 +307,21 @@ export class DeckBuilderService {
       extra.limitedFormat = predefinedFormat
     }
     return extra
+  }
+
+  private sanitizeDescription(description?: string): string | undefined {
+    return description
+      ?.split('\n')
+      .map((line: string) => {
+        if (line.startsWith('>')) {
+          // Fix for markdown quote parser
+          return this.sanitizer
+            .sanitize(SecurityContext.HTML, line)
+            ?.replace(/&gt;/g, '>')
+        } else {
+          return this.sanitizer.sanitize(SecurityContext.HTML, line)
+        }
+      })
+      .join('\n')
   }
 }
