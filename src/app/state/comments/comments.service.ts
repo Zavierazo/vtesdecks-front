@@ -1,5 +1,4 @@
-import { inject, Injectable, SecurityContext } from '@angular/core'
-import { DomSanitizer } from '@angular/platform-browser'
+import { inject, Injectable } from '@angular/core'
 import { filter, Observable, tap } from 'rxjs'
 import { ApiComment } from './../../models/api-comment'
 import { ApiDataService } from './../../services/api.data.service'
@@ -10,7 +9,6 @@ import { CommentsStore } from './comments.store'
 export class CommentsService {
   private readonly commentsStore = inject(CommentsStore)
   private readonly apiDataService = inject(ApiDataService)
-  private readonly sanitizer = inject(DomSanitizer)
 
   static readonly limit = 10
 
@@ -23,14 +21,14 @@ export class CommentsService {
   }
 
   addComment(comment: ApiComment): Observable<ApiComment> {
-    return this.apiDataService.addComment(this.sanitizeComment(comment)).pipe(
+    return this.apiDataService.addComment(comment).pipe(
       filter((comment: ApiComment) => comment.id !== undefined),
       tap((comment: ApiComment) => this.commentsStore.add(comment)),
     )
   }
 
   editComment(comment: ApiComment): Observable<ApiComment> {
-    return this.apiDataService.editComment(this.sanitizeComment(comment)).pipe(
+    return this.apiDataService.editComment(comment).pipe(
       filter((comment: ApiComment) => comment.id !== undefined),
       tap((comment: ApiComment) =>
         this.commentsStore.update(comment.id, comment),
@@ -46,28 +44,7 @@ export class CommentsService {
   }
 
   private updateComments(comments: ApiComment[]) {
-    this.commentsStore.set(comments.map(this.sanitizeComment))
+    this.commentsStore.set(comments)
     this.commentsStore.setLoading()
-  }
-
-  private sanitizeComment(comment: ApiComment): ApiComment {
-    const contentSanitized = comment.content
-      ?.split('\n')
-      .map((line: string) => {
-        if (line.startsWith('>')) {
-          // Fix for markdown quote parser
-          return this.sanitizer
-            .sanitize(SecurityContext.HTML, line)
-            ?.replace(/&gt;/g, '>')
-        } else {
-          return this.sanitizer.sanitize(SecurityContext.HTML, line)
-        }
-      })
-      .join('\n')
-
-    return {
-      ...comment,
-      content: contentSanitized,
-    }
   }
 }
