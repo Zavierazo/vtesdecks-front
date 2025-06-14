@@ -16,7 +16,7 @@
     </div>
     @if (!isEditing){
     <p class="text-justify comment-text mb-0">
-      <markdown class="mt-3" [data]="comment.content" [disableSanitizer]="true" emoji />
+      <app-markdown-text class="mt-3" [data]="comment.content" />
     </p>
     }
     @if (isEditing){

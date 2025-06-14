@@ -19,11 +19,11 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MarkdownComponent } from 'ngx-markdown'
 import { tap } from 'rxjs'
 import { Clan, CLAN_LIST } from '../../../utils/clans'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 import { MarkdownHelpModalComponent } from '../markdown-help-modal/markdown-help-modal.component'
+import { MarkdownTextComponent } from '../markdown-text/markdown-text.component'
 
 const MARKDOWN_EXAMPLE = `
 # Heading
@@ -43,7 +43,7 @@ const MARKDOWN_EXAMPLE = `
   imports: [
     TranslocoDirective,
     ReactiveFormsModule,
-    MarkdownComponent,
+    MarkdownTextComponent,
     NgbDropdown,
     NgbDropdownToggle,
     NgbDropdownMenu,
