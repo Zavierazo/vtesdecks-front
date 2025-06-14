@@ -29,7 +29,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { MarkdownComponent, provideMarkdown } from 'ngx-markdown'
+import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { ApiCard } from '../../models/api-card'
@@ -41,6 +41,7 @@ import { ToastService } from '../../services/toast.service'
 import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { MarkdownTextComponent } from '../../shared/components/markdown-text/markdown-text.component'
 import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
@@ -90,7 +91,7 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     TranslocoPipe,
     TranslocoDatePipe,
     AdSenseComponent,
-    MarkdownComponent,
+    MarkdownTextComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {

@@ -10,10 +10,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MarkdownComponent } from 'ngx-markdown'
 import { filter, Observable, switchMap } from 'rxjs'
 import { ApiComment } from '../../../models/api-comment'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
+import { MarkdownTextComponent } from '../../../shared/components/markdown-text/markdown-text.component'
 import { DateAsAgoPipe } from '../../../shared/pipes/date-ago.pipe'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { CommentsService } from '../../../state/comments/comments.service'
@@ -31,7 +31,7 @@ import { MarkdownTextareaComponent } from './../../../shared/components/markdown
     AsyncPipe,
     DateAsAgoPipe,
     MarkdownTextareaComponent,
-    MarkdownComponent,
+    MarkdownTextComponent,
   ],
 })
 export class CommentComponent implements OnInit {
