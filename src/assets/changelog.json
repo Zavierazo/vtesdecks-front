@@ -1,5 +1,15 @@
 [
   {
+    "version": "2.43.0",
+    "date": "14th June, 2025",
+    "changes": [
+      "Added Markdown support for cards, clans, and disciplines",
+      "Added V5 Predefined Limited Format",
+      "Fixed issue causing duplicate decks to be created",
+      "Fixed card popovers in the deck builder for mobile devices"
+    ]
+  },
+  {
     "version": "2.42.0",
     "date": "07th June, 2025",
     "changes": [

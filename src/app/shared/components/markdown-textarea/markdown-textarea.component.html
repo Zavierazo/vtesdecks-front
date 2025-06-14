@@ -85,7 +85,7 @@
     </button>
   </div>
   @if(previewDescription()){
-  <markdown [data]="description" emoji />
+  <markdown [data]="description" [disableSanitizer]="true" emoji />
   } @else{
   <div class="form-floating">
     <textarea #ref class="form-control w-vw-100 markdown-textarea" id="description" type="text"

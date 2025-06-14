@@ -38,7 +38,7 @@ export class DeckBuilderStore {
     this.update((state) => ({ ...state, name }))
   }
 
-  updateDescription(description: string): void {
+  updateDescription(description?: string): void {
     this.update((state) => ({ ...state, description }))
   }
 

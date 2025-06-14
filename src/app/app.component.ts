@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, Injector, OnInit, inject } from '@angular/core'
+import { createCustomElement } from '@angular/elements'
 import {
   NavigationEnd,
   NavigationError,
@@ -17,6 +18,7 @@ import { ColorThemeService } from './services/color-theme.service'
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from './shared/components/footer/footer.component'
 import { HeaderComponent } from './shared/components/header/header.component'
+import { MarkdownCardComponent } from './shared/components/markdown-card/markdown-card.component'
 import { ToastsContainer } from './shared/components/toast-container/toast-container.component'
 import { AuthQuery } from './state/auth/auth.query'
 import { AuthService } from './state/auth/auth.service'
@@ -44,7 +46,13 @@ export class AppComponent implements OnInit {
   versionAvailable = false
 
   constructor() {
+    // Load color theme
     this.colorThemeService.load()
+    // Add custom element for markdown cards
+    const markdownCard = createCustomElement(MarkdownCardComponent, {
+      injector: inject(Injector),
+    })
+    customElements.define('app-markdown-card', markdownCard)
   }
 
   ngOnInit() {

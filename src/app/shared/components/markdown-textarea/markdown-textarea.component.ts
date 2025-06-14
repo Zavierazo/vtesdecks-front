@@ -4,11 +4,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   input,
   signal,
   ViewChild,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { DomSanitizer } from '@angular/platform-browser'
 import { TranslocoDirective } from '@jsverse/transloco'
 import {
   NgbDropdown,
@@ -25,6 +27,7 @@ import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
 const MARKDOWN_EXAMPLE = `
 # Heading
 **bold**
+[[card:Blood Doll]]
 [[discipline:Animalism]]
 [[clan:Ventrue]]
 [link](https://vtesdecks.com)
@@ -48,6 +51,8 @@ const MARKDOWN_EXAMPLE = `
   ],
 })
 export class MarkdownTextareaComponent implements AfterViewInit {
+  private readonly sanitizer = inject(DomSanitizer)
+
   control = input.required<FormControl>()
   placeholder = input.required<string>()
   label = input.required<string>()
@@ -78,7 +83,7 @@ export class MarkdownTextareaComponent implements AfterViewInit {
   }
 
   get placeholderWithExample(): string {
-    return this.placeholder() + '\n' + MARKDOWN_EXAMPLE
+    return this.placeholder() + MARKDOWN_EXAMPLE
   }
 
   get textArea(): HTMLTextAreaElement {
