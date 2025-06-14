@@ -10,19 +10,20 @@ import {
   ViewChild,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { DomSanitizer } from '@angular/platform-browser'
 import { TranslocoDirective } from '@jsverse/transloco'
 import {
   NgbDropdown,
   NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
+  NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MarkdownComponent } from 'ngx-markdown'
 import { tap } from 'rxjs'
 import { Clan, CLAN_LIST } from '../../../utils/clans'
 import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
+import { MarkdownHelpModalComponent } from '../markdown-help-modal/markdown-help-modal.component'
 
 const MARKDOWN_EXAMPLE = `
 # Heading
@@ -51,7 +52,7 @@ const MARKDOWN_EXAMPLE = `
   ],
 })
 export class MarkdownTextareaComponent implements AfterViewInit {
-  private readonly sanitizer = inject(DomSanitizer)
+  private readonly modalService = inject(NgbModal)
 
   control = input.required<FormControl>()
   placeholder = input.required<string>()
@@ -105,7 +106,7 @@ export class MarkdownTextareaComponent implements AfterViewInit {
   }
 
   onItalic(): void {
-    this.applyStyle('*', '*', 'emphasized')
+    this.applyStyle('_', '_', 'emphasized')
   }
 
   onStrikethrough(): void {
@@ -252,5 +253,12 @@ export class MarkdownTextareaComponent implements AfterViewInit {
       )
     }
     textArea.focus()
+  }
+
+  onHelp(): void {
+    this.modalService.open(MarkdownHelpModalComponent, {
+      size: 'lg',
+      centered: true,
+    })
   }
 }

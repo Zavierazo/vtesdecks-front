@@ -1,0 +1,142 @@
+<div class="modal-header">
+  <h4 class="modal-title">Markdown syntax</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body" id="markdown-help-top">
+  <p><strong>VtesDecks</strong> descriptions and comments are written using <strong>Markdown</strong>, a plain-text
+    formatting language.
+    However, we also
+    add in some of our own flavor to allow you to do special things (e.g., adding card, discipline, clans, etc). We also
+    removed some of the custom HTML from Markdown to prevent people from
+    abusing the design of the site.</p>
+  <p>This article will show you some of the basics of creating a markdown text.
+    <br>
+  </p>
+  <h4>Editor Basics</h4>
+  <p><strong>Previewing</strong> — While you're editing, you can press the Preview button in the toolbar to
+    see what your text will look like after processes all of the Markdown.</p>
+  <h4>Formatting Text</h4>
+  <p><strong>Headers</strong> — Headers are useful for organizing your content and making the text more organized and
+    readable. To create a header, use the number sign (#) followed by your header title. The number of number signs you
+    use will dictate the size of the header that is rendered. One being the largest and six being the smallest.</p>
+  <p>For example, <code>## This is a header</code> would produce the following:</p>
+  <h2>This is a header</h2>
+  <p><code>#### This is a smaller header</code> would produce the following:</p>
+  <h5>This is a smaller header</h5>
+  <br>
+  <p>Be sure to include an empty line above and below your header.</p>
+  <p><strong>Bold</strong> — In order to bold your text, surround the text with two asterisks (i.e., to make
+    <strong>Bold Text</strong> you would type <code>**Bold Text**</code>).
+  </p>
+  <p><strong>Italic</strong> — In order to italicize your text, surround the text with one underscore (i.e., to make
+    <em>Italic Text</em> you would type <code>_Italic Text_</code>).
+  </p>
+  <p><strong>Strikethrough</strong> — In order to strikethrough your text, surround the text with two tildes (i.e., to
+    make <s>Strikethrough Text</s> you would type <code>~~Strikethrough Text~~</code>).</p>
+  <h4>Lists</h4>
+  <p><strong>Unordered Lists</strong> — Unordered lists are lists that use bullets to start an indented line. To create
+    an unordered list, type an dash (-) at the beginning of a line followed by the list item. An example would look like
+    this:</p>
+  <pre>
+  - Unordered List Item 1
+  - Unordered List Item 2
+  - Unordered List Item 3
+  </pre>
+  <p>If you wish to create a nested unordered list, you may do so by adding 4 spaces (avoid using tab indentation)
+    preceding the list item on subsequent lines. An example would look like this:</p>
+  <pre>
+  - Unordered List Item 1
+  - Unordered List Item 2
+      - Indented List Item 1
+      - Indented List Item 2
+  - Unordered List Item 3
+  </pre>
+  <p><strong>Ordered Lists</strong> — Ordered lists are lists that use numbers followed by a period to start an indented
+    line. The list will begin at whatever number you choose followed by a period. Each subsequent line that begins with
+    any number less than 10 digits long followed by a period will create another sequential entry in your ordered list
+    regardless of what number you've chosen. To create an ordered list, type a number at the beginning of a line
+    followed by a period and a space then the list item. An example would look like this:</p>
+  <pre>
+  1. Ordered List Item 1
+  2. Ordered List Item 2
+  3. Ordered List Item 3
+  </pre>
+  <p>If you wish to create a nested ordered list, you may do so by adding 4 spaces (avoid using tab indentation)
+    preceding the list item on subsequent lines. An example would look like this:</p>
+  <pre>
+  1. Ordered List Item 1
+  2. Ordered List Item 2
+      1. Indented List Item 1
+      2. Indented List Item 2
+  3. Ordered List Item 3
+  </pre>
+  <p>You may also nest ordered lists into unordered lists and vice versa. An example would look like this:</p>
+  <pre>
+  1. Ordered List Item 1
+  2. Ordered List Item 2
+      - Indented Unordered List Item 1
+          1. Indented Ordered List Item 1
+          2. Indented Ordered List Item 2
+              - Indented Unordered List Item 1
+  3. Ordered List Item 3
+  </pre>
+  <h4>Embedding Links, Images</h4>
+  <p><strong>Links</strong> — To create a link, surround some text with brackets followed by the URL surrounded with
+    parentheses. For example, to create a link to <a href="https://vtesdecks.com">VtesDecks</a> you would type
+    <code>[VtesDecks](https://vtesdecks.com)</code>.
+  </p>
+  <p>You may also add an optional title to a link by enclosing some text in quotation marks after the URL. This will
+    result in in a tooltip when the user hovers over the link. Adding to our previous example, the result of
+    <code>[VtesDecks](https://vtesdecks.com "A deck building website for Vampire: The Eternal Struggle")</code> would
+    look like
+    this: <a href="https://vtesdecks.com"
+      title="A deck building website for Vampire: The Eternal Struggle">VtesDecks</a>
+  </p>
+  <p><strong>Images</strong> — To create an image, begin with an exclamation mark (!) followed by some alt text in
+    brackets then the URL to the image asset in parentheses. For example,
+    <code>![My Favorite GIF](https://media1.giphy.com/media/giphy.gif))</code>
+    will result in the
+    following:
+  </p>
+  <p><img
+      src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExam56dTdlMTZ1a2J2YmxxcnZ3anVsNGd6MG4wM2lnZTdmaTlncmhrbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vQqeT3AYg8S5O/giphy.gif"
+      alt="My Favorite GIF"></p>
+  <p>If you wish to make an image into a link, enclose the markdown for the image in brackets, and then add the URL in
+    parentheses. For example,
+    <code>[![VtesDecks](https://vtesdecks.com/assets/img/logo.png)](https://vtesdecks.com)</code>
+    will result in the following:
+  </p>
+  <p><a href="https://vtesdecks.com"><img src="https://vtesdecks.com/assets/img/logo.png" alt="VtesDecks"></a></p>
+  <h4>Embedding Cards</h4>
+  <p><strong>Cards</strong> — Embedding a card will create a link that, when hovered over by the user, will display the
+    card. To embed a card, surround the card's name in double brackets. The format is not case sensitive, however, any
+    punctuation in the card's name must be present. For example, <code>[[card:British Museum, London, The]]</code> with
+    result in the following:
+  </p>
+  <p><app-markdown-card name="British Museum, London, The" image="/img/cards/102236.jpg"></app-markdown-card></p>
+  <h4>Embedding Disciplines</h4>
+  <p><strong>Discipline</strong> — Many of Vampire: The Eternal Struggle's disciplines symbols are available for use in
+    the
+    editor. The format for manually adding the disciplines is surrounding with double brackets the word
+    <code>discipline</code> (all
+    lower case) followed by a colon and then the discipline abbreviation or name. For example,
+    <code>[[discipline:Animalism]]</code> with result in the following:
+  </p>
+  <p><i class="vtes-small animalism" title="Animalism"></i></p>
+  <p>
+    The easiest way to add discipline symbols to your text is by using the button on the
+    toolbar and then selecting the discipline of your choice.
+  </p>
+  <h4>Embedding Clans</h4>
+  <p><strong>Clan</strong> — Many of Vampire: The Eternal Struggle's clans symbols are available for use in the
+    editor. The format for manually adding the clans is surrounding with double brackets the word
+    <code>clan</code> (all
+    lower case) followed by a colon and then the clan abbreviation or name. For example,
+    <code>[[clan:Gangrel]]</code> with result in the following:
+  </p>
+  <p><i class="vtes-small gangrel" title="Gangrel"></i></p>
+  <p>
+    The easiest way to add clans symbols to your text is by using the button on the
+    toolbar and then selecting the clan of your choice.
+  </p>
+</div>
