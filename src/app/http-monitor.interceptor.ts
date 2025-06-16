@@ -25,16 +25,6 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const isApiRequest = request?.url?.includes(environment.apiDomain)
     if (!isApiRequest) {
-      const isGoogleAdsRequest = request?.url?.includes(
-        'pagead2.googlesyndication.com',
-      )
-      if (isGoogleAdsRequest) {
-        return next.handle(
-          request.clone({
-            headers: request.headers.set('ngsw-bypass', 'true'),
-          }),
-        )
-      }
       return next.handle(request)
     }
 
