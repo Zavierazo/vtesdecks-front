@@ -1,29 +1,31 @@
 import {
+  AsyncPipe,
   DOCUMENT,
-  ViewportScroller,
   NgClass,
   NgTemplateOutlet,
-  AsyncPipe,
+  ViewportScroller,
 } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   TemplateRef,
-  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
-  NgbModal,
   NgbDropdown,
-  NgbDropdownToggle,
-  NgbDropdownMenu,
   NgbDropdownButtonItem,
   NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
@@ -39,11 +41,9 @@ import { ApiCrypt } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
-import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
+import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
 
 @UntilDestroy()
 @Component({
@@ -88,7 +88,7 @@ export class CryptSectionComponent implements OnInit {
   private limitTo = CryptSectionComponent.PAGE_SIZE
   sortBy: keyof ApiCrypt = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
-  printOnDemand: boolean = false
+  printOnDemand = false
   clans: string[] = []
   disciplines: string[] = []
   superiorDisciplines: string[] = []
@@ -141,6 +141,7 @@ export class CryptSectionComponent implements OnInit {
     }
     this.sortBy = sortBy
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeNameFilter() {
@@ -148,7 +149,10 @@ export class CryptSectionComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         debounceTime(500),
-        tap(() => this.initQuery()),
+        tap(() => {
+          this.initQuery()
+          this.scrollToTop()
+        }),
       )
       .subscribe()
   }
@@ -156,46 +160,55 @@ export class CryptSectionComponent implements OnInit {
   onChangePrintOnDemand(printOnDemand: boolean) {
     this.printOnDemand = printOnDemand
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeClanFilter(clans: string[]) {
     this.clans = clans
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeDisciplineFilter(disciplines: string[]) {
     this.disciplines = disciplines
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
     this.superiorDisciplines = superiorDisciplines
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeGroupSliderFilter(groupSlider: number[]) {
     this.groupSlider = groupSlider
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeCapacitySliderFilter(capacitySlider: number[]) {
     this.capacitySlider = capacitySlider
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeTitleFilter(title: string) {
     this.title = title
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
+    this.scrollToTop()
   }
 
   initQuery() {
@@ -305,7 +318,7 @@ export class CryptSectionComponent implements OnInit {
 
   scrollToTop() {
     this.document
-      .querySelector('#container')
+      .querySelector('.scroll-container')
       ?.scrollIntoView({ behavior: 'smooth' })
   }
 

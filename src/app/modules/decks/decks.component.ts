@@ -1,10 +1,10 @@
-import { DOCUMENT, ViewportScroller, NgClass, AsyncPipe } from '@angular/common'
+import { AsyncPipe, DOCUMENT, NgClass, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnInit,
   TemplateRef,
-  inject,
   viewChild,
 } from '@angular/core'
 import {
@@ -14,8 +14,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   debounceTime,
   distinctUntilChanged,
@@ -27,16 +29,14 @@ import {
   tap,
 } from 'rxjs'
 import { ApiDeck } from '../../models/api-deck'
+import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { DecksService } from '../../state/decks/decks.service'
+import { DeckCardComponent } from '../deck-card/deck-card.component'
+import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
 import { MediaService } from './../../services/media.service'
 import { DecksQuery } from './../../state/decks/decks.query'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
-import { TranslocoDirective } from '@jsverse/transloco'
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { DeckCardComponent } from '../deck-card/deck-card.component'
-import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({
@@ -87,7 +87,10 @@ export class DecksComponent implements OnInit {
         untilDestroyed(this),
         distinctUntilChanged(),
         skip(1),
-        tap((params) => this.decksService.init(params)),
+        tap((params) => {
+          this.scrollToTop()
+          this.decksService.init(params)
+        }),
         switchMap(() => this.decksService.getMore()),
       )
       .subscribe()
@@ -112,7 +115,7 @@ export class DecksComponent implements OnInit {
 
   scrollToTop(): void {
     this.document
-      .querySelector('#container')
+      .querySelector('.scroll-container')
       ?.scrollIntoView({ behavior: 'smooth' })
   }
 
