@@ -23,6 +23,7 @@ export interface ApiDeck {
   published?: boolean
   crypt?: ApiCard[]
   library?: ApiCard[]
+  filterCards?: ApiCard[]
   clanIcons: string[]
   disciplineIcons: string[]
   stats: ApiDeckStats

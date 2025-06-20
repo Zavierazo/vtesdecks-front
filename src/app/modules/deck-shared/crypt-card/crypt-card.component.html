@@ -89,25 +89,44 @@
           @if ((preconstructedDecks$ | async)?.decks; as decks) {
           @if (card.printOnDemand || decks.length > 0) {
           <strong>{{ t('where_find') }}</strong>
-          <ul>
-            @for (shop of (shops$ | async)!; track shop) {
-            <li>
-              @if (getShopInfo(shop.platform); as shopInfo) {
-              <a class="text-decoration-none" [href]="shop.link" target="_blank" gaEvent="purchase"
-                [gaCategory]="shop.platform" [gaLabel]="card.name">
-                {{ shopInfo.name }} ({{ shop.price | currency:shop.currency }})
-              </a>
+          @for (shop of (shops$ | async)!; track shop) {
+          <div>
+            @if (getShopInfo(shop.platform); as shopInfo) {
+            <a class="text-decoration-none" [href]="shop.link" target="_blank" gaEvent="purchase"
+              [gaCategory]="shop.platform" [gaLabel]="card.name">
+              {{ shopInfo.name }} ({{ shop.price | currency:shop.currency }})
+            </a>
+            }
+          </div>
+          }
+          @for (deck of decks; track deck) {
+          <div>
+            <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
+              @if( deck.filterCards?.[0]?.number; as number ){
+              <span class="badge bg-primary badge-pill">{{ number }}x</span>
               }
-            </li>
-            }
-            @for (deck of decks; track deck) {
-            <li>
+              {{ deck.name }} ({{ deck.year }})
+
+            </a>
+          </div>
+          }
+          }
+          }
+          @if ((myDecks$ | async)?.decks; as myDecks) {
+          @if (myDecks.length > 0) {
+          <div class="mt-2">
+            <strong>{{ t('my_decks') }}</strong>
+            @for (deck of myDecks; track deck) {
+            <div>
               <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
-                {{ deck.name }} ({{ deck.year }})
+                @if( deck.filterCards?.[0]?.number; as number ){
+                <span class="badge bg-primary badge-pill">{{ number }}x</span>
+                }
+                {{ deck.name }}
               </a>
-            </li>
+            </div>
             }
-          </ul>
+          </div>
           }
           }
         </div>

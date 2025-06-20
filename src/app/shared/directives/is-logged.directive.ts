@@ -14,10 +14,10 @@ import { AuthQuery } from '../../state/auth/auth.query'
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[isLogged]' })
 export class IsLoggedDirective {
-  private authQuery = inject(AuthQuery)
-  private templateRef = inject<TemplateRef<unknown>>(TemplateRef)
-  private viewContainer = inject(ViewContainerRef)
-  private changes = inject(ChangeDetectorRef)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly templateRef = inject<TemplateRef<unknown>>(TemplateRef)
+  private readonly viewContainer = inject(ViewContainerRef)
+  private readonly changes = inject(ChangeDetectorRef)
 
   private hasView = false
 

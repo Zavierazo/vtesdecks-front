@@ -18,6 +18,7 @@ import { EMPTY, Observable } from 'rxjs'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
+import { AuthQuery } from '../../../state/auth/auth.query'
 import { Shop, getShop } from '../../../utils/shops'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
@@ -46,6 +47,7 @@ import { MediaService } from './../../../services/media.service'
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
   modal = inject(NgbActiveModal)
+  private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
   private readonly mediaService = inject(MediaService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
@@ -55,6 +57,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   @Input() index!: number
   krcgCard$!: Observable<ApiKrcgCard>
   preconstructedDecks$!: Observable<ApiDecks>
+  myDecks$!: Observable<ApiDecks>
   isMobile$!: Observable<boolean>
   shops$!: Observable<ApiShop[]>
   defaultTouch = { x: 0, y: 0, time: 0 }
@@ -64,6 +67,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
+    this.fetchMyDecks()
     // Push fake state to capture dismiss modal on back button
     history.pushState(
       {
@@ -93,14 +97,14 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   @HostListener('touchend', ['$event'])
   @HostListener('touchcancel', ['$event'])
   handleTouch(event: TouchEvent): void {
-    let touch = event.touches[0] || event.changedTouches[0]
+    const touch = event.touches[0] || event.changedTouches[0]
     if (event.type === 'touchstart') {
       this.defaultTouch.x = touch.pageX
       this.defaultTouch.y = touch.pageY
       this.defaultTouch.time = event.timeStamp
     } else if (event.type === 'touchend') {
-      let deltaX = touch.pageX - this.defaultTouch.x
-      let deltaTime = event.timeStamp - this.defaultTouch.time
+      const deltaX = touch.pageX - this.defaultTouch.x
+      const deltaTime = event.timeStamp - this.defaultTouch.time
       if (deltaTime < 500) {
         if (Math.abs(deltaX) > 100) {
           if (deltaX > 0) {
@@ -120,6 +124,8 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
+    this.fetchMyDecks()
+    this.changeDetectorRef.markForCheck()
   }
 
   @HostListener('window:keydown.ArrowLeft')
@@ -133,6 +139,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
+    this.fetchMyDecks()
   }
 
   private fetchShops() {
@@ -143,7 +150,6 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     } else {
       this.shops$ = EMPTY
     }
-    this.changeDetectorRef.markForCheck()
   }
 
   private fetchRulings() {
@@ -153,7 +159,6 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     this.krcgCard$ = this.apiDataService
       .getKrcgCard(this.cardList[this.index].id)
       .pipe(untilDestroyed(this))
-    this.changeDetectorRef.markForCheck()
   }
 
   private fetchPreconstructedDecks(): void {
@@ -163,7 +168,19 @@ export class CryptCardComponent implements OnInit, OnDestroy {
         cards: `${this.cardList[this.index].id}=1`,
       })
       .pipe(untilDestroyed(this))
-    this.changeDetectorRef.markForCheck()
+  }
+
+  private fetchMyDecks(): void {
+    if (this.authQuery.isAuthenticated()) {
+      this.myDecks$ = this.apiDataService
+        .getDecks(0, 10, {
+          type: 'USER',
+          cards: `${this.cardList[this.index].id}=1`,
+        })
+        .pipe(untilDestroyed(this))
+    } else {
+      this.myDecks$ = EMPTY
+    }
   }
 
   getShopInfo(code: string): Shop | undefined {

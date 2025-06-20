@@ -171,7 +171,8 @@
     "promo": "Promo",
     "private_deck": "Private Deck",
     "restore_deck": "Restore Deck",
-    "print": "Print"
+    "print": "Print",
+    "my_decks": "Where have I used it?"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
