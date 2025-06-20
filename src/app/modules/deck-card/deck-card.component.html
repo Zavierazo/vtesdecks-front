@@ -1,26 +1,27 @@
-<a [routerLink]="'/deck/' + deck().id" class="text-decoration-none">
+@if(deck(); as deck){
+<a [routerLink]="'/deck/' + deck.id" class="text-decoration-none">
   <div class="deck-card border border-2 rounded-2 hover-shadow my-1 position-relative d-flex flex-column" [ngClass]="{
-    'border-secondary-subtle': !deck().owner,
-    'border-primary': deck().owner
+    'border-secondary-subtle': !deck.owner,
+    'border-primary': deck.owner
   }" [ngStyle]="{'min-height':height}">
     <!-- Top Section -->
     <div class="deck-header px-3 py-2">
       <div class="d-flex justify-content-between align-items-center mb-1">
         <div class="deck-stats d-flex gap-2 text-start">
           <span class="small text-black">
-            <i class="bi bi-person-badge me-1"></i>{{ deck().stats.crypt }}
+            <i class="bi bi-person-badge me-1"></i>{{ deck.stats.crypt }}
           </span>
           <span class="small text-black">
-            <i class="bi bi-stack me-1"></i>{{ deck().stats.library }}
+            <i class="bi bi-stack me-1"></i>{{ deck.stats.library }}
           </span>
         </div>
 
         <h2 class="deck-title fs-4 text-black text-center mb-0">
           <span class="deck-indicators me-1">
-            @if (deck().favorite) {
+            @if (deck.favorite) {
             <i class="bi bi-bookmark-star-fill text-primary small" title="Bookmarked"></i>
             }
-            @if (!deck().published) {
+            @if (!deck.published) {
             <i class="bi bi-incognito text-secondary small" [title]="'deck_shared.private_deck' | transloco"></i>
             }
           </span>
@@ -29,11 +30,11 @@
 
         <div class="deck-engagement d-flex gap-2 text-end">
           <span class="small text-black d-flex align-items-center">
-            <span>{{ deck().comments }}</span>
+            <span>{{ deck.comments }}</span>
             <i class="bi bi-chat ms-1"></i>
           </span>
           <span class="small text-black d-flex align-items-center">
-            <span>{{ deck().views }}</span>
+            <span>{{ deck.views }}</span>
             <i class="bi bi-eye-fill ms-1"></i>
           </span>
         </div>
@@ -44,17 +45,17 @@
     <div class="deck-meta d-flex align-items-center justify-content-center position-relative flex-grow-1">
       <div class="d-flex align-items-center gap-2">
         <div class="clan-badges">
-          @for (icon of deck().clanIcons; track icon) {
+          @for (icon of deck.clanIcons; track icon) {
           <i class="vtes small" [ngClass]="icon"></i>
           }
         </div>
         <div class="discipline-badges">
-          @for (icon of deck().disciplineIcons; track icon) {
+          @for (icon of deck.disciplineIcons; track icon) {
           <i class="vtes small border rounded-1 border-light" [ngClass]="icon"></i>
           }
         </div>
       </div>
-      @if (deck().rate; as rate) {
+      @if (deck.rate; as rate) {
       <div class="deck-rating position-absolute end-0">
         <span class="small text-black me-3">
           <span>{{ rate }}</span>
@@ -70,14 +71,14 @@
 
     <!-- Bottom Section -->
     <div class="deck-content px-3">
-      @if (deck().limitedFormat; as limitedFormat) {
+      @if (deck.limitedFormat; as limitedFormat) {
       <div class="tournament-info text-center">
         <span class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center">
           <i class="bi bi-funnel-fill me-1"></i>{{ limitedFormat }}
         </span>
       </div>
       }
-      @if (deck().tournament; as tournament) {
+      @if (deck.tournament; as tournament) {
       <div class="tournament-info text-center">
         <span class="badge bg-warning text-dark small shadow-sm">
           <i class="bi bi-award-fill me-1"></i>{{ tournament }}
@@ -86,12 +87,12 @@
       }
 
       <div class="deck-author-date small text-center">
-        <span class="text-dark">{{ deck().author | truncate: 25:true }}</span>
+        <span class="text-dark">{{ deck.author | truncate: 25:true }}</span>
         <span class="text-dark mx-1">•</span>
-        <span class="text-dark">{{ deck().creationDate | translocoDate: { dateStyle: 'long' } }}</span>
+        <span class="text-dark">{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
       </div>
 
-      @if (deck().tags; as tags) {
+      @if (deck.tags; as tags) {
       <div class="deck-tags text-center mb-2">
         @for (tag of tags; track tag) {
         <span class="badge rounded-pill me-1 small shadow-sm" [ngClass]="{
@@ -103,7 +104,7 @@
         }
       </div>
       }
-      @if(deck().filterCards; as filterCards){
+      @if(deck.filterCards; as filterCards){
       <div class="deck-tags text-center mb-2">
         @for (card of filterCards; track card) {
         @if(getCardName(card.id); as cardName){
@@ -117,3 +118,4 @@
     </div>
   </div>
 </a>
+}
