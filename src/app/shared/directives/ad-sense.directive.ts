@@ -1,5 +1,10 @@
-import { DOCUMENT } from '@angular/common'
-import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core'
+import {
+  AfterViewInit,
+  Directive,
+  DOCUMENT,
+  ElementRef,
+  inject,
+} from '@angular/core'
 import { AuthQuery } from '../../state/auth/auth.query'
 
 let uniqueId = 0
