@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.44.0",
+    "date": "20th June, 2025",
+    "changes": [
+      "Added number of copies for each card in the 'Where can I find it?' (in Crypt and Library sections)",
+      "Added a 'My Decks' list showing decks that include the selected card (in Crypt and Library sections)",
+      "Improved card filtering: now shows how many copies of each filtered card are in each deck",
+      "Added an edit link in the Rulings section",
+      "Enabled horizontal scroll for desktop in the filters for Decks, Crypt, and Library"
+    ]
+  },
+  {
     "version": "2.43.0",
     "date": "14th June, 2025",
     "changes": [

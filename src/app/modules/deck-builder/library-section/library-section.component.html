@@ -29,87 +29,89 @@
             </div>
           </div>
           @if (!(isMobileOrTablet$ | async)!) {
-            <div class="col-auto d-inline-block">
-              <button type="button" class="btn btn-danger" (click)="initFilters()">
-                <i class="bi bi-arrow-clockwise"></i> {{ t('reset')}}
-              </button>
-            </div>
+          <div class="col-auto d-inline-block">
+            <button type="button" class="btn btn-danger" (click)="initFilters()">
+              <i class="bi bi-arrow-clockwise"></i> {{ t('reset')}}
+            </button>
+          </div>
           }
           @if ((isMobileOrTablet$ | async)!) {
-            <div class="col-auto">
-              <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
-                <i class="bi bi-funnel-fill"></i>@if (!(isMobile$ | async)!) {
-                <span> {{ t('filters')}}</span>
+          <div class="col-auto">
+            <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
+              <i class="bi bi-funnel-fill"></i>@if (!(isMobile$ | async)!) {
+              <span> {{ t('filters')}}</span>
               }
             </button>
           </div>
-        }
-      </div>
-    </form>
-  </header>
-  <div class="library-body">
-    <div class="row">
-      @if (!(isMobileOrTablet$ | async) && (library$ | async)!) {
-        <div class="col-4">
-          <ng-container *ngTemplateOutlet="filter"></ng-container>
+          }
         </div>
-      }
+      </form>
+    </header>
+    <div class="library-body">
+      <div class="scroll-container row">
+        @if (!(isMobileOrTablet$ | async) && (library$ | async)!) {
+        <div class="col-4 filters-desktop">
+          <div class="filters-desktop-container">
+            <ng-container *ngTemplateOutlet="filter"></ng-container>
+          </div>
+        </div>
+        }
         <div [ngClass]="{
       'col-12': (isMobileOrTablet$ | async),
       'col-8': !(isMobileOrTablet$ | async)
     }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100" (scrolled)="onScroll()">
-        @if ((isMobileOrTablet$ | async)) {
+          @if ((isMobileOrTablet$ | async)) {
           <strong class="d-flex justify-content-center">
             {{ t('results', { count: (resultsCount$ | async)! }) }}
           </strong>
-        }
-        @if ((library$ | async)?.length === 0) {
+          }
+          @if ((library$ | async)?.length === 0) {
           <div class="d-flex justify-content-center mt-2">
             <button type="button" class="btn btn-danger btn-lg" (click)="initFilters()">
               {{ t('reset_filters') }}
             </button>
           </div>
-        }
-        @for (library of (library$ | async)! ; track trackByFn($index, library)) {
+          }
+          @for (library of (library$ | async)! ; track trackByFn($index, library)) {
           <ul class="col list-group">
             <app-library [card]="getCard(library)" (click)="openLibraryCard(library)"
-            [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-library>
+              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-library>
           </ul>
-        }
+          }
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-@if (showScrollButton$ | async) {
-  <button class="btn btn-secondary btn-lg border back-to-top" placement="start"
-    [ngbTooltip]="t('back_to_top')" (click)="scrollToTop()">
+  @if (showScrollButton$ | async) {
+  <button class="btn btn-secondary btn-lg border back-to-top" placement="start" [ngbTooltip]="t('back_to_top')"
+    (click)="scrollToTop()">
     <i class="bi bi-chevron-up"></i>
   </button>
-}
+  }
 
-<ng-template #filterModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"><i class="bi bi-funnel-fill"></i>{{ t('filters') }}</h4>
-    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-    (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body">
-    <ng-container *ngTemplateOutlet="filter"></ng-container>
-  </div>
-</ng-template>
+  <ng-template #filterModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"><i class="bi bi-funnel-fill"></i>{{ t('filters') }}</h4>
+      <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+        (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngTemplateOutlet="filter"></ng-container>
+    </div>
+  </ng-template>
 
-<ng-template #filter>
-  <strong class="float-end">
-    {{ t('results', { count: (resultsCount$ | async)! }) }}
-  </strong>
-  <app-library-builder-filter [(printOnDemand)]="printOnDemand" (printOnDemandChange)="onChangePrintOnDemand($event)"
-    [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
-    (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
-    [(taints)]="taints" (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types"
-    (typesChange)="onChangeTypesFilter($event)" [(bloodCostSlider)]="bloodCostSlider"
-    (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)" [(poolCostSlider)]="poolCostSlider"
-    (poolCostSliderChange)="onChangePoolCostSliderFilter($event)" [(title)]="title"
-    (titleChange)="onChangeTitleFilter($event)" />
-</ng-template>
+  <ng-template #filter>
+    <strong class="float-end">
+      {{ t('results', { count: (resultsCount$ | async)! }) }}
+    </strong>
+    <app-library-builder-filter [(printOnDemand)]="printOnDemand" (printOnDemandChange)="onChangePrintOnDemand($event)"
+      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
+      (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
+      [(taints)]="taints" (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types"
+      (typesChange)="onChangeTypesFilter($event)" [(bloodCostSlider)]="bloodCostSlider"
+      (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)" [(poolCostSlider)]="poolCostSlider"
+      (poolCostSliderChange)="onChangePoolCostSliderFilter($event)" [(title)]="title"
+      (titleChange)="onChangeTitleFilter($event)" />
+  </ng-template>
 </ng-container>

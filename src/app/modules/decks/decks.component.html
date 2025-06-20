@@ -49,11 +49,13 @@
         </div>
       </form>
     </header>
-    <div class="row">
+    <div class="scroll-container row">
       @if (!(isMobileOrTablet$ | async)!) {
-        <div class="col-3">
+      <div class="col-3 filters-desktop">
+        <div class="filters-desktop-container">
           <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
         </div>
+      </div>
       }
       <main class="p-0" [ngClass]="{
         'col-12': (isMobileOrTablet$ | async),
@@ -62,58 +64,58 @@
         <div class="decks-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100"
           (scrolled)="onScroll()">
           @if ((decks$ | async)!; as decks) {
-            @for (deck of decks; track deck) {
-              <div class="col-12 px-2">
-                <app-deck-card [deck]="deck" (tagClick)="onTagClick($event)"></app-deck-card>
-              </div>
-            }
-            @if (!(isLoading$ | async)! && decks.length === 0) {
-              <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
-                  {{ t('clear_filters') }}
-                </button>
-              </div>
-            }
+          @for (deck of decks; track deck) {
+          <div class="col-12 px-2">
+            <app-deck-card [deck]="deck" (tagClick)="onTagClick($event)"></app-deck-card>
+          </div>
+          }
+          @if (!(isLoading$ | async)! && decks.length === 0) {
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
+              {{ t('clear_filters') }}
+            </button>
+          </div>
+          }
           }
         </div>
         @if ((restorableDecks$ | async)!; as decks) {
-          <div>
-            <div class="col-12 px-2">
-              @for (deck of decks; track deck) {
-                <app-deck-restorable-card [deck]="deck"></app-deck-restorable-card>
-              }
-            </div>
+        <div>
+          <div class="col-12 px-2">
+            @for (deck of decks; track deck) {
+            <app-deck-restorable-card [deck]="deck"></app-deck-restorable-card>
+            }
           </div>
+        </div>
         }
         @if (isLoading$ | async) {
-          <div class="alert alert-light">
-            <app-loading></app-loading>
-            <div style="height: 100vw"></div>
-          </div>
+        <div class="alert alert-light">
+          <app-loading></app-loading>
+          <div style="height: 100vh"></div>
+        </div>
         }
       </main>
     </div>
   </div>
   @if (showScrollButton$ | async) {
-    <button class="btn btn-secondary btn-lg border back-to-top" placement="start"
-      [ngbTooltip]="t('back_to_top')" (click)="scrollToTop()">
-      <i class="bi bi-chevron-up"></i>
-    </button>
+  <button class="btn btn-secondary btn-lg border back-to-top" placement="start" [ngbTooltip]="t('back_to_top')"
+    (click)="scrollToTop()">
+    <i class="bi bi-chevron-up"></i>
+  </button>
   }
   @if (isMobileOrTablet$ | async) {
-    <button class="btn btn-primary btn-sm filters-mobile" placement="start"
-      [ngbTooltip]="t('show_filters')" (click)="openFilters(filtersMobile)">
-      <i class="bi bi-funnel-fill"></i>&nbsp;{{ t('filters') }}
-    </button>
+  <button class="btn btn-primary btn-sm filters-mobile" placement="start" [ngbTooltip]="t('show_filters')"
+    (click)="openFilters(filtersMobile)">
+    <i class="bi bi-funnel-fill"></i>&nbsp;{{ t('filters') }}
+  </button>
   }
   <ng-template #filtersMobile let-offcanvas>
     <div class="offcanvas-header">
       <h4 class="offcanvas-title" id="offcanvas-basic-title"><i class="bi bi-funnel-fill"></i>&nbsp;{{ t('filters') }}
-    </h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-  </div>
-  <div class="offcanvas-body">
-    <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
-  </div>
-</ng-template>
+      </h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body">
+      <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
+    </div>
+  </ng-template>
 </ng-container>

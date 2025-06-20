@@ -1,29 +1,31 @@
 import {
+  AsyncPipe,
   DOCUMENT,
-  ViewportScroller,
   NgClass,
   NgTemplateOutlet,
-  AsyncPipe,
+  ViewportScroller,
 } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   TemplateRef,
-  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
-  NgbModal,
   NgbDropdown,
-  NgbDropdownToggle,
-  NgbDropdownMenu,
   NgbDropdownButtonItem,
   NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
@@ -39,11 +41,9 @@ import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { searchIncludes } from '../../../utils/vtes-utils'
-import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
+import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
 
 @UntilDestroy()
 @Component({
@@ -70,12 +70,12 @@ import { LibraryBuilderFilterComponent } from '../library-builder-filter/library
   ],
 })
 export class LibrarySectionComponent implements OnInit {
-  private document = inject<Document>(DOCUMENT)
-  private viewportService = inject(ViewportScroller)
-  private changeDetector = inject(ChangeDetectorRef)
-  private libraryQuery = inject(LibraryQuery)
-  private mediaService = inject(MediaService)
-  private modalService = inject(NgbModal)
+  private readonly document = inject<Document>(DOCUMENT)
+  private readonly viewportService = inject(ViewportScroller)
+  private readonly changeDetector = inject(ChangeDetectorRef)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly mediaService = inject(MediaService)
+  private readonly modalService = inject(NgbModal)
 
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
@@ -88,7 +88,7 @@ export class LibrarySectionComponent implements OnInit {
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   sortBy: keyof ApiLibrary = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
-  printOnDemand: boolean = false
+  printOnDemand = false
   types: string[] = []
   clans: string[] = []
   disciplines: string[] = []
@@ -143,6 +143,7 @@ export class LibrarySectionComponent implements OnInit {
     }
     this.sortBy = sortBy
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeNameFilter() {
@@ -150,7 +151,10 @@ export class LibrarySectionComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         debounceTime(500),
-        tap(() => this.initQuery()),
+        tap(() => {
+          this.initQuery()
+          this.scrollToTop()
+        }),
       )
       .subscribe()
   }
@@ -158,46 +162,55 @@ export class LibrarySectionComponent implements OnInit {
   onChangePrintOnDemand(printOnDemand: boolean) {
     this.printOnDemand = printOnDemand
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeTypesFilter(types: string[]) {
     this.types = types
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeClanFilter(clans: string[]) {
     this.clans = clans
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeDisciplineFilter(disciplines: string[]) {
     this.disciplines = disciplines
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeTitleFilter(title: string) {
     this.title = title
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeBloodCostSliderFilter(bloodCostSlider: number[]) {
     this.bloodCostSlider = bloodCostSlider
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangePoolCostSliderFilter(poolCostSlider: number[]) {
     this.poolCostSlider = poolCostSlider
     this.initQuery()
+    this.scrollToTop()
   }
 
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
+    this.scrollToTop()
   }
 
   initQuery() {
@@ -341,7 +354,7 @@ export class LibrarySectionComponent implements OnInit {
 
   scrollToTop() {
     this.document
-      .querySelector('#container')
+      .querySelector('.scroll-container')
       ?.scrollIntoView({ behavior: 'smooth' })
   }
 

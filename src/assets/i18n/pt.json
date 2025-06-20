@@ -171,7 +171,8 @@
     "promo": "Promo",
     "private_deck": "Mazo privado",
     "restore_deck": "Restaurar mazo",
-    "print": "Imprimir"
+    "print": "Imprimir",
+    "my_decks": "¿En quais mazos eu uso?"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

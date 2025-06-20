@@ -10,3 +10,21 @@ header {
   right: 25px;
   z-index: 1001;
 }
+
+.filters-desktop {
+  overflow-y: auto;
+  max-height: calc(100dvh - 65px);
+  max-height: calc(100vh - 65px);
+  position: sticky;
+  top: 65px;
+  direction: rtl;
+}
+
+.filters-desktop-container {
+  direction: ltr;
+  margin-bottom: 75px;
+}
+
+.scroll-container {
+  scroll-margin-top: 65px;
+}
