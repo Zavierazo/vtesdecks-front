@@ -1,7 +1,8 @@
-import { AsyncPipe, DOCUMENT, NgClass, ViewportScroller } from '@angular/common'
+import { AsyncPipe, NgClass, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   inject,
   OnInit,
   TemplateRef,
