@@ -101,6 +101,7 @@ export class DeckFiltersComponent implements OnInit {
   reset() {
     // Default value filter form
     this.filterForm.get('name')?.patchValue('', { emitEvent: false })
+    this.filterForm.get('limitedFormat')?.patchValue('', { emitEvent: false })
     this.filterForm.get('author')?.patchValue('', { emitEvent: false })
     this.filterForm.get('cardText')?.patchValue('', { emitEvent: false })
     this.filterForm
@@ -207,6 +208,7 @@ export class DeckFiltersComponent implements OnInit {
   private initFilterForm() {
     this.filterForm = this.formBuilder.group({})
     this.listenAndNavigateString(this.filterForm, 'name', '', 500)
+    this.listenAndNavigateString(this.filterForm, 'limitedFormat', '', 500)
     this.listenAndNavigateString(this.filterForm, 'author', '', 500)
     this.listenAndNavigateString(this.filterForm, 'cardText', '', 500)
     this.listenAndNavigateBoolean(this.filterForm, 'singleDiscipline', false)

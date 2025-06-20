@@ -240,7 +240,8 @@
     "other_filters": "Other Filters",
     "name": "Name",
     "author": "Author",
-    "card_text": "Card Text"
+    "card_text": "Card Text",
+    "limited_format": "Limited Format"
   },
   "footer": {
     "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",

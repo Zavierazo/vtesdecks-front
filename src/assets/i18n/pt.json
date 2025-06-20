@@ -240,7 +240,8 @@
     "other_filters": "Outros filtros",
     "name": "Nome",
     "author": "Autor",
-    "card_text": "Texto do cartão"
+    "card_text": "Texto do cartão",
+    "limited_format": "Formato Limitado"
   },
   "footer": {
     "trademark": "Partes da marca registradas são propriedade de Paradox Interactive AB e são usadas com permissão. Todos os direitos reservados. Para mais informações, visite",

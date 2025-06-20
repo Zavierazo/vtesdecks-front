@@ -240,7 +240,8 @@
     "other_filters": "Otros filtros",
     "name": "Nombre",
     "author": "Autor",
-    "card_text": "Texto de la carta"
+    "card_text": "Texto de la carta",
+    "limited_format": "Formato Limitado"
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
