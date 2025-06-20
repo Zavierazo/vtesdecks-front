@@ -5,7 +5,8 @@
     "changes": [
       "Added number of copies for each card in the 'Where can I find it?' section (both Crypt and Library cards).",
       "Added a list of My Decks containing the selected card in the Crypt and Library sections.",
-      "Improved deck filtering by cards: now shows how many copies of each filtered card are included in each deck."
+      "Improved deck filtering by cards: now shows how many copies of each filtered card are included in each deck.",
+      "Added link to edit rulings in the Rulings section."
     ]
   },
   {

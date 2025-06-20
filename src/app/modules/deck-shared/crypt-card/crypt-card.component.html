@@ -78,6 +78,10 @@
           </p>
           @if ((krcgCard$ | async)?.rulings; as krcgRulings) {
           <strong>{{ t('rulings') }}</strong>
+          <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card.id"
+            title="Edit Rulings">
+            <i class="bi bi-pencil-square float-end"></i>
+          </a>
           <ul>
             @for (ruling of krcgRulings; track ruling) {
             <li>
