@@ -109,7 +109,7 @@
     "export": "Exportar",
     "draw": "Draw",
     "edit": "Editar",
-    "similar_decks": "Decks parecidos"
+    "similar_decks": "Mazos Parecidos"
   },
   "deck_builder": {
     "deck_not_exists": "O mazo não existe. Tente novamente mais tarde.",
