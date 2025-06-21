@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.45.0",
+    "date": "21th June, 2025",
+    "changes": [
+      "Added Similar Decks section to deck detail page for easier exploration of related builds.",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
     "version": "2.44.0",
     "date": "20th June, 2025",
     "changes": [

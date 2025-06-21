@@ -108,7 +108,8 @@
     "deck_copied": "Deck copied to clipboard",
     "export": "Export",
     "draw": "Draw",
-    "edit": "Edit"
+    "edit": "Edit",
+    "similar_decks": "Similar Decks"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",

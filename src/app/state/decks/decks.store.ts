@@ -43,7 +43,7 @@ export class DecksStore {
   updateParams(params: Params) {
     this.update((state) => ({
       ...state,
-      params,
+      params: params,
     }))
   }
 

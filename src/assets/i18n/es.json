@@ -108,7 +108,8 @@
     "deck_copied": "Lista copiada al portapapeles",
     "export": "Exportar",
     "draw": "Draw",
-    "edit": "Editar"
+    "edit": "Editar",
+    "related_decks": "Decks similares"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",

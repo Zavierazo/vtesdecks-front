@@ -308,6 +308,22 @@
     </div>
     <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto"
       fullWidthResponsive="true"></app-ad-sense>
+    @if(similarDecks$ | async; as similarDecks) {
+    <div class="col-12 d-flex justify-content-center mt-3">
+      <h2>{{ t('similar_decks') }}</h2>
+    </div>
+    <div class="row">
+      @for(deck of similarDecks; track deck) {
+      <app-deck-card class="col-12 col-md-6" [deck]="deck" (tagClick)="onTag($event)"></app-deck-card>
+      }
+    </div>
+    <div class="col-12 d-flex justify-content-center mt-3">
+      <a class="btn btn-success btn-rounded btn-lg" routerLink="/decks" [queryParams]="{ bySimilarity: id }"
+        role="button">
+        {{ 'home.see_more' | transloco }}
+      </a>
+    </div>
+    }
     <div class="col-12 d-flex justify-content-center mt-3">
       <h2>{{ t('comments') }}</h2>
     </div>

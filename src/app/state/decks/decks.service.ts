@@ -20,12 +20,13 @@ export class DecksService {
     this.decksStore.updateParams(params)
   }
 
-  getMore(): Observable<ApiDecks> {
+  getMore(overrideLimit?: number): Observable<ApiDecks> {
     const deckState: DecksState = this.decksStore.getValue()
     if (deckState.hasMore) {
       this.decksStore.setLoading(true)
       const limit =
-        deckState.offset === 0 ? DecksService.initLimit : DecksService.limit
+        overrideLimit ??
+        (deckState.offset === 0 ? DecksService.initLimit : DecksService.limit)
       return this.apiDataService
         .getDecks(deckState.offset, limit, deckState.params)
         .pipe(tap((decks) => this.updateDecks(decks, limit)))
