@@ -385,6 +385,7 @@
     "library": "Library",
     "unexpected_error": "Unexpected error. Please try again later.",
     "unexpected_error_with_message": "{{ message }}. Please try again later.",
+    "new_version_available": "A new version of the app is loading. Please wait a few seconds or press Ctrl + F5 to refresh.",
     "not_required": "Not Required"
   },
   "table_seating": {

@@ -77,7 +77,7 @@ export class DecksComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
   mainForm!: FormGroup
 
-  readonly filters = viewChild.required<DeckFiltersComponent>('filters')
+  readonly filters = viewChild<DeckFiltersComponent>('filters')
 
   ngOnInit() {
     this.isLoading$ = this.decksQuery.selectLoading()

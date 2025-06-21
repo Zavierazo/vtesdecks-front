@@ -385,6 +385,7 @@
     "library": "Biblioteca",
     "unexpected_error": "Error inesperado. Por favor, inténtelo de nuevo más tarde.",
     "unexpected_error_with_message": "{{ message }}. Por favor, inténtelo de nuevo más tarde.",
+    "new_version_available": "Se está cargando una nueva versión de la aplicación. Por favor, espera unos segundos o presiona Ctrl + F5 para actualizar.",
     "not_required": "No requerido"
   },
   "table_seating": {

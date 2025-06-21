@@ -249,9 +249,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
   onShare(): void {
     const url = `https://${environment.domain}/deck/${this.id}`
     if (window.navigator.share) {
-      window.navigator.share({
-        url: url,
-      })
+      ;(async () => {
+        await window.navigator.share({
+          url: url,
+        })
+      })()
     } else {
       this.clipboard.copy(url)
       this.toastService.show(
