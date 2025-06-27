@@ -35,18 +35,29 @@ export const searchIncludes = (
   string: string,
   searchString: string,
 ): boolean => {
-  const collator = new Intl.Collator('en', { sensitivity: 'base' })
-  const searchStringLength = searchString.length
-  const lengthDiff = string.length - searchString.length
-  for (let i = 0; i <= lengthDiff; i++) {
-    if (
-      collator.compare(
-        string.substring(i, i + searchStringLength),
-        searchString,
-      ) === 0
-    ) {
-      return true
+  if (searchString.startsWith('/') && searchString.endsWith('/')) {
+    try {
+      const regexPattern = searchString.slice(1, -1) // Remove the slashes
+      const regex = new RegExp(regexPattern, 'i') // Create a RegExp object
+      return regex.test(string) // Test the regex on the string
+    } catch {
+      // If the regex is invalid, consider it not a match
+      return false
     }
+  } else {
+    const collator = new Intl.Collator('en', { sensitivity: 'base' })
+    const searchStringLength = searchString.length
+    const lengthDiff = string.length - searchString.length
+    for (let i = 0; i <= lengthDiff; i++) {
+      if (
+        collator.compare(
+          string.substring(i, i + searchStringLength),
+          searchString,
+        ) === 0
+      ) {
+        return true
+      }
+    }
+    return false
   }
-  return false
 }

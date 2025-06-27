@@ -11,6 +11,7 @@ export interface ApiCrypt {
   adv: boolean
   group: number
   capacity: number
+  text: string
   sets: string[]
   title: string
   banned: string

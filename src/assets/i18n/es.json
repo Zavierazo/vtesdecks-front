@@ -44,7 +44,9 @@
     "title": "Título",
     "sect": "Secta",
     "taints": "Características",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto de la carta",
+    "card_text_placeholder": "Introduce el texto o usa /tu-regex/"
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -319,7 +321,9 @@
     "blood_cost": "Coste de sangre",
     "pool_cost": "Coste de vida",
     "taints": "Características",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto de la carta",
+    "card_text_placeholder": "Introduce el texto o usa /tu-regex/"
   },
   "library_section": {
     "card_name": "Nombre de carta",

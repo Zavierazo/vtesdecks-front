@@ -44,7 +44,9 @@
     "title": "Title",
     "sect": "Sect",
     "taints": "Taints",
-    "limited_format": "Limited Format"
+    "limited_format": "Limited Format",
+    "card_text": "Card Text",
+    "card_text_placeholder": "Enter text or use /your-regex/"
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -319,7 +321,9 @@
     "blood_cost": "Blood Cost",
     "pool_cost": "Pool Cost",
     "taints": "Taints",
-    "limited_format": "Limited Format"
+    "limited_format": "Limited Format",
+    "card_text": "Card Text",
+    "card_text_placeholder": "Enter text or use /your-regex/"
   },
   "library_section": {
     "card_name": "Card Name",

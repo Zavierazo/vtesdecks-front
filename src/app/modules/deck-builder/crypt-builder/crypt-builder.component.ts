@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   TemplateRef,
-  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -82,6 +82,7 @@ export class CryptBuilderComponent implements OnInit {
   title!: string
   sect!: string
   taints!: string[]
+  cardText!: string
 
   ngOnInit() {
     this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()
@@ -125,6 +126,7 @@ export class CryptBuilderComponent implements OnInit {
     this.taints = []
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
+    this.cardText = ''
     this.initQuery()
   }
 
@@ -201,6 +203,11 @@ export class CryptBuilderComponent implements OnInit {
     this.initQuery()
   }
 
+  onChangeCardTextFilter(cardText: string) {
+    this.cardText = cardText
+    this.initQuery()
+  }
+
   initQuery() {
     this.limitTo = CryptBuilderComponent.PAGE_SIZE
     this.updateQuery()
@@ -252,6 +259,13 @@ export class CryptBuilderComponent implements OnInit {
         }
         for (const taint of this.taints) {
           if (!entity.taints.includes(taint)) {
+            return false
+          }
+        }
+        if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
+          if (entity.i18n?.text) {
+            return searchIncludes(entity.i18n.text, this.cardText)
+          } else {
             return false
           }
         }

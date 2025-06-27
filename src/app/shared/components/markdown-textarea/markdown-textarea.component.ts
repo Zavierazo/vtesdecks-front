@@ -26,13 +26,13 @@ import { MarkdownHelpModalComponent } from '../markdown-help-modal/markdown-help
 import { MarkdownTextComponent } from '../markdown-text/markdown-text.component'
 
 const MARKDOWN_EXAMPLE = `
-# Heading
 **bold**
 [[card:Blood Doll]]
 [[discipline:Animalism]]
 [[clan:Ventrue]]
 [link](https://vtesdecks.com)
 ![image](https://vtesdecks.com/assets/img/logo.png)
+[[youtube:IxX_QHay02M]]
 `
 @UntilDestroy()
 @Component({

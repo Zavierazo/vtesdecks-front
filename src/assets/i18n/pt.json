@@ -44,7 +44,9 @@
     "title": "Título",
     "sect": "Seita",
     "taints": "Taints",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto do cartão",
+    "card_text_placeholder": "Digite o texto ou use /seu-regex/"
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
@@ -319,7 +321,9 @@
     "blood_cost": "Custo de Sangue",
     "pool_cost": "Custo da Vida",
     "taints": "Taints",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto do cartão",
+    "card_text_placeholder": "Digite o texto ou use /seu-regex/"
   },
   "library_section": {
     "card_name": "Nome do cartão",

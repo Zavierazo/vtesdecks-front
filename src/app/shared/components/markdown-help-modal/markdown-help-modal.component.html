@@ -80,7 +80,7 @@
               - Indented Unordered List Item 1
   3. Ordered List Item 3
   </pre>
-  <h4>Embedding Links, Images</h4>
+  <h4>Embedding Links, Images and Videos</h4>
   <p><strong>Links</strong> — To create a link, surround some text with brackets followed by the URL surrounded with
     parentheses. For example, to create a link to <a href="https://vtesdecks.com">VtesDecks</a> you would type
     <code>[VtesDecks](https://vtesdecks.com)</code>.
@@ -107,6 +107,16 @@
     will result in the following:
   </p>
   <p><a href="https://vtesdecks.com"><img src="https://vtesdecks.com/assets/img/logo.png" alt="VtesDecks"></a></p>
+  <p><strong>YouTube Videos</strong> — To create an embedded YouTube video, surround with double brackets the word
+    <code>youtube</code> (all lower case) followed by a colon and then the link ID to the YouTube video you want to
+    embed. The link ID can be found after <code>https://youtu.be/</code> in the URL when selecting share from the
+    YouTube video or copied from your browser's address bar. For example, the URL
+    <code>https://youtu.be/IxX_QHay02M</code> includes the link ID <code>IxX_QHay02M</code>. For example,
+    <code>[[youtube:IxX_QHay02M]]</code> will result in the following:
+    <iframe width="560" loading="lazy" height="315" src="https://www.youtube.com/embed/IxX_QHay02M" frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+      style="max-width: 100%;"></iframe>
+  </p>
   <h4>Embedding Cards</h4>
   <p><strong>Cards</strong> — Embedding a card will create a link that, when hovered over by the user, will display the
     card. To embed a card, surround the card's name in double brackets. The format is not case sensitive, however, any

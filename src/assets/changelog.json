@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.46.0",
+    "date": "27th June, 2025",
+    "changes": [
+      "Added card text search filter to both Crypt and Library sections.",
+      "Introduced support for regular expressions in card name and text search using the /your-regex/ syntax.",
+      "Switched primary funding platform from Ko-fi to Patreon.",
+      "Enabled YouTube video embedding in markdown descriptions and comments.",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
     "version": "2.45.0",
     "date": "21th June, 2025",
     "changes": [
