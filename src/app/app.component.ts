@@ -94,7 +94,16 @@ export class AppComponent implements OnInit {
       this.swUpdate.versionUpdates
         .pipe(
           distinct(),
-          tap((evt) => console.log(evt)),
+
+          tap((evt) => {
+            console.log(evt)
+            if (evt.type === 'VERSION_DETECTED') {
+              this.toastService.show(
+                this.translocoService.translate('shared.new_version_available'),
+                { classname: 'bg-danger text-light', delay: 5000 },
+              )
+            }
+          }),
           filter(
             (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY',
           ),

@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   TemplateRef,
-  inject,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -82,6 +82,7 @@ export class LibraryBuilderComponent implements OnInit {
   poolCostSlider!: number[]
   title!: string
   taints!: string[]
+  cardText!: string
 
   ngOnInit() {
     this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()
@@ -115,6 +116,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.taints = []
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
+    this.cardText = ''
     this.initQuery()
   }
 
@@ -188,6 +190,11 @@ export class LibraryBuilderComponent implements OnInit {
 
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
+    this.initQuery()
+  }
+
+  onChangeCardTextFilter(cardText: string) {
+    this.cardText = cardText
     this.initQuery()
   }
 
@@ -277,6 +284,13 @@ export class LibraryBuilderComponent implements OnInit {
         }
         for (const taint of this.taints) {
           if (!entity.taints.includes(taint)) {
+            return false
+          }
+        }
+        if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
+          if (entity.i18n?.text) {
+            return searchIncludes(entity.i18n.text, this.cardText)
+          } else {
             return false
           }
         }

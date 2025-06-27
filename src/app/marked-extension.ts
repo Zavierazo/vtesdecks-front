@@ -106,11 +106,36 @@ export function bracketsExtension(
     },
   }
 
+  const youtubeExtension: TokenizerAndRendererExtension = {
+    name: 'youtubeBrackets',
+    level: 'inline',
+    start(src: string) {
+      const rule = /\[\[youtube:/
+      return rule.exec(src)?.index
+    },
+    tokenizer(src: string) {
+      const rule = /^\[\[youtube:([^\]]+)\]\]/
+      const match = rule.exec(src)
+      if (match) {
+        return {
+          type: 'youtubeBrackets',
+          raw: match[0],
+          link: match[1].trim(),
+        }
+      }
+      return undefined
+    },
+    renderer(token) {
+      return `<iframe width="560" loading="lazy" height="315" src="https://www.youtube.com/embed/${token['link']}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="max-width: 100%;"></iframe>`
+    },
+  }
+
   return {
     extensions: [
       cardBracketsExtension,
       clanBracketsExtension,
       disciplineBracketsExtension,
+      youtubeExtension,
     ],
   }
 }

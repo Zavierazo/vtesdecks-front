@@ -61,6 +61,8 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly poolCostSliderChange = output<number[]>()
   @Input() taints!: string[]
   readonly taintsChange = output<string[]>()
+  @Input() cardText!: string
+  readonly cardTextChange = output<string>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
@@ -69,6 +71,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   bloodCostSliderControl!: FormControl
   poolCostSliderControl!: FormControl
   taintGroup!: FormGroup
+  cardTextControl!: FormControl
 
   sects$!: Observable<string[]>
   titles$!: Observable<string[]>
@@ -95,6 +98,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeBloodCostSlider()
     this.onChangePoolCostSlider()
     this.onChangeTaint()
+    this.onChangeCardText()
   }
 
   onChangeTypeFilter(types: string[]) {
@@ -212,6 +216,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         )
         .subscribe()
     })
+  }
+
+  onChangeCardText() {
+    this.cardTextControl = new FormControl(this.cardText)
+    this.cardTextControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.cardText = value
+          this.cardTextChange.emit(value)
+        }),
+      )
+      .subscribe()
   }
 
   translateGroupSlider(value: number): string {

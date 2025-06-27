@@ -97,6 +97,7 @@ export class CryptSectionComponent implements OnInit {
   title!: string
   sect!: string
   taints: string[] = []
+  cardText!: string
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
@@ -125,6 +126,7 @@ export class CryptSectionComponent implements OnInit {
     this.taints = []
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
+    this.cardText = ''
     this.onChangeNameFilter()
     this.initQuery()
   }
@@ -211,6 +213,12 @@ export class CryptSectionComponent implements OnInit {
     this.scrollToTop()
   }
 
+  onChangeCardTextFilter(cardText: string) {
+    this.cardText = cardText
+    this.initQuery()
+    this.scrollToTop()
+  }
+
   initQuery() {
     this.limitTo = CryptSectionComponent.PAGE_SIZE
     this.updateQuery()
@@ -264,6 +272,13 @@ export class CryptSectionComponent implements OnInit {
     }
     for (const taint of this.taints) {
       if (!entity.taints.includes(taint)) {
+        return false
+      }
+    }
+    if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
+      if (entity.i18n?.text) {
+        return searchIncludes(entity.i18n.text, this.cardText)
+      } else {
         return false
       }
     }
