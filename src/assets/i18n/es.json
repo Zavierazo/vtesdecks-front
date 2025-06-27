@@ -290,8 +290,8 @@
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
     "see_more": "Ver más...",
-    "buy_me_a_coffee": "Apoyá VTES Decks",
-    "buy_me_a_coffee_message": "Esta web es gratuita y se mantiene gracias a la comunidad.<br>Un café ayuda a cubrir el servidor mensual ☕",
+    "patreon": "Apoya en Patreon",
+    "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "contact_support": "Contactar Soporte",
     "whats_new": "Novedades en v{{ version }} ({{ date }})"
   },
