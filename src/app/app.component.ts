@@ -99,8 +99,10 @@ export class AppComponent implements OnInit {
             console.log(evt)
             if (evt.type === 'VERSION_DETECTED') {
               this.toastService.show(
-                this.translocoService.translate('shared.new_version_available'),
-                { classname: 'bg-danger text-light', delay: 5000 },
+                this.translocoService.translate(
+                  'shared.new_version_installing',
+                ),
+                { classname: 'bg-success text-light', delay: 5000 },
               )
             }
           }),
