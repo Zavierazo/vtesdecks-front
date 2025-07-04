@@ -1,0 +1,53 @@
+<ng-container *transloco="let t; read: 'collection'">
+  @if(!isPublic){
+  <nav class="mt-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/collection">{{ t('title') }}</a></li>
+      <li class="breadcrumb-item"><a routerLink="/collection/binders">{{ t('binders') }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+  </nav>
+  }
+  @if(binder$ | async; as binder) {
+  <h1 class="my-4 d-flex align-items-center gap-2">
+    @if(binder.icon) {
+    <span class="fs-5 d-inline-flex align-items-center">
+      <i class="vtes {{ binder.icon }}"></i>
+    </span>
+    }
+    {{ binder.name }}
+  </h1>
+  @if(!isPublic){
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button class="btn btn-primary me-2" (click)="onAddCard(binder)">
+        <i class="bi bi-plus"></i>
+        {{ t('add_card') }}
+      </button>
+      @if(binder.publicVisibility){
+      <button class="btn btn-outline-primary" (click)="onShare(binder)">
+        <i class="bi bi-share"></i>
+        {{ t('share') }}
+      </button>
+      }
+    </div>
+    <div>
+      <button class="btn btn-secondary" (click)="onEdit(binder)">
+        <i class="bi bi-pencil"></i>
+        {{ t('edit_binder') }}
+      </button>
+      <button class="btn btn-danger ms-2" (click)="onDelete(binder, false)">
+        <i class="bi bi-trash"></i>
+        {{ t('delete_binder') }}
+      </button>
+      <button class="btn btn-danger ms-2" (click)="onDelete(binder, true)">
+        <i class="bi bi-trash"></i>
+        {{ t('delete_binder_and_cards') }}
+      </button>
+    </div>
+  </div>
+  }
+  <app-collection-cards-list [owned]="!isPublic" [editable]="!isPublic"
+    [showBinders]="false"></app-collection-cards-list>
+  }
+</ng-container>

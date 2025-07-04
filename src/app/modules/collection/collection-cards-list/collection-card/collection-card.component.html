@@ -1,0 +1,5 @@
+@if(isCrypt()){
+<app-crypt [card]="{id: cardId(), number: 0}" [background]="false"></app-crypt>
+}@else {
+<app-library [card]="{id: cardId(), number: 0}" [background]="false"></app-library>
+}
