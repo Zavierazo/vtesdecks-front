@@ -44,7 +44,7 @@ export abstract class CollectionService {
   }
 
   setFilter(filterBy: string, filterValue?: string | number | boolean): void {
-    if (filterValue) {
+    if (filterValue !== undefined) {
       this.collectionStore.updateQuery((query) => ({
         ...query,
         filters: [
