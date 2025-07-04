@@ -10,8 +10,7 @@ export class CardImagePipe implements PipeTransform {
     } else if (set) {
       const setAbbrev = set.split(':')[0].toLocaleLowerCase()
       return `https://statics.bloodlibrary.info/img/sets/${setAbbrev}/${card.id}.jpg`
-    }
-    if (card.i18n && card.i18n.image) {
+    } else if (card.i18n && card.i18n.image) {
       return '/assets' + card.i18n.image
     }
     return '/assets' + card.image
