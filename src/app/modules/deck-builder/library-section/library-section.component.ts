@@ -97,6 +97,7 @@ export class LibrarySectionComponent implements OnInit {
   poolCostSlider: number[] = [0, 6]
   title!: string
   taints: string[] = []
+  cardText!: string
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
@@ -127,6 +128,7 @@ export class LibrarySectionComponent implements OnInit {
     this.taints = []
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
+    this.cardText = ''
     this.onChangeNameFilter()
     this.initQuery()
   }
@@ -209,6 +211,12 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
+    this.initQuery()
+    this.scrollToTop()
+  }
+
+  onChangeCardTextFilter(cardText: string) {
+    this.cardText = cardText
     this.initQuery()
     this.scrollToTop()
   }
@@ -300,6 +308,13 @@ export class LibrarySectionComponent implements OnInit {
     }
     for (const taint of this.taints) {
       if (!entity.taints.includes(taint)) {
+        return false
+      }
+    }
+    if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
+      if (entity.i18n?.text) {
+        return searchIncludes(entity.i18n.text, this.cardText)
+      } else {
         return false
       }
     }

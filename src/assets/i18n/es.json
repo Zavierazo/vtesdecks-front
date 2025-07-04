@@ -44,7 +44,9 @@
     "title": "Título",
     "sect": "Secta",
     "taints": "Características",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto de la carta",
+    "card_text_placeholder": "Introduce el texto o usa /tu-regex/"
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -108,7 +110,8 @@
     "deck_copied": "Lista copiada al portapapeles",
     "export": "Exportar",
     "draw": "Draw",
-    "edit": "Editar"
+    "edit": "Editar",
+    "related_decks": "Mazos Similares"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -240,7 +243,8 @@
     "other_filters": "Otros filtros",
     "name": "Nombre",
     "author": "Autor",
-    "card_text": "Texto de la carta"
+    "card_text": "Texto de la carta",
+    "limited_format": "Formato Limitado"
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
@@ -288,8 +292,8 @@
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
     "see_more": "Ver más...",
-    "buy_me_a_coffee": "Apoyá VTES Decks",
-    "buy_me_a_coffee_message": "Esta web es gratuita y se mantiene gracias a la comunidad.<br>Un café ayuda a cubrir el servidor mensual ☕",
+    "patreon": "Apoya en Patreon",
+    "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "contact_support": "Contactar Soporte",
     "whats_new": "Novedades en v{{ version }} ({{ date }})"
   },
@@ -317,7 +321,9 @@
     "blood_cost": "Coste de sangre",
     "pool_cost": "Coste de vida",
     "taints": "Características",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "card_text": "Texto de la carta",
+    "card_text_placeholder": "Introduce el texto o usa /tu-regex/"
   },
   "library_section": {
     "card_name": "Nombre de carta",
@@ -384,6 +390,8 @@
     "library": "Biblioteca",
     "unexpected_error": "Error inesperado. Por favor, inténtelo de nuevo más tarde.",
     "unexpected_error_with_message": "{{ message }}. Por favor, inténtelo de nuevo más tarde.",
+    "new_version_available": "Se está cargando una nueva versión de la aplicación. Por favor, espera unos segundos o presiona Ctrl + F5 para actualizar.",
+    "new_version_installing": "¡Buenas noticias! Se está instalando una actualización en segundo plano.",
     "not_required": "No requerido"
   },
   "table_seating": {

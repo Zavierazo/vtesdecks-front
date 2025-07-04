@@ -4,30 +4,45 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
   </div>
   @if ((notifications$ | async); as notifications) {
-    <div class="offcanvas-body notification-container">
-      <div class="d-flex flex-column justify-content-center mb-3">
-        @if (notifications.length > 0) {
-          <button type="button" class="btn btn-outline-info btn-sm" (click)="readAll()">
-            {{ t('mark_all_read') }}
-          </button>
-        }
-      </div>
-      @for (notification of notifications; track notification) {
-<div class="notification-list" [ngClass]="{
-      'notification-list--unread': !notification.read
-    }" [routerLink]="notification.link" (click)="!notification.read ? read(notification.id): offcanvas.close()">
-          <div class="notification-list_content">
-            <div class="notification-list_detail">
-              <p [innerHTML]="notification.notification"></p>
-              <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
-            </div>
-          </div>
-        </div>
-      }
-      @if (notifications.length === 0) {
-        <p class="text-center">{{
-        t('no_notifications') }}</p>
+  <div class="offcanvas-body notification-container">
+    <div class="d-flex flex-column justify-content-center mb-3">
+      @if (notifications.length > 0) {
+      <button type="button" class="btn btn-outline-info btn-sm" (click)="readAll()">
+        {{ t('mark_all_read') }}
+      </button>
       }
     </div>
+    @for (notification of notifications; track notification) {
+    @if(notification.type === 'LINK'){
+    <a class="text-decoration-none text-black notification-list" [ngClass]="{
+      'notification-list--unread': !notification.read
+    }" [href]="notification.link" target="_blank"
+      (click)="!notification.read ? read(notification.id): offcanvas.close()">
+      <div class="notification-list_content">
+        <div class="notification-list_detail">
+          <p [innerHTML]="notification.notification"></p>
+          <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
+        </div>
+      </div>
+    </a>
+    }
+    @if(notification.type === 'GLOBAL' || notification.type === 'COMMENT'){
+    <a class="text-decoration-none text-black notification-list" [ngClass]="{
+      'notification-list--unread': !notification.read
+    }" [routerLink]="notification.link" (click)="!notification.read ? read(notification.id): offcanvas.close()">
+      <div class="notification-list_content">
+        <div class="notification-list_detail">
+          <p [innerHTML]="notification.notification"></p>
+          <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
+        </div>
+      </div>
+    </a>
+    }
+    }
+    @if (notifications.length === 0) {
+    <p class="text-center">{{
+      t('no_notifications') }}</p>
+    }
+  </div>
   }
 </ng-container>

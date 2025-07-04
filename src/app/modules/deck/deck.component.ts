@@ -47,10 +47,13 @@ import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { DeckQuery } from '../../state/deck/deck.query'
+import { DecksQuery } from '../../state/decks/decks.query'
+import { DecksService } from '../../state/decks/decks.service'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
+import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
@@ -92,9 +95,11 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     TranslocoDatePipe,
     AdSenseComponent,
     MarkdownTextComponent,
+    DeckCardComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
+  private static readonly similarDecksLimit = 4
   private readonly route = inject(ActivatedRoute)
   private readonly titleService = inject(Title)
   private readonly deckQuery = inject(DeckQuery)
@@ -109,6 +114,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router)
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly decksService = inject(DecksService)
 
   id!: string
 
@@ -119,6 +126,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
   userDisplayName$!: Observable<string | undefined>
 
   deck$!: Observable<ApiDeck | undefined>
+
+  similarDecks$ = this.decksQuery.selectAll()
 
   isMobile$!: Observable<boolean>
 
@@ -143,6 +152,17 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
       }),
     )
+    this.route.paramMap.subscribe((params) =>
+      this.fetchSimilarDecks(params.get('id')),
+    )
+  }
+
+  fetchSimilarDecks(deckId: string | null) {
+    this.decksService.init({ bySimilarity: deckId })
+    this.decksService
+      .getMore(DeckComponent.similarDecksLimit)
+      .pipe(untilDestroyed(this))
+      .subscribe()
   }
 
   ngAfterViewInit(): void {
@@ -249,9 +269,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
   onShare(): void {
     const url = `https://${environment.domain}/deck/${this.id}`
     if (window.navigator.share) {
-      window.navigator.share({
-        url: url,
-      })
+      ;(async () => {
+        await window.navigator.share({
+          url: url,
+        })
+      })()
     } else {
       this.clipboard.copy(url)
       this.toastService.show(

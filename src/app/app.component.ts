@@ -7,6 +7,7 @@ import {
   RouterOutlet,
 } from '@angular/router'
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker'
+import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { GoogleAnalyticsService } from 'ngx-google-analytics'
@@ -15,6 +16,7 @@ import { environment } from '../environments/environment'
 import { ApiChangelog } from './models/api-changelog'
 import { ApiDataService } from './services/api.data.service'
 import { ColorThemeService } from './services/color-theme.service'
+import { ToastService } from './services/toast.service'
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from './shared/components/footer/footer.component'
 import { HeaderComponent } from './shared/components/header/header.component'
@@ -40,6 +42,8 @@ export class AppComponent implements OnInit {
   private readonly colorThemeService = inject(ColorThemeService)
   private readonly googleAnalyticsService = inject(GoogleAnalyticsService)
   private readonly authQuery = inject(AuthQuery)
+  private readonly toastService = inject(ToastService)
+  private readonly translocoService = inject(TranslocoService)
 
   title = 'VTES Decks'
 
@@ -72,6 +76,9 @@ export class AppComponent implements OnInit {
         }
       } else if (evt instanceof NavigationError) {
         this.handleNavigationError(evt)
+        if (this.versionAvailable) {
+          this.handleNavigationEndActivateUpdate()
+        }
       }
     })
     // Add christmas effect
@@ -87,7 +94,18 @@ export class AppComponent implements OnInit {
       this.swUpdate.versionUpdates
         .pipe(
           distinct(),
-          tap((evt) => console.log(evt)),
+
+          tap((evt) => {
+            console.log(evt)
+            if (evt.type === 'VERSION_DETECTED') {
+              this.toastService.show(
+                this.translocoService.translate(
+                  'shared.new_version_installing',
+                ),
+                { classname: 'bg-success text-light', delay: 5000 },
+              )
+            }
+          }),
           filter(
             (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY',
           ),
@@ -145,14 +163,11 @@ export class AppComponent implements OnInit {
   }
 
   private handleNavigationError(evt: NavigationError) {
-    if (evt.error.name === 'ChunkLoadError') {
-      console.warn('ChunkLoadError, reloading the app')
-      if (evt.url) {
-        window.location.replace(`${window.location.origin}${evt.url}`)
-      } else {
-        window.location.reload()
-      }
-    }
+    console.warn('NavigationError', evt)
+    this.toastService.show(
+      this.translocoService.translate('shared.new_version_available'),
+      { classname: 'bg-danger text-light', delay: 5000 },
+    )
   }
 
   private googleTagConsentUpdate() {

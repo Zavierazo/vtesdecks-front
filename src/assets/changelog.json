@@ -1,13 +1,31 @@
 [
   {
+    "version": "2.46.0",
+    "date": "27th June, 2025",
+    "changes": [
+      "Added card text search filter to both Crypt and Library sections.",
+      "Introduced support for regular expressions in card name and text search using the /your-regex/ syntax.",
+      "Switched primary funding platform from Ko-fi to Patreon.",
+      "Enabled YouTube video embedding in markdown descriptions and comments.",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
+    "version": "2.45.0",
+    "date": "21th June, 2025",
+    "changes": [
+      "Added Similar Decks section to deck detail page for easier exploration of related builds.",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
     "version": "2.44.0",
     "date": "20th June, 2025",
     "changes": [
-      "Added number of copies for each card in the 'Where can I find it?' (in Crypt and Library sections)",
-      "Added a 'My Decks' list showing decks that include the selected card (in Crypt and Library sections)",
-      "Improved card filtering: now shows how many copies of each filtered card are in each deck",
-      "Added an edit link in the Rulings section",
-      "Enabled horizontal scroll for desktop in the filters for Decks, Crypt, and Library"
+      "Added detailed card info in Crypt and Library sections: number of copies in 'Where can I find it?', decks including the card in 'My Decks,' and copy counts in filtered decks.",
+      "Added an Edit link in the Rulings section",
+      "Enabled horizontal scroll on  desktop for filters in Decks, Crypt, and Library",
+      "Add limited format filter in Decks"
     ]
   },
   {

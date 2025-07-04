@@ -13,6 +13,7 @@ export interface ApiLibrary {
   bloodCost: number
   convictionCost: number
   burn: boolean
+  text: string
   flavor: string
   sets: string[]
   requirement: string

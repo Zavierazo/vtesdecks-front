@@ -44,7 +44,9 @@
     "title": "Title",
     "sect": "Sect",
     "taints": "Taints",
-    "limited_format": "Limited Format"
+    "limited_format": "Limited Format",
+    "card_text": "Card Text",
+    "card_text_placeholder": "Enter text or use /your-regex/"
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -108,7 +110,8 @@
     "deck_copied": "Deck copied to clipboard",
     "export": "Export",
     "draw": "Draw",
-    "edit": "Edit"
+    "edit": "Edit",
+    "similar_decks": "Similar Decks"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -240,7 +243,8 @@
     "other_filters": "Other Filters",
     "name": "Name",
     "author": "Author",
-    "card_text": "Card Text"
+    "card_text": "Card Text",
+    "limited_format": "Limited Format"
   },
   "footer": {
     "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",
@@ -288,8 +292,8 @@
     "newest_tournament": "Newest Tournament",
     "newest_community": "Newest Community",
     "see_more": "See More...",
-    "buy_me_a_coffee": "Support VTES Decks",
-    "buy_me_a_coffee_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider buying me a coffee ☕",
+    "patreon": "Support on Patreon",
+    "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
     "contact_support": "Contact Support",
     "whats_new": "What's new in v{{ version }} ({{ date }})"
   },
@@ -317,7 +321,9 @@
     "blood_cost": "Blood Cost",
     "pool_cost": "Pool Cost",
     "taints": "Taints",
-    "limited_format": "Limited Format"
+    "limited_format": "Limited Format",
+    "card_text": "Card Text",
+    "card_text_placeholder": "Enter text or use /your-regex/"
   },
   "library_section": {
     "card_name": "Card Name",
@@ -384,6 +390,8 @@
     "library": "Library",
     "unexpected_error": "Unexpected error. Please try again later.",
     "unexpected_error_with_message": "{{ message }}. Please try again later.",
+    "new_version_available": "A new version of the app is loading. Please wait a few seconds or press Ctrl + F5 to refresh.",
+    "new_version_installing": "Good news! An update is being installed in the background.",
     "not_required": "Not Required"
   },
   "table_seating": {

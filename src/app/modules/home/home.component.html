@@ -106,16 +106,24 @@
 
     <!-- Buy me a coffee button -->
     <div class="container text-center mt-5">
-      <a class="text-decoration-none" href="https://www.buymeacoffee.com/zavierazo" target="_blank">
-        <img width="235" height="50"
-          [src]="'https://img.buymeacoffee.com/button-api/?text=' + t('buy_me_a_coffee') + '&emoji=☕&slug=zavierazo&button_colour=BD5FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00'"
-          [alt]="t('buy_me_a_coffee')" />
+      <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
+        class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow">
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px" y="0px" viewBox="0 0 1080 1080" width="20" height="20" style="enable-background:new 0 0 1080 1080;"
+          xml:space="preserve">
+          <path d="M1033.05,324.45c-0.19-137.9-107.59-250.92-233.6-291.7c-156.48-50.64-362.86-43.3-512.28,27.2
+	C106.07,145.41,49.18,332.61,47.06,519.31c-1.74,153.5,13.58,557.79,241.62,560.67c169.44,2.15,194.67-216.18,273.07-321.33
+	c55.78-74.81,127.6-95.94,216.01-117.82C929.71,603.22,1033.27,483.3,1033.05,324.45z" />
+        </svg>
+        {{ t('patreon') }}
       </a>
-      <p class="text-center mt-2 h6" [innerHTML]="t('buy_me_a_coffee_message')">
+      <p class="text-center mt-2 h6" [innerHTML]="t('patreon_message')">
       </p>
     </div>
   </section>
+  <!-- VtesDecks Home Hero Responsive -->
 
+  <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="6580167823" adFormat="auto" fullWidthResponsive="true" />
 
   <!-- Popular and Newest Decks -->
   <div class="row mt-3">
@@ -137,8 +145,7 @@
     </app-home-section>
   </div>
 
-  <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7683446640" adFormat="auto"
-    fullWidthResponsive="true" />
+  <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7683446640" adFormat="auto" fullWidthResponsive="true" />
 
   <!-- Contribution Section -->
   <section class="contribution-section py-4">

@@ -164,6 +164,12 @@
       <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
     </div>
     <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="deckLimitedFormat" [placeholder]="t('limited_format')"
+        formControlName="limitedFormat" />
+      <label for="deckLimitedFormat" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('limited_format')
+        }}</label>
+    </div>
+    <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckAuthor" [placeholder]="t('author')" formControlName="author" />
       <label for="deckAuthor" class="text-primary"><i class="bi bi-person me-2"></i>{{ t('author') }}</label>
     </div>

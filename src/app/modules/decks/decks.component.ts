@@ -60,15 +60,15 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
   ],
 })
 export class DecksComponent implements OnInit {
-  private document = inject<Document>(DOCUMENT)
-  private route = inject(ActivatedRoute)
-  private router = inject(Router)
-  private decksQuery = inject(DecksQuery)
-  private decksService = inject(DecksService)
-  private viewportService = inject(ViewportScroller)
-  private formBuilder = inject(FormBuilder)
-  private mediaService = inject(MediaService)
-  private offcanvasService = inject(NgbOffcanvas)
+  private readonly document = inject<Document>(DOCUMENT)
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly decksQuery = inject(DecksQuery)
+  private readonly decksService = inject(DecksService)
+  private readonly viewportService = inject(ViewportScroller)
+  private readonly formBuilder = inject(FormBuilder)
+  private readonly mediaService = inject(MediaService)
+  private readonly offcanvasService = inject(NgbOffcanvas)
 
   decks$!: Observable<ApiDeck[]>
   restorableDecks$!: Observable<ApiDeck[]>
@@ -78,7 +78,7 @@ export class DecksComponent implements OnInit {
   isMobileOrTablet$!: Observable<boolean>
   mainForm!: FormGroup
 
-  readonly filters = viewChild.required<DeckFiltersComponent>('filters')
+  readonly filters = viewChild<DeckFiltersComponent>('filters')
 
   ngOnInit() {
     this.isLoading$ = this.decksQuery.selectLoading()
