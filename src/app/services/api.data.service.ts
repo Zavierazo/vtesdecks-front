@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { ApiAiAskRequest } from '../models/api-ai-ask-request'
@@ -356,6 +356,12 @@ export class ApiDataService {
           abbrev,
         },
       },
+    )
+  }
+
+  getSetLastUpdate(): Observable<ApiSet> {
+    return this.httpClient.get<ApiSet>(
+      `${environment.api.baseUrl}${this.setsPath}/lastUpdate`,
     )
   }
 

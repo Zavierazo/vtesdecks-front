@@ -24,6 +24,9 @@ import { MarkdownCardComponent } from './shared/components/markdown-card/markdow
 import { ToastsContainer } from './shared/components/toast-container/toast-container.component'
 import { AuthQuery } from './state/auth/auth.query'
 import { AuthService } from './state/auth/auth.service'
+import { CryptService } from './state/crypt/crypt.service'
+import { LibraryService } from './state/library/library.service'
+import { SetService } from './state/set/set.service'
 import { isChristmas } from './utils/vtes-utils'
 
 @Component({
@@ -44,6 +47,9 @@ export class AppComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
+  private readonly cryptService = inject(CryptService)
+  private readonly libraryService = inject(LibraryService)
+  private readonly setService = inject(SetService)
 
   title = 'VTES Decks'
 
@@ -148,6 +154,10 @@ export class AppComponent implements OnInit {
     } else {
       this.addAdSenseScript()
     }
+    // Fetch crypt, library and sets data
+    this.cryptService.getCryptCards().subscribe()
+    this.libraryService.getLibraryCards().subscribe()
+    this.setService.getSets().subscribe()
   }
 
   private handleNavigationEnd(evt: NavigationEnd) {

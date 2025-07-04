@@ -46,7 +46,8 @@
     "taints": "Taints",
     "limited_format": "Formato Limitado",
     "card_text": "Texto do cartão",
-    "card_text_placeholder": "Digite o texto ou use /seu-regex/"
+    "card_text_placeholder": "Digite o texto ou use /seu-regex/",
+    "set": "Expansão"
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
@@ -175,7 +176,8 @@
     "private_deck": "Mazo privado",
     "restore_deck": "Restaurar mazo",
     "print": "Imprimir",
-    "my_decks": "¿En quais mazos eu uso?"
+    "my_decks": "¿En quais mazos eu uso?",
+    "set_image_not_available": "Imagem de expansão não disponível, usando imagem padrão"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
@@ -273,7 +275,7 @@
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
-    "whats_new": "Novidades em v{{ version }} ({{ date }})"
+    "whats_new": "Novidades {{ date }}"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
@@ -323,7 +325,8 @@
     "taints": "Taints",
     "limited_format": "Formato Limitado",
     "card_text": "Texto do cartão",
-    "card_text_placeholder": "Digite o texto ou use /seu-regex/"
+    "card_text_placeholder": "Digite o texto ou use /seu-regex/",
+    "set": "Expansão"
   },
   "library_section": {
     "card_name": "Nome do cartão",

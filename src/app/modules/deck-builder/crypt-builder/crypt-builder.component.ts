@@ -81,6 +81,7 @@ export class CryptBuilderComponent implements OnInit {
   capacitySlider!: number[]
   title!: string
   sect!: string
+  set!: string
   taints!: string[]
   cardText!: string
 
@@ -123,6 +124,8 @@ export class CryptBuilderComponent implements OnInit {
     }
     this.capacitySlider = [1, this.cryptQuery.getMaxCapacity()]
     this.title = ''
+    this.sect = ''
+    this.set = ''
     this.taints = []
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
@@ -193,6 +196,11 @@ export class CryptBuilderComponent implements OnInit {
     this.initQuery()
   }
 
+  onChangeSetFilter(set: string) {
+    this.set = set
+    this.initQuery()
+  }
+
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
@@ -256,6 +264,13 @@ export class CryptBuilderComponent implements OnInit {
         }
         if (this.sect && entity.sect !== this.sect) {
           return false
+        }
+        if (this.set) {
+          if (this.set === 'Promo') {
+            return entity.sets.some((set) => set.startsWith('Promo-'))
+          } else {
+            return entity.sets.some((set) => set.startsWith(this.set + ':'))
+          }
         }
         for (const taint of this.taints) {
           if (!entity.taints.includes(taint)) {
