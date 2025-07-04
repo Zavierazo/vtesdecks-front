@@ -3,18 +3,20 @@ import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
   OnChanges,
   OnInit,
-  inject,
   output,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
+import { ApiSet } from '../../../models/api-set'
 import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { SetQuery } from '../../../state/set/set.query'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
@@ -40,6 +42,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
+  private setQuery = inject(SetQuery)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -55,6 +58,8 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly sectChange = output<string>()
   @Input() title!: string
   readonly titleChange = output<string>()
+  @Input() set!: string
+  readonly setChange = output<string>()
   @Input() bloodCostSlider!: number[]
   readonly bloodCostSliderChange = output<number[]>()
   @Input() poolCostSlider!: number[]
@@ -68,6 +73,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   limitedFormatControl!: FormControl
   sectControl!: FormControl
   titleControl!: FormControl
+  setControl!: FormControl
   bloodCostSliderControl!: FormControl
   poolCostSliderControl!: FormControl
   taintGroup!: FormGroup
@@ -76,6 +82,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   sects$!: Observable<string[]>
   titles$!: Observable<string[]>
   taints$!: Observable<string[]>
+  sets$!: Observable<ApiSet[]>
   maxCapacity!: number
   maxGroup!: number
 
@@ -83,6 +90,10 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.sects$ = this.libraryQuery.selectSects()
     this.titles$ = this.libraryQuery.selectTitles()
     this.taints$ = this.libraryQuery.selectTaints()
+    this.sets$ = this.setQuery.selectAll({
+      sortBy: 'lastUpdate',
+      sortByOrder: 'desc',
+    })
     this.initFormControls()
   }
 
@@ -95,6 +106,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeLimitedFormat()
     this.onChangeSect()
     this.onChangeTitle()
+    this.onChangeSet()
     this.onChangeBloodCostSlider()
     this.onChangePoolCostSlider()
     this.onChangeTaint()
@@ -163,6 +175,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.title = value
           this.titleChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeSet() {
+    this.setControl = new FormControl(this.set)
+    this.setControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.set = value
+          this.setChange.emit(value)
         }),
       )
       .subscribe()

@@ -231,6 +231,7 @@ export const DISCIPLINE_LIST = [
     false,
   ),
   new Discipline('Vision', 'vtes.discipline.vision', 'viz', 'vision', false),
+  new Discipline('Flight', 'vtes.discipline.flight', 'fli', 'flight', false),
 ]
 
 export function getDisciplineIcon(

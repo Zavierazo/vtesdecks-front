@@ -1,15 +1,15 @@
 @if (showNotRequired) {
-  <span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
-  <i class="btn-icon vtes-big noclan" [ngClass]="{
+<span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
+  <i class="btn-icon vtes vtes-big noclan" [ngClass]="{
     'non-selected': !isSelected('none')
   }"></i>
-  </span>
+</span>
 }
 @for (clan of clansList; track clan) {
-  <span (click)="toggle(clan.name)" [title]="clan.label | transloco">
-    <i class="btn-icon vtes-big" [class]="clan.icon" [ngClass]="{
+<span (click)="toggle(clan.name)" [title]="clan.label | transloco">
+  <i class="btn-icon vtes vtes-big" [class]="clan.icon" [ngClass]="{
         'non-selected': !isSelected(clan.name),
         'bg-dark': isSelected(clan.name)
       }"></i>
-  </span>
+</span>
 }

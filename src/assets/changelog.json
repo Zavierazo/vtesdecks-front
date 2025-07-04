@@ -1,5 +1,14 @@
 [
   {
+    "version": "2.47.0",
+    "date": "4th July, 2025",
+    "changes": [
+      "Add Flight filter to Crypt and Library sections",
+      "Add Set filter to Crypt and Library sections",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
     "version": "2.46.0",
     "date": "27th June, 2025",
     "changes": [

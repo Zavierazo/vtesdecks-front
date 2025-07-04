@@ -96,6 +96,7 @@ export class LibrarySectionComponent implements OnInit {
   bloodCostSlider: number[] = [0, 4]
   poolCostSlider: number[] = [0, 6]
   title!: string
+  set!: string
   taints: string[] = []
   cardText!: string
 
@@ -123,6 +124,7 @@ export class LibrarySectionComponent implements OnInit {
     this.clans = []
     this.title = ''
     this.sect = ''
+    this.set = ''
     this.bloodCostSlider = [0, 4]
     this.poolCostSlider = [0, 6]
     this.taints = []
@@ -193,6 +195,12 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeTitleFilter(title: string) {
     this.title = title
+    this.initQuery()
+    this.scrollToTop()
+  }
+
+  onChangeSetFilter(set: string) {
+    this.set = set
     this.initQuery()
     this.scrollToTop()
   }
@@ -289,6 +297,13 @@ export class LibrarySectionComponent implements OnInit {
         return entity.titles.length === 0
       } else if (!entity.titles.includes(this.title)) {
         return false
+      }
+    }
+    if (this.set) {
+      if (this.set === 'Promo') {
+        return entity.sets.some((set) => set.startsWith('Promo-'))
+      } else {
+        return entity.sets.some((set) => set.startsWith(this.set + ':'))
       }
     }
     const bloodCostMin = this.bloodCostSlider[0]
