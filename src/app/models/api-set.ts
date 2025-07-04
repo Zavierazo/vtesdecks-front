@@ -1,3 +1,5 @@
+export type SetSortBy = keyof ApiSet
+
 export interface ApiSet {
   id: number
   abbrev: string
@@ -5,4 +7,5 @@ export interface ApiSet {
   fullName: string
   company: string
   icon: string
+  lastUpdate: Date
 }

@@ -3,12 +3,21 @@
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
-        @if( card.i18n && card.i18n.image ){
-        <img #i18nImage class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.i18n.image"
-          [alt]="card.i18n.name" (error)="i18nImage.src='/assets' + card.image" />
+        <img #image class="rounded mx-auto d-block img-fluid" [src]="card | cardImage:activeSet"
+          [alt]="card?.i18n?.name ?? card.name" (error)="image.src='/assets' + card.image; setImageError = true" />
+        @if(setImageError) {
+        <div class="text-center text-warning small mb-2">
+          {{ 'deck_shared.set_image_not_available' | transloco }}
+        </div>
         }
-        @else {
-        <img class="rounded mx-auto d-block img-fluid" [src]="'/assets' + card.image" [alt]="card.name" />
+        @if(!(isMobile$ | async)! && card.sets && card.sets.length > 1) {
+        <div class="d-flex flex-wrap mb-2 justify-content-center align-items-center">
+          @for (set of card.sets; track set) {
+          <span class="badge me-1"
+            [ngClass]="{ 'text-bg-secondary': activeSet !== set, 'text-bg-primary border border-primary border-1': activeSet === set }"
+            tabindex="0" (click)="setActiveSet(set)" [title]="set" role="button">{{ set }}</span>
+          }
+        </div>
         }
       </div>
       <div class="col-sm-12 col-md-7 ps-0">
@@ -37,7 +46,7 @@
             </span>
             <small class="float-start ms-1 d-none d-sm-inline">
               <span class="badge rounded-pill bg-dark text-white crypt_group">
-                {{ card.group == -1 ? "any" : "G"+card.group }}
+                {{ card.group === -1 ? "any" : "G"+card.group }}
               </span>
             </small>
           </h4>
@@ -59,7 +68,7 @@
           <hr />
           <p><strong>{{ t('sets') }}:&nbsp;</strong>
             @for (set of card.sets; track set) {
-            <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent"
+            <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" tabindex="0"
               triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()">
               {{ set }}&nbsp;
               <ng-template #setContent>

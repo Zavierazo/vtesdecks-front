@@ -29,12 +29,10 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { debounceTime, filter, Observable, switchMap, tap, zip } from 'rxjs'
+import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
-import { ApiCrypt } from '../../models/api-crypt'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
-import { ApiLibrary } from '../../models/api-library'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
@@ -47,9 +45,7 @@ import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
 import { environment } from './../../../environments/environment'
-import { CryptService } from './../../state/crypt/crypt.service'
 import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
-import { LibraryService } from './../../state/library/library.service'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
@@ -87,8 +83,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly route = inject(ActivatedRoute)
   private readonly deckBuilderQuery = inject(DeckBuilderQuery)
   private readonly deckBuilderService = inject(DeckBuilderService)
-  private readonly libraryService = inject(LibraryService)
-  private readonly cryptService = inject(CryptService)
   private readonly toastService = inject(ToastService)
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
@@ -118,11 +112,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   ngOnInit() {
     this.initForm()
-    this.initCards()
-      .pipe(
-        untilDestroyed(this),
-        switchMap(() => this.initDeck()),
-      )
+    this.initDeck()
+      .pipe(untilDestroyed(this))
       .subscribe({
         error: () => {
           this.toastService.show(
@@ -132,13 +123,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           this.changeDetector.markForCheck()
         },
       })
-  }
-
-  private initCards(): Observable<[ApiCrypt[], ApiLibrary[]]> {
-    return zip(
-      this.cryptService.getCryptCards(),
-      this.libraryService.getLibraryCards(),
-    )
   }
 
   initDeck(): Observable<ApiDeckBuilder> {

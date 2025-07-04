@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnInit,
-  inject,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -18,11 +18,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
-  combineLatest,
   debounceTime,
-  mergeMap,
   Observable,
-  of,
   OperatorFunction,
   switchMap,
   tap,
@@ -86,23 +83,14 @@ export class CardFilterComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) =>
-    text$.pipe(
-      mergeMap((term) =>
-        combineLatest([of(term), this.cryptService.getCryptCards()]),
-      ),
-      switchMap(([term]) => this.cryptQuery.selectByName(term, 10)),
-    )
+  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
 
   searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
     text$: Observable<string>,
   ) =>
     text$.pipe(
       debounceTime(200),
-      mergeMap((term) => {
-        return combineLatest([of(term), this.libraryService.getLibraryCards()])
-      }),
-      switchMap(([term]) => this.libraryQuery.selectByName(term, 10)),
+      switchMap((term) => this.libraryQuery.selectByName(term, 10)),
     )
 
   formatter = (x: { name: string }) => x.name

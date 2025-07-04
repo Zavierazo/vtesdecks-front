@@ -387,7 +387,23 @@ i.vision {
 /* Miscelaneous */
 i.flight {
   content: url(/assets/img/icons/misc/flight.gif);
+
+  &.vtes {
+    width: 2.2em;
+    height: 1.4em;
+  }
+
+  &.vtes-small {
+    width: 1.6em;
+    height: 1.1em;
+  }
+
+  &.vtes-big {
+    width: 2.3em;
+    height: 1.7em;
+  }
 }
+
 i.bloodx {
   content: url(/assets/img/icons/misc/bloodx.png);
   width: 1em;

@@ -1,37 +1,34 @@
-import { ApiDataService } from './../../services/api.data.service'
-import { LocalStorageService } from './../../services/local-storage.service'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
 import {
-  NgbTypeaheadSelectItemEvent,
-  NgbTooltip,
   NgbHighlight,
-  NgbTypeahead,
   NgbRating,
+  NgbTooltip,
+  NgbTypeahead,
+  NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
-  combineLatest,
   distinctUntilChanged,
-  mergeMap,
   Observable,
-  of,
   OperatorFunction,
   switchMap,
   tap,
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
+import { ApiCardToday } from '../../models/api-card-today'
 import { ApiCrypt } from '../../models/api-crypt'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { CryptService } from '../../state/crypt/crypt.service'
-import { ActivatedRoute } from '@angular/router'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiCardToday } from '../../models/api-card-today'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiDataService } from './../../services/api.data.service'
+import { LocalStorageService } from './../../services/local-storage.service'
 
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
@@ -87,13 +84,7 @@ export class VtesdleComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) =>
-    text$.pipe(
-      mergeMap((term) =>
-        combineLatest([of(term), this.cryptService.getCryptCards()]),
-      ),
-      switchMap(([term]) => this.cryptQuery.selectByName(term, 10)),
-    )
+  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
 
   formatter = (x: { name: string }) => x.name
 

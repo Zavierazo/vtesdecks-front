@@ -13,8 +13,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
+import { ApiSet } from '../../../models/api-set'
 import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
+import { SetQuery } from '../../../state/set/set.query'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 
@@ -37,6 +39,7 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
+  private setQuery = inject(SetQuery)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -56,6 +59,8 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly titleChange = output<string>()
   @Input() sect!: string
   readonly sectChange = output<string>()
+  @Input() set!: string
+  readonly setChange = output<string>()
   @Input() taints!: string[]
   readonly taintsChange = output<string[]>()
   @Input() cardText!: string
@@ -67,12 +72,14 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   capacitySliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
+  setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
 
   titles$!: Observable<string[]>
   sects$!: Observable<string[]>
   taints$!: Observable<string[]>
+  sets$!: Observable<ApiSet[]>
   maxCapacity!: number
   maxGroup!: number
 
@@ -82,6 +89,10 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.titles$ = this.cryptQuery.selectTitles()
     this.sects$ = this.cryptQuery.selectSects()
     this.taints$ = this.cryptQuery.selectTaints()
+    this.sets$ = this.setQuery.selectAll({
+      sortBy: 'lastUpdate',
+      sortByOrder: 'desc',
+    })
     this.initFormControls()
   }
 
@@ -95,6 +106,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
     this.onChangeTitle()
+    this.onChangeSet()
     this.onChangeSect()
     this.onChangeTaint()
     this.onChangeCardText()
@@ -175,6 +187,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.title = value
           this.titleChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeSet() {
+    this.setControl = new FormControl(this.set)
+    this.setControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.set = value
+          this.setChange.emit(value)
         }),
       )
       .subscribe()

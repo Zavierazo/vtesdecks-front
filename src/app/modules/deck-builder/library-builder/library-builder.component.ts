@@ -81,6 +81,7 @@ export class LibraryBuilderComponent implements OnInit {
   bloodCostSlider!: number[]
   poolCostSlider!: number[]
   title!: string
+  set!: string
   taints!: string[]
   cardText!: string
 
@@ -111,6 +112,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.clans = []
     this.title = ''
     this.sect = ''
+    this.set = ''
     this.bloodCostSlider = [0, 4]
     this.poolCostSlider = [0, 6]
     this.taints = []
@@ -175,6 +177,11 @@ export class LibraryBuilderComponent implements OnInit {
 
   onChangeTitleFilter(title: string) {
     this.title = title
+    this.initQuery()
+  }
+
+  onChangeSetFilter(set: string) {
+    this.set = set
     this.initQuery()
   }
 
@@ -262,6 +269,13 @@ export class LibraryBuilderComponent implements OnInit {
             return entity.titles.length === 0
           } else if (!entity.titles.includes(this.title)) {
             return false
+          }
+        }
+        if (this.set) {
+          if (this.set === 'Promo') {
+            return entity.sets.some((set) => set.startsWith('Promo-'))
+          } else {
+            return entity.sets.some((set) => set.startsWith(this.set + ':'))
           }
         }
         const bloodCostMin = this.bloodCostSlider[0]

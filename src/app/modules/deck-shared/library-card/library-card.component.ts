@@ -19,6 +19,7 @@ import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { ApiDataService } from '../../../services/api.data.service'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { Shop, getShop } from '../../../utils/shops'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
@@ -43,6 +44,7 @@ import { MediaService } from './../../../services/media.service'
     AsyncPipe,
     TranslocoPipe,
     CurrencyPipe,
+    CardImagePipe,
   ],
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
@@ -60,6 +62,8 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   myDecks$!: Observable<ApiDecks>
   shops$!: Observable<ApiShop[]>
   defaultTouch = { x: 0, y: 0, time: 0 }
+  activeSet?: string
+  setImageError = false
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
@@ -124,6 +128,8 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchShops()
     this.fetchPreconstructedDecks()
     this.fetchMyDecks()
+    this.setActiveSet()
+    this.changeDetectorRef.markForCheck()
   }
 
   @HostListener('window:keydown.ArrowLeft')
@@ -138,6 +144,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchShops()
     this.fetchPreconstructedDecks()
     this.fetchMyDecks()
+    this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
 
@@ -181,5 +188,15 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     } else {
       this.myDecks$ = EMPTY
     }
+  }
+
+  setActiveSet(set?: string) {
+    this.setImageError = false
+    if (set === this.activeSet) {
+      this.activeSet = undefined
+    } else {
+      this.activeSet = set
+    }
+    this.changeDetectorRef.markForCheck()
   }
 }

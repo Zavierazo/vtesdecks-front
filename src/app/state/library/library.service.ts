@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
@@ -25,7 +25,6 @@ export class LibraryService {
   getLibraryCards(): Observable<ApiLibrary[]> {
     const locale = this.translocoService.getActiveLang()
     const libraryState: LibraryState = this.libraryStore.getValue()
-    console.log(this.libraryQuery.getLastUpdate())
     const request$ = this.apiDataService
       .getAllLibrary()
       .pipe(tap((cards: ApiLibrary[]) => this.libraryStore.set(cards)))

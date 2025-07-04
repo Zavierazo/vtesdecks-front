@@ -96,6 +96,7 @@ export class CryptSectionComponent implements OnInit {
   capacitySlider: number[] = [1, this.cryptQuery.getMaxCapacity()]
   title!: string
   sect!: string
+  set!: string
   taints: string[] = []
   cardText!: string
 
@@ -106,6 +107,7 @@ export class CryptSectionComponent implements OnInit {
     this.initFilters()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   openModal(content: TemplateRef<any>) {
     this.modalService.open(content)
   }
@@ -118,6 +120,9 @@ export class CryptSectionComponent implements OnInit {
   initFilters() {
     this.nameFormControl.patchValue('', { emitEvent: false })
     this.printOnDemand = false
+    this.set = ''
+    this.title = ''
+    this.sect = ''
     this.clans = []
     this.disciplines = []
     this.superiorDisciplines = []
@@ -201,6 +206,12 @@ export class CryptSectionComponent implements OnInit {
     this.scrollToTop()
   }
 
+  onChangeSetFilter(set: string) {
+    this.set = set
+    this.initQuery()
+    this.scrollToTop()
+  }
+
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
@@ -269,6 +280,13 @@ export class CryptSectionComponent implements OnInit {
     }
     if (this.sect && entity.sect !== this.sect) {
       return false
+    }
+    if (this.set) {
+      if (this.set === 'Promo') {
+        return entity.sets.some((set) => set.startsWith('Promo-'))
+      } else {
+        return entity.sets.some((set) => set.startsWith(this.set + ':'))
+      }
     }
     for (const taint of this.taints) {
       if (!entity.taints.includes(taint)) {

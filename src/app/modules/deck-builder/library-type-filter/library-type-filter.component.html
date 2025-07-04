@@ -1,8 +1,8 @@
 @for (type of typeList; track type) {
-  <span (click)="toggle(type.name)" [title]="type.label | transloco">
-    <i class="btn-icon vtes-big" [class]="type.icon" [ngClass]="{
+<span (click)="toggle(type.name)" [title]="type.label | transloco">
+  <i class="btn-icon vtes vtes-big" [class]="type.icon" [ngClass]="{
         'non-selected': !isSelected(type.name),
         'bg-dark': isSelected(type.name)
       }"></i>
-  </span>
+</span>
 }
