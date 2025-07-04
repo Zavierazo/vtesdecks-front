@@ -52,6 +52,8 @@ export class CryptComponent implements OnInit {
 
   @Input() disableClickPopover = false
 
+  @Input() background = true
+
   @Input() maxNumber?: number
 
   @Input() overrideImage?: string | null

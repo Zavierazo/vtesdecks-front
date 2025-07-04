@@ -1,12 +1,13 @@
 @if(crypt$ | async; as crypt){
-<li class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
-  [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-  (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="{
+<!-- eslint-disable-next-line -->
+<a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
+  [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+  (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="background && {
     background: 'url(/assets' + crypt.cropImage + ') scroll',
     'background-repeat': 'no-repeat',
     'background-position': 'right 33%',
     'background-size': '50%'
-  }" [autoClose]="withControls && (isMobile$ | async)!">
+  } || null" [autoClose]="withControls && (isMobile$ | async)!">
   <ng-template #imgPopover>
     @if( crypt.i18n && crypt.i18n.image ){
     <img #i18nImage [ngClass]="{
@@ -37,7 +38,7 @@
       }
     </h6>
   </ng-template>
-  <div class="row">
+  <div class="row align-items-center">
     <div class="col-6">
       <div class="row">
         @if(withControls && (card.number || maxNumber)){
@@ -61,7 +62,7 @@
           <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard($event)"></i>
         </div>
         }
-        <div class="col-9">
+        <div class="col-9 align-items-center">
           @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
           <div class="float-start d-flex flex-column">
             <span class="text-body">{{ crypt.i18n.name }}</span>
@@ -103,7 +104,7 @@
           }
           <small class="float-end d-none d-sm-inline">
             <span class="badge rounded-pill bg-light text-body crypt_group">
-              {{ crypt.group == -1 ? "any" : "G"+crypt.group }}
+              {{ crypt.group === -1 ? "any" : "G"+crypt.group }}
             </span>
           </small>
           <i class="vtes float-end" [ngClass]="crypt.clanIcon"></i>
@@ -117,7 +118,7 @@
       </div>
     </div>
   </div>
-</li>
+</a>
 } @else {
 <div class="list-group-item list-group-item-action">
   <ngx-skeleton-loader count="1" animation="progress" [theme]="{

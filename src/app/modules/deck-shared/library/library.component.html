@@ -1,13 +1,14 @@
 <ng-container *transloco="let t; read: 'deck_shared'">
   @if (library$ | async; as library) {
+  <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-    (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="{
+    (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="background && {
       background: 'url(/assets' + library.cropImage + ') scroll',
       'background-repeat': 'no-repeat',
       'background-position': 'right 33%',
       'background-size': '50%'
-    }" [autoClose]="withControls && (isMobile$ | async)!">
+    } || null" [autoClose]="withControls && (isMobile$ | async)!">
     <ng-template #imgPopover>
       @if( library.i18n && library.i18n.image ){
       <img #i18nImage [ngClass]="{
