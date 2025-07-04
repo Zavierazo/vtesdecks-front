@@ -1,6 +1,6 @@
 {
   "name": "vtes-decks-front",
-  "version": "2.46.1",
+  "version": "2.46.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -16,7 +16,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-slider/ngx-slider": "^19.0.0",
+    "@angular-slider/ngx-slider": "^20.0.0",
     "@angular/animations": "^20.0.4",
     "@angular/cdk": "^20.0.3",
     "@angular/common": "^20.0.4",
@@ -34,7 +34,7 @@
     "@jsverse/transloco": "^7.6.1",
     "@jsverse/transloco-locale": "^7.0.1",
     "@jsverse/transloco-persist-lang": "^7.0.2",
-    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@ngneat/until-destroy": "^10.0.0",
     "@popperjs/core": "^2.11.8",
     "@sentry/angular": "^9.29.0",
@@ -45,13 +45,13 @@
     "cookieconsent": "^3.1.1",
     "emoji-toolkit": "^9.0.0",
     "marked": "^15.0.12",
-    "ng-recaptcha-2": "^15.0.3",
+    "ng-recaptcha-2": "^16.0.1",
     "ng2-charts": "^8.0.0",
     "ngx-cookieconsent": "^8.0.0",
     "ngx-google-analytics": "^14.0.1",
-    "ngx-infinite-scroll": "^19.0.0",
-    "ngx-markdown": "^19.1.1",
-    "ngx-skeleton-loader": "^11.1.0",
+    "ngx-infinite-scroll": "^20.0.0",
+    "ngx-markdown": "^20.0.0",
+    "ngx-skeleton-loader": "^11.2.1",
     "prismjs": "^1.30.0",
     "rxjs": "^7.8.2",
     "tslib": "2.8.1",
@@ -73,7 +73,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "8.34.0",
+    "typescript-eslint": "8.35.1",
     "wrangler": "^4.20.0"
   }
 }
