@@ -176,7 +176,8 @@
     "private_deck": "Mazo privado",
     "restore_deck": "Restaurar mazo",
     "print": "Imprimir",
-    "my_decks": "¿En quais mazos eu uso?"
+    "my_decks": "¿En quais mazos eu uso?",
+    "set_image_not_available": "Imagem de expansão não disponível, usando imagem padrão"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
@@ -274,7 +275,7 @@
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
-    "whats_new": "Novidades em v{{ version }} ({{ date }})"
+    "whats_new": "Novidades {{ date }}"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",

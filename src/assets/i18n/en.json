@@ -176,7 +176,8 @@
     "private_deck": "Private Deck",
     "restore_deck": "Restore Deck",
     "print": "Print",
-    "my_decks": "Where have I used it?"
+    "my_decks": "Where have I used it?",
+    "set_image_not_available": "Set image not available, using default image"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
@@ -296,7 +297,7 @@
     "patreon": "Support on Patreon",
     "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
     "contact_support": "Contact Support",
-    "whats_new": "What's new in v{{ version }} ({{ date }})"
+    "whats_new": "What's new {{ date }}"
   },
   "import_amaranth": {
     "title": "Import Amaranth",

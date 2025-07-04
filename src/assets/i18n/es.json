@@ -176,7 +176,8 @@
     "private_deck": "Mazo Privado",
     "restore_deck": "Restaurar mazo",
     "print": "Imprimir",
-    "my_decks": "¿En qué mazos la utilizo?"
+    "my_decks": "¿En qué mazos la utilizo?",
+    "set_image_not_available": "Imagen de la expansion no disponible, utilizando imagen por defecto"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
@@ -296,7 +297,7 @@
     "patreon": "Apoya en Patreon",
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "contact_support": "Contactar Soporte",
-    "whats_new": "Novedades en v{{ version }} ({{ date }})"
+    "whats_new": "Novedades {{ date }}"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
