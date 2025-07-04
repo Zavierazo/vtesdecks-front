@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  DOCUMENT,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -9,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   inject,
   OnInit,
   TemplateRef,

@@ -1,6 +1,5 @@
-import { DOCUMENT } from '@angular/common'
-import { Injectable, inject } from '@angular/core'
-import { Router, NavigationEnd } from '@angular/router'
+import { DOCUMENT, Injectable, inject } from '@angular/core'
+import { NavigationEnd, Router } from '@angular/router'
 
 @Injectable({
   providedIn: 'root',
