@@ -64,9 +64,16 @@ export class CollectionApiDataService {
     )
   }
 
-  createCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
+  addCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
     return this.httpClient.post<ApiCollectionCard>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards`,
+      card,
+    )
+  }
+
+  updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
+    return this.httpClient.put<ApiCollectionCard>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${card.id}`,
       card,
     )
   }

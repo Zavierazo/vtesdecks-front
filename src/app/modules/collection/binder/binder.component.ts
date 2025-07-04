@@ -24,6 +24,7 @@ import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
+import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionPublicService } from '../state/collection-public.service'
@@ -117,7 +118,11 @@ export class BinderComponent implements OnInit {
   }
 
   onAddCard(binder: ApiCollectionBinder) {
-    //TODO: Implement add card functionality
+    const modalRef = this.modalService.open(CardModalComponent, {
+      size: 'xl',
+      centered: true,
+    })
+    modalRef.componentInstance.initBinder(binder.id)
   }
 
   onEdit(binder: ApiCollectionBinder) {

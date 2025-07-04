@@ -13,6 +13,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { distinctUntilChanged, switchMap } from 'rxjs'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
+import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
@@ -59,6 +60,9 @@ export class CollectionComponent implements OnInit {
   }
 
   onAddCard() {
-    // TODO: Implement add card functionality
+    this.modalService.open(CardModalComponent, {
+      size: 'xl',
+      centered: true,
+    })
   }
 }

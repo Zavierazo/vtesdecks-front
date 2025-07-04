@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import {
   FormControl,
@@ -19,6 +20,7 @@ import { CLAN_LIST } from '../../../utils/clans'
 import { DISCIPLINE_LIST } from '../../../utils/disciplines'
 import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
 import { CollectionPrivateService } from '../state/collection-private.service'
+import { CollectionQuery } from '../state/collection.query'
 
 @UntilDestroy()
 @Component({
@@ -26,10 +28,11 @@ import { CollectionPrivateService } from '../state/collection-private.service'
   templateUrl: './binder-modal.component.html',
   styleUrls: ['./binder-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoPipe, TranslocoDirective, ReactiveFormsModule],
+  imports: [TranslocoPipe, TranslocoDirective, ReactiveFormsModule, AsyncPipe],
 })
 export class BinderModalComponent {
   private collectionService = inject(CollectionPrivateService)
+  private collectionQuery = inject(CollectionQuery)
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
 
@@ -37,14 +40,22 @@ export class BinderModalComponent {
   disciplines = DISCIPLINE_LIST
   clans = CLAN_LIST
   types = LIBRARY_TYPE_LIST
+  loading$ = this.collectionQuery.selectLoading()
 
   formBinder = new FormGroup({
     id: new FormControl<number | null>(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    name: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     icon: new FormControl(''),
     publicVisibility: new FormControl(false),
     description: new FormControl(''),
   })
+
+  get binderName(): FormControl<string> {
+    return this.formBinder.get('name') as FormControl<string>
+  }
 
   onSave() {
     if (!this.formBinder.valid) {

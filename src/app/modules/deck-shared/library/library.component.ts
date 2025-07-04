@@ -16,6 +16,7 @@ import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
 import drawProbability from '../../../utils/draw-probability'
@@ -34,6 +35,7 @@ import drawProbability from '../../../utils/draw-probability'
     NgxSkeletonLoaderComponent,
     AsyncPipe,
     TranslocoPipe,
+    CardImagePipe,
   ],
 })
 export class LibraryComponent implements OnInit {
@@ -58,6 +60,8 @@ export class LibraryComponent implements OnInit {
   @Input() maxNumber?: number
 
   @Input() overrideImage?: string
+
+  @Input() setAbbrev?: string
 
   readonly cardAdded = output<number>()
 

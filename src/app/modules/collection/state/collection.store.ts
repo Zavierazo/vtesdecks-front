@@ -101,6 +101,19 @@ export class CollectionStore {
     this.entities.update(() => entities ?? [])
   }
 
+  addEntity(entity: ApiCollectionCard) {
+    this.entities.update((current) => [
+      entity,
+      ...current.filter((e) => e.id !== entity.id),
+    ])
+  }
+
+  updateEntity(entity: ApiCollectionCard) {
+    this.entities.update((current) =>
+      current.map((e) => (e.id === entity.id ? entity : e)),
+    )
+  }
+
   setQueryFilters(filters: [string, string | number | boolean][]): void {
     this.state.update((state) => ({
       ...state,

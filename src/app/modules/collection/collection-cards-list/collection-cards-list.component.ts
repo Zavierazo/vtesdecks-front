@@ -16,6 +16,7 @@ import {
   NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
+  NgbModal,
   NgbPaginationModule,
   NgbProgressbarModule,
   NgbTooltip,
@@ -23,6 +24,7 @@ import {
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { MediaService } from '../../../services/media.service'
+import { CardModalComponent } from '../card-modal/card-modal.component'
 import {
   CollectionSortableHeader,
   SortEvent,
@@ -61,9 +63,10 @@ import { CollectionCardComponent } from './collection-card/collection-card.compo
   ],
 })
 export class CollectionCardsListComponent {
-  collectionQuery = inject(CollectionQuery)
-  collectionService = inject(CollectionService)
-  mediaService = inject(MediaService)
+  private collectionQuery = inject(CollectionQuery)
+  private collectionService = inject(CollectionService)
+  private mediaService = inject(MediaService)
+  private modalService = inject(NgbModal)
 
   owned = input.required<boolean>()
   editable = input.required<boolean>()
@@ -99,8 +102,11 @@ export class CollectionCardsListComponent {
   }
 
   onEdit(card: ApiCollectionCard) {
-    //TODO: Implement edit functionality here
-    console.log('Edit card with ID:', card)
+    const modalRef = this.modalService.open(CardModalComponent, {
+      size: 'xl',
+      centered: true,
+    })
+    modalRef.componentInstance.initEdit(card)
   }
 
   onDelete(card: ApiCollectionCard) {

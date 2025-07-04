@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { ApiCrypt } from '../../models/api-crypt'
-import { ApiLibrary } from '../../models/api-library'
+import { ApiI18n } from '../../models/api-i18n'
 
 @Pipe({ name: 'cardImage' })
 export class CardImagePipe implements PipeTransform {
-  transform(card: ApiCrypt | ApiLibrary, set?: string) {
+  transform(card: { id: number; i18n?: ApiI18n; image: string }, set?: string) {
     if (set?.startsWith('Promo')) {
       return `https://statics.bloodlibrary.info/img/sets/promo/${card.id}.jpg`
     } else if (set) {

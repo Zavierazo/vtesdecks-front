@@ -17,5 +17,6 @@ import { LibraryComponent } from '../../../deck-shared/library/library.component
 })
 export class CollectionCardComponent {
   cardId = input.required<number>()
+  setAbbrev = input<string | undefined>(undefined)
   isCrypt = computed(() => isCryptId(this.cardId()))
 }

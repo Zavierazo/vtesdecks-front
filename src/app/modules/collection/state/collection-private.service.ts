@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { finalize, Observable, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
+import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
@@ -86,6 +87,22 @@ export class CollectionPrivateService extends CollectionService {
           binders: state.binders?.filter((b) => b.id !== id),
         }))
       }),
+      finalize(() => this.collectionStore.setLoading(false)),
+    )
+  }
+
+  addCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
+    this.collectionStore.setLoading(true)
+    return this.collectionApiDataService.addCard(card).pipe(
+      tap((newCard) => this.collectionStore.addEntity(newCard)),
+      finalize(() => this.collectionStore.setLoading(false)),
+    )
+  }
+
+  updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
+    this.collectionStore.setLoading(true)
+    return this.collectionApiDataService.updateCard(card).pipe(
+      tap((updatedCard) => this.collectionStore.updateEntity(updatedCard)),
       finalize(() => this.collectionStore.setLoading(false)),
     )
   }

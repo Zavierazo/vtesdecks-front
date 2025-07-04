@@ -49,7 +49,7 @@
           </tr>
         </thead>
         <tbody>
-          @if(isLoading$ | async; as isLoading) {
+          @if(isLoading$ | async) {
           <tr>
             <td colspan="100%" style="text-align: center" class="p-0">
               <ngb-progressbar type="primary" [value]="100" [striped]="true" [animated]="true" height=".3rem" />
@@ -60,7 +60,7 @@
           <tr class="align-middle">
             <td>{{ card.number }}</td>
             <td>
-              <app-collection-card [cardId]="card.cardId"></app-collection-card>
+              <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"></app-collection-card>
             </td>
             @if(owned() && showBinders()){
             <td class="text-center">
@@ -150,11 +150,13 @@
             }
           </tr>
           } @empty {
+          @if(!(isLoading$ | async)!) {
           <tr>
             <td colspan="100%" class="text-center">
               {{ t('no_cards_found') }}
             </td>
           </tr>
+          }
           }
 
         </tbody>
