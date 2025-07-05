@@ -58,7 +58,7 @@ export class CardBinderModalComponent {
     this.formCardBinder.patchValue({
       id: card.id,
       quantity: 1,
-      binderId: card.binderId,
+      binderId: card.binderId ?? null,
     })
   }
 

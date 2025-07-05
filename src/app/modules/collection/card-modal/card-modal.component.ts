@@ -27,7 +27,6 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
-  filter,
   map,
   Observable,
   OperatorFunction,
@@ -109,12 +108,15 @@ export class CardModalComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap(() => (this.setImageError = false)),
-        filter((id) => id !== null),
-        tap((id) =>
-          this.formCard.patchValue({
-            setAbbrev: this.setQuery.getEntity(Number(id))?.abbrev || null,
-          }),
-        ),
+        tap((id) => {
+          if (id !== null) {
+            this.formCard.patchValue({
+              setAbbrev: this.setQuery.getEntity(Number(id))?.abbrev || null,
+            })
+          } else {
+            this.formCard.patchValue({ setAbbrev: null })
+          }
+        }),
       )
       .subscribe()
   }
@@ -129,8 +131,8 @@ export class CardModalComponent implements OnInit {
       this.formCard.patchValue({
         id: card.id,
         card: searchCard,
-        setAbbrev: card.set?.abbrev ?? null,
-        setId: card.set?.id ?? null,
+        setAbbrev: card.set ? this.setQuery.getEntity(card.set)?.abbrev : null,
+        setId: card.set ?? null,
         quantity: card.number,
         condition: card.condition,
         language: card.language,

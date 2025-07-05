@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { finalize, Observable, tap } from 'rxjs'
+import { finalize, map, Observable, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import {
@@ -97,7 +97,11 @@ export class CollectionPrivateService extends CollectionService {
   addCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
     this.collectionStore.setLoading(true)
     return this.collectionApiDataService.addCard(card).pipe(
-      tap((newCard) => this.collectionStore.addEntity(newCard)),
+      tap(({ card, deletedIds }) => {
+        deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
+        this.collectionStore.addEntity(card)
+      }),
+      map(({ card }) => card),
       finalize(() => this.collectionStore.setLoading(false)),
     )
   }
@@ -105,7 +109,11 @@ export class CollectionPrivateService extends CollectionService {
   updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
     this.collectionStore.setLoading(true)
     return this.collectionApiDataService.updateCard(card).pipe(
-      tap((updatedCard) => this.collectionStore.updateEntity(updatedCard)),
+      tap(({ card, deletedIds }) => {
+        deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
+        this.collectionStore.updateEntity(card)
+      }),
+      map(({ card }) => card),
       finalize(() => this.collectionStore.setLoading(false)),
     )
   }

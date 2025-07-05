@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
@@ -64,18 +64,56 @@ export class CollectionApiDataService {
     )
   }
 
-  addCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
-    return this.httpClient.post<ApiCollectionCard>(
-      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards`,
-      card,
-    )
+  addCard(
+    card: ApiCollectionCard,
+  ): Observable<{ card: ApiCollectionCard; deletedIds: number[] }> {
+    return this.httpClient
+      .post<ApiCollectionCard>(
+        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards`,
+        card,
+        { observe: 'response' },
+      )
+      .pipe(
+        map((response: HttpResponse<ApiCollectionCard>) => {
+          const deletedHeader = response.headers.get('X-Card-Deleted')
+          const deletedIds =
+            deletedHeader
+              ?.split(',')
+              .map((id) => Number(id))
+              .filter((id) => !isNaN(id)) ?? []
+          return {
+            card: response.body!,
+            deletedIds,
+          }
+        }),
+      )
   }
 
-  updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
-    return this.httpClient.put<ApiCollectionCard>(
-      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${card.id}`,
-      card,
-    )
+  updateCard(
+    card: ApiCollectionCard,
+  ): Observable<{ card: ApiCollectionCard; deletedIds: number[] }> {
+    return this.httpClient
+      .put<ApiCollectionCard>(
+        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${card.id}`,
+        card,
+        { observe: 'response' },
+      )
+      .pipe(
+        map((response: HttpResponse<ApiCollectionCard>) => {
+          const deletedHeader = response.headers.get('x-card-deleted')
+          const deletedIds =
+            deletedHeader
+              ?.split(',')
+              .map((id) => Number(id))
+              .filter((id) => !isNaN(id)) ?? []
+          console.log(deletedIds)
+          console.log(deletedHeader)
+          return {
+            card: response.body!,
+            deletedIds,
+          }
+        }),
+      )
   }
 
   deleteCard(id: number): Observable<boolean> {

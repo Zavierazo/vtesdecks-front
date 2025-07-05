@@ -723,6 +723,7 @@
     "max_quantity": "You can not add more than {{ max }} cards",
     "move_to_binder": "Move to Binder",
     "move_to_binder_message": "How many cards do you want to move into a binder?",
-    "any_set": "Any Set"
+    "any_set": "Any Set",
+    "unknown_set": "Unknown"
   }
 }

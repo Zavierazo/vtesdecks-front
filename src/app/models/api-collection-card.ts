@@ -1,5 +1,3 @@
-import { ApiSet } from './api-set'
-
 export const FILTER_SET = 'set'
 export const FILTER_CARD_TYPE = 'cardType'
 export const FILTER_BINDER = 'binderId'
@@ -10,8 +8,7 @@ export interface ApiCollectionCard {
   id?: number
   cardId: number
   cardName?: string
-  set?: ApiSet
-  setId?: number
+  set?: number
   number: number
   binderId?: number
   condition?: 'MT' | 'NM' | 'EX' | 'GD' | 'LP' | 'PL' | 'PO'

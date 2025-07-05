@@ -40,9 +40,11 @@ import {
   FILTER_SET,
 } from '../../../models/api-collection-card'
 import { ApiI18n } from '../../../models/api-i18n'
+import { ApiSet } from '../../../models/api-set'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { AutofocusDirective } from '../../../shared/directives/auto-focus.directive'
+import { CardSetPipe } from '../../../shared/pipes/card-set.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
@@ -94,6 +96,7 @@ export interface SearchCard {
     AutofocusDirective,
     ReactiveFormsModule,
     DatePipe,
+    CardSetPipe,
   ],
 })
 export class CollectionCardsListComponent implements OnInit {
@@ -174,6 +177,13 @@ export class CollectionCardsListComponent implements OnInit {
         ),
       ),
     )
+
+  getSet(setId: number | undefined): ApiSet | undefined {
+    if (!setId) {
+      return undefined
+    }
+    return this.setQuery.getEntity(setId)
+  }
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {

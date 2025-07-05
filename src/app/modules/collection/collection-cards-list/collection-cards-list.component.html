@@ -84,7 +84,7 @@
           <td>{{ card.number }}</td>
           }
           <td>
-            <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"
+            <app-collection-card [cardId]="card.cardId" [setAbbrev]="(card.set | cardSet | async)?.abbrev"
               (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
           </td>
           @if(owned() && showBinders()){
@@ -108,13 +108,19 @@
           @if(!(isMobile$ | async)!) {
           <td>
             @if(card.set) {
+            @if(card.set | cardSet | async; as set){
             <span class="badge text-bg-secondary" [ngbTooltip]="setContent" triggers="mouseenter:mouseleave"
               container="body">
-              {{ card.set.abbrev }}
+              {{ set.abbrev }}
             </span>
             <ng-template #setContent>
-              <strong>{{ card.set.fullName }} - {{ card.set.releaseDate | date:'yyyy' }}</strong>
+              <strong>{{ set.fullName }} - {{ set.releaseDate | date:'yyyy' }}</strong>
             </ng-template>
+            }@else {
+            <span class="badge text-bg-secondary">
+              {{ t('unknown_set') }}
+            </span>
+            }
             }
           </td>
           <td>
