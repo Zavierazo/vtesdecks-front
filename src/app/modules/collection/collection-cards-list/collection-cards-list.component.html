@@ -58,7 +58,19 @@
           }
           @for (card of cards$ | async; track card.id) {
           <tr class="align-middle">
+            @if(editable()){
+            <td (click)="editNumberId = card.id" class="text-center" style="cursor:pointer;">
+              @if(editNumberId === card.id){
+              <input #numberInput type="number" class="form-control form-control-sm d-inline-block" style="width: 70px;"
+                [value]="card.number" (blur)="onNumberEdit(card, numberInput.value)"
+                (keydown.enter)="onNumberEdit(card, numberInput.value)" (click)="$event.stopPropagation()" appAutoFocus>
+              }@else {
+              {{ card.number }}
+              }
+            </td>
+            }@else {
             <td>{{ card.number }}</td>
+            }
             <td>
               <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"></app-collection-card>
             </td>

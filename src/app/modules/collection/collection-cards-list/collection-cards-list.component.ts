@@ -26,6 +26,7 @@ import { catchError } from 'rxjs'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
+import { AutofocusDirective } from '../../../shared/directives/auto-focus.directive'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import {
@@ -63,6 +64,7 @@ import { CollectionCardComponent } from './collection-card/collection-card.compo
     RouterLink,
     NgClass,
     CollectionCardComponent,
+    AutofocusDirective,
   ],
 })
 export class CollectionCardsListComponent {
@@ -85,6 +87,8 @@ export class CollectionCardsListComponent {
   total$ = this.collectionQuery.selectTotalElements()
   query$ = this.collectionQuery.selectQuery()
   cardTypeFilter$ = this.collectionQuery.selectFilter('cardType')
+
+  editNumberId?: number
 
   @ViewChildren(CollectionSortableHeader)
   headers!: QueryList<CollectionSortableHeader>
@@ -154,5 +158,23 @@ export class CollectionCardsListComponent {
     } else {
       this.collectionService.setFilter('cardType', tab)
     }
+  }
+
+  onNumberEdit(card: ApiCollectionCard, value: string | number) {
+    const newNumber = Number(value)
+    if (!isNaN(newNumber) && newNumber !== card.number && newNumber >= 0) {
+      if (newNumber === 0) {
+        this.collectionService
+          .deleteCard(card.id!)
+          .pipe(untilDestroyed(this))
+          .subscribe()
+      } else {
+        this.collectionService
+          .updateCard({ ...card, number: newNumber })
+          .pipe(untilDestroyed(this))
+          .subscribe()
+      }
+    }
+    this.editNumberId = undefined
   }
 }
