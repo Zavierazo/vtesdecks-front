@@ -1,209 +1,209 @@
 <ng-container *transloco="let t; read: 'collection'">
-  <form>
-    <div class="mb-3 row g-2">
-      <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
-        <select id="set" class="form-select w-auto" [formControl]="setFormControl">
-          <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
-          @for(set of sets$ | async; track set) {
-          <option [value]="set.id">{{ set.fullName }}</option>
-          }
-        </select>
-      </div>
-      <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
-        <div class="col-xs-3 col-sm-auto">
-          <input #searchInput id="search" type="text" class="form-control" [placeholder]="t('search_placeholder')"
-            [formControl]="searchCardFormControl" />
-        </div>
+  <hr class="my-3 text-secondary">
+  <div class="row g-2">
+    <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
+      <select id="set" class="form-select w-auto" [formControl]="setFormControl">
+        <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
+        @for(set of sets$ | async; track set) {
+        <option [value]="set.id">{{ set.fullName }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
+      <div class="col-xs-3 col-sm-auto">
+        <input #searchInput id="search" type="text" class="form-control" [placeholder]="t('search_placeholder')"
+          [formControl]="searchCardFormControl" />
       </div>
     </div>
-    <ul class="nav nav-tabs">
-      <li class="nav-item cursor-pointer">
-        <button class="nav-link" [ngClass]="{
+  </div>
+  <hr class="my-3 text-secondary">
+  <ul class="nav nav-tabs">
+    <li class="nav-item cursor-pointer">
+      <button class="nav-link" [ngClass]="{
           'active': (cardTypeFilter$ | async) === undefined
         }" (click)="onTabClick('all')">{{ t('all') }}</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" [ngClass]="{
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{
           'active': (cardTypeFilter$ | async) === 'crypt'
         }" (click)="onTabClick('crypt')">{{ t('crypt') }}</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" [ngClass]="{
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{
           'active': (cardTypeFilter$ | async) === 'library'
         }" (click)="onTabClick('library')">{{ t('library') }}</button>
-      </li>
-    </ul>
-    <div class="table-responsive">
-      <table class="table table-hover cards-list-table">
-        <thead>
-          <tr>
-            <th scope="col" appSortable="number" (sort)="onSort($event)">{{ t('column_number') }}</th>
-            <th scope="col" appSortable="cardName" (sort)="onSort($event)">{{ t('column_name') }}</th>
-            @if(owned() && showBinders()){
-            <th scope="col" class="text-center">{{ t('column_binder') }}</th>
-            }
-            @if(!(isMobile$ | async)!) {
-            <th scope="col" appSortable="set" (sort)="onSort($event)">{{ t('column_set') }}</th>
-            <th scope="col" appSortable="condition" (sort)="onSort($event)">{{ t('column_condition') }}</th>
-            <th scope="col" appSortable="language" (sort)="onSort($event)">{{ t('column_language') }}</th>
-            <th scope="col" class="text-center">{{ t('column_notes') }}</th>
-            <th scope="col" appSortable="modificationDate" direction="desc" (sort)="onSort($event)"><i
-                class="bi bi-calendar"></i>
-            </th>
-            }
-            @if(editable()){
-            <th scope="col"></th>
-            }
-          </tr>
-        </thead>
-        <tbody>
-          @if(isLoading$ | async) {
-          <tr class="table-progress">
-            <td colspan="100%" style="text-align: center" class="p-0">
-              <ngb-progressbar type="primary" [value]="100" [striped]="true" [animated]="true" height=".3rem" />
-            </td>
-          </tr>
+    </li>
+  </ul>
+  <div class="table-responsive">
+    <table class="table table-hover cards-list-table">
+      <thead>
+        <tr>
+          <th scope="col" appSortable="number" (sort)="onSort($event)">{{ t('column_number') }}</th>
+          <th scope="col" appSortable="cardName" (sort)="onSort($event)">{{ t('column_name') }}</th>
+          @if(owned() && showBinders()){
+          <th scope="col" class="text-center">{{ t('column_binder') }}</th>
           }
-          @for (card of cards$ | async; track card.id) {
-          <tr class="align-middle">
-            @if(editable()){
-            <td (click)="editNumberId = card.id" class="text-center cursor-pointer">
-              @if(editNumberId === card.id){
-              <input #numberInput type="number" class="form-control form-control-sm d-inline-block" style="width: 70px;"
-                [value]="card.number" (blur)="onNumberEdit(card, numberInput.value)"
-                (keydown.enter)="onNumberEdit(card, numberInput.value)" (click)="$event.stopPropagation()" appAutoFocus>
-              }@else {
-              {{ card.number }}
-              }
-            </td>
+          @if(!(isMobile$ | async)!) {
+          <th scope="col" appSortable="set" (sort)="onSort($event)">{{ t('column_set') }}</th>
+          <th scope="col" appSortable="condition" (sort)="onSort($event)">{{ t('column_condition') }}</th>
+          <th scope="col" appSortable="language" (sort)="onSort($event)">{{ t('column_language') }}</th>
+          <th scope="col" class="text-center">{{ t('column_notes') }}</th>
+          <th scope="col" appSortable="modificationDate" direction="desc" (sort)="onSort($event)"><i
+              class="bi bi-calendar"></i>
+          </th>
+          }
+          @if(editable()){
+          <th scope="col"></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @if(isLoading$ | async) {
+        <tr class="table-progress">
+          <td colspan="100%" style="text-align: center" class="p-0">
+            <ngb-progressbar type="primary" [value]="100" [striped]="true" [animated]="true" height=".3rem" />
+          </td>
+        </tr>
+        }
+        @for (card of cards$ | async; track card.id) {
+        <tr class="align-middle">
+          @if(editable()){
+          <td (click)="editNumberId = card.id" class="text-center cursor-pointer">
+            @if(editNumberId === card.id){
+            <input #numberInput type="number" class="form-control form-control-sm d-inline-block" style="width: 70px;"
+              [value]="card.number" (blur)="onNumberEdit(card, numberInput.value)"
+              (keydown.enter)="onNumberEdit(card, numberInput.value)" (click)="$event.stopPropagation()" appAutoFocus>
             }@else {
-            <td>{{ card.number }}</td>
+            {{ card.number }}
             }
-            <td>
-              <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"
-                (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
-            </td>
-            @if(owned() && showBinders()){
-            <td class="text-center">
-              @if(card.binderId | binder | async; as binder) {
-              <a type="button" class="btn text-secondary" style="--bs-btn-padding-y: 0rem; --bs-btn-padding-x: 0rem;"
-                [ngbTooltip]="binderContent" triggers="mouseenter:mouseleave" container="body"
-                [routerLink]="'/collection/binders/' + binder.id">
-                @if(binder.icon){
-                <i class="vtes-small {{ binder.icon }}"></i>
-                }@else{
-                <i class="bi bi-check-circle"></i>
-                }
-              </a>
-              <ng-template #binderContent>
-                {{ binder.name }}
-              </ng-template>
+          </td>
+          }@else {
+          <td>{{ card.number }}</td>
+          }
+          <td>
+            <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"
+              (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
+          </td>
+          @if(owned() && showBinders()){
+          <td class="text-center">
+            @if(card.binderId | binder | async; as binder) {
+            <a type="button" class="btn text-secondary" style="--bs-btn-padding-y: 0rem; --bs-btn-padding-x: 0rem;"
+              [ngbTooltip]="binderContent" triggers="mouseenter:mouseleave" container="body"
+              [routerLink]="'/collection/binders/' + binder.id">
+              @if(binder.icon){
+              <i class="vtes-small {{ binder.icon }}"></i>
+              }@else{
+              <i class="bi bi-check-circle"></i>
               }
-            </td>
+            </a>
+            <ng-template #binderContent>
+              {{ binder.name }}
+            </ng-template>
             }
-            @if(!(isMobile$ | async)!) {
-            <td>
-              @if(card.set) {
-              <span class="badge text-bg-secondary" [ngbTooltip]="setContent" triggers="mouseenter:mouseleave"
-                container="body">
-                {{ card.set.abbrev }}
-              </span>
-              <ng-template #setContent>
-                <strong>{{ card.set.fullName }} - {{ card.set.releaseDate | date:'yyyy' }}</strong>
-              </ng-template>
-              }
-            </td>
-            <td>
-              @if(card.condition){
-              @if(card.condition | condition; as cardCondition) {
-              <span class="badge" [class]="cardCondition.badgeClass">
-                @if(isMobile$ | async) {
-                {{ card.condition }}
-                }@else {
-                {{ cardCondition.label }}
-                }
-              </span>
-              }
-              }
-            </td>
-            <td>{{ card.language }}</td>
-            <td class="text-center">
-              @if(card.notes){
-              @if(isMobileOrTablet$ | async) {
-              <span [ngbTooltip]="noteContent" triggers="mouseenter:mouseleave" container="body">
-                <i class="bi bi-sticky-fill"></i>
-              </span>
-              <ng-template #noteContent>
-                {{ card.notes }}
-              </ng-template>
+          </td>
+          }
+          @if(!(isMobile$ | async)!) {
+          <td>
+            @if(card.set) {
+            <span class="badge text-bg-secondary" [ngbTooltip]="setContent" triggers="mouseenter:mouseleave"
+              container="body">
+              {{ card.set.abbrev }}
+            </span>
+            <ng-template #setContent>
+              <strong>{{ card.set.fullName }} - {{ card.set.releaseDate | date:'yyyy' }}</strong>
+            </ng-template>
+            }
+          </td>
+          <td>
+            @if(card.condition){
+            @if(card.condition | condition; as cardCondition) {
+            <span class="badge" [class]="cardCondition.badgeClass">
+              @if(isMobile$ | async) {
+              {{ card.condition }}
               }@else {
+              {{ cardCondition.label }}
+              }
+            </span>
+            }
+            }
+          </td>
+          <td>{{ card.language }}</td>
+          <td class="text-center">
+            @if(card.notes){
+            @if(isMobileOrTablet$ | async) {
+            <span [ngbTooltip]="noteContent" triggers="mouseenter:mouseleave" container="body">
+              <i class="bi bi-sticky-fill"></i>
+            </span>
+            <ng-template #noteContent>
               {{ card.notes }}
-              }
-              }
-            </td>
-            <td>
-              <span [ngbTooltip]="dateContent" triggers="mouseenter:mouseleave" container="body">
-                <i class="bi bi-calendar-fill"></i>
-              </span>
-              <ng-template #dateContent>
-                {{card.modificationDate | date:'MMM d, y, HH:mm:ss'}}
-              </ng-template>
-            </td>
+            </ng-template>
+            }@else {
+            {{ card.notes }}
             }
-            @if(editable()){
-            <td class="text-center">
-              <div ngbDropdown>
-                <button class="btn btn-link p-0" id="dropdownMenuButton" ngbDropdownToggle
-                  [class.dropdown-toggle]="false">
-                  <i class="bi bi-three-dots-vertical"></i>
+            }
+          </td>
+          <td>
+            <span [ngbTooltip]="dateContent" triggers="mouseenter:mouseleave" container="body">
+              <i class="bi bi-calendar-fill"></i>
+            </span>
+            <ng-template #dateContent>
+              {{card.modificationDate | date:'MMM d, y, HH:mm:ss'}}
+            </ng-template>
+          </td>
+          }
+          @if(editable()){
+          <td class="text-center">
+            <div ngbDropdown>
+              <button class="btn btn-link p-0" id="dropdownMenuButton" ngbDropdownToggle
+                [class.dropdown-toggle]="false">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                <button ngbDropdownItem (click)="onEdit(card)">
+                  {{ t('edit')}}
                 </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-                  <button ngbDropdownItem (click)="onEdit(card)">
-                    {{ t('edit')}}
-                  </button>
-                  <button ngbDropdownItem (click)="onMoveToBinder(card)">
-                    {{ t('move_to_binder')}}
-                  </button>
-                  <div class="dropdown-divider"></div>
-                  <button ngbDropdownItem class="text-danger" (click)="onDelete(card)">
-                    {{ t('delete')}}
-                  </button>
-                </div>
+                <button ngbDropdownItem (click)="onMoveToBinder(card)">
+                  {{ t('move_to_binder')}}
+                </button>
+                <div class="dropdown-divider"></div>
+                <button ngbDropdownItem class="text-danger" (click)="onDelete(card)">
+                  {{ t('delete')}}
+                </button>
               </div>
-            </td>
-            }
-          </tr>
-          } @empty {
-          @if(!(isLoading$ | async)!) {
-          <tr>
-            <td colspan="100%" class="text-center">
-              {{ t('no_cards_found') }}
-            </td>
-          </tr>
+            </div>
+          </td>
           }
-          }
+        </tr>
+        } @empty {
+        @if(!(isLoading$ | async)!) {
+        <tr>
+          <td colspan="100%" class="text-center">
+            {{ t('no_cards_found') }}
+          </td>
+        </tr>
+        }
+        }
 
-        </tbody>
-      </table>
-    </div>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="row g-2 align-items-center my-3">
-      @if(query$ | async; as query) {
-      <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
-        <ngb-pagination [collectionSize]="(total$ | async)!" [page]="query.page + 1" [pageSize]="query.pageSize"
-          (pageChange)="onPageChange($event)">
-        </ngb-pagination>
-      </div>
-      <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
-        <select class="form-select" style="width: auto" name="pageSize" [ngModel]="query.pageSize"
-          (ngModelChange)="onPageSizeChange($event)">
-          <option [ngValue]="20">{{ t('items_per_page', { count: 20 }) }}</option>
-          <option [ngValue]="50">{{ t('items_per_page', { count: 50 }) }}</option>
-          <option [ngValue]="100">{{ t('items_per_page', { count: 100 }) }}</option>
-          <option [ngValue]="200">{{ t('items_per_page', { count: 200 }) }}</option>
-        </select>
-      </div>
-      }
+  <div class="row g-2 align-items-center my-3">
+    @if(query$ | async; as query) {
+    <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
+      <ngb-pagination [collectionSize]="(total$ | async)!" [page]="query.page + 1" [pageSize]="query.pageSize"
+        (pageChange)="onPageChange($event)">
+      </ngb-pagination>
     </div>
-  </form>
+    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
+      <select class="form-select" style="width: auto" name="pageSize" [ngModel]="query.pageSize"
+        (ngModelChange)="onPageSizeChange($event)">
+        <option [ngValue]="20">{{ t('items_per_page', { count: 20 }) }}</option>
+        <option [ngValue]="50">{{ t('items_per_page', { count: 50 }) }}</option>
+        <option [ngValue]="100">{{ t('items_per_page', { count: 100 }) }}</option>
+        <option [ngValue]="200">{{ t('items_per_page', { count: 200 }) }}</option>
+      </select>
+    </div>
+    }
+  </div>
 </ng-container>
