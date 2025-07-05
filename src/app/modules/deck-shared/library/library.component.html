@@ -10,20 +10,11 @@
       'background-size': '50%'
     } || null" [autoClose]="withControls && (isMobile$ | async)!">
     <ng-template #imgPopover>
-      @if( library.i18n && library.i18n.image ){
       <img #i18nImage [ngClass]="{
             'img-popover': !(isMobile$ | async)!,
             'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="overrideImage ? overrideImage : '/assets' + library.i18n.image" [alt]="library.i18n.name"
+          }" [src]="overrideImage ? overrideImage :  library | cardImage:setAbbrev" [alt]="library.name"
         (error)="i18nImage.src='/assets' + library.image" />
-      }
-      @else{
-      <img #image [ngClass]="{
-            'img-popover': !(isMobile$ | async)!,
-            'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="overrideImage ? overrideImage :'/assets' + library.image" [alt]="library.name"
-        (error)="image.src='/assets' + library.image" />
-      }
       <h6 class="text-white">
         @if (librarySize && card.number > 0) {
         <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;

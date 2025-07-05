@@ -1,0 +1,78 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/collection">{{ t('title') }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+  </nav>
+  <h1 class="mb-3 d-flex align-items-center gap-2">
+    {{ t('binders') }}
+  </h1>
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button class="btn btn-primary" (click)="onAddBinder()">
+        <i class="bi bi-plus"></i>
+        {{ t('add_binder') }}
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive min-vh-100">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">{{ t('column_icon') }}</th>
+          <th scope="col">{{ t('column_name') }}</th>
+          <th scope="col">{{ t('column_description') }}</th>
+          <th scope="col">{{ t('column_visibility') }}</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (binder of binders$ | async; track binder.id) {
+        <tr>
+          <td>
+            @if(binder.icon) {
+            <i class="vtes {{ binder.icon }}"></i>
+            }
+          </td>
+          <td>
+            <a class="text-decoration-none" routerLink="/collection/binders/{{ binder.id }}">{{ binder.name }}</a>
+          </td>
+          <td>{{ binder.description }}</td>
+          <td>
+            @if(binder.publicVisibility) {
+            <span class="badge text-bg-success">
+              <i class="bi bi-globe"></i> {{ t('public') }}
+            </span>
+            }@else {
+            <span class="badge text-bg-secondary">
+              <i class="bi bi-lock"></i> {{ t('private') }}
+            </span>
+            }
+          </td>
+          <td>
+            <div ngbDropdown>
+              <button class="btn btn-link p-0" id="dropdownMenuButton" ngbDropdownToggle
+                [class.dropdown-toggle]="false">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                <button ngbDropdownItem (click)="onEdit(binder)">
+                  {{ t('edit') }}
+                </button>
+                <div class="dropdown-divider"></div>
+                <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, false)">
+                  {{ t('delete_binder')}}
+                </button>
+                <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, true)">
+                  {{ t('delete_binder_and_cards')}}
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</ng-container>

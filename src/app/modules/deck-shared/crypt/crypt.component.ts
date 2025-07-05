@@ -16,6 +16,7 @@ import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiCrypt } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { CryptService } from '../../../state/crypt/crypt.service'
 import drawProbability from '../../../utils/draw-probability'
@@ -33,6 +34,7 @@ import drawProbability from '../../../utils/draw-probability'
     NgxSkeletonLoaderComponent,
     AsyncPipe,
     TranslocoPipe,
+    CardImagePipe,
   ],
 })
 export class CryptComponent implements OnInit {
@@ -57,6 +59,8 @@ export class CryptComponent implements OnInit {
   @Input() maxNumber?: number
 
   @Input() overrideImage?: string | null
+
+  @Input() setAbbrev?: string
 
   readonly cardAdded = output<number>()
 

@@ -9,20 +9,11 @@
     'background-size': '50%'
   } || null" [autoClose]="withControls && (isMobile$ | async)!">
   <ng-template #imgPopover>
-    @if( crypt.i18n && crypt.i18n.image ){
-    <img #i18nImage [ngClass]="{
-        'img-popover': !(isMobile$ | async)!,
-        'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
-      (error)="i18nImage.src='/assets' + crypt.image" />
-    }
-    @else{
     <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.image" [alt]="crypt.name"
+      }" [src]="overrideImage ? overrideImage : crypt | cardImage:setAbbrev" [alt]="crypt.name"
       (error)="image.src='/assets' + crypt.image" />
-    }
     <h6 class="text-white">
       @if(cryptSize && card.number > 0){
       <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
