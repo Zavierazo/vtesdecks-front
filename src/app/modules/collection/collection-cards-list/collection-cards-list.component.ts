@@ -104,7 +104,10 @@ export interface SearchCard {
       transition(':leave', [animate('300ms ease', style({ opacity: 0 }))]),
     ]),
     trigger('fadeIn', [
-      transition(':enter', [animate('300ms ease', style({ opacity: 1 }))]),
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease', style({ opacity: 1 })),
+      ]),
     ]),
   ],
 })
