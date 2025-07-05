@@ -69,7 +69,7 @@
         </tr>
         }
         @for (card of cards$ | async; track card.id) {
-        <tr class="align-middle">
+        <tr class="align-middle" [@fadeIn] [@fadeOut]>
           @if(editable()){
           <td (click)="editNumberId = card.id" class="text-center cursor-pointer">
             @if(editNumberId === card.id){

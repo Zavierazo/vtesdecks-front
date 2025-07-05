@@ -87,7 +87,7 @@ export class CardModalComponent implements OnInit {
   setOptions$ = new BehaviorSubject<ApiSet[]>([])
   defaultBinderId: number | null = null
   binders$ = this.collectionQuery.selectBinders()
-  loading$ = this.collectionQuery.selectLoading()
+  loading$ = this.collectionQuery.selectLoadingBackground()
   formCard = new FormGroup({
     id: new FormControl<number | null>(null),
     card: new FormControl<SearchCard | null>(null, Validators.required),

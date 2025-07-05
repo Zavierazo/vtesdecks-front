@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionStore } from './collection.store'
@@ -65,13 +64,4 @@ export abstract class CollectionService {
       }))
     }
   }
-
-  abstract addBinder(
-    binder: ApiCollectionBinder,
-  ): Observable<ApiCollectionBinder>
-  abstract updateBinder(
-    id: number,
-    binder: ApiCollectionBinder,
-  ): Observable<ApiCollectionBinder>
-  abstract deleteBinder(id: number, deleteCards: boolean): Observable<boolean>
 }

@@ -42,16 +42,4 @@ export class CollectionPublicService extends CollectionService {
         finalize(() => this.collectionStore.setLoading(false)),
       )
   }
-
-  addBinder(): Observable<ApiCollectionBinder> {
-    throw new Error('Method not allowed.')
-  }
-
-  updateBinder(): Observable<ApiCollectionBinder> {
-    throw new Error('Method not allowed.')
-  }
-
-  deleteBinder(): Observable<boolean> {
-    throw new Error('Method not allowed.')
-  }
 }

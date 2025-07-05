@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations'
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -97,6 +98,14 @@ export interface SearchCard {
     ReactiveFormsModule,
     DatePipe,
     CardSetPipe,
+  ],
+  animations: [
+    trigger('fadeOut', [
+      transition(':leave', [animate('300ms ease', style({ opacity: 0 }))]),
+    ]),
+    trigger('fadeIn', [
+      transition(':enter', [animate('300ms ease', style({ opacity: 1 }))]),
+    ]),
   ],
 })
 export class CollectionCardsListComponent implements OnInit {

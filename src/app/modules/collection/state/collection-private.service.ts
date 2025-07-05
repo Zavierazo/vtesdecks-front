@@ -51,7 +51,7 @@ export class CollectionPrivateService extends CollectionService {
   }
 
   addBinder(binder: ApiCollectionBinder): Observable<ApiCollectionBinder> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.addBinder(binder).pipe(
       tap((newBinder) => {
         this.collectionStore.update((state) => ({
@@ -59,7 +59,7 @@ export class CollectionPrivateService extends CollectionService {
           binders: [...(state.binders ?? []), newBinder],
         }))
       }),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
@@ -67,7 +67,7 @@ export class CollectionPrivateService extends CollectionService {
     id: number,
     binder: ApiCollectionBinder,
   ): Observable<ApiCollectionBinder> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.updateBinder(id, binder).pipe(
       tap((newBinder) => {
         this.collectionStore.update((state) => ({
@@ -77,12 +77,12 @@ export class CollectionPrivateService extends CollectionService {
           ],
         }))
       }),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
   deleteBinder(id: number, deleteCards: boolean): Observable<boolean> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.deleteBinder(id, deleteCards).pipe(
       tap(() => {
         this.collectionStore.update((state) => ({
@@ -90,39 +90,39 @@ export class CollectionPrivateService extends CollectionService {
           binders: state.binders?.filter((b) => b.id !== id),
         }))
       }),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
   addCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.addCard(card).pipe(
       tap(({ card, deletedIds }) => {
         deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
         this.collectionStore.addEntity(card)
       }),
       map(({ card }) => card),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
   updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.updateCard(card).pipe(
       tap(({ card, deletedIds }) => {
         deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
         this.collectionStore.updateEntity(card)
       }),
       map(({ card }) => card),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
   deleteCard(id: number): Observable<boolean> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.deleteCard(id).pipe(
       tap(() => this.collectionStore.removeEntity(id)),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
 
@@ -131,7 +131,7 @@ export class CollectionPrivateService extends CollectionService {
     quantity: number,
     binderId?: number,
   ): Observable<ApiCollectionCard> {
-    this.collectionStore.setLoading(true)
+    this.collectionStore.setLoadingBackground(true)
     const existingCard = this.collectionStore.getEntity(id)
     return this.collectionApiDataService
       .moveCardToBinder(id, quantity, binderId)
@@ -150,7 +150,7 @@ export class CollectionPrivateService extends CollectionService {
             }
           }
         }),
-        finalize(() => this.collectionStore.setLoading(false)),
+        finalize(() => this.collectionStore.setLoadingBackground(false)),
       )
   }
 }

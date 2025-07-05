@@ -42,9 +42,15 @@ export class CollectionStore {
   private readonly entities$ = toObservable(this.entities)
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
+  private readonly loadingBackground = signal<boolean>(false)
+  private readonly loadingBackground$ = toObservable(this.loadingBackground)
 
   selectLoading(): Observable<boolean> {
     return this.loading$
+  }
+
+  selectLoadingBackground(): Observable<boolean> {
+    return this.loadingBackground$
   }
 
   selectState(): Observable<CollectionState> {
@@ -59,6 +65,10 @@ export class CollectionStore {
     return this.loading()
   }
 
+  getLoadingBackground(): boolean {
+    return this.loadingBackground()
+  }
+
   reset(): void {
     this.state.update(() => initialState)
     this.entities.update(() => [])
@@ -67,6 +77,10 @@ export class CollectionStore {
 
   setLoading(value = false) {
     this.loading.update(() => value)
+  }
+
+  setLoadingBackground(value = false) {
+    this.loadingBackground.update(() => value)
   }
 
   update(updateFn: (value: CollectionState) => CollectionState) {

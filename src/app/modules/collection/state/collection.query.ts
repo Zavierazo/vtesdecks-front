@@ -14,6 +14,10 @@ export class CollectionQuery {
     return this.store.selectLoading()
   }
 
+  selectLoadingBackground(): Observable<boolean> {
+    return this.store.selectLoadingBackground()
+  }
+
   selectAll(): Observable<ApiCollectionCard[]> {
     return this.store.selectEntities()
   }

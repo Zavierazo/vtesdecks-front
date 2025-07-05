@@ -152,7 +152,10 @@ export class BinderComponent implements OnInit {
         untilDestroyed(this),
         switchMap((confirmed: boolean) => {
           if (confirmed) {
-            return this.collectionService.deleteBinder(binder.id!, deleteCards)
+            return this.collectionPrivateService.deleteBinder(
+              binder.id!,
+              deleteCards,
+            )
           }
           return of(null)
         }),

@@ -40,7 +40,7 @@ export class BinderModalComponent {
   disciplines = DISCIPLINE_LIST
   clans = CLAN_LIST
   types = LIBRARY_TYPE_LIST
-  loading$ = this.collectionQuery.selectLoading()
+  loading$ = this.collectionQuery.selectLoadingBackground()
 
   formBinder = new FormGroup({
     id: new FormControl<number | null>(null),
