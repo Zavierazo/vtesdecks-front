@@ -106,8 +106,6 @@ export class CollectionApiDataService {
               ?.split(',')
               .map((id) => Number(id))
               .filter((id) => !isNaN(id)) ?? []
-          console.log(deletedIds)
-          console.log(deletedHeader)
           return {
             card: response.body!,
             deletedIds,
