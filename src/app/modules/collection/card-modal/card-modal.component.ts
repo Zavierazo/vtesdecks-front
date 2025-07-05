@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, DatePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -71,6 +71,7 @@ export interface SearchCard {
     NgbTypeahead,
     CardImagePipe,
     AsyncPipe,
+    DatePipe,
   ],
 })
 export class CardModalComponent implements OnInit {

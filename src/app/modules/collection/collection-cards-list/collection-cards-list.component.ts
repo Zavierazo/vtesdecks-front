@@ -93,6 +93,7 @@ export interface SearchCard {
     CollectionCardComponent,
     AutofocusDirective,
     ReactiveFormsModule,
+    DatePipe,
   ],
 })
 export class CollectionCardsListComponent implements OnInit {
@@ -135,7 +136,10 @@ export class CollectionCardsListComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap((setId) => {
-          this.collectionService.setFilter(FILTER_SET, setId ?? undefined)
+          this.collectionService.setFilter(
+            FILTER_SET,
+            setId !== null ? setId : undefined,
+          )
         }),
       )
       .subscribe()

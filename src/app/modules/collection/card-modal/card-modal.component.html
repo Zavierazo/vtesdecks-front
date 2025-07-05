@@ -74,7 +74,9 @@
               <select id="set" class="form-select" formControlName="setId">
                 <option [value]="null" [ngValue]="null"> - </option>
                 @for(set of setOptions$ | async; track set) {
-                <option [value]="set.id">{{ set.fullName }}</option>
+                <option [value]="set.id">
+                  {{ set.fullName }} <span class="text-muted">'{{ set.releaseDate | date:'yy'}}</span>
+                </option>
                 }
               </select>
             </div>
