@@ -4,10 +4,11 @@ import {
   Component,
   inject,
   input,
+  OnInit,
   QueryList,
   ViewChildren,
 } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
@@ -22,11 +23,29 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { catchError } from 'rxjs'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
+import {
+  catchError,
+  combineLatest,
+  debounceTime,
+  map,
+  Observable,
+  OperatorFunction,
+  switchMap,
+  tap,
+} from 'rxjs'
+import {
+  ApiCollectionCard,
+  FILTER_CARD_NAME,
+  FILTER_CARD_TYPE,
+  FILTER_SET,
+} from '../../../models/api-collection-card'
+import { ApiI18n } from '../../../models/api-i18n'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { AutofocusDirective } from '../../../shared/directives/auto-focus.directive'
+import { CryptQuery } from '../../../state/crypt/crypt.query'
+import { LibraryQuery } from '../../../state/library/library.query'
+import { SetQuery } from '../../../state/set/set.query'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import {
@@ -38,6 +57,14 @@ import { ConditionPipe } from '../pipes/condition.pipe'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 import { CollectionCardComponent } from './collection-card/collection-card.component'
+
+export interface SearchCard {
+  id: number
+  name: string
+  i18n?: ApiI18n
+  typeIcons?: string[]
+  clanIcon: string
+}
 
 @UntilDestroy()
 @Component({
@@ -65,15 +92,19 @@ import { CollectionCardComponent } from './collection-card/collection-card.compo
     NgClass,
     CollectionCardComponent,
     AutofocusDirective,
+    ReactiveFormsModule,
   ],
 })
-export class CollectionCardsListComponent {
+export class CollectionCardsListComponent implements OnInit {
   private collectionQuery = inject(CollectionQuery)
   private collectionService = inject(CollectionPrivateService)
   private mediaService = inject(MediaService)
   private modalService = inject(NgbModal)
   private translocoService = inject(TranslocoService)
   private toastService = inject(ToastService)
+  private setQuery = inject(SetQuery)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
 
   owned = input.required<boolean>()
   editable = input.required<boolean>()
@@ -86,12 +117,59 @@ export class CollectionCardsListComponent {
   cards$ = this.collectionQuery.selectAll()
   total$ = this.collectionQuery.selectTotalElements()
   query$ = this.collectionQuery.selectQuery()
-  cardTypeFilter$ = this.collectionQuery.selectFilter('cardType')
+  cardTypeFilter$ = this.collectionQuery.selectFilter(FILTER_CARD_TYPE)
+  sets$ = this.setQuery.selectAll({
+    sortBy: 'releaseDate',
+    sortByOrder: 'desc',
+  })
 
   editNumberId?: number
+  setFormControl = new FormControl<number | null>(null)
+  searchCardFormControl = new FormControl<string>('')
 
   @ViewChildren(CollectionSortableHeader)
   headers!: QueryList<CollectionSortableHeader>
+
+  ngOnInit(): void {
+    this.setFormControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((setId) => {
+          this.collectionService.setFilter(FILTER_SET, setId ?? undefined)
+        }),
+      )
+      .subscribe()
+
+    this.searchCardFormControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(500),
+        tap((term) => {
+          if (term && term.length >= 3) {
+            this.collectionService.setFilter(FILTER_CARD_NAME, term)
+          } else {
+            this.collectionService.setFilter(FILTER_CARD_NAME, undefined)
+          }
+        }),
+      )
+      .subscribe()
+  }
+
+  searchCard: OperatorFunction<string, number[]> = (
+    text$: Observable<string>,
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        combineLatest([
+          this.libraryQuery.selectByName(term, 10),
+          this.cryptQuery.selectByName(term, 10),
+        ]).pipe(
+          map(([libraryCards, cryptCards]) =>
+            [...libraryCards, ...cryptCards].map((card) => card.id),
+          ),
+        ),
+      ),
+    )
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {
@@ -154,9 +232,9 @@ export class CollectionCardsListComponent {
 
   onTabClick(tab: string) {
     if (tab === 'all') {
-      this.collectionService.setFilter('cardType')
+      this.collectionService.setFilter(FILTER_CARD_TYPE)
     } else {
-      this.collectionService.setFilter('cardType', tab)
+      this.collectionService.setFilter(FILTER_CARD_TYPE, tab)
     }
   }
 

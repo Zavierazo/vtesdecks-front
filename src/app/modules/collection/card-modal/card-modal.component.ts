@@ -207,6 +207,7 @@ export class CardModalComponent implements OnInit {
       notes: null,
     })
   }
+
   private getSearchCard(card: ApiCrypt | ApiLibrary): SearchCard {
     return {
       id: card.id,

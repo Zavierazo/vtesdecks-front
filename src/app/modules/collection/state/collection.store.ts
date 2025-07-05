@@ -9,7 +9,7 @@ export interface CollectionQueryState {
   pageSize: number
   sortBy: keyof ApiCollectionCard
   sortDirection: 'asc' | 'desc' | ''
-  filters: [string, string | number | boolean | undefined][]
+  filters: [string, string | number | number[] | boolean | undefined][]
 }
 
 export interface CollectionState {

@@ -1,13 +1,21 @@
 <ng-container *transloco="let t; read: 'collection'">
   <form>
-    @if(editable()){
-    <div class="mb-3 row">
-      <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Search:</label>
-      <div class="col-xs-3 col-sm-auto">
-        <input id="table-complete-search" type="text" class="form-control" name="searchTerm" />
+    <div class="mb-3 row g-2">
+      <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
+        <select id="set" class="form-select w-auto" [formControl]="setFormControl">
+          <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
+          @for(set of sets$ | async; track set) {
+          <option [value]="set.id">{{ set.fullName }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
+        <div class="col-xs-3 col-sm-auto">
+          <input #searchInput id="search" type="text" class="form-control" [placeholder]="t('search_placeholder')"
+            [formControl]="searchCardFormControl" />
+        </div>
       </div>
     </div>
-    }
     <ul class="nav nav-tabs">
       <li class="nav-item cursor-pointer">
         <button class="nav-link" [ngClass]="{
@@ -59,7 +67,7 @@
           @for (card of cards$ | async; track card.id) {
           <tr class="align-middle">
             @if(editable()){
-            <td (click)="editNumberId = card.id" class="text-center" style="cursor:pointer;">
+            <td (click)="editNumberId = card.id" class="text-center cursor-pointer">
               @if(editNumberId === card.id){
               <input #numberInput type="number" class="form-control form-control-sm d-inline-block" style="width: 70px;"
                 [value]="card.number" (blur)="onNumberEdit(card, numberInput.value)"
@@ -72,7 +80,8 @@
             <td>{{ card.number }}</td>
             }
             <td>
-              <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"></app-collection-card>
+              <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set?.abbrev"
+                (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
             </td>
             @if(owned() && showBinders()){
             <td class="text-center">
@@ -178,7 +187,7 @@
       </table>
     </div>
 
-    <div class="row g-1 align-items-center my-3">
+    <div class="row g-2 align-items-center my-3">
       @if(query$ | async; as query) {
       <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
         <ngb-pagination [collectionSize]="(total$ | async)!" [page]="query.page + 1" [pageSize]="query.pageSize"

@@ -44,7 +44,10 @@ export abstract class CollectionService {
     }))
   }
 
-  setFilter(filterBy: string, filterValue?: string | number | boolean): void {
+  setFilter(
+    filterBy: string,
+    filterValue?: string | number | boolean | number[],
+  ): void {
     if (filterValue !== undefined) {
       this.collectionStore.updateQuery((query) => ({
         ...query,

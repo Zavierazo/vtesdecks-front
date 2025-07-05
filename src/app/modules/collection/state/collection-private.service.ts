@@ -2,7 +2,10 @@ import { inject, Injectable } from '@angular/core'
 import { finalize, Observable, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
+import {
+  ApiCollectionCard,
+  FILTER_BINDER,
+} from '../../../models/api-collection-card'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
@@ -16,7 +19,7 @@ export class CollectionPrivateService extends CollectionService {
   initialize(binderId?: number): Observable<ApiCollection> {
     this.collectionStore.setLoading(true)
     if (binderId) {
-      this.setFilter('binderId', binderId)
+      this.setFilter(FILTER_BINDER, binderId)
     }
     return this.collectionApiDataService.getCollection().pipe(
       tap((data) => {

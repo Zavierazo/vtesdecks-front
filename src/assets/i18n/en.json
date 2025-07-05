@@ -680,6 +680,7 @@
     "crypt": "Crypt",
     "library": "Library",
     "edit": "Edit",
+    "edit_card": "Edit Card",
     "delete": "Delete from Collection",
     "no_cards_found": "No cards found in your collection",
     "items_per_page": "{{ count }} items per page",
@@ -721,6 +722,7 @@
     "min_quantity": "At least one card is required",
     "max_quantity": "You can not add more than {{ max }} cards",
     "move_to_binder": "Move to Binder",
-    "move_to_binder_message": "How many cards do you want to move into a binder?"
+    "move_to_binder_message": "How many cards do you want to move into a binder?",
+    "any_set": "Any Set"
   }
 }
