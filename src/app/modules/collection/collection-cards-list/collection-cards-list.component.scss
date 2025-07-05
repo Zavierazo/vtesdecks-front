@@ -16,6 +16,10 @@ table tr {
   height: 50px;
 }
 
+.table-progress {
+  height: min-content !important;
+}
+
 th[appSortable] {
   cursor: pointer;
   user-select: none;

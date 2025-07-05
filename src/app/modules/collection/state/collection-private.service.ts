@@ -106,4 +106,40 @@ export class CollectionPrivateService extends CollectionService {
       finalize(() => this.collectionStore.setLoading(false)),
     )
   }
+
+  deleteCard(id: number): Observable<boolean> {
+    this.collectionStore.setLoading(true)
+    return this.collectionApiDataService.deleteCard(id).pipe(
+      tap(() => this.collectionStore.removeEntity(id)),
+      finalize(() => this.collectionStore.setLoading(false)),
+    )
+  }
+
+  moveToBinder(
+    id: number,
+    quantity: number,
+    binderId?: number,
+  ): Observable<ApiCollectionCard> {
+    this.collectionStore.setLoading(true)
+    const existingCard = this.collectionStore.getEntity(id)
+    return this.collectionApiDataService
+      .moveCardToBinder(id, quantity, binderId)
+      .pipe(
+        tap((updatedCard) => this.collectionStore.addEntity(updatedCard)),
+        tap(() => {
+          if (existingCard) {
+            const updatedQuantity = existingCard.number - quantity
+            if (updatedQuantity <= 0) {
+              this.collectionStore.removeEntity(id)
+            } else {
+              this.collectionStore.updateEntity({
+                ...existingCard,
+                number: updatedQuantity,
+              })
+            }
+          }
+        }),
+        finalize(() => this.collectionStore.setLoading(false)),
+      )
+  }
 }

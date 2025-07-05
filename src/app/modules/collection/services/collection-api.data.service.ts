@@ -78,6 +78,28 @@ export class CollectionApiDataService {
     )
   }
 
+  deleteCard(id: number): Observable<boolean> {
+    return this.httpClient.delete<boolean>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id}`,
+    )
+  }
+
+  moveCardToBinder(
+    id: number,
+    quantity: number,
+    binderId?: number,
+  ): Observable<ApiCollectionCard> {
+    const params = new URLSearchParams()
+    if (binderId) {
+      params.set('binderId', binderId.toString())
+    }
+    params.set('quantity', quantity.toString())
+    return this.httpClient.post<ApiCollectionCard>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id}/binders?${params.toString()}`,
+      {},
+    )
+  }
+
   // PUBLIC COLLECTIONS
 
   getPublicBinder(publicHash: string): Observable<ApiCollectionBinder> {

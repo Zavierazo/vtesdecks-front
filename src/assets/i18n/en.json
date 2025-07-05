@@ -718,6 +718,9 @@
     "none": "None",
     "quantity": "Quantity",
     "must_3_characters": "Must be at least 3 characters",
-    "min_quantity": "At least one card is required"
+    "min_quantity": "At least one card is required",
+    "max_quantity": "You can not add more than {{ max }} cards",
+    "move_to_binder": "Move to Binder",
+    "move_to_binder_message": "How many cards do you want to move into a binder?"
   }
 }

@@ -50,7 +50,7 @@
         </thead>
         <tbody>
           @if(isLoading$ | async) {
-          <tr>
+          <tr class="table-progress">
             <td colspan="100%" style="text-align: center" class="p-0">
               <ngb-progressbar type="primary" [value]="100" [striped]="true" [animated]="true" height=".3rem" />
             </td>
@@ -139,6 +139,9 @@
                 <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
                   <button ngbDropdownItem (click)="onEdit(card)">
                     {{ t('edit')}}
+                  </button>
+                  <button ngbDropdownItem (click)="onMoveToBinder(card)">
+                    {{ t('move_to_binder')}}
                   </button>
                   <div class="dropdown-divider"></div>
                   <button ngbDropdownItem class="text-danger" (click)="onDelete(card)">

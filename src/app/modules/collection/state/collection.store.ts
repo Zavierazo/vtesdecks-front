@@ -97,6 +97,10 @@ export class CollectionStore {
     return this.entities$
   }
 
+  getEntity(id: number): ApiCollectionCard | undefined {
+    return this.entities().find((e) => e.id === id)
+  }
+
   setEntities(entities?: ApiCollectionCard[]) {
     this.entities.update(() => entities ?? [])
   }
@@ -112,6 +116,10 @@ export class CollectionStore {
     this.entities.update((current) =>
       current.map((e) => (e.id === entity.id ? entity : e)),
     )
+  }
+
+  removeEntity(id: number) {
+    this.entities.update((current) => current.filter((e) => e.id !== id))
   }
 
   setQueryFilters(filters: [string, string | number | boolean][]): void {

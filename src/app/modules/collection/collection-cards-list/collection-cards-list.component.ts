@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -21,9 +21,12 @@ import {
   NgbProgressbarModule,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
-import { UntilDestroy } from '@ngneat/until-destroy'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { catchError } from 'rxjs'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { MediaService } from '../../../services/media.service'
+import { ToastService } from '../../../services/toast.service'
+import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import {
   CollectionSortableHeader,
@@ -31,8 +34,8 @@ import {
 } from '../directives/collection-sortable.directive'
 import { BinderPipe } from '../pipes/binder.pipe'
 import { ConditionPipe } from '../pipes/condition.pipe'
+import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
-import { CollectionService } from '../state/collection.service'
 import { CollectionCardComponent } from './collection-card/collection-card.component'
 
 @UntilDestroy()
@@ -64,9 +67,11 @@ import { CollectionCardComponent } from './collection-card/collection-card.compo
 })
 export class CollectionCardsListComponent {
   private collectionQuery = inject(CollectionQuery)
-  private collectionService = inject(CollectionService)
+  private collectionService = inject(CollectionPrivateService)
   private mediaService = inject(MediaService)
   private modalService = inject(NgbModal)
+  private translocoService = inject(TranslocoService)
+  private toastService = inject(ToastService)
 
   owned = input.required<boolean>()
   editable = input.required<boolean>()
@@ -88,6 +93,8 @@ export class CollectionCardsListComponent {
     this.headers.forEach((header) => {
       if (header.appSortable !== column) {
         header.direction = ''
+      } else {
+        header.direction = direction
       }
     })
     this.collectionService.setSortBy(column, direction)
@@ -110,8 +117,35 @@ export class CollectionCardsListComponent {
   }
 
   onDelete(card: ApiCollectionCard) {
-    //TODO: Implement delete functionality here
-    console.log('Delete card with ID:', card)
+    this.collectionService
+      .deleteCard(card.id!)
+      .pipe(
+        untilDestroyed(this),
+        catchError((error) => {
+          if (error.status === 400 && error.error) {
+            this.toastService.show(error.error, {
+              classname: 'bg-danger text-light',
+              delay: 5000,
+            })
+          } else {
+            console.error('Unexpected error:', error)
+            this.toastService.show(
+              this.translocoService.translate('shared.unexpected_error'),
+              { classname: 'bg-danger text-light', delay: 5000 },
+            )
+          }
+          throw error
+        }),
+      )
+      .subscribe()
+  }
+
+  onMoveToBinder(card: ApiCollectionCard) {
+    const modalRef = this.modalService.open(CardBinderModalComponent, {
+      size: 'lg',
+      centered: true,
+    })
+    modalRef.componentInstance.initAdd(card)
   }
 
   onTabClick(tab: string) {

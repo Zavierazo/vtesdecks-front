@@ -31,6 +31,7 @@ export abstract class CollectionService {
   ): void {
     this.collectionStore.updateQuery((query) => ({
       ...query,
+      page: 0, // Reset to first page when changing sort
       sortBy,
       sortDirection,
     }))
@@ -47,6 +48,7 @@ export abstract class CollectionService {
     if (filterValue !== undefined) {
       this.collectionStore.updateQuery((query) => ({
         ...query,
+        page: 0, // Reset to first page when changing filters
         filters: [
           ...query.filters.filter((filter) => filter[0] !== filterBy),
           [filterBy, filterValue],
@@ -55,6 +57,7 @@ export abstract class CollectionService {
     } else {
       this.collectionStore.updateQuery((query) => ({
         ...query,
+        page: 0, // Reset to first page when changing filters
         filters: [...query.filters.filter((filter) => filter[0] !== filterBy)],
       }))
     }
