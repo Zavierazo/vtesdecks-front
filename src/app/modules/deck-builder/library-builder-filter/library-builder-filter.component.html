@@ -106,7 +106,7 @@
     @for (taint of (taints$ | async); track taint) {
     <div class="col-6 form-check">
       <input class="form-check-input" type="checkbox" [id]="taint" [formControlName]="taint">
-      <label class="form-check-label" [for]="taint">
+      <label class="form-check-label" for="taint">
         @if( taint === 'Flight') {
         <i class="vtes vtes-small flight"></i>
         }
