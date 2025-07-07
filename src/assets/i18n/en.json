@@ -393,6 +393,7 @@
     "library": "Library",
     "unexpected_error": "Unexpected error. Please try again later.",
     "unexpected_error_with_message": "{{ message }}. Please try again later.",
+    "validation_error": "Validation error. Please check the form and try again.",
     "new_version_available": "A new version of the app is loading. Please wait a few seconds or press Ctrl + F5 to refresh.",
     "new_version_installing": "Good news! An update is being installed in the background.",
     "not_required": "Not Required"
@@ -724,6 +725,13 @@
     "move_to_binder": "Move to Binder",
     "move_to_binder_message": "How many cards do you want to move into a binder?",
     "any_set": "Any Set",
-    "unknown_set": "Unknown"
+    "unknown_set": "Unknown",
+    "more": "More",
+    "export": "Export",
+    "import": "Import",
+    "format": "Format",
+    "file": "File",
+    "collection_imported": "Collection imported successfully!",
+    "keep_binder": "Keep binder from CSV"
   }
 }

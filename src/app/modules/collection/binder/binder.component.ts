@@ -9,7 +9,14 @@ import {
 } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import {
+  NgbDropdown,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   catchError,
@@ -39,6 +46,11 @@ import { CollectionQuery } from '../state/collection.query'
   imports: [
     TranslocoDirective,
     CollectionCardsListComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    NgbDropdownButtonItem,
     RouterLink,
     AsyncPipe,
   ],
@@ -159,8 +171,10 @@ export class BinderComponent implements OnInit {
           }
           return of(null)
         }),
-        tap(() => {
-          this.router.navigate(['/collection/binders'])
+        tap((deleted) => {
+          if (deleted) {
+            this.router.navigate(['/collection/binders'])
+          }
         }),
         catchError((error) => {
           if (error.status === 400 && error.error) {
@@ -178,6 +192,13 @@ export class BinderComponent implements OnInit {
           throw error
         }),
       )
+      .subscribe()
+  }
+
+  onExport(binder: ApiCollectionBinder) {
+    this.collectionPrivateService
+      .exportCollectionAsCsv(binder.id)
+      .pipe(untilDestroyed(this))
       .subscribe()
   }
 }

@@ -71,7 +71,7 @@
           <div class="form-group row">
             <label for="set" class="col-12 col-form-label text-primary fw-bold">{{ t('column_set') }}</label>
             <div class="col-12">
-              <select id="set" class="form-select" formControlName="setId">
+              <select id="set" class="form-select" formControlName="set">
                 <option [value]="null" [ngValue]="null"> - </option>
                 @for(set of setOptions$ | async; track set) {
                 <option [value]="set.id">

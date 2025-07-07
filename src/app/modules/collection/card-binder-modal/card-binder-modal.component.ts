@@ -63,6 +63,7 @@ export class CardBinderModalComponent {
   }
 
   onSave() {
+    this.formCardBinder.markAllAsTouched()
     if (this.formCardBinder.valid) {
       const formValue = this.formCardBinder.value
       const id = formValue.id

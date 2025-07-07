@@ -23,27 +23,41 @@
   @if(!isPublic){
   <div class="d-flex justify-content-between mb-3">
     <div>
-      <button class="btn btn-primary me-2" (click)="onAddCard(binder)">
-        <i class="bi bi-plus"></i>
+      <button class="btn text-primary me-2" (click)="onAddCard(binder)">
+        <i class="bi bi-plus-circle"></i>
         {{ t('add_card') }}
       </button>
       @if(binder.publicVisibility){
-      <button class="btn btn-outline-primary" (click)="onShare(binder)">
+      <button class="btn text-primary" (click)="onShare(binder)">
         <i class="bi bi-share"></i>
         {{ t('share') }}
       </button>
       }
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
+          <i class="bi bi-three-dots-vertical"></i>
+          {{ t('more') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="moreMenuButton">
+          <button ngbDropdownItem>
+            {{ t('import')}}
+          </button>
+          <button ngbDropdownItem (click)="onExport(binder)">
+            {{ t('export')}}
+          </button>
+        </div>
+      </div>
     </div>
     <div>
-      <button class="btn btn-secondary" (click)="onEdit(binder)">
+      <button class="btn text-secondary" (click)="onEdit(binder)">
         <i class="bi bi-pencil"></i>
         {{ t('edit_binder') }}
       </button>
-      <button class="btn btn-danger ms-2" (click)="onDelete(binder, false)">
+      <button class="btn text-danger ms-2" (click)="onDelete(binder, false)">
         <i class="bi bi-trash"></i>
         {{ t('delete_binder') }}
       </button>
-      <button class="btn btn-danger ms-2" (click)="onDelete(binder, true)">
+      <button class="btn text-danger ms-2" (click)="onDelete(binder, true)">
         <i class="bi bi-trash"></i>
         {{ t('delete_binder_and_cards') }}
       </button>

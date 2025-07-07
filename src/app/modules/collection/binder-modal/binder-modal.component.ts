@@ -58,6 +58,7 @@ export class BinderModalComponent {
   }
 
   onSave() {
+    this.formBinder.markAllAsTouched()
     if (!this.formBinder.valid) {
       return
     }

@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/module.d-CnjH8Dlt'
 import { inject, Injectable } from '@angular/core'
 import { finalize, map, Observable, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
@@ -6,6 +7,7 @@ import {
   ApiCollectionCard,
   FILTER_BINDER,
 } from '../../../models/api-collection-card'
+import { ApiCollectionImport } from '../../../models/api-collection-import'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
@@ -149,6 +151,45 @@ export class CollectionPrivateService extends CollectionService {
               })
             }
           }
+        }),
+        finalize(() => this.collectionStore.setLoadingBackground(false)),
+      )
+  }
+
+  exportCollectionAsCsv(binderId?: number): Observable<HttpResponse<Blob>> {
+    return this.collectionApiDataService.exportCollection(binderId).pipe(
+      tap((response: HttpResponse<Blob>) => {
+        let filename = 'collection.csv'
+        const disposition = response.headers.get('content-disposition')
+        const match = disposition?.match(/filename="?([^"]+)"?/)
+        if (match && match[1]) {
+          filename = match[1]
+        }
+
+        const blob = response.body
+        const url = window.URL.createObjectURL(blob!)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+      }),
+    )
+  }
+
+  importCollection(
+    format: 'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB',
+    file: File,
+    binderId?: number,
+  ): Observable<ApiCollectionImport> {
+    this.collectionStore.setLoadingBackground(true)
+    return this.collectionApiDataService
+      .importCollection(format, file, binderId)
+      .pipe(
+        tap(() => {
+          this.collectionStore.setLoadingBackground(false)
         }),
         finalize(() => this.collectionStore.setLoadingBackground(false)),
       )

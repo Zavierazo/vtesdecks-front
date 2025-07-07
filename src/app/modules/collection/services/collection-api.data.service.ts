@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
+import { ApiCollectionImport } from '../../../models/api-collection-import'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionQueryState } from '../state/collection.store'
 
@@ -133,6 +134,35 @@ export class CollectionApiDataService {
     return this.httpClient.post<ApiCollectionCard>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id}/binders?${params.toString()}`,
       {},
+    )
+  }
+
+  exportCollection(binderId?: number): Observable<HttpResponse<Blob>> {
+    const params = binderId ? { params: { binderId: binderId.toString() } } : {}
+    return this.httpClient.get(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/export`,
+      {
+        responseType: 'blob',
+        observe: 'response',
+        ...params,
+      },
+    )
+  }
+
+  importCollection(
+    format: 'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB',
+    file: File,
+    binderId?: number,
+  ): Observable<ApiCollectionImport> {
+    const params = new URLSearchParams()
+    if (binderId) {
+      params.set('binderId', binderId.toString())
+    }
+    const formData = new FormData()
+    formData.append('file', file)
+    return this.httpClient.post<ApiCollectionImport>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/import/${format}?${params.toString()}`,
+      formData,
     )
   }
 

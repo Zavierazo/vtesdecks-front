@@ -92,7 +92,7 @@ export class CardModalComponent implements OnInit {
     id: new FormControl<number | null>(null),
     card: new FormControl<SearchCard | null>(null, Validators.required),
     setAbbrev: new FormControl<string | null>(null),
-    setId: new FormControl<number | null>(null),
+    set: new FormControl<number | null>(null),
     quantity: new FormControl<number>(1, [
       Validators.required,
       Validators.min(1),
@@ -104,7 +104,7 @@ export class CardModalComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.setIdControl.valueChanges
+    this.setControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap(() => (this.setImageError = false)),
@@ -132,7 +132,7 @@ export class CardModalComponent implements OnInit {
         id: card.id,
         card: searchCard,
         setAbbrev: card.set ? this.setQuery.getEntity(card.set)?.abbrev : null,
-        setId: card.set ?? null,
+        set: card.set ?? null,
         quantity: card.number,
         condition: card.condition,
         language: card.language,
@@ -162,8 +162,8 @@ export class CardModalComponent implements OnInit {
     return value === null ? undefined : value
   }
 
-  get setIdControl(): FormControl<number | null> {
-    return this.formCard.get('setId') as FormControl<number | null>
+  get setControl(): FormControl<number | null> {
+    return this.formCard.get('set') as FormControl<number | null>
   }
 
   get quantityControl(): FormControl<number> {
@@ -202,7 +202,7 @@ export class CardModalComponent implements OnInit {
       id: null,
       card: item,
       setAbbrev: null,
-      setId: null,
+      set: null,
       quantity: 1,
       condition: 'NM',
       language: 'EN',
@@ -234,11 +234,12 @@ export class CardModalComponent implements OnInit {
   }
 
   onSave(addMore: boolean) {
+    this.formCard.markAllAsTouched()
     if (this.formCard.valid) {
       const formValue = this.formCard.value
       const card = {
         cardId: formValue.card?.id,
-        setId: formValue.setId,
+        set: formValue.set,
         number: formValue.quantity,
         binderId: formValue.binder,
         condition: formValue.condition,
@@ -255,7 +256,7 @@ export class CardModalComponent implements OnInit {
                 id: null,
                 card: null,
                 setAbbrev: null,
-                setId: null,
+                set: null,
                 quantity: 1,
                 condition: 'NM',
                 language: 'EN',
@@ -287,12 +288,13 @@ export class CardModalComponent implements OnInit {
   }
 
   onEdit() {
+    this.formCard.markAllAsTouched()
     if (this.formCard.valid) {
       const formValue = this.formCard.value
       const card = {
         id: formValue.id,
         cardId: formValue.card?.id,
-        setId: formValue.setId,
+        set: formValue.set,
         number: formValue.quantity,
         binderId: formValue.binder,
         condition: formValue.condition,

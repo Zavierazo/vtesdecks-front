@@ -2,12 +2,12 @@
   <h1 class="my-3">{{ t('title') }}</h1>
   <div class="d-flex justify-content-between mb-3">
     <div class="d-flex flex-wrap gap-2">
-      <button class="btn btn-primary" (click)="onAddCard()">
-        <i class="bi bi-plus"></i>
+      <button class="btn text-primary" (click)="onAddCard()">
+        <i class="bi bi-plus-circle"></i>
         {{ t('add_card') }}
       </button>
       <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary" id="bindersMenuButton" ngbDropdownToggle>
+        <button class="btn text-primary" id="bindersMenuButton" ngbDropdownToggle>
           <i class="bi bi-archive"></i>
           {{ t('binders') }}
         </button>
@@ -24,6 +24,20 @@
           <div class="dropdown-divider"></div>
           <button ngbDropdownItem (click)="onAddBinder()">
             {{ t('add_binder')}}...
+          </button>
+        </div>
+      </div>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
+          <i class="bi bi-three-dots-vertical"></i>
+          {{ t('more') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="moreMenuButton">
+          <button ngbDropdownItem (click)="onImport()">
+            {{ t('import')}}
+          </button>
+          <button ngbDropdownItem (click)="onExport()">
+            {{ t('export')}}
           </button>
         </div>
       </div>

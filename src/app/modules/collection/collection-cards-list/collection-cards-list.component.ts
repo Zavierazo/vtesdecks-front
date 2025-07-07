@@ -150,10 +150,10 @@ export class CollectionCardsListComponent implements OnInit {
     this.setFormControl.valueChanges
       .pipe(
         untilDestroyed(this),
-        tap((setId) => {
+        tap((set) => {
           this.collectionService.setFilter(
             FILTER_SET,
-            setId !== null ? setId : undefined,
+            set !== null ? set : undefined,
           )
         }),
       )
@@ -190,11 +190,11 @@ export class CollectionCardsListComponent implements OnInit {
       ),
     )
 
-  getSet(setId: number | undefined): ApiSet | undefined {
-    if (!setId) {
+  getSet(set: number | undefined): ApiSet | undefined {
+    if (!set) {
       return undefined
     }
-    return this.setQuery.getEntity(setId)
+    return this.setQuery.getEntity(set)
   }
 
   onSort({ column, direction }: SortEvent) {

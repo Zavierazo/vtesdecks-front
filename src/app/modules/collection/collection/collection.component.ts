@@ -15,6 +15,7 @@ import { distinctUntilChanged, switchMap } from 'rxjs'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
+import { CollectionImportModalComponent } from '../collection-import-modal/collection-import-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
@@ -64,5 +65,16 @@ export class CollectionComponent implements OnInit {
       size: 'xl',
       centered: true,
     })
+  }
+
+  onImport() {
+    this.modalService.open(CollectionImportModalComponent)
+  }
+
+  onExport() {
+    this.collectionService
+      .exportCollectionAsCsv()
+      .pipe(untilDestroyed(this))
+      .subscribe()
   }
 }
