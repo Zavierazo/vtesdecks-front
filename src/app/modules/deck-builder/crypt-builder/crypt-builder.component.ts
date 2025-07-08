@@ -266,11 +266,7 @@ export class CryptBuilderComponent implements OnInit {
           return false
         }
         if (this.set) {
-          if (this.set === 'Promo') {
-            return entity.sets.some((set) => set.startsWith('Promo-'))
-          } else {
-            return entity.sets.some((set) => set.startsWith(this.set + ':'))
-          }
+          return entity.sets.some((set) => set.startsWith(this.set + ':'))
         }
         for (const taint of this.taints) {
           if (!entity.taints.includes(taint)) {
