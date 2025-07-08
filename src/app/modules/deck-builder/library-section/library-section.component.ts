@@ -300,11 +300,7 @@ export class LibrarySectionComponent implements OnInit {
       }
     }
     if (this.set) {
-      if (this.set === 'Promo') {
-        return entity.sets.some((set) => set.startsWith('Promo-'))
-      } else {
-        return entity.sets.some((set) => set.startsWith(this.set + ':'))
-      }
+      return entity.sets.some((set) => set.startsWith(this.set + ':'))
     }
     const bloodCostMin = this.bloodCostSlider[0]
     const bloodCostMax = this.bloodCostSlider[1]
