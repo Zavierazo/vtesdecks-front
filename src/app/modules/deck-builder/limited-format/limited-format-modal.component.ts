@@ -104,13 +104,14 @@ export class LimitedFormatModalComponent implements OnInit {
       .getSets()
       .pipe(untilDestroyed(this))
       .subscribe((sets) => {
-        this.availableSets = sets
-          .filter((set) => !set.abbrev.startsWith('Promo-'))
-          .sort(
-            (a, b) =>
-              new Date(b.releaseDate).getTime() -
-              new Date(a.releaseDate).getTime(),
+        this.availableSets = sets.sort((a, b) => {
+          if (!a.releaseDate) return -1
+          if (!b.releaseDate) return 1
+          return (
+            new Date(b.releaseDate).getTime() -
+            new Date(a.releaseDate).getTime()
           )
+        })
         this.initializeSetControls()
         this.initializeWithFormat()
       })
