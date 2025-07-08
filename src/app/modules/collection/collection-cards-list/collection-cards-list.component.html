@@ -4,10 +4,10 @@
     <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
       <select id="set" class="form-select w-auto" [formControl]="setFormControl">
         <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
-        <option [value]="0" [ngValue]="0">{{ t('none') }}</option>
+        <option [value]="'none'" [ngValue]="'none'">{{ t('none') }}</option>
         @for(set of sets$ | async; track set) {
-        <option [value]="set.id" [ngValue]="set.id">
-          {{ set.fullName }} <span class="text-muted">'{{ set.releaseDate | date:'yy'}}</span>
+        <option [value]="set.abbrev" [ngValue]="set.abbrev">
+          {{ set.fullName }} @if(set.releaseDate){<span class="text-muted">'{{ set.releaseDate | date:'yy'}}</span>}
         </option>
         }
       </select>
@@ -84,8 +84,8 @@
           <td>{{ card.number }}</td>
           }
           <td>
-            <app-collection-card [cardId]="card.cardId" [setAbbrev]="(card.set | cardSet | async)?.abbrev"
-              (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
+            <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set" (click)="editable() && onEdit(card)"
+              [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
           </td>
           @if(owned() && showBinders()){
           <td class="text-center">

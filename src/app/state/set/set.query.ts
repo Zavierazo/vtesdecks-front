@@ -28,6 +28,10 @@ export class SetQuery {
     return this.store.getEntity(id)
   }
 
+  getEntityByAbbrev(abbrev: string): ApiSet | undefined {
+    return this.store.getEntityByAbbrev(abbrev)
+  }
+
   getAll({
     filterBy,
     sortBy,

@@ -140,7 +140,7 @@ export class CollectionCardsListComponent implements OnInit {
   })
 
   editNumberId?: number
-  setFormControl = new FormControl<number | null>(null)
+  setFormControl = new FormControl<string | null>(null)
   searchCardFormControl = new FormControl<string>('')
 
   @ViewChildren(CollectionSortableHeader)
@@ -190,11 +190,11 @@ export class CollectionCardsListComponent implements OnInit {
       ),
     )
 
-  getSet(set: number | undefined): ApiSet | undefined {
+  getSet(set: string | undefined): ApiSet | undefined {
     if (!set) {
       return undefined
     }
-    return this.setQuery.getEntity(set)
+    return this.setQuery.getEntityByAbbrev(set)
   }
 
   onSort({ column, direction }: SortEvent) {

@@ -8,7 +8,7 @@ export interface ApiCollectionCard {
   id?: number
   cardId: number
   cardName?: string
-  set?: number
+  set?: string
   number: number
   binderId?: number
   condition?: 'MT' | 'NM' | 'EX' | 'GD' | 'LP' | 'PL' | 'PO'

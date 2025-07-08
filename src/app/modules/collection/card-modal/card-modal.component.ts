@@ -91,13 +91,12 @@ export class CardModalComponent implements OnInit {
   formCard = new FormGroup({
     id: new FormControl<number | null>(null),
     card: new FormControl<SearchCard | null>(null, Validators.required),
-    setAbbrev: new FormControl<string | null>(null),
-    set: new FormControl<number | null>(null),
+    set: new FormControl<string | null>(null),
     quantity: new FormControl<number>(1, [
       Validators.required,
       Validators.min(1),
     ]),
-    condition: new FormControl<string>('NM'),
+    condition: new FormControl<string | null>(null),
     language: new FormControl<string>('EN'),
     binder: new FormControl<number | null>(null),
     notes: new FormControl<string | null>(null),
@@ -108,15 +107,6 @@ export class CardModalComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap(() => (this.setImageError = false)),
-        tap((id) => {
-          if (id !== null) {
-            this.formCard.patchValue({
-              setAbbrev: this.setQuery.getEntity(Number(id))?.abbrev || null,
-            })
-          } else {
-            this.formCard.patchValue({ setAbbrev: null })
-          }
-        }),
       )
       .subscribe()
   }
@@ -131,7 +121,6 @@ export class CardModalComponent implements OnInit {
       this.formCard.patchValue({
         id: card.id,
         card: searchCard,
-        setAbbrev: card.set ? this.setQuery.getEntity(card.set)?.abbrev : null,
         set: card.set ?? null,
         quantity: card.number,
         condition: card.condition,
@@ -157,8 +146,8 @@ export class CardModalComponent implements OnInit {
     return this.formCard.get('card')?.value
   }
 
-  get setAbbrev(): string | undefined {
-    const value = this.formCard.get('setAbbrev')?.value
+  get set(): string | undefined {
+    const value = this.formCard.get('set')?.value
     return value === null ? undefined : value
   }
 
@@ -201,10 +190,9 @@ export class CardModalComponent implements OnInit {
     this.formCard.patchValue({
       id: null,
       card: item,
-      setAbbrev: null,
       set: null,
       quantity: 1,
-      condition: 'NM',
+      condition: null,
       language: 'EN',
       binder: this.defaultBinderId,
       notes: null,
@@ -218,6 +206,7 @@ export class CardModalComponent implements OnInit {
       i18n: card.i18n,
       typeIcons: 'typeIcons' in card ? card.typeIcons : undefined,
       clanIcon: 'clanIcon' in card ? card.clanIcon : undefined,
+      adv: 'adv' in card ? card.adv : undefined,
       image: card.image,
       sets: card.sets,
     } as SearchCard
@@ -255,7 +244,6 @@ export class CardModalComponent implements OnInit {
               this.formCard.reset({
                 id: null,
                 card: null,
-                setAbbrev: null,
                 set: null,
                 quantity: 1,
                 condition: 'NM',

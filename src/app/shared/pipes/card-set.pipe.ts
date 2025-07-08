@@ -7,10 +7,10 @@ import { SetQuery } from '../../state/set/set.query'
 export class CardSetPipe implements PipeTransform {
   private setQuery = inject(SetQuery)
 
-  transform(set?: number): Observable<ApiSet | undefined> {
+  transform(set?: string): Observable<ApiSet | undefined> {
     if (!set) {
       return EMPTY
     }
-    return this.setQuery.selectEntity(set)
+    return this.setQuery.selectEntityByAbbrev(set)
   }
 }
