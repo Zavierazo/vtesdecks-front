@@ -75,7 +75,11 @@
                 <option [value]="null" [ngValue]="null"> - </option>
                 @for(set of setOptions$ | async; track set) {
                 <option [value]="set.abbrev">
-                  {{ set.fullName }} <span class="text-muted">'{{ set.releaseDate | date:'yy'}}</span>
+                  {{ set.fullName }}
+                  @if(set.releaseDate){
+                  <span class="text-muted">
+                    '{{ set.releaseDate | date:'yy'}}</span>
+                  }
                 </option>
                 }
               </select>

@@ -114,7 +114,7 @@
               {{ set.abbrev }}
             </span>
             <ng-template #setContent>
-              <strong>{{ set.fullName }} - {{ set.releaseDate | date:'yyyy' }}</strong>
+              <strong>{{ set.fullName }} @if(set.releaseDate){- {{ set.releaseDate | date:'yyyy' }}}</strong>
             </ng-template>
             }@else {
             <span class="badge text-bg-secondary">
