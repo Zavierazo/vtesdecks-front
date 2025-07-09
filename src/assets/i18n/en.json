@@ -732,6 +732,8 @@
     "format": "Format",
     "file": "File",
     "collection_imported": "Collection imported successfully!",
-    "keep_binder": "Keep binder from CSV"
+    "keep_binder": "Keep binder from CSV",
+    "filter": "Filter",
+    "group_by": "Group by"
   }
 }

@@ -1,5 +1,12 @@
 import { AsyncPipe } from '@angular/common'
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -27,7 +34,7 @@ import { CollectionQuery } from '../state/collection.query'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoPipe, TranslocoDirective, ReactiveFormsModule, AsyncPipe],
 })
-export class CollectionImportModalComponent {
+export class CollectionImportModalComponent implements OnInit {
   private collectionQuery = inject(CollectionQuery)
   private collectionService = inject(CollectionPrivateService)
   private toastService = inject(ToastService)
@@ -45,6 +52,52 @@ export class CollectionImportModalComponent {
   binders$ = this.collectionQuery.selectBinders()
   loading$ = this.collectionQuery.selectLoadingBackground()
   errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([])
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
+
+  ngOnInit(): void {
+    this.formatControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((format) => {
+          this.fileInput.nativeElement.value = ''
+          this.fileControl.patchValue(null)
+          this.fileControl.updateValueAndValidity()
+          if (format === 'VTESDECKS') {
+            this.binderControl.patchValue(null)
+          } else {
+            this.binderControl.patchValue(0)
+          }
+          this.binderControl.updateValueAndValidity()
+        }),
+      )
+      .subscribe()
+  }
+
+  get formatControl(): FormControl<'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB'> {
+    return this.formImport.get('format') as FormControl<
+      'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB'
+    >
+  }
+
+  get binderControl(): FormControl<number | null> {
+    return this.formImport.get('binderId') as FormControl<number | null>
+  }
+
+  get fileControl(): FormControl<File | null> {
+    return this.formImport.get('file') as FormControl<File | null>
+  }
+
+  get acceptedFileTypes(): string {
+    switch (this.formatControl.value) {
+      case 'VTESDECKS':
+        return '.csv'
+      case 'VDB':
+        return '.xlsx'
+      default:
+        return '.txt'
+    }
+  }
 
   onSave() {
     this.formImport.markAllAsTouched()
@@ -92,10 +145,6 @@ export class CollectionImportModalComponent {
         )
         .subscribe()
     }
-  }
-
-  get fileControl(): FormControl<File | null> {
-    return this.formImport.get('file') as FormControl<File | null>
   }
 
   onFileSelected(event: Event) {

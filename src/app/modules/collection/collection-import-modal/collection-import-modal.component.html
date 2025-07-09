@@ -20,7 +20,7 @@
       <div class="form-group row mb-3">
         <label for="file" class="col-12 col-form-label text-primary fw-bold">{{ t('file') }}</label>
         <div class="col-12">
-          <input id="file" type="file" class="form-control" accept=".csv,.xlsx,.txt"
+          <input #fileInput id="file" type="file" class="form-control" [accept]="acceptedFileTypes"
             (change)="onFileSelected($event)" />
         </div>
         @if (fileControl.invalid && (fileControl.dirty || fileControl.touched)) {
@@ -38,7 +38,9 @@
         <label for="binderId" class="col-12 col-form-label text-primary fw-bold">{{ t('binder') }}</label>
         <div class="col-12">
           <select id="binderId" class="form-select" formControlName="binderId">
+            @if(formatControl.value === 'VTESDECKS') {
             <option [value]="null" [ngValue]="null">{{ t('keep_binder') }}</option>
+            }
             <option [value]="0" [ngValue]="0">{{ t('none') }}</option>
             @for(binder of binders$ | async; track binder) {
             <option [value]="binder.id">{{ binder.name }}</option>

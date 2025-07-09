@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; read: 'collection'">
   <hr class="my-3 text-secondary">
-  <div class="row g-2">
-    <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
+  <div class="d-flex flex-column flex-md-row align-items-center justify-content-start gap-2">
+    <div class="flex-grow-1 d-flex flex-column flex-md-row align-items-center justify-content-start gap-2">
       <select id="set" class="form-select w-auto" [formControl]="setFormControl">
         <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
         <option [value]="'none'" [ngValue]="'none'">{{ t('none') }}</option>
@@ -11,8 +11,33 @@
         </option>
         }
       </select>
+      <!-- TODO: Implement group by functionality -->
+      <button type="button" class="btn btn-outline-secondary">
+        <i class="bi bi-funnel"></i>
+        {{ t('filter') }}
+      </button>
+      <!-- TODO: Implement group by functionality -->
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-secondary" id="groupByMenuButton" ngbDropdownToggle>
+          {{ t('group_by') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="groupByMenuButton">
+          <button ngbDropdownItem>
+            None
+          </button>
+          <button ngbDropdownItem>
+            Name
+          </button>
+          <button ngbDropdownItem>
+            Set
+          </button>
+          <button ngbDropdownItem>
+            Binder
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
+    <div class="d-flex justify-content-center justify-content-md-end">
       <div class="col-xs-3 col-sm-auto">
         <input #searchInput id="search" type="text" class="form-control" [placeholder]="t('search_placeholder')"
           [formControl]="searchCardFormControl" />
