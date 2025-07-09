@@ -25,8 +25,8 @@ const initialState: CollectionState = {
   query: {
     page: 0,
     pageSize: 20,
-    sortBy: 'modificationDate',
-    sortDirection: 'desc',
+    sortBy: 'cardName',
+    sortDirection: 'asc',
     filters: [],
   },
 }

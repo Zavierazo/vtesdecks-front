@@ -42,7 +42,7 @@
       <thead>
         <tr>
           <th scope="col" appSortable="number" (sort)="onSort($event)">{{ t('column_number') }}</th>
-          <th scope="col" appSortable="cardName" (sort)="onSort($event)">{{ t('column_name') }}</th>
+          <th scope="col" appSortable="cardName" (sort)="onSort($event)" direction="asc">{{ t('column_name') }}</th>
           @if(owned() && showBinders()){
           <th scope="col" class="text-center">{{ t('column_binder') }}</th>
           }
@@ -51,8 +51,7 @@
           <th scope="col" appSortable="condition" (sort)="onSort($event)">{{ t('column_condition') }}</th>
           <th scope="col" appSortable="language" (sort)="onSort($event)">{{ t('column_language') }}</th>
           <th scope="col" class="text-center">{{ t('column_notes') }}</th>
-          <th scope="col" appSortable="modificationDate" direction="desc" (sort)="onSort($event)"><i
-              class="bi bi-calendar"></i>
+          <th scope="col" appSortable="modificationDate" (sort)="onSort($event)"><i class="bi bi-calendar"></i>
           </th>
           }
           @if(editable()){
@@ -84,8 +83,8 @@
           <td>{{ card.number }}</td>
           }
           <td>
-            <app-collection-card [cardId]="card.cardId" [setAbbrev]="card.set" (click)="editable() && onEdit(card)"
-              [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
+            <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set"
+              (click)="editable() && onEdit(card)" [ngClass]="{'cursor-pointer': editable()}"></app-collection-card>
           </td>
           @if(owned() && showBinders()){
           <td class="text-center">
@@ -201,7 +200,8 @@
     @if(query$ | async; as query) {
     <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
       <ngb-pagination [collectionSize]="(total$ | async)!" [page]="query.page + 1" [pageSize]="query.pageSize"
-        (pageChange)="onPageChange($event)">
+        [maxSize]="3" [rotate]="true" [ellipses]="!(isMobile$ | async)!" [boundaryLinks]="true"
+        [disabled]="(isLoading$ | async)!" (pageChange)="onPageChange($event)">
       </ngb-pagination>
     </div>
     <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">

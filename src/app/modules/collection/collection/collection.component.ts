@@ -11,7 +11,7 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { distinctUntilChanged, switchMap } from 'rxjs'
+import { distinctUntilChanged, switchMap, tap } from 'rxjs'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
@@ -68,7 +68,13 @@ export class CollectionComponent implements OnInit {
   }
 
   onImport() {
-    this.modalService.open(CollectionImportModalComponent)
+    this.modalService
+      .open(CollectionImportModalComponent)
+      .closed.pipe(
+        untilDestroyed(this),
+        tap(() => this.collectionService.setPage(0)),
+      )
+      .subscribe()
   }
 
   onExport() {

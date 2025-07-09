@@ -155,7 +155,7 @@ export class CollectionApiDataService {
     binderId?: number,
   ): Observable<ApiCollectionImport> {
     const params = new URLSearchParams()
-    if (binderId) {
+    if (binderId !== undefined) {
       params.set('binderId', binderId.toString())
     }
     const formData = new FormData()

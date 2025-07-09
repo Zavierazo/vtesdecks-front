@@ -1,5 +1,9 @@
+@if(isMobile$ | async) {
+{{ cardName() }}
+}@else{
 @if(isCrypt()){
 <app-crypt [card]="{id: cardId(), number: 0}" [background]="false" [setAbbrev]="setAbbrev()"></app-crypt>
 }@else {
 <app-library [card]="{id: cardId(), number: 0}" [background]="false" [setAbbrev]="setAbbrev()"></app-library>
+}
 }
