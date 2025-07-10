@@ -68,9 +68,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Update GA consent
     this.googleTagConsentUpdate()
-    this.cookieConsentService.statusChange$.subscribe(() =>
-      this.googleTagConsentUpdate(),
-    )
+    this.cookieConsentService.statusChange$
+      .pipe(filter((status) => status.status === 'allow'))
+      .subscribe(() => this.googleTagConsentUpdate())
+    this.apiDataService
+      .getUserCountry()
+      .subscribe((response) =>
+        this.googleTagConsentUpdateAdPersonalization(response.countryCode),
+      )
     // Check expired session
     this.authService.refreshToken().subscribe()
     // Navigation events
@@ -187,8 +192,53 @@ export class AppComponent implements OnInit {
     this.googleAnalyticsService.gtag('consent', 'update', {
       ad_storage: status,
       ad_user_data: status,
-      ad_personalization: status,
       analytics_storage: status,
+    })
+  }
+
+  private googleTagConsentUpdateAdPersonalization(countryCode?: string) {
+    if (!countryCode) {
+      console.warn(
+        'Country code is not defined for ad personalization consent update.',
+      )
+      return
+    }
+    const isEuCountry = [
+      'AT',
+      'BE',
+      'BG',
+      'HR',
+      'CY',
+      'CZ',
+      'DK',
+      'EE',
+      'FI',
+      'FR',
+      'DE',
+      'GR',
+      'HU',
+      'IS',
+      'IE',
+      'IT',
+      'LV',
+      'LI',
+      'LT',
+      'LU',
+      'MT',
+      'NL',
+      'NO',
+      'PL',
+      'PT',
+      'RO',
+      'SK',
+      'SI',
+      'ES',
+      'SE',
+      'CH',
+      'GB',
+    ].includes(countryCode)
+    this.googleAnalyticsService.gtag('consent', 'update', {
+      ad_personalization: isEuCountry ? 'denied' : 'granted',
     })
   }
 
