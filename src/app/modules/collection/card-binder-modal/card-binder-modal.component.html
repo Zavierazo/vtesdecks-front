@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('move_to_binder') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formCardBinder">
+      <div>
+        {{ t('move_to_binder_message') }}
+      </div>
+      <div class="form-group row">
+        <label for="quantity" class="col-12 col-form-label text-primary fw-bold">{{ t('quantity') }}</label>
+        <div class="col-12">
+          <input id="quantity" type="number" class="form-control" formControlName="quantity"
+            [placeholder]="t('min_quantity')" min="1" />
+        </div>
+        @if (quantityControl.invalid && (quantityControl.dirty || quantityControl.touched)) {
+        <div>
+          @if (quantityControl.errors?.['required']) {
+          <div class="invalid-feedback d-block">
+            <i class="bi bi-x-circle-fill"></i>
+            {{ 'shared.field_required' | transloco: { field: t('quantity') } }}
+          </div>
+          }
+          @if (quantityControl.errors?.['min']) {
+          <div class="invalid-feedback d-block">
+            <i class="bi bi-x-circle-fill"></i>
+            {{ t('min_quantity') }}
+          </div>
+          }
+          @if (quantityControl.errors?.['max']) {
+          <div class="invalid-feedback d-block">
+            <i class="bi bi-x-circle-fill"></i>
+            {{ t('max_quantity', { max: quantityControl.errors?.['max']?.['max'] }) }}
+          </div>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group row">
+        <label for="binderId" class="col-12 col-form-label text-primary fw-bold">{{ t('binder') }}</label>
+        <div class="col-12">
+          <select id="binderId" class="form-select" formControlName="binderId">
+            <option [value]="null" [ngValue]="null">{{ t('none') }}</option>
+            @for(binder of binders$ | async; track binder) {
+            <option [value]="binder.id">{{ binder.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="loading$ | async">
+      {{ t('save') }}
+    </button>
+  </div>
+</ng-container>
