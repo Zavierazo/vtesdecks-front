@@ -24,6 +24,9 @@ import { MarkdownCardComponent } from './shared/components/markdown-card/markdow
 import { ToastsContainer } from './shared/components/toast-container/toast-container.component'
 import { AuthQuery } from './state/auth/auth.query'
 import { AuthService } from './state/auth/auth.service'
+import { CryptService } from './state/crypt/crypt.service'
+import { LibraryService } from './state/library/library.service'
+import { SetService } from './state/set/set.service'
 import { isChristmas } from './utils/vtes-utils'
 
 @Component({
@@ -44,6 +47,9 @@ export class AppComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
+  private readonly cryptService = inject(CryptService)
+  private readonly libraryService = inject(LibraryService)
+  private readonly setService = inject(SetService)
 
   title = 'VTES Decks'
 
@@ -62,9 +68,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Update GA consent
     this.googleTagConsentUpdate()
-    this.cookieConsentService.statusChange$.subscribe(() =>
-      this.googleTagConsentUpdate(),
-    )
+    this.cookieConsentService.statusChange$
+      .pipe(filter((status) => status.status === 'allow'))
+      .subscribe(() => this.googleTagConsentUpdate())
+    this.apiDataService
+      .getUserCountry()
+      .subscribe((response) =>
+        this.googleTagConsentUpdateAdPersonalization(response.countryCode),
+      )
     // Check expired session
     this.authService.refreshToken().subscribe()
     // Navigation events
@@ -148,6 +159,10 @@ export class AppComponent implements OnInit {
     } else {
       this.addAdSenseScript()
     }
+    // Fetch crypt, library and sets data
+    this.cryptService.getCryptCards().subscribe()
+    this.libraryService.getLibraryCards().subscribe()
+    this.setService.getSets().subscribe()
   }
 
   private handleNavigationEnd(evt: NavigationEnd) {
@@ -177,8 +192,53 @@ export class AppComponent implements OnInit {
     this.googleAnalyticsService.gtag('consent', 'update', {
       ad_storage: status,
       ad_user_data: status,
-      ad_personalization: status,
       analytics_storage: status,
+    })
+  }
+
+  private googleTagConsentUpdateAdPersonalization(countryCode?: string) {
+    if (!countryCode) {
+      console.warn(
+        'Country code is not defined for ad personalization consent update.',
+      )
+      return
+    }
+    const isEuCountry = [
+      'AT',
+      'BE',
+      'BG',
+      'HR',
+      'CY',
+      'CZ',
+      'DK',
+      'EE',
+      'FI',
+      'FR',
+      'DE',
+      'GR',
+      'HU',
+      'IS',
+      'IE',
+      'IT',
+      'LV',
+      'LI',
+      'LT',
+      'LU',
+      'MT',
+      'NL',
+      'NO',
+      'PL',
+      'PT',
+      'RO',
+      'SK',
+      'SI',
+      'ES',
+      'SE',
+      'CH',
+      'GB',
+    ].includes(countryCode)
+    this.googleAnalyticsService.gtag('consent', 'update', {
+      ad_personalization: isEuCountry ? 'denied' : 'granted',
     })
   }
 

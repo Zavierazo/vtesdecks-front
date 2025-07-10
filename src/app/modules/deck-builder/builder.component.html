@@ -133,7 +133,7 @@
       @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat) {
       <h5 class="col-auto d-flex justify-content-center"
         [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
-        <i class="vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
+        <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
         &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
       </h5>
       }
@@ -203,7 +203,7 @@
         @if (!isFirst) {
         <span>+</span>
         }
-        <i class="vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
+        <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
         }
         <span class="pt-1">&nbsp;{{ libraryDiscipline.inferior }}</span>
       </h5>
@@ -214,7 +214,7 @@
         @if (!isFirst) {
         <span>/</span>
         }
-        <i class="vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
+        <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
         }
         <span class="pt-1">&nbsp;{{ libraryClan.number }}</span>
       </h5>

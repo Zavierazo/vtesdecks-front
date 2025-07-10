@@ -24,31 +24,34 @@ export class SetTooltipComponent implements OnInit {
   @Input() proxySetOption$!: Observable<ApiProxyCardOption>
   isMobile$ = this.mediaService.observeMobile()
   name!: string
-  releaseYear!: number
+  releaseYear?: number
 
   ngOnInit() {
-    const abbrev = this.set.split(':')[0]
+    const setSplit = this.set.split(':')
+    const abbrev = setSplit[0]
+    const setInfo = setSplit[1] ?? undefined
     this.name = abbrev
     if (abbrev === 'POD') {
       this.name = this.translocoService.translate('deck_shared.print_on_demand')
-    } else if (abbrev.startsWith('Promo')) {
+    } else if (abbrev === 'Promo') {
       this.name = this.translocoService.translate('deck_shared.promo')
-      this.releaseYear = Number(abbrev.substring(6, 10))
+      if (setInfo) {
+        this.releaseYear = Number(setInfo.substring(0, 4))
+      }
     } else {
       this.apiDataService
         .getSet(abbrev)
         .pipe(untilDestroyed(this))
         .subscribe((setInfo) => {
           this.name = setInfo.fullName
-          this.releaseYear = new Date(setInfo.releaseDate).getFullYear()
+          this.releaseYear = setInfo.releaseDate
+            ? new Date(setInfo.releaseDate).getFullYear()
+            : undefined
         })
     }
 
     this.proxySetOption$ = this.apiDataService
-      .getProxyOption(
-        this.cardId,
-        abbrev.startsWith('Promo-') ? 'Promo' : abbrev,
-      )
+      .getProxyOption(this.cardId, abbrev)
       .pipe(untilDestroyed(this))
   }
 }

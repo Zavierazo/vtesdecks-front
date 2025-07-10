@@ -2,10 +2,6 @@ import { Routes } from '@angular/router'
 import { CanActivateUser } from '../../shared/guards/can-activate-user.guard'
 import { CanDeactivateComponent } from '../../shared/guards/can-deactivate-component.guard'
 
-import { cryptSectionResolver } from './crypt-section/crypt-section.resolver'
-
-import { librarySectionResolver } from './library-section/library-section.resolver'
-
 export const DECK_BUILDER_ROUTES: Routes = [
   {
     path: '',
@@ -23,7 +19,6 @@ export const DECK_BUILDER_ROUTES: Routes = [
         (m) => m.CryptSectionComponent,
       ),
     title: 'VTES Decks - Crypt',
-    resolve: { crypt: cryptSectionResolver },
   },
   {
     path: 'library',
@@ -32,6 +27,5 @@ export const DECK_BUILDER_ROUTES: Routes = [
         (m) => m.LibrarySectionComponent,
       ),
     title: 'VTES Decks - Library',
-    resolve: { library: librarySectionResolver },
   },
 ]

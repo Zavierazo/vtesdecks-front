@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { ApiAiAskRequest } from '../models/api-ai-ask-request'
@@ -18,6 +18,7 @@ import { ApiResponse } from '../models/api-response'
 import { ApiSet } from '../models/api-set'
 import { ApiShop } from '../models/api-shop'
 import { ApiUser } from '../models/api-user'
+import { ApiUserCountry } from '../models/api-user-country'
 import { ApiUserNotification } from '../models/api-user-notification'
 import { ApiUserSettings } from '../models/api-user-settings'
 import { ApiYearStatistic } from '../models/api-year-statistic'
@@ -37,6 +38,7 @@ export class ApiDataService {
 
   private readonly loginPath = '/auth/login'
   private readonly registerPath = '/auth/create'
+  private readonly countryPath = '/auth/country'
   private readonly forgotPasswordPath = '/auth/forgot-password'
   private readonly userValidatePath = '/user/validate'
   private readonly userVerifyPath = '/user/verify'
@@ -73,7 +75,7 @@ export class ApiDataService {
     password: string,
     recaptcha: string,
   ): Observable<ApiUser> {
-    var formData = new FormData()
+    const formData = new FormData()
     formData.append('username', username)
     formData.append('password', password)
     formData.append('g-recaptcha-response', recaptcha)
@@ -90,7 +92,7 @@ export class ApiDataService {
     confirmPassword: string,
     recaptcha: string,
   ): Observable<ApiResponse> {
-    var formData = new FormData()
+    const formData = new FormData()
     formData.append('username', username)
     formData.append('email', email)
     formData.append('password', password)
@@ -102,8 +104,14 @@ export class ApiDataService {
     )
   }
 
+  getUserCountry(): Observable<ApiUserCountry> {
+    return this.httpClient.get<ApiUserCountry>(
+      `${environment.api.baseUrl}${this.countryPath}`,
+    )
+  }
+
   forgotPassword(email: string, recaptcha: string): Observable<ApiResponse> {
-    var formData = new FormData()
+    const formData = new FormData()
     formData.append('email', email)
     formData.append('g-recaptcha-response', recaptcha)
     return this.httpClient.post<ApiResponse>(
@@ -356,6 +364,12 @@ export class ApiDataService {
           abbrev,
         },
       },
+    )
+  }
+
+  getSetLastUpdate(): Observable<ApiSet> {
+    return this.httpClient.get<ApiSet>(
+      `${environment.api.baseUrl}${this.setsPath}/lastUpdate`,
     )
   }
 

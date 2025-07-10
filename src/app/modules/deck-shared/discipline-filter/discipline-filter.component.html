@@ -1,14 +1,14 @@
 @if (showNotRequired) {
-  <span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
-  <i class="btn-icon vtes-big nodiscipline" [ngClass]="{
+<span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
+  <i class="btn-icon vtes vtes-big nodiscipline" [ngClass]="{
     'non-selected': !isSelected('none')
   }"></i>
-  </span>
+</span>
 }
 @for (discipline of disciplineList; track discipline) {
-  <span (click)="toggle(discipline)" [title]="discipline.label | transloco">
-    <i class="btn-icon vtes-big" [class]="getIcon(discipline)" [ngClass]="{
+<span (click)="toggle(discipline)" [title]="discipline.label | transloco">
+  <i class="btn-icon vtes vtes-big" [class]="getIcon(discipline)" [ngClass]="{
         'non-selected': !isSelected(discipline.name)
       }"></i>
-  </span>
+</span>
 }
