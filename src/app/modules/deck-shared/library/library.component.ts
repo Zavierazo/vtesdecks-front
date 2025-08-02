@@ -20,6 +20,8 @@ import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
 import drawProbability from '../../../utils/draw-probability'
+import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
+import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 
 @UntilDestroy()
 @Component({
@@ -36,6 +38,8 @@ import drawProbability from '../../../utils/draw-probability'
     AsyncPipe,
     TranslocoPipe,
     CardImagePipe,
+    CollectionCardTrackerComponent,
+    CollectionCardMiniStatsComponent,
   ],
 })
 export class LibraryComponent implements OnInit {

@@ -112,7 +112,8 @@
     "export": "Export",
     "draw": "Draw",
     "edit": "Edit",
-    "similar_decks": "Similar Decks"
+    "similar_decks": "Similar Decks",
+    "collection_tracker": "Collection Tracker"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -179,7 +180,8 @@
     "my_decks": "Where have I used it?",
     "set_image_not_available": "Set image not available, using default image",
     "my_collection": "How many do I own?",
-    "view_collection": "View in Collection"
+    "view_collection": "View in Collection",
+    "tracked_collection": "Tracked in Collection"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
@@ -752,6 +754,9 @@
     "bulk_edit_message": "You can edit the selected cards in bulk.<br>Choose the properties you want to edit and provide the new values.",
     "keep_binder_bulk": "Keep current binder",
     "keep_condition_bulk": "Keep current condition",
-    "keep_language_bulk": "Keep current language"
+    "keep_language_bulk": "Keep current language",
+    "tracker_collection": "Found in Collection",
+    "tracker_decks": "Needed for Decks (All)",
+    "tracker_decks_tracked": "Needed for Decks (Tracked)"
   }
 }

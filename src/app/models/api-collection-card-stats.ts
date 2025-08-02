@@ -3,6 +3,8 @@ import { ApiDecks } from './api-decks'
 
 export interface ApiCollectionCardStats {
   collectionNumber: number
-  collectionCards: ApiCollectionCard[]
-  decks: ApiDecks
+  decksNumber: number
+  trackedDecksNumber: number
+  collectionCards?: ApiCollectionCard[]
+  decks?: ApiDecks
 }

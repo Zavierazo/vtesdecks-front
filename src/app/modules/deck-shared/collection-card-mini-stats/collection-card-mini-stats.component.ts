@@ -7,31 +7,19 @@ import {
   input,
   output,
 } from '@angular/core'
-import { RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { UntilDestroy } from '@ngneat/until-destroy'
 import { EMPTY } from 'rxjs'
 import { ApiDataService } from '../../../services/api.data.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
-import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 
-@UntilDestroy()
 @Component({
-  selector: 'app-collection-card-stats',
-  templateUrl: './collection-card-stats.component.html',
-  styleUrls: ['./collection-card-stats.component.scss'],
+  selector: 'app-collection-card-mini-stats',
+  templateUrl: './collection-card-mini-stats.component.html',
+  styleUrls: ['./collection-card-mini-stats.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    TranslocoDirective,
-    AsyncPipe,
-    RouterLink,
-    NgbTooltip,
-    SetTooltipComponent,
-    NgClass,
-  ],
+  imports: [TranslocoDirective, AsyncPipe, NgClass],
 })
-export class CollectionCardStatsComponent {
+export class CollectionCardMiniStatsComponent {
   private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
 
@@ -40,7 +28,7 @@ export class CollectionCardStatsComponent {
 
   collectionStats$ = computed(() => {
     if (this.authQuery.isAuthenticated()) {
-      return this.apiDataService.getCardCollectionStats(this.cardId(), false)
+      return this.apiDataService.getCardCollectionStats(this.cardId(), true)
     }
     return EMPTY
   })

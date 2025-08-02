@@ -5,6 +5,12 @@
     <div class="card-header bg-primary text-white py-2">
       <h6 class="mb-0 fw-bold">
         <i class="bi bi-collection me-2"></i>{{ t('my_decks') }}
+        <span class="badge text-dark ms-2" [ngClass]="{
+      'bg-danger': collectionStats.collectionNumber < collectionStats.decksNumber ,
+      'bg-light':  collectionStats.collectionNumber >= collectionStats.decksNumber
+     }">
+          {{ collectionStats.decksNumber }}
+        </span>
       </h6>
     </div>
     <div class="card-body p-2">
@@ -15,6 +21,9 @@
           <span class="badge bg-primary me-2">{{ number }}x</span>
           }
           <span class="fw-medium">{{ deck.name }}</span>
+          @if(deck.collection){
+          <i class="ms-1 text-success bi bi-fs-1_2x bi-check2-circle" [ngbTooltip]="t('tracked_collection')"></i>
+          }
         </a>
       </div>
       }
@@ -54,7 +63,7 @@
       }
       <div class="text-center">
         <a class="btn btn-outline-success btn-sm" [routerLink]="'/collection'"
-          [queryParams]="{ cardName: collectionStats.collectionCards[0].cardName }" (click)="routerClick.emit(true)">
+          [queryParams]="{ cardName: collectionStats.collectionCards?.[0]?.cardName }" (click)="routerClick.emit(true)">
           <i class="bi bi-eye me-1"></i>{{ t('view_collection') }}
         </a>
       </div>

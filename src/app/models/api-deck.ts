@@ -19,8 +19,10 @@ export interface ApiDeck {
   url?: string
   source?: string
   description?: string
+  set?: string
   limitedFormat?: string
   published?: boolean
+  collection: boolean
   crypt?: ApiCard[]
   library?: ApiCard[]
   filterCards?: ApiCard[]

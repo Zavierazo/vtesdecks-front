@@ -1,0 +1,11 @@
+@switch (card().collection) {
+@case ('NONE'){
+<i class="bi bi-fs-1_2x bi-info-circle text-muted"></i>
+}
+@case ('PARTIAL'){
+<i class="bi bi-fs-1_2x bi-exclamation-circle text-danger"></i>
+}
+@case ('FULL'){
+<i class="bi bi-fs-1_2x bi-check-circle-fill text-primary"></i>
+}
+}

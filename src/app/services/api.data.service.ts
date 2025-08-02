@@ -172,9 +172,14 @@ export class ApiDataService {
     )
   }
 
-  getDeck(id: string): Observable<ApiDeck> {
+  getDeck(id: string, collectionTracker?: boolean): Observable<ApiDeck> {
+    let params = new HttpParams()
+    if (collectionTracker !== undefined) {
+      params = params.set('collectionTracker', collectionTracker)
+    }
     return this.httpClient.get<ApiDeck>(
       `${environment.api.baseUrl}${this.deckDetailPath}${id}`,
+      { params },
     )
   }
 
@@ -310,6 +315,17 @@ export class ApiDataService {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}`,
       deck,
+    )
+  }
+
+  updateCollectionTracker(
+    id: string,
+    collectionTracker: boolean,
+  ): Observable<boolean> {
+    return this.httpClient.patch<boolean>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}`,
+      {},
+      { params: { collectionTracker } },
     )
   }
 
@@ -477,9 +493,12 @@ export class ApiDataService {
     )
   }
 
-  getCardCollectionStats(id: number): Observable<ApiCollectionCardStats> {
+  getCardCollectionStats(
+    id: number,
+    mini: boolean,
+  ): Observable<ApiCollectionCardStats> {
     return this.httpClient.get<ApiCollectionCardStats>(
-      `${environment.api.baseUrl}/user/collections/cards/${id}/stats`,
+      `${environment.api.baseUrl}/user/collections/cards/${id}/stats?mini=${mini}`,
     )
   }
 }

@@ -112,7 +112,8 @@
     "export": "Exportar",
     "draw": "Draw",
     "edit": "Editar",
-    "related_decks": "Mazos Similares"
+    "related_decks": "Mazos Similares",
+    "collection_tracker": "Rastreador de Colección"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -179,7 +180,8 @@
     "my_decks": "¿En qué mazos la utilizo?",
     "set_image_not_available": "Imagen de la expansion no disponible, utilizando imagen por defecto",
     "my_collection": "¿Cuántas tengo?",
-    "view_collection": "Ver en Colección"
+    "view_collection": "Ver en Colección",
+    "tracked_collection": "Rastreado en Colección"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
