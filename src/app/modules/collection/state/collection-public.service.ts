@@ -4,6 +4,7 @@ import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
+import { CollectionQueryState } from './collection.store'
 @Injectable({
   providedIn: 'root',
 })
@@ -41,5 +42,13 @@ export class CollectionPublicService extends CollectionService {
         }),
         finalize(() => this.collectionStore.setLoading(false)),
       )
+  }
+
+  getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
+    const { binders } = this.collectionStore.getValue()
+    return this.collectionApiDataService.getPublicBinderCards(
+      binders![0].publicHash!,
+      query,
+    )
   }
 }

@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment'
 import { ApiAiAskRequest } from '../models/api-ai-ask-request'
 import { ApiAiAskResponse } from '../models/api-ai-ask-response'
 import { ApiChangelog } from '../models/api-changelog'
+import { ApiCollectionCardStats } from '../models/api-collection-card-stats'
 import { ApiComment } from '../models/api-comment'
 import { ApiContact } from '../models/api-contact'
 import { ApiCrypt } from '../models/api-crypt'
@@ -473,6 +474,12 @@ export class ApiDataService {
   getProxyOptions(id: number): Observable<ApiProxyCardOption[]> {
     return this.httpClient.get<ApiProxyCardOption[]>(
       `${environment.api.baseUrl}${this.proxyOptionsPath}${id}`,
+    )
+  }
+
+  getCardCollectionStats(id: number): Observable<ApiCollectionCardStats> {
+    return this.httpClient.get<ApiCollectionCardStats>(
+      `${environment.api.baseUrl}/user/collections/cards/${id}/stats`,
     )
   }
 }

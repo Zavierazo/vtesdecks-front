@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/module.d-CnjH8Dlt'
 import { inject, Injectable } from '@angular/core'
-import { finalize, map, Observable, tap } from 'rxjs'
+import { finalize, map, Observable, switchMap, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import {
@@ -11,6 +11,7 @@ import { ApiCollectionImport } from '../../../models/api-collection-import'
 import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
+import { CollectionQueryState } from './collection.store'
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,10 @@ export class CollectionPrivateService extends CollectionService {
       }),
       finalize(() => this.collectionStore.setLoading(false)),
     )
+  }
+
+  getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
+    return this.collectionApiDataService.getCards(query)
   }
 
   addBinder(binder: ApiCollectionBinder): Observable<ApiCollectionBinder> {
@@ -120,10 +125,10 @@ export class CollectionPrivateService extends CollectionService {
     )
   }
 
-  deleteCard(id: number): Observable<boolean> {
+  deleteCards(ids: number[]): Observable<boolean> {
     this.collectionStore.setLoadingBackground(true)
-    return this.collectionApiDataService.deleteCard(id).pipe(
-      tap(() => this.collectionStore.removeEntity(id)),
+    return this.collectionApiDataService.deleteCard(ids).pipe(
+      tap(() => ids.forEach((id) => this.collectionStore.removeEntity(id))),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
@@ -134,12 +139,12 @@ export class CollectionPrivateService extends CollectionService {
     binderId?: number,
   ): Observable<ApiCollectionCard> {
     this.collectionStore.setLoadingBackground(true)
-    const existingCard = this.collectionStore.getEntity(id)
     return this.collectionApiDataService
       .moveCardToBinder(id, quantity, binderId)
       .pipe(
-        tap((updatedCard) => this.collectionStore.addEntity(updatedCard)),
-        tap(() => {
+        tap((updatedCard) => {
+          this.collectionStore.addEntity(updatedCard)
+          const existingCard = this.collectionStore.getEntity(id)
           if (existingCard) {
             const updatedQuantity = existingCard.number - quantity
             if (updatedQuantity <= 0) {
@@ -152,6 +157,25 @@ export class CollectionPrivateService extends CollectionService {
             }
           }
         }),
+        finalize(() => this.collectionStore.setLoadingBackground(false)),
+      )
+  }
+
+  bulkEditCards(
+    ids: number[],
+    binderId?: number,
+    condition?: string,
+    language?: string,
+  ): Observable<ApiCollectionCard[]> {
+    this.collectionStore.setLoadingBackground(true)
+    return this.collectionApiDataService
+      .bulkEditCards(ids, binderId, condition, language)
+      .pipe(
+        tap(({ cards, deletedIds }) => {
+          deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
+          cards.forEach((card) => this.collectionStore.updateEntity(card))
+        }),
+        map(({ cards }) => cards),
         finalize(() => this.collectionStore.setLoadingBackground(false)),
       )
   }
@@ -193,5 +217,16 @@ export class CollectionPrivateService extends CollectionService {
         }),
         finalize(() => this.collectionStore.setLoadingBackground(false)),
       )
+  }
+
+  deleteCollection(): Observable<ApiCollection> {
+    this.collectionStore.setLoadingBackground(true)
+    return this.collectionApiDataService.deleteCollection().pipe(
+      switchMap(() => {
+        this.collectionStore.reset()
+        return this.initialize()
+      }),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
+    )
   }
 }

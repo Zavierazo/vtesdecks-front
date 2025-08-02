@@ -43,9 +43,7 @@ export class CollectionImportModalComponent implements OnInit {
   activeModal = inject(NgbActiveModal)
 
   formImport = new FormGroup({
-    format: new FormControl<'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB'>(
-      'VTESDECKS',
-    ),
+    format: new FormControl<'VTESDECKS' | 'TWD' | 'VDB'>('VTESDECKS'),
     file: new FormControl<File | null>(null, Validators.required),
     binderId: new FormControl<number | null>(null),
   })
@@ -74,9 +72,9 @@ export class CollectionImportModalComponent implements OnInit {
       .subscribe()
   }
 
-  get formatControl(): FormControl<'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB'> {
+  get formatControl(): FormControl<'VTESDECKS' | 'TWD' | 'VDB'> {
     return this.formImport.get('format') as FormControl<
-      'VTESDECKS' | 'TWD' | 'LACKEY' | 'VDB'
+      'VTESDECKS' | 'TWD' | 'VDB'
     >
   }
 

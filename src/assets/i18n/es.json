@@ -177,7 +177,9 @@
     "restore_deck": "Restaurar mazo",
     "print": "Imprimir",
     "my_decks": "¿En qué mazos la utilizo?",
-    "set_image_not_available": "Imagen de la expansion no disponible, utilizando imagen por defecto"
+    "set_image_not_available": "Imagen de la expansion no disponible, utilizando imagen por defecto",
+    "my_collection": "¿Cuántas tengo?",
+    "view_collection": "Ver en Colección"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

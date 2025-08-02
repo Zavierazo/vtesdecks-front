@@ -2,7 +2,10 @@ import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
+import {
+  ApiCollectionCard,
+  FILTER_GROUP_BY,
+} from '../../../models/api-collection-card'
 
 export interface CollectionQueryState {
   page: number
@@ -111,6 +114,10 @@ export class CollectionStore {
     return this.entities$
   }
 
+  getEntities(): ApiCollectionCard[] {
+    return this.entities()
+  }
+
   getEntity(id: number): ApiCollectionCard | undefined {
     return this.entities().find((e) => e.id === id)
   }
@@ -124,6 +131,28 @@ export class CollectionStore {
       entity,
       ...current.filter((e) => e.id !== entity.id),
     ])
+  }
+
+  updateGroupItems(
+    entity: ApiCollectionCard,
+    groupItems: ApiCollectionCard[] | undefined,
+  ) {
+    this.entities.update((current) =>
+      current.map((e) =>
+        e === entity
+          ? {
+              ...e,
+              groupItems,
+            }
+          : e,
+      ),
+    )
+  }
+
+  getGroupBy(): string | undefined {
+    const { filters } = this.state().query
+    const groupByFilter = filters.find((f) => f[0] === FILTER_GROUP_BY)
+    return groupByFilter ? (groupByFilter[1] as string) : undefined
   }
 
   updateEntity(entity: ApiCollectionCard) {

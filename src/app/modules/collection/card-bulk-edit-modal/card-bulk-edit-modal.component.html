@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('bulk_edit_title') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formBulkEdit">
+      <div [innerHTML]="t('bulk_edit_message')" class="text-secondary">
+      </div>
+      <div class="form-group row">
+        <label for="binderId" class="col-12 col-form-label text-primary fw-bold">{{ t('binder') }}</label>
+        <div class="col-12">
+          <select id="binderId" class="form-select" formControlName="binderId">
+            <option [value]="null" [ngValue]="null">{{ t('keep_binder_bulk') }}</option>
+            <option [value]="0" [ngValue]="0">- {{ t('none') }} -</option>
+            @for(binder of binders$ | async; track binder) {
+            <option [value]="binder.id">{{ binder.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="condition" class="col-12 col-form-label text-primary fw-bold">{{ t('column_condition') }}</label>
+        <div class="col-12">
+          <select id="condition" class="form-select" formControlName="condition">
+            <option [value]="null" [ngValue]="null">{{ t('keep_condition_bulk') }}</option>
+            <option [value]="'none'" [ngValue]="'none'">- {{ t('none') }} -</option>
+            <option value="MT">{{ t('condition_mint') }}</option>
+            <option value="NM">{{ t('condition_near_mint') }}</option>
+            <option value="EX">{{ t('condition_excellent') }}</option>
+            <option value="GD">{{ t('condition_good') }}</option>
+            <option value="LP">{{ t('condition_lightly_played') }}</option>
+            <option value="PL">{{ t('condition_played') }}</option>
+            <option value="PO">{{ t('condition_poor') }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="language" class="col-12 col-form-label text-primary fw-bold">{{ t('column_language') }}</label>
+        <div class="col-12">
+          <select id="language" class="form-select" formControlName="language">
+            <option [value]="null" [ngValue]="null">{{ t('keep_language_bulk') }}</option>
+            <option value="EN">English</option>
+            <option value="ES">Español</option>
+            <option value="FR">Français</option>
+            <option value="PT">Português</option>
+            <option value="LA">Latin</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="(loading$ | async) || invalidBulkEdit">
+      {{ t('save') }}
+    </button>
+  </div>
+</ng-container>

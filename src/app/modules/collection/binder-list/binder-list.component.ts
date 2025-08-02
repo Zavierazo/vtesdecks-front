@@ -16,7 +16,7 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { catchError, of, switchMap } from 'rxjs'
+import { catchError, EMPTY, switchMap } from 'rxjs'
 import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
@@ -88,7 +88,7 @@ export class BinderListComponent implements OnInit {
           if (confirmed) {
             return this.collectionService.deleteBinder(binder.id!, deleteCards)
           }
-          return of(null)
+          return EMPTY
         }),
         catchError((error) => {
           if (error.status === 400 && error.error) {

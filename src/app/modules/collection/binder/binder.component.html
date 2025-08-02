@@ -33,6 +33,13 @@
         {{ t('share') }}
       </button>
       }
+      <button class="btn text-primary" (click)="onToggleMultiSelect()">
+        <i class="bi" [ngClass]="{
+          'bi-check-square': !multiSelect,
+          'bi-check-square-fill': multiSelect
+        }"></i>
+        {{ t('toggle_multiselect') }}
+      </button>
       <div ngbDropdown class="d-inline-block">
         <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
           <i class="bi bi-three-dots-vertical"></i>
@@ -45,6 +52,14 @@
           <button ngbDropdownItem (click)="onExport(binder)">
             {{ t('export')}}
           </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, false)">
+            <i class="bi bi-trash"></i>
+            {{ t('delete_binder') }}
+          </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, true)">
+            <i class="bi bi-trash"></i>
+            {{ t('delete_binder_and_cards') }}
+          </button>
         </div>
       </div>
     </div>
@@ -53,18 +68,10 @@
         <i class="bi bi-pencil"></i>
         {{ t('edit_binder') }}
       </button>
-      <button class="btn text-danger ms-2" (click)="onDelete(binder, false)">
-        <i class="bi bi-trash"></i>
-        {{ t('delete_binder') }}
-      </button>
-      <button class="btn text-danger ms-2" (click)="onDelete(binder, true)">
-        <i class="bi bi-trash"></i>
-        {{ t('delete_binder_and_cards') }}
-      </button>
     </div>
   </div>
   }
-  <app-collection-cards-list [owned]="!isPublic" [editable]="!isPublic"
+  <app-collection-cards-list [owned]="!isPublic" [editable]="!isPublic" [multiSelect]="multiSelect"
     [showBinders]="false"></app-collection-cards-list>
   }
 </ng-container>

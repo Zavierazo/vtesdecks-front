@@ -107,62 +107,64 @@
         </a-->
           </p>
           @if ((krcgCard$ | async)?.rulings; as krcgRulings) {
-          <strong>{{ t('rulings') }}</strong>
-          <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card.id"
-            title="Edit Rulings">
-            <i class="bi bi-pencil-square float-end"></i>
-          </a>
-          <ul>
-            @for (ruling of krcgRulings; track ruling) {
-            <li>
-              <app-ruling-text [ruling]="ruling"></app-ruling-text>
-            </li>
-            }
-          </ul>
+          <div class="card border-0 shadow-sm mt-3">
+            <div class="card-header bg-warning text-dark py-2">
+              <h6 class="mb-0 fw-bold">
+                <i class="bi bi-book me-2"></i>{{ t('rulings') }}
+                <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card.id"
+                  title="Edit Rulings" class="float-end text-dark">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+              </h6>
+            </div>
+            <div class="card-body px-2">
+              @for (ruling of krcgRulings; track ruling; let last = $last) {
+              <div class="py-2 border-dark" [class.border-bottom]="!last">
+                <app-ruling-text [ruling]="ruling"></app-ruling-text>
+              </div>
+              }
+            </div>
+          </div>
           }
           @if ((preconstructedDecks$ | async)?.decks; as decks) {
           @if (card.printOnDemand || decks.length > 0) {
-          <strong>{{ t('where_find') }}</strong>
-          @for (shop of (shops$ | async)!; track shop) {
-          <div>
-            @if (getShopInfo(shop.platform); as shopInfo) {
-            <a class="text-decoration-none" [href]="shop.link" target="_blank" gaEvent="purchase"
-              [gaCategory]="shop.platform" [gaLabel]="card.name">
-
-              {{ shopInfo.name }} ({{ shop.price | currency:shop.currency }})
-            </a>
-            }
-          </div>
-          }
-          @for (deck of decks; track deck) {
-          <div>
-            <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
-              @if( deck.filterCards?.[0]?.number; as number ){
-              <span class="badge bg-primary badge-pill">{{ number }}x</span>
-              }
-              {{ deck.name }} ({{ deck.year }})
-            </a>
-          </div>
-          }
-          }
-          }
-          @if ((myDecks$ | async)?.decks; as myDecks) {
-          @if (myDecks.length > 0) {
-          <div class="mt-2">
-            <strong>{{ t('my_decks') }}</strong>
-            @for (deck of myDecks; track deck) {
-            <div>
-              <a class="text-decoration-none" [routerLink]="'/deck/'+deck.id" (click)="modal.dismiss('Link click')">
-                @if( deck.filterCards?.[0]?.number; as number ){
-                <span class="badge bg-primary badge-pill">{{ number }}x</span>
-                }
-                {{ deck.name }}
-              </a>
+          <div class="card border-0 shadow-sm mt-3">
+            <div class="card-header bg-secondary text-white py-2">
+              <h6 class="mb-0 fw-bold">
+                <i class="bi bi-search me-2"></i>{{ t('where_find') }}
+              </h6>
             </div>
-            }
+            <div class="card-body p-2">
+              @for (shop of (shops$ | async)!; track shop; let last = $last) {
+              <div class="d-flex align-items-center justify-content-between py-1 border-dark"
+                [class.border-bottom]="!last || decks.length > 0">
+                @if (getShopInfo(shop.platform); as shopInfo) {
+                <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
+                  [gaCategory]="shop.platform" [gaLabel]="card.name">
+                  <span class="badge bg-success me-2">{{ shopInfo.name }}</span>
+                  <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
+                </a>
+                }
+              </div>
+              }
+              @for (deck of decks; track deck; let last = $last) {
+              <div class="d-flex align-items-center py-1 border-dark" [class.border-bottom]="!last">
+                <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id"
+                  (click)="modal.dismiss('Link click')">
+                  @if( deck.filterCards?.[0]?.number; as number ){
+                  <span class="badge bg-primary me-2">{{ number }}x</span>
+                  }
+                  <span class="fw-medium">{{ deck.name }}</span>
+                  <span class="text-muted ms-2">({{ deck.year }})</span>
+                </a>
+              </div>
+              }
+            </div>
           </div>
           }
           }
+          <app-collection-card-stats [cardId]="card.id"
+            (routerClick)="modal.dismiss('Link click')"></app-collection-card-stats>
         </div>
         <div class="modal-footer align-self-end">
           <div class="row justify-content-between w-100">

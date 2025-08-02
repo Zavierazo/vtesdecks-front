@@ -6,6 +6,7 @@
         <i class="bi bi-plus-circle"></i>
         {{ t('add_card') }}
       </button>
+
       <div ngbDropdown class="d-inline-block">
         <button class="btn text-primary" id="bindersMenuButton" ngbDropdownToggle>
           <i class="bi bi-archive"></i>
@@ -27,6 +28,13 @@
           </button>
         </div>
       </div>
+      <button class="btn text-primary" (click)="onToggleMultiSelect()">
+        <i class="bi" [ngClass]="{
+          'bi-check-square': !multiSelect,
+          'bi-check-square-fill': multiSelect
+        }"></i>
+        {{ t('toggle_multiselect') }}
+      </button>
       <div ngbDropdown class="d-inline-block">
         <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
           <i class="bi bi-three-dots-vertical"></i>
@@ -39,9 +47,14 @@
           <button ngbDropdownItem (click)="onExport()">
             {{ t('export')}}
           </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete()">
+            <i class="bi bi-trash"></i>
+            {{ t('collection_delete') }}
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true"></app-collection-cards-list>
+  <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true"
+    [multiSelect]="multiSelect"></app-collection-cards-list>
 </ng-container>

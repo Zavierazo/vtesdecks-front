@@ -12,7 +12,6 @@
           <select id="format" class="form-select" formControlName="format">
             <option value="VTESDECKS">VtesDecks</option>
             <option value="TWD">TWD</option>
-            <option value="LACKEY">Lackey</option>
             <option value="VDB">VDB</option>
           </select>
         </div>
@@ -41,7 +40,7 @@
             @if(formatControl.value === 'VTESDECKS') {
             <option [value]="null" [ngValue]="null">{{ t('keep_binder') }}</option>
             }
-            <option [value]="0" [ngValue]="0">{{ t('none') }}</option>
+            <option [value]="0" [ngValue]="0">- {{ t('none') }} -</option>
             @for(binder of binders$ | async; track binder) {
             <option [value]="binder.id">{{ binder.name }}</option>
             }

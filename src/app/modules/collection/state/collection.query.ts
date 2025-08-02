@@ -49,4 +49,12 @@ export class CollectionQuery {
       (state) => state.query.filters.find((f) => f[0] === filter)?.[1],
     )
   }
+
+  getQuery(): CollectionQueryState {
+    return this.store.getValue().query
+  }
+
+  getAll(): ApiCollectionCard[] {
+    return this.store.getEntities()
+  }
 }

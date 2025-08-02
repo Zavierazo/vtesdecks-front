@@ -3,6 +3,7 @@ export const FILTER_CARD_TYPE = 'cardType'
 export const FILTER_BINDER = 'binderId'
 export const FILTER_CARD_ID = 'cardId'
 export const FILTER_CARD_NAME = 'cardName'
+export const FILTER_GROUP_BY = 'groupBy'
 
 export interface ApiCollectionCard {
   id?: number
@@ -19,4 +20,5 @@ export interface ApiCollectionCard {
   notes?: string
   creationDate?: Date
   modificationDate?: Date
+  groupItems?: ApiCollectionCard[]
 }

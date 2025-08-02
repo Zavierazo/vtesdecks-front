@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -53,6 +53,7 @@ import { CollectionQuery } from '../state/collection.query'
     NgbDropdownButtonItem,
     RouterLink,
     AsyncPipe,
+    NgClass,
   ],
 })
 export class BinderComponent implements OnInit {
@@ -68,6 +69,7 @@ export class BinderComponent implements OnInit {
   private clipboard = inject(Clipboard)
 
   binder$!: Observable<ApiCollectionBinder | undefined>
+  multiSelect = false
   isPublic = false
   private collectionService!: CollectionPrivateService | CollectionPublicService
 
@@ -110,6 +112,10 @@ export class BinderComponent implements OnInit {
         )
         .subscribe()
     }
+  }
+
+  onToggleMultiSelect() {
+    this.multiSelect = !this.multiSelect
   }
 
   onShare(binder: ApiCollectionBinder) {
@@ -159,6 +165,9 @@ export class BinderComponent implements OnInit {
         : 'collection.binder_delete_message_without_cards',
       { binderName: binder.name },
     )
+    modalRef.componentInstance.okLabel =
+      this.translocoService.translate('shared.delete')
+    modalRef.componentInstance.okButtonType = 'btn-danger'
     modalRef.closed
       .pipe(
         untilDestroyed(this),

@@ -117,7 +117,7 @@
             <label for="binder" class="col-12 col-form-label text-primary fw-bold">{{ t('column_binder') }}</label>
             <div class="col-12">
               <select id="binder" class="form-select" formControlName="binder">
-                <option [value]="null" [ngValue]="null">{{ t('none') }}</option>
+                <option [value]="null" [ngValue]="null">-</option>
                 @for(binder of binders$ | async; track binder) {
                 <option [value]="binder.id">{{ binder.name }}</option>
                 }

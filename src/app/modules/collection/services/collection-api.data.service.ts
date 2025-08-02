@@ -24,6 +24,12 @@ export class CollectionApiDataService {
     )
   }
 
+  deleteCollection(): Observable<boolean> {
+    return this.httpClient.delete<boolean>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}`,
+    )
+  }
+
   getBinders(): Observable<ApiCollectionBinder[]> {
     return this.httpClient.get<ApiCollectionBinder[]>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/binders`,
@@ -115,9 +121,9 @@ export class CollectionApiDataService {
       )
   }
 
-  deleteCard(id: number): Observable<boolean> {
+  deleteCard(id: number[]): Observable<boolean> {
     return this.httpClient.delete<boolean>(
-      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id}`,
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id.join(',')}`,
     )
   }
 
@@ -131,10 +137,46 @@ export class CollectionApiDataService {
       params.set('binderId', binderId.toString())
     }
     params.set('quantity', quantity.toString())
-    return this.httpClient.post<ApiCollectionCard>(
+    return this.httpClient.patch<ApiCollectionCard>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${id}/binders?${params.toString()}`,
       {},
     )
+  }
+
+  bulkEditCards(
+    ids: number[],
+    binderId?: number,
+    condition?: string,
+    language?: string,
+  ): Observable<{ cards: ApiCollectionCard[]; deletedIds: number[] }> {
+    const params = new URLSearchParams()
+    if (binderId) {
+      params.set('binderId', binderId.toString())
+    }
+    if (condition) {
+      params.set('condition', condition)
+    }
+    if (language) {
+      params.set('language', language)
+    }
+    return this.httpClient
+      .patch<
+        ApiCollectionCard[]
+      >(`${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${ids.join(',')}/bulk?${params.toString()}`, {}, { observe: 'response' })
+      .pipe(
+        map((response: HttpResponse<ApiCollectionCard[]>) => {
+          const deletedHeader = response.headers.get('x-card-deleted')
+          const deletedIds =
+            deletedHeader
+              ?.split(',')
+              .map((id) => Number(id))
+              .filter((id) => !isNaN(id)) ?? []
+          return {
+            cards: response.body!,
+            deletedIds,
+          }
+        }),
+      )
   }
 
   exportCollection(binderId?: number): Observable<HttpResponse<Blob>> {
