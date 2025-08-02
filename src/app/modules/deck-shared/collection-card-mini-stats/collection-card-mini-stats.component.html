@@ -1,7 +1,10 @@
 <div class="text-white text-start px-3 pb-3" *transloco="let t; read: 'collection'">
   @if ((collectionStats$() | async); as collectionStats) {
   <div class="mb-0 fw-bold">
-    <span class="ms-2">
+    <span class="ms-2" [ngClass]="{
+      'text-danger': collectionStats.collectionNumber < card().number ,
+      'text-success':  collectionStats.collectionNumber >= card().number
+     }">
       {{ collectionStats.collectionNumber }}
     </span>
     -
@@ -10,7 +13,7 @@
   <div class="mb-0 fw-bold">
     <span class="ms-2" [ngClass]="{
       'text-danger': collectionStats.collectionNumber < collectionStats.trackedDecksNumber ,
-      'text-white':  collectionStats.collectionNumber >= collectionStats.trackedDecksNumber
+      'text-success':  collectionStats.collectionNumber >= collectionStats.trackedDecksNumber
      }">
       {{ collectionStats.trackedDecksNumber }}
     </span>
@@ -20,7 +23,7 @@
   <div class="mb-0 fw-bold">
     <span class="ms-2" [ngClass]="{
       'text-danger': collectionStats.collectionNumber < collectionStats.decksNumber ,
-      'text-white':  collectionStats.collectionNumber >= collectionStats.decksNumber
+      'text-success':  collectionStats.collectionNumber >= collectionStats.decksNumber
      }">
       {{ collectionStats.decksNumber }}
     </span>

@@ -9,6 +9,7 @@ import {
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { EMPTY } from 'rxjs'
+import { ApiCard } from '../../../models/api-card'
 import { ApiDataService } from '../../../services/api.data.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 
@@ -23,12 +24,13 @@ export class CollectionCardMiniStatsComponent {
   private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
 
-  cardId = input.required<number>()
+  card = input.required<ApiCard>()
+
   routerClick = output<boolean>()
 
   collectionStats$ = computed(() => {
     if (this.authQuery.isAuthenticated()) {
-      return this.apiDataService.getCardCollectionStats(this.cardId(), true)
+      return this.apiDataService.getCardCollectionStats(this.card().id, true)
     }
     return EMPTY
   })
