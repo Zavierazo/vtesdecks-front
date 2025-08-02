@@ -2,8 +2,8 @@
   @if ((collectionStats$() | async); as collectionStats) {
   <div class="mb-0 fw-bold">
     <span class="ms-2" [ngClass]="{
-      'text-danger': collectionStats.collectionNumber < card().number ,
-      'text-success':  collectionStats.collectionNumber >= card().number
+      'text-danger': card().number > 0 && collectionStats.collectionNumber < card().number ,
+      'text-success':  card().number > 0 && collectionStats.collectionNumber >= card().number
      }">
       {{ collectionStats.collectionNumber }}
     </span>
