@@ -123,6 +123,15 @@
                     <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
                   </button>
                   }
+                  <button class="btn" [ngClass]="{
+                      'btn-outline-primary': !collectionTracker,
+                      'btn-primary': collectionTracker
+                    }" (click)="onCollectionTracker()" *isLogged="true">
+                    <i class="bi me-2" [ngClass]="{
+                      'bi-check-square': !collectionTracker,
+                      'bi-check-square-fill': collectionTracker
+                    }"></i>{{ t('collection_tracker') }}
+                  </button>
                   <button class="btn btn-outline-primary" (click)="onShare()">
                     <i class="bi bi-share me-2"></i>{{ t('share') }}
                   </button>

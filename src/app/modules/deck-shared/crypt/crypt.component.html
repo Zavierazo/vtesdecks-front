@@ -9,20 +9,11 @@
     'background-size': '50%'
   } || null" [autoClose]="withControls && (isMobile$ | async)!">
   <ng-template #imgPopover>
-    @if( crypt.i18n && crypt.i18n.image ){
-    <img #i18nImage [ngClass]="{
-        'img-popover': !(isMobile$ | async)!,
-        'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
-      (error)="i18nImage.src='/assets' + crypt.image" />
-    }
-    @else{
     <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage : '/assets' + crypt.image" [alt]="crypt.name"
+      }" [src]="overrideImage ? overrideImage : crypt | cardImage:setAbbrev" [alt]="crypt.name"
       (error)="image.src='/assets' + crypt.image" />
-    }
     <h6 class="text-white">
       @if(cryptSize && card.number > 0){
       <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
@@ -37,6 +28,9 @@
       <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
       }
     </h6>
+    @if(card.collection){
+    <app-collection-card-mini-stats [card]="card"></app-collection-card-mini-stats>
+    }
   </ng-template>
   <div class="row align-items-center">
     <div class="col-6">
@@ -63,6 +57,11 @@
         </div>
         }
         <div class="col-9 align-items-center">
+          @if(card.collection){
+          <div class="float-start me-1">
+            <app-collection-card-tracker [card]="card"></app-collection-card-tracker>
+          </div>
+          }
           @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
           <div class="float-start d-flex flex-column">
             <span class="text-body">{{ crypt.i18n.name }}</span>

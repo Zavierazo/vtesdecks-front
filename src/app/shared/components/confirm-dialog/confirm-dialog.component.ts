@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import { Component, Input, inject } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
@@ -6,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, NgClass],
 })
 export class ConfirmDialogComponent {
   modal = inject(NgbActiveModal)
@@ -14,5 +15,6 @@ export class ConfirmDialogComponent {
   @Input() title!: string
   @Input() message!: string
   @Input() okLabel = 'shared.ok'
+  @Input() okButtonType = 'btn-primary'
   @Input() cancelLabel = 'shared.cancel'
 }

@@ -16,9 +16,12 @@ import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryService } from '../../../state/library/library.service'
 import drawProbability from '../../../utils/draw-probability'
+import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
+import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 
 @UntilDestroy()
 @Component({
@@ -34,6 +37,9 @@ import drawProbability from '../../../utils/draw-probability'
     NgxSkeletonLoaderComponent,
     AsyncPipe,
     TranslocoPipe,
+    CardImagePipe,
+    CollectionCardTrackerComponent,
+    CollectionCardMiniStatsComponent,
   ],
 })
 export class LibraryComponent implements OnInit {
@@ -58,6 +64,8 @@ export class LibraryComponent implements OnInit {
   @Input() maxNumber?: number
 
   @Input() overrideImage?: string
+
+  @Input() setAbbrev?: string
 
   readonly cardAdded = output<number>()
 
