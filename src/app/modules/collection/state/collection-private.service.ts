@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/module.d-CnjH8Dlt'
+import { HttpResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { finalize, map, Observable, switchMap, tap } from 'rxjs'
 import { ApiCollection } from '../../../models/api-collection'
