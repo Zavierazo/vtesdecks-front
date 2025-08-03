@@ -172,6 +172,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'collection',
+    loadChildren: () =>
+      import('./app/modules/collection/collection.routes').then(
+        (m) => m.COLLECTION_ROUTES,
+      ),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import(

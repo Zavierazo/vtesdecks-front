@@ -3,130 +3,132 @@
     <a [routerLink]="'/'" class="navbar-brand">
       <img class="header-logo" width="60" height="60"
         [src]="isChristmas()?'/assets/img/logo_christmas.png':'/assets/img/logo.png'" alt="logo" />
-        <img class="header-logo-text" width="100" height="60" src="/assets/img/logo_text.png" alt="vtes decks" />
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"
-        aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation"
-        (click)="isCollapsed = !isCollapsed">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNavBar" [ngbCollapse]="isCollapsed">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"
-              (click)="isCollapsed = true">
-              {{ t('home') }}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/decks" [routerLinkActive]="['active']"
+      <img class="header-logo-text" width="100" height="60" src="/assets/img/logo_text.png" alt="vtes decks" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"
+      aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation"
+      (click)="isCollapsed = !isCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavBar" [ngbCollapse]="isCollapsed">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"
+            (click)="isCollapsed = true">
+            {{ t('home') }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/decks" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('decks') }}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/cards/crypt" [routerLinkActive]="['active']"
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/cards/crypt" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('crypt') }}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/cards/library" [routerLinkActive]="['active']"
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/cards/library" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('library') }}</a>
-          </li>
-          <li class="nav-item" *isLogged="true">
-            <a class="nav-link" routerLink="/decks/builder" [routerLinkActive]="['active']"
+        </li>
+        <li class="nav-item" *isLogged="true">
+          <a class="nav-link" routerLink="/decks/builder" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('builder') }}</a>
-          </li>
-          <li ngbDropdown class="nav-item" display="dynamic">
-            <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownTools" role="button"
-              aria-expanded="false">
-              {{ t('tools') }}
-            </span>
-            <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-              <a ngbDropdownItem href="https://bloodlibrary.info/" target="_blank" (click)="isCollapsed = true"
-                gaEvent="referral" gaCategory="bloodLibrary">
-                Blood Library
-              </a>
-              <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
-                (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
-                Codex of the Damned
-              </a>
-              <a ngbDropdownItem routerLink="/vtesdle" [routerLinkActive]="['active']" (click)="isCollapsed = true"
-                gaEvent="referral" gaCategory="vtesdle">
-                VTESDLE
-              </a>
-              <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
-                {{ t('table_seating') }}
-              </button>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
-              {{ t('statistics') }}
+        </li>
+        <li ngbDropdown class="nav-item" display="dynamic">
+          <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownTools" role="button"
+            aria-expanded="false">
+            {{ t('tools') }}
+          </span>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
+            <a ngbDropdownItem href="https://bloodlibrary.info/" target="_blank" (click)="isCollapsed = true"
+              gaEvent="referral" gaCategory="bloodLibrary">
+              Blood Library
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contact" [routerLinkActive]="['active']" (click)="isCollapsed = true">
-              {{ t('contact') }}
+            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
+              (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
+              Codex of the Damned
             </a>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <app-lang-selector></app-lang-selector>
-          @if (themeEnabled) {
-            <app-theme-selector></app-theme-selector>
+            <a ngbDropdownItem routerLink="/vtesdle" [routerLinkActive]="['active']" (click)="isCollapsed = true"
+              gaEvent="referral" gaCategory="vtesdle">
+              VTESDLE
+            </a>
+            <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
+              {{ t('table_seating') }}
+            </button>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+            {{ t('statistics') }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+            {{ t('contact') }}
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <app-lang-selector></app-lang-selector>
+        @if (themeEnabled) {
+        <app-theme-selector></app-theme-selector>
+        }
+        <li
+          class="nav-item nav-link position-relative notification me-0 me-lg-2 d-flex justify-content-start align-items-center"
+          *isLogged="true" (click)="openNotifications()">
+          @if (isMobile$ | async) {
+          <span class="me-1">
+            {{ t('notifications') }}
+          </span>
           }
-          <li
-            class="nav-item nav-link position-relative notification me-0 me-lg-2 d-flex justify-content-start align-items-center"
-            *isLogged="true" (click)="openNotifications()">
-            @if (isMobile$ | async) {
-              <span class="me-1">
-                {{ t('notifications') }}
-              </span>
+          <i class="bi bi-bell-fill bi-fs-1_2x"></i>
+          @if ((notificationUnreadCount$ | async); as unreadCount) {
+          <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">
+            @if (unreadCount > 99) {
+            99+
+            } @else {
+            {{unreadCount}}
             }
-            <i class="bi bi-bell-fill bi-fs-1_2x"></i>
-            @if ((notificationUnreadCount$ | async); as unreadCount) {
-              <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                >
-                @if (unreadCount > 99) {
-                  99+
-                } @else {
-                  {{unreadCount}}
-                }
-                <span class="visually-hidden">{{ t('unread_notifications') }}</span>
-              </span>
-            }
-          </li>
-          <button type="button" class="btn btn-outline-light mx-2 mb-2 mb-lg-0" (click)="openLoginModal()"
-            *isLogged="false">
-            {{ t('login') }}
-          </button>
-          <button type="button" class="btn btn-warning mx-2 mb-2 mb-lg-0" (click)="openSignUpModal()" *isLogged="false">
-            {{ t('sign_up') }}
-          </button>
-          <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
-            <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button"
-              aria-expanded="false">
-              <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
-                class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
-                <strong>{{ displayName$ | async }}</strong>
-              </a>
-              <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'USER'}" [routerLinkActive]="['active']"
-                  (click)="isCollapsed = true">
-                  <i class="bi bi-collection-fill"></i> {{ t('my_decks') }}
-                </a>
-                <a ngbDropdownItem routerLink="/decks" [queryParams]="{ favorite: true}" [routerLinkActive]="['active']"
-                  (click)="isCollapsed = true">
-                  <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
-                </a>
-                <hr class="dropdown-divider" />
-                <a ngbDropdownItem routerLink="/user/profile" [routerLinkActive]="['active']" (click)="isCollapsed = true">
-                  {{ t('profile_settings') }}
-                </a>
-                <a ngbDropdownItem href="javascript:void(0)" (click)="logout()">
-                  {{ t('logout') }}
-                </a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+            <span class="visually-hidden">{{ t('unread_notifications') }}</span>
+          </span>
+          }
+        </li>
+        <button type="button" class="btn btn-outline-light mx-2 mb-2 mb-lg-0" (click)="openLoginModal()"
+          *isLogged="false">
+          {{ t('login') }}
+        </button>
+        <button type="button" class="btn btn-warning mx-2 mb-2 mb-lg-0" (click)="openSignUpModal()" *isLogged="false">
+          {{ t('sign_up') }}
+        </button>
+        <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button"
+            aria-expanded="false">
+            <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
+              class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
+            <strong>{{ displayName$ | async }}</strong>
+          </a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+            <a ngbDropdownItem routerLink="/collection" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+              <i class="bi bi-collection-fill"></i> {{ t('my_collection') }}
+            </a>
+            <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'USER'}" [routerLinkActive]="['active']"
+              (click)="isCollapsed = true">
+              <i class="bi bi-stack"></i> {{ t('my_decks') }}
+            </a>
+            <a ngbDropdownItem routerLink="/decks" [queryParams]="{ favorite: true}" [routerLinkActive]="['active']"
+              (click)="isCollapsed = true">
+              <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
+            </a>
+            <hr class="dropdown-divider" />
+            <a ngbDropdownItem routerLink="/user/profile" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+              {{ t('profile_settings') }}
+            </a>
+            <a ngbDropdownItem href="javascript:void(0)" (click)="logout()">
+              {{ t('logout') }}
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

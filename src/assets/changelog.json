@@ -1,5 +1,17 @@
 [
   {
+    "version": "2.48.0",
+    "date": "3rd August, 2025",
+    "changes": [
+      "Introduced Collection Tracker: manage your personal card collection directly on the site.",
+      "Add cards to your collection with detailed info: Set, Binder, Condition, Language, and personal Notes.",
+      "View and filter your collection with flexible search and organization options.",
+      "Binders can now be created and shared with others.",
+      "In Deck view, see how many cards you own from your collection and whether you have enough to build the deck.",
+      "Minor fixes and improvements."
+    ]
+  },
+  {
     "version": "2.47.0",
     "date": "4th July, 2025",
     "changes": [

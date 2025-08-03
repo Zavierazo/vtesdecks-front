@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core'
-import { map, Observable } from 'rxjs'
+import { combineLatest, map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiCollectionCard } from '../../models/api-collection-card'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { ApiLibrary } from '../../models/api-library'
@@ -36,6 +37,27 @@ export class DeckBuilderQuery {
   }
 
   selectCrypt(): Observable<ApiCard[]> {
+    return combineLatest([
+      this.selectCryptCards(),
+      this.selectCollectionCards(),
+    ]).pipe(
+      map(([cryptCards, collectionCards]) => {
+        return cryptCards.map(
+          (card: ApiCard) =>
+            ({
+              ...card,
+              collection: this.getCollectionType(
+                card.id,
+                card.number,
+                collectionCards,
+              ),
+            }) as ApiCard,
+        )
+      }),
+    )
+  }
+
+  private selectCryptCards() {
     return this.store.select((state) => state.cards.filter(isCrypt))
   }
 
@@ -91,6 +113,27 @@ export class DeckBuilderQuery {
   }
 
   selectLibrary(): Observable<ApiCard[]> {
+    return combineLatest([
+      this.selectLibraryCards(),
+      this.selectCollectionCards(),
+    ]).pipe(
+      map(([libraryCards, collectionCards]) => {
+        return libraryCards.map(
+          (card: ApiCard) =>
+            ({
+              ...card,
+              collection: this.getCollectionType(
+                card.id,
+                card.number,
+                collectionCards,
+              ),
+            }) as ApiCard,
+        )
+      }),
+    )
+  }
+
+  private selectLibraryCards() {
     return this.store.select((state) => state.cards.filter(isLibrary))
   }
 
@@ -158,8 +201,20 @@ export class DeckBuilderQuery {
     return this.store.getValue().published
   }
 
+  getCollection(): boolean {
+    return this.store.getValue().collection
+  }
+
   getCardNumber(id: number): number {
     return this.store.getValue().cards.find((c) => c.id === id)?.number ?? 0
+  }
+
+  getCardCollection(
+    id: number,
+    number: number,
+  ): 'NONE' | 'PARTIAL' | 'FULL' | undefined {
+    const collectionCards = this.store.getValue().collectionCards
+    return this.getCollectionType(id, number, collectionCards)
   }
 
   getCryptSize(): number {
@@ -249,5 +304,29 @@ export class DeckBuilderQuery {
       this.store.getValue().cryptErrors.length === 0 &&
       this.store.getValue().libraryErrors.length === 0
     )
+  }
+
+  selectCollection(): Observable<boolean> {
+    return this.store.select((state) => state.collection)
+  }
+
+  selectCollectionCards(): Observable<ApiCollectionCard[]> {
+    return this.store.select((state) => state.collectionCards)
+  }
+
+  hasCollectionCards(): boolean {
+    return (this.store.getValue().collectionCards?.length ?? 0) > 0
+  }
+
+  private getCollectionType(
+    id: number,
+    number: number,
+    collectionCards?: ApiCollectionCard[],
+  ): 'NONE' | 'PARTIAL' | 'FULL' | undefined {
+    if (!collectionCards) return undefined
+    const card = collectionCards?.find((c) => c.cardId === id)
+    if (!card) return 'NONE'
+    if (card.number < number) return 'PARTIAL'
+    return 'FULL'
   }
 }

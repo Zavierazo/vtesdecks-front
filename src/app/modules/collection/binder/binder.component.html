@@ -1,0 +1,77 @@
+<ng-container *transloco="let t; read: 'collection'">
+  @if(!isPublic){
+  <nav class="mt-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/collection">{{ t('title') }}</a></li>
+      <li class="breadcrumb-item"><a routerLink="/collection/binders">{{ t('binders') }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+  </nav>
+  }
+  @if(binder$ | async; as binder) {
+  <h1 class="my-4 d-flex align-items-center gap-2">
+    @if(binder.icon) {
+    <span class="fs-5 d-inline-flex align-items-center">
+      <i class="vtes {{ binder.icon }}"></i>
+    </span>
+    }
+    {{ binder.name }}
+  </h1>
+  <p class="text-muted">
+    {{ binder.description }}
+  </p>
+  @if(!isPublic){
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button class="btn text-primary me-2" (click)="onAddCard(binder)">
+        <i class="bi bi-plus-circle"></i>
+        {{ t('add_card') }}
+      </button>
+      @if(binder.publicVisibility){
+      <button class="btn text-primary" (click)="onShare(binder)">
+        <i class="bi bi-share"></i>
+        {{ t('share') }}
+      </button>
+      }
+      <button class="btn text-primary" (click)="onToggleMultiSelect()">
+        <i class="bi" [ngClass]="{
+          'bi-check-square': !multiSelect,
+          'bi-check-square-fill': multiSelect
+        }"></i>
+        {{ t('toggle_multiselect') }}
+      </button>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
+          <i class="bi bi-three-dots-vertical"></i>
+          {{ t('more') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="moreMenuButton">
+          <button ngbDropdownItem>
+            {{ t('import')}}
+          </button>
+          <button ngbDropdownItem (click)="onExport(binder)">
+            {{ t('export')}}
+          </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, false)">
+            <i class="bi bi-trash"></i>
+            {{ t('delete_binder') }}
+          </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, true)">
+            <i class="bi bi-trash"></i>
+            {{ t('delete_binder_and_cards') }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button class="btn text-secondary" (click)="onEdit(binder)">
+        <i class="bi bi-pencil"></i>
+        {{ t('edit_binder') }}
+      </button>
+    </div>
+  </div>
+  }
+  <app-collection-cards-list [owned]="!isPublic" [editable]="!isPublic" [multiSelect]="multiSelect"
+    [showBinders]="false"></app-collection-cards-list>
+  }
+</ng-container>

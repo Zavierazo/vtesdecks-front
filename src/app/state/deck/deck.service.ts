@@ -12,12 +12,19 @@ export class DeckService {
 
   static readonly limit = 10
 
-  getDeck(id: string): Observable<ApiDeck> {
+  getDeck(id: string, collectionTracker?: boolean): Observable<ApiDeck> {
     this.deckStore.reset()
     this.deckStore.setLoading(true)
     return this.apiDataService
-      .getDeck(id)
+      .getDeck(id, collectionTracker)
       .pipe(tap((deck) => this.updateDeck(deck)))
+  }
+
+  toggleCollectionTracker(collectionTracker: boolean): Observable<boolean> {
+    return this.apiDataService.updateCollectionTracker(
+      this.deckStore.getValue().deck!.id,
+      collectionTracker,
+    )
   }
 
   private updateDeck(deck: ApiDeck) {

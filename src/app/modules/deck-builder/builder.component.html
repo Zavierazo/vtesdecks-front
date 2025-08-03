@@ -27,6 +27,16 @@
               <i class="bi bi-copy me-2"></i>
               {{ t('clone') }}
             </button>
+            @let collectionTracker = collectionTracker$ | async;
+            <button class="btn" [ngClass]="{
+                      'btn-outline-primary': !collectionTracker,
+                      'btn-primary': collectionTracker
+                    }" (click)="onCollectionTracker()">
+              <i class="bi me-2" [ngClass]="{
+                      'bi-square': !collectionTracker,
+                      'bi-check-square-fill': collectionTracker
+                    }"></i>{{ t('collection_tracker') }}
+            </button>
             <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
               (click)="shareDeck()">
               <i class="bi bi-share"></i>
@@ -130,7 +140,7 @@
   </div>
   <div class="col-12 text-center mt-2">
     <div class="row justify-content-center">
-      @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat) {
+      @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat.disciplines) {
       <h5 class="col-auto d-flex justify-content-center"
         [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
         <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
@@ -142,7 +152,7 @@
   <div class="col-12 mt-3">
     @if ((cryptList$ | async)!; as cryptList) {
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-      @for (crypt of cryptList; track trackByFn($index, crypt)) {
+      @for (crypt of cryptList; track crypt.id) {
       <ul class="col list-group">
         <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
           (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
@@ -192,7 +202,7 @@
   </div>
   <div class="col-12 text-center mt-2">
     <div class="row justify-content-center">
-      @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline) {
+      @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline.disciplines) {
       <h5 class="col-auto d-flex justify-content-center">
         @if (libraryDiscipline.disciplines.length === 0) {
         <span [title]="'deck.no_discipline' | transloco">
@@ -208,7 +218,7 @@
         <span class="pt-1">&nbsp;{{ libraryDiscipline.inferior }}</span>
       </h5>
       }
-      @for (libraryClan of (libraryClans$ | async)!; track libraryClan) {
+      @for (libraryClan of (libraryClans$ | async)!; track libraryClan.clans) {
       <h5 class="col-auto d-flex justify-content-center">
         @for (clan of libraryClan.clans; track clan; let isFirst = $first) {
         @if (!isFirst) {

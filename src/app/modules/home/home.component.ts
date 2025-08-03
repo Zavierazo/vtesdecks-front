@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,7 +33,6 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     RouterLink,
     AnimatedDigitComponent,
     IsLoggedDirective,
-    NgTemplateOutlet,
     HomeSectionComponent,
     TranslocoPipe,
     AdSenseComponent,

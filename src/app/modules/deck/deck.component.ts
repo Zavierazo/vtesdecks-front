@@ -5,9 +5,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   ViewChild,
-  inject,
 } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
@@ -47,6 +47,7 @@ import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { DeckQuery } from '../../state/deck/deck.query'
+import { DeckService } from '../../state/deck/deck.service'
 import { DecksQuery } from '../../state/decks/decks.query'
 import { DecksService } from '../../state/decks/decks.service'
 import { getClanIcon } from '../../utils/clans'
@@ -103,6 +104,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly route = inject(ActivatedRoute)
   private readonly titleService = inject(Title)
   private readonly deckQuery = inject(DeckQuery)
+  private readonly deckService = inject(DeckService)
   private readonly authQuery = inject(AuthQuery)
   private readonly toastService = inject(ToastService)
   private readonly apiDataService = inject(ApiDataService)
@@ -137,6 +139,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isRated = false
 
+  collectionTracker = false
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!
     this.isLoading$ = this.deckQuery.selectLoading()
@@ -149,6 +153,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
       tap((deck) => {
         this.isBookmarked = deck?.favorite ?? false
         this.isRated = deck?.rated ?? false
+        const collectionTrackerOwner = deck?.owner ? deck.collection : false
+        this.collectionTracker =
+          this.collectionTracker || collectionTrackerOwner
         this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
       }),
     )
@@ -320,5 +327,29 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ...(this.deckQuery.getDeck()?.crypt ?? []),
       ...(this.deckQuery.getDeck()?.library ?? []),
     ]
+  }
+
+  onCollectionTracker(): void {
+    this.collectionTracker = !this.collectionTracker
+    const deck = this.deckQuery.getDeck()
+    if (deck) {
+      const { owner } = deck
+      if (owner) {
+        this.deckService
+          .toggleCollectionTracker(this.collectionTracker)
+          .pipe(
+            untilDestroyed(this),
+            switchMap(() =>
+              this.deckService.getDeck(this.id, this.collectionTracker),
+            ),
+          )
+          .subscribe()
+      } else {
+        this.deckService
+          .getDeck(this.id, this.collectionTracker)
+          .pipe(untilDestroyed(this))
+          .subscribe()
+      }
+    }
   }
 }

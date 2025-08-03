@@ -30,7 +30,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { ApiDataService } from '../../services/api.data.service'
@@ -108,6 +107,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
   saved$ = this.deckBuilderQuery.selectSaved()
   limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
+  collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
 
   ngOnInit() {
@@ -339,10 +339,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     return getDisciplineIcon(discipline, superior)
   }
 
-  trackByFn(_: number, item: ApiCard) {
-    return item.id
-  }
-
   onOpenInBuilder(): void {
     this.deckBuilderService.clone()
     this.onDeckLoaded()
@@ -470,5 +466,12 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         }
       }
     })
+  }
+
+  onCollectionTracker(): void {
+    this.deckBuilderService
+      .updateCollection(!this.deckBuilderQuery.getCollection())
+      .pipe(untilDestroyed(this))
+      .subscribe()
   }
 }

@@ -1,0 +1,156 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      @if(cardCollectionId){
+      {{ t('edit_card') }}
+      }@else{
+      {{ t('add_to_collection') }}
+      }
+    </h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    @if(!cardCollectionId){
+    <ng-template #cardTemplate let-r="result" let-t="term">
+      @if(r.typeIcons){
+      @for(typeIcon of r.typeIcons; track typeIcon){
+      <i class="vtes" [class]="typeIcon"></i>
+      }
+      }
+      @if(r.clanIcon){
+      <i class="vtes" [class]="r.clanIcon"></i>
+      }
+      @if(r.adv){
+      <i class="vtes advanced"></i>
+      }
+      <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name ?? r.name" [term]="t" />
+    </ng-template>
+    <label for="search" class="col-12 col-form-label text-primary fw-bold">{{ t('search_label') }}</label>
+    <div class="col-12">
+      <input #searchInput id="search" type="text" class="form-control" [ngbTypeahead]="searchCard"
+        [resultTemplate]="cardTemplate" [inputFormatter]="formatter" [editable]="false"
+        (selectItem)="selectCardItem($event, searchInput)" [placeholder]="t('search_placeholder')" />
+    </div>
+    }
+    @if(card){
+    <div class="row mt-3">
+      <div class="col-sm-12 col-md-5 pe-3">
+        <img #image class="rounded mx-auto d-block img-fluid" [src]="card | cardImage:set"
+          [alt]="card.i18n?.name ?? card.name" (error)="image.src='/assets' + card.image; setImageError = true" />
+        @if(setImageError) {
+        <div class="fw-bold fs-6 text-center text-danger small mb-2">
+          {{ 'deck_shared.set_image_not_available' | transloco }}
+        </div>
+        }
+      </div>
+      <div class="col-sm-12 col-md-7 ps-0">
+        <form [formGroup]="formCard">
+          <div class="form-group row">
+            <label for="quantity" class="col-12 col-form-label text-primary fw-bold">{{ t('quantity') }}</label>
+            <div class="col-12">
+              <input id="quantity" type="number" class="form-control" formControlName="quantity" min="1" />
+            </div>
+            @if (quantityControl.invalid && (quantityControl.dirty || quantityControl.touched)) {
+            <div>
+              @if (quantityControl.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('quantity') } }}
+              </div>
+              }
+              @if (quantityControl.errors?.['min']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ t('min_quantity') }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+          <div class="form-group row">
+            <label for="set" class="col-12 col-form-label text-primary fw-bold">{{ t('column_set') }}</label>
+            <div class="col-12">
+              <select id="set" class="form-select" formControlName="set">
+                <option [value]="null" [ngValue]="null"> - </option>
+                @for(set of setOptions$ | async; track set) {
+                <option [value]="set.abbrev">
+                  {{ set.fullName }}
+                  @if(set.releaseDate){
+                  <span class="text-muted">
+                    '{{ set.releaseDate | date:'yy'}}</span>
+                  }
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="condition" class="col-12 col-form-label text-primary fw-bold">{{ t('column_condition')
+              }}</label>
+            <div class="col-12">
+              <select id="condition" class="form-select" formControlName="condition">
+                <option [value]="null" [ngValue]="null"> - </option>
+                <option value="MT">{{ t('condition_mint') }}</option>
+                <option value="NM">{{ t('condition_near_mint') }}</option>
+                <option value="EX">{{ t('condition_excellent') }}</option>
+                <option value="GD">{{ t('condition_good') }}</option>
+                <option value="LP">{{ t('condition_lightly_played') }}</option>
+                <option value="PL">{{ t('condition_played') }}</option>
+                <option value="PO">{{ t('condition_poor') }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="language" class="col-12 col-form-label text-primary fw-bold">{{ t('column_language') }}</label>
+            <div class="col-12">
+              <select id="language" class="form-select" formControlName="language">
+                <option value="EN">English</option>
+                <option value="ES">Español</option>
+                <option value="FR">Français</option>
+                <option value="PT">Português</option>
+                <option value="LA">Latin</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="binder" class="col-12 col-form-label text-primary fw-bold">{{ t('column_binder') }}</label>
+            <div class="col-12">
+              <select id="binder" class="form-select" formControlName="binder">
+                <option [value]="null" [ngValue]="null">-</option>
+                @for(binder of binders$ | async; track binder) {
+                <option [value]="binder.id">{{ binder.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="notes" class="col-12 col-form-label text-primary fw-bold">{{ t('column_notes') }}</label>
+            <div class="col-12">
+              <textarea id="notes" class="form-control" formControlName="notes"
+                placeholder="{{ t('notes_placeholder') }}" rows="3"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="modal-footer">
+    @if(cardCollectionId){
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onEdit()" [disabled]="loading$ | async">
+      {{ t('save') }}
+    </button>
+    }@else{
+    <button type="button" class="btn btn-secondary" (click)="onSave(false)" [disabled]="loading$ | async">
+      {{ t('save_and_close') }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSave(true)" [disabled]="loading$ | async">
+      {{ t('save_and_more') }}
+    </button>
+    }
+  </div>
+</ng-container>

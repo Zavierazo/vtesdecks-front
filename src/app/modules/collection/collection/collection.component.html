@@ -1,0 +1,60 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <h1 class="my-3">{{ t('title') }}</h1>
+  <div class="d-flex justify-content-between mb-3">
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn text-primary" (click)="onAddCard()">
+        <i class="bi bi-plus-circle"></i>
+        {{ t('add_card') }}
+      </button>
+
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn text-primary" id="bindersMenuButton" ngbDropdownToggle>
+          <i class="bi bi-archive"></i>
+          {{ t('binders') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="bindersMenuButton">
+          @for(binder of binders$ | async; track binder.id) {
+          <a ngbDropdownItem [routerLink]="['/collection/binders', binder.id]" class="d-flex align-items-center gap-2">
+            <i class="vtes-small {{ binder.icon }}"></i>
+            {{ binder.name }}
+          </a>
+          }
+          <a ngbDropdownItem routerLink="/collection/binders">
+            {{ t('view_all') }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <button ngbDropdownItem (click)="onAddBinder()">
+            {{ t('add_binder')}}...
+          </button>
+        </div>
+      </div>
+      <button class="btn text-primary" (click)="onToggleMultiSelect()">
+        <i class="bi" [ngClass]="{
+          'bi-check-square': !multiSelect,
+          'bi-check-square-fill': multiSelect
+        }"></i>
+        {{ t('toggle_multiselect') }}
+      </button>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn text-primary" id="moreMenuButton" ngbDropdownToggle [class.dropdown-toggle]="false">
+          <i class="bi bi-three-dots-vertical"></i>
+          {{ t('more') }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="moreMenuButton">
+          <button ngbDropdownItem (click)="onImport()">
+            {{ t('import')}}
+          </button>
+          <button ngbDropdownItem (click)="onExport()">
+            {{ t('export')}}
+          </button>
+          <button ngbDropdownItem class="text-danger" (click)="onDelete()">
+            <i class="bi bi-trash"></i>
+            {{ t('collection_delete') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true"
+    [multiSelect]="multiSelect"></app-collection-cards-list>
+</ng-container>
