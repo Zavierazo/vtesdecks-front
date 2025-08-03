@@ -314,7 +314,6 @@ export class CryptBuilderComponent implements OnInit {
         disciplines: this.deckBuilderQuery.getCryptDisciplines(),
       },
     })
-    console.log('update')
     this.changeDetector.markForCheck()
   }
 
