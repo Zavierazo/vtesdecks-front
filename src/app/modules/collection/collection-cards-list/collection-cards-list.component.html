@@ -45,20 +45,20 @@
         <div ngbDropdownMenu aria-labelledby="groupByMenuButton">
           <button ngbDropdownItem [ngClass]="{'active': groupByControl.value === null}"
             (click)="groupByControl.setValue(null)">
-            None
+            {{ t('none') }}
           </button>
           <button ngbDropdownItem [ngClass]="{'active': groupByControl.value === 'cardId'}"
             (click)="groupByControl.setValue('cardId')">
-            Name
+            {{ t('name') }}
           </button>
           <button ngbDropdownItem [ngClass]="{'active': groupByControl.value === 'set'}"
             (click)="groupByControl.setValue('set')">
-            Set
+            {{ t('set') }}
           </button>
           @if(owned() && showBinders()){
           <button ngbDropdownItem [ngClass]="{'active': groupByControl.value === 'binderId'}"
             (click)="groupByControl.setValue('binderId')">
-            Binder
+            {{ t('binder') }}
           </button>
           }
         </div>
@@ -181,14 +181,12 @@
           @if(owned() && showBinders()){
           <th scope="col" class="text-center">{{ t('column_binder') }}</th>
           }
-          @if(!(isMobile$ | async)!) {
           <th scope="col" appSortable="set" (sort)="onSort($event)">{{ t('column_set') }}</th>
           <th scope="col" appSortable="condition" (sort)="onSort($event)">{{ t('column_condition') }}</th>
           <th scope="col" appSortable="language" (sort)="onSort($event)">{{ t('column_language') }}</th>
           <th scope="col" class="text-center">{{ t('column_notes') }}</th>
           <th scope="col" appSortable="modificationDate" (sort)="onSort($event)"><i class="bi bi-calendar"></i>
           </th>
-          }
           @if(editable){
           <th scope="col"></th>
           }
@@ -198,14 +196,12 @@
           @if(owned() && showBinders()){
           <th scope="col">{{ t('column_binder') }}</th>
           }
-          @if(!(isMobile$ | async)!) {
           <th scope="col">{{ t('column_set') }}</th>
           <th scope="col">{{ t('column_condition') }}</th>
           <th scope="col">{{ t('column_language') }}</th>
           <th scope="col" class="text-center">{{ t('column_notes') }}</th>
           <th scope="col"><i class="bi bi-calendar"></i>
           </th>
-          }
           @if(editable){
           <th scope="col"></th>
           }
@@ -249,7 +245,6 @@
             <app-collection-binder [binderId]="card.binderId"></app-collection-binder>
           </td>
           }
-          @if(!(isMobile$ | async)!) {
           <td>
             <app-collection-set [set]="card.set"></app-collection-set>
           </td>
@@ -289,10 +284,9 @@
               {{card.modificationDate | date:'MMM d, y, HH:mm:ss'}}
             </ng-template>
           </td>
-          }
           @if(editable){
           <td class="text-center">
-            <div ngbDropdown>
+            <div ngbDropdown container="body">
               <button class="btn btn-link p-0" id="dropdownMenuButton" ngbDropdownToggle
                 [class.dropdown-toggle]="false">
                 <i class="bi bi-three-dots-vertical"></i>

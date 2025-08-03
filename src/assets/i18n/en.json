@@ -273,6 +273,7 @@
     "login": "Login",
     "sign_up": "Sign-up",
     "statistics": "Statistics",
+    "my_collection": "My Collection",
     "my_decks": "My Decks",
     "bookmarks": "Bookmarks",
     "profile_settings": "Profile Settings",
@@ -302,7 +303,8 @@
     "patreon": "Support on Patreon",
     "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
     "contact_support": "Contact Support",
-    "whats_new": "What's new {{ date }}"
+    "whats_new": "What's new {{ date }}",
+    "new": "New"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -397,6 +399,7 @@
     "service_temporarily_unavailable": "Service temporarily unavailable. Please wait...",
     "crypt": "Crypt",
     "library": "Library",
+    "collection": "My Collection",
     "unexpected_error": "Unexpected error. Please try again later.",
     "unexpected_error_with_message": "{{ message }}. Please try again later.",
     "validation_error": "Validation error. Please check the form and try again.",
@@ -703,6 +706,7 @@
     "share": "Share",
     "binder": "Binder",
     "name": "Name",
+    "set": "Set",
     "icon": "Icon",
     "visibility": "Visibility",
     "description": "Description",
