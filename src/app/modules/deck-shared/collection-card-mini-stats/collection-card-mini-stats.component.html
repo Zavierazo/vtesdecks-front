@@ -1,5 +1,5 @@
 <div class="text-white text-start px-3 pb-3" *transloco="let t; read: 'collection'">
-  @if ((collectionStats$() | async); as collectionStats) {
+  @if ((collectionStats$ | async); as collectionStats) {
   <div class="mb-0 fw-bold">
     <span class="ms-2" [ngClass]="{
       'text-danger': card().number > 0 && collectionStats.collectionNumber < card().number ,

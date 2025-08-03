@@ -149,7 +149,8 @@
     "clipboard": "Área de transferência",
     "file": "Arquivo",
     "limited_format": "Formato Limitado",
-    "deck_copied": "Mazo copiado para a área de transferência"
+    "deck_copied": "Mazo copiado para a área de transferência",
+    "collection_tracker": "Rastreador de Coleção"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",

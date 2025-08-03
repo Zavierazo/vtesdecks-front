@@ -37,11 +37,6 @@
         </option>
         }
       </select>
-      <!-- TODO: Implement filter functionality -->
-      <button type="button" class="btn btn-outline-secondary">
-        <i class="bi bi-funnel"></i>
-        {{ t('filter') }}
-      </button>
       <div ngbDropdown class="d-inline-block">
         <button type="button" class="btn" [class.btn-outline-secondary]="groupByControl.value === null"
           [class.btn-primary]="groupByControl.value !== null" id="groupByMenuButton" ngbDropdownToggle>

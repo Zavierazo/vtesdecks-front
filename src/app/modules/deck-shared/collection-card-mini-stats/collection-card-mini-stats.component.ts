@@ -2,14 +2,15 @@ import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   input,
+  OnInit,
   output,
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { EMPTY } from 'rxjs'
+import { EMPTY, Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
+import { ApiCollectionCardStats } from '../../../models/api-collection-card-stats'
 import { ApiDataService } from '../../../services/api.data.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 
@@ -20,7 +21,7 @@ import { AuthQuery } from '../../../state/auth/auth.query'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, AsyncPipe, NgClass],
 })
-export class CollectionCardMiniStatsComponent {
+export class CollectionCardMiniStatsComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
 
@@ -28,10 +29,16 @@ export class CollectionCardMiniStatsComponent {
 
   routerClick = output<boolean>()
 
-  collectionStats$ = computed(() => {
+  collectionStats$!: Observable<ApiCollectionCardStats>
+
+  ngOnInit() {
     if (this.authQuery.isAuthenticated()) {
-      return this.apiDataService.getCardCollectionStats(this.card().id, true)
+      this.collectionStats$ = this.apiDataService.getCardCollectionStats(
+        this.card().id,
+        true,
+      )
+    } else {
+      this.collectionStats$ = EMPTY
     }
-    return EMPTY
-  })
+  }
 }

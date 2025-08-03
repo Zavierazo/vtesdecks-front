@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { ApiCollectionCard } from '../../models/api-collection-card'
 import { ApiDeckExtra } from '../../models/api-deck-extra'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 
@@ -10,11 +11,13 @@ export interface DeckBuilderState {
   name?: string
   description?: string
   extra?: ApiDeckExtra
+  collection: boolean
   published: boolean
   cards: ApiCard[]
   cryptErrors: string[]
   libraryErrors: string[]
   saved: boolean
+  collectionCards?: ApiCollectionCard[]
 }
 
 const initialState: DeckBuilderState = {
@@ -23,6 +26,7 @@ const initialState: DeckBuilderState = {
   libraryErrors: [],
   published: true,
   saved: true,
+  collection: false,
 }
 
 @Injectable({
@@ -44,6 +48,10 @@ export class DeckBuilderStore {
 
   updatePublished(published: boolean): void {
     this.update((state) => ({ ...state, published }))
+  }
+
+  updateCollection(collection: boolean): void {
+    this.update((state) => ({ ...state, collection }))
   }
 
   addCard(id: number, type?: string): void {
@@ -123,5 +131,12 @@ export class DeckBuilderStore {
 
   update(updateFn: (value: DeckBuilderState) => DeckBuilderState) {
     this.state.update(updateFn)
+  }
+
+  updateCollectionCards(collectionCards?: ApiCollectionCard[]) {
+    this.state.update((state) => ({
+      ...state,
+      collectionCards,
+    }))
   }
 }

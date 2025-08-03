@@ -149,7 +149,8 @@
     "clipboard": "Portapapeles",
     "file": "Archivo",
     "limited_format": "Formato Limitado",
-    "deck_copied": "Lista copiada al portapapeles"
+    "deck_copied": "Lista copiada al portapapeles",
+    "collection_tracker": "Rastreador de Colección"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",

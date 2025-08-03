@@ -495,10 +495,10 @@ export class ApiDataService {
 
   getCardCollectionStats(
     id: number,
-    mini: boolean,
+    summary: boolean,
   ): Observable<ApiCollectionCardStats> {
     return this.httpClient.get<ApiCollectionCardStats>(
-      `${environment.api.baseUrl}/user/collections/cards/${id}/stats?mini=${mini}`,
+      `${environment.api.baseUrl}/user/collections/cards/${id}/stats?summary=${summary}`,
     )
   }
 }

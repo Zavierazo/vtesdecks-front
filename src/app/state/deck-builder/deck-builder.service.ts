@@ -1,12 +1,26 @@
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { finalize, Observable, of, tap, throwError } from 'rxjs'
+import {
+  combineLatest,
+  EMPTY,
+  finalize,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs'
 import { ApiDeck } from 'src/app/models/api-deck'
+import { FILTER_GROUP_BY } from '../../models/api-collection-card'
+import { ApiCollectionPage } from '../../models/api-collection-page'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
 import { ApiDeckExtra } from '../../models/api-deck-extra'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
+import { CollectionQueryState } from '../../modules/collection/state/collection.store'
 import { PREDEFINED_LIMITED_FORMATS } from '../../modules/deck-builder/limited-format/limited-format.const'
 import { LibraryQuery } from '../library/library.query'
+import { CollectionApiDataService } from './../../modules/collection/services/collection-api.data.service'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
@@ -16,6 +30,7 @@ export class DeckBuilderService {
   private readonly query = inject(DeckBuilderQuery)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly collectionApiDataService = inject(CollectionApiDataService)
   private readonly translocoService = inject(TranslocoService)
 
   init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {
@@ -30,11 +45,19 @@ export class DeckBuilderService {
             description: deck.description,
             cards: deck.cards ?? [],
             published: deck.published ?? false,
+            collection: deck.collection ?? false,
             extra: this.updatePredefinedFormat(deck.extra),
             saved: true,
           }))
           this.validateDeck()
         }),
+        switchMap((deck) =>
+          combineLatest([
+            of(deck),
+            deck.collection ? this.fetchCollection() : EMPTY,
+          ]),
+        ),
+        map(([deck]) => deck),
       )
     } else if (cloneDeck) {
       this.store.update((state) => ({
@@ -44,12 +67,13 @@ export class DeckBuilderService {
         extra: cloneDeck.extra,
         cards: [...cloneDeck.crypt!, ...cloneDeck.library!],
         published: false,
+        collection: false,
         saved: false,
       }))
       this.validateDeck()
     }
 
-    return of({})
+    return EMPTY
   }
 
   clone(): void {
@@ -62,6 +86,7 @@ export class DeckBuilderService {
       extra,
       cards: [...cards],
       published: false,
+      collection: false,
       saved: false,
     }))
     this.validateDeck()
@@ -78,6 +103,7 @@ export class DeckBuilderService {
           description: deck.description,
           cards: deck.cards ?? [],
           published: true,
+          collection: false,
           saved: false,
         }))
         this.validateDeck()
@@ -98,6 +124,7 @@ export class DeckBuilderService {
         description: deck.description,
         cards: deck.cards,
         published: deck.published,
+        collection: deck.collection,
         extra: deck.extra,
       } as ApiDeckBuilder)
       .pipe(
@@ -110,6 +137,7 @@ export class DeckBuilderService {
             cards: deck.cards ?? [],
             extra: deck.extra,
             published: deck.published ?? false,
+            collection: deck.collection ?? false,
             saved: true,
           }))
           this.validateDeck()
@@ -141,6 +169,17 @@ export class DeckBuilderService {
   updatePublished(published: boolean) {
     this.store.updatePublished(published)
     this.store.setSaved(false)
+  }
+
+  updateCollection(collection: boolean): Observable<ApiCollectionPage> {
+    this.store.updateCollection(collection)
+    this.store.setSaved(false)
+    if (collection && !this.query.hasCollectionCards()) {
+      return this.fetchCollection()
+    } else {
+      this.store.updateCollectionCards()
+      return EMPTY
+    }
   }
 
   addCard(id: number) {
@@ -305,5 +344,20 @@ export class DeckBuilderService {
       extra.limitedFormat = predefinedFormat
     }
     return extra
+  }
+
+  private fetchCollection(): Observable<ApiCollectionPage> {
+    const query = {
+      page: 0,
+      pageSize: 10000,
+      sortBy: 'cardId',
+      sortDirection: 'asc',
+      filters: [[FILTER_GROUP_BY, 'cardId']],
+    } as CollectionQueryState
+    return this.collectionApiDataService.getCards(query).pipe(
+      tap((response) => {
+        this.store.updateCollectionCards(response.content)
+      }),
+    )
   }
 }

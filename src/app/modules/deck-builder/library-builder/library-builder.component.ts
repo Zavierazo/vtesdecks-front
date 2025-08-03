@@ -343,9 +343,14 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   getCard(card: ApiLibrary): ApiCard {
+    const number = this.deckBuilderQuery.getCardNumber(card.id)
     return {
       id: card.id,
-      number: this.deckBuilderQuery.getCardNumber(card.id),
+      number,
+      collection:
+        number > 0
+          ? this.deckBuilderQuery.getCardCollection(card.id, number)
+          : undefined,
     } as ApiCard
   }
 
@@ -355,10 +360,6 @@ export class LibraryBuilderComponent implements OnInit {
 
   removeCard(id: number) {
     this.deckBuilderService.removeCard(id)
-  }
-
-  trackByFn(_: number, item: ApiLibrary) {
-    return item.id
   }
 
   translateGroupSlider(value: number): string {

@@ -6,6 +6,7 @@ export interface ApiDeckBuilder {
   name?: string
   description?: string
   published?: boolean
+  collection?: boolean
   cards?: ApiCard[]
   extra?: ApiDeckExtra
 }
