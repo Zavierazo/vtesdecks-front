@@ -762,6 +762,13 @@
     "keep_language_bulk": "Keep current language",
     "tracker_collection": "Found in Collection",
     "tracker_decks": "Needed for Decks (All)",
-    "tracker_decks_tracked": "Needed for Decks (Tracked)"
+    "tracker_decks_tracked": "Needed for Decks (Tracked)",
+    "add_preconstructed_deck": "Add Preconstructed Deck",
+    "preconstructed_deck_description": "Select a preconstructed deck to add all its cards to your collection.",
+    "no_preconstructed_decks_found": "No preconstructed decks found.",
+    "deck_cards_added_successfully": "Successfully added {{ cardCount }} cards from \"{{ deckName }}\" to your collection.",
+    "number_of_copies": "Number of copies",
+    "total_decks": "{{ total }} decks found",
+    "cards": "cards"
   }
 }

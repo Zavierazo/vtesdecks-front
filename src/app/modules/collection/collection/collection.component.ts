@@ -18,6 +18,7 @@ import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
 import { CollectionImportModalComponent } from '../collection-import-modal/collection-import-modal.component'
+import { PreconstructedDeckModalComponent } from '../preconstructed-deck-modal/preconstructed-deck-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
@@ -75,6 +76,23 @@ export class CollectionComponent implements OnInit {
       size: 'xl',
       centered: true,
     })
+  }
+
+  onAddPreconstructedDeck() {
+    this.modalService
+      .open(PreconstructedDeckModalComponent, {
+        size: 'lg',
+        centered: true,
+      })
+      .closed.pipe(
+        untilDestroyed(this),
+        tap((result) => {
+          if (result) {
+            this.collectionService.setPage(0)
+          }
+        }),
+      )
+      .subscribe()
   }
 
   onImport() {

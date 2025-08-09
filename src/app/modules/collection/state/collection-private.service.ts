@@ -113,6 +113,18 @@ export class CollectionPrivateService extends CollectionService {
     )
   }
 
+  addCardsBulk(cards: ApiCollectionCard[]): Observable<ApiCollectionCard[]> {
+    this.collectionStore.setLoadingBackground(true)
+    return this.collectionApiDataService.addCardsBulk(cards).pipe(
+      tap(({ cards, deletedIds }) => {
+        deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
+        cards.forEach((card) => this.collectionStore.addEntity(card))
+      }),
+      map(({ cards }) => cards),
+      finalize(() => this.collectionStore.setLoadingBackground(false)),
+    )
+  }
+
   updateCard(card: ApiCollectionCard): Observable<ApiCollectionCard> {
     this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.updateCard(card).pipe(

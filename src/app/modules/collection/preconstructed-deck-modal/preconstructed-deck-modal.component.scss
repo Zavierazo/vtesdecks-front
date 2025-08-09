@@ -1,0 +1,122 @@
+.deck-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px; // Space for scrollbar
+}
+
+.card {
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .card-body {
+    .d-flex {
+      &.justify-content-between {
+        // Desktop layout
+        @media (min-width: 768px) {
+          .flex-grow-1 {
+            min-width: 0; // Allow flex item to shrink below its content size
+            overflow: hidden; // Prevent content from overflowing
+          }
+
+          .ms-3 {
+            flex-shrink: 0; // Prevent the button area from shrinking
+            min-width: 200px; // Ensure minimum width for the button
+          }
+        }
+
+        // Mobile layout - stack vertically
+        @media (max-width: 767px) {
+          flex-direction: column;
+          align-items: stretch !important;
+
+          .flex-grow-1 {
+            width: 100%;
+            margin-bottom: 1rem;
+          }
+
+          .ms-3 {
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+            width: 100%;
+
+            .input-group {
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.vtes-small {
+  font-size: 1rem;
+  margin-right: 0.125rem;
+}
+
+.icons-container {
+  .d-flex.flex-wrap {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+.total-count {
+  font-size: 0.875rem;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+// Styling for the unified input-button group
+.input-group {
+  .form-control {
+    text-align: center;
+    font-weight: 500;
+    border-right: none;
+    border-color: var(--bs-primary);
+
+    &:focus {
+      border-color: var(--bs-primary);
+      box-shadow: none;
+      z-index: 3;
+    }
+
+    &:disabled {
+      background-color: var(--bs-gray-100);
+      border-color: var(--bs-gray-300);
+    }
+
+    &.copies-input {
+      width: 55px;
+      max-width: 55px;
+
+      // In mobile, make input more proportional
+      @media (max-width: 767px) {
+        width: 60px;
+        max-width: 60px;
+      }
+    }
+  }
+
+  .btn-primary {
+    border-left: none;
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+    }
+
+    // In mobile, make button text smaller if needed
+    @media (max-width: 576px) {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+    }
+  }
+
+  // Ensure no gap between input and button
+  .form-control + .btn {
+    margin-left: -1px;
+  }
+}

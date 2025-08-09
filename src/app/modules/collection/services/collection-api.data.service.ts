@@ -96,6 +96,29 @@ export class CollectionApiDataService {
       )
   }
 
+  addCardsBulk(
+    cards: ApiCollectionCard[],
+  ): Observable<{ cards: ApiCollectionCard[]; deletedIds: number[] }> {
+    return this.httpClient
+      .post<
+        ApiCollectionCard[]
+      >(`${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/bulk`, cards, { observe: 'response' })
+      .pipe(
+        map((response: HttpResponse<ApiCollectionCard[]>) => {
+          const deletedHeader = response.headers.get('X-Card-Deleted')
+          const deletedIds =
+            deletedHeader
+              ?.split(',')
+              .map((id) => Number(id))
+              .filter((id) => !isNaN(id)) ?? []
+          return {
+            cards: response.body!,
+            deletedIds,
+          }
+        }),
+      )
+  }
+
   updateCard(
     card: ApiCollectionCard,
   ): Observable<{ card: ApiCollectionCard; deletedIds: number[] }> {

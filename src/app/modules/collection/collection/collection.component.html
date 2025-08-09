@@ -7,6 +7,11 @@
         {{ t('add_card') }}
       </button>
 
+      <button class="btn text-primary" (click)="onAddPreconstructedDeck()">
+        <i class="bi bi-collection"></i>
+        {{ t('add_preconstructed_deck') }}
+      </button>
+
       <div ngbDropdown class="d-inline-block">
         <button class="btn text-primary" id="bindersMenuButton" ngbDropdownToggle>
           <i class="bi bi-archive"></i>

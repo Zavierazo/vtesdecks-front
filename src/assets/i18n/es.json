@@ -760,6 +760,13 @@
     "keep_language_bulk": "Mantener idioma actual",
     "tracker_collection": "Encontrado en Colección",
     "tracker_decks": "Necesario para Mazos (Todos)",
-    "tracker_decks_tracked": "Necesario para Mazos (Rastreados)"
+    "tracker_decks_tracked": "Necesario para Mazos (Rastreados)",
+    "add_preconstructed_deck": "Añadir Mazo Preconstruido",
+    "preconstructed_deck_description": "Selecciona un mazo preconstruido para añadir todas sus cartas a tu colección.",
+    "no_preconstructed_decks_found": "No se encontraron mazos preconstruidos.",
+    "deck_cards_added_successfully": "Se añadieron {{ cardCount }} cartas de \"{{ deckName }}\" a tu colección exitosamente.",
+    "number_of_copies": "Número de copias",
+    "total_decks": "{{ total }} mazos encontrados",
+    "cards": "cartas"
   }
 }
