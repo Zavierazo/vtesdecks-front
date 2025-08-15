@@ -251,7 +251,10 @@
     "name": "Nombre",
     "author": "Autor",
     "card_text": "Texto de la carta",
-    "limited_format": "Formato Limitado"
+    "limited_format": "Formato Limitado",
+    "collection_tracker": "Rastreador de Colección",
+    "filter_by_collection": "Filtrar por Colección",
+    "deck_completion": "Cartas en Colección (%)"
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
@@ -302,6 +305,7 @@
     "see_more": "Ver más...",
     "patreon": "Apoya en Patreon",
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
+    "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️.",
     "contact_support": "Contactar Soporte",
     "whats_new": "Novedades {{ date }}",
     "new": "Nuevo"
