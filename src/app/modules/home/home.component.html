@@ -25,7 +25,7 @@
           <p class="lead mb-4 text-center">{{ t('welcome_subtitle') }}</p>
           <div class="hero-actions">
             <div class="row g-3 justify-content-center">
-              <div class="col-6 col-md-4 col-lg-3">
+              <div class="col-6 col-md-4">
                 <a routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT' }" class="hero-card bg-primary text-white">
                   <i class="bi bi-award"></i>
                   <span>{{ t('tournament_decks') }}</span>
@@ -34,7 +34,7 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3">
+              <div class="col-6 col-md-4">
                 <a routerLink="/decks" [queryParams]="{ type: 'COMMUNITY' }" class="hero-card bg-primary text-white">
                   <i class="bi bi-people"></i>
                   <span>{{ t('community_decks') }}</span>
@@ -43,7 +43,7 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3">
+              <div class="col-6 col-md-4">
                 <a routerLink="/decks" [queryParams]="{ type: 'PRECONSTRUCTED' }"
                   class="hero-card bg-primary text-white">
                   <i class="bi bi-bag"></i>
@@ -53,22 +53,26 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3">
-                <ng-template #deckBuilderCard>
+              <div class="col-6 col-md-3" *isLogged="true">
+                <a routerLink="/decks/builder" class="text-decoration-none">
                   <div class="hero-card bg-success text-white">
                     <i class="bi bi-magic"></i>
                     <span>{{ t('deck_builder') }}</span>
                   </div>
-                </ng-template>
-                <a routerLink="/decks/builder" class="text-decoration-none" *isLogged="true">
-                  <ng-container *ngTemplateOutlet="deckBuilderCard"></ng-container>
                 </a>
-                <span class="text-decoration-none" href="javascript:void(0)" (click)="openLoginModal()"
-                  *isLogged="false">
-                  <ng-container *ngTemplateOutlet="deckBuilderCard"></ng-container>
-                </span>
               </div>
-              <div class="col-6 col-md-4 col-lg-3" *isLogged="true">
+              <div class="col-6 col-md-3" *isLogged="true">
+                <a routerLink="/collection" class="position-relative hero-card bg-success text-white">
+                  <span
+                    class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fw-semibold"
+                    style="z-index: 2; font-size: 0.75rem;">
+                    <i class="bi bi-fs-sm bi-stars" style="font-size: 0.75rem;"></i> {{ t('new') }}
+                  </span>
+                  <i class="bi bi-collection-fill"></i>
+                  <span>{{ 'shared.collection' | transloco }}</span>
+                </a>
+              </div>
+              <div class="col-6 col-md-3" *isLogged="true">
                 <a routerLink="/decks" [queryParams]="{ type: 'USER' }" class="hero-card bg-success text-white">
                   <i class="bi bi-stack"></i>
                   <span>{{ t('user_decks') }}</span>
@@ -77,7 +81,7 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3" *isLogged="true">
+              <div class="d-none d-md-block col-6 col-md-3" *isLogged="true">
                 <a routerLink="/decks" [queryParams]="{ favorite: true }" class="hero-card bg-success text-white">
                   <i class="bi bi-bookmark-star"></i>
                   <span>{{ t('bookmarked_decks') }}</span>
@@ -86,13 +90,15 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3">
+            </div>
+            <div class="mt-1 row g-3 justify-content-center">
+              <div class="col-6 col-md-4">
                 <a routerLink="/cards/crypt" class="hero-card bg-secondary text-white">
                   <i class="bi bi-file-person"></i>
                   <span>{{ 'shared.crypt' | transloco }}</span>
                 </a>
               </div>
-              <div class="col-6 col-md-4 col-lg-3">
+              <div class="col-6 col-md-4">
                 <a routerLink="/cards/library" class="hero-card bg-secondary text-white">
                   <i class="bi bi-file-richtext"></i>
                   <span>{{ 'shared.library' | transloco }}</span>
@@ -105,7 +111,7 @@
     </div>
 
     <!-- Buy me a coffee button -->
-    <div class="container text-center mt-5">
+    <div class="container text-center mt-5" *appIsSupporter="false">
       <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
         class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -118,6 +124,11 @@
         {{ t('patreon') }}
       </a>
       <p class="text-center mt-2 h6" [innerHTML]="t('patreon_message')">
+      </p>
+    </div>
+    <div class="container text-center mt-5" *appIsSupporter="true">
+
+      <p class="text-center mt-2 h6" [innerHTML]="t('patreon_supporter_message')">
       </p>
     </div>
   </section>

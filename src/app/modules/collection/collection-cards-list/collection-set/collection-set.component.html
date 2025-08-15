@@ -1,0 +1,12 @@
+@if(set() | cardSet | async; as set){
+<span class="badge text-bg-secondary" [ngbTooltip]="setContent" triggers="mouseenter:mouseleave" container="body">
+  {{ set.abbrev }}
+</span>
+<ng-template #setContent>
+  <strong>{{ set.fullName }} @if(set.releaseDate){- {{ set.releaseDate | date:'yyyy' }}}</strong>
+</ng-template>
+}@else if(set()){
+<span class="badge text-bg-secondary">
+  {{ set() }}
+</span>
+}

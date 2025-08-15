@@ -1,0 +1,14 @@
+@if(binderId() | binder | async; as binder) {
+<a type="button" class="btn text-secondary" style="--bs-btn-padding-y: 0rem; --bs-btn-padding-x: 0rem;"
+  [ngbTooltip]="binderContent" triggers="mouseenter:mouseleave" container="body"
+  [routerLink]="'/collection/binders/' + binder.id">
+  @if(binder.icon){
+  <i class="vtes-small {{ binder.icon }}"></i>
+  }@else{
+  <i class="bi bi-check-circle"></i>
+  }
+</a>
+<ng-template #binderContent>
+  {{ binder.name }}
+</ng-template>
+}

@@ -135,6 +135,12 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('event')?.patchValue('any', { emitEvent: false })
     this.filterForm.get('tags')?.patchValue('', { emitEvent: false })
     this.filterForm.get('favorite')?.patchValue(false, { emitEvent: false })
+    this.filterForm
+      .get('collectionTracker')
+      ?.patchValue(false, { emitEvent: false })
+    this.filterForm
+      .get('collectionPercentage')
+      ?.patchValue(100, { emitEvent: false })
     this.clans = []
     this.disciplines = []
     this.cardFilter().reset()
@@ -179,6 +185,9 @@ export class DeckFiltersComponent implements OnInit {
   }
   get customProportion(): boolean {
     return this.filterForm.get('customProportion')?.value
+  }
+  get collectionTracker(): boolean {
+    return this.filterForm.get('collectionTracker')?.value
   }
 
   getProportionValue(name: string): string {
@@ -244,6 +253,13 @@ export class DeckFiltersComponent implements OnInit {
     this.listenAndNavigateString(this.filterForm, 'event', 'any')
     this.listenAndNavigateString(this.filterForm, 'tags', '')
     this.listenAndNavigateBoolean(this.filterForm, 'favorite', false)
+    this.listenAndNavigateCollectionTracker()
+    this.listenAndNavigateSimpleSlider(
+      this.filterForm,
+      'collectionPercentage',
+      100,
+      500,
+    )
   }
 
   private listenAndNavigateString(
@@ -310,6 +326,36 @@ export class DeckFiltersComponent implements OnInit {
     formGroup.addControl(name, formControl)
   }
 
+  private listenAndNavigateSimpleSlider(
+    formGroup: FormGroup,
+    name: string,
+    initialValue: number,
+    debounce = 0,
+    navigate = true,
+  ) {
+    const formControl = new FormControl(
+      this.decksQuery.getParam(name) ?? initialValue,
+    )
+    if (navigate) {
+      formControl.valueChanges
+        .pipe(
+          untilDestroyed(this),
+          debounceTime(debounce),
+          tap((value) =>
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: {
+                [name]: value > 0 ? value : undefined,
+              },
+              queryParamsHandling: 'merge',
+            }),
+          ),
+        )
+        .subscribe()
+    }
+    formGroup.addControl(name, formControl)
+  }
+
   private listenAndNavigateBoolean(
     formGroup: FormGroup,
     name: string,
@@ -361,7 +407,7 @@ export class DeckFiltersComponent implements OnInit {
 
   onSelectTagItem(
     selectItemEvent: NgbTypeaheadSelectItemEvent<string>,
-    input: any,
+    input: HTMLInputElement,
   ) {
     selectItemEvent.preventDefault()
     input.value = ''
@@ -391,5 +437,32 @@ export class DeckFiltersComponent implements OnInit {
   get tags(): string[] {
     const value = this.filterForm.get('tags')?.value
     return value && value !== '' ? value.split(',') : []
+  }
+
+  private listenAndNavigateCollectionTracker() {
+    const formControl = new FormControl(
+      this.decksQuery.getParam('collectionPercentage') ?? false,
+    )
+
+    formControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          // When enabling collection tracker, set completion to 100%
+          if (value) {
+            this.filterForm
+              .get('collectionPercentage')
+              ?.patchValue(100, { emitEvent: true })
+          } else {
+            // When disabling, reset to full range
+            this.filterForm
+              .get('collectionPercentage')
+              ?.patchValue(0, { emitEvent: true })
+          }
+        }),
+      )
+      .subscribe()
+
+    this.filterForm.addControl('collectionTracker', formControl)
   }
 }

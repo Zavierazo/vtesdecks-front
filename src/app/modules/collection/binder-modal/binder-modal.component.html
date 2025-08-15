@@ -1,0 +1,71 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('binder') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formBinder">
+      <div class="mb-3">
+        <label for="binderName" class="form-label">{{ t('name') }}</label>
+        <input id="binderName" type="text" class="form-control" formControlName="name" />
+        @if (binderName.invalid && (binderName.dirty || binderName.touched)) {
+        <div>
+          @if (binderName.errors?.['required']) {
+          <div class="invalid-feedback d-block">
+            <i class="bi bi-x-circle-fill"></i>
+            {{ 'shared.field_required' | transloco: { field: t('name') } }}
+          </div>
+          }
+          @if (binderName.errors?.['minlength']) {
+          <div class="invalid-feedback d-block">
+            <i class="bi bi-x-circle-fill"></i>
+            {{ t('must_3_characters') }}
+          </div>
+          }
+        </div>
+        }
+      </div>
+      <div class="input-group mb-3">
+        <label for="binderIcon" class="input-group-text">
+          @if(formBinder.value.icon) {
+          <i [class]="'vtes ' + formBinder.value.icon"></i>
+          }@else{
+          {{ t('icon') }}
+          }
+        </label>
+        <select id="binderIcon" class="form-select" formControlName="icon">
+          <option value="">--</option>
+          @for(type of types; track type.icon) {
+          <option [value]="type.icon">{{ type.name }}</option>
+          }
+          @for(discipline of disciplines; track discipline.icon) {
+          <option [value]="discipline.icon">{{ discipline.name }}</option>
+          }
+          @for(clan of clans; track clan.icon) {
+          <option [value]="clan.icon">{{ clan.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="binderPublicVisibility" class="form-label">{{ t('visibility') }}</label>
+        <select id="binderPublicVisibility" class="form-select" formControlName="publicVisibility">
+          <option [ngValue]="false">{{ t('private') }}</option>
+          <option [ngValue]="true">{{ t('public') }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="binderDescription" class="form-label">{{ t('description') }}</label>
+        <textarea id="binderDescription" class="form-control" formControlName="description"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="loading$ | async">
+      {{ t('save') }}
+    </button>
+  </div>
+</ng-container>

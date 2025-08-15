@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,6 +19,7 @@ import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.comp
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoginComponent } from '../../shared/components/login/login.component'
 import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
+import { IsSupporterDirective } from '../../shared/directives/is-supporter.directive'
 import { AuthQuery } from '../../state/auth/auth.query'
 import { HomeSectionComponent } from './home-section/home-section.component'
 
@@ -34,10 +34,10 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     RouterLink,
     AnimatedDigitComponent,
     IsLoggedDirective,
-    NgTemplateOutlet,
     HomeSectionComponent,
     TranslocoPipe,
     AdSenseComponent,
+    IsSupporterDirective,
   ],
 })
 export class HomeComponent implements OnInit {

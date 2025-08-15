@@ -318,9 +318,14 @@ export class CryptBuilderComponent implements OnInit {
   }
 
   getCard(card: ApiCrypt): ApiCard {
+    const number = this.deckBuilderQuery.getCardNumber(card.id)
     return {
       id: card.id,
-      number: this.deckBuilderQuery.getCardNumber(card.id),
+      number,
+      collection:
+        number > 0
+          ? this.deckBuilderQuery.getCardCollection(card.id, number)
+          : undefined,
     } as ApiCard
   }
 
@@ -330,10 +335,6 @@ export class CryptBuilderComponent implements OnInit {
 
   removeCard(id: number) {
     this.deckBuilderService.removeCard(id)
-  }
-
-  trackByFn(_: number, item: ApiCrypt) {
-    return item.id
   }
 
   translateGroupSlider(value: number): string {

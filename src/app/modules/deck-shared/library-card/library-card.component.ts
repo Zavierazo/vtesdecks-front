@@ -20,8 +20,8 @@ import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { ApiDataService } from '../../../services/api.data.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { AuthQuery } from '../../../state/auth/auth.query'
 import { Shop, getShop } from '../../../utils/shops'
+import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 import { ApiLibrary } from './../../../models/api-library'
@@ -45,11 +45,11 @@ import { MediaService } from './../../../services/media.service'
     TranslocoPipe,
     CurrencyPipe,
     CardImagePipe,
+    CollectionCardStatsComponent,
   ],
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
   modal = inject(NgbActiveModal)
-  private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
   private readonly mediaService = inject(MediaService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
@@ -59,7 +59,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   isMobile$!: Observable<boolean>
   krcgCard$!: Observable<ApiKrcgCard>
   preconstructedDecks$!: Observable<ApiDecks>
-  myDecks$!: Observable<ApiDecks>
   shops$!: Observable<ApiShop[]>
   defaultTouch = { x: 0, y: 0, time: 0 }
   activeSet?: string
@@ -70,7 +69,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
-    this.fetchMyDecks()
     // Push fake state to capture dismiss modal on back button
     history.pushState(
       {
@@ -127,7 +125,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
-    this.fetchMyDecks()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
@@ -143,7 +140,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchRulings()
     this.fetchShops()
     this.fetchPreconstructedDecks()
-    this.fetchMyDecks()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
@@ -175,19 +171,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
         cards: `${this.cardList[this.index].id}=1`,
       })
       .pipe(untilDestroyed(this))
-  }
-
-  private fetchMyDecks(): void {
-    if (this.authQuery.isAuthenticated()) {
-      this.myDecks$ = this.apiDataService
-        .getDecks(0, 10, {
-          type: 'USER',
-          cards: `${this.cardList[this.index].id}=1`,
-        })
-        .pipe(untilDestroyed(this))
-    } else {
-      this.myDecks$ = EMPTY
-    }
   }
 
   setActiveSet(set?: string) {

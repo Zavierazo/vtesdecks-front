@@ -1,0 +1,89 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('add_preconstructed_deck') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <p class="text-muted mb-3">{{ t('preconstructed_deck_description') }}</p>
+
+    <div class="total-count mb-3">
+      <small class="text-muted">
+        {{ t('total_decks', { total: total$ | async }) }}
+      </small>
+    </div>
+
+    <div class="deck-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100"
+      [scrollWindow]="false" (scrolled)="onScroll()">
+      @if (decks$ | async; as decks) {
+      @if (decks.length === 0 && (isLoading$ | async) === false) {
+      <div class="text-center p-4">
+        <p class="text-muted">{{ t('no_preconstructed_decks_found') }}</p>
+      </div>
+      } @else {
+      @for (deck of decks; track deck.id) {
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <a [routerLink]="['/deck/', deck.id]" target="_blank">
+                <h5 class="card-title mb-2">{{ deck.name }}</h5>
+              </a>
+              <div class="text-muted small mb-2">
+                <span>{{ deck.stats.crypt + deck.stats.library }} {{ t('cards') }}</span>
+                @if (deck.set) {
+                <span class="ms-2">• {{ deck.set }}</span>
+                }
+                @if (deck.year) {
+                <span class="ms-2">• {{ deck.year }}</span>
+                }
+              </div>
+              @if (deck.description) {
+              <p class="card-text text-muted">{{ deck.description }}</p>
+              }
+              <div class="icons-container">
+                <div class="d-flex flex-wrap gap-1 mb-2">
+                  @for (icon of deck.clanIcons; track icon) {
+                  <i class="vtes-small {{ icon }}"></i>
+                  }
+                  @for (icon of deck.disciplineIcons; track icon) {
+                  <i class="vtes-small {{ icon }}"></i>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="ms-3">
+              <div class="input-group">
+                <input type="number" class="form-control copies-input" [formControl]="getDeckCopiesControl(deck.id)"
+                  min="1" max="9" title="{{ t('number_of_copies') }}" [disabled]="(addingCards$ | async) ?? false">
+                <button type="button" class="btn btn-primary" [disabled]="(addingCards$ | async) ?? false"
+                  (click)="onAddDeckToCollection(deck)">
+                  @if (addingCards$ | async) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  }
+                  {{ t('add_to_collection') }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
+      }
+
+      @if (isLoading$ | async) {
+      <div class="d-flex justify-content-center p-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+  </div>
+</ng-container>
