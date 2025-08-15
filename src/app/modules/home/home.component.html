@@ -111,7 +111,7 @@
     </div>
 
     <!-- Buy me a coffee button -->
-    <div class="container text-center mt-5">
+    <div class="container text-center mt-5" *appIsSupporter="false">
       <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
         class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -124,6 +124,11 @@
         {{ t('patreon') }}
       </a>
       <p class="text-center mt-2 h6" [innerHTML]="t('patreon_message')">
+      </p>
+    </div>
+    <div class="container text-center mt-5" *appIsSupporter="true">
+
+      <p class="text-center mt-2 h6" [innerHTML]="t('patreon_supporter_message')">
       </p>
     </div>
   </section>

@@ -17,6 +17,12 @@ export class AuthQuery {
     return this.store.select((user: ApiUser) => !!user.token)
   }
 
+  selectSupporter(): Observable<boolean> {
+    return this.store.select((user: ApiUser) =>
+      user.roles?.includes('supporter'),
+    )
+  }
+
   selectAdmin(): Observable<boolean> {
     return this.store.select((user: ApiUser) => Boolean(user.admin))
   }
