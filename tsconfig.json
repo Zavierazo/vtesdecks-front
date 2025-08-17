@@ -23,6 +23,11 @@
       "dom",
       "ES2021.String"
     ],
+    "paths": {
+      "chart.js/dist/types/utils": [
+        "node_modules/chart.js/dist/types/utils.d.ts"
+      ]
+    },
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
