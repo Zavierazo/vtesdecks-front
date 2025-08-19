@@ -2,8 +2,13 @@
 @if(releaseYear){
 <span>-&nbsp;{{ releaseYear }}</span>
 }
-@if( proxySetOption$ | async; as proxySetOption){ <img [ngClass]="{
+@if(!imageError){
+<img #image [ngClass]="{
   'set-img-popover': !(isMobile$ | async)!,
   'set-img-popover-mobile': (isMobile$ | async)!
-}" [src]="proxySetOption.imageUrl" [alt]="proxySetOption.setName" />
+}" [src]="{id: cardId } | cardImage:set" [alt]="name" (error)="imageError = true" (load)="imageError = false" />
+}@else{
+<div class="text-center text-warning small mb-2">
+  {{ 'deck_shared.set_image_not_available' | transloco }}
+</div>
 }

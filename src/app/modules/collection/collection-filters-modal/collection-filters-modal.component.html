@@ -1,0 +1,49 @@
+<ng-container *transloco="let t; read: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('filters') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    @if(form){
+    <form [formGroup]="form">
+      <!-- Type Filter -->
+      <div class="mb-3">
+        <div class="form-label">{{ t('card_type') }}</div>
+        <app-library-type-filter [types]="typeControl.value" (typesChange)="typeControl.setValue($event)">
+        </app-library-type-filter>
+      </div>
+
+      <!-- Clan Filter -->
+      <div class="mb-3">
+        <div class="form-label">{{ t('clans') }}</div>
+        <app-clan-filter [clans]="clanControl.value" (clansChange)="clanControl.setValue($event)"
+          [showNotRequired]="true">
+        </app-clan-filter>
+      </div>
+
+      <!-- Discipline Filter -->
+      <div class="mb-3">
+        <div class="form-label">{{ t('disciplines') }}</div>
+        <app-discipline-filter [disciplines]="disciplineControl.value"
+          (disciplinesChange)="disciplineControl.setValue($event)" [showNotRequired]="true" [showSuperior]="false">
+        </app-discipline-filter>
+      </div>
+    </form>
+    }
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onClear()">
+      {{ t('clear_filters') }}
+    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onApply()">
+      {{ t('apply_filters') }}
+    </button>
+  </div>
+</ng-container>

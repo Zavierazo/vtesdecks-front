@@ -59,9 +59,6 @@
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="set" [formControl]="setControl">
       <option selected></option>
-      <option value="POD">
-        {{ t('print_on_demand') }}
-      </option>
       @for (set of (sets$ | async); track set) {
       <option [value]="set.abbrev">
         {{ set.fullName }}

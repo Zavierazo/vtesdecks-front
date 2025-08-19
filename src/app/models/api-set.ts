@@ -5,7 +5,7 @@ export interface ApiSet {
   abbrev: string
   releaseDate?: Date
   fullName: string
-  company: string
-  icon: string
+  company?: string
+  icon?: string
   lastUpdate: Date
 }

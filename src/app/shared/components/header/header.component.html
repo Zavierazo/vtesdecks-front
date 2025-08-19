@@ -34,6 +34,11 @@
           <a class="nav-link" routerLink="/decks/builder" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('builder') }}</a>
         </li>
+        <li class="nav-item" *isLogged="true">
+          <a class="nav-link" routerLink="/collection" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+            {{ t('collection') }}
+          </a>
+        </li>
         <li ngbDropdown class="nav-item" display="dynamic">
           <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownTools" role="button"
             aria-expanded="false">
@@ -52,15 +57,13 @@
               gaEvent="referral" gaCategory="vtesdle">
               VTESDLE
             </a>
+            <a ngbDropdownItem routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+              {{ t('statistics') }}
+            </a>
             <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
               {{ t('table_seating') }}
             </button>
           </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
-            {{ t('statistics') }}
-          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact" [routerLinkActive]="['active']" (click)="isCollapsed = true">

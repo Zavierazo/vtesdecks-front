@@ -4,6 +4,9 @@ export const FILTER_BINDER = 'binderId'
 export const FILTER_CARD_ID = 'cardId'
 export const FILTER_CARD_NAME = 'cardName'
 export const FILTER_GROUP_BY = 'groupBy'
+export const FILTER_TYPES = 'cardTypes'
+export const FILTER_CLANS = 'cardClans'
+export const FILTER_DISCIPLINES = 'cardDisciplines'
 
 export interface ApiCollectionCard {
   id?: number

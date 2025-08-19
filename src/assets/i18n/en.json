@@ -173,13 +173,11 @@
     "buy": "Buy this card on {{ name }}",
     "previous_card": "Previous Card",
     "next_card": "Next Card",
-    "print_on_demand": "Print on Demand",
-    "promo": "Promo",
     "private_deck": "Private Deck",
     "restore_deck": "Restore Deck",
     "print": "Print",
     "my_decks": "Where have I used it?",
-    "set_image_not_available": "Set image not available, using default image",
+    "set_image_not_available": "Set image not available",
     "my_collection": "How many do I own?",
     "view_collection": "View in Collection",
     "tracked_collection": "Tracked in Collection"
@@ -270,6 +268,7 @@
     "crypt": "Crypt",
     "library": "Library",
     "builder": "Builder",
+    "collection": "Collection",
     "tools": "Tools",
     "table_seating": "Table Seating",
     "contact": "Contact",
@@ -773,6 +772,16 @@
     "deck_cards_added_successfully": "Successfully added {{ cardCount }} cards from \"{{ deckName }}\" to your collection.",
     "number_of_copies": "Number of copies",
     "total_decks": "{{ total }} decks found",
-    "cards": "cards"
+    "cards": "cards",
+    "type": "Type",
+    "clan": "Clan",
+    "discipline": "Discipline",
+    "filters": "Filters",
+    "clear_filters": "Clear Filters",
+    "active_filters": "Active filters",
+    "apply_filters": "Apply Filters",
+    "card_type": "Types",
+    "clans": "Clans",
+    "disciplines": "Disciplines"
   }
 }

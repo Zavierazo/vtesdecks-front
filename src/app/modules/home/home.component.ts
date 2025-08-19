@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit {
           tap((changelogs) => {
             if (changelogs && changelogs.length > 0) {
               const appVersionSplit = this.appVersion.split('.')
-              let entry = changelogs.find((changelog) => {
+              const entry = changelogs.find((changelog) => {
                 const versionSplit = changelog.version.split('.')
                 return (
                   versionSplit[0] === appVersionSplit[0] &&
@@ -74,11 +74,8 @@ export class HomeComponent implements OnInit {
                 )
               })
               if (entry) {
-                const lastVersionSeenSplit = lastAppVersionSeen?.split('.')
                 this.changelogAlert = entry
-                this.showChangelogAlert =
-                  appVersionSplit[0] !== lastVersionSeenSplit?.[0] ||
-                  appVersionSplit[1] !== lastVersionSeenSplit?.[1]
+                this.showChangelogAlert = this.appVersion !== lastAppVersionSeen
                 this.changeDetector.markForCheck()
               }
             }

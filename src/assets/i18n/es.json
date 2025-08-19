@@ -173,13 +173,11 @@
     "buy": "Compra esta carta en {{ name }}",
     "previous_card": "Carta anterior",
     "next_card": "Carta siguiente",
-    "print_on_demand": "Impresión bajo demanda",
-    "promo": "Promo",
     "private_deck": "Mazo Privado",
     "restore_deck": "Restaurar mazo",
     "print": "Imprimir",
     "my_decks": "¿En qué mazos la utilizo?",
-    "set_image_not_available": "Imagen de la expansion no disponible, utilizando imagen por defecto",
+    "set_image_not_available": "Imagen de la expansion no disponible",
     "my_collection": "¿Cuántas tengo?",
     "view_collection": "Ver en Colección",
     "tracked_collection": "Rastreado en Colección"
@@ -270,6 +268,7 @@
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
+    "collection": "Colección",
     "tools": "Herramientas",
     "table_seating": "Asignación de asientos",
     "contact": "Contacto",
@@ -771,6 +770,16 @@
     "deck_cards_added_successfully": "Se añadieron {{ cardCount }} cartas de \"{{ deckName }}\" a tu colección exitosamente.",
     "number_of_copies": "Número de copias",
     "total_decks": "{{ total }} mazos encontrados",
-    "cards": "cartas"
+    "cards": "cartas",
+    "type": "Tipo",
+    "clan": "Clan",
+    "discipline": "Disciplina",
+    "filters": "Filtros",
+    "clear_filters": "Limpiar Filtros",
+    "active_filters": "Filtros activos",
+    "apply_filters": "Aplicar Filtros",
+    "card_type": "Tipos",
+    "clans": "Clanes",
+    "disciplines": "Disciplinas"
   }
 }

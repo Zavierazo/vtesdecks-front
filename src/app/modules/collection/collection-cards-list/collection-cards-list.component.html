@@ -63,8 +63,20 @@
           }
         </div>
       </div>
+      <button type="button" class="btn" [class.btn-outline-secondary]="!hasActiveFilters"
+        [class.btn-primary]="hasActiveFilters" (click)="onOpenFilters()">
+        <i class="bi bi-funnel"></i>
+        {{ t('filters') }}
+      </button>
+      @if(hasActiveFilters) {
+      <button type="button" class="btn btn-outline-secondary" (click)="onClearFilters()">
+        <i class="bi bi-x-circle"></i>
+        {{ t('clear_filters') }}
+      </button>
+      }
+
     </div>
-    <div class="d-flex justify-content-center justify-content-md-end">
+    <div class="d-flex justify-content-center justify-content-md-end gap-2">
       <div class="col-xs-3 col-sm-auto">
         <div class="input-group">
           <input #searchInput id="search" type="text" class="form-control" [placeholder]="t('search_placeholder')"
@@ -76,6 +88,28 @@
       </div>
     </div>
   </form>
+  @if(hasActiveFilters) {
+  <div class="mt-2">
+    <small class="text-muted">
+      <strong>{{ t('active_filters') }}: </strong>
+      @if(currentFilters.types && currentFilters.types.length) {
+      <span class="badge bg-secondary me-1">
+        {{ t('card_type') }}: {{ currentFilters.types.join(', ') }}
+      </span>
+      }
+      @if(currentFilters.clans && currentFilters.clans.length) {
+      <span class="badge bg-secondary me-1">
+        {{ t('clans') }}: {{ currentFilters.clans.join(', ') }}
+      </span>
+      }
+      @if(currentFilters.disciplines && currentFilters.disciplines.length) {
+      <span class="badge bg-secondary me-1">
+        {{ t('disciplines') }}: {{ currentFilters.disciplines.join(', ') }}
+      </span>
+      }
+    </small>
+  </div>
+  }
   <hr class="my-3 text-secondary">
   <ul class="nav nav-tabs">
     <li class="nav-item cursor-pointer">

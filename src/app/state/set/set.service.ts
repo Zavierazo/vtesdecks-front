@@ -23,14 +23,4 @@ export class SetService {
       defaultIfEmpty([]),
     )
   }
-
-  getSet(abbrev: string): Observable<ApiSet | undefined> {
-    if (this.setQuery.hasEntityByAbbrev(abbrev)) {
-      return this.setQuery.selectEntityByAbbrev(abbrev)
-    } else {
-      return this.apiDataService
-        .getSet(abbrev)
-        .pipe(tap((card: ApiSet) => this.setStore.upsert(card.id, card)))
-    }
-  }
 }

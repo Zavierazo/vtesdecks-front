@@ -373,17 +373,6 @@ export class ApiDataService {
     )
   }
 
-  getSet(abbrev: string): Observable<ApiSet> {
-    return this.httpClient.get<ApiSet>(
-      `${environment.api.baseUrl}${this.setsPath}`,
-      {
-        params: {
-          abbrev,
-        },
-      },
-    )
-  }
-
   getSetLastUpdate(): Observable<ApiSet> {
     return this.httpClient.get<ApiSet>(
       `${environment.api.baseUrl}${this.setsPath}/lastUpdate`,
@@ -478,12 +467,6 @@ export class ApiDataService {
       `${environment.api.baseUrl}${this.proxyPath}`,
       request,
       { responseType: 'blob' },
-    )
-  }
-
-  getProxyOption(id: number, set: string): Observable<ApiProxyCardOption> {
-    return this.httpClient.get<ApiProxyCardOption>(
-      `${environment.api.baseUrl}${this.proxyOptionsPath}${id}/${set}`,
     )
   }
 
