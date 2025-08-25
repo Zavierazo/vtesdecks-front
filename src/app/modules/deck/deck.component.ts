@@ -135,6 +135,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isMobileOrTablet$!: Observable<boolean>
 
+  isAdmin$!: Observable<boolean>
+
   isBookmarked = false
 
   isRated = false
@@ -148,6 +150,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
     this.userDisplayName$ = this.authQuery.selectDisplayName()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
+    this.isAdmin$ = this.authQuery.selectAdmin()
     this.deck$ = this.deckQuery.selectDeck().pipe(
       untilDestroyed(this),
       tap((deck) => {

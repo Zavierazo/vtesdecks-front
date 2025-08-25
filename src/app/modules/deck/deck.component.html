@@ -123,6 +123,11 @@
                     <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
                   </button>
                   }
+                  @if(!deck.owner && (isAdmin$ | async)!){
+                  <a class="btn btn-danger" [routerLink]="'/decks/builder'" [queryParams]="{id:deck.id }">
+                    <i class="bi bi-pencil-square me-2"></i>{{ t('edit_as_admin') }}
+                  </a>
+                  }
                   <button class="btn" [ngClass]="{
                       'btn-outline-primary': !collectionTracker,
                       'btn-primary': collectionTracker

@@ -397,10 +397,10 @@ export class DeckFiltersComponent implements OnInit {
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map((term) =>
         term === ''
-          ? this.availableTags.slice(0, 10)
+          ? this.availableTags.slice(0, 100)
           : this.availableTags
               .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+              .slice(0, 100),
       ),
     )
   }

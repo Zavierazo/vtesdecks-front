@@ -112,6 +112,7 @@
     "export": "Exportar",
     "draw": "Draw",
     "edit": "Editar",
+    "edit_as_admin": "Editar (como Admin)",
     "similar_decks": "Baralhos Parecidos",
     "collection_tracker": "Rastreador de Coleção"
   },

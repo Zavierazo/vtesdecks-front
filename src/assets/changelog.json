@@ -1,5 +1,18 @@
 [
   {
+    "version": "2.50.0",
+    "date": "25th August, 2025",
+    "changes": [
+      "New tags: Added #v5 and #2player for limited format decks, making them easier to find.",
+      "Added Strike (taint) for both Crypt and Library cards.",
+      "V5H (V5 Hecata) and V5L (V5 Lasombra) are now separated sets from the regular V5 set.",
+      "Collection Tracker: Added filters by Type, Clan, and Discipline.",
+      "Collection Tracker: Now supports Print-on-Demand (POD) sets.",
+      "Tip: Use the Collection Tracker to easily organize and monitor your cards.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.49.0",
     "date": "15th August, 2025",
     "changes": [
@@ -7,9 +20,6 @@
       "You can now import cards from preconstructed decks directly into your collection.",
       "New set added: Full Art Promo.",
       "New set added: BCP Business Cards.",
-      "Added filters by Type, Clan, and Discipline to the Collection Tracker.",
-      "The Collection Tracker now supports Print-on-Demand (POD) sets.",
-      "Tip: Use the Collection Tracker to easily organize and monitor your cards.",
       "Minor fixes and improvements."
     ]
   },

@@ -112,6 +112,7 @@
     "export": "Export",
     "draw": "Draw",
     "edit": "Edit",
+    "edit_as_admin": "Edit (as Admin)",
     "similar_decks": "Similar Decks",
     "collection_tracker": "Collection Tracker"
   },
