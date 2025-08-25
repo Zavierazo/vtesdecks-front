@@ -128,7 +128,11 @@ export class SetStore {
     if (a === b) {
       return 0
     }
-    if (order === 'asc') {
+    if (a === undefined && b !== undefined) {
+      return -1
+    } else if (a !== undefined && b === undefined) {
+      return 1
+    } else if (order === 'asc') {
       return a > b ? 1 : -1
     } else {
       return a < b ? 1 : -1

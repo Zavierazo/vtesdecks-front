@@ -158,7 +158,7 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
   query$ = this.collectionQuery.selectQuery()
   cardTypeFilter$ = this.collectionQuery.selectFilter(FILTER_CARD_TYPE)
   sets$ = this.setQuery.selectAll({
-    sortBy: 'lastUpdate',
+    sortBy: 'releaseDate',
     sortByOrder: 'desc',
   })
 

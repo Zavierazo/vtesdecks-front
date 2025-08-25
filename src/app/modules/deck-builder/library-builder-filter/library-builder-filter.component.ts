@@ -91,7 +91,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.titles$ = this.libraryQuery.selectTitles()
     this.taints$ = this.libraryQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
-      sortBy: 'lastUpdate',
+      sortBy: 'releaseDate',
       sortByOrder: 'desc',
     })
     this.initFormControls()

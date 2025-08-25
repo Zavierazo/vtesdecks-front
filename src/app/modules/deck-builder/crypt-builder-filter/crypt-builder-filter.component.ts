@@ -90,7 +90,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.sects$ = this.cryptQuery.selectSects()
     this.taints$ = this.cryptQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
-      sortBy: 'lastUpdate',
+      sortBy: 'releaseDate',
       sortByOrder: 'desc',
     })
     this.initFormControls()
