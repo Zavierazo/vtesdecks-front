@@ -215,7 +215,7 @@ export class CardModalComponent implements OnInit {
   private updateSetOptions(item: SearchCard) {
     this.setOptions$.next(
       this.setQuery
-        .getAll({ sortBy: 'lastUpdate', sortByOrder: 'desc' })
+        .getAll({ sortBy: 'releaseDate', sortByOrder: 'desc' })
         .filter((set) =>
           item.sets.some((cardSet) => cardSet.split(':')[0] === set.abbrev),
         ),
