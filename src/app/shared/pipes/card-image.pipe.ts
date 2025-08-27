@@ -8,12 +8,8 @@ export class CardImagePipe implements PipeTransform {
     set?: string,
   ): string | undefined {
     if (set) {
-      if (set.startsWith('V5L') || set.startsWith('V5H')) {
-        return `https://statics.bloodlibrary.info/img/sets/v5/${card.id}.jpg`
-      } else {
-        const setAbbrev = set.split(':')[0].toLocaleLowerCase()
-        return `https://statics.bloodlibrary.info/img/sets/${setAbbrev}/${card.id}.jpg`
-      }
+      const setAbbrev = set.split(':')[0].toLocaleLowerCase()
+      return `https://statics.bloodlibrary.info/img/sets/${setAbbrev}/${card.id}.jpg`
     } else if (card.i18n && card.i18n.image) {
       return '/assets' + card.i18n.image
     } else if (card.image) {
