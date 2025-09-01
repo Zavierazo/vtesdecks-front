@@ -9,6 +9,7 @@ import { ApiCollectionCardStats } from '../models/api-collection-card-stats'
 import { ApiComment } from '../models/api-comment'
 import { ApiContact } from '../models/api-contact'
 import { ApiCrypt } from '../models/api-crypt'
+import { ApiDeckLimitedFormat } from '../models/api-deck-limited-format'
 import { ApiDecks } from '../models/api-decks'
 import { ApiHistoricStatistic } from '../models/api-historic-statistic'
 import { ApiHome } from '../models/api-home'
@@ -54,6 +55,7 @@ export class ApiDataService {
   private readonly deckDetailPath = '/decks/'
   private readonly deckTagsPath = '/decks/tags'
   private readonly deckHomePath = '/decks/home'
+  private readonly limitedFormatsPath = '/limitedFormats'
   private readonly cardCryptPath = '/cards/crypt'
   private readonly cardCryptLastUpdatePath = '/cards/crypt/lastUpdate'
   private readonly cardCryptDetailPath = '/cards/crypt/'
@@ -394,6 +396,12 @@ export class ApiDataService {
   getDeckHome(): Observable<ApiHome> {
     return this.httpClient.get<ApiHome>(
       `${environment.api.baseUrl}${this.deckHomePath}`,
+    )
+  }
+
+  getLimitedFormats(): Observable<ApiDeckLimitedFormat[]> {
+    return this.httpClient.get<ApiDeckLimitedFormat[]>(
+      `${environment.api.baseUrl}${this.limitedFormatsPath}`,
     )
   }
 

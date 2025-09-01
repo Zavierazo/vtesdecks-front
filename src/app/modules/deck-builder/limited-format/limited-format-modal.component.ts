@@ -26,6 +26,7 @@ import {
   of,
   OperatorFunction,
   switchMap,
+  tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { ApiCrypt } from '../../../models/api-crypt'
@@ -38,8 +39,8 @@ import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { SetQuery } from '../../../state/set/set.query'
 import { toUrl } from './limited-format-utils'
-import { PREDEFINED_LIMITED_FORMATS } from './limited-format.const'
 @UntilDestroy()
 @Component({
   selector: 'app-limited-format-modal',
@@ -60,6 +61,7 @@ export class LimitedFormatModalComponent implements OnInit {
   private readonly fb = inject(FormBuilder)
   readonly activeModal = inject(NgbActiveModal)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly setQuery = inject(SetQuery)
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly mediaService = inject(MediaService)
@@ -70,7 +72,21 @@ export class LimitedFormatModalComponent implements OnInit {
   previousFormat: ApiDeckLimitedFormat | null = null
   isMobile$ = this.mediaService.observeMobile()
   formatForm: FormGroup
-  predefinedFormats = PREDEFINED_LIMITED_FORMATS
+  predefinedFormats: ApiDeckLimitedFormat[] = [
+    {
+      id: 0,
+      name: 'None',
+      sets: {},
+      allowed: {
+        crypt: {},
+        library: {},
+      },
+      banned: {
+        crypt: {},
+        library: {},
+      },
+    },
+  ]
   selectedFormat: ApiDeckLimitedFormat | null = null
   isCustomFormat = false
   availableSets: ApiSet[] = []
@@ -97,34 +113,39 @@ export class LimitedFormatModalComponent implements OnInit {
   ngOnInit(): void {
     this.initializePredefinedFormats()
     this.loadSets()
+    this.loadLimitedFormats()
   }
 
   private loadSets(): void {
-    this.apiDataService
-      .getSets()
-      .pipe(untilDestroyed(this))
-      .subscribe((sets) => {
-        this.availableSets = sets.sort((a, b) => {
-          if (!a.releaseDate) return -1
-          if (!b.releaseDate) return 1
-          return (
-            new Date(b.releaseDate).getTime() -
-            new Date(a.releaseDate).getTime()
-          )
-        })
-        this.initializeSetControls()
-        this.initializeWithFormat()
-      })
+    this.availableSets = this.setQuery.getAll({
+      sortBy: 'releaseDate',
+      sortByOrder: 'desc',
+    })
+    this.initializeSetControls()
   }
 
+  private loadLimitedFormats(): void {
+    this.apiDataService
+      .getLimitedFormats()
+      .pipe(
+        untilDestroyed(this),
+        tap((formats) => {
+          formats.forEach((format) => {
+            this.predefinedFormats.push(format)
+          })
+          this.initializeWithFormat()
+        }),
+      )
+      .subscribe()
+  }
   private initializeWithFormat(): void {
     const format = this.previousFormat
     if (!format) {
       return
     }
     if (format.id) {
-      const predefinedFormat = PREDEFINED_LIMITED_FORMATS.find(
-        (f) => f.id === format.id,
+      const predefinedFormat = this.predefinedFormats.find(
+        (f: ApiDeckLimitedFormat) => f.id === format.id,
       )
       if (predefinedFormat) {
         this.selectedFormat = predefinedFormat

@@ -15,10 +15,8 @@ import { ApiDeck } from 'src/app/models/api-deck'
 import { FILTER_GROUP_BY } from '../../models/api-collection-card'
 import { ApiCollectionPage } from '../../models/api-collection-page'
 import { ApiDeckBuilder } from '../../models/api-deck-builder'
-import { ApiDeckExtra } from '../../models/api-deck-extra'
 import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { CollectionQueryState } from '../../modules/collection/state/collection.store'
-import { PREDEFINED_LIMITED_FORMATS } from '../../modules/deck-builder/limited-format/limited-format.const'
 import { LibraryQuery } from '../library/library.query'
 import { CollectionApiDataService } from './../../modules/collection/services/collection-api.data.service'
 import { ApiDataService } from './../../services/api.data.service'
@@ -46,7 +44,7 @@ export class DeckBuilderService {
             cards: deck.cards ?? [],
             published: deck.published ?? false,
             collection: deck.collection ?? false,
-            extra: this.updatePredefinedFormat(deck.extra),
+            extra: deck.extra,
             saved: true,
           }))
           this.validateDeck()
@@ -331,19 +329,6 @@ export class DeckBuilderService {
     this.store.setLibraryErrors(libraryErrors)
 
     return isValid
-  }
-
-  private updatePredefinedFormat(
-    extra?: ApiDeckExtra,
-  ): ApiDeckExtra | undefined {
-    const formatId = extra?.limitedFormat?.id
-    if (formatId) {
-      const predefinedFormat = PREDEFINED_LIMITED_FORMATS.find(
-        (f) => f.id === formatId,
-      )
-      extra.limitedFormat = predefinedFormat
-    }
-    return extra
   }
 
   private fetchCollection(): Observable<ApiCollectionPage> {
