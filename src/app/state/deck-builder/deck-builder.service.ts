@@ -52,7 +52,7 @@ export class DeckBuilderService {
         switchMap((deck) =>
           combineLatest([
             of(deck),
-            deck.collection ? this.fetchCollection() : EMPTY,
+            deck.collection ? this.fetchCollection() : of({}),
           ]),
         ),
         map(([deck]) => deck),
@@ -71,7 +71,7 @@ export class DeckBuilderService {
       this.validateDeck()
     }
 
-    return EMPTY
+    return of({})
   }
 
   clone(): void {
