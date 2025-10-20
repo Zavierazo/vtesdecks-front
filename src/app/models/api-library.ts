@@ -8,7 +8,7 @@ export interface ApiLibrary {
   aka: string
   type: string
   clans: string[]
-  clanIcons: string[]
+  path: string
   poolCost: number
   bloodCost: number
   convictionCost: number
@@ -25,6 +25,8 @@ export interface ApiLibrary {
   trifle: boolean
   disciplines: string[]
   typeIcons: string[]
+  clanIcons: string[]
+  pathIcon: string
   disciplineIcons: string[]
   sects: string[]
   titles: string[]

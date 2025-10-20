@@ -1,5 +1,18 @@
 [
   {
+    "version": "2.51.0",
+    "date": "20th October, 2025",
+    "changes": [
+      "Add new Fifth Edition: Path of Caine cards (Sabbat V5)",
+      "Add new Fifth Edition: Path of Cathari cards (Sabbat V5)",
+      "Add new Fifth Edition: Path of Death and the Soul cards (Sabbat V5)",
+      "Add new Fifth Edition: Path of Power and the Inner Voice cards (Sabbat V5)",
+      "Added Path filter to Crypt and Library sections.",
+      "Add Path icon to Crypt and Library cards.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.50.0",
     "date": "25th August, 2025",
     "changes": [

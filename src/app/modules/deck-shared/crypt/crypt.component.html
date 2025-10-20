@@ -106,11 +106,14 @@
               {{ crypt.group === -1 ? "any" : "G"+crypt.group }}
             </span>
           </small>
-          <i class="vtes float-end" [ngClass]="crypt.clanIcon"></i>
-          @if(crypt.adv){
-          <i class="vtes float-end advanced"></i>
+          <i class="vtes float-end me-1" [ngClass]="crypt.clanIcon"></i>
+          @if(crypt.pathIcon){
+          <i class="vtes path float-end me-1" [ngClass]="crypt.pathIcon"></i>
           }
-          <span class="badge rounded-pill bg-danger float-end">
+          @if(crypt.adv){
+          <i class="vtes float-end advanced me-1"></i>
+          }
+          <span class="badge rounded-pill bg-danger me-1 float-end">
             {{ crypt.capacity }}
           </span>
         </div>

@@ -96,6 +96,7 @@ export class CryptSectionComponent implements OnInit {
   capacitySlider: number[] = [1, this.cryptQuery.getMaxCapacity()]
   title!: string
   sect!: string
+  path!: string
   set!: string
   taints: string[] = []
   cardText!: string
@@ -123,6 +124,7 @@ export class CryptSectionComponent implements OnInit {
     this.set = ''
     this.title = ''
     this.sect = ''
+    this.path = ''
     this.clans = []
     this.disciplines = []
     this.superiorDisciplines = []
@@ -218,6 +220,12 @@ export class CryptSectionComponent implements OnInit {
     this.scrollToTop()
   }
 
+  onChangePathFilter(path: string) {
+    this.path = path
+    this.initQuery()
+    this.scrollToTop()
+  }
+
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
@@ -279,6 +287,9 @@ export class CryptSectionComponent implements OnInit {
       return false
     }
     if (this.sect && entity.sect !== this.sect) {
+      return false
+    }
+    if (this.path && entity.path !== this.path) {
       return false
     }
     if (this.set) {

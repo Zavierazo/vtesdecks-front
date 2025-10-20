@@ -84,6 +84,15 @@ export class CryptQuery {
     )
   }
 
+  selectPaths(): Observable<string[]> {
+    return this.store.selectAll().pipe(
+      map((crypt) =>
+        crypt.filter((crypt) => crypt.path).map((crypt) => crypt.path),
+      ),
+      map((paths) => [...new Set(paths)].sort()),
+    )
+  }
+
   selectTaints(): Observable<string[]> {
     return this.store.selectAll().pipe(
       map((crypt) =>

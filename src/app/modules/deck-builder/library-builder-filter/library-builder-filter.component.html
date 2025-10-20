@@ -48,6 +48,18 @@
     <label for="set">{{ t('set') }}</label>
   </div>
   <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="title" [formControl]="titleControl">
+      <option selected></option>
+      <option value="none">{{ 'shared.not_required' | transloco }} </option>
+      @for (title of (titles$ | async); track title) {
+      <option [value]="title">
+        {{ title | titlecase }}
+      </option>
+      }
+    </select>
+    <label for="title">{{ t('title') }}</label>
+  </div>
+  <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="sect" [formControl]="sectControl">
       <option selected></option>
       <option value="none">{{ 'shared.not_required' | transloco }} </option>
@@ -59,17 +71,17 @@
     </select>
     <label for="sect">{{ t('sect') }}</label>
   </div>
+
   <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="title" [formControl]="titleControl">
+    <select class="form-select" id="path" [formControl]="pathControl">
       <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }} </option>
-      @for (title of (titles$ | async); track title) {
-      <option [value]="title">
-        {{ title | titlecase }}
+      @for (path of (paths$ | async); track path) {
+      <option [value]="path">
+        {{ path | titlecase }}
       </option>
       }
     </select>
-    <label for="title">{{ t('title') }}</label>
+    <label for="path">{{ t('path') }}</label>
   </div>
   <div class="row g-1 mt-2">
     <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>

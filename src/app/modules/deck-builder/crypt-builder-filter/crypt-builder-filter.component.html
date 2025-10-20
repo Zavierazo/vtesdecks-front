@@ -89,6 +89,18 @@
     </select>
     <label for="sect">{{ t('sect') }}</label>
   </div>
+
+  <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="path" [formControl]="pathControl">
+      <option selected></option>
+      @for (path of (paths$ | async); track path) {
+      <option [value]="path">
+        {{ path | titlecase }}
+      </option>
+      }
+    </select>
+    <label for="path">{{ t('path') }}</label>
+  </div>
   <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
   <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">
     @for (taint of (taints$ | async); track taint) {
