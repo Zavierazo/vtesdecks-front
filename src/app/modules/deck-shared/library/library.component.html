@@ -130,6 +130,9 @@
         @for (clanIcon of library.clanIcons; track clanIcon) {
         <i class="vtes float-end me-1" [ngClass]="clanIcon"></i>
         }
+        @if (library.pathIcon) {
+        <i class="vtes path float-end me-1" [ngClass]="library.pathIcon"></i>
+        }
       </div>
     </div>
   </a>

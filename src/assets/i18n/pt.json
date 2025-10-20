@@ -38,6 +38,7 @@
   "crypt_builder_filter": {
     "print_on_demand": "Impressão em demanda",
     "clans": "Clãs",
+    "path": "Path",
     "disciplines": "Disciplinas",
     "group": "Grupo",
     "capacity": "Capacidade",
@@ -330,6 +331,7 @@
     "type": "Tipo",
     "disciplines": "Disciplinas",
     "clans": "Clãs",
+    "path": "Path",
     "sect": "Seita",
     "title": "Título",
     "blood_cost": "Custo de Sangue",

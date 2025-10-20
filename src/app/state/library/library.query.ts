@@ -78,6 +78,17 @@ export class LibraryQuery {
     )
   }
 
+  selectPaths(): Observable<string[]> {
+    return this.store.selectAll().pipe(
+      map((library) =>
+        library
+          .filter((library) => library.path)
+          .map((library) => library.path),
+      ),
+      map((paths) => [...new Set(paths)].sort()),
+    )
+  }
+
   selectTitles(): Observable<string[]> {
     return this.store.selectAll().pipe(
       map((library) =>

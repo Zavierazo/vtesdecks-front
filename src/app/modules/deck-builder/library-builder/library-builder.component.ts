@@ -78,6 +78,7 @@ export class LibraryBuilderComponent implements OnInit {
   clans!: string[]
   disciplines!: string[]
   sect!: string
+  path!: string
   bloodCostSlider!: number[]
   poolCostSlider!: number[]
   title!: string
@@ -112,6 +113,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.clans = []
     this.title = ''
     this.sect = ''
+    this.path = ''
     this.set = ''
     this.bloodCostSlider = [0, 4]
     this.poolCostSlider = [0, 6]
@@ -172,6 +174,11 @@ export class LibraryBuilderComponent implements OnInit {
 
   onChangeSectFilter(sect: string) {
     this.sect = sect
+    this.initQuery()
+  }
+
+  onChangePathFilter(path: string) {
+    this.path = path
     this.initQuery()
   }
 
@@ -263,6 +270,9 @@ export class LibraryBuilderComponent implements OnInit {
           } else if (!entity.sects.includes(this.sect)) {
             return false
           }
+        }
+        if (this.path && entity.path !== this.path) {
+          return false
         }
         if (this.title) {
           if (this.title === 'none') {

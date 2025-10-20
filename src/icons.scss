@@ -170,6 +170,36 @@ i.visionary {
   content: url(/assets/img/icons/creeds/iconcrevisionary.gif);
 }
 
+/* Paths */
+i.path {
+  &.vtes {
+    height: 1.5em;
+    width: 1.2em;
+  }
+
+  &.vtes-small {
+    height: 1.1em;
+    width: 0.9em;
+  }
+
+  &.vtes-big {
+    height: 1.6em;
+    width: 1.3em;
+  }
+}
+i.pathcaine {
+  content: url(/assets/img/icons/paths/pathcaine.svg);
+}
+i.pathcathari {
+  content: url(/assets/img/icons/paths/pathcathari.svg);
+}
+i.pathdeath {
+  content: url(/assets/img/icons/paths/pathdeath.svg);
+}
+i.pathpower {
+  content: url(/assets/img/icons/paths/pathpower.svg);
+}
+
 /* Disciplines */
 i.nodiscipline {
   content: url(/assets/img/icons/disciplines/nodiscipline.svg);

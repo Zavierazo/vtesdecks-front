@@ -8,6 +8,7 @@ export interface ApiCrypt {
   aka: string
   type: string
   clan: string
+  path: string
   adv: boolean
   group: number
   capacity: number
@@ -19,6 +20,7 @@ export interface ApiCrypt {
   image: string
   cropImage: string
   clanIcon: string
+  pathIcon: string
   disciplines: string[]
   superiorDisciplines: string[]
   disciplineIcons: string[]

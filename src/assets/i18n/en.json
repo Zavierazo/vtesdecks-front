@@ -38,6 +38,7 @@
   "crypt_builder_filter": {
     "print_on_demand": "Print on Demand",
     "clans": "Clans",
+    "path": "Path",
     "disciplines": "Disciplines",
     "group": "Group",
     "capacity": "Capacity",
@@ -329,6 +330,7 @@
     "type": "Type",
     "disciplines": "Disciplines",
     "clans": "Clans",
+    "path": "Path",
     "sect": "Sect",
     "title": "Title",
     "blood_cost": "Blood Cost",

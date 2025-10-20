@@ -59,6 +59,8 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly titleChange = output<string>()
   @Input() sect!: string
   readonly sectChange = output<string>()
+  @Input() path!: string
+  readonly pathChange = output<string>()
   @Input() set!: string
   readonly setChange = output<string>()
   @Input() taints!: string[]
@@ -72,12 +74,14 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   capacitySliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
+  pathControl!: FormControl
   setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
 
   titles$!: Observable<string[]>
   sects$!: Observable<string[]>
+  paths$!: Observable<string[]>
   taints$!: Observable<string[]>
   sets$!: Observable<ApiSet[]>
   maxCapacity!: number
@@ -88,6 +92,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.maxGroup = this.cryptQuery.getMaxGroup()
     this.titles$ = this.cryptQuery.selectTitles()
     this.sects$ = this.cryptQuery.selectSects()
+    this.paths$ = this.cryptQuery.selectPaths()
     this.taints$ = this.cryptQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
       sortBy: 'releaseDate',
@@ -108,6 +113,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeSect()
+    this.onChangePath()
     this.onChangeTaint()
     this.onChangeCardText()
   }
@@ -213,6 +219,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.sect = value
           this.sectChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangePath() {
+    this.pathControl = new FormControl(this.path)
+    this.pathControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.path = value
+          this.pathChange.emit(value)
         }),
       )
       .subscribe()

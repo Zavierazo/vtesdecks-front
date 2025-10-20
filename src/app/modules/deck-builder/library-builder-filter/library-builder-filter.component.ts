@@ -56,6 +56,8 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly disciplinesChange = output<string[]>()
   @Input() sect!: string
   readonly sectChange = output<string>()
+  @Input() path!: string
+  readonly pathChange = output<string>()
   @Input() title!: string
   readonly titleChange = output<string>()
   @Input() set!: string
@@ -72,6 +74,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
   sectControl!: FormControl
+  pathControl!: FormControl
   titleControl!: FormControl
   setControl!: FormControl
   bloodCostSliderControl!: FormControl
@@ -80,6 +83,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   cardTextControl!: FormControl
 
   sects$!: Observable<string[]>
+  paths$!: Observable<string[]>
   titles$!: Observable<string[]>
   taints$!: Observable<string[]>
   sets$!: Observable<ApiSet[]>
@@ -88,6 +92,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.sects$ = this.libraryQuery.selectSects()
+    this.paths$ = this.libraryQuery.selectPaths()
     this.titles$ = this.libraryQuery.selectTitles()
     this.taints$ = this.libraryQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
@@ -105,6 +110,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangePrintOnDemand()
     this.onChangeLimitedFormat()
     this.onChangeSect()
+    this.onChangePath()
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeBloodCostSlider()
@@ -162,6 +168,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.sect = value
           this.sectChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangePath() {
+    this.pathControl = new FormControl(this.path)
+    this.pathControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.path = value
+          this.pathChange.emit(value)
         }),
       )
       .subscribe()
