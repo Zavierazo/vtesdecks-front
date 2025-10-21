@@ -24,6 +24,9 @@
         <div class="modal-header">
           <h4 class="modal-title d-flex align-items-center">
             <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>
+            @if(card.path){
+            <i class="vtes vtes-big path float-start" [ngClass]="card.pathIcon" [title]="card.path"></i>
+            }
             <span class="d-flex flex-column">
               @if( card.i18n && card.i18n.name !== card.name ){
               <span>

@@ -14,14 +14,13 @@ export const CLAN_LIST = [
   new Clan('Abomination', 'abo', 'vtes.clan.abo'),
   new Clan('Ahrimane', 'ahrimanes', 'vtes.clan.ahrimanes'),
   new Clan('Akunanse', 'akunanse', 'vtes.clan.akunanse'),
-  new Clan('Assamite', 'assamite', 'vtes.clan.assamite'),
   new Clan('Baali', 'baali', 'vtes.clan.baali'),
+  new Clan('Banu Haqim', 'banuhaqim', 'vtes.clan.banuhaqim'), // formerly Assamite
   new Clan('Blood Brother', 'bloodbrothers', 'vtes.clan.bloodbrothers'),
   new Clan('Brujah', 'brujah', 'vtes.clan.brujah'),
   new Clan('Brujah antitribu', 'brujahanti', 'vtes.clan.brujahanti'),
   new Clan('Caitiff', 'caitiff', 'vtes.clan.caitiff'),
   new Clan('Daughter of Cacophony', 'daughters', 'vtes.clan.daughters'),
-  new Clan('Follower of Set', 'fos', 'vtes.clan.fos'),
   new Clan('Gangrel', 'gangrel', 'vtes.clan.gangrel'),
   new Clan('Gangrel antitribu', 'gangrelanti', 'vtes.clan.gangrelanti'),
   new Clan('Gargoyle', 'gargoyle', 'vtes.clan.gargoyle'),
@@ -33,6 +32,7 @@ export const CLAN_LIST = [
   new Clan('Lasombra', 'lasombra', 'vtes.clan.lasombra'),
   new Clan('Malkavian', 'malkavian', 'vtes.clan.malkavian'),
   new Clan('Malkavian antitribu', 'malkaviananti', 'vtes.clan.malkaviananti'),
+  new Clan('Ministry', 'ministry', 'vtes.clan.ministry'), // formerly Followers of Set
   new Clan('Nagaraja', 'nagaraja', 'vtes.clan.nagaraja'),
   new Clan('Nosferatu', 'nosferatu', 'vtes.clan.nosferatu'),
   new Clan('Nosferatu antitribu', 'nosferatuanti', 'vtes.clan.nosferatuanti'),

@@ -26,6 +26,9 @@
             @for (typeIcon of card.typeIcons; track typeIcon) {
             <i class="vtes vtes-big float-start" [ngClass]="typeIcon"></i>
             }
+            @if(card.path){
+            <i class="vtes vtes-big path float-start" [ngClass]="card.pathIcon" [title]="card.path"></i>
+            }
             <span class="d-flex flex-column">
               @if( card.i18n && card.i18n.name !== card.name ){
               <span>

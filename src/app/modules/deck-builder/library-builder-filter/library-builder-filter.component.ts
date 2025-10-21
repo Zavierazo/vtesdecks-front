@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -38,6 +38,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     TitleCasePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,
+    DatePipe,
   ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {

@@ -41,6 +41,9 @@ i.assamite {
 i.baali {
   content: url(/assets/img/icons/clans/baali.svg);
 }
+i.banuhaqim {
+  content: url(/assets/img/icons/clans/banuhaqim.svg);
+}
 i.bloodbrothers {
   content: url(/assets/img/icons/clans/bloodbrother.svg);
 }
@@ -91,6 +94,9 @@ i.malkavian {
 }
 i.malkaviananti {
   content: url(/assets/img/icons/clans/malkavianantitribu.svg);
+}
+i.ministry {
+  content: url(/assets/img/icons/clans/ministry.svg);
 }
 i.nagaraja {
   content: url(/assets/img/icons/clans/nagaraja.svg);
@@ -175,16 +181,15 @@ i.path {
   &.vtes {
     height: 1.5em;
     width: 1.2em;
-  }
+    &-small {
+      height: 1.1em;
+      width: 0.9em;
+    }
 
-  &.vtes-small {
-    height: 1.1em;
-    width: 0.9em;
-  }
-
-  &.vtes-big {
-    height: 1.6em;
-    width: 1.3em;
+    &-big {
+      height: 2em;
+      width: 1.6em;
+    }
   }
 }
 i.pathcaine {
@@ -192,6 +197,16 @@ i.pathcaine {
 }
 i.pathcathari {
   content: url(/assets/img/icons/paths/pathcathari.svg);
+  &.vtes {
+    width: 1.6em;
+    &-small {
+      width: 1.2em;
+    }
+
+    &-big {
+      width: 2.2em;
+    }
+  }
 }
 i.pathdeath {
   content: url(/assets/img/icons/paths/pathdeath.svg);

@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -35,6 +35,7 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
+    DatePipe,
   ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
