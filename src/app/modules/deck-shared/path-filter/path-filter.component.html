@@ -1,0 +1,8 @@
+@for (path of pathsList; track path) {
+<span (click)="toggle(path.name)" [title]="path.label | transloco">
+  <i class="btn-icon vtes vtes-big path me-1" [class]="path.icon" [ngClass]="{
+        'non-selected': !isSelected(path.name),
+        'bg-dark': isSelected(path.name)
+      }"></i>
+</span>
+}

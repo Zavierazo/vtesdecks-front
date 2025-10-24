@@ -74,6 +74,7 @@ export class DecksComponent implements OnInit {
   restorableDecks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
   isLoading$!: Observable<boolean>
+  hasMore$!: Observable<boolean>
   showScrollButton$!: Observable<boolean>
   isMobileOrTablet$!: Observable<boolean>
   mainForm!: FormGroup
@@ -98,6 +99,7 @@ export class DecksComponent implements OnInit {
     this.decks$ = this.decksQuery.selectAll()
     this.total$ = this.decksQuery.selectTotal()
     this.restorableDecks$ = this.decksQuery.selectRestorableDecks()
+    this.hasMore$ = this.decksQuery.selectHasMore()
     this.listenScroll()
     this.initMainForm()
   }

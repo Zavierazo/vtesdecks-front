@@ -53,6 +53,11 @@
         (disciplinesChange)="changeDisciplineFilter()">
       </app-discipline-filter>
     </div>
+    <label for="paths" class="form-label text-primary fw-bold">{{ t('paths') }}</label>
+    <div id="paths" class="user-select-none mb-2">
+      <app-path-filter [(paths)]="paths" (pathsChange)="changePathFilter()">
+      </app-path-filter>
+    </div>
     <app-card-filter #cardFilter></app-card-filter>
     <div class="row g-1 mb-2" *isLogged="true">
       <div class="form-label text-primary fw-bold">

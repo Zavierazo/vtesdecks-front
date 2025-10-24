@@ -204,7 +204,8 @@
     "clear_filters": "Borrar filtros",
     "back_to_top": "Volver arriba",
     "filters": "Filtros",
-    "show_filters": "Mostrar filtros"
+    "show_filters": "Mostrar filtros",
+    "show_more": "Ver más"
   },
   "draw_cards": {
     "title": "Robar Cartas",
@@ -254,7 +255,8 @@
     "limited_format": "Formato Limitado",
     "collection_tracker": "Rastreador de Colección",
     "filter_by_collection": "Filtrar por Colección",
-    "deck_completion": "Cartas en Colección (%)"
+    "deck_completion": "Cartas en Colección (%)",
+    "paths": "Sendas"
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
@@ -584,6 +586,12 @@
       "martyr": "Martyr",
       "redeemer": "Redeemer",
       "hecata": "Hecata"
+    },
+    "path": {
+      "caine": "Caín",
+      "cathari": "Cátaros",
+      "death": "Muerte y el Alma",
+      "power": "Poder y la Voz Interior"
     },
     "tags": {
       "ramp": "rampeo",

@@ -204,7 +204,8 @@
     "clear_filters": "Repor filtros",
     "back_to_top": "Voltar ao topo",
     "filters": "Filtros",
-    "show_filters": "Mostrar filtros"
+    "show_filters": "Mostrar filtros",
+    "show_more": "Ver mais"
   },
   "draw_cards": {
     "title": "Comprar Cartas",
@@ -254,7 +255,8 @@
     "limited_format": "Formato Limitado",
     "collection_tracker": "Rastreador de Coleção",
     "filter_by_collection": "Filtrar por Coleção",
-    "deck_completion": "Cartas na Coleção (%)"
+    "deck_completion": "Cartas na Coleção (%)",
+    "paths": "Paths"
   },
   "footer": {
     "trademark": "Partes da marca registradas são propriedade de Paradox Interactive AB e são usadas com permissão. Todos os direitos reservados. Para mais informações, visite",
@@ -584,6 +586,12 @@
       "martyr": "Martyr",
       "redeemer": "Redeemer",
       "hecata": "Hecata"
+    },
+    "path": {
+      "caine": "Caine",
+      "cathari": "Cathari",
+      "death": "Death and the Soul",
+      "power": "Power and the Inner Voice"
     },
     "tags": {
       "ramp": "ramp",

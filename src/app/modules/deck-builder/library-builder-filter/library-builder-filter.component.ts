@@ -17,6 +17,7 @@ import { ApiSet } from '../../../models/api-set'
 import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
+import { PATH_LIST } from '../../../utils/paths'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
@@ -84,16 +85,15 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   cardTextControl!: FormControl
 
   sects$!: Observable<string[]>
-  paths$!: Observable<string[]>
   titles$!: Observable<string[]>
   taints$!: Observable<string[]>
   sets$!: Observable<ApiSet[]>
+  pathList = PATH_LIST
   maxCapacity!: number
   maxGroup!: number
 
   ngOnInit() {
     this.sects$ = this.libraryQuery.selectSects()
-    this.paths$ = this.libraryQuery.selectPaths()
     this.titles$ = this.libraryQuery.selectTitles()
     this.taints$ = this.libraryQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
