@@ -29,6 +29,10 @@ export class DecksQuery {
     return this.store.select((decks: DecksState) => decks.restorableDecks)
   }
 
+  selectHasMore(): Observable<boolean> {
+    return this.store.select((decks: DecksState) => decks.hasMore)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getParam(key: string): any {
     return this.store.getValue().params[key]

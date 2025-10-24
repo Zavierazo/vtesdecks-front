@@ -204,7 +204,8 @@
     "clear_filters": "Borrar filtros",
     "back_to_top": "Volver arriba",
     "filters": "Filtros",
-    "show_filters": "Mostrar filtros"
+    "show_filters": "Mostrar filtros",
+    "show_more": "Ver más"
   },
   "draw_cards": {
     "title": "Robar Cartas",

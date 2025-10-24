@@ -204,7 +204,8 @@
     "clear_filters": "Clear Filters",
     "back_to_top": "Back to top",
     "filters": "Filters",
-    "show_filters": "Show filters"
+    "show_filters": "Show filters",
+    "show_more": "Show more"
   },
   "draw_cards": {
     "title": "Draw Cards",

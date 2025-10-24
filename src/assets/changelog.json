@@ -10,6 +10,7 @@
       "Added Path filter to Crypt and Library sections.",
       "Add Path icon to Crypt and Library cards.",
       "Updated clan naming and icons: Assamite → Banu Haqim, Follower of Set → Ministry. Filters and search now use V5 naming conventions.",
+      "Fixed an issue that caused duplicate decks to appear when scrolling on slow network connections.",
       "Minor fixes and performance improvements."
     ]
   },
