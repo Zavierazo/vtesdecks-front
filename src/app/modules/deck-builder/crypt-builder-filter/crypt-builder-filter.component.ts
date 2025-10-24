@@ -10,13 +10,14 @@ import {
   output,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
 import { ApiSet } from '../../../models/api-set'
 import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { SetQuery } from '../../../state/set/set.query'
+import { PATH_LIST } from '../../../utils/paths'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 
@@ -35,6 +36,7 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
+    TranslocoPipe,
     DatePipe,
   ],
 })
@@ -82,9 +84,9 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   titles$!: Observable<string[]>
   sects$!: Observable<string[]>
-  paths$!: Observable<string[]>
   taints$!: Observable<string[]>
   sets$!: Observable<ApiSet[]>
+  pathList = PATH_LIST
   maxCapacity!: number
   maxGroup!: number
 
@@ -93,7 +95,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.maxGroup = this.cryptQuery.getMaxGroup()
     this.titles$ = this.cryptQuery.selectTitles()
     this.sects$ = this.cryptQuery.selectSects()
-    this.paths$ = this.cryptQuery.selectPaths()
     this.taints$ = this.cryptQuery.selectTaints()
     this.sets$ = this.setQuery.selectAll({
       sortBy: 'releaseDate',

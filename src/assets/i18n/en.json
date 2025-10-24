@@ -255,7 +255,8 @@
     "limited_format": "Limited Format",
     "collection_tracker": "Collection Tracker",
     "filter_by_collection": "Filter by Collection",
-    "deck_completion": "Deck Completion (%)"
+    "deck_completion": "Deck Completion (%)",
+    "paths": "Paths"
   },
   "footer": {
     "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",
@@ -586,6 +587,12 @@
       "martyr": "Martyr",
       "redeemer": "Redeemer",
       "hecata": "Hecata"
+    },
+    "path": {
+      "caine": "Caine",
+      "cathari": "Cathari",
+      "death": "Death and the Soul",
+      "power": "Power and the Inner Voice"
     },
     "tags": {
       "ramp": "ramp",

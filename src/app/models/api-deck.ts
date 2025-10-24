@@ -28,6 +28,7 @@ export interface ApiDeck {
   filterCards?: ApiCard[]
   clanIcons: string[]
   disciplineIcons: string[]
+  pathIcon?: string
   stats: ApiDeckStats
   favorite?: boolean
   rated?: boolean

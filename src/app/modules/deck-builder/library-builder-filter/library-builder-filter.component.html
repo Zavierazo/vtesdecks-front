@@ -78,9 +78,9 @@
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="path" [formControl]="pathControl">
       <option selected></option>
-      @for (path of (paths$ | async); track path) {
-      <option [value]="path">
-        {{ path | titlecase }}
+      @for (path of pathList; track path) {
+      <option [value]="path.name">
+        {{ path.label | transloco}}
       </option>
       }
     </select>

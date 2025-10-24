@@ -42,6 +42,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
+import { PathFilterComponent } from '../../deck-shared/path-filter/path-filter.component'
 import { CardProportionComponent } from './card-proportion/card-proportion.component'
 
 @UntilDestroy()
@@ -58,6 +59,7 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
     NgbTypeahead,
     ClanFilterComponent,
     DisciplineFilterComponent,
+    PathFilterComponent,
     CardFilterComponent,
     NgxSliderModule,
     NgbTooltip,
@@ -77,6 +79,7 @@ export class DeckFiltersComponent implements OnInit {
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
+  paths!: string[]
   availableTags: string[] = []
 
   tagFocus$ = new Subject<string>()
@@ -88,6 +91,7 @@ export class DeckFiltersComponent implements OnInit {
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()
     this.clans = this.getCurrentClans()
+    this.paths = this.getCurrentPaths()
     this.apiDataService
       .getDeckTags()
       .pipe(
@@ -143,6 +147,7 @@ export class DeckFiltersComponent implements OnInit {
       ?.patchValue(100, { emitEvent: false })
     this.clans = []
     this.disciplines = []
+    this.paths = []
     this.cardFilter().reset()
     // TODO: The 'emit' function requires a mandatory void argument
     this.resetFilters.emit()
@@ -164,6 +169,16 @@ export class DeckFiltersComponent implements OnInit {
       relativeTo: this.route,
       queryParams: {
         clans: this.clans?.length > 0 ? this.clans.join(',') : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  changePathFilter() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        paths: this.paths?.length > 0 ? this.paths.join(',') : undefined,
       },
       queryParamsHandling: 'merge',
     })
@@ -210,6 +225,14 @@ export class DeckFiltersComponent implements OnInit {
     const clans = this.decksQuery.getParam('clans')
     if (clans) {
       return clans.split(',')
+    }
+    return []
+  }
+
+  private getCurrentPaths(): string[] {
+    const paths = this.decksQuery.getParam('paths')
+    if (paths) {
+      return paths.split(',')
     }
     return []
   }
