@@ -9,7 +9,7 @@ export class CardImagePipe implements PipeTransform {
   ): string | undefined {
     if (set) {
       const setAbbrev = set.split(':')[0].toLocaleLowerCase()
-      return `https://statics.vtesdecks.com/img/sets/${setAbbrev}/${card.id}.jpg`
+      return `https://statics.vtesdecks.com/img/cards/sets/${setAbbrev}/${card.id}.jpg`
     } else if (card.i18n && card.i18n.image) {
       return '/assets' + card.i18n.image
     } else if (card.image) {
