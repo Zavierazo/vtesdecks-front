@@ -13,6 +13,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
 import { Observable } from 'rxjs'
+import { environment } from '../../../../environments/environment'
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
@@ -74,6 +75,8 @@ export class LibraryComponent implements OnInit {
   library$!: Observable<ApiLibrary | undefined>
 
   isMobile$!: Observable<boolean>
+
+  cdnDomain = environment.cdnDomain
 
   ngOnInit() {
     if (!this.libraryQuery.getEntity(this.card.id)) {

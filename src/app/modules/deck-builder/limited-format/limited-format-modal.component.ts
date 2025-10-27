@@ -37,6 +37,7 @@ import { ApiSet } from '../../../models/api-set'
 import { ApiDataService } from '../../../services/api.data.service'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
@@ -55,6 +56,7 @@ import { toUrl } from './limited-format-utils'
     NgbPopover,
     NgbTypeahead,
     NgbHighlight,
+    CardImagePipe,
   ],
 })
 export class LimitedFormatModalComponent implements OnInit {
@@ -90,6 +92,7 @@ export class LimitedFormatModalComponent implements OnInit {
   selectedFormat: ApiDeckLimitedFormat | null = null
   isCustomFormat = false
   availableSets: ApiSet[] = []
+  cdnDomain = environment.cdnDomain
 
   constructor() {
     this.formatForm = this.fb.group({

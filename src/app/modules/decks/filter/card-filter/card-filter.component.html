@@ -43,19 +43,10 @@
         </button>
       </div>
       <ng-template #cryptImgPopover>
-        @if( crypt.i18n && crypt.i18n.image ){
-        <img #i18nImage [ngClass]="{
+        <img #image [ngClass]="{
           'img-popover': !(isMobile$ | async)!,
           'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="'/assets' + crypt.i18n.image" [alt]="crypt.i18n.name"
-          (error)="i18nImage.src='/assets' + crypt.image" />
-        }
-        @else{
-        <img [ngClass]="{
-          'img-popover': !(isMobile$ | async)!,
-          'img-popover-mobile': (isMobile$ | async)!
-        }" [src]="'/assets' + crypt.image" [alt]="crypt.name" />
-        }
+        }" [src]="crypt | cardImage" [alt]="crypt.name" (error)="image.src=cdnDomain + crypt.image" />
       </ng-template>
       <i class="vtes" [class]="crypt.clanIcon"></i>
       @if(crypt.adv){
@@ -112,19 +103,11 @@
         </button>
       </div>
       <ng-template #libraryImgPopover>
-        @if( library.i18n && library.i18n.image ){
-        <img #i18nImage [ngClass]="{
-      'img-popover': !(isMobile$ | async)!,
-      'img-popover-mobile': (isMobile$ | async)!
-    }" [src]="'/assets' + library.i18n.image" [alt]="library.i18n.name"
-          (error)="i18nImage.src='/assets' + library.image" />
-        }
-        @else{
-        <img [ngClass]="{
-      'img-popover': !(isMobile$ | async)!,
-      'img-popover-mobile': (isMobile$ | async)!
-    }" [src]="'/assets' + library.image" [alt]="library.name" />
-        }
+
+        <img #image [ngClass]="{
+          'img-popover': !(isMobile$ | async)!,
+          'img-popover-mobile': (isMobile$ | async)!
+        }" [src]="library | cardImage" [alt]="library.name" (error)="image.src=cdnDomain  + library.image" />
       </ng-template>
       @for(typeIcon of library.typeIcons; track typeIcon){
       <i class="vtes" [class]="typeIcon"></i>

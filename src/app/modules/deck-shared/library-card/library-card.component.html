@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
         <img #image class="rounded mx-auto d-block img-fluid" [src]="card | cardImage:activeSet"
-          [alt]="card?.i18n?.name ?? card.name" (error)="image.src='/assets' + card.image; setImageError = true" />
+          [alt]="card?.i18n?.name ?? card.name" (error)="image.src=cdnDomain + card.image; setImageError = true" />
         @if(setImageError) {
         <div class="text-center text-warning small mb-2">
           {{ 'deck_shared.set_image_not_available' | transloco }}

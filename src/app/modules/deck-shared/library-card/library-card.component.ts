@@ -15,6 +15,7 @@ import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
+import { environment } from '../../../../environments/environment'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
@@ -63,6 +64,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   defaultTouch = { x: 0, y: 0, time: 0 }
   activeSet?: string
   setImageError = false
+  cdnDomain = environment.cdnDomain
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

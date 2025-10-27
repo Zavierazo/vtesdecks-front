@@ -111,9 +111,9 @@ export class VtesdleComponent implements OnInit {
 
   getImageUrl(): string {
     if (this.guessed || this.lives <= 0) {
-      return `/assets/img/cards/${this.cardId}.jpg`
+      return `${environment.cdnDomain}/img/cards/${this.cardId}.jpg`
     }
-    let sections = []
+    const sections = []
     if (this.lives === 6) {
       sections.push('CLAN')
     }

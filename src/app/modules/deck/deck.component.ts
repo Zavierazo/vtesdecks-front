@@ -143,6 +143,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   collectionTracker = false
 
+  cdnDomain = environment.cdnDomain
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!
     this.isLoading$ = this.deckQuery.selectLoading()

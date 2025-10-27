@@ -3,6 +3,7 @@ export const environment = {
   appVersion: require('../../package.json').version,
   domain: 'localhost',
   apiDomain: 'localhost:8080',
+  cdnDomain: 'https://cdn.vtesdecks.com',
   production: false,
   api: {
     baseUrl: 'http://localhost:8080/api/1.0',

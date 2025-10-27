@@ -13,6 +13,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
 import { Observable } from 'rxjs'
+import { environment } from '../../../../environments/environment'
 import { ApiCard } from '../../../models/api-card'
 import { ApiCrypt } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
@@ -73,6 +74,8 @@ export class CryptComponent implements OnInit {
   crypt$!: Observable<ApiCrypt | undefined>
 
   isMobile$!: Observable<boolean>
+
+  cdnDomain = environment.cdnDomain
 
   ngOnInit() {
     if (!this.cryptQuery.getEntity(this.card.id)) {

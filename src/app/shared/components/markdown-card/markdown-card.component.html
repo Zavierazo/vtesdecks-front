@@ -4,7 +4,7 @@
     <img [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="'/assets' + image()" [alt]="name()" />
+      }" [src]="cdnDomain + image()" [alt]="name()" />
   </ng-template>
   {{ name() }}
 </span>

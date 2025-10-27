@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,11 +6,11 @@ import {
   OnInit,
   inject,
 } from '@angular/core'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { environment } from '../../../../../environments/environment'
 import { ApiKrcgRuling } from '../../../../models/krcg/api-krcg-ruling'
 import { RulingText } from '../../../../models/ruling-text'
 import { MediaService } from '../../../../services/media.service'
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
-import { NgClass, AsyncPipe } from '@angular/common'
 
 @Component({
   selector: 'app-ruling-text',
@@ -72,7 +73,7 @@ export class RulingTextComponent implements OnInit {
       this.rulingsText.push({
         type: 'card',
         text: currentPart,
-        popoverImage: `/assets/img/cards/${card.id}.jpg`,
+        popoverImage: `${environment.cdnDomain}/img/cards/${card.id}.jpg`,
       })
     } else {
       this.rulingsText.push({ type: 'card', text: currentPart })

@@ -4,7 +4,7 @@
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
     (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="background && {
-      background: 'url(/assets' + library.cropImage + ') scroll',
+      background: 'url('+ cdnDomain + library.cropImage + ') scroll',
       'background-repeat': 'no-repeat',
       'background-position': 'right 33%',
       'background-size': '50%'
@@ -14,7 +14,7 @@
             'img-popover': !(isMobile$ | async)!,
             'img-popover-mobile': (isMobile$ | async)!
           }" [src]="overrideImage ? overrideImage :  library | cardImage:setAbbrev" [alt]="library.name"
-        (error)="i18nImage.src='/assets' + library.image" />
+        (error)="i18nImage.src=cdnDomain + library.image" />
       <h6 class="text-white">
         @if (librarySize && card.number > 0) {
         <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;

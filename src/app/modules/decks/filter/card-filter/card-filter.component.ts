@@ -24,9 +24,11 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { environment } from '../../../../../environments/environment'
 import { ApiCrypt } from '../../../../models/api-crypt'
 import { CardFilter } from '../../../../models/card-filter'
 import { MediaService } from '../../../../services/media.service'
+import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../../state/crypt/crypt.query'
 import { CryptService } from '../../../../state/crypt/crypt.service'
 import { DecksQuery } from '../../../../state/decks/decks.query'
@@ -48,6 +50,7 @@ import { LibraryService } from './../../../../state/library/library.service'
     NgbPopover,
     ReactiveFormsModule,
     AsyncPipe,
+    CardImagePipe,
   ],
 })
 export class CardFilterComponent implements OnInit {
@@ -68,6 +71,8 @@ export class CardFilterComponent implements OnInit {
   isMobile$!: Observable<boolean>
 
   form!: FormGroup
+
+  cdnDomain = environment.cdnDomain
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()

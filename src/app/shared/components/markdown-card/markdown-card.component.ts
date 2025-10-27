@@ -1,6 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common'
 import { Component, inject, input } from '@angular/core'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { environment } from '../../../../environments/environment'
 import { MediaService } from '../../../services/media.service'
 
 @Component({
@@ -15,4 +16,5 @@ export class MarkdownCardComponent {
   name = input.required<string>()
 
   isMobile$ = this.mediaService.observeMobile()
+  cdnDomain = environment.cdnDomain
 }

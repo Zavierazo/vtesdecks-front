@@ -33,6 +33,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { environment } from '../../../../environments/environment'
 import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { ApiCrypt } from '../../../models/api-crypt'
 import { ApiI18n } from '../../../models/api-i18n'
@@ -101,6 +102,7 @@ export class CardModalComponent implements OnInit {
     binder: new FormControl<number | null>(null),
     notes: new FormControl<string | null>(null),
   })
+  cdnDomain = environment.cdnDomain
 
   ngOnInit() {
     this.setControl.valueChanges
