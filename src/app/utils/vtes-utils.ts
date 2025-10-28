@@ -31,11 +31,21 @@ export function isChristmas() {
   )
 }
 
+const normalizeText = (text: string): string => {
+  return text
+    .normalize('NFD') // Decompose accented characters
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
+    .toLowerCase() // Convert to lowercase
+    .replace(/[^\w]/g, '') // Keep only word characters
+    .trim()
+}
+
 export const searchIncludes = (
   string: string,
   searchString: string,
 ): boolean => {
   if (searchString.startsWith('/') && searchString.endsWith('/')) {
+    // Regex search
     try {
       const regexPattern = searchString.slice(1, -1) // Remove the slashes
       const regex = new RegExp(regexPattern, 'i') // Create a RegExp object
@@ -45,19 +55,10 @@ export const searchIncludes = (
       return false
     }
   } else {
-    const collator = new Intl.Collator('en', { sensitivity: 'base' })
-    const searchStringLength = searchString.length
-    const lengthDiff = string.length - searchString.length
-    for (let i = 0; i <= lengthDiff; i++) {
-      if (
-        collator.compare(
-          string.substring(i, i + searchStringLength),
-          searchString,
-        ) === 0
-      ) {
-        return true
-      }
-    }
-    return false
+    // Non-regex search
+    const normalizedString = normalizeText(string)
+    const normalizedSearchString = normalizeText(searchString)
+
+    return normalizedString.includes(normalizedSearchString)
   }
 }
