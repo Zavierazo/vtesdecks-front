@@ -1,5 +1,15 @@
 [
   {
+    "version": "2.52.0",
+    "date": "30th October, 2025",
+    "changes": [
+      "Migrated all images to a CDN cache to boost loading speed and overall performance.",
+      "Enhanced card name search with trigram similarity for more accurate results, even with typos or partial matches.",
+      "Added a special Halloween theme and effects for the spooky season.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.51.0",
     "date": "20th October, 2025",
     "changes": [
@@ -21,8 +31,7 @@
       "V5H (V5 Hecata) and V5L (V5 Lasombra) are now separated sets from the regular V5 set.",
       "Collection Tracker: Added filters by Type, Clan, and Discipline.",
       "Collection Tracker: Now supports Print-on-Demand (POD) sets.",
-      "Tip: Use the Collection Tracker to easily organize and monitor your cards.",
-      "Minor fixes and performance improvements."
+      "Tip: Use the Collection Tracker to easily organize and monitor your cards."
     ]
   },
   {
@@ -32,8 +41,7 @@
       "Added a new deck filter by percentage of collection completion.",
       "You can now import cards from preconstructed decks directly into your collection.",
       "New set added: Full Art Promo.",
-      "New set added: BCP Business Cards.",
-      "Minor fixes and improvements."
+      "New set added: BCP Business Cards."
     ]
   },
   {
@@ -44,8 +52,7 @@
       "Add cards to your collection with detailed info: Set, Binder, Condition, Language, and personal Notes.",
       "View and filter your collection with flexible search and organization options.",
       "Binders can now be created and shared with others.",
-      "In Deck view, see how many cards you own from your collection and whether you have enough to build the deck.",
-      "Minor fixes and improvements."
+      "In Deck view, see how many cards you own from your collection and whether you have enough to build the deck."
     ]
   },
   {
@@ -54,8 +61,7 @@
     "changes": [
       "Added Flight filter to both Crypt and Library sections.",
       "Added Set filter to Crypt and Library sections.",
-      "Added set images in Crypt and Library modals.",
-      "Minor fixes and improvements."
+      "Added set images in Crypt and Library modals."
     ]
   },
   {
@@ -65,16 +71,14 @@
       "Added card text search filter to both Crypt and Library sections.",
       "Introduced support for regular expressions in card name and text search using the /your-regex/ syntax.",
       "Switched primary funding platform from Ko-fi to Patreon.",
-      "Enabled YouTube video embedding in markdown descriptions and comments.",
-      "Minor fixes and improvements."
+      "Enabled YouTube video embedding in markdown descriptions and comments."
     ]
   },
   {
     "version": "2.45.0",
     "date": "21st June, 2025",
     "changes": [
-      "Added Similar Decks section to deck detail page for easier exploration of related builds.",
-      "Minor fixes and improvements."
+      "Added Similar Decks section to deck detail page for easier exploration of related builds."
     ]
   },
   {
