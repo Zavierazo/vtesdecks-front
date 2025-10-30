@@ -1,4 +1,5 @@
 import { ApiCard } from '../models/api-card'
+import { trigramSimilarity } from './trigram-similarity'
 
 export function isCrypt(value: ApiCard): boolean {
   return value.id >= 200000
@@ -40,11 +41,15 @@ const normalizeText = (text: string): string => {
     .trim()
 }
 
+export const isRegexSearch = (searchString: string): boolean => {
+  return searchString.startsWith('/') && searchString.endsWith('/')
+}
+
 export const searchIncludes = (
   string: string,
   searchString: string,
 ): boolean => {
-  if (searchString.startsWith('/') && searchString.endsWith('/')) {
+  if (isRegexSearch(searchString)) {
     // Regex search
     try {
       const regexPattern = searchString.slice(1, -1) // Remove the slashes
@@ -59,6 +64,13 @@ export const searchIncludes = (
     const normalizedString = normalizeText(string)
     const normalizedSearchString = normalizeText(searchString)
 
-    return normalizedString.includes(normalizedSearchString)
+    if (normalizedString.includes(normalizedSearchString)) {
+      return true
+    }
+    const trigramWeight = trigramSimilarity(string, searchString)
+    if (trigramWeight >= 0.25) {
+      return true
+    }
+    return false
   }
 }

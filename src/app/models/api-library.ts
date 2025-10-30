@@ -1,6 +1,6 @@
 import { ApiI18n } from './api-i18n'
 
-export type LibrarySortBy = keyof ApiLibrary | 'relevance'
+export type LibrarySortBy = keyof ApiLibrary | 'relevance' | 'trigramSimilarity'
 
 export interface ApiLibrary {
   id: number

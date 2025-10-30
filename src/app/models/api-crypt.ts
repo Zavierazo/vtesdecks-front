@@ -1,6 +1,6 @@
 import { ApiI18n } from './api-i18n'
 
-export type CryptSortBy = keyof ApiCrypt | 'relevance'
+export type CryptSortBy = keyof ApiCrypt | 'relevance' | 'trigramSimilarity'
 
 export interface ApiCrypt {
   id: number

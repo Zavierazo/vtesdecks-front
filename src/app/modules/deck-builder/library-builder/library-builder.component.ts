@@ -29,7 +29,7 @@ import { ApiLibrary, LibrarySortBy } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
-import { searchIncludes } from './../../../utils/vtes-utils'
+import { isRegexSearch, searchIncludes } from './../../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({
@@ -94,7 +94,16 @@ export class LibraryBuilderComponent implements OnInit {
     this.onChangeNameFilter()
   }
 
-  openModal(content: TemplateRef<any>) {
+  get nameFilter(): string | undefined {
+    return this.nameFormControl.value || undefined
+  }
+
+  get sortByTrigramSimilarity(): boolean {
+    const name = this.nameFilter
+    return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  openModal(content: TemplateRef<unknown>) {
     this.modalService.open(content)
   }
 
@@ -221,7 +230,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.library$ = this.libraryQuery.selectAll({
       limitTo: this.limitTo,
       filterBy: (entity) => {
-        const name = this.nameFormControl.value
+        const name = this.nameFilter
         if (name && !searchIncludes(entity.name, name)) {
           if (entity.i18n?.name) {
             return searchIncludes(entity.i18n.name, name)
@@ -338,8 +347,9 @@ export class LibraryBuilderComponent implements OnInit {
         }
         return true
       },
-      sortBy: this.sortBy,
-      sortByOrder: this.sortByOrder,
+      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
+      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      nameFilter: this.nameFilter,
       stats: {
         total: this.deckBuilderQuery.getLibrarySize(),
         disciplines: this.deckBuilderQuery.getLibraryDisciplines(),

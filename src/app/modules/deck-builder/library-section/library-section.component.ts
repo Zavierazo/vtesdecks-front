@@ -37,10 +37,10 @@ import {
   tap,
 } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
-import { ApiLibrary } from '../../../models/api-library'
+import { ApiLibrary, LibrarySortBy } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
-import { searchIncludes } from '../../../utils/vtes-utils'
+import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
@@ -86,7 +86,7 @@ export class LibrarySectionComponent implements OnInit {
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
-  sortBy: keyof ApiLibrary = 'name'
+  sortBy: LibrarySortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   printOnDemand = false
   types: string[] = []
@@ -108,7 +108,16 @@ export class LibrarySectionComponent implements OnInit {
     this.initFilters()
   }
 
-  openModal(content: TemplateRef<any>) {
+  get nameFilter(): string | undefined {
+    return this.nameFormControl.value || undefined
+  }
+
+  get sortByTrigramSimilarity(): boolean {
+    const name = this.nameFilter
+    return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  openModal(content: TemplateRef<unknown>) {
     this.modalService.open(content)
   }
 
@@ -245,7 +254,7 @@ export class LibrarySectionComponent implements OnInit {
   private readonly filterBy: (entity: ApiLibrary, index?: number) => boolean = (
     entity,
   ) => {
-    const name = this.nameFormControl.value
+    const name = this.nameFilter
     if (name && !searchIncludes(entity.name, name)) {
       if (entity.i18n?.name) {
         return searchIncludes(entity.i18n.name, name)
@@ -347,8 +356,11 @@ export class LibrarySectionComponent implements OnInit {
     this.library$ = this.libraryQuery
       .selectAll({
         filterBy: this.filterBy,
-        sortBy: this.sortBy,
-        sortByOrder: this.sortByOrder,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        nameFilter: this.nameFilter,
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
@@ -382,8 +394,9 @@ export class LibrarySectionComponent implements OnInit {
     })
     const libraryList = this.libraryQuery.getAll({
       filterBy: this.filterBy,
-      sortBy: this.sortBy,
-      sortByOrder: this.sortByOrder,
+      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
+      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      nameFilter: this.nameFilter,
     })
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)

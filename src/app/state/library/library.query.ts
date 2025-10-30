@@ -27,12 +27,14 @@ export class LibraryQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    nameFilter,
   }: {
     filterBy?: (entity: ApiLibrary) => boolean
     sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
+    nameFilter?: string
   }): ApiLibrary[] {
-    return this.store.getEntities(filterBy, sortBy, sortByOrder)
+    return this.store.getEntities(filterBy, sortBy, sortByOrder, nameFilter)
   }
 
   selectAll({
@@ -40,12 +42,14 @@ export class LibraryQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    nameFilter,
     stats,
   }: {
     limitTo?: number
     filterBy?: (entity: ApiLibrary) => boolean
     sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
+    nameFilter?: string
     stats?: LibraryStats
   }): Observable<ApiLibrary[]> {
     return this.store.selectEntities(
@@ -53,6 +57,7 @@ export class LibraryQuery {
       filterBy,
       sortBy,
       sortByOrder,
+      nameFilter,
       stats,
     )
   }

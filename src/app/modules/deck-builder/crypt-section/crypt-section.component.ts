@@ -37,10 +37,10 @@ import {
   tap,
 } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
-import { ApiCrypt } from '../../../models/api-crypt'
+import { ApiCrypt, CryptSortBy } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { searchIncludes } from '../../../utils/vtes-utils'
+import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
@@ -86,7 +86,7 @@ export class CryptSectionComponent implements OnInit {
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
-  sortBy: keyof ApiCrypt = 'name'
+  sortBy: CryptSortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   printOnDemand = false
   clans: string[] = []
@@ -108,8 +108,16 @@ export class CryptSectionComponent implements OnInit {
     this.initFilters()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  openModal(content: TemplateRef<any>) {
+  get nameFilter(): string | undefined {
+    return this.nameFormControl.value || undefined
+  }
+
+  get sortByTrigramSimilarity(): boolean {
+    const name = this.nameFilter
+    return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  openModal(content: TemplateRef<unknown>) {
     this.modalService.open(content)
   }
 
@@ -246,7 +254,7 @@ export class CryptSectionComponent implements OnInit {
   private readonly filterBy: (entity: ApiCrypt, index?: number) => boolean = (
     entity,
   ) => {
-    const name = this.nameFormControl.value
+    const name = this.nameFilter
     if (name && !searchIncludes(entity.name, name)) {
       if (entity.i18n?.name) {
         return searchIncludes(entity.i18n.name, name)
@@ -314,8 +322,11 @@ export class CryptSectionComponent implements OnInit {
     this.crypt$ = this.cryptQuery
       .selectAll({
         filterBy: this.filterBy,
-        sortBy: this.sortBy,
-        sortByOrder: this.sortByOrder,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        nameFilter: this.nameFilter,
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
@@ -338,8 +349,9 @@ export class CryptSectionComponent implements OnInit {
     })
     const cryptList = this.cryptQuery.getAll({
       filterBy: this.filterBy,
-      sortBy: this.sortBy,
-      sortByOrder: this.sortByOrder,
+      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
+      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      nameFilter: this.nameFilter,
     })
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = cryptList.indexOf(card)
