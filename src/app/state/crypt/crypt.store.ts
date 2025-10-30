@@ -5,6 +5,7 @@ import { ApiClanStat } from '../../models/api-clan-stat'
 import { ApiCrypt, CryptSortBy } from '../../models/api-crypt'
 import { ApiDisciplineStat } from '../../models/api-discipline-stat'
 import { LocalStorageService } from '../../services/local-storage.service'
+import { trigramSimilarity } from '../../utils/trigram-similarity'
 
 export interface CryptStats {
   total: number
@@ -78,6 +79,7 @@ export class CryptStore {
     filterFn?: (entity: ApiCrypt) => boolean,
     sortBy?: CryptSortBy,
     sortByOrder?: 'asc' | 'desc',
+    nameFilter?: string,
     stats?: CryptStats,
   ): Observable<ApiCrypt[]> {
     if (stats) {
@@ -104,6 +106,10 @@ export class CryptStore {
                 return aWeight < bWeight ? 1 : -1
               }
             })
+          } else if (sortBy === 'trigramSimilarity') {
+            entities = entities.sort((a, b) =>
+              this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+            )
           } else {
             entities = entities.sort((a, b) =>
               this.sort(a[sortBy], b[sortBy], sortByOrder),
@@ -128,12 +134,17 @@ export class CryptStore {
     filterFn?: (entity: ApiCrypt) => boolean,
     sortBy?: CryptSortBy,
     sortByOrder?: 'asc' | 'desc',
+    nameFilter?: string,
   ): ApiCrypt[] {
     let entities = this.entities()
     if (filterFn) {
       entities = entities.filter(filterFn)
     }
-    if (sortBy && sortBy !== 'relevance') {
+    if (sortBy === 'trigramSimilarity') {
+      entities = entities.sort((a, b) =>
+        this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+      )
+    } else if (sortBy && sortBy !== 'relevance') {
       entities = entities.sort((a, b) =>
         this.sort(a[sortBy], b[sortBy], sortByOrder),
       )
@@ -259,12 +270,26 @@ export class CryptStore {
     )
   }
 
+  private sortTrigramSimilarity(
+    a: ApiCrypt,
+    b: ApiCrypt,
+    nameFilter?: string,
+    sortByOrder?: 'asc' | 'desc',
+  ): number {
+    const aWeight = trigramSimilarity(a.name, nameFilter)
+    const bWeight = trigramSimilarity(b.name, nameFilter)
+    if (aWeight === bWeight) {
+      return this.sort(a['name'], b['name'], 'asc')
+    }
+    return this.sort(aWeight, bWeight, sortByOrder)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private sort(a: any, b: any, order?: 'asc' | 'desc'): number {
+  private sort(a: any, b: any, sortByOrder?: 'asc' | 'desc'): number {
     if (a === b) {
       return 0
     }
-    if (order === 'asc') {
+    if (sortByOrder === 'asc') {
       return a > b ? 1 : -1
     } else {
       return a < b ? 1 : -1

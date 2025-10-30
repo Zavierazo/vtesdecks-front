@@ -13,7 +13,8 @@
             [formControl]="nameFormControl">
         </div>
         <div ngbDropdown class="col-auto d-inline-block">
-          <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle>
+          <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
+            [disabled]="sortByTrigramSimilarity">
             <i class="bi bi-sort-alpha-down"></i>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownSortBy">

@@ -1,34 +1,34 @@
+import { AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
 } from '@angular/core'
+import { RouterLink, RouterLinkActive } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
 import {
-  NgbModal,
-  NgbOffcanvas,
   NgbCollapse,
   NgbDropdown,
-  NgbDropdownToggle,
-  NgbDropdownMenu,
-  NgbDropdownItem,
   NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+  NgbOffcanvas,
 } from '@ng-bootstrap/ng-bootstrap'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { MediaService } from '../../../services/media.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { AuthService } from '../../../state/auth/auth.service'
-import { isChristmas } from '../../../utils/vtes-utils'
+import { isChristmas, isHalloween } from '../../../utils/vtes-utils'
+import { IsLoggedDirective } from '../../directives/is-logged.directive'
+import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
 import { TableSeatingComponent } from '../table-seating/table-seating.component'
-import { TranslocoDirective } from '@jsverse/transloco'
-import { RouterLink, RouterLinkActive } from '@angular/router'
-import { IsLoggedDirective } from '../../directives/is-logged.directive'
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
-import { AsyncPipe } from '@angular/common'
 import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component'
 
 @Component({
@@ -103,10 +103,15 @@ export class HeaderComponent implements OnInit {
     this.modalService.open(TableSeatingComponent, { size: 'xl' })
   }
 
-  isChristmas(): boolean {
-    return isChristmas()
+  get logoPath(): string {
+    if (isChristmas()) {
+      return '/assets/img/logo_christmas.png'
+    } else if (isHalloween()) {
+      return '/assets/img/logo_halloween.png'
+    } else {
+      return '/assets/img/logo.png'
+    }
   }
-
   get themeEnabled(): boolean {
     return this.colorThemeService.enabled
   }

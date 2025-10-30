@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0" *transloco="let t; read: 'header'">
   <div class="container-fluid">
     <a [routerLink]="'/'" class="navbar-brand">
-      <img class="header-logo" width="60" height="60"
-        [src]="isChristmas()?'/assets/img/logo_christmas.png':'/assets/img/logo.png'" alt="logo" />
+      <img class="header-logo" width="60" height="60" [src]="logoPath" alt="logo" />
       <img class="header-logo-text" width="100" height="60" src="/assets/img/logo_text.png" alt="vtes decks" />
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"

@@ -27,7 +27,7 @@ import { AuthService } from './state/auth/auth.service'
 import { CryptService } from './state/crypt/crypt.service'
 import { LibraryService } from './state/library/library.service'
 import { SetService } from './state/set/set.service'
-import { isChristmas } from './utils/vtes-utils'
+import { isChristmas, isHalloween } from './utils/vtes-utils'
 
 @Component({
   selector: 'app-root',
@@ -97,6 +97,13 @@ export class AppComponent implements OnInit {
       //Add to head <script defer src="https://app.embed.im/snow.js"></script> only on christmas
       const node = document.createElement('script')
       node.src = 'https://app.embed.im/snow.js'
+      node.defer = true
+      document.getElementsByTagName('head')[0].appendChild(node)
+    }
+    // Add halloween effect
+    if (isHalloween()) {
+      const node = document.createElement('script')
+      node.src = '/assets/js/halloween.js'
       node.defer = true
       document.getElementsByTagName('head')[0].appendChild(node)
     }

@@ -21,7 +21,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
-import { searchIncludes } from '../../../utils/vtes-utils'
+import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { ApiCard } from './../../../models/api-card'
@@ -94,7 +94,16 @@ export class CryptBuilderComponent implements OnInit {
     this.onChangeNameFilter()
   }
 
-  openModal(content: TemplateRef<any>) {
+  get nameFilter(): string | undefined {
+    return this.nameFormControl.value || undefined
+  }
+
+  get sortByTrigramSimilarity(): boolean {
+    const name = this.nameFilter
+    return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  openModal(content: TemplateRef<unknown>) {
     this.modalService.open(content)
   }
 
@@ -232,7 +241,7 @@ export class CryptBuilderComponent implements OnInit {
     this.crypt$ = this.cryptQuery.selectAll({
       limitTo: this.limitTo,
       filterBy: (entity) => {
-        const name = this.nameFormControl.value
+        const name = this.nameFilter
         if (name && !searchIncludes(entity.name, name)) {
           if (entity.i18n?.name) {
             return searchIncludes(entity.i18n.name, name)
@@ -314,8 +323,9 @@ export class CryptBuilderComponent implements OnInit {
         }
         return true
       },
-      sortBy: this.sortBy,
-      sortByOrder: this.sortByOrder,
+      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
+      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      nameFilter: this.nameFilter,
       crypt: {
         total: this.deckBuilderQuery.getCryptSize(),
         minGroup: this.deckBuilderQuery.getMinGroupCrypt(),

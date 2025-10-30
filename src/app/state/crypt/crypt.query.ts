@@ -27,12 +27,14 @@ export class CryptQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    nameFilter,
   }: {
     filterBy?: (entity: ApiCrypt) => boolean
     sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
+    nameFilter?: string
   }): ApiCrypt[] {
-    return this.store.getEntities(filterBy, sortBy, sortByOrder)
+    return this.store.getEntities(filterBy, sortBy, sortByOrder, nameFilter)
   }
 
   selectAll({
@@ -40,12 +42,14 @@ export class CryptQuery {
     filterBy,
     sortBy,
     sortByOrder,
+    nameFilter,
     crypt,
   }: {
     limitTo?: number
     filterBy?: (entity: ApiCrypt) => boolean
     sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
+    nameFilter?: string
     crypt?: CryptStats
   }): Observable<ApiCrypt[]> {
     return this.store.selectEntities(
@@ -53,6 +57,7 @@ export class CryptQuery {
       filterBy,
       sortBy,
       sortByOrder,
+      nameFilter,
       crypt,
     )
   }
