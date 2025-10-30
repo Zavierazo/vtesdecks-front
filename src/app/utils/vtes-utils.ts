@@ -34,7 +34,6 @@ export function isChristmas() {
 
 export function isHalloween() {
   const now = new Date()
-  console.log(now.getMonth(), now.getDate())
   return (
     (now.getMonth() === 9 && now.getDate() > 29) ||
     (now.getMonth() === 10 && now.getDate() < 2)
