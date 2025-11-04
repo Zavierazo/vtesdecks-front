@@ -15,6 +15,7 @@ import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryCardComponent } from '../library-card/library-card.component'
+import { LibraryGridCardComponent } from '../library-grid-card/library-grid-card.component'
 import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe'
 import { LibraryComponent } from '../library/library.component'
 
@@ -30,6 +31,7 @@ import { LibraryComponent } from '../library/library.component'
     AsyncPipe,
     TranslocoPipe,
     LibraryTypeTranslocoPipe,
+    LibraryGridCardComponent,
   ],
 })
 export class LibraryListComponent implements OnInit {
@@ -62,6 +64,8 @@ export class LibraryListComponent implements OnInit {
   @Input() libraryList!: ApiCard[]
 
   @Input() withControls = false
+
+  @Input() displayMode: 'list' | 'grid' = 'list'
 
   readonly cardAdded = output<number>()
 
@@ -121,7 +125,7 @@ export class LibraryListComponent implements OnInit {
     return LibraryListComponent.libraryTypeOrder.indexOf(type)
   }
 
-  openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
+  openLibraryCard(card: ApiCard, cardList: ApiCard[]): void {
     if (this.withControls) {
       return
     }

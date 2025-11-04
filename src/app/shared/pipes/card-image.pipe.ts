@@ -7,7 +7,7 @@ export class CardImagePipe implements PipeTransform {
   transform(
     card: { id: number; i18n?: ApiI18n; image?: string },
     set?: string,
-  ): string | undefined {
+  ): string {
     if (set) {
       const setAbbrev = set.split(':')[0].toLocaleLowerCase()
       return `${environment.cdnDomain}/img/cards/sets/${setAbbrev}/${card.id}.jpg`
@@ -16,7 +16,8 @@ export class CardImagePipe implements PipeTransform {
     } else if (card.image) {
       return environment.cdnDomain + card.image
     } else {
-      return undefined
+      const cdnDomain = environment.cdnDomain
+      return `${cdnDomain}/img/cards/${card.id}.jpg`
     }
   }
 }

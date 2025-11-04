@@ -226,11 +226,23 @@
         }
       </section>
     </div>
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <h1>{{ 'shared.crypt' | transloco }}</h1>
-      <span class="circle_number ms-2" [title]="t('total_crypt')">
-        {{ deck.stats.crypt }}
-      </span>
+    <div class="col-12 d-flex align-items-center mt-3">
+      <div class="flex-grow-1"></div>
+      <div class="d-flex align-items-top  justify-content-center">
+        <h1>{{ 'shared.crypt' | transloco }}</h1>
+        <span class="circle_number ms-2" [title]="t('total_crypt')">
+          {{ deck.stats.crypt }}
+        </span>
+      </div>
+      <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+        <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+          [options]="displayModeOptions"></app-toggle-icon>
+      </div>
+      <div class="d-md-none flex-grow-1"></div>
+    </div>
+    <div class="d-md-none mt-3 d-flex justify-content-center">
+      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+        [options]="displayModeOptions"></app-toggle-icon>
     </div>
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
@@ -244,6 +256,16 @@
       </div>
     </div>
     <div class="col-12 mt-3">
+      @if((displayMode$ |async) === 'grid') {
+      <div class="row m-2 g-2 justify-content-center">
+        @for (crypt of deck.crypt; track crypt) {
+        <div class="col-6 col-md-auto">
+          <app-crypt-grid-card [card]="crypt" [cryptSize]="deck.stats.crypt"
+            (click)="openCryptCard(crypt, deck.crypt!)"></app-crypt-grid-card>
+        </div>
+        }
+      </div>
+      }@else{
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
         @for (crypt of deck.crypt; track crypt) {
         <ul class="col list-group">
@@ -252,6 +274,7 @@
         </ul>
         }
       </div>
+      }
     </div>
     <div class="col-12 text-center mt-3">
       <div class="row">
@@ -269,20 +292,33 @@
         </div>
       </div>
     </div>
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <h1>{{ 'shared.library' | transloco }}</h1>
-      <span class="circle_number ms-2" [title]="t('total_library')">
-        {{ deck.stats.library }}
-      </span>
-      <div>
-        <div class="costx ms-2" [title]="t('total_pool_cost')">
-          {{ deck.stats.poolCost }}<i class="vtes poolcost"></i>
-        </div>
-        <div class="costx ms-2" [title]="t('total_blood_cost')">
-          {{ deck.stats.bloodCost }}<i class="vtes bloodcost"></i>
+    <div class="col-12 d-flex align-items-center mt-3">
+      <div class="flex-grow-1"></div>
+      <div class="d-flex align-items-top  justify-content-center">
+        <h1>{{ 'shared.library' | transloco }}</h1>
+        <span class="circle_number ms-2" [title]="t('total_library')">
+          {{ deck.stats.library }}
+        </span>
+        <div>
+          <div class="costx ms-2" [title]="t('total_pool_cost')">
+            {{ deck.stats.poolCost }}<i class="vtes poolcost"></i>
+          </div>
+          <div class="costx ms-2" [title]="t('total_blood_cost')">
+            {{ deck.stats.bloodCost }}<i class="vtes bloodcost"></i>
+          </div>
         </div>
       </div>
+      <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+        <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+          [options]="displayModeOptions"></app-toggle-icon>
+      </div>
+      <div class="d-md-none flex-grow-1"></div>
     </div>
+    <div class="d-md-none mt-3 d-flex justify-content-center">
+      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+        [options]="displayModeOptions"></app-toggle-icon>
+    </div>
+
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
         @for (disciplineStat of deck.stats.libraryDisciplines; track disciplineStat) {
@@ -317,7 +353,7 @@
     </div>
     <div class="col-12 mt-3">
       @if (deck.library) {
-      <app-library-list [libraryList]="deck.library"></app-library-list>
+      <app-library-list [libraryList]="deck.library" [displayMode]="(displayMode$ |async)!"></app-library-list>
       }
     </div>
     <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto"

@@ -1,0 +1,10 @@
+<div class="btn-group" role="group">
+  @for(option of options(); track option) {
+  <button type="button" class="btn" [ngClass]="{
+    'btn-primary': option.option === active(),
+    'btn-outline-primary': option.option !== active()
+  }" (click)="onToggle(option)">
+    <i class="bi bi-{{ option.icon }}"></i> {{ option.label | transloco}}
+  </button>
+  }
+</div>

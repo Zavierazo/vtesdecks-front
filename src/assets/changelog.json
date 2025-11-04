@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.53.0",
+    "date": "4th November, 2025",
+    "changes": [
+      "Added new Grid layout for Crypt and Library cards.",
+      "Improved card browsing with a cleaner and more visual interface.",
+      "Enhanced image loading with lazy loading — only visible images load for faster performance.",
+      "Updated TRUE Brujah PoD images with correct text.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.52.0",
     "date": "30th October, 2025",
     "changes": [

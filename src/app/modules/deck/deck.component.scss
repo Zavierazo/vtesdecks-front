@@ -131,6 +131,13 @@ span.circle_number {
   border: 1px solid #000;
   background-color: black;
   color: white;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    line-height: 30px;
+  }
 }
 
 .img-popover {

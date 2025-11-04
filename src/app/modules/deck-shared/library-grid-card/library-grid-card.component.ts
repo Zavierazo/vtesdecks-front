@@ -1,0 +1,104 @@
+import { AsyncPipe } from '@angular/common'
+import {
+  Component,
+  HostListener,
+  inject,
+  input,
+  OnInit,
+  output,
+} from '@angular/core'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { LazyLoadImageModule } from 'ng-lazyload-image'
+import { Observable } from 'rxjs'
+import { environment } from '../../../../environments/environment'
+import { ApiCard } from '../../../models/api-card'
+import { ApiLibrary } from '../../../models/api-library'
+import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
+import { LibraryQuery } from '../../../state/library/library.query'
+import drawProbability from '../../../utils/draw-probability'
+import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
+import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
+import { LibraryService } from './../../../state/library/library.service'
+
+@UntilDestroy()
+@Component({
+  selector: 'app-library-grid-card',
+  templateUrl: './library-grid-card.component.html',
+  styleUrls: ['./library-grid-card.component.scss'],
+  imports: [
+    AsyncPipe,
+    CardImagePipe,
+    LazyLoadImageModule,
+    CollectionCardTrackerComponent,
+    CollectionCardMiniStatsComponent,
+  ],
+})
+export class LibraryGridCardComponent implements OnInit {
+  private libraryQuery = inject(LibraryQuery)
+  private libraryService = inject(LibraryService)
+
+  card = input.required<ApiCard>()
+  librarySize = input<number>(60)
+  withControls = input<boolean>(false)
+  readonly cardAdded = output<number>()
+  readonly cardRemoved = output<number>()
+
+  cdnDomain = environment.cdnDomain
+  library$!: Observable<ApiLibrary | undefined>
+
+  ngOnInit(): void {
+    if (!this.libraryQuery.getEntity(this.card().id)) {
+      this.libraryService
+        .getLibrary(this.card().id)
+        .pipe(untilDestroyed(this))
+        .subscribe()
+    }
+    this.library$ = this.libraryQuery.selectEntity(this.card().id)
+  }
+
+  getDrawProbability(copy: number): number {
+    return Math.round(
+      drawProbability(copy, this.librarySize(), 7, this.card().number),
+    )
+  }
+  addCard(event: MouseEvent) {
+    event.preventDefault()
+    this.cardAdded.emit(this.card().id)
+  }
+
+  removeCard(event: MouseEvent) {
+    event.preventDefault()
+    this.cardRemoved.emit(this.card().id)
+  }
+
+  // Avoid context menu on right click
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    if (this.withControls()) {
+      event.preventDefault()
+    }
+  }
+
+  // Detect double left&right click to add/remove card
+  @HostListener('mouseup', ['$event'])
+  onMouseUp(event: MouseEvent) {
+    if (this.withControls()) {
+      if (
+        event.target instanceof HTMLElement &&
+        (event.target.classList.contains('btn') ||
+          event.target.classList.contains('btn-group'))
+      ) {
+        //Avoid run when btn icons clicked
+        return
+      }
+      if (event.detail > 1) {
+        if (event.button === 0) {
+          this.addCard(event)
+        }
+        if (event.button === 2) {
+          this.removeCard(event)
+        }
+      }
+    }
+  }
+}

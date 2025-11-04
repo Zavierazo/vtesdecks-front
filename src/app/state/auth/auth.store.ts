@@ -6,7 +6,13 @@ import { ApiUser } from '../../models/api-user'
 import { LocalStorageService } from '../../services/local-storage.service'
 import { SessionStorageService } from '../../services/session-storage.service'
 
-const initialState: ApiUser = {}
+export interface AuthState extends ApiUser {
+  displayMode: 'list' | 'grid'
+}
+
+const initialState: AuthState = {
+  displayMode: 'list',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +23,7 @@ export class AuthStore {
   private readonly cookieConsentService = inject(NgcCookieConsentService)
 
   static readonly storeName = 'auth'
-  private readonly state = signal<ApiUser>(initialState)
+  private readonly state = signal<AuthState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
@@ -25,13 +31,13 @@ export class AuthStore {
   private readonly error$ = toObservable(this.error)
 
   constructor() {
-    const previousState = this.sessionStorage.getValue<ApiUser>(
+    const previousState = this.sessionStorage.getValue<AuthState>(
       AuthStore.storeName,
     )
     if (previousState) {
       this.update(previousState)
     }
-    const previousLocalState = this.localStorage.getValue<ApiUser>(
+    const previousLocalState = this.localStorage.getValue<AuthState>(
       AuthStore.storeName,
     )
     if (previousLocalState) {
@@ -41,7 +47,7 @@ export class AuthStore {
 
   updateToken(response: ApiUser, remember: boolean) {
     const { token } = response
-    this.update({ ...response, token })
+    this.update({ ...this.getValue(), ...response, token })
     const useLocalStorage =
       Boolean(remember) && this.cookieConsentService.hasConsented()
     this.updateStorage(useLocalStorage)
@@ -62,6 +68,11 @@ export class AuthStore {
     this.updateStorage()
   }
 
+  updateDisplayMode(displayMode: 'list' | 'grid') {
+    this.update({ ...this.getValue(), displayMode })
+    this.updateStorage()
+  }
+
   private updateStorage(useLocalStorage?: boolean): void {
     if (
       useLocalStorage ||
@@ -73,7 +84,7 @@ export class AuthStore {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  select(selector: (state: ApiUser) => any): Observable<any> {
+  select(selector: (state: AuthState) => any): Observable<any> {
     return this.state$.pipe(map(selector))
   }
 
@@ -81,7 +92,7 @@ export class AuthStore {
     return this.loading$
   }
 
-  getValue(): ApiUser {
+  getValue(): AuthState {
     return this.state()
   }
 
@@ -93,7 +104,7 @@ export class AuthStore {
     return this.error()
   }
 
-  update(value: ApiUser) {
+  update(value: AuthState) {
     this.state.update(() => value)
   }
 

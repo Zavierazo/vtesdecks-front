@@ -1,0 +1,51 @@
+@if(library$ | async; as library){
+<div class="d-flex flex-column align-items-center">
+  <div class="grid-card position-relative">
+    @if(card().number; as count ){
+    <div class="position-absolute top-0 end-0 badge border border-light bg-primary m-2">
+      x{{ count }}
+    </div>
+    }
+    @if(card().collection){
+    <div class="collection-tracker">
+      <div class="position-absolute top-0 end-0 badge border border-secondary bg-dark m-2 mt-5">
+        <app-collection-card-tracker [card]="card()"></app-collection-card-tracker>
+      </div>
+      <div class="collection-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark">
+        <app-collection-card-mini-stats [card]="card()"></app-collection-card-mini-stats>
+      </div>
+    </div>
+    }
+    <img class="grid-img rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbacklibrary.jpg'"
+      [lazyLoad]="library | cardImage" [errorImage]="cdnDomain + library.image"
+      [alt]="library.i18n?.name ?? library.name" [offset]="100" />
+    @if(card().number > 0){
+    <div class="draw-probability-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark">
+      @if( card().number > 0){
+      <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
+      }
+      @if(card().number > 1){
+      <span class="fw-normal">2+</span>&nbsp;<span class="text-info">{{getDrawProbability(2)}}%</span>&nbsp;
+      }
+      @if( card().number > 2){
+      <span class="fw-normal">3+</span>&nbsp;<span class="text-info">{{getDrawProbability(3)}}%</span>&nbsp;
+      }
+      @if( card().number > 3){
+      <span class="fw-normal">4+</span>&nbsp;<span class="text-info">{{getDrawProbability(4)}}%</span>
+      }
+    </div>
+    }
+  </div>
+  @if(withControls()){
+  <div class="btn-group w-100 mt-1" role="group">
+    <button type="button" class="btn btn-sm btn-success flex-fill" (click)="addCard($event)">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+    <button type="button" class="btn btn-sm btn-danger flex-fill" (click)="removeCard($event)"
+      [disabled]="card().number === 0">
+      <i class="bi bi-dash-lg"></i>
+    </button>
+  </div>
+  }
+</div>
+}

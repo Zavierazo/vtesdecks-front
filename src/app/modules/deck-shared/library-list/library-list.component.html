@@ -1,4 +1,15 @@
 <div class="row" *transloco="let t; read: 'deck_shared'">
+  @if(displayMode === 'grid') {
+  <div class="row m-2 g-2 justify-content-center">
+    @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
+    @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
+    <app-library-grid-card class="col-6 col-md-auto" [card]="library" [librarySize]="librarySize"
+      [withControls]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
+      (click)="openLibraryCard(library, libraryList!)"></app-library-grid-card>
+    }
+    }
+  </div>
+  }@else{
   @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
   <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
     <li class="list-group-item list-group-item-primary">
@@ -12,10 +23,12 @@
     <div>
       <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
         (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-        (click)="openCryptCard(library, libraryList!)" [disablePopover]="!withControls && (isMobileOrTablet$ | async)!"
+        (click)="openLibraryCard(library, libraryList!)"
+        [disablePopover]="!withControls && (isMobileOrTablet$ | async)!"
         [disableClickPopover]="!withControls"></app-library>
     </div>
     }
   </ul>
+  }
   }
 </div>

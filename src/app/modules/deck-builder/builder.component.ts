@@ -36,10 +36,14 @@ import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
 import { MarkdownTextareaComponent } from '../../shared/components/markdown-textarea/markdown-textarea.component'
+import { ToggleIconComponent } from '../../shared/components/toggle-icon/toggle-icon.component'
 import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
+import { AuthQuery } from '../../state/auth/auth.query'
+import { AuthService } from '../../state/auth/auth.service'
 import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
 import { getClanIcon } from '../../utils/clans'
 import { getDisciplineIcon } from '../../utils/disciplines'
+import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
@@ -75,11 +79,15 @@ import { fromUrl } from './limited-format/limited-format-utils'
     AsyncPipe,
     TranslocoPipe,
     MarkdownTextareaComponent,
+    ToggleIconComponent,
+    CryptGridCardComponent,
   ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly deckBuilderQuery = inject(DeckBuilderQuery)
   private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly toastService = inject(ToastService)
@@ -110,6 +118,20 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
 
+  displayMode$ = this.authQuery.selectDisplayMode()
+  displayModeOptions = [
+    {
+      option: 'grid',
+      icon: 'grid-fill',
+      label: 'shared.grid',
+    },
+    {
+      option: 'list',
+      icon: 'list',
+      label: 'shared.list',
+    },
+  ]
+
   ngOnInit() {
     this.initForm()
     this.initDeck()
@@ -123,6 +145,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           this.changeDetector.markForCheck()
         },
       })
+  }
+
+  onChangeDisplayMode(displayMode: string) {
+    const displayModeValue = displayMode as 'list' | 'grid'
+    this.authService.updateDisplayMode(displayModeValue)
   }
 
   initDeck(): Observable<ApiDeckBuilder> {
@@ -275,7 +302,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openCryptBuilder() {
     this.modalService.open(CryptBuilderComponent, {
-      size: 'xl',
+      fullscreen: true,
       centered: true,
       scrollable: true,
     })
@@ -283,7 +310,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openLibraryBuilder() {
     this.modalService.open(LibraryBuilderComponent, {
-      size: 'xl',
+      fullscreen: true,
       centered: true,
       scrollable: true,
     })

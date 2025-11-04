@@ -411,7 +411,9 @@
     "unexpected_error_with_message": "{{ message }}. Por favor, inténtelo de nuevo más tarde.",
     "new_version_available": "Se está cargando una nueva versión de la aplicación. Por favor, espera unos segundos o presiona Ctrl + F5 para actualizar.",
     "new_version_installing": "¡Buenas noticias! Se está instalando una actualización en segundo plano.",
-    "not_required": "No requerido"
+    "not_required": "No requerido",
+    "grid": "Cuadrícula",
+    "list": "Lista"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -535,7 +537,8 @@
       "martyrdom": "Martirio",
       "redemption": "Redención",
       "vengeance": "Venganza",
-      "vision": "Visión"
+      "vision": "Visión",
+      "flight": "Vuelo"
     },
     "clan": {
       "abo": "Abomination",
@@ -602,7 +605,10 @@
       "rush": "visita",
       "stealth": "sigilo",
       "swarm": "enjambre",
-      "vote": "voto"
+      "vote": "voto",
+      "mmpa": "mmpa",
+      "v5": "v5",
+      "2player": "2jugadores"
     },
     "taints": {
       "+Intercept": "+Intercepción",
@@ -644,7 +650,8 @@
       "Sterile": "Estéril",
       "Scarce": "Escaso",
       "Blood Cursed": "Sangre Maldita",
-      "Circle": "Círculo"
+      "Circle": "Círculo",
+      "Strike": "Ataque"
     }
   },
   "limited_format": {

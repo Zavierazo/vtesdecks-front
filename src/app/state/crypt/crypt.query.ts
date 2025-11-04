@@ -67,7 +67,8 @@ export class CryptQuery {
       limit,
       (entity) =>
         entity.name.toLowerCase().includes(name.toLowerCase()) ||
-        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()),
+        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()) ||
+        false,
     )
   }
 

@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
@@ -47,6 +48,7 @@ import { MediaService } from './../../../services/media.service'
     CurrencyPipe,
     CardImagePipe,
     CollectionCardStatsComponent,
+    LazyLoadImageModule,
   ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
@@ -187,5 +189,11 @@ export class CryptCardComponent implements OnInit, OnDestroy {
       this.activeSet = set
     }
     this.changeDetectorRef.markForCheck()
+  }
+
+  onLazyLoadEvent(event: StateChange) {
+    if (event.reason === 'loading-failed') {
+      this.setImageError = true
+    }
   }
 }

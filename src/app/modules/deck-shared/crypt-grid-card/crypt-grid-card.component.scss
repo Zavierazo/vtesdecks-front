@@ -1,0 +1,27 @@
+.grid-img {
+  max-height: 350px;
+}
+
+.draw-probability-badge {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+
+.collection-badge {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+
+.grid-card:hover > .draw-probability-badge {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+.collection-tracker:hover > .collection-badge {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}

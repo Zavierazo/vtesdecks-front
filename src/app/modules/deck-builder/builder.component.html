@@ -123,21 +123,33 @@
       </div>
     </section>
   </div>
-  <div class="col-12 d-flex justify-content-center mt-3">
-    <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
-    <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
-    <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
-      {{ (cryptSize$ | async)! }}
-    </span>
-    @if ((cryptErrors$ | async)!.length > 0) {
-    <ul class="ms-3 list-unstyled text-danger">
-      @for (error of (cryptErrors$ | async)!; track error) {
-      <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-      </li>
-      }
-    </ul>
-    }
+  <div class="col-12 d-flex align-items-center mt-3">
+    <div class="flex-grow-1"></div>
+    <div class="d-flex align-items-top justify-content-center">
+      <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+      <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
+      <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
+        {{ (cryptSize$ | async)! }}
+      </span>
+    </div>
+    <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+        [options]="displayModeOptions"></app-toggle-icon>
+    </div>
+    <div class="d-md-none flex-grow-1"></div>
   </div>
+  <div class="d-md-none mt-3 d-flex justify-content-center">
+    <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+      [options]="displayModeOptions"></app-toggle-icon>
+  </div>
+  @if ((cryptErrors$ | async)!.length > 0) {
+  <ul class="list-unstyled text-danger d-flex align-items-top  justify-content-center mt-2">
+    @for (error of (cryptErrors$ | async)!; track error) {
+    <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+    </li>
+    }
+  </ul>
+  }
   <div class="col-12 text-center mt-2">
     <div class="row justify-content-center">
       @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat.disciplines) {
@@ -151,6 +163,16 @@
   </div>
   <div class="col-12 mt-3">
     @if ((cryptList$ | async)!; as cryptList) {
+    @if((displayMode$ |async) === 'grid') {
+    <div class="row m-2 g-2 justify-content-center">
+      @for (crypt of cryptList; track crypt.id) {
+      <div class="col-6 col-md-auto">
+        <app-crypt-grid-card [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt-grid-card>
+      </div>
+      }
+    </div>
+    }@else{
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
       @for (crypt of cryptList; track crypt.id) {
       <ul class="col list-group">
@@ -159,6 +181,7 @@
       </ul>
       }
     </div>
+    }
     }
   </div>
   <div class="col-12 text-center mt-3">
@@ -177,29 +200,43 @@
       </div>
     </div>
   </div>
-  <div class="col-12 d-flex justify-content-center mt-3">
-    <h1 (click)="openLibraryBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
-    <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
-    <span class="circle_number ms-2" [title]="'deck.total_library' | transloco">
-      {{ (librarySize$ | async)! }}
-    </span>
-    <div>
-      <div class="costx ms-2" [title]="'deck.total_pool_cost' | transloco">
-        {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
-      </div>
-      <div class="costx ms-2" [title]="'deck.total_blood_cost' | transloco">
-        {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+  <div class="col-12 d-flex align-items-center mt-3">
+
+    <div class="flex-grow-1"></div>
+
+    <div class="d-flex align-items-top  justify-content-center">
+      <h1 (click)="openLibraryBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+      <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
+      <span class="circle_number ms-2" [title]="'deck.total_library' | transloco">
+        {{ (librarySize$ | async)! }}
+      </span>
+      <div>
+        <div class="costx ms-2" [title]="'deck.total_pool_cost' | transloco">
+          {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
+        </div>
+        <div class="costx ms-2" [title]="'deck.total_blood_cost' | transloco">
+          {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+        </div>
       </div>
     </div>
-    @if ((libraryErrors$ | async)!.length > 0) {
-    <ul class="ms-3 list-unstyled text-danger">
-      @for (error of (libraryErrors$ | async)!; track error) {
-      <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-      </li>
-      }
-    </ul>
-    }
+    <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+        [options]="displayModeOptions"></app-toggle-icon>
+    </div>
+    <div class="d-md-none flex-grow-1"></div>
   </div>
+  <div class="d-md-none mt-3 d-flex justify-content-center">
+    <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
+      [options]="displayModeOptions"></app-toggle-icon>
+  </div>
+  @if ((libraryErrors$ | async)!.length > 0) {
+  <ul class="list-unstyled text-danger d-flex align-items-top  justify-content-center mt-2">
+    @for (error of (libraryErrors$ | async)!; track error) {
+    <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+    </li>
+    }
+  </ul>
+  }
   <div class="col-12 text-center mt-2">
     <div class="row justify-content-center">
       @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline.disciplines) {
@@ -233,8 +270,8 @@
   </div>
   <div class="col-12 mt-3">
     @if ((libraryList$ | async)!; as libraryList) {
-    <app-library-list [libraryList]="libraryList" [withControls]="true" (cardAdded)="addCard($event)"
-      (cardRemoved)="removeCard($event)">
+    <app-library-list [libraryList]="libraryList" [displayMode]="(displayMode$ |async)!" [withControls]="true"
+      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)">
     </app-library-list>
     }
   </div>
