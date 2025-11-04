@@ -143,9 +143,10 @@
       [options]="displayModeOptions"></app-toggle-icon>
   </div>
   @if ((cryptErrors$ | async)!.length > 0) {
-  <ul class="list-unstyled text-danger d-flex align-items-top  justify-content-center mt-2">
+  <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
     @for (error of (cryptErrors$ | async)!; track error) {
-    <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+    <li class="fw-bold">
+      <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
     </li>
     }
   </ul>
@@ -230,7 +231,7 @@
       [options]="displayModeOptions"></app-toggle-icon>
   </div>
   @if ((libraryErrors$ | async)!.length > 0) {
-  <ul class="list-unstyled text-danger d-flex align-items-top  justify-content-center mt-2">
+  <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
     @for (error of (libraryErrors$ | async)!; track error) {
     <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
     </li>
