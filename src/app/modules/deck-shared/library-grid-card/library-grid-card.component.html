@@ -2,16 +2,16 @@
 <div class="d-flex flex-column align-items-center">
   <div class="grid-card position-relative">
     @if(card().number; as count ){
-    <div class="position-absolute top-0 end-0 badge border border-light bg-primary m-2">
+    <div class="position-absolute top-0 end-0 badge border border-light bg-primary m-2 fs-7">
       x{{ count }}
     </div>
     }
     @if(card().collection){
     <div class="collection-tracker">
-      <div class="position-absolute top-0 end-0 badge border border-secondary bg-dark m-2 mt-5">
+      <div class="position-absolute top-0 end-0 badge border border-secondary bg-dark m-2 mt-5 fs-7">
         <app-collection-card-tracker [card]="card()"></app-collection-card-tracker>
       </div>
-      <div class="collection-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark">
+      <div class="collection-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark fs-7">
         <app-collection-card-mini-stats [card]="card()"></app-collection-card-mini-stats>
       </div>
     </div>
@@ -20,7 +20,7 @@
       [lazyLoad]="library | cardImage" [errorImage]="cdnDomain + library.image"
       [alt]="library.i18n?.name ?? library.name" [offset]="100" />
     @if(card().number > 0){
-    <div class="draw-probability-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark">
+    <div class="draw-probability-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark fs-7">
       @if( card().number > 0){
       <span class="fw-normal">1+</span>&nbsp;<span class="text-info">{{getDrawProbability(1)}}%</span>&nbsp;
       }
