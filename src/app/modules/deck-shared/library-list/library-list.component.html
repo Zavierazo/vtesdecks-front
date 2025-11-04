@@ -1,5 +1,21 @@
 <div class="row" *transloco="let t; read: 'deck_shared'">
   @if(displayMode === 'grid') {
+  <div class="row justify-content-center">
+    @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
+    <h5 class="col-auto d-flex justify-content-center align-items-center" [title]="libraryType| libraryTypeTransloco">
+      <span class="d-flex align-items-center">
+        @for(libraryTypeIcon of getLibraryTypeIcons(libraryType); track libraryTypeIcon) {
+        <i class="vtes vtes-big" [ngClass]="libraryTypeIcon"></i>
+        }
+        <span class="ms-1">
+          {{ librarySizeByType(libraryType) }}
+          (@if (libraryType === 'Master' && masterTrifle > 0){{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
+          -}{{ percentageSize(libraryType) }}%)
+        </span>
+      </span>
+    </h5>
+    }
+  </div>
   <div class="row m-2 g-2 justify-content-center">
     @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
     @for (library of libraryCards(libraryType); track trackByFn($index, library)) {

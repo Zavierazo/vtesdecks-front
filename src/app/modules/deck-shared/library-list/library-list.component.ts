@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { getLibraryTypeIcons } from '../../../utils/library-types'
 import { LibraryCardComponent } from '../library-card/library-card.component'
 import { LibraryGridCardComponent } from '../library-grid-card/library-grid-card.component'
 import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe'
@@ -26,6 +27,7 @@ import { LibraryComponent } from '../library/library.component'
   styleUrls: ['./library-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgClass,
     TranslocoDirective,
     LibraryComponent,
     AsyncPipe,
@@ -146,5 +148,9 @@ export class LibraryListComponent implements OnInit {
     modalRef.componentInstance.index = current
       ? libraryList.indexOf(current)
       : 0
+  }
+
+  getLibraryTypeIcons(libraryType: string): string[] | undefined {
+    return getLibraryTypeIcons(libraryType)
   }
 }
