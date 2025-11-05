@@ -16,9 +16,9 @@
       </div>
     </div>
     }
-    <img class="grid-img rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
-      [lazyLoad]="crypt | cardImage" [errorImage]="cdnDomain + crypt.image" [alt]="crypt.i18n?.name ?? crypt.name"
-      [offset]="100" />
+    <img class="grid-img rounded mx-auto d-block img-fluid" [style.box-shadow]="stackedShadow"
+      [defaultImage]="'/assets/img/cardbackcrypt.jpg'" [lazyLoad]="crypt | cardImage"
+      [errorImage]="cdnDomain + crypt.image" [alt]="crypt.i18n?.name ?? crypt.name" [offset]="100" />
     @if(card().number > 0){
     <div class="draw-probability-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark fs-7">
       @if( card().number > 0){
@@ -39,10 +39,10 @@
   </div>
   @if(withControls()){
   <div class="btn-group w-100 mt-1" role="group">
-    <button type="button" class="btn btn-sm btn-success flex-fill" (click)="addCard($event)">
+    <button type="button" class="btn btn-sm btn-success flex-fill fs-6" (click)="addCard($event)">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <button type="button" class="btn btn-sm btn-danger flex-fill" (click)="removeCard($event)"
+    <button type="button" class="btn btn-sm btn-danger flex-fill fs-6" (click)="removeCard($event)"
       [disabled]="card().number === 0">
       <i class="bi bi-dash-lg"></i>
     </button>

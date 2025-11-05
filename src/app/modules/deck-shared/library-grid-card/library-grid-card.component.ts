@@ -56,11 +56,24 @@ export class LibraryGridCardComponent implements OnInit {
     this.library$ = this.libraryQuery.selectEntity(this.card().id)
   }
 
+  get stackedShadow(): string {
+    const count = this.card().number
+    if (count <= 1) return 'none'
+
+    const shadows: string[] = []
+    for (let i = 1; i < Math.min(count, 5); i++) {
+      const offset = i * 2
+      shadows.push(`${offset}px ${offset}px 0px rgba(0,0,0,0.4)`)
+    }
+    return shadows.join(', ')
+  }
+
   getDrawProbability(copy: number): number {
     return Math.round(
       drawProbability(copy, this.librarySize(), 7, this.card().number),
     )
   }
+
   addCard(event: MouseEvent) {
     event.preventDefault()
     this.cardAdded.emit(this.card().id)
