@@ -6,12 +6,14 @@
 
   </div>
   <div class="modal-header">
-    <form class="flex-fill">
-      <div class="row g-1" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
-        <div class="col mb-2">
+    <form class="flex-fill mb-2">
+      <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+        <div class="col-12 col-sm mb-2">
           <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
             [formControl]="nameFormControl">
         </div>
+        <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
+          (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions"></app-toggle-icon>
         <div ngbDropdown class="col-auto d-inline-block">
           <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
             [disabled]="sortByTrigramSimilarity">
@@ -66,14 +68,14 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      @if (!(isMobileOrTablet$ | async)) {
+      @if ((isMobileOrTablet$ | async) === false) {
       <div class="col-4">
         <ng-container *ngTemplateOutlet="filter"></ng-container>
       </div>
       }
       <div [ngClass]="{
       'col-12': (isMobileOrTablet$ | async),
-      'col-8': !(isMobileOrTablet$ | async)
+      'col-8': (isMobileOrTablet$ | async) === false
     }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" infiniteScrollContainer=".modal-body"
         [fromRoot]="true" [alwaysCallback]="true" (scrolled)="onScroll()">
         @if ((crypt$ | async)!.length === 0) {
@@ -83,11 +85,22 @@
           </button>
         </div>
         }
+        @if((displayMode$ |async) === 'grid') {
+        <div class="row mx-2 mb-2 g-1 justify-content-center">
+          @for (crypt of (crypt$ | async)! ; track crypt.id) {
+          <div class="col-6 col-md-auto">
+            <app-crypt-grid-card [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+              (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt-grid-card>
+          </div>
+          }
+        </div>
+        }@else{
         @for (crypt of (crypt$ | async)! ; track crypt.id) {
         <ul class="col list-group">
           <app-crypt [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
             (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
         </ul>
+        }
         }
       </div>
     </div>
@@ -101,6 +114,13 @@
     </div>
     <div class="modal-body">
       <ng-container *ngTemplateOutlet="filter"></ng-container>
+    </div>
+    <div class="modal-footer">
+      <div class="d-grid gap-2 w-100">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Apply')">
+          {{ 'shared.apply' | transloco }}
+        </button>
+      </div>
     </div>
   </ng-template>
 

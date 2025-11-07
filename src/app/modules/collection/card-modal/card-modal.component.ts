@@ -23,6 +23,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
   BehaviorSubject,
   catchError,
@@ -72,6 +73,7 @@ export interface SearchCard {
     CardImagePipe,
     AsyncPipe,
     DatePipe,
+    LazyLoadImageModule,
   ],
 })
 export class CardModalComponent implements OnInit {
@@ -313,6 +315,12 @@ export class CardModalComponent implements OnInit {
           }),
         )
         .subscribe()
+    }
+  }
+
+  onLazyLoadEvent(event: StateChange) {
+    if (event.reason === 'loading-failed') {
+      this.setImageError = true
     }
   }
 }

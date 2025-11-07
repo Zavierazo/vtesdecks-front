@@ -33,7 +33,7 @@ export interface ApiLibrary {
   taints: string[]
   deckPopularity: number
   cardPopularity: number
-  i18n: ApiI18n
+  i18n?: ApiI18n
   printOnDemand: boolean
   lastUpdate: Date
 }

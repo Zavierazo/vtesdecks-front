@@ -413,7 +413,11 @@
     "validation_error": "Validation error. Please check the form and try again.",
     "new_version_available": "A new version of the app is loading. Please wait a few seconds or press Ctrl + F5 to refresh.",
     "new_version_installing": "Good news! An update is being installed in the background.",
-    "not_required": "Not Required"
+    "not_required": "Not Required",
+    "grid": "Grid",
+    "list": "List",
+    "cards": "cards",
+    "apply": "Apply"
   },
   "table_seating": {
     "title": "Table Seating",
@@ -537,7 +541,8 @@
       "martyrdom": "Martyrdom",
       "redemption": "Redemption",
       "vengeance": "Vengeance",
-      "vision": "Vision"
+      "vision": "Vision",
+      "flight": "Flight"
     },
     "clan": {
       "abo": "Abomination",
@@ -603,7 +608,10 @@
       "rush": "rush",
       "stealth": "stealth",
       "swarm": "swarm",
-      "vote": "vote"
+      "vote": "vote",
+      "mmpa": "mmpa",
+      "v5": "v5",
+      "2player": "2player"
     },
     "taints": {
       "+Intercept": "+Intercept",
@@ -645,7 +653,8 @@
       "Sterile": "Sterile",
       "Scarce": "Scarce",
       "Blood Cursed": "Blood Cursed",
-      "Circle": "Circle"
+      "Circle": "Circle",
+      "Strike": "Strike"
     }
   },
   "limited_format": {

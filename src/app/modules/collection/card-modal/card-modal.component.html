@@ -36,8 +36,9 @@
     @if(card){
     <div class="row mt-3">
       <div class="col-sm-12 col-md-5 pe-3">
-        <img #image class="rounded mx-auto d-block img-fluid" [src]="card | cardImage:set"
-          [alt]="card.i18n?.name ?? card.name" (error)="image.src=cdnDomain + card.image; setImageError = true" />
+        <img class="rounded mx-auto d-block img-fluid" [lazyLoad]="card | cardImage:set"
+          [errorImage]="cdnDomain + card.image" (onStateChange)="onLazyLoadEvent($event)"
+          [alt]="card.i18n?.name ?? card.name" />
         @if(setImageError) {
         <div class="fw-bold fs-6 text-center text-danger small mb-2">
           {{ 'deck_shared.set_image_not_available' | transloco }}

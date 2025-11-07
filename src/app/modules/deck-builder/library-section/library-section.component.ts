@@ -39,8 +39,12 @@ import {
 import { ApiCard } from '../../../models/api-card'
 import { ApiLibrary, LibrarySortBy } from '../../../models/api-library'
 import { MediaService } from '../../../services/media.service'
+import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { AuthService } from '../../../state/auth/auth.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
+import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
@@ -67,6 +71,8 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     LibraryBuilderFilterComponent,
     AsyncPipe,
     TranslocoPipe,
+    ToggleIconComponent,
+    LibraryGridCardComponent,
   ],
 })
 export class LibrarySectionComponent implements OnInit {
@@ -74,6 +80,8 @@ export class LibrarySectionComponent implements OnInit {
   private readonly viewportService = inject(ViewportScroller)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly libraryQuery = inject(LibraryQuery)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
 
@@ -101,6 +109,20 @@ export class LibrarySectionComponent implements OnInit {
   taints: string[] = []
   cardText!: string
 
+  displayMode$ = this.authQuery.selectDisplayMode()
+  displayModeOptions = [
+    {
+      option: 'grid',
+      icon: 'grid-fill',
+      label: 'shared.grid',
+    },
+    {
+      option: 'list',
+      icon: 'list',
+      label: 'shared.list',
+    },
+  ]
+
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
@@ -115,6 +137,11 @@ export class LibrarySectionComponent implements OnInit {
   get sortByTrigramSimilarity(): boolean {
     const name = this.nameFilter
     return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  onChangeDisplayMode(displayMode: string) {
+    const displayModeValue = displayMode as 'list' | 'grid'
+    this.authService.updateDisplayMode(displayModeValue)
   }
 
   openModal(content: TemplateRef<unknown>) {

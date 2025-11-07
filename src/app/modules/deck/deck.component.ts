@@ -42,9 +42,11 @@ import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.comp
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '../../shared/components/markdown-text/markdown-text.component'
+import { ToggleIconComponent } from '../../shared/components/toggle-icon/toggle-icon.component'
 import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { AuthQuery } from '../../state/auth/auth.query'
+import { AuthService } from '../../state/auth/auth.service'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { DeckQuery } from '../../state/deck/deck.query'
 import { DeckService } from '../../state/deck/deck.service'
@@ -57,6 +59,7 @@ import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.compon
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
+import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
@@ -97,6 +100,8 @@ import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.comp
     AdSenseComponent,
     MarkdownTextComponent,
     DeckCardComponent,
+    ToggleIconComponent,
+    CryptGridCardComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
@@ -106,6 +111,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly deckQuery = inject(DeckQuery)
   private readonly deckService = inject(DeckService)
   private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly toastService = inject(ToastService)
   private readonly apiDataService = inject(ApiDataService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
@@ -145,6 +151,20 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   cdnDomain = environment.cdnDomain
 
+  displayMode$ = this.authQuery.selectDisplayMode()
+  displayModeOptions = [
+    {
+      option: 'grid',
+      icon: 'grid-fill',
+      label: 'shared.grid',
+    },
+    {
+      option: 'list',
+      icon: 'list',
+      label: 'shared.list',
+    },
+  ]
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!
     this.isLoading$ = this.deckQuery.selectLoading()
@@ -167,6 +187,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe((params) =>
       this.fetchSimilarDecks(params.get('id')),
     )
+  }
+
+  onChangeDisplayMode(displayMode: string) {
+    const displayModeValue = displayMode as 'list' | 'grid'
+    this.authService.updateDisplayMode(displayModeValue)
   }
 
   fetchSimilarDecks(deckId: string | null) {

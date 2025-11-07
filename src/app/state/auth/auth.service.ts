@@ -108,4 +108,8 @@ export class AuthService {
       }),
     )
   }
+
+  updateDisplayMode(displayMode: 'list' | 'grid'): void {
+    this.authStore.updateDisplayMode(displayMode)
+  }
 }

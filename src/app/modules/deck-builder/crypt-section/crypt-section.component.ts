@@ -39,8 +39,12 @@ import {
 import { ApiCard } from '../../../models/api-card'
 import { ApiCrypt, CryptSortBy } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
+import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { AuthService } from '../../../state/auth/auth.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
+import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
@@ -67,6 +71,8 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     CryptBuilderFilterComponent,
     AsyncPipe,
     TranslocoPipe,
+    ToggleIconComponent,
+    CryptGridCardComponent,
   ],
 })
 export class CryptSectionComponent implements OnInit {
@@ -74,6 +80,8 @@ export class CryptSectionComponent implements OnInit {
   private readonly viewportService = inject(ViewportScroller)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly cryptQuery = inject(CryptQuery)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
 
@@ -101,6 +109,20 @@ export class CryptSectionComponent implements OnInit {
   taints: string[] = []
   cardText!: string
 
+  displayMode$ = this.authQuery.selectDisplayMode()
+  displayModeOptions = [
+    {
+      option: 'grid',
+      icon: 'grid-fill',
+      label: 'shared.grid',
+    },
+    {
+      option: 'list',
+      icon: 'list',
+      label: 'shared.list',
+    },
+  ]
+
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
@@ -115,6 +137,11 @@ export class CryptSectionComponent implements OnInit {
   get sortByTrigramSimilarity(): boolean {
     const name = this.nameFilter
     return name !== undefined && !isRegexSearch(name) && name.length > 3
+  }
+
+  onChangeDisplayMode(displayMode: string) {
+    const displayModeValue = displayMode as 'list' | 'grid'
+    this.authService.updateDisplayMode(displayModeValue)
   }
 
   openModal(content: TemplateRef<unknown>) {

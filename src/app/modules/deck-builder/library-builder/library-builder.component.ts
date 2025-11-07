@@ -21,7 +21,11 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
+import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { AuthService } from '../../../state/auth/auth.service'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { ApiCard } from './../../../models/api-card'
@@ -52,11 +56,15 @@ import { isRegexSearch, searchIncludes } from './../../../utils/vtes-utils'
     LibraryBuilderFilterComponent,
     AsyncPipe,
     TranslocoPipe,
+    ToggleIconComponent,
+    LibraryGridCardComponent,
   ],
 })
 export class LibraryBuilderComponent implements OnInit {
   modal = inject(NgbActiveModal)
   private readonly libraryQuery = inject(LibraryQuery)
+  private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly deckBuilderQuery = inject(DeckBuilderQuery)
   private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly mediaService = inject(MediaService)
@@ -86,12 +94,31 @@ export class LibraryBuilderComponent implements OnInit {
   taints!: string[]
   cardText!: string
 
+  displayMode$ = this.authQuery.selectDisplayMode()
+  displayModeOptions = [
+    {
+      option: 'grid',
+      icon: 'grid-fill',
+      label: 'shared.grid',
+    },
+    {
+      option: 'list',
+      icon: 'list',
+      label: 'shared.list',
+    },
+  ]
+
   ngOnInit() {
     this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.initFilters()
     this.onChangeNameFilter()
+  }
+
+  onChangeDisplayMode(displayMode: string) {
+    const displayModeValue = displayMode as 'list' | 'grid'
+    this.authService.updateDisplayMode(displayModeValue)
   }
 
   get nameFilter(): string | undefined {

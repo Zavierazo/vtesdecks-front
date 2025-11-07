@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,13 +8,15 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
+import { getLibraryTypeIcons } from '../../../utils/library-types'
 import { LibraryCardComponent } from '../library-card/library-card.component'
+import { LibraryGridCardComponent } from '../library-grid-card/library-grid-card.component'
 import { LibraryTypeTranslocoPipe } from '../library-type-transloco/library-type-transloco.pipe'
 import { LibraryComponent } from '../library/library.component'
 
@@ -25,11 +27,15 @@ import { LibraryComponent } from '../library/library.component'
   styleUrls: ['./library-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgClass,
+    NgbCollapseModule,
+    NgTemplateOutlet,
     TranslocoDirective,
     LibraryComponent,
     AsyncPipe,
     TranslocoPipe,
     LibraryTypeTranslocoPipe,
+    LibraryGridCardComponent,
   ],
 })
 export class LibraryListComponent implements OnInit {
@@ -63,14 +69,30 @@ export class LibraryListComponent implements OnInit {
 
   @Input() withControls = false
 
+  @Input() displayMode: 'list' | 'grid' = 'list'
+
   readonly cardAdded = output<number>()
 
   readonly cardRemoved = output<number>()
 
   isMobileOrTablet$!: Observable<boolean>
 
+  collapsedStates = new Map<string, boolean>()
+
   ngOnInit() {
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
+    this.libraryTypes.forEach((type) => {
+      this.collapsedStates.set(type, false)
+    })
+  }
+
+  isCollapsed(libraryType: string): boolean {
+    return this.collapsedStates.get(libraryType) ?? false
+  }
+
+  toggleCollapsed(libraryType: string): void {
+    const currentState = this.isCollapsed(libraryType)
+    this.collapsedStates.set(libraryType, !currentState)
   }
 
   get libraryTypes(): string[] {
@@ -121,7 +143,7 @@ export class LibraryListComponent implements OnInit {
     return LibraryListComponent.libraryTypeOrder.indexOf(type)
   }
 
-  openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
+  openLibraryCard(card: ApiCard, cardList: ApiCard[]): void {
     if (this.withControls) {
       return
     }
@@ -142,5 +164,9 @@ export class LibraryListComponent implements OnInit {
     modalRef.componentInstance.index = current
       ? libraryList.indexOf(current)
       : 0
+  }
+
+  getLibraryTypeIcons(libraryType: string): string[] | undefined {
+    return getLibraryTypeIcons(libraryType)
   }
 }

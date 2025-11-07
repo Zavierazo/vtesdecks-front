@@ -160,3 +160,8 @@ blockquote p {
   color: var(--bs-secondary-color);
   opacity: 0.5;
 }
+
+/** Additional styles **/
+.fs-7 {
+  font-size: 0.9rem !important;
+}

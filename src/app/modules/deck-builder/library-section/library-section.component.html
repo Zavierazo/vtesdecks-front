@@ -1,12 +1,14 @@
 <ng-container *transloco="let t;read: 'library_section'">
   <div id="container" class="min-vh-100">
     <header class="border-bottom mb-0 mb-lg-3 pt-2 p-1 px-3 sticky-top bg-light">
-      <form class="flex-fill">
-        <div class="row g-1" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
-          <div class="col mb-2">
+      <form class="flex-fill mb-2">
+        <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+          <div class="col-12 col-sm">
             <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
               [formControl]="nameFormControl">
           </div>
+          <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
+            (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions"></app-toggle-icon>
           <div ngbDropdown class="col-auto d-inline-block">
             <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
               [disabled]="sortByTrigramSimilarity">
@@ -39,9 +41,7 @@
           @if ((isMobileOrTablet$ | async)!) {
           <div class="col-auto">
             <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
-              <i class="bi bi-funnel-fill"></i>@if (!(isMobile$ | async)!) {
-              <span> {{ t('filters')}}</span>
-              }
+              <i class="bi bi-funnel-fill"></i><span> {{ t('filters')}}</span>
             </button>
           </div>
           }
@@ -50,7 +50,7 @@
     </header>
     <div class="library-body">
       <div class="scroll-container row">
-        @if (!(isMobileOrTablet$ | async) && (library$ | async)!) {
+        @if ((isMobileOrTablet$ | async) === false && (library$ | async)!) {
         <div class="col-4 filters-desktop">
           <div class="filters-desktop-container">
             <ng-container *ngTemplateOutlet="filter"></ng-container>
@@ -59,7 +59,7 @@
         }
         <div [ngClass]="{
       'col-12': (isMobileOrTablet$ | async),
-      'col-8': !(isMobileOrTablet$ | async)
+      'col-8': (isMobileOrTablet$ | async) === false
     }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100" (scrolled)="onScroll()">
           @if ((isMobileOrTablet$ | async)) {
           <strong class="d-flex justify-content-center">
@@ -73,11 +73,22 @@
             </button>
           </div>
           }
+          @if((displayMode$ |async) === 'grid') {
+          <div class="row mx-2 mb-2 g-1 justify-content-center">
+            @for (library of (library$ | async)! ; track trackByFn($index, library)) {
+            <div class="col-6 col-md-auto">
+              <app-library-grid-card [card]="getCard(library)"
+                (click)="openLibraryCard(library)"></app-library-grid-card>
+            </div>
+            }
+          </div>
+          }@else{
           @for (library of (library$ | async)! ; track trackByFn($index, library)) {
           <ul class="col list-group">
             <app-library [card]="getCard(library)" (click)="openLibraryCard(library)"
               [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-library>
           </ul>
+          }
           }
         </div>
       </div>
@@ -99,6 +110,13 @@
     </div>
     <div class="modal-body">
       <ng-container *ngTemplateOutlet="filter"></ng-container>
+    </div>
+    <div class="modal-footer">
+      <div class="d-grid gap-2 w-100">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Apply')">
+          {{ 'shared.apply' | transloco }}
+        </button>
+      </div>
     </div>
   </ng-template>
 

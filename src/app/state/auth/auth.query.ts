@@ -43,6 +43,10 @@ export class AuthQuery {
     return this.store.select((user: ApiUser) => user.email)
   }
 
+  selectDisplayMode(): Observable<'list' | 'grid'> {
+    return this.store.select((state) => state.displayMode || 'list')
+  }
+
   isAuthenticated(): boolean {
     return !!this.store.getValue().token
   }
@@ -61,6 +65,10 @@ export class AuthQuery {
 
   getEmail(): string | undefined {
     return this.store.getValue().email
+  }
+
+  getDisplayMode(): 'list' | 'grid' {
+    return this.store.getValue().displayMode
   }
 
   isSupporter(): boolean {

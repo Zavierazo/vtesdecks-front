@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
@@ -47,6 +47,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
+    TranslocoPipe,
     ReactiveFormsModule,
     IsLoggedDirective,
     DeckFiltersComponent,
