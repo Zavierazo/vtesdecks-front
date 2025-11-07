@@ -111,6 +111,13 @@
     <div class="modal-body">
       <ng-container *ngTemplateOutlet="filter"></ng-container>
     </div>
+    <div class="modal-footer">
+      <div class="d-grid gap-2 w-100">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Apply')">
+          {{ 'shared.apply' | transloco }}
+        </button>
+      </div>
+    </div>
   </ng-template>
 
   <ng-template #filter>

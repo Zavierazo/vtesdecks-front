@@ -413,7 +413,9 @@
     "new_version_installing": "¡Buenas noticias! Se está instalando una actualización en segundo plano.",
     "not_required": "No requerido",
     "grid": "Cuadrícula",
-    "list": "Lista"
+    "list": "Lista",
+    "cards": "cartas",
+    "apply": "Aplicar"
   },
   "table_seating": {
     "title": "Asignación de asientos",

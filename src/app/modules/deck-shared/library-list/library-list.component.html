@@ -1,39 +1,32 @@
 <div class="row" *transloco="let t; read: 'deck_shared'">
   @if(displayMode === 'grid') {
-  <div class="row justify-content-center">
-    @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
-    <h5 class="col-auto d-flex justify-content-center align-items-center" [title]="libraryType| libraryTypeTransloco">
-      <span class="d-flex align-items-center">
-        @for(libraryTypeIcon of getLibraryTypeIcons(libraryType); track libraryTypeIcon) {
-        <i class="vtes vtes-big" [ngClass]="libraryTypeIcon"></i>
-        }
-        <span class="ms-1">
-          {{ librarySizeByType(libraryType) }}
-          (@if (libraryType === 'Master' && masterTrifle > 0){{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
-          - }{{ percentageSize(libraryType) }}%)
-        </span>
-      </span>
-    </h5>
-    }
-  </div>
   <div class="row m-2 g-2 justify-content-center">
     @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
-    @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
-    <app-library-grid-card class="col-6 col-md-auto" [card]="library" [librarySize]="librarySize"
-      [withControls]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-      (click)="openLibraryCard(library, libraryList!)"></app-library-grid-card>
-    }
+    <button class="nav-link " data-toggle="collapse" (click)="toggleCollapsed(libraryType)">
+      <h6 class="col-auto d-flex justify-content-start align-items-center" [title]="libraryType| libraryTypeTransloco">
+        <i class="bi me-2" [ngClass]="{
+        'bi-caret-down-fill': !isCollapsed(libraryType),
+        'bi-caret-right-fill': isCollapsed(libraryType)
+      }"></i>
+        <span class="d-flex align-items-center">
+          <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }"></ng-container>
+        </span>
+      </h6>
+    </button>
+    <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed(libraryType)" class="row m-2 g-2 justify-content-start">
+      @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
+      <app-library-grid-card class="col-6 col-md-auto" [card]="library" [librarySize]="librarySize"
+        [withControls]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
+        (click)="openLibraryCard(library, libraryList!)"></app-library-grid-card>
+      }
+    </div>
     }
   </div>
   }@else{
   @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
   <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-    <li class="list-group-item list-group-item-primary">
-      {{ librarySizeByType(libraryType) }}&nbsp;{{ libraryType | libraryTypeTransloco }}
-      @if (libraryType === 'Master' && masterTrifle > 0) {
-      &nbsp;-&nbsp;{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
-      }
-      <span class="float-end"> {{ percentageSize(libraryType) }}% </span>
+    <li class="list-group-item list-group-item-primary d-flex justify-content-start align-items-center">
+      <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }"></ng-container>
     </li>
     @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
     <div>
@@ -48,3 +41,18 @@
   }
   }
 </div>
+<ng-template #libraryTypeTpl let-libraryType="libraryType">
+  <span>
+    @for(libraryTypeIcon of getLibraryTypeIcons(libraryType); track libraryTypeIcon) {
+    <i class="vtes" [ngClass]="libraryTypeIcon"></i>
+    }
+  </span>
+  <span class="mx-1 fw-semibold">
+    {{ libraryType | libraryTypeTransloco }}
+  </span>
+  <span class="text-muted">
+    ({{ librarySizeByType(libraryType) }} {{ 'shared.cards' | transloco }} ·
+    @if (libraryType === 'Master' && masterTrifle > 0){{{ masterTrifle }} {{ 'vtes.type.trifle' | transloco }}
+    · }{{ percentageSize(libraryType) }}%)
+  </span>
+</ng-template>

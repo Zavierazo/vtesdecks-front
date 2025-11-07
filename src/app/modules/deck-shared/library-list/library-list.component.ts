@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
 import { ApiCard } from '../../../models/api-card'
@@ -28,6 +28,8 @@ import { LibraryComponent } from '../library/library.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgClass,
+    NgbCollapseModule,
+    NgTemplateOutlet,
     TranslocoDirective,
     LibraryComponent,
     AsyncPipe,
@@ -75,8 +77,22 @@ export class LibraryListComponent implements OnInit {
 
   isMobileOrTablet$!: Observable<boolean>
 
+  collapsedStates = new Map<string, boolean>()
+
   ngOnInit() {
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
+    this.libraryTypes.forEach((type) => {
+      this.collapsedStates.set(type, false)
+    })
+  }
+
+  isCollapsed(libraryType: string): boolean {
+    return this.collapsedStates.get(libraryType) ?? false
+  }
+
+  toggleCollapsed(libraryType: string): void {
+    const currentState = this.isCollapsed(libraryType)
+    this.collapsedStates.set(libraryType, !currentState)
   }
 
   get libraryTypes(): string[] {

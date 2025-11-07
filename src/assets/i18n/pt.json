@@ -414,7 +414,9 @@
     "new_version_installing": "Boas notícias! Uma atualização está sendo instalada em segundo plano.",
     "not_required": "Não requerido",
     "grid": "Grade",
-    "list": "Lista"
+    "list": "Lista",
+    "cards": "cartas",
+    "apply": "Aplicar"
   },
   "table_seating": {
     "title": "Assentamento de mesa",

@@ -415,7 +415,9 @@
     "new_version_installing": "Good news! An update is being installed in the background.",
     "not_required": "Not Required",
     "grid": "Grid",
-    "list": "List"
+    "list": "List",
+    "cards": "cards",
+    "apply": "Apply"
   },
   "table_seating": {
     "title": "Table Seating",

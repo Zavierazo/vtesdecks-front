@@ -123,5 +123,12 @@
     <div class="offcanvas-body">
       <app-deck-filters #filters (resetFilters)="reset()"></app-deck-filters>
     </div>
+    <div class="offcanvas-footer">
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary" (click)="offcanvas.dismiss('Apply')">
+          {{ 'shared.apply' | transloco }}
+        </button>
+      </div>
+    </div>
   </ng-template>
 </ng-container>
