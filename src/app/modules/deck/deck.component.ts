@@ -151,7 +151,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   cdnDomain = environment.cdnDomain
 
-  displayMode$ = this.authQuery.selectDisplayMode()
+  displayMode$ = this.authQuery.selectDeckDisplayMode()
   displayModeOptions = [
     {
       option: 'grid',
@@ -191,7 +191,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
-    this.authService.updateDisplayMode(displayModeValue)
+    this.authService.updateDeckDisplayMode(displayModeValue)
   }
 
   fetchSimilarDecks(deckId: string | null) {

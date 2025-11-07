@@ -7,11 +7,15 @@ import { LocalStorageService } from '../../services/local-storage.service'
 import { SessionStorageService } from '../../services/session-storage.service'
 
 export interface AuthState extends ApiUser {
-  displayMode: 'list' | 'grid'
+  builderDisplayMode: 'list' | 'grid'
+  cardsDisplayMode: 'list' | 'grid'
+  deckDisplayMode: 'list' | 'grid'
 }
 
 const initialState: AuthState = {
-  displayMode: 'list',
+  builderDisplayMode: 'list',
+  cardsDisplayMode: 'list',
+  deckDisplayMode: 'list',
 }
 
 @Injectable({
@@ -68,8 +72,18 @@ export class AuthStore {
     this.updateStorage()
   }
 
-  updateDisplayMode(displayMode: 'list' | 'grid') {
-    this.update({ ...this.getValue(), displayMode })
+  updateBuilderDisplayMode(builderDisplayMode: 'list' | 'grid') {
+    this.update({ ...this.getValue(), builderDisplayMode })
+    this.updateStorage()
+  }
+
+  updateCardsDisplayMode(cardsDisplayMode: 'list' | 'grid') {
+    this.update({ ...this.getValue(), cardsDisplayMode })
+    this.updateStorage()
+  }
+
+  updateDeckDisplayMode(deckDisplayMode: 'list' | 'grid') {
+    this.update({ ...this.getValue(), deckDisplayMode })
     this.updateStorage()
   }
 

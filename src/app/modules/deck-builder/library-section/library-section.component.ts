@@ -109,7 +109,7 @@ export class LibrarySectionComponent implements OnInit {
   taints: string[] = []
   cardText!: string
 
-  displayMode$ = this.authQuery.selectDisplayMode()
+  displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
     {
       option: 'grid',
@@ -141,7 +141,7 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
-    this.authService.updateDisplayMode(displayModeValue)
+    this.authService.updateCardsDisplayMode(displayModeValue)
   }
 
   openModal(content: TemplateRef<unknown>) {

@@ -43,8 +43,16 @@ export class AuthQuery {
     return this.store.select((user: ApiUser) => user.email)
   }
 
-  selectDisplayMode(): Observable<'list' | 'grid'> {
-    return this.store.select((state) => state.displayMode || 'list')
+  selectBuilderDisplayMode(): Observable<'list' | 'grid'> {
+    return this.store.select((state) => state.builderDisplayMode || 'list')
+  }
+
+  selectCardsDisplayMode(): Observable<'list' | 'grid'> {
+    return this.store.select((state) => state.cardsDisplayMode || 'list')
+  }
+
+  selectDeckDisplayMode(): Observable<'list' | 'grid'> {
+    return this.store.select((state) => state.deckDisplayMode || 'list')
   }
 
   isAuthenticated(): boolean {
@@ -67,8 +75,16 @@ export class AuthQuery {
     return this.store.getValue().email
   }
 
-  getDisplayMode(): 'list' | 'grid' {
-    return this.store.getValue().displayMode
+  getBuilderDisplayMode(): 'list' | 'grid' {
+    return this.store.getValue().builderDisplayMode
+  }
+
+  getCardsDisplayMode(): 'list' | 'grid' {
+    return this.store.getValue().cardsDisplayMode
+  }
+
+  getDeckDisplayMode(): 'list' | 'grid' {
+    return this.store.getValue().deckDisplayMode
   }
 
   isSupporter(): boolean {

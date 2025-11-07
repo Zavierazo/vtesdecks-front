@@ -94,7 +94,7 @@ export class CryptBuilderComponent implements OnInit {
   taints!: string[]
   cardText!: string
 
-  displayMode$ = this.authQuery.selectDisplayMode()
+  displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
     {
       option: 'grid',
@@ -118,7 +118,7 @@ export class CryptBuilderComponent implements OnInit {
 
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
-    this.authService.updateDisplayMode(displayModeValue)
+    this.authService.updateBuilderDisplayMode(displayModeValue)
   }
 
   get nameFilter(): string | undefined {

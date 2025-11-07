@@ -109,7 +109,15 @@ export class AuthService {
     )
   }
 
-  updateDisplayMode(displayMode: 'list' | 'grid'): void {
-    this.authStore.updateDisplayMode(displayMode)
+  updateBuilderDisplayMode(displayMode: 'list' | 'grid'): void {
+    this.authStore.updateBuilderDisplayMode(displayMode)
+  }
+
+  updateCardsDisplayMode(displayMode: 'list' | 'grid'): void {
+    this.authStore.updateCardsDisplayMode(displayMode)
+  }
+
+  updateDeckDisplayMode(displayMode: 'list' | 'grid'): void {
+    this.authStore.updateDeckDisplayMode(displayMode)
   }
 }

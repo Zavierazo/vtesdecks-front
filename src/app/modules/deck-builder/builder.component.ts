@@ -118,7 +118,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
 
-  displayMode$ = this.authQuery.selectDisplayMode()
+  displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
     {
       option: 'grid',
@@ -149,7 +149,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
-    this.authService.updateDisplayMode(displayModeValue)
+    this.authService.updateBuilderDisplayMode(displayModeValue)
   }
 
   initDeck(): Observable<ApiDeckBuilder> {
