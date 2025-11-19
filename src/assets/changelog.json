@@ -1,13 +1,23 @@
 [
   {
+    "version": "2.54.0",
+    "date": "19th November, 2025",
+    "changes": [
+      "Added card filters to the URL, allowing you to share specific searches.",
+      "Added a share button to Crypt and Library pages to easily share individual cards.",
+      "Added localized card text in the card modal when no localized image is available. Note: card texts are not available for all cards due to outdated data in the official CSV.",
+      "Fixed and updated all Print-on-Demand shop links and prices. They should now refresh correctly every day.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.53.0",
     "date": "7th November, 2025",
     "changes": [
       "Added new Grid layout for Crypt and Library cards.",
       "Improved card browsing with a cleaner and more visual interface.",
       "Enhanced image loading with lazy loading — only visible images load for faster performance.",
-      "Updated TRUE Brujah PoD images with correct text.",
-      "Minor fixes and performance improvements."
+      "Updated TRUE Brujah PoD images with correct text."
     ]
   },
   {
@@ -16,8 +26,7 @@
     "changes": [
       "Migrated all images to a CDN cache to boost loading speed and overall performance.",
       "Enhanced card name search with trigram similarity for more accurate results, even with typos or partial matches.",
-      "Added a special Halloween theme and effects for the spooky season.",
-      "Minor fixes and performance improvements."
+      "Added a special Halloween theme and effects for the spooky season."
     ]
   },
   {
@@ -29,8 +38,7 @@
       "Added Path filter to Deck, Crypt and Library sections.",
       "Add Path icon to Deck, Crypt and Library cards.",
       "Updated clan naming and icons: Assamite → Banu Haqim, Follower of Set → Ministry. Filters and search now use V5 naming conventions.",
-      "Fixed an issue that caused duplicate decks to appear when scrolling on slow network connections.",
-      "Minor fixes and performance improvements."
+      "Fixed an issue that caused duplicate decks to appear when scrolling on slow network connections."
     ]
   },
   {

@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -10,7 +11,11 @@ import {
   inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
@@ -20,6 +25,7 @@ import { environment } from '../../../../environments/environment'
 import { ApiDecks } from '../../../models/api-decks'
 import { ApiShop } from '../../../models/api-shop'
 import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
+import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { Shop, getShop } from '../../../utils/shops'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
@@ -56,6 +62,9 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   private readonly apiDataService = inject(ApiDataService)
   private readonly mediaService = inject(MediaService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly toastService = inject(ToastService)
+  private readonly clipboard = inject(Clipboard)
+  private readonly translocoService = inject(TranslocoService)
 
   readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'
   @Input() cardList!: ApiCrypt[]
@@ -194,6 +203,23 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   onLazyLoadEvent(event: StateChange) {
     if (event.reason === 'loading-failed') {
       this.setImageError = true
+    }
+  }
+
+  onShare() {
+    const url = `https://${environment.domain}/cards/crypt?cardId=${this.cardList[this.index].id}`
+    if (window.navigator.share) {
+      ;(async () => {
+        await window.navigator.share({
+          url: url,
+        })
+      })()
+    } else {
+      this.clipboard.copy(url)
+      this.toastService.show(
+        this.translocoService.translate('deck.link_copied'),
+        { classname: 'bg-success text-light', delay: 5000 },
+      )
     }
   }
 }
