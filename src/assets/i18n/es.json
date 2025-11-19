@@ -182,7 +182,8 @@
     "set_image_not_available": "Imagen de la expansion no disponible",
     "my_collection": "¿Cuántas tengo?",
     "view_collection": "Ver en Colección",
-    "tracked_collection": "Rastreado en Colección"
+    "tracked_collection": "Rastreado en Colección",
+    "share": "Compartir"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

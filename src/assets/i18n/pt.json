@@ -182,7 +182,8 @@
     "set_image_not_available": "Imagem de expansão não disponível",
     "my_collection": "Quantas eu possuo?",
     "view_collection": "Ver na Coleção",
-    "tracked_collection": "Rastreado na Coleção"
+    "tracked_collection": "Rastreado na Coleção",
+    "share": "Compartilhar"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",

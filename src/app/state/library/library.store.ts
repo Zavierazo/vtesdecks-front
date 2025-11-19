@@ -18,6 +18,7 @@ export interface LibraryStats {
 }
 export interface LibraryState {
   locale?: string
+  lastUpdate?: Date
 }
 
 const initialState: LibraryState = {}
@@ -60,6 +61,10 @@ export class LibraryStore {
       locale,
       lastUpdate,
     }))
+  }
+
+  getLastUpdate(): Date | undefined {
+    return this.state().lastUpdate
   }
 
   selectLoading(): Observable<boolean> {

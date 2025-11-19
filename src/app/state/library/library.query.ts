@@ -171,9 +171,4 @@ export class LibraryQuery {
     clans.sort((a, b) => b.number - a.number)
     return clans
   }
-
-  getLastUpdate(): Date {
-    return this.store.getEntities(undefined, 'lastUpdate', 'desc')[0]
-      ?.lastUpdate
-  }
 }

@@ -3,16 +3,23 @@
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
-        <img class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
-          [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
-          (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
+        <div class="position-relative">
+          <img class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
+            [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
+            (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
+          @if(card.i18n && !card.i18n.image && card.i18n.text) {
+          <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2">
+            {{ card.i18n.text }}
+          </div>
+          }
+        </div>
         @if(setImageError) {
-        <div class="text-center text-warning small mb-2">
+        <div class="text-center text-warning small my-2">
           {{ 'deck_shared.set_image_not_available' | transloco }}
         </div>
         }
         @if(!(isMobile$ | async)! && card.sets && card.sets.length > 1) {
-        <div class="d-flex flex-wrap mb-2 justify-content-center align-items-center">
+        <div class="d-flex flex-wrap my-2 justify-content-center align-items-center">
           @for (set of card.sets; track set) {
           <span class="badge me-1"
             [ngClass]="{ 'text-bg-secondary': activeSet !== set, 'text-bg-primary border border-primary border-1': activeSet === set }"
@@ -148,28 +155,26 @@
           }
           <app-collection-card-stats [cardId]="card.id"
             (routerClick)="modal.dismiss('Link click')"></app-collection-card-stats>
+          <small class="float-end text-muted mt-2">#{{card.id}}</small>
         </div>
         <div class="modal-footer align-self-end">
-          <div class="row justify-content-between w-100">
-            <button type="button" class="btn btn-primary col-auto me-auto" [title]="t('search_title')"
-              routerLink="/decks" [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
+          <div class="row justify-content-start align-items-center w-100 g-2">
+            <button type="button" class="btn btn-primary col-auto me-1" (click)="onShare()">
+              <i class="bi bi-share me-2"></i>{{ t('share') }}
+            </button>
+            <button type="button" class="btn btn-primary col-auto me-2" [title]="t('search_title')" routerLink="/decks"
+              [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-stack"></i> {{ t('search') }}
             </button>
             @for (shop of (shops$ | async)!; track shop) {
             @if (getShopInfo(shop.platform); as shopInfo) {
-            <a type="button" class="btn btn-success col-auto me-auto" [title]="t('buy', { name: shopInfo.name })"
+            <a type="button" class="btn btn-sm btn-success col-auto me-1" [title]="t('buy', { name: shopInfo.name })"
               [href]="shop.link" target="_blank" gaEvent="purchase" [gaCategory]="shop.platform" [gaLabel]="card.name">
               <i class="bi bi-cart4"></i>
-              @if (!(isMobile$ | async)!) {
               <span>&nbsp;{{ shopInfo.name }}</span><br />{{ shop.price | currency:shop.currency }}
-              }
-              @if ((isMobile$ | async)!) {
-              <span>&nbsp;{{ shopInfo.abbr }}</span>
-              }
             </a>
             }
             }
-            <small class="col-auto text-muted mt-2">#{{card.id}}</small>
           </div>
         </div>
       </div>

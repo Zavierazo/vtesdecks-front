@@ -206,9 +206,4 @@ export class CryptQuery {
     disciplines.sort((a, b) => b.superior - a.superior)
     return disciplines
   }
-
-  getLastUpdate(): Date {
-    return this.store.getEntities(undefined, 'lastUpdate', 'desc')[0]
-      ?.lastUpdate
-  }
 }

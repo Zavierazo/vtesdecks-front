@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   defaultIfEmpty,
@@ -32,8 +32,9 @@ export class CryptService {
       map((crypt) => crypt.lastUpdate),
       filter(
         (lastUpdate) =>
-          lastUpdate !== this.cryptQuery.getLastUpdate() ||
-          locale !== cryptState.locale,
+          lastUpdate !== this.cryptStore.getLastUpdate() ||
+          locale !== cryptState.locale ||
+          this.cryptQuery.getAll({}).length < 1000,
       ),
       switchMap((lastUpdate) =>
         request$.pipe(

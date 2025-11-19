@@ -18,6 +18,7 @@ export interface CryptStats {
 
 export interface CryptState {
   locale?: string
+  lastUpdate?: Date
 }
 
 const initialState: CryptState = {}
@@ -60,6 +61,10 @@ export class CryptStore {
       locale,
       lastUpdate,
     }))
+  }
+
+  getLastUpdate(): Date | undefined {
+    return this.state().lastUpdate
   }
 
   selectLoading(): Observable<boolean> {

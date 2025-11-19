@@ -14,6 +14,7 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   NgbDropdown,
@@ -84,6 +85,8 @@ export class CryptSectionComponent implements OnInit {
   private readonly authService = inject(AuthService)
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
 
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
@@ -130,6 +133,15 @@ export class CryptSectionComponent implements OnInit {
     this.initFilters()
   }
 
+  private updateQueryParams(params: Record<string, string | undefined>) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: params,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    })
+  }
+
   get nameFilter(): string | undefined {
     return this.nameFormControl.value || undefined
   }
@@ -153,8 +165,85 @@ export class CryptSectionComponent implements OnInit {
     this.updateQuery()
   }
 
+  resetFilters() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      queryParamsHandling: 'replace',
+      replaceUrl: true,
+    })
+    this.initDefaults()
+    this.initQuery()
+  }
+
   initFilters() {
-    this.nameFormControl.patchValue('', { emitEvent: false })
+    this.initDefaults()
+    const queryParams = this.route.snapshot.queryParams
+    if (queryParams['name']) {
+      this.nameFormControl.patchValue(queryParams['name'], {
+        emitEvent: false,
+      })
+    }
+    if (queryParams['printOnDemand']) {
+      this.printOnDemand = queryParams['printOnDemand'] === 'true'
+    }
+    if (queryParams['set']) {
+      this.set = queryParams['set']
+    }
+    if (queryParams['title']) {
+      this.title = queryParams['title']
+    }
+    if (queryParams['sect']) {
+      this.sect = queryParams['sect']
+    }
+    if (queryParams['path']) {
+      this.path = queryParams['path']
+    }
+    if (queryParams['clans']) {
+      this.clans = queryParams['clans'].split(',')
+    }
+    if (queryParams['disciplines']) {
+      this.disciplines = queryParams['disciplines'].split(',')
+    }
+    if (queryParams['superiorDisciplines']) {
+      this.superiorDisciplines = queryParams['superiorDisciplines'].split(',')
+    }
+    if (queryParams['group']) {
+      this.groupSlider = queryParams['group'].split(',').map((v: string) => +v)
+    }
+    if (queryParams['capacity']) {
+      this.capacitySlider = queryParams['capacity']
+        .split(',')
+        .map((v: string) => +v)
+    }
+    if (queryParams['taints']) {
+      this.taints = queryParams['taints'].split(',')
+    }
+    if (queryParams['sortBy']) {
+      this.sortBy = queryParams['sortBy']
+    }
+    if (queryParams['sortByOrder']) {
+      this.sortByOrder = queryParams['sortByOrder']
+    }
+    if (queryParams['cardText']) {
+      this.cardText = queryParams['cardText']
+    }
+    if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
+      setTimeout(() => {
+        const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
+        if (card) {
+          this.openCryptCard(card)
+        }
+      }, 1000)
+    }
+    this.onChangeNameFilter()
+    this.initQuery()
+  }
+
+  private initDefaults() {
+    this.nameFormControl.patchValue('', {
+      emitEvent: false,
+    })
     this.printOnDemand = false
     this.set = ''
     this.title = ''
@@ -169,8 +258,6 @@ export class CryptSectionComponent implements OnInit {
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
     this.cardText = ''
-    this.onChangeNameFilter()
-    this.initQuery()
   }
 
   onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
@@ -186,6 +273,10 @@ export class CryptSectionComponent implements OnInit {
     this.sortBy = sortBy
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['sortBy']: this.sortBy,
+      ['sortByOrder']: this.sortByOrder,
+    })
   }
 
   onChangeNameFilter() {
@@ -196,6 +287,7 @@ export class CryptSectionComponent implements OnInit {
         tap(() => {
           this.initQuery()
           this.scrollToTop()
+          this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
       .subscribe()
@@ -205,72 +297,120 @@ export class CryptSectionComponent implements OnInit {
     this.printOnDemand = printOnDemand
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['printOnDemand']: this.printOnDemand ? 'true' : undefined,
+    })
   }
 
   onChangeClanFilter(clans: string[]) {
     this.clans = clans
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['clans']: this.clans.length > 0 ? this.clans.join(',') : undefined,
+    })
   }
 
   onChangeDisciplineFilter(disciplines: string[]) {
     this.disciplines = disciplines
     this.initQuery()
     this.scrollToTop()
+    this.onChangeDisciplines()
   }
 
   onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
     this.superiorDisciplines = superiorDisciplines
     this.initQuery()
     this.scrollToTop()
+    this.onChangeDisciplines()
+  }
+
+  private onChangeDisciplines() {
+    this.updateQueryParams({
+      ['disciplines']:
+        this.disciplines.length > 0 ? this.disciplines.join(',') : undefined,
+      ['superiorDisciplines']:
+        this.superiorDisciplines.length > 0
+          ? this.superiorDisciplines.join(',')
+          : undefined,
+    })
   }
 
   onChangeGroupSliderFilter(groupSlider: number[]) {
     this.groupSlider = groupSlider
     this.initQuery()
     this.scrollToTop()
+    const isDefault =
+      groupSlider[0] === 1 && groupSlider[1] === this.cryptQuery.getMaxGroup()
+    this.updateQueryParams({
+      ['group']: isDefault ? undefined : this.groupSlider.join(','),
+    })
   }
 
   onChangeCapacitySliderFilter(capacitySlider: number[]) {
     this.capacitySlider = capacitySlider
     this.initQuery()
     this.scrollToTop()
+    const isDefault =
+      capacitySlider[0] === 1 &&
+      capacitySlider[1] === this.cryptQuery.getMaxCapacity()
+    this.updateQueryParams({
+      ['capacity']: isDefault ? undefined : this.capacitySlider.join(','),
+    })
   }
 
   onChangeTitleFilter(title: string) {
     this.title = title
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['title']: this.title || undefined,
+    })
   }
 
   onChangeSetFilter(set: string) {
     this.set = set
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['set']: this.set || undefined,
+    })
   }
 
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['sect']: this.sect || undefined,
+    })
   }
 
   onChangePathFilter(path: string) {
     this.path = path
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['path']: this.path || undefined,
+    })
   }
 
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['taints']: this.taints.length > 0 ? this.taints.join(',') : undefined,
+    })
   }
 
   onChangeCardTextFilter(cardText: string) {
     this.cardText = cardText
     this.initQuery()
     this.scrollToTop()
+    this.updateQueryParams({
+      ['cardText']: this.cardText || undefined,
+    })
   }
 
   initQuery() {

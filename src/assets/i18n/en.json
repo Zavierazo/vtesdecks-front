@@ -182,7 +182,8 @@
     "set_image_not_available": "Set image not available",
     "my_collection": "How many do I own?",
     "view_collection": "View in Collection",
-    "tracked_collection": "Tracked in Collection"
+    "tracked_collection": "Tracked in Collection",
+    "share": "Share"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",

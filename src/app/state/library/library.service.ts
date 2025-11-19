@@ -32,8 +32,9 @@ export class LibraryService {
       map((library) => library.lastUpdate),
       filter(
         (lastUpdate) =>
-          lastUpdate !== this.libraryQuery.getLastUpdate() ||
-          locale !== libraryState.locale,
+          lastUpdate !== this.libraryStore.getLastUpdate() ||
+          locale !== libraryState.locale ||
+          this.libraryQuery.getAll({}).length < 1000,
       ),
       switchMap((lastUpdate) =>
         request$.pipe(
