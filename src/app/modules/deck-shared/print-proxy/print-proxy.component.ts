@@ -83,7 +83,7 @@ export class PrintProxyComponent implements OnInit {
 
   @Input() title?: string
   @Input() cards!: ApiCard[]
-  @Output() loading$ = new BehaviorSubject<boolean>(false)
+  loading$ = new BehaviorSubject<boolean>(false)
   cardList = signal<ApiProxyItem[]>([])
 
   ngOnInit() {
