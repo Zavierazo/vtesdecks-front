@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
+import { ApiCollectionCard } from '@models'
 
 export type SortColumn = keyof ApiCollectionCard
 export type SortDirection = 'asc' | 'desc' | ''

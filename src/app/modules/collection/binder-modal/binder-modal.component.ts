@@ -11,10 +11,10 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiCollectionBinder } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { catchError, tap } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ToastService } from '../../../services/toast.service'
 import { CLAN_LIST } from '../../../utils/clans'
 import { DISCIPLINE_LIST } from '../../../utils/disciplines'

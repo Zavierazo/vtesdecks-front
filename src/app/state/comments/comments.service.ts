@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
+import { ApiComment } from '@models'
 import { filter, Observable, tap } from 'rxjs'
-import { ApiComment } from './../../models/api-comment'
 import { ApiDataService } from './../../services/api.data.service'
 import { CommentsStore } from './comments.store'
 @Injectable({

@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,24 +10,22 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
-  ReactiveFormsModule,
 } from '@angular/forms'
 import {
-  TranslocoService,
   TranslocoDirective,
   TranslocoPipe,
+  TranslocoService,
 } from '@jsverse/transloco'
+import { ApiResponse, ApiUserSettings } from '@models'
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { Observable, tap } from 'rxjs'
-import { ApiUserSettings } from '../../../models/api-user-settings'
-import { ApiResponse } from './../../../models/api-response'
 import { AuthQuery } from './../../../state/auth/auth.query'
 import { AuthService } from './../../../state/auth/auth.service'
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap'
-import { NgClass, AsyncPipe } from '@angular/common'
 
 @UntilDestroy()
 @Component({

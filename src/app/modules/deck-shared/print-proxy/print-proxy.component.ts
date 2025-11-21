@@ -4,11 +4,18 @@ import {
   inject,
   Input,
   OnInit,
-  Output,
   signal,
 } from '@angular/core'
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  ApiCard,
+  ApiCrypt,
+  ApiLibrary,
+  ApiProxy,
+  ApiProxyCard,
+  ApiProxyCardOption,
+} from '@models'
 import {
   NgbHighlight,
   NgbTypeahead,
@@ -27,12 +34,6 @@ import {
   tap,
   throwError,
 } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { ApiLibrary } from '../../../models/api-library'
-import { ApiProxy } from '../../../models/api-proxy'
-import { ApiProxyCard } from '../../../models/api-proxy-card'
-import { ApiProxyCardOption } from '../../../models/api-proxy-card-option'
 import { ToastService } from '../../../services/toast.service'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'

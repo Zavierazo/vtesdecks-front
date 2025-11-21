@@ -7,12 +7,11 @@ import {
   OnInit,
   output,
 } from '@angular/core'
+import { ApiCard, ApiLibrary } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCard } from '../../../models/api-card'
-import { ApiLibrary } from '../../../models/api-library'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { LibraryQuery } from '../../../state/library/library.query'
 import drawProbability from '../../../utils/draw-probability'

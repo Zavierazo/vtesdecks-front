@@ -1,4 +1,4 @@
-import { ApiCard } from '../models/api-card'
+import { ApiCard } from '@models'
 import { trigramSimilarity } from './trigram-similarity'
 
 export function isCrypt(value: ApiCard): boolean {

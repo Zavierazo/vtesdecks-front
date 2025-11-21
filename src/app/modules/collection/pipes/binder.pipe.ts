@@ -1,6 +1,6 @@
 import { inject, Pipe, PipeTransform } from '@angular/core'
+import { ApiCollectionBinder } from '@models'
 import { Observable } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { CollectionQuery } from '../state/collection.query'
 
 @Pipe({

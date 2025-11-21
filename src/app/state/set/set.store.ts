@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiSet, SetSortBy } from '@models'
 import { map, Observable } from 'rxjs'
-import { ApiSet, SetSortBy } from '../../models/api-set'
 import { LocalStorageService } from '../../services/local-storage.service'
 
 @Injectable({

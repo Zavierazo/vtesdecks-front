@@ -8,9 +8,8 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiCard, ApiCollectionCardStats } from '@models'
 import { EMPTY, Observable } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
-import { ApiCollectionCardStats } from '../../../models/api-collection-card-stats'
 import { ApiDataService } from '../../../services/api.data.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 

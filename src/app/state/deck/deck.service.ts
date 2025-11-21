@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core'
+import { ApiDeck } from '@models'
 import { Observable, tap } from 'rxjs'
-import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from './../../services/api.data.service'
 import { DeckStore } from './deck.store'
 @Injectable({

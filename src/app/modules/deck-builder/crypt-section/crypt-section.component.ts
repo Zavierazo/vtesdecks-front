@@ -16,6 +16,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard, ApiCrypt, CryptSortBy } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -37,8 +38,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
-import { ApiCrypt, CryptSortBy } from '../../../models/api-crypt'
 import { MediaService } from '../../../services/media.service'
 import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '../../../state/auth/auth.query'

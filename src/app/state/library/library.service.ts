@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
+import { ApiLibrary } from '@models'
 import {
   defaultIfEmpty,
   EMPTY,
@@ -10,7 +11,6 @@ import {
   tap,
 } from 'rxjs'
 import { ApiDataService } from '../../services/api.data.service'
-import { ApiLibrary } from './../../models/api-library'
 import { LibraryQuery } from './library.query'
 import { LibraryState, LibraryStore } from './library.store'
 @Injectable({ providedIn: 'root' })

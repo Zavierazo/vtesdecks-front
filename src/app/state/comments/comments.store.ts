@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiComment } from '@models'
 import { Observable } from 'rxjs'
-import { ApiComment } from './../../models/api-comment'
 
 @Injectable({
   providedIn: 'root',

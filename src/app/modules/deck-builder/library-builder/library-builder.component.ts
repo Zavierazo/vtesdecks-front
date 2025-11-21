@@ -9,6 +9,7 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard, ApiLibrary, LibrarySortBy } from '@models'
 import {
   NgbActiveModal,
   NgbDropdown,
@@ -28,8 +29,6 @@ import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
-import { ApiCard } from './../../../models/api-card'
-import { ApiLibrary, LibrarySortBy } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'

@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
+import { ApiCrypt } from '@models'
 import {
   defaultIfEmpty,
   EMPTY,
@@ -9,7 +10,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { ApiCrypt } from '../../models/api-crypt'
 import { ApiDataService } from './../../services/api.data.service'
 import { CryptQuery } from './crypt.query'
 import { CryptState, CryptStore } from './crypt.store'

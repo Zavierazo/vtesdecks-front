@@ -13,11 +13,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiHistoricStatistic, ApiYearStatistic } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts'
 import { BehaviorSubject, Observable, tap } from 'rxjs'
-import { ApiHistoricStatistic } from '../../models/api-historic-statistic'
-import { ApiYearStatistic } from '../../models/api-year-statistic'
 import { CLAN_LIST } from '../../utils/clans'
 import { DISCIPLINE_LIST } from '../../utils/disciplines'
 import { ApiDataService } from './../../services/api.data.service'

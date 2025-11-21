@@ -26,7 +26,10 @@
     "paths": {
       "chart.js/dist/types/utils": [
         "node_modules/chart.js/dist/types/utils.d.ts"
-      ]
+      ],
+      "@models": [
+        "src/app/models/index.ts"
+      ],
     },
     "useDefineForClassFields": false
   },

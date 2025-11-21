@@ -13,6 +13,7 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiCollectionCard, ApiDeck } from '@models'
 import {
   NgbActiveModal,
   NgbProgressbarModule,
@@ -20,8 +21,6 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { BehaviorSubject, catchError, finalize, switchMap, tap } from 'rxjs'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
-import { ApiDeck } from '../../../models/api-deck'
 import { ApiDataService } from '../../../services/api.data.service'
 import { ToastService } from '../../../services/toast.service'
 import { DecksQuery } from '../../../state/decks/decks.query'

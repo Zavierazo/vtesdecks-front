@@ -19,6 +19,7 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiDeckBuilder, ApiDeckLimitedFormat } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -30,8 +31,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
-import { ApiDeckBuilder } from '../../models/api-deck-builder'
-import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { ApiDataService } from '../../services/api.data.service'
 import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'

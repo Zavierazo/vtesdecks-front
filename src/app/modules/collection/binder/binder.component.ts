@@ -9,6 +9,7 @@ import {
 } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import { ApiCollectionBinder } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -27,7 +28,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'

@@ -1,7 +1,4 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { ApiUser } from '../../../models/api-user'
-import { AuthService } from '../../../state/auth/auth.service'
+import { AsyncPipe } from '@angular/common'
 import {
   AfterViewInit,
   Component,
@@ -14,18 +11,20 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
-  ReactiveFormsModule,
 } from '@angular/forms'
-import { ReCaptchaV3Service } from 'ng-recaptcha-2'
-import { switchMap, Observable } from 'rxjs'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { ToastService } from '../../../services/toast.service'
-import { ApiResponse } from '../../../models/api-response'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { AsyncPipe } from '@angular/common'
+import { ApiResponse, ApiUser } from '@models'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ReCaptchaV3Service } from 'ng-recaptcha-2'
+import { Observable, switchMap } from 'rxjs'
+import { ToastService } from '../../../services/toast.service'
+import { AuthQuery } from '../../../state/auth/auth.query'
+import { AuthService } from '../../../state/auth/auth.service'
 
 export enum Tabs {
   Login,

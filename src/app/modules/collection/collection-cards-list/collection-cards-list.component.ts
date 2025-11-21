@@ -20,6 +20,18 @@ import {
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCollectionCard,
+  ApiI18n,
+  ApiSet,
+  FILTER_CARD_NAME,
+  FILTER_CARD_TYPE,
+  FILTER_CLANS,
+  FILTER_DISCIPLINES,
+  FILTER_GROUP_BY,
+  FILTER_SET,
+  FILTER_TYPES,
+} from '@models'
+import {
   NgbDropdown,
   NgbDropdownButtonItem,
   NgbDropdownItem,
@@ -42,18 +54,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import {
-  ApiCollectionCard,
-  FILTER_CARD_NAME,
-  FILTER_CARD_TYPE,
-  FILTER_CLANS,
-  FILTER_DISCIPLINES,
-  FILTER_GROUP_BY,
-  FILTER_SET,
-  FILTER_TYPES,
-} from '../../../models/api-collection-card'
-import { ApiI18n } from '../../../models/api-i18n'
-import { ApiSet } from '../../../models/api-set'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'

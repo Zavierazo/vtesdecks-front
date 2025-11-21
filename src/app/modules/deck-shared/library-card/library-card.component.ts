@@ -16,15 +16,13 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiDecks, ApiKrcgCard, ApiLibrary, ApiShop } from '@models'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiDecks } from '../../../models/api-decks'
-import { ApiShop } from '../../../models/api-shop'
-import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
 import { ApiDataService } from '../../../services/api.data.service'
 import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
@@ -32,7 +30,6 @@ import { Shop, getShop } from '../../../utils/shops'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
-import { ApiLibrary } from './../../../models/api-library'
 import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()

@@ -11,6 +11,13 @@ import {
 } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCrypt,
+  ApiDeckLimitedFormat,
+  ApiDeckLimitedFormatFilter,
+  ApiLibrary,
+  ApiSet,
+} from '@models'
+import {
   NgbActiveModal,
   NgbHighlight,
   NgbPopover,
@@ -30,11 +37,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { ApiDeckLimitedFormat } from '../../../models/api-deck-limited-format'
-import { ApiDeckLimitedFormatFilter } from '../../../models/api-deck-limited-format-filter'
-import { ApiLibrary } from '../../../models/api-library'
-import { ApiSet } from '../../../models/api-set'
 import { ApiDataService } from '../../../services/api.data.service'
 import { MediaService } from '../../../services/media.service'
 import { ToastService } from '../../../services/toast.service'

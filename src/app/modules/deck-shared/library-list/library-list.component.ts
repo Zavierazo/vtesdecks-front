@@ -8,10 +8,10 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard } from '@models'
 import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { Observable } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
 import { MediaService } from '../../../services/media.service'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { getLibraryTypeIcons } from '../../../utils/library-types'

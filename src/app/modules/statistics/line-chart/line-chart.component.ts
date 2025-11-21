@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,15 +7,14 @@ import {
   OnInit,
   inject,
 } from '@angular/core'
+import { TranslocoPipe } from '@jsverse/transloco'
+import { ApiHistoricStatistic } from '@models'
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ChartConfiguration, ChartData } from 'chart.js'
-import { tap } from 'rxjs'
-import { ApiHistoricStatistic } from '../../../models/api-historic-statistic'
-import { MediaService } from '../../../services/media.service'
 import { BaseChartDirective } from 'ng2-charts'
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap'
-import { NgClass } from '@angular/common'
-import { TranslocoPipe } from '@jsverse/transloco'
+import { tap } from 'rxjs'
+import { MediaService } from '../../../services/media.service'
 
 @UntilDestroy()
 @Component({

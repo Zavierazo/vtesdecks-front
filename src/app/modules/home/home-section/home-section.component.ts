@@ -1,16 +1,15 @@
+import { TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
   inject,
 } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
-import { ApiDeck } from '../../../models/api-deck'
-import { TitleCasePipe } from '@angular/common'
-import { DeckCardComponent } from '../../deck-card/deck-card.component'
-import { LoadingComponent } from '../../../shared/components/loading/loading.component'
 import { TranslocoPipe } from '@jsverse/transloco'
+import { ApiDeck } from '@models'
+import { LoadingComponent } from '../../../shared/components/loading/loading.component'
+import { DeckCardComponent } from '../../deck-card/deck-card.component'
 
 @Component({
   selector: 'app-home-section',

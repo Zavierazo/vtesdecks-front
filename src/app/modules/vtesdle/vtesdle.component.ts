@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiCardToday, ApiCrypt } from '@models'
 import {
   NgbHighlight,
   NgbRating,
@@ -24,8 +25,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiCardToday } from '../../models/api-card-today'
-import { ApiCrypt } from '../../models/api-crypt'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { CryptService } from '../../state/crypt/crypt.service'
 import { ApiDataService } from './../../services/api.data.service'

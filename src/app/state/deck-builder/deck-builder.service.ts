@@ -1,6 +1,13 @@
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCollectionPage,
+  ApiDeck,
+  ApiDeckBuilder,
+  ApiDeckLimitedFormat,
+  FILTER_GROUP_BY,
+} from '@models'
+import {
   combineLatest,
   EMPTY,
   finalize,
@@ -11,11 +18,6 @@ import {
   tap,
   throwError,
 } from 'rxjs'
-import { ApiDeck } from 'src/app/models/api-deck'
-import { FILTER_GROUP_BY } from '../../models/api-collection-card'
-import { ApiCollectionPage } from '../../models/api-collection-page'
-import { ApiDeckBuilder } from '../../models/api-deck-builder'
-import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 import { CollectionQueryState } from '../../modules/collection/state/collection.store'
 import { LibraryQuery } from '../library/library.query'
 import { CollectionApiDataService } from './../../modules/collection/services/collection-api.data.service'

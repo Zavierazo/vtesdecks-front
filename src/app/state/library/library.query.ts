@@ -1,10 +1,13 @@
 import { inject, Injectable } from '@angular/core'
+import {
+  ApiCard,
+  ApiClanStat,
+  ApiDisciplineStat,
+  ApiLibrary,
+  LibrarySortBy,
+} from '@models'
 import { map, Observable } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
 import { searchIncludes } from '../../utils/vtes-utils'
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',

@@ -7,12 +7,11 @@ import {
   OnInit,
   output,
 } from '@angular/core'
+import { ApiCard, ApiCrypt } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCard } from '../../../models/api-card'
-import { ApiCrypt } from '../../../models/api-crypt'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { CryptService } from '../../../state/crypt/crypt.service'

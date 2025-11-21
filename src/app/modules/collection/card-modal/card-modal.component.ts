@@ -17,6 +17,13 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import {
+  ApiCollectionCard,
+  ApiCrypt,
+  ApiI18n,
+  ApiLibrary,
+  ApiSet,
+} from '@models'
+import {
   NgbActiveModal,
   NgbHighlight,
   NgbTypeahead,
@@ -35,11 +42,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { ApiI18n } from '../../../models/api-i18n'
-import { ApiLibrary } from '../../../models/api-library'
-import { ApiSet } from '../../../models/api-set'
 import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'

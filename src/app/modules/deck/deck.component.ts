@@ -17,6 +17,7 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
+import { ApiCard, ApiDeck } from '@models'
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -32,8 +33,6 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiCard } from '../../models/api-card'
-import { ApiDeck } from '../../models/api-deck'
 import { ApiDataService } from '../../services/api.data.service'
 import { MediaService } from '../../services/media.service'
 import { PreviousRouteService } from '../../services/previous-route-service'

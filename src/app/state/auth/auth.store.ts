@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiUser } from '@models'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
-import { ApiUser } from '../../models/api-user'
 import { LocalStorageService } from '../../services/local-storage.service'
 import { SessionStorageService } from '../../services/session-storage.service'
 

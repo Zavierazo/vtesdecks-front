@@ -8,10 +8,9 @@ import {
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard, ApiProxyCardOption } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
-import { ApiCard } from '../../../models/api-card'
-import { ApiProxyCardOption } from '../../../models/api-proxy-card-option'
 import { PrintProxyComponent } from '../print-proxy/print-proxy.component'
 
 export interface ApiProxyItem {
