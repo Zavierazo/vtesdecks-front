@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'comments'">
+<ng-container *transloco="let t; prefix: 'comments'">
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color" *isLogged="true">
     <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')"
       onerror="this.src='/assets/img/default_user.png'">

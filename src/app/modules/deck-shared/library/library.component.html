@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'deck_shared'">
+<ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (library$ | async; as library) {
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"

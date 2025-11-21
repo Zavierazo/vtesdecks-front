@@ -1,4 +1,4 @@
-<div class="text-white text-start px-3 pb-3" *transloco="let t; read: 'collection'">
+<div class="text-white text-start px-3 pb-3" *transloco="let t; prefix: 'collection'">
   @if ((collectionStats$ | async); as collectionStats) {
   <div class="mb-0 fw-bold">
     <span class="ms-2" [ngClass]="{

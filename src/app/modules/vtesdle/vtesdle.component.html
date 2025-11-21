@@ -1,90 +1,88 @@
-<div class="container" *transloco="let t; read: 'vtesdle'">
+<div class="container" *transloco="let t; prefix: 'vtesdle'">
   <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 my-3" role="main">
     <div class="d-flex justify-content-center align-self-center">
       @if (!infiniteMode) {
-        <button [ngbTooltip]="t('help')" placement="left"
-          type="button" class="ms-2 btn btn-info" (click)="help()">
-          <i class="bi bi-fs-1x bi-question-lg"></i>
-        </button>
+      <button [ngbTooltip]="t('help')" placement="left" type="button" class="ms-2 btn btn-info" (click)="help()">
+        <i class="bi bi-fs-1x bi-question-lg"></i>
+      </button>
       } @else {
-        <button ngbTooltip="Reset" placement="left" type="button" class="ms-2 btn btn-danger"
-          (click)="infiniteModeInit()">
-          <i class="bi bi-fs-1x bi-arrow-counterclockwise"></i>
-        </button>
+      <button ngbTooltip="Reset" placement="left" type="button" class="ms-2 btn btn-danger"
+        (click)="infiniteModeInit()">
+        <i class="bi bi-fs-1x bi-arrow-counterclockwise"></i>
+      </button>
       }
       <h1 class="ms-2 fw-bold title">VTESDLE</h1>
       @if (!infiniteMode) {
-        <button [ngbTooltip]="t('infinite_mode')" placement="right"
-          type="button" class="ms-2 btn btn-dark" (click)="switchMode()">
-          <i class="bi bi-fs-1x bi-infinity"></i>
-        </button>
+      <button [ngbTooltip]="t('infinite_mode')" placement="right" type="button" class="ms-2 btn btn-dark"
+        (click)="switchMode()">
+        <i class="bi bi-fs-1x bi-infinity"></i>
+      </button>
       } @else {
-        <button [ngbTooltip]="t('today_mode')" placement="right" type="button" class="ms-2 btn btn-dark"
-          (click)="switchMode()">
-          <i class="bi bi-fs-1x bi-calendar"></i>
-        </button>
+      <button [ngbTooltip]="t('today_mode')" placement="right" type="button" class="ms-2 btn btn-dark"
+        (click)="switchMode()">
+        <i class="bi bi-fs-1x bi-calendar"></i>
+      </button>
       }
     </div>
     <hr>
-      <div class="d-flex justify-content-center align-self-center">
-        <div class="image-container">
-          @if (cardId) {
-            <img [src]="getImageUrl()" class="card-image" />
-          } @else {
-            <app-loading [size]="10"></app-loading>
-          }
-        </div>
+    <div class="d-flex justify-content-center align-self-center">
+      <div class="image-container">
+        @if (cardId) {
+        <img [src]="getImageUrl()" class="card-image" />
+        } @else {
+        <app-loading [size]="10"></app-loading>
+        }
       </div>
-      <hr>
-        <ng-template #cryptTemplate let-r="result" let-t="term">
-          <i class="vtes" [class]="r['clanIcon']"></i>
-          @if (r.adv) {
-            <i class="vtes advanced"></i>
-          }
-          <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
-        </ng-template>
-        <div class="mt-2 row">
-          @if (lives > 0 && !guessed) {
-            <div class="col-12">
-              <input autofocus #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
-                [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
-                [placeholder]="t('guess_placeholder')" (selectItem)="selectCryptItem($event, cryptInput)" />
-              </div>
-            }
-            @if (guessed) {
-              <div class="alert alert-success" role="alert">
-                {{ t('win_message') }}
-                @if (!infiniteMode) {
-                  <span>
-                    {{ t('come_back_message') }}
-                  </span>
-                }
-              </div>
-            }
-            @if (!guessed && lives <=0) {
-              <div class="alert alert-danger" role="alert">
-                @if (infiniteMode) {
-                  <span>
-                    {{ t('game_over_infinite_message') }}
-                  </span>
-                } @else {
-                  {{ t('game_over_today_message') }}
-                }
-              </div>
-            }
-          </div>
-          <div class="col-12 pr-0 text-center">
-            <div class="rating">
-              <ng-template #heartTemplate let-fill="fill">
-                <span class="heart" [class.full]="fill === 100">&hearts;
-                </span>
-              </ng-template>
-              <ngb-rating [rate]="lives" [starTemplate]="heartTemplate" [readonly]="true" [max]="maxLives">
-              </ngb-rating>
-            </div>
-            <div>
-              {{ t('remaining_lives', { lives }) }}
-            </div>
-          </div>
-        </main>
+    </div>
+    <hr>
+    <ng-template #cryptTemplate let-r="result" let-t="term">
+      <i class="vtes" [class]="r['clanIcon']"></i>
+      @if (r.adv) {
+      <i class="vtes advanced"></i>
+      }
+      <ngb-highlight class="align-top ms-1" [result]="r.name" [term]="t"></ngb-highlight>
+    </ng-template>
+    <div class="mt-2 row">
+      @if (lives > 0 && !guessed) {
+      <div class="col-12">
+        <input autofocus #cryptInput id="crypt" type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+          [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+          [placeholder]="t('guess_placeholder')" (selectItem)="selectCryptItem($event, cryptInput)" />
       </div>
+      }
+      @if (guessed) {
+      <div class="alert alert-success" role="alert">
+        {{ t('win_message') }}
+        @if (!infiniteMode) {
+        <span>
+          {{ t('come_back_message') }}
+        </span>
+        }
+      </div>
+      }
+      @if (!guessed && lives <=0) { <div class="alert alert-danger" role="alert">
+        @if (infiniteMode) {
+        <span>
+          {{ t('game_over_infinite_message') }}
+        </span>
+        } @else {
+        {{ t('game_over_today_message') }}
+        }
+    </div>
+    }
+</div>
+<div class="col-12 pr-0 text-center">
+  <div class="rating">
+    <ng-template #heartTemplate let-fill="fill">
+      <span class="heart" [class.full]="fill === 100">&hearts;
+      </span>
+    </ng-template>
+    <ngb-rating [rate]="lives" [starTemplate]="heartTemplate" [readonly]="true" [max]="maxLives">
+    </ngb-rating>
+  </div>
+  <div>
+    {{ t('remaining_lives', { lives }) }}
+  </div>
+</div>
+</main>
+</div>

@@ -1,261 +1,259 @@
-<ng-container *transloco="let t; read: 'login_modal'">
+<ng-container *transloco="let t; prefix: 'login_modal'">
   <div class="modal-header">
     @if (tab===Tabs.Login) {
-      <h4 class="modal-title">{{ t('login') }}</h4>
+    <h4 class="modal-title">{{ t('login') }}</h4>
     }
     @if (tab===Tabs.SignUp) {
-      <h4 class="modal-title">{{ t('create_account') }}</h4>
+    <h4 class="modal-title">{{ t('create_account') }}</h4>
     }
     @if (tab===Tabs.ForgotPassword) {
-      <h4 class="modal-title">{{ t('forgot_password') }}</h4>
+    <h4 class="modal-title">{{ t('forgot_password') }}</h4>
     }
     <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-    (click)="activeModal.dismiss('Cross click')"></button>
+      (click)="activeModal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div class="modal-body p-4">
       @if (tab===Tabs.Login) {
-        <div>
-          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-            <!-- Email input -->
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control rounded-3" id="floatingInput" [placeholder]="t('username_or_email')"
-                formControlName="username" autocomplete="username">
-              <label for="floatingInput">{{ t('username_or_email') }}</label>
-              @if (loginUsername?.invalid && (loginUsername?.dirty || loginUsername?.touched)) {
-                <div>
-                  @if (loginUsername?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('username_or_email') } }}
-                    </div>
-                  }
-                </div>
+      <div>
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+          <!-- Email input -->
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control rounded-3" id="floatingInput" [placeholder]="t('username_or_email')"
+              formControlName="username" autocomplete="username">
+            <label for="floatingInput">{{ t('username_or_email') }}</label>
+            @if (loginUsername?.invalid && (loginUsername?.dirty || loginUsername?.touched)) {
+            <div>
+              @if (loginUsername?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('username_or_email') } }}
+              </div>
               }
             </div>
-            <!-- Password input -->
-            <div class="form-floating mb-3">
-              <input type="password" class="form-control rounded-3" id="floatingPassword" [placeholder]="t('password')"
-                formControlName="password" autocomplete="current-password">
-              <label for="floatingPassword">{{ t('password') }}</label>
-              @if (loginPassword?.invalid && (loginPassword?.dirty || loginPassword?.touched)) {
-                <div>
-                  @if (loginPassword?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('password') } }}
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-            <!-- 2 column grid layout for inline styling -->
-            <div class="row mb-4">
-              <div class="col d-flex justify-content-center">
-                <!-- Checkbox -->
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked=""
-                    formControlName="remember">
-                  <label class="form-check-label" for="loginCheck">{{ t('remember_me') }}</label>
-                </div>
-              </div>
-              <div class="col">
-                <!-- Simple link -->
-                <a class="text-primary" href="javascript:void(0)" (click)="switchTab(Tabs.ForgotPassword)">
-                  {{ t('forgot_password') }}?
-                </a>
-              </div>
-            </div>
-            <!-- Submit button -->
-            @if ((isLoading$ | async)!) {
-              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" disabled
-                >
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                {{ 'shared.loading' | transloco }}...
-              </button>
-            } @else {
-              <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="loginForm.invalid">
-                {{ t('login') }}
-              </button>
             }
-            <!-- Register buttons -->
-            <div class="text-center">
-              <p class="mb-1">{{ t('does_not_have_account') }} <a class="text-primary" href="javascript:void(0)"
-              (click)="switchTab(Tabs.SignUp)">{{ t('create_account_here') }}</a></p>
+          </div>
+          <!-- Password input -->
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control rounded-3" id="floatingPassword" [placeholder]="t('password')"
+              formControlName="password" autocomplete="current-password">
+            <label for="floatingPassword">{{ t('password') }}</label>
+            @if (loginPassword?.invalid && (loginPassword?.dirty || loginPassword?.touched)) {
+            <div>
+              @if (loginPassword?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('password') } }}
+              </div>
+              }
             </div>
-          </form>
-        </div>
+            }
+          </div>
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked=""
+                  formControlName="remember">
+                <label class="form-check-label" for="loginCheck">{{ t('remember_me') }}</label>
+              </div>
+            </div>
+            <div class="col">
+              <!-- Simple link -->
+              <a class="text-primary" href="javascript:void(0)" (click)="switchTab(Tabs.ForgotPassword)">
+                {{ t('forgot_password') }}?
+              </a>
+            </div>
+          </div>
+          <!-- Submit button -->
+          @if ((isLoading$ | async)!) {
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            {{ 'shared.loading' | transloco }}...
+          </button>
+          } @else {
+          <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="loginForm.invalid">
+            {{ t('login') }}
+          </button>
+          }
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p class="mb-1">{{ t('does_not_have_account') }} <a class="text-primary" href="javascript:void(0)"
+                (click)="switchTab(Tabs.SignUp)">{{ t('create_account_here') }}</a></p>
+          </div>
+        </form>
+      </div>
       }
       @if (tab===Tabs.SignUp) {
-        <div>
-          <form [formGroup]=" registerForm" (ngSubmit)="onRegisterSubmit()">
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control rounded-3" id="floatingUserInput" [placeholder]="t('username')"
-                formControlName="username" autocomplete="username">
-              <label for="floatingUserInput">{{ t('username') }}</label>
-              @if (registerUsername?.invalid && (registerUsername?.dirty || registerUsername?.touched)) {
-                <div>
-                  @if (registerUsername?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('username') } }}
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control rounded-3" id="floatingEmailInput" placeholder="user@example.com"
-                formControlName="email" autocomplete="email">
-              <label for="floatingEmailInput">{{ t('email' )}}</label>
-              @if (registerEmail?.invalid && (registerEmail?.dirty || registerEmail?.touched)) {
-                <div>
-                  @if (registerEmail?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('email') } }}
-                    </div>
-                  }
-                  @if (registerEmail?.errors?.['email']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('invalid_email_format') }}
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-            <div class="form-floating mb-3">
-              <input type="password" class="form-control rounded-3" id="floatingPassword" [placeholder]="t('password')"
-                formControlName="password" autocomplete="new-password">
-              <label for="floatingPassword">{{ t('password') }}</label>
-              @if (registerPassword?.invalid && (registerPassword?.dirty || registerPassword?.touched)) {
-                <div>
-                  @if (registerPassword?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('password') } }}
-                    </div>
-                  }
-                  @if (registerPassword?.hasError('hasNumber')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_one_number') }}
-                    </div>
-                  }
-                  @if (registerPassword?.hasError('minlength')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_8_characters') }}
-                    </div>
-                  }
-                  @if (registerPassword?.hasError('noPasswordMatch')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_match') }}
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-            <div class="form-floating mb-3">
-              <input type="password" class="form-control rounded-3" id="floatingConfirmPassword"
-                [placeholder]="t('password')" formControlName="confirmPassword" autocomplete="new-password">
-              <label for="floatingPassword">{{ t('password_confirm') }}</label>
-              @if (registerConfirmPassword?.invalid && (registerConfirmPassword?.dirty || registerConfirmPassword?.touched)) {
-                <div
-                  >
-                  @if (registerConfirmPassword?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('password_confirm') } }}
-                    </div>
-                  }
-                  @if (registerConfirmPassword?.hasError('hasNumber')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_one_number') }}
-                    </div>
-                  }
-                  @if (registerConfirmPassword?.hasError('minlength')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_8_characters') }}
-                    </div>
-                  }
-                  @if (registerConfirmPassword?.hasError('noPasswordMatch')) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('must_match') }}
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-            <div class="form-check d-flex justify-content-center mb-4">
-              <input mdbCheckbox class="form-check-input me-2" type="checkbox" value="" id="registerCheck"
-                aria-describedby="registerCheckHelpText" formControlName="terms">
-              <label class="form-check-label" for="registerCheck">
-                {{ t('read_and_agree_terms') }}
-              </label>
-            </div>
-            @if (registerTerms?.invalid && (registerTerms?.dirty || registerTerms?.touched)) {
-              <div>
-                @if (registerTerms?.errors?.['required']) {
-                  <div class="invalid-feedback d-block">
-                    <i class="bi bi-x-circle-fill"></i> {{ t('terms_mandatory') }}
-                  </div>
-                }
+      <div>
+        <form [formGroup]=" registerForm" (ngSubmit)="onRegisterSubmit()">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" id="floatingUserInput" [placeholder]="t('username')"
+              formControlName="username" autocomplete="username">
+            <label for="floatingUserInput">{{ t('username') }}</label>
+            @if (registerUsername?.invalid && (registerUsername?.dirty || registerUsername?.touched)) {
+            <div>
+              @if (registerUsername?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('username') } }}
               </div>
-            }
-            <!-- Submit button -->
-            <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="registerForm.invalid">
-              {{ t('create_account') }}
-            </button>
-            <div class="text-center">
-              <p class="mb-1">{{ t('already_member') }} <a class="text-primary" href="javascript:void(0)"
-              (click)="switchTab(Tabs.Login)">{{ t('login') }}</a></p>
+              }
             </div>
-          </form>
-        </div>
+            }
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control rounded-3" id="floatingEmailInput" placeholder="user@example.com"
+              formControlName="email" autocomplete="email">
+            <label for="floatingEmailInput">{{ t('email' )}}</label>
+            @if (registerEmail?.invalid && (registerEmail?.dirty || registerEmail?.touched)) {
+            <div>
+              @if (registerEmail?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('email') } }}
+              </div>
+              }
+              @if (registerEmail?.errors?.['email']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('invalid_email_format') }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control rounded-3" id="floatingPassword" [placeholder]="t('password')"
+              formControlName="password" autocomplete="new-password">
+            <label for="floatingPassword">{{ t('password') }}</label>
+            @if (registerPassword?.invalid && (registerPassword?.dirty || registerPassword?.touched)) {
+            <div>
+              @if (registerPassword?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('password') } }}
+              </div>
+              }
+              @if (registerPassword?.hasError('hasNumber')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_one_number') }}
+              </div>
+              }
+              @if (registerPassword?.hasError('minlength')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_8_characters') }}
+              </div>
+              }
+              @if (registerPassword?.hasError('noPasswordMatch')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_match') }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control rounded-3" id="floatingConfirmPassword"
+              [placeholder]="t('password')" formControlName="confirmPassword" autocomplete="new-password">
+            <label for="floatingPassword">{{ t('password_confirm') }}</label>
+            @if (registerConfirmPassword?.invalid && (registerConfirmPassword?.dirty ||
+            registerConfirmPassword?.touched)) {
+            <div>
+              @if (registerConfirmPassword?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('password_confirm') } }}
+              </div>
+              }
+              @if (registerConfirmPassword?.hasError('hasNumber')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_one_number') }}
+              </div>
+              }
+              @if (registerConfirmPassword?.hasError('minlength')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_8_characters') }}
+              </div>
+              }
+              @if (registerConfirmPassword?.hasError('noPasswordMatch')) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('must_match') }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+          <div class="form-check d-flex justify-content-center mb-4">
+            <input mdbCheckbox class="form-check-input me-2" type="checkbox" value="" id="registerCheck"
+              aria-describedby="registerCheckHelpText" formControlName="terms">
+            <label class="form-check-label" for="registerCheck">
+              {{ t('read_and_agree_terms') }}
+            </label>
+          </div>
+          @if (registerTerms?.invalid && (registerTerms?.dirty || registerTerms?.touched)) {
+          <div>
+            @if (registerTerms?.errors?.['required']) {
+            <div class="invalid-feedback d-block">
+              <i class="bi bi-x-circle-fill"></i> {{ t('terms_mandatory') }}
+            </div>
+            }
+          </div>
+          }
+          <!-- Submit button -->
+          <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="registerForm.invalid">
+            {{ t('create_account') }}
+          </button>
+          <div class="text-center">
+            <p class="mb-1">{{ t('already_member') }} <a class="text-primary" href="javascript:void(0)"
+                (click)="switchTab(Tabs.Login)">{{ t('login') }}</a></p>
+          </div>
+        </form>
+      </div>
       }
       @if (tab===Tabs.ForgotPassword) {
-        <div>
-          <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()">
-            <!-- Email input -->
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control rounded-3" id="floatingEmailInput" placeholder="user@example.com"
-                formControlName="email" autocomplete="email">
-              <label for="floatingEmailInput">{{ t('email') }}</label>
-              @if (forgotPasswordEmail?.invalid && (forgotPasswordEmail?.dirty || forgotPasswordEmail?.touched)) {
-                <div>
-                  @if (forgotPasswordEmail?.errors?.['required']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i>
-                      {{ 'shared.field_required' | transloco: { field: t('email') } }}
-                    </div>
-                  }
-                  @if (forgotPasswordEmail?.errors?.['email']) {
-                    <div class="invalid-feedback d-block">
-                      <i class="bi bi-x-circle-fill"></i> {{ t('invalid_email_format') }}
-                    </div>
-                  }
-                </div>
+      <div>
+        <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()">
+          <!-- Email input -->
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control rounded-3" id="floatingEmailInput" placeholder="user@example.com"
+              formControlName="email" autocomplete="email">
+            <label for="floatingEmailInput">{{ t('email') }}</label>
+            @if (forgotPasswordEmail?.invalid && (forgotPasswordEmail?.dirty || forgotPasswordEmail?.touched)) {
+            <div>
+              @if (forgotPasswordEmail?.errors?.['required']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i>
+                {{ 'shared.field_required' | transloco: { field: t('email') } }}
+              </div>
+              }
+              @if (forgotPasswordEmail?.errors?.['email']) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-x-circle-fill"></i> {{ t('invalid_email_format') }}
+              </div>
               }
             </div>
-            <!-- Submit button -->
-            @if ((isLoading$ | async)!) {
-              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" disabled
-                >
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                {{ 'shared.loading' | transloco }}...
-              </button>
-            } @else {
-              <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
-                [disabled]="forgotPasswordForm.invalid">
-                {{ t('forgot_password') }}
-              </button>
             }
-            <!-- Register buttons -->
-            <div class="text-center">
-              <p class="mb-1">{{ t('does_not_have_account') }} <a class="text-primary" href="javascript:void(0)"
-              (click)="switchTab(Tabs.SignUp)">{{ t('create_account_here') }}</a></p>
-            </div>
-          </form>
-        </div>
+          </div>
+          <!-- Submit button -->
+          @if ((isLoading$ | async)!) {
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            {{ 'shared.loading' | transloco }}...
+          </button>
+          } @else {
+          <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+            [disabled]="forgotPasswordForm.invalid">
+            {{ t('forgot_password') }}
+          </button>
+          }
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p class="mb-1">{{ t('does_not_have_account') }} <a class="text-primary" href="javascript:void(0)"
+                (click)="switchTab(Tabs.SignUp)">{{ t('create_account_here') }}</a></p>
+          </div>
+        </form>
+      </div>
       }
     </div>
   </div>

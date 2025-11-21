@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'deck_shared'">
+<ng-container *transloco="let t; prefix: 'deck_shared'">
   @if ((collectionStats$() | async); as collectionStats) {
   @if (collectionStats.decks && collectionStats.decks.total > 0) {
   <div class="card border-0 shadow-sm mt-3">

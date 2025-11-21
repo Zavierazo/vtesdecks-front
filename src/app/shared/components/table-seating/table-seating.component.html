@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'table_seating'">
+<ng-container *transloco="let t; prefix: 'table_seating'">
   <div class="modal-header">
     <h4 class="modal-title">{{ t('title') }}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
@@ -7,18 +7,18 @@
     <div class="row row-cols-1 row-cols-sm-2 g-3">
       <form class="col" [formGroup]="form">
         @for (player of players.controls; track player; let i = $index) {
-          <div formArrayName="players">
-            <div [formGroupName]="i" class="input-group mb-3">
-              <div class="input-group-text form-switch">
-                <input formControlName="active" class="form-check-input ms-0 mt-0" type="checkbox" role="switch"
-                  [attr.aria-label]="t('active_player')">
-              </div>
-              <input formControlName="name" type="text" class="form-control" [attr.aria-label]="t('player_name')">
-              <button type="button" class="btn btn-outline-danger" (click)="removePlayer(i)">
-                <i aria-hidden="true" class="bi bi-trash"></i>
-              </button>
+        <div formArrayName="players">
+          <div [formGroupName]="i" class="input-group mb-3">
+            <div class="input-group-text form-switch">
+              <input formControlName="active" class="form-check-input ms-0 mt-0" type="checkbox" role="switch"
+                [attr.aria-label]="t('active_player')">
             </div>
+            <input formControlName="name" type="text" class="form-control" [attr.aria-label]="t('player_name')">
+            <button type="button" class="btn btn-outline-danger" (click)="removePlayer(i)">
+              <i aria-hidden="true" class="bi bi-trash"></i>
+            </button>
           </div>
+        </div>
         }
         <div class="d-flex justify-content-between">
           <button type="button" class="btn btn-primary" (click)="addPlayer()">
@@ -33,29 +33,29 @@
       </form>
       <div class="col d-flex flex-column justify-content-center align-items-center">
         @for (table of tables; track table) {
-<div class="m-5" [ngClass]="{
+        <div class="m-5" [ngClass]="{
         'seating-6': table.length === 6,
         'seating-5': table.length === 5,
         'seating-4': table.length === 4,
         'seating-3': table.length === 3
       }">
-            @if (table.length > 2) {
-              @for (seat of table; track seat; let first = $first) {
-<label class="seat" [ngClass]="{
+          @if (table.length > 2) {
+          @for (seat of table; track seat; let first = $first) {
+          <label class="seat" [ngClass]="{
           'first': first,
           'missing': seat === 'Missing'
           }">
-                  @if (seat === 'Missing') {
-                    <span>
-                      {{ t('missing') }}
-                    </span>
-                  } @else {
-                    {{ seat }}
-                  }
-                </label>
-              }
+            @if (seat === 'Missing') {
+            <span>
+              {{ t('missing') }}
+            </span>
+            } @else {
+            {{ seat }}
             }
-          </div>
+          </label>
+          }
+          }
+        </div>
         }
       </div>
     </div>

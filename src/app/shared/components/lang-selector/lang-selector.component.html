@@ -1,18 +1,17 @@
-<div ngbDropdown class="language-selector nav-item dropdown" display="dynamic" *transloco="let t; read: 'language'">
+<div ngbDropdown class="language-selector nav-item dropdown" display="dynamic" *transloco="let t; prefix: 'language'">
   <button class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" aria-expanded="false">
     @if (isMobile$ | async) {
-      <span class="me-1">
-        {{ t('title') }}
-      </span>
+    <span class="me-1">
+      {{ t('title') }}
+    </span>
     }
     <i class="bi bi-fs-1_2x fw-bold bi-translate"></i>
   </button>
   <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
     @for (language of languages; track language) {
-      <button ngbDropdownItem (click)="switchLanguage(language.code)"
-        [ngClass]="{'active':isActive(language.code)}">
-        <img [src]="language.icon" [alt]="language.code" class="language-icon">{{ language.title }}
-      </button>
+    <button ngbDropdownItem (click)="switchLanguage(language.code)" [ngClass]="{'active':isActive(language.code)}">
+      <img [src]="language.icon" [alt]="language.code" class="language-icon">{{ language.title }}
+    </button>
     }
   </div>
 </div>
