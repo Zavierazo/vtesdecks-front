@@ -1,7 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common'
 import { ChangeDetectionStrategy, Component, input } from '@angular/core'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { CardSetPipe } from '../../../../shared/pipes/card-set.pipe'
+import { CardSetPipe } from '@shared/pipes/card-set.pipe'
 
 @Component({
   selector: 'app-collection-set',

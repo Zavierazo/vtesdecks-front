@@ -20,10 +20,10 @@ import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
+import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
 import { MarkdownPipe } from 'ngx-markdown'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
-import { VtesAiQuery } from '../../state/vtes-ai/vtes-ai.query'
-import { VtesAiService } from '../../state/vtes-ai/vtes-ai.service'
 
 @UntilDestroy()
 @Component({

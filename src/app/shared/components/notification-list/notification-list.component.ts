@@ -11,8 +11,8 @@ import { ApiUserNotification } from '@models'
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { AuthService } from '@state/auth/auth.service'
 import { Observable, tap } from 'rxjs'
-import { AuthService } from '../../../state/auth/auth.service'
 import { DateAsAgoPipe } from '../../pipes/date-ago.pipe'
 
 @UntilDestroy()

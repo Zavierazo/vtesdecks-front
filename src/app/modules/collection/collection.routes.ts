@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router'
-import { CanActivateUser } from '../../shared/guards/can-activate-user.guard'
+import { CanActivateUser } from '@shared/guards/can-activate-user.guard'
 
 export const COLLECTION_ROUTES: Routes = [
   {

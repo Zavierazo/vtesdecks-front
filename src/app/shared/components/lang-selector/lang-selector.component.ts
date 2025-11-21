@@ -10,8 +10,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
-import { CryptService } from '../../../state/crypt/crypt.service'
-import { LibraryService } from '../../../state/library/library.service'
+import { CryptService } from '@state/crypt/crypt.service'
+import { LibraryService } from '@state/library/library.service'
 import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
 
 @UntilDestroy()

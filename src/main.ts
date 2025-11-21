@@ -40,11 +40,11 @@ import {
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 
+import { AuthQuery } from '@state/auth/auth.query'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { MARKED_EXTENSIONS, provideMarkdown } from 'ngx-markdown'
 import { bracketsExtension } from './app/marked-extension'
-import { AuthQuery } from './app/state/auth/auth.query'
-import { CryptQuery } from './app/state/crypt/crypt.query'
-import { LibraryQuery } from './app/state/library/library.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -188,9 +188,9 @@ const routes: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import(
-        './app/shared/components/page-not-found/page-not-found.component'
-      ).then((m) => m.PageNotFoundComponent),
+      import('@shared/components/page-not-found/page-not-found.component').then(
+        (m) => m.PageNotFoundComponent,
+      ),
   }, // Wildcard route for a 404 page
 ]
 

@@ -8,7 +8,7 @@ import {
 import { Router, RouterLink } from '@angular/router'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiDeck } from '@models'
-import { LoadingComponent } from '../../../shared/components/loading/loading.component'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { DeckCardComponent } from '../../deck-card/deck-card.component'
 
 @Component({

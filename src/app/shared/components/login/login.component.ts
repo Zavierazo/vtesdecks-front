@@ -21,10 +21,10 @@ import { ApiResponse, ApiUser } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { Observable, switchMap } from 'rxjs'
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { AuthService } from '../../../state/auth/auth.service'
 
 export enum Tabs {
   Login,

@@ -5,7 +5,7 @@ import {
   ElementRef,
   inject,
 } from '@angular/core'
-import { AuthQuery } from '../../state/auth/auth.query'
+import { AuthQuery } from '@state/auth/auth.query'
 
 let uniqueId = 0
 

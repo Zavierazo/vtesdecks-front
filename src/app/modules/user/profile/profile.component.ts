@@ -23,9 +23,9 @@ import {
 import { ApiResponse, ApiUserSettings } from '@models'
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
 import { Observable, tap } from 'rxjs'
-import { AuthQuery } from './../../../state/auth/auth.query'
-import { AuthService } from './../../../state/auth/auth.service'
 
 @UntilDestroy()
 @Component({

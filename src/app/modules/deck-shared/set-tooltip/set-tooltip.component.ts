@@ -4,9 +4,9 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiProxyCardOption } from '@models'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { SetQuery } from '@state/set/set.query'
 import { Observable } from 'rxjs'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { SetQuery } from '../../../state/set/set.query'
 
 @UntilDestroy()
 @Component({

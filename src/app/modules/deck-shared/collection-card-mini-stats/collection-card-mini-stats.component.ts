@@ -10,8 +10,8 @@ import {
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiCard, ApiCollectionCardStats } from '@models'
 import { ApiDataService } from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
 import { EMPTY, Observable } from 'rxjs'
-import { AuthQuery } from '../../../state/auth/auth.query'
 
 @Component({
   selector: 'app-collection-card-mini-stats',

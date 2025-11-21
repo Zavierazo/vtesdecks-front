@@ -20,10 +20,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
+import { DecksQuery } from '@state/decks/decks.query'
+import { DecksService } from '@state/decks/decks.service'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { BehaviorSubject, catchError, finalize, switchMap, tap } from 'rxjs'
-import { DecksQuery } from '../../../state/decks/decks.query'
-import { DecksService } from '../../../state/decks/decks.service'
 import { CollectionPrivateService } from '../state/collection-private.service'
 
 @UntilDestroy()

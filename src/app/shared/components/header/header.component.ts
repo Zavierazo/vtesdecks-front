@@ -18,11 +18,11 @@ import {
   NgbOffcanvas,
 } from '@ng-bootstrap/ng-bootstrap'
 import { ColorThemeService, MediaService } from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
 import { isChristmas, isHalloween } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { AuthService } from '../../../state/auth/auth.service'
 import { IsLoggedDirective } from '../../directives/is-logged.directive'
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
 import { LoginComponent, Tabs } from '../login/login.component'

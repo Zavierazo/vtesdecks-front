@@ -1,8 +1,8 @@
 import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router'
 import { ApiDecks } from '@models'
+import { DecksService } from '@state/decks/decks.service'
 import { Observable } from 'rxjs'
-import { DecksService } from '../../state/decks/decks.service'
 
 export const decksResolver: ResolveFn<ApiDecks> = (
   route: ActivatedRouteSnapshot,

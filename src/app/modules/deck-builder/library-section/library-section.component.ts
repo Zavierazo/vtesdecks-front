@@ -28,6 +28,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
+import { LibraryQuery } from '@state/library/library.query'
 import { isRegexSearch, searchIncludes } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
@@ -40,10 +44,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { AuthService } from '../../../state/auth/auth.service'
-import { LibraryQuery } from '../../../state/library/library.query'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'

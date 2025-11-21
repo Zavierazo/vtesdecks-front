@@ -36,6 +36,21 @@
       "@utils": [
         "src/app/utils/index.ts"
       ],
+      "@shared/components/*": [
+        "src/app/shared/components/*"
+      ],
+      "@shared/directives/*": [
+        "src/app/shared/directives/*"
+      ],
+      "@shared/guards/*": [
+        "src/app/shared/guards/*"
+      ],
+      "@shared/pipes/*": [
+        "src/app/shared/pipes/*"
+      ],
+      "@state/*": [
+        "src/app/state/*"
+      ]
     },
     "useDefineForClassFields": false
   },

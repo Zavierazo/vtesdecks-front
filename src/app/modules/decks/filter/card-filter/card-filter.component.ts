@@ -19,6 +19,12 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { CryptService } from '@state/crypt/crypt.service'
+import { DecksQuery } from '@state/decks/decks.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { LibraryService } from '@state/library/library.service'
 import { sortTrigramSimilarity } from '@utils'
 import {
   debounceTime,
@@ -29,12 +35,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../../environments/environment'
-import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../../state/crypt/crypt.query'
-import { CryptService } from '../../../../state/crypt/crypt.service'
-import { DecksQuery } from '../../../../state/decks/decks.query'
-import { LibraryQuery } from './../../../../state/library/library.query'
-import { LibraryService } from './../../../../state/library/library.service'
 
 @UntilDestroy()
 @Component({

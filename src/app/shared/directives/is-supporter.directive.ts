@@ -7,8 +7,8 @@ import {
   inject,
 } from '@angular/core'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { AuthQuery } from '@state/auth/auth.query'
 import { tap } from 'rxjs'
-import { AuthQuery } from '../../state/auth/auth.query'
 
 @UntilDestroy()
 @Directive({ selector: '[appIsSupporter]' })

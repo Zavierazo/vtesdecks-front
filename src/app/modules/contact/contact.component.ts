@@ -14,7 +14,7 @@ import {
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiContact } from '@models'
 import { ApiDataService } from '@services'
-import { AuthQuery } from './../../state/auth/auth.query'
+import { AuthQuery } from '@state/auth/auth.query'
 
 @Component({
   selector: 'app-contact',

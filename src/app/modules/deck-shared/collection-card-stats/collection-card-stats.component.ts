@@ -12,8 +12,8 @@ import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
 import { EMPTY } from 'rxjs'
-import { AuthQuery } from '../../../state/auth/auth.query'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 
 @UntilDestroy()

@@ -23,6 +23,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import {
   isCrypt,
   isCryptId,
@@ -42,8 +44,6 @@ import {
   tap,
   throwError,
 } from 'rxjs'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
 import { CryptComponent } from '../crypt/crypt.component'
 import { LibraryComponent } from '../library/library.component'
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({

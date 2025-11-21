@@ -26,6 +26,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { SetQuery } from '@state/set/set.query'
 import { sortTrigramSimilarity } from '@utils'
 import {
   combineLatest,
@@ -39,10 +43,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { SetQuery } from '../../../state/set/set.query'
 import { toUrl } from './limited-format-utils'
 @UntilDestroy()
 @Component({

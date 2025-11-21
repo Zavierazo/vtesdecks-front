@@ -16,6 +16,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   distinctUntilChanged,
   map,
@@ -25,11 +26,10 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { CryptQuery } from '../../state/crypt/crypt.query'
 
 import { ApiDataService, LocalStorageService } from '@services'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { sortTrigramSimilarity } from '@utils'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
 
 @UntilDestroy()
 @Component({

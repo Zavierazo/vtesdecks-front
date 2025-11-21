@@ -31,6 +31,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { SetQuery } from '@state/set/set.query'
 import { sortTrigramSimilarity } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
@@ -44,10 +48,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { SetQuery } from '../../../state/set/set.query'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
