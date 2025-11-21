@@ -19,6 +19,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   debounceTime,
+  map,
   Observable,
   OperatorFunction,
   switchMap,
@@ -32,6 +33,7 @@ import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../../state/crypt/crypt.query'
 import { CryptService } from '../../../../state/crypt/crypt.service'
 import { DecksQuery } from '../../../../state/decks/decks.query'
+import { sortTrigramSimilarity } from '../../../../utils/vtes-utils'
 import { ApiLibrary } from './../../../../models/api-library'
 import { LibraryQuery } from './../../../../state/library/library.query'
 import { LibraryService } from './../../../../state/library/library.service'
@@ -88,14 +90,33 @@ export class CardFilterComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
 
   searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
     text$: Observable<string>,
   ) =>
     text$.pipe(
       debounceTime(200),
-      switchMap((term) => this.libraryQuery.selectByName(term, 10)),
+      switchMap((term) =>
+        this.libraryQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   formatter = (x: { name: string }) => x.name

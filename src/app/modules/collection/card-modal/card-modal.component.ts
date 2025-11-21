@@ -45,6 +45,7 @@ import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
+import { sortTrigramSimilarity } from '../../../utils/vtes-utils'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
@@ -175,7 +176,7 @@ export class CardModalComponent implements OnInit {
           map(([libraryCards, cryptCards]) =>
             [...libraryCards, ...cryptCards]
               .map((card) => this.getSearchCard(card))
-              .sort((a, b) => (a.name > b.name ? 1 : -1)),
+              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
+import { searchIncludes } from '../../utils/vtes-utils'
 import { ApiClanStat } from './../../models/api-clan-stat'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
 import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
@@ -66,8 +67,8 @@ export class LibraryQuery {
     return this.store.selectEntities(
       limit,
       (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()) ||
-        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()) ||
+        searchIncludes(entity.name, name) ||
+        searchIncludes(entity.i18n?.name, name) ||
         false,
     )
   }

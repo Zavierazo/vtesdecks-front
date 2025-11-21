@@ -17,6 +17,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   distinctUntilChanged,
+  map,
   Observable,
   OperatorFunction,
   switchMap,
@@ -31,6 +32,7 @@ import { ApiDataService } from './../../services/api.data.service'
 import { LocalStorageService } from './../../services/local-storage.service'
 
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { sortTrigramSimilarity } from '../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({
@@ -84,7 +86,18 @@ export class VtesdleComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
 
   formatter = (x: { name: string }) => x.name
 

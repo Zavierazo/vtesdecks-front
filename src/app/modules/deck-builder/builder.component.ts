@@ -46,7 +46,7 @@ import { getDisciplineIcon } from '../../utils/disciplines'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
-import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
+import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 import { environment } from './../../../environments/environment'
 import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
@@ -381,7 +381,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onPrint(): void {
-    const modalRef = this.modalService.open(PrintProxyComponent, {
+    const modalRef = this.modalService.open(PrintProxyModalComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,

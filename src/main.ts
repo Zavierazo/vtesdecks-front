@@ -179,6 +179,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'proxy-generator',
+    loadChildren: () =>
+      import('./app/modules/proxy-generator/proxy-generator.routes').then(
+        (m) => m.PROXY_GENERATOR_ROUTES,
+      ),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import(

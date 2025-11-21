@@ -223,7 +223,9 @@
     "print": "Imprimir",
     "select_arial": "Seleccionar imagen de proxy",
     "select_all": "Seleccionar Todo",
-    "reset": "Reiniciar"
+    "reset": "Reiniciar",
+    "add_crypt_card_placeholder": "Agregar carta de Cripta por nombre...",
+    "add_library_card_placeholder": "Agregar carta de Biblioteca por nombre..."
   },
   "filters": {
     "crypt_cards": "Cartas de Cripta",
@@ -287,7 +289,8 @@
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
-    "unread_notifications": "notificaciones no leídas"
+    "unread_notifications": "notificaciones no leídas",
+    "proxy_generator": "Generador de Proxies"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -416,7 +419,8 @@
     "grid": "Cuadrícula",
     "list": "Lista",
     "cards": "cartas",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "proxy_generator": "Generador de Proxies"
   },
   "table_seating": {
     "title": "Asignación de asientos",

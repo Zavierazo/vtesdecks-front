@@ -223,7 +223,9 @@
     "print": "Print",
     "select_arial": "Select proxy image",
     "select_all": "Select All",
-    "reset": "Reset"
+    "reset": "Reset",
+    "add_crypt_card_placeholder": "Add Crypt card by name...",
+    "add_library_card_placeholder": "Add Library card by name..."
   },
   "filters": {
     "crypt_cards": "Crypt Cards",
@@ -287,7 +289,8 @@
     "logout": "Logout",
     "theme": "Theme",
     "notifications": "Notifications",
-    "unread_notifications": "unread notifications"
+    "unread_notifications": "unread notifications",
+    "proxy_generator": "Proxy Generator"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -418,7 +421,8 @@
     "grid": "Grid",
     "list": "List",
     "cards": "cards",
-    "apply": "Apply"
+    "apply": "Apply",
+    "proxy_generator": "Proxy Generator"
   },
   "table_seating": {
     "title": "Table Seating",

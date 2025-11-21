@@ -223,7 +223,9 @@
     "print": "Imprimir",
     "select_arial": "Selecione a imagem proxy",
     "select_all": "Selecionar Todos",
-    "reset": "Repor"
+    "reset": "Repor",
+    "add_crypt_card_placeholder": "Adicionar carta de Cripta pelo nome...",
+    "add_library_card_placeholder": "Adicionar carta de Biblioteca pelo nome..."
   },
   "filters": {
     "crypt_cards": "Cartões de cripta",
@@ -288,7 +290,8 @@
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
-    "whats_new": "Novidades {{ date }}"
+    "whats_new": "Novidades {{ date }}",
+    "proxy_generator": "Gerador de Proxies"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
@@ -417,7 +420,8 @@
     "grid": "Grade",
     "list": "Lista",
     "cards": "cartas",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "proxy_generator": "Gerador de Proxies"
   },
   "table_seating": {
     "title": "Assentamento de mesa",

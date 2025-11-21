@@ -59,6 +59,10 @@
             <a ngbDropdownItem routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('statistics') }}
             </a>
+            <a ngbDropdownItem routerLink="/proxy-generator" [routerLinkActive]="['active']"
+              (click)="isCollapsed = true">
+              {{ t('proxy_generator') }}
+            </a>
             <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
               {{ t('table_seating') }}
             </button>

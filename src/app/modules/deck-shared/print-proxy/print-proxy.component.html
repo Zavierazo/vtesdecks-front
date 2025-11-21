@@ -1,78 +1,93 @@
 <ng-container *transloco="let t; read: 'print_proxy'">
-  <div class="modal-header">
-    <h4 class="modal-title d-flex align-items-center">
-      {{ t('title') }}
-    </h4>
-    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-      (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-        <li class="list-group-item list-group-item-primary">
-          {{ t('crypt') }}
-          <span class="float-end">
-            <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
-              (click)="selectAllCrypt()" onkeydown="javascript:void(0)"></i>
-            <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
-              (click)="resetCryptCards()" onkeydown="javascript:void(0)"></i>
-          </span>
-        </li>
-        @for(card of cardList(); track card.cardId){
-        @if(card.isCrypt){
-        <div>
-          <app-crypt [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
-            [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
-            (cardRemoved)="removeCard($event)"></app-crypt>
-          @if(card.setControl){
-          <select class="form-select form-select-sm" [attr.aria-label]="t('select_arial')"
-            [formControl]="card.setControl">
-            @for(setOption of card.setOptions; track setOption.setAbbrev){
-            <option [value]="setOption.setAbbrev">{{ setOption.setName }}</option>
-            }
-          </select>
+  <div class="row">
+    <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
+      <li class="list-group-item list-group-item-primary">
+        {{ t('crypt') }}
+        <span class="float-end">
+          <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
+            (click)="selectAllCrypt()" onkeydown="javascript:void(0)"></i>
+          <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
+            (click)="resetCryptCards()" onkeydown="javascript:void(0)"></i>
+        </span>
+      </li>
+      <div class="list-group-item">
+        <ng-template #cryptTemplate let-r="result" let-t="term">
+          @if(r.clanIcon){
+          <i class="vtes" [class]="r.clanIcon"></i>
           }
+          @if(r.adv){
+          <i class="vtes advanced"></i>
+          }
+          <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name ?? r.name" [term]="t" />
+        </ng-template>
+        <div class="input-group">
+          <input #cryptInput type="text" class="form-control" [ngbTypeahead]="searchCrypt"
+            [resultTemplate]="cryptTemplate" [inputFormatter]="formatter" [editable]="false"
+            (selectItem)="selectCardItem($event, cryptInput)" [placeholder]="t('add_crypt_card_placeholder')">
         </div>
-        }
-        }
-      </ul>
-      <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-        <li class="list-group-item list-group-item-primary">
-          {{ t('library') }}
-          <span class="float-end">
-            <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
-              (click)="selectAllLibrary()" onkeydown="javascript:void(0)"></i>
-            <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
-              (click)="resetLibraryCards()" onkeydown="javascript:void(0)"></i>
-          </span>
-        </li>
-        @for(card of cardList(); track card.cardId){
-        @if(card.isLibrary){
-        <div>
-          <app-library [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
-            [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
-            (cardRemoved)="removeCard($event)"></app-library>
-        </div>
+      </div>
+      @for(card of cardList(); track card.cardId){
+      @if(card.isCrypt){
+      <div>
+        <app-crypt [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
+          [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
+          (cardRemoved)="removeCard($event)"></app-crypt>
         @if(card.setControl){
-        <select class="form-select form-select-sm" aria-label="Select proxy image" [formControl]="card.setControl">
+        <select class="form-select form-select-sm" [attr.aria-label]="t('select_arial')"
+          [formControl]="card.setControl">
           @for(setOption of card.setOptions; track setOption.setAbbrev){
           <option [value]="setOption.setAbbrev">{{ setOption.setName }}</option>
           }
         </select>
         }
+      </div>
+      }
+      }
+    </ul>
+    <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
+      <li class="list-group-item list-group-item-primary">
+        {{ t('library') }}
+        <span class="float-end">
+          <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
+            (click)="selectAllLibrary()" onkeydown="javascript:void(0)"></i>
+          <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
+            (click)="resetLibraryCards()" onkeydown="javascript:void(0)"></i>
+        </span>
+      </li>
+      <div class="list-group-item">
+        <ng-template #libraryTemplate let-r="result" let-t="term">
+          @if(r.typeIcons){
+          @for(typeIcon of r.typeIcons; track typeIcon){
+          <i class="vtes" [class]="typeIcon"></i>
+          }
+          }
+          @if(r.clanIcon){
+          <i class="vtes" [class]="r.clanIcon"></i>
+          }
+          <ngb-highlight class="align-top ms-1" [result]="r.i18n?.name ?? r.name" [term]="t" />
+        </ng-template>
+        <div class="input-group">
+          <input #libraryInput type="text" class="form-control" [ngbTypeahead]="searchLibrary"
+            [resultTemplate]="libraryTemplate" [inputFormatter]="formatter" [editable]="false"
+            (selectItem)="selectCardItem($event, libraryInput)" [placeholder]="t('add_library_card_placeholder')">
+        </div>
+      </div>
+      @for(card of cardList(); track card.cardId){
+      @if(card.isLibrary){
+      <div>
+        <app-library [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
+          [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
+          (cardRemoved)="removeCard($event)"></app-library>
+      </div>
+      @if(card.setControl){
+      <select class="form-select form-select-sm" aria-label="Select proxy image" [formControl]="card.setControl">
+        @for(setOption of card.setOptions; track setOption.setAbbrev){
+        <option [value]="setOption.setAbbrev">{{ setOption.setName }}</option>
         }
-        }
-      </ul>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <div class="d-flex justify-content-center align-self-center w-100">
-      <button type="button" ngbAutofocus class="btn btn-success me-3" (click)="onPrint()">
-        {{ t('print') }}
-      </button>
-      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
-        {{ 'shared.cancel' | transloco }}
-      </button>
-    </div>
+      </select>
+      }
+      }
+      }
+    </ul>
   </div>
 </ng-container>

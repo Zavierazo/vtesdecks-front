@@ -61,6 +61,7 @@ import { AutofocusDirective } from '../../../shared/directives/auto-focus.direct
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
+import { sortTrigramSimilarity } from '../../../utils/vtes-utils'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardBulkEditModalComponent } from '../card-bulk-edit-modal/card-bulk-edit-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
@@ -299,7 +300,9 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
           this.cryptQuery.selectByName(term, 10),
         ]).pipe(
           map(([libraryCards, cryptCards]) =>
-            [...libraryCards, ...cryptCards].map((card) => card.id),
+            [...libraryCards, ...cryptCards]
+              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term))
+              .map((card) => card.id),
           ),
         ),
       ),

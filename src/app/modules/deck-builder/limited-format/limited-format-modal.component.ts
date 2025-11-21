@@ -21,6 +21,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   combineLatest,
   debounceTime,
+  map,
   mergeMap,
   Observable,
   of,
@@ -41,6 +42,7 @@ import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
+import { sortTrigramSimilarity } from '../../../utils/vtes-utils'
 import { toUrl } from './limited-format-utils'
 @UntilDestroy()
 @Component({
@@ -254,7 +256,15 @@ export class LimitedFormatModalComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       mergeMap((term) => combineLatest([of(term)])),
-      switchMap(([term]) => this.cryptQuery.selectByName(term, 10)),
+      switchMap(([term]) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
@@ -263,7 +273,15 @@ export class LimitedFormatModalComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       mergeMap((term) => combineLatest([of(term)])),
-      switchMap(([term]) => this.libraryQuery.selectByName(term, 10)),
+      switchMap(([term]) =>
+        this.libraryQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   formatter = (x: { name: string }) => x.name

@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core'
 import { Observable, map } from 'rxjs'
 import { ApiCard } from '../../models/api-card'
 import { ApiClanStat } from '../../models/api-clan-stat'
+import { searchIncludes } from '../../utils/vtes-utils'
 import { ApiCrypt, CryptSortBy } from './../../models/api-crypt'
 import { ApiDisciplineStat } from './../../models/api-discipline-stat'
 import { CryptStats, CryptStore } from './crypt.store'
@@ -66,8 +67,8 @@ export class CryptQuery {
     return this.store.selectEntities(
       limit,
       (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()) ||
-        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()) ||
+        searchIncludes(entity.name, name) ||
+        searchIncludes(entity.i18n?.name, name) ||
         false,
     )
   }

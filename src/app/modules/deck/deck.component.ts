@@ -63,7 +63,7 @@ import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-gri
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
-import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
+import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -347,7 +347,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onPrint(): void {
-    const modalRef = this.modalService.open(PrintProxyComponent, {
+    const modalRef = this.modalService.open(PrintProxyModalComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,
