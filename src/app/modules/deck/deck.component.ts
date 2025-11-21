@@ -35,6 +35,7 @@ import {
   PreviousRouteService,
   ToastService,
 } from '@services'
+import { getClanIcon, getDisciplineIcon } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
@@ -53,8 +54,6 @@ import { DeckQuery } from '../../state/deck/deck.query'
 import { DeckService } from '../../state/deck/deck.service'
 import { DecksQuery } from '../../state/decks/decks.query'
 import { DecksService } from '../../state/decks/decks.service'
-import { getClanIcon } from '../../utils/clans'
-import { getDisciplineIcon } from '../../utils/disciplines'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'

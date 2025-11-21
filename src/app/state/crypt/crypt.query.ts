@@ -6,8 +6,8 @@ import {
   ApiDisciplineStat,
   CryptSortBy,
 } from '@models'
+import { searchIncludes } from '@utils'
 import { Observable, map } from 'rxjs'
-import { searchIncludes } from '../../utils/vtes-utils'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',

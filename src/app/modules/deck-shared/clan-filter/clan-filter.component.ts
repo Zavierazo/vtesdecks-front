@@ -1,14 +1,14 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
-  Component,
-  Input,
   ChangeDetectorRef,
+  Component,
   inject,
+  Input,
   output,
 } from '@angular/core'
-import { CLAN_LIST } from '../../../utils/clans'
-import { NgClass } from '@angular/common'
 import { TranslocoPipe } from '@jsverse/transloco'
+import { CLAN_LIST } from '@utils'
 
 @Component({
   selector: 'app-clan-filter',

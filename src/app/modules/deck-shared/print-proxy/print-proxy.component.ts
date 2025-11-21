@@ -24,6 +24,13 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
 import {
+  isCrypt,
+  isCryptId,
+  isLibrary,
+  isLibraryId,
+  sortTrigramSimilarity,
+} from '@utils'
+import {
   BehaviorSubject,
   catchError,
   filter,
@@ -37,13 +44,6 @@ import {
 } from 'rxjs'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
-import {
-  isCrypt,
-  isCryptId,
-  isLibrary,
-  isLibraryId,
-  sortTrigramSimilarity,
-} from '../../../utils/vtes-utils'
 import { CryptComponent } from '../crypt/crypt.component'
 import { LibraryComponent } from '../library/library.component'
 

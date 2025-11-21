@@ -26,11 +26,10 @@ import {
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { CryptQuery } from '../../state/crypt/crypt.query'
-import { CryptService } from '../../state/crypt/crypt.service'
 
 import { ApiDataService, LocalStorageService } from '@services'
+import { sortTrigramSimilarity } from '@utils'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
-import { sortTrigramSimilarity } from '../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({
@@ -51,7 +50,6 @@ export class VtesdleComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private localStorageService = inject(LocalStorageService)
   private apiDataService = inject(ApiDataService)
-  private cryptService = inject(CryptService)
   private cryptQuery = inject(CryptQuery)
   private changeDetectorRef = inject(ChangeDetectorRef)
 

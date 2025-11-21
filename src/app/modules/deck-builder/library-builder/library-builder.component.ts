@@ -21,6 +21,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { isRegexSearch, searchIncludes } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
@@ -32,7 +33,6 @@ import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { DeckBuilderQuery } from './../../../state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from './../../../state/deck-builder/deck-builder.service'
-import { isRegexSearch, searchIncludes } from './../../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({

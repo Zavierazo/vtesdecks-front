@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
-import { PATH_LIST } from '../../../utils/paths'
+import { PATH_LIST } from '@utils'
 
 @Component({
   selector: 'app-path-filter',

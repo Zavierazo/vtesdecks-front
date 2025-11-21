@@ -1,4 +1,4 @@
-const drawProbability = (x: number, N: number, n: number, k: number) => {
+export const drawProbability = (x: number, N: number, n: number, k: number) => {
   // x - target cards in draw (e.g. i=2 to draw 2 copy of the card)
   // N - total cards (e.g. N=12 for total crypt size of 12)
   // n - drawed cards (e.g. n=4 for initial crypt draw of 4 card)
@@ -40,5 +40,3 @@ const drawProbability = (x: number, N: number, n: number, k: number) => {
   }
   return prob * 100
 }
-
-export default drawProbability

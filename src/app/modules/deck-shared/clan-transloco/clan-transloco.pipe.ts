@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { CLAN_LIST } from '../../../utils/clans'
+import { CLAN_LIST } from '@utils'
 
 @Pipe({ name: 'clanTransloco' })
 export class ClanTranslocoPipe implements PipeTransform {

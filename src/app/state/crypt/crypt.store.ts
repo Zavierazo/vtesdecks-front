@@ -2,8 +2,8 @@ import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { ApiClanStat, ApiCrypt, ApiDisciplineStat, CryptSortBy } from '@models'
 import { LocalStorageService } from '@services'
+import { trigramSimilarity } from '@utils'
 import { map, Observable } from 'rxjs'
-import { trigramSimilarity } from '../../utils/trigram-similarity'
 
 export interface CryptStats {
   total: number

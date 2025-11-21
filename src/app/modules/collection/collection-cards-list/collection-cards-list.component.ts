@@ -44,6 +44,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, ToastService } from '@services'
+import { sortTrigramSimilarity } from '@utils'
 import {
   catchError,
   combineLatest,
@@ -60,7 +61,6 @@ import { AutofocusDirective } from '../../../shared/directives/auto-focus.direct
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
-import { sortTrigramSimilarity } from '../../../utils/vtes-utils'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardBulkEditModalComponent } from '../card-bulk-edit-modal/card-bulk-edit-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'

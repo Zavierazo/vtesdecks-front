@@ -26,6 +26,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
+import { sortTrigramSimilarity } from '@utils'
 import {
   combineLatest,
   debounceTime,
@@ -42,7 +43,6 @@ import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'
 import { SetQuery } from '../../../state/set/set.query'
-import { sortTrigramSimilarity } from '../../../utils/vtes-utils'
 import { toUrl } from './limited-format-utils'
 @UntilDestroy()
 @Component({

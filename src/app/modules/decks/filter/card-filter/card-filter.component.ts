@@ -19,6 +19,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { sortTrigramSimilarity } from '@utils'
 import {
   debounceTime,
   map,
@@ -32,7 +33,6 @@ import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../../state/crypt/crypt.query'
 import { CryptService } from '../../../../state/crypt/crypt.service'
 import { DecksQuery } from '../../../../state/decks/decks.query'
-import { sortTrigramSimilarity } from '../../../../utils/vtes-utils'
 import { LibraryQuery } from './../../../../state/library/library.query'
 import { LibraryService } from './../../../../state/library/library.service'
 

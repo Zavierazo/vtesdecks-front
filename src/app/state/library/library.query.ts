@@ -6,8 +6,8 @@ import {
   ApiLibrary,
   LibrarySortBy,
 } from '@models'
+import { searchIncludes } from '@utils'
 import { map, Observable } from 'rxjs'
-import { searchIncludes } from '../../utils/vtes-utils'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',

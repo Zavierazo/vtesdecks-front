@@ -13,12 +13,12 @@ import { TranslocoDatePipe } from '@jsverse/transloco-locale'
 import { ApiDeck } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
+import { isCryptId } from '@utils'
 import { tap } from 'rxjs'
 import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../state/library/library.query'
-import { isCryptId } from '../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({

@@ -33,6 +33,9 @@
       "@services": [
         "src/app/services/index.ts"
       ],
+      "@utils": [
+        "src/app/utils/index.ts"
+      ],
     },
     "useDefineForClassFields": false
   },

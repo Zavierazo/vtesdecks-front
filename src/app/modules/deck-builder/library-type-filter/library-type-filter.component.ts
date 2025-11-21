@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,9 +7,8 @@ import {
   inject,
   output,
 } from '@angular/core'
-import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
-import { NgClass } from '@angular/common'
 import { TranslocoPipe } from '@jsverse/transloco'
+import { LIBRARY_TYPE_LIST } from '@utils'
 
 @Component({
   selector: 'app-library-type-filter',

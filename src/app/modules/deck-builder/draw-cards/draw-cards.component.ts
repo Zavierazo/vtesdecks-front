@@ -12,8 +12,8 @@ import {
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCard } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { isCrypt } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { isCrypt } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 

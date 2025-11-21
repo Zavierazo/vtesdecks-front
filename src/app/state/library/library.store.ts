@@ -7,8 +7,8 @@ import {
   LibrarySortBy,
 } from '@models'
 import { LocalStorageService } from '@services'
+import { trigramSimilarity } from '@utils'
 import { map, Observable } from 'rxjs'
-import { trigramSimilarity } from '../../utils/trigram-similarity'
 
 export interface LibraryStats {
   total: number
