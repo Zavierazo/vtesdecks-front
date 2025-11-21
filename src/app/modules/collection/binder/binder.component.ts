@@ -19,6 +19,7 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
 import {
   catchError,
   distinctUntilChanged,
@@ -28,7 +29,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'

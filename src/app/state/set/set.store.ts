@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { ApiSet, SetSortBy } from '@models'
+import { LocalStorageService } from '@services'
 import { map, Observable } from 'rxjs'
-import { LocalStorageService } from '../../services/local-storage.service'
 
 @Injectable({
   providedIn: 'root',

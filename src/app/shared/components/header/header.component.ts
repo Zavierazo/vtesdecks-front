@@ -17,10 +17,9 @@ import {
   NgbModal,
   NgbOffcanvas,
 } from '@ng-bootstrap/ng-bootstrap'
+import { ColorThemeService, MediaService } from '@services'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
-import { ColorThemeService } from '../../../services/color-theme.service'
-import { MediaService } from '../../../services/media.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { AuthService } from '../../../state/auth/auth.service'
 import { isChristmas, isHalloween } from '../../../utils/vtes-utils'

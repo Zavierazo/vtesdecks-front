@@ -25,6 +25,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, MediaService, ToastService } from '@services'
 import {
   combineLatest,
   debounceTime,
@@ -37,9 +38,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiDataService } from '../../../services/api.data.service'
-import { MediaService } from '../../../services/media.service'
-import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'

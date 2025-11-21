@@ -1,18 +1,18 @@
+import { AsyncPipe, NgClass } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  NgbDropdown,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService } from '../../../services/media.service'
+import { MediaService } from '@services'
 import { CryptService } from '../../../state/crypt/crypt.service'
 import { LibraryService } from '../../../state/library/library.service'
 import { SUPPORTED_LANGUAGES } from '../../../transloco-root.module'
-import {
-  NgbDropdown,
-  NgbDropdownToggle,
-  NgbDropdownMenu,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-} from '@ng-bootstrap/ng-bootstrap'
-import { NgClass, AsyncPipe } from '@angular/common'
 
 @UntilDestroy()
 @Component({

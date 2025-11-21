@@ -11,10 +11,10 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiHistoricStatistic } from '@models'
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
 import { ChartConfiguration, ChartData } from 'chart.js'
 import { BaseChartDirective } from 'ng2-charts'
 import { tap } from 'rxjs'
-import { MediaService } from '../../../services/media.service'
 
 @UntilDestroy()
 @Component({

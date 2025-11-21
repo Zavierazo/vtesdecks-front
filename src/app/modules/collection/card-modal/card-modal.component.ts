@@ -30,6 +30,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
   BehaviorSubject,
@@ -42,7 +43,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../state/crypt/crypt.query'
 import { LibraryQuery } from '../../../state/library/library.query'

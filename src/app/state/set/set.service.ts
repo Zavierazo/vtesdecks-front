@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core'
 import { ApiSet } from '@models'
+import { ApiDataService } from '@services'
 import { defaultIfEmpty, filter, map, Observable, switchMap, tap } from 'rxjs'
-import { ApiDataService } from '../../services/api.data.service'
 import { SetQuery } from './set.query'
 import { SetStore } from './set.store'
 @Injectable({ providedIn: 'root' })

@@ -27,9 +27,8 @@ import {
 import { environment } from '../../../environments/environment'
 import { CryptQuery } from '../../state/crypt/crypt.query'
 import { CryptService } from '../../state/crypt/crypt.service'
-import { ApiDataService } from './../../services/api.data.service'
-import { LocalStorageService } from './../../services/local-storage.service'
 
+import { ApiDataService, LocalStorageService } from '@services'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'
 import { sortTrigramSimilarity } from '../../utils/vtes-utils'
 

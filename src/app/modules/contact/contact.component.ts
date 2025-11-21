@@ -13,7 +13,7 @@ import {
 } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiContact } from '@models'
-import { ApiDataService } from './../../services/api.data.service'
+import { ApiDataService } from '@services'
 import { AuthQuery } from './../../state/auth/auth.query'
 
 @Component({

@@ -2,8 +2,7 @@ import { AsyncPipe, NgClass } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { Theme } from '@models'
-import { ColorThemeService } from '../../../services/color-theme.service'
-import { MediaService } from '../../../services/media.service'
+import { ColorThemeService, MediaService } from '@services'
 
 @Component({
   selector: 'app-theme-selector',

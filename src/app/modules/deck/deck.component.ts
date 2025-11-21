@@ -29,14 +29,16 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import {
+  ApiDataService,
+  MediaService,
+  PreviousRouteService,
+  ToastService,
+} from '@services'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiDataService } from '../../services/api.data.service'
-import { MediaService } from '../../services/media.service'
-import { PreviousRouteService } from '../../services/previous-route-service'
-import { ToastService } from '../../services/toast.service'
 import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
 import { LoadingComponent } from '../../shared/components/loading/loading.component'

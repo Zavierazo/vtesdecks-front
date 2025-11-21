@@ -21,8 +21,8 @@ import {
 import { ApiCollectionImport } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
 import { BehaviorSubject, catchError, tap } from 'rxjs'
-import { ToastService } from '../../../services/toast.service'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 

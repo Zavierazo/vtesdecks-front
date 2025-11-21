@@ -8,8 +8,8 @@ import {
 } from '@angular/core'
 import { ApiKrcgRuling, RulingText } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { MediaService } from '@services'
 import { environment } from '../../../../../environments/environment'
-import { MediaService } from '../../../../services/media.service'
 
 @Component({
   selector: 'app-ruling-text',

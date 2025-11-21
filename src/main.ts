@@ -27,6 +27,7 @@ import {
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { GlobalErrorHandler } from '@services'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
 import {
   NgcCookieConsentConfig,
@@ -38,7 +39,6 @@ import {
 } from 'ngx-google-analytics'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
-import { GlobalErrorHandler } from './app/services/global-error.handler'
 
 import { MARKED_EXTENSIONS, provideMarkdown } from 'ngx-markdown'
 import { bracketsExtension } from './app/marked-extension'

@@ -19,18 +19,16 @@ import {
 import { ApiCrypt, ApiDecks, ApiKrcgCard, ApiShop } from '@models'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, MediaService, ToastService } from '@services'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { EMPTY, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ToastService } from '../../../services/toast.service'
 import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
 import { Shop, getShop } from '../../../utils/shops'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
-import { ApiDataService } from './../../../services/api.data.service'
-import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({

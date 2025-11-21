@@ -18,6 +18,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
 import {
   debounceTime,
   map,
@@ -27,7 +28,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../../environments/environment'
-import { MediaService } from '../../../../services/media.service'
 import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
 import { CryptQuery } from '../../../../state/crypt/crypt.query'
 import { CryptService } from '../../../../state/crypt/crypt.service'

@@ -19,10 +19,9 @@ import {
   NgbProgressbarModule,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, ToastService } from '@services'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { BehaviorSubject, catchError, finalize, switchMap, tap } from 'rxjs'
-import { ApiDataService } from '../../../services/api.data.service'
-import { ToastService } from '../../../services/toast.service'
 import { DecksQuery } from '../../../state/decks/decks.query'
 import { DecksService } from '../../../state/decks/decks.service'
 import { CollectionPrivateService } from '../state/collection-private.service'

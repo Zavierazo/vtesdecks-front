@@ -1,10 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { ApiUser } from '@models'
+import { LocalStorageService, SessionStorageService } from '@services'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
-import { LocalStorageService } from '../../services/local-storage.service'
-import { SessionStorageService } from '../../services/session-storage.service'
 
 export interface AuthState extends ApiUser {
   builderDisplayMode: 'list' | 'grid'

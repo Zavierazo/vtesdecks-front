@@ -43,6 +43,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService, ToastService } from '@services'
 import {
   catchError,
   combineLatest,
@@ -54,8 +55,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { MediaService } from '../../../services/media.service'
-import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { AutofocusDirective } from '../../../shared/directives/auto-focus.directive'
 import { CryptQuery } from '../../../state/crypt/crypt.query'

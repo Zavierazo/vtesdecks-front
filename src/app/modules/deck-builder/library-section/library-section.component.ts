@@ -27,6 +27,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
@@ -38,7 +39,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { MediaService } from '../../../services/media.service'
 import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '../../../state/auth/auth.query'
 import { AuthService } from '../../../state/auth/auth.service'

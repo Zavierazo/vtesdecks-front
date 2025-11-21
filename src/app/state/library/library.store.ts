@@ -6,8 +6,8 @@ import {
   ApiLibrary,
   LibrarySortBy,
 } from '@models'
+import { LocalStorageService } from '@services'
 import { map, Observable } from 'rxjs'
-import { LocalStorageService } from '../../services/local-storage.service'
 import { trigramSimilarity } from '../../utils/trigram-similarity'
 
 export interface LibraryStats {

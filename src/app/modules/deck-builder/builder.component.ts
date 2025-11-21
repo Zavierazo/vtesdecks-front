@@ -30,9 +30,8 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, ToastService } from '@services'
 import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
-import { ApiDataService } from '../../services/api.data.service'
-import { ToastService } from '../../services/toast.service'
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
 import { MarkdownTextareaComponent } from '../../shared/components/markdown-textarea/markdown-textarea.component'
 import { ToggleIconComponent } from '../../shared/components/toggle-icon/toggle-icon.component'

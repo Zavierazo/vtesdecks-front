@@ -9,8 +9,8 @@ import {
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiCard, ApiCollectionCardStats } from '@models'
+import { ApiDataService } from '@services'
 import { EMPTY, Observable } from 'rxjs'
-import { ApiDataService } from '../../../services/api.data.service'
 import { AuthQuery } from '../../../state/auth/auth.query'
 
 @Component({

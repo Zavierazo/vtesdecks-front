@@ -17,8 +17,8 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
 import { catchError, EMPTY, switchMap } from 'rxjs'
-import { ToastService } from '../../../services/toast.service'
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'

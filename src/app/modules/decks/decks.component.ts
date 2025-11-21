@@ -19,6 +19,7 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   debounceTime,
@@ -35,7 +36,6 @@ import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
 import { DecksService } from '../../state/decks/decks.service'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
-import { MediaService } from './../../services/media.service'
 import { DecksQuery } from './../../state/decks/decks.query'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
 

@@ -22,6 +22,7 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
 import {
   Observable,
   OperatorFunction,
@@ -33,7 +34,6 @@ import {
   merge,
   tap,
 } from 'rxjs'
-import { ApiDataService } from '../../../services/api.data.service'
 import { IsLoggedDirective } from '../../../shared/directives/is-logged.directive'
 import { DecksQuery } from '../../../state/decks/decks.query'
 import { CardFilterComponent } from './card-filter/card-filter.component'
