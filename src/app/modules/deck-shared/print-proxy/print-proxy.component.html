@@ -31,7 +31,7 @@
       <div>
         <app-crypt [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
           [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
-          (cardRemoved)="removeCard($event)"></app-crypt>
+          (cardRemoved)="removeCard($event)" />
         @if(card.setControl){
         <select class="form-select form-select-sm" [attr.aria-label]="t('select_arial')"
           [formControl]="card.setControl">
@@ -77,7 +77,7 @@
       <div>
         <app-library [card]="{id: card.cardId, number: card.amount}" [overrideImage]="card.set?.imageUrl"
           [withControls]="true" [maxNumber]="card.maxAmount" (cardAdded)="addCard($event)"
-          (cardRemoved)="removeCard($event)"></app-library>
+          (cardRemoved)="removeCard($event)" />
       </div>
       @if(card.setControl){
       <select class="form-select form-select-sm" aria-label="Select proxy image" [formControl]="card.setControl">

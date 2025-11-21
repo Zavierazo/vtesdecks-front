@@ -160,16 +160,16 @@
           <td>{{ card.number }}</td>
           <td>
             <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName"
-              [setAbbrev]="card.set"></app-collection-card>
+              [setAbbrev]="card.set" />
           </td>
           @if(groupBy === 'binderId' && owned() && showBinders()){
           <td class="text-center">
-            <app-collection-binder [binderId]="card.binderId"></app-collection-binder>
+            <app-collection-binder [binderId]="card.binderId" />
           </td>
           }
           @if(groupBy === 'set'){
           <td>
-            <app-collection-set [set]="card.set"></app-collection-set>
+            <app-collection-set [set]="card.set" />
           </td>
           }
           <td>
@@ -272,15 +272,15 @@
           }
           <td>
             <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set"
-              (click)="editable && onEdit(card)" [ngClass]="{'cursor-pointer': editable}"></app-collection-card>
+              (click)="editable && onEdit(card)" [ngClass]="{'cursor-pointer': editable}" />
           </td>
           @if(owned() && showBinders()){
           <td class="text-center">
-            <app-collection-binder [binderId]="card.binderId"></app-collection-binder>
+            <app-collection-binder [binderId]="card.binderId" />
           </td>
           }
           <td>
-            <app-collection-set [set]="card.set"></app-collection-set>
+            <app-collection-set [set]="card.set" />
           </td>
           <td>
             @if(card.condition){
@@ -359,8 +359,7 @@
     <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
       <ngb-pagination [collectionSize]="(total$ | async)!" [page]="query.page + 1" [pageSize]="query.pageSize"
         [maxSize]="3" [rotate]="true" [ellipses]="!(isMobile$ | async)!" [boundaryLinks]="true"
-        [disabled]="(isLoading$ | async)!" (pageChange)="onPageChange($event)">
-      </ngb-pagination>
+        [disabled]="(isLoading$ | async)!" (pageChange)="onPageChange($event)" />
     </div>
     <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
       <select class="form-select" style="width: auto" name="pageSize" [ngModel]="query.pageSize"

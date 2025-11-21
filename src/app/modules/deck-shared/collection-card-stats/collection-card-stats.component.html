@@ -51,7 +51,7 @@
             triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
             {{ card.set }}
             <ng-template #setContent>
-              <app-set-tooltip [cardId]="card.cardId" [set]="card.set"></app-set-tooltip>
+              <app-set-tooltip [cardId]="card.cardId" [set]="card.set" />
             </ng-template>
           </span>
           }

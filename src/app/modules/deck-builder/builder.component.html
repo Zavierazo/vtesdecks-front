@@ -13,7 +13,7 @@
           </div>
           <div class="justify-content-center align-self-center text-start p-2">
             <app-markdown-textarea [control]="descriptionControl" [placeholder]="t('description_placeholder')"
-              [label]="t('description')"></app-markdown-textarea>
+              [label]="t('description')" />
           </div>
           <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
             @if ((deckId$ | async)!!) {
@@ -134,13 +134,13 @@
     </div>
     <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
       <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions"></app-toggle-icon>
+        [options]="displayModeOptions" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
   <div class="d-md-none mt-3 d-flex justify-content-center">
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-      [options]="displayModeOptions"></app-toggle-icon>
+      [options]="displayModeOptions" />
   </div>
   @if ((cryptErrors$ | async)!.length > 0) {
   <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
@@ -169,7 +169,7 @@
       @for (crypt of cryptList; track crypt.id) {
       <div class="col-6 col-md-auto">
         <app-crypt-grid-card [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt-grid-card>
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
       </div>
       }
     </div>
@@ -178,7 +178,7 @@
       @for (crypt of cryptList; track crypt.id) {
       <ul class="col list-group">
         <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
       </ul>
       }
     </div>
@@ -222,13 +222,13 @@
     </div>
     <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
       <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions"></app-toggle-icon>
+        [options]="displayModeOptions" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
   <div class="d-md-none mt-3 d-flex justify-content-center">
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-      [options]="displayModeOptions"></app-toggle-icon>
+      [options]="displayModeOptions" />
   </div>
   @if ((libraryErrors$ | async)!.length > 0) {
   <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
@@ -272,8 +272,7 @@
   <div class="col-12 mt-3">
     @if ((libraryList$ | async)!; as libraryList) {
     <app-library-list [libraryList]="libraryList" [displayMode]="(displayMode$ |async)!" [withControls]="true"
-      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)">
-    </app-library-list>
+      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
     }
   </div>
 </main>

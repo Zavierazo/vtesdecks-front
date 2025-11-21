@@ -30,7 +30,7 @@
                   <i class="bi bi-award"></i>
                   <span>{{ t('tournament_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -39,7 +39,7 @@
                   <i class="bi bi-people"></i>
                   <span>{{ t('community_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -49,7 +49,7 @@
                   <i class="bi bi-bag"></i>
                   <span>{{ t('preconstructed_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -72,7 +72,7 @@
                   <i class="bi bi-stack"></i>
                   <span>{{ t('user_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -81,7 +81,7 @@
                   <i class="bi bi-bookmark-star"></i>
                   <span>{{ t('bookmarked_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -140,21 +140,17 @@
   <!-- Popular and Newest Decks -->
   <div class="row mt-3">
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_tournament')"
-      [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular">
-    </app-home-section>
+      [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular" />
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_community')"
-      [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular">
-    </app-home-section>
+      [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular" />
   </div>
 
   <!-- Newest Decks -->
   <div class="row mt-3">
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_tournament')"
-      [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest">
-    </app-home-section>
+      [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest" />
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_community')"
-      [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest">
-    </app-home-section>
+      [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest" />
   </div>
 
   <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7683446640" adFormat="auto" fullWidthResponsive="true" />

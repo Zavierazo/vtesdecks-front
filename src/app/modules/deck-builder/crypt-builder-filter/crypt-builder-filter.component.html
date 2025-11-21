@@ -24,14 +24,13 @@
   </div>
   <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
   <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)">
-    </app-clan-filter>
+    <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" />
   </div>
   <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
   <div id="disciplines" class="row g-1">
     <app-discipline-filter [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
       [(superiorDisciplines)]="superiorDisciplines"
-      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)"></app-discipline-filter>
+      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" />
   </div>
   <div class="row g-1 mt-2">
     <label for="group" class="form-label text-primary fw-bold">{{ t('group') }}</label>
@@ -42,8 +41,7 @@
         showTicks: true,
         showTicksValues: true,
         translate: translateGroupSlider
-      }" [formControl]="groupSliderControl">
-    </ngx-slider>
+      }" [formControl]="groupSliderControl" />
   </div>
   <div class="row g-1 mt-2">
     <label for="capacity" class="form-label text-primary fw-bold">{{ t('capacity') }}</label>
@@ -53,8 +51,7 @@
         step: 1,
         showTicks: true,
         showTicksValues: true
-      }" [formControl]="capacitySliderControl">
-    </ngx-slider>
+      }" [formControl]="capacitySliderControl" />
   </div>
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="set" [formControl]="setControl">

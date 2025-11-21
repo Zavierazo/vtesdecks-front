@@ -2,8 +2,7 @@
   <div class="container py-4 d-flex flex-column justify-content-center align-items-center">
     <h1>{{ t('title') }}</h1>
     <div class="my-3 w-100">
-      <app-print-proxy #printProxy [cards]="[]">
-      </app-print-proxy>
+      <app-print-proxy #printProxy [cards]="[]" />
     </div>
     <div class="d-flex justify-content-center align-self-center w-100">
       @if(printProxy.loading$ | async){

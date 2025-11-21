@@ -9,7 +9,7 @@
         'bi-caret-right-fill': isCollapsed(libraryType)
       }"></i>
         <span class="d-flex align-items-center">
-          <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }"></ng-container>
+          <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }" />
         </span>
       </h6>
     </button>
@@ -17,7 +17,7 @@
       @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
       <app-library-grid-card class="col-6 col-md-auto" [card]="library" [librarySize]="librarySize"
         [withControls]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-        (click)="openLibraryCard(library, libraryList!)"></app-library-grid-card>
+        (click)="openLibraryCard(library, libraryList!)" />
       }
     </div>
     }
@@ -26,7 +26,7 @@
   @for (libraryType of libraryTypes; track trackByIndexFn($index, libraryType)) {
   <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
     <li class="list-group-item list-group-item-primary d-flex justify-content-start align-items-center">
-      <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }"></ng-container>
+      <ng-container *ngTemplateOutlet="libraryTypeTpl; context: { libraryType: libraryType }" />
     </li>
     @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
     <div>
@@ -34,7 +34,7 @@
         (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
         (click)="openLibraryCard(library, libraryList!)"
         [disablePopover]="!withControls && (isMobileOrTablet$ | async)!"
-        [disableClickPopover]="!withControls"></app-library>
+        [disableClickPopover]="!withControls" />
     </div>
     }
   </ul>

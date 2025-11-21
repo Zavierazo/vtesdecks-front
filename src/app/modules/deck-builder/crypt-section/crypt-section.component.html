@@ -8,7 +8,7 @@
               [formControl]="nameFormControl">
           </div>
           <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
-            (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions"></app-toggle-icon>
+            (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
           <div ngbDropdown class="col-auto d-inline-block">
             <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
               [disabled]="sortByTrigramSimilarity">
@@ -61,7 +61,7 @@
         @if ((isMobileOrTablet$ | async) === false && (crypt$ | async)!) {
         <div class="col-4 filters-desktop">
           <div class="filters-desktop-container">
-            <ng-container *ngTemplateOutlet="filter"></ng-container>
+            <ng-container *ngTemplateOutlet="filter" />
           </div>
         </div>
         }
@@ -85,7 +85,7 @@
           <div class="row mx-2 mb-2 g-1 justify-content-center">
             @for (crypt of (crypt$ | async)! ; track trackByFn($index, crypt)) {
             <div class="col-6 col-md-auto">
-              <app-crypt-grid-card [card]="getCard(crypt)" (click)="openCryptCard(crypt)"></app-crypt-grid-card>
+              <app-crypt-grid-card [card]="getCard(crypt)" (click)="openCryptCard(crypt)" />
             </div>
             }
           </div>
@@ -93,7 +93,7 @@
           @for (crypt of (crypt$ | async)! ; track trackByFn($index, crypt)) {
           <ul class="col list-group">
             <app-crypt [card]="getCard(crypt)" (click)="openCryptCard(crypt)"
-              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-crypt>
+              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true" />
           </ul>
           }
           }
@@ -116,7 +116,7 @@
         (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-      <ng-container *ngTemplateOutlet="filter"></ng-container>
+      <ng-container *ngTemplateOutlet="filter" />
     </div>
     <div class="modal-footer">
       <div class="d-grid gap-2 w-100">

@@ -83,7 +83,7 @@
               triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
               {{ set }}&nbsp;
               <ng-template #setContent>
-                <app-set-tooltip [cardId]="card.id" [set]="set"></app-set-tooltip>
+                <app-set-tooltip [cardId]="card.id" [set]="set" />
               </ng-template>
             </span>
             }
@@ -110,7 +110,7 @@
             <div class="card-body px-2">
               @for (ruling of krcgRulings; track ruling; let last = $last) {
               <div class="py-2 border-dark" [class.border-bottom]="!last">
-                <app-ruling-text [ruling]="ruling"></app-ruling-text>
+                <app-ruling-text [ruling]="ruling" />
               </div>
               }
             </div>
@@ -154,7 +154,7 @@
           }
           }
           <app-collection-card-stats [cardId]="card.id"
-            (routerClick)="modal.dismiss('Link click')"></app-collection-card-stats>
+            (routerClick)="modal.dismiss('Link click')" />
           <small class="float-end text-muted mt-2">#{{card.id}}</small>
         </div>
         <div class="modal-footer align-self-end">
