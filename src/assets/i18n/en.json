@@ -659,7 +659,8 @@
       "Scarce": "Scarce",
       "Blood Cursed": "Blood Cursed",
       "Circle": "Circle",
-      "Strike": "Strike"
+      "Strike": "Strike",
+      "Cannot Block": "Cannot Block"
     }
   },
   "limited_format": {

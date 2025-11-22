@@ -658,7 +658,8 @@
       "Scarce": "Escasso",
       "Blood Cursed": "Maldição de Sangue",
       "Circle": "Círculo",
-      "Strike": "Golpe"
+      "Strike": "Golpe",
+      "Cannot Block": "Não pode bloquear"
     }
   },
   "limited_format": {

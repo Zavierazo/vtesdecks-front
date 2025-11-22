@@ -658,7 +658,8 @@
       "Scarce": "Escaso",
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo",
-      "Strike": "Ataque"
+      "Strike": "Ataque",
+      "Cannot Block": "No puede bloquear"
     }
   },
   "limited_format": {
