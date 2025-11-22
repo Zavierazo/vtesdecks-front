@@ -71,7 +71,7 @@
       @if(hasActiveFilters) {
       <button type="button" class="btn btn-outline-secondary" (click)="onClearFilters()">
         <i class="bi bi-x-circle"></i>
-        {{ t('clear_filters') }}
+        {{ t('reset') }}
       </button>
       }
 
@@ -159,8 +159,7 @@
         <tr class="align-middle" [@fadeIn] [@fadeOut]>
           <td>{{ card.number }}</td>
           <td>
-            <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName"
-              [setAbbrev]="card.set" />
+            <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set" />
           </td>
           @if(groupBy === 'binderId' && owned() && showBinders()){
           <td class="text-center">

@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'decks'">
   <div id="container" class="h-100">
     <header class="border-bottom mb-3 p-2 sticky-top bg-light">
-      <form [formGroup]="mainForm" class="d-flex flex-row align-items-center">
+      <form [formGroup]="mainForm" class="d-flex flex-column flex-md-row align-items-center g-2">
         <div class="col-auto flex-fill">
           <span class="me-md-auto" [innerHTML]="t('total_decks', { total: total$ | async })">
           </span>
@@ -47,6 +47,20 @@
             </div>
           </div>
         </div>
+        @if ((isMobileOrTablet$ | async)!) {
+        <div class="row mt-2">
+          <div class="col-auto">
+            <button type="button" class="btn btn-secondary" (click)="openFilters(filtersMobile)">
+              <i class="bi bi-funnel-fill"></i><span> {{ t('filters') }}</span>
+            </button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-danger" (click)="resetFilters()">
+              <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+            </button>
+          </div>
+        </div>
+        }
       </form>
     </header>
     <div class="scroll-container row">
@@ -72,7 +86,7 @@
           @if (!(isLoading$ | async)! && decks.length === 0) {
           <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
-              {{ t('clear_filters') }}
+              {{ t('reset') }}
             </button>
           </div>
           }
@@ -106,12 +120,6 @@
   <button class="btn btn-secondary btn-lg border back-to-top" placement="start" [ngbTooltip]="t('back_to_top')"
     (click)="scrollToTop()">
     <i class="bi bi-chevron-up"></i>
-  </button>
-  }
-  @if (isMobileOrTablet$ | async) {
-  <button class="btn btn-primary btn-sm filters-mobile" placement="start" [ngbTooltip]="t('show_filters')"
-    (click)="openFilters(filtersMobile)">
-    <i class="bi bi-funnel-fill"></i>&nbsp;{{ t('filters') }}
   </button>
   }
   <ng-template #filtersMobile let-offcanvas>
