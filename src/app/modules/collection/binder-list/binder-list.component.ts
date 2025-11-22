@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import { ApiCollectionBinder } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -16,10 +17,9 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { catchError, EMPTY, switchMap } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ToastService } from '../../../services/toast.service'
-import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'

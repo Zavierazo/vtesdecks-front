@@ -12,9 +12,9 @@ import {
   Validators,
 } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiContact } from '../../models/api-contact'
-import { ApiDataService } from './../../services/api.data.service'
-import { AuthQuery } from './../../state/auth/auth.query'
+import { ApiContact } from '@models'
+import { ApiDataService } from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
 
 @Component({
   selector: 'app-contact',

@@ -1,5 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2, inject } from '@angular/core'
-import { Theme } from '../models/theme'
+import { Theme } from '@models'
 
 @Injectable({
   providedIn: 'root',

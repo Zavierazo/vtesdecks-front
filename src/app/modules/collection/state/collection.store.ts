@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
-import { map, Observable } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import {
+  ApiCollectionBinder,
   ApiCollectionCard,
   FILTER_GROUP_BY,
-} from '../../../models/api-collection-card'
+} from '@models'
+import { map, Observable } from 'rxjs'
 
 export interface CollectionQueryState {
   page: number

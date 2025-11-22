@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core'
-import { EMPTY, finalize, Observable, tap } from 'rxjs'
 import {
   ApiCollectionCard,
+  ApiCollectionPage,
   FILTER_BINDER,
   FILTER_CARD_ID,
   FILTER_SET,
-} from '../../../models/api-collection-card'
-import { ApiCollectionPage } from '../../../models/api-collection-page'
+} from '@models'
+import { EMPTY, finalize, Observable, tap } from 'rxjs'
 import { CollectionQueryState, CollectionStore } from './collection.store'
 
 @Injectable({

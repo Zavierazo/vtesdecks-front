@@ -3,22 +3,21 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
-  ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import {
-  TranslocoService,
   TranslocoDirective,
   TranslocoPipe,
+  TranslocoService,
 } from '@jsverse/transloco'
+import { ApiResponse } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, ToastService } from '@services'
 import { switchMap, take } from 'rxjs'
-import { ApiResponse } from '../../models/api-response'
-import { ApiDataService } from '../../services/api.data.service'
-import { ToastService } from '../../services/toast.service'
 
 @UntilDestroy()
 @Component({

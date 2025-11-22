@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { LIBRARY_TYPE_LIST } from '../../../utils/library-types'
+import { LIBRARY_TYPE_LIST } from '@utils'
 
 @Pipe({ name: 'libraryTypeTransloco' })
 export class LibraryTypeTranslocoPipe implements PipeTransform {

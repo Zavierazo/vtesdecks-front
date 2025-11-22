@@ -13,15 +13,15 @@ import {
   Validators,
 } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiComment } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
+import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { AuthQuery } from '@state/auth/auth.query'
+import { CommentsQuery } from '@state/comments/comments.query'
+import { CommentsService } from '@state/comments/comments.service'
 import { Observable } from 'rxjs'
-import { ApiComment } from '../../models/api-comment'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
-import { AuthQuery } from '../../state/auth/auth.query'
-import { CommentsQuery } from '../../state/comments/comments.query'
-import { CommentsService } from '../../state/comments/comments.service'
-import { MarkdownTextareaComponent } from './../../shared/components/markdown-textarea/markdown-textarea.component'
 import { CommentComponent } from './comment/comment.component'
 
 @UntilDestroy()

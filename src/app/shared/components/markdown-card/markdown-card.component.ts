@@ -1,8 +1,8 @@
 import { AsyncPipe, NgClass } from '@angular/common'
 import { Component, inject, input } from '@angular/core'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
+import { MediaService } from '@services'
 import { environment } from '../../../../environments/environment'
-import { MediaService } from '../../../services/media.service'
 
 @Component({
   selector: 'app-markdown-card',

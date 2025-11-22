@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
+import { ApiComment } from '@models'
 import { map, Observable } from 'rxjs'
-import { ApiComment } from '../../models/api-comment'
 import { CommentsStore } from './comments.store'
 @Injectable({
   providedIn: 'root',

@@ -10,15 +10,15 @@ import {
 import { RouterLink } from '@angular/router'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
+import { ApiDeck } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
+import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
+import { TruncatePipe } from '@shared/pipes/truncate.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { isCryptId } from '@utils'
 import { tap } from 'rxjs'
-import { ApiDeck } from '../../models/api-deck'
-import { MediaService } from '../../services/media.service'
-import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
-import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
-import { CryptQuery } from '../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../state/library/library.query'
-import { isCryptId } from '../../utils/vtes-utils'
 
 @UntilDestroy()
 @Component({

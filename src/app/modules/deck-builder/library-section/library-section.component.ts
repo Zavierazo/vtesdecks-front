@@ -16,6 +16,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard, ApiLibrary, LibrarySortBy } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -26,6 +27,12 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
+import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
+import { LibraryQuery } from '@state/library/library.query'
+import { isRegexSearch, searchIncludes } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
@@ -37,14 +44,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
-import { ApiLibrary, LibrarySortBy } from '../../../models/api-library'
-import { MediaService } from '../../../services/media.service'
-import { ToggleIconComponent } from '../../../shared/components/toggle-icon/toggle-icon.component'
-import { AuthQuery } from '../../../state/auth/auth.query'
-import { AuthService } from '../../../state/auth/auth.service'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { isRegexSearch, searchIncludes } from '../../../utils/vtes-utils'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'

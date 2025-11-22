@@ -1,34 +1,36 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
+import {
+  ApiAiAskRequest,
+  ApiAiAskResponse,
+  ApiCardToday,
+  ApiChangelog,
+  ApiCollectionCardStats,
+  ApiComment,
+  ApiContact,
+  ApiCrypt,
+  ApiDeck,
+  ApiDeckBuilder,
+  ApiDeckLimitedFormat,
+  ApiDecks,
+  ApiHistoricStatistic,
+  ApiHome,
+  ApiKrcgCard,
+  ApiLibrary,
+  ApiProxy,
+  ApiProxyCardOption,
+  ApiResetPassword,
+  ApiResponse,
+  ApiSet,
+  ApiShop,
+  ApiUser,
+  ApiUserCountry,
+  ApiUserNotification,
+  ApiUserSettings,
+  ApiYearStatistic,
+} from '@models'
 import { catchError, Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
-import { ApiAiAskRequest } from '../models/api-ai-ask-request'
-import { ApiAiAskResponse } from '../models/api-ai-ask-response'
-import { ApiChangelog } from '../models/api-changelog'
-import { ApiCollectionCardStats } from '../models/api-collection-card-stats'
-import { ApiComment } from '../models/api-comment'
-import { ApiContact } from '../models/api-contact'
-import { ApiCrypt } from '../models/api-crypt'
-import { ApiDeckLimitedFormat } from '../models/api-deck-limited-format'
-import { ApiDecks } from '../models/api-decks'
-import { ApiHistoricStatistic } from '../models/api-historic-statistic'
-import { ApiHome } from '../models/api-home'
-import { ApiProxy } from '../models/api-proxy'
-import { ApiProxyCardOption } from '../models/api-proxy-card-option'
-import { ApiResetPassword } from '../models/api-reset-password'
-import { ApiResponse } from '../models/api-response'
-import { ApiSet } from '../models/api-set'
-import { ApiShop } from '../models/api-shop'
-import { ApiUser } from '../models/api-user'
-import { ApiUserCountry } from '../models/api-user-country'
-import { ApiUserNotification } from '../models/api-user-notification'
-import { ApiUserSettings } from '../models/api-user-settings'
-import { ApiYearStatistic } from '../models/api-year-statistic'
-import { ApiCardToday } from './../models/api-card-today'
-import { ApiDeck } from './../models/api-deck'
-import { ApiDeckBuilder } from './../models/api-deck-builder'
-import { ApiLibrary } from './../models/api-library'
-import { ApiKrcgCard } from './../models/krcg/api-krcg-card'
 import { SessionStorageService } from './session-storage.service'
 
 @Injectable({

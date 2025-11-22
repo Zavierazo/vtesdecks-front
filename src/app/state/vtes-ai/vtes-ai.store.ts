@@ -1,8 +1,8 @@
-import { Injectable, signal, inject } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiAiMessage } from '@models'
+import { LocalStorageService } from '@services'
 import { map, Observable } from 'rxjs'
-import { ApiAiMessage } from '../../models/api-ai-message'
-import { LocalStorageService } from '../../services/local-storage.service'
 
 export interface AiChat {
   id: number

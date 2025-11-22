@@ -17,6 +17,7 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
+import { ApiCard, ApiDeck } from '@models'
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -28,32 +29,31 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import {
+  ApiDataService,
+  MediaService,
+  PreviousRouteService,
+  ToastService,
+} from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
+import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
+import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { DeckQuery } from '@state/deck/deck.query'
+import { DeckService } from '@state/deck/deck.service'
+import { DecksQuery } from '@state/decks/decks.query'
+import { DecksService } from '@state/decks/decks.service'
+import { getClanIcon, getDisciplineIcon } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiCard } from '../../models/api-card'
-import { ApiDeck } from '../../models/api-deck'
-import { ApiDataService } from '../../services/api.data.service'
-import { MediaService } from '../../services/media.service'
-import { PreviousRouteService } from '../../services/previous-route-service'
-import { ToastService } from '../../services/toast.service'
-import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.component'
-import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
-import { MarkdownTextComponent } from '../../shared/components/markdown-text/markdown-text.component'
-import { ToggleIconComponent } from '../../shared/components/toggle-icon/toggle-icon.component'
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
-import { TranslocoFallbackPipe } from '../../shared/pipes/transloco-fallback'
-import { AuthQuery } from '../../state/auth/auth.query'
-import { AuthService } from '../../state/auth/auth.service'
-import { CryptQuery } from '../../state/crypt/crypt.query'
-import { DeckQuery } from '../../state/deck/deck.query'
-import { DeckService } from '../../state/deck/deck.service'
-import { DecksQuery } from '../../state/decks/decks.query'
-import { DecksService } from '../../state/decks/decks.service'
-import { getClanIcon } from '../../utils/clans'
-import { getDisciplineIcon } from '../../utils/disciplines'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
@@ -63,7 +63,7 @@ import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-gri
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
-import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
+import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -347,7 +347,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onPrint(): void {
-    const modalRef = this.modalService.open(PrintProxyComponent, {
+    const modalRef = this.modalService.open(PrintProxyModalComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,

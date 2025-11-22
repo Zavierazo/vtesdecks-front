@@ -1,10 +1,12 @@
 import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import {
+  ApiCard,
+  ApiCollectionCard,
+  ApiDeckExtra,
+  ApiDeckLimitedFormat,
+} from '@models'
 import { map, Observable } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
-import { ApiCollectionCard } from '../../models/api-collection-card'
-import { ApiDeckExtra } from '../../models/api-deck-extra'
-import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
 
 export interface DeckBuilderState {
   id?: string

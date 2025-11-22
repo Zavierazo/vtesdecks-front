@@ -1,8 +1,7 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
+import { ApiAiAskRequest, ApiAiAskResponse } from '@models'
+import { ApiDataService } from '@services'
 import { catchError, finalize, Observable, of, tap } from 'rxjs'
-import { ApiAiAskRequest } from '../../models/api-ai-ask-request'
-import { ApiAiAskResponse } from '../../models/api-ai-ask-response'
-import { ApiDataService } from './../../services/api.data.service'
 import { VtesAiStore } from './vtes-ai.store'
 @Injectable({
   providedIn: 'root',

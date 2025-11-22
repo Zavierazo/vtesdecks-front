@@ -7,16 +7,15 @@ import {
   OnInit,
   output,
 } from '@angular/core'
+import { ApiCard, ApiCrypt } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { CryptService } from '@state/crypt/crypt.service'
+import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCard } from '../../../models/api-card'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { CryptService } from '../../../state/crypt/crypt.service'
-import drawProbability from '../../../utils/draw-probability'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 

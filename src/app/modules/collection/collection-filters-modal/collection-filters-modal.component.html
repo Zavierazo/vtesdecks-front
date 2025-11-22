@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'collection'">
+<ng-container *transloco="let t; prefix: 'collection'">
   <div class="modal-header">
     <h4 class="modal-title">{{ t('filters') }}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()">
@@ -12,24 +12,21 @@
       <!-- Type Filter -->
       <div class="mb-3">
         <div class="form-label">{{ t('card_type') }}</div>
-        <app-library-type-filter [types]="typeControl.value" (typesChange)="typeControl.setValue($event)">
-        </app-library-type-filter>
+        <app-library-type-filter [types]="typeControl.value" (typesChange)="typeControl.setValue($event)" />
       </div>
 
       <!-- Clan Filter -->
       <div class="mb-3">
         <div class="form-label">{{ t('clans') }}</div>
         <app-clan-filter [clans]="clanControl.value" (clansChange)="clanControl.setValue($event)"
-          [showNotRequired]="true">
-        </app-clan-filter>
+          [showNotRequired]="true" />
       </div>
 
       <!-- Discipline Filter -->
       <div class="mb-3">
         <div class="form-label">{{ t('disciplines') }}</div>
         <app-discipline-filter [disciplines]="disciplineControl.value"
-          (disciplinesChange)="disciplineControl.setValue($event)" [showNotRequired]="true" [showSuperior]="false">
-        </app-discipline-filter>
+          (disciplinesChange)="disciplineControl.setValue($event)" [showNotRequired]="true" [showSuperior]="false" />
       </div>
     </form>
     }
@@ -37,7 +34,7 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="onClear()">
-      {{ t('clear_filters') }}
+      {{ t('reset') }}
     </button>
     <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
       {{ 'shared.cancel' | transloco }}

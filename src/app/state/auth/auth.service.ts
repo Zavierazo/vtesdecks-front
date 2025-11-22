@@ -1,10 +1,8 @@
 import { Injectable, inject } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
+import { ApiResponse, ApiUser, ApiUserSettings } from '@models'
+import { ApiDataService } from '@services'
 import { Observable, catchError, of, switchMap, tap } from 'rxjs'
-import { ApiResponse } from '../../models/api-response'
-import { ApiUser } from '../../models/api-user'
-import { ApiUserSettings } from '../../models/api-user-settings'
-import { ApiDataService } from '../../services/api.data.service'
 import { AuthStore } from './auth.store'
 
 @Injectable({

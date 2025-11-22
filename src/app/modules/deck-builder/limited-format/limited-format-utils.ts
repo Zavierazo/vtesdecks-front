@@ -1,5 +1,5 @@
-import { ApiDeckLimitedFormat } from '../../../models/api-deck-limited-format'
-import { isCryptId, isLibraryId } from '../../../utils/vtes-utils'
+import { ApiDeckLimitedFormat } from '@models'
+import { isCryptId, isLibraryId } from '@utils'
 
 export function toUrl(value: ApiDeckLimitedFormat): string {
   if (!value) {

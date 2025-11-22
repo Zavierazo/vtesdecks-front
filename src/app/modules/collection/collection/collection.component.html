@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'collection'">
+<ng-container *transloco="let t; prefix: 'collection'">
   <h1 class="my-3">{{ t('title') }}</h1>
   <div class="d-flex justify-content-between mb-3">
     <div class="d-flex flex-wrap gap-2">
@@ -61,5 +61,5 @@
     </div>
   </div>
   <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true"
-    [multiSelect]="multiSelect"></app-collection-cards-list>
+    [multiSelect]="multiSelect" />
 </ng-container>

@@ -1,14 +1,14 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   inject,
+  Input,
   output,
 } from '@angular/core'
-import { Discipline, DISCIPLINE_LIST } from '../../../utils/disciplines'
-import { NgClass } from '@angular/common'
 import { TranslocoPipe } from '@jsverse/transloco'
+import { Discipline, DISCIPLINE_LIST } from '@utils'
 
 @Component({
   selector: 'app-discipline-filter',

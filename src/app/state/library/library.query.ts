@@ -1,9 +1,13 @@
 import { inject, Injectable } from '@angular/core'
+import {
+  ApiCard,
+  ApiClanStat,
+  ApiDisciplineStat,
+  ApiLibrary,
+  LibrarySortBy,
+} from '@models'
+import { searchIncludes } from '@utils'
 import { map, Observable } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { ApiDisciplineStat } from './../../models/api-discipline-stat'
-import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
@@ -66,8 +70,8 @@ export class LibraryQuery {
     return this.store.selectEntities(
       limit,
       (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()) ||
-        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()) ||
+        searchIncludes(entity.name, name) ||
+        searchIncludes(entity.i18n?.name, name) ||
         false,
     )
   }

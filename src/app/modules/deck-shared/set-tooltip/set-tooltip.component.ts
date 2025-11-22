@@ -1,12 +1,12 @@
 import { AsyncPipe, NgClass } from '@angular/common'
 import { Component, Input, OnInit, inject } from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
+import { ApiProxyCardOption } from '@models'
 import { UntilDestroy } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { SetQuery } from '@state/set/set.query'
 import { Observable } from 'rxjs'
-import { ApiProxyCardOption } from '../../../models/api-proxy-card-option'
-import { MediaService } from '../../../services/media.service'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { SetQuery } from '../../../state/set/set.query'
 
 @UntilDestroy()
 @Component({

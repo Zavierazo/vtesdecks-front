@@ -202,7 +202,7 @@
     "views": "Vistas",
     "comments": "Comentarios",
     "players_twd": "Jugadores (TWD)",
-    "clear_filters": "Borrar filtros",
+    "reset": "Reiniciar",
     "back_to_top": "Volver arriba",
     "filters": "Filtros",
     "show_filters": "Mostrar filtros",
@@ -223,7 +223,9 @@
     "print": "Imprimir",
     "select_arial": "Seleccionar imagen de proxy",
     "select_all": "Seleccionar Todo",
-    "reset": "Reiniciar"
+    "reset": "Reiniciar",
+    "add_crypt_card_placeholder": "Agregar carta de Cripta por nombre...",
+    "add_library_card_placeholder": "Agregar carta de Biblioteca por nombre..."
   },
   "filters": {
     "crypt_cards": "Cartas de Cripta",
@@ -232,7 +234,7 @@
     "number_of_copies": "número de copias",
     "any": "Cualquier",
     "none": "Ninguno",
-    "clear_filters": "Borrar filtros",
+    "reset": "Reiniciar",
     "bookmarked": "Favoritos",
     "tags": "Etiquetas",
     "tags_placeholder": "Agregar etiquetas...",
@@ -287,7 +289,8 @@
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
-    "unread_notifications": "notificaciones no leídas"
+    "unread_notifications": "notificaciones no leídas",
+    "proxy_generator": "Generador de Proxies"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -416,7 +419,8 @@
     "grid": "Cuadrícula",
     "list": "Lista",
     "cards": "cartas",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "proxy_generator": "Generador de Proxies"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -654,7 +658,8 @@
       "Scarce": "Escaso",
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo",
-      "Strike": "Ataque"
+      "Strike": "Ataque",
+      "Cannot Block": "No puede bloquear"
     }
   },
   "limited_format": {
@@ -797,7 +802,7 @@
     "clan": "Clan",
     "discipline": "Disciplina",
     "filters": "Filtros",
-    "clear_filters": "Limpiar Filtros",
+    "reset": "Reiniciar",
     "active_filters": "Filtros activos",
     "apply_filters": "Aplicar Filtros",
     "card_type": "Tipos",

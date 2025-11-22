@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,14 +12,12 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms'
-import { TranslocoService, TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { LocalStorageService, SessionStorageService } from '@services'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { debounceTime, tap } from 'rxjs'
-import { LocalStorageService } from '../../../services/local-storage.service'
-import { SessionStorageService } from '../../../services/session-storage.service'
-import { NgClass } from '@angular/common'
 
 @UntilDestroy()
 @Component({

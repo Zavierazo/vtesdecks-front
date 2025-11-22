@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core'
+import { ApiCollectionBinder, ApiCollectionPage } from '@models'
 import { finalize, Observable, tap } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
 import { CollectionQueryState } from './collection.store'

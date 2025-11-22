@@ -1,9 +1,9 @@
 import { AsyncPipe } from '@angular/common'
 import { Component, OnInit, inject } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiChangelog } from '@models'
+import { ApiDataService } from '@services'
 import { Observable } from 'rxjs'
-import { ApiChangelog } from '../../models/api-changelog'
-import { ApiDataService } from './../../services/api.data.service'
 
 @Component({
   selector: 'app-changelog',

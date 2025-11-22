@@ -1,29 +1,51 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
   OnInit,
   signal,
-  inject,
 } from '@angular/core'
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
-  TranslocoDirective,
-  TranslocoPipe,
-  TranslocoService,
-} from '@jsverse/transloco'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+  ApiCard,
+  ApiCrypt,
+  ApiLibrary,
+  ApiProxy,
+  ApiProxyCard,
+  ApiProxyCardOption,
+} from '@models'
+import {
+  NgbHighlight,
+  NgbTypeahead,
+  NgbTypeaheadSelectItemEvent,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { catchError, filter, tap, throwError } from 'rxjs'
-import { ApiCard } from '../../../models/api-card'
-import { ApiProxy } from '../../../models/api-proxy'
-import { ApiProxyCard } from '../../../models/api-proxy-card'
-import { ApiProxyCardOption } from '../../../models/api-proxy-card-option'
-import { ToastService } from '../../../services/toast.service'
-import { isCrypt, isLibrary } from '../../../utils/vtes-utils'
+import { ApiDataService, ToastService } from '@services'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import {
+  isCrypt,
+  isCryptId,
+  isLibrary,
+  isLibraryId,
+  sortTrigramSimilarity,
+} from '@utils'
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  finalize,
+  map,
+  Observable,
+  OperatorFunction,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs'
 import { CryptComponent } from '../crypt/crypt.component'
 import { LibraryComponent } from '../library/library.component'
-import { ApiDataService } from './../../../services/api.data.service'
 
 export interface ApiProxyItem {
   cardId: number
@@ -46,19 +68,22 @@ export interface ApiProxyItem {
     TranslocoDirective,
     FormsModule,
     ReactiveFormsModule,
-    TranslocoPipe,
+    NgbHighlight,
+    NgbTypeahead,
     CryptComponent,
     LibraryComponent,
   ],
 })
 export class PrintProxyComponent implements OnInit {
-  modal = inject(NgbActiveModal)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
   private readonly apiDataService = inject(ApiDataService)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
 
   @Input() title?: string
   @Input() cards!: ApiCard[]
+  loading$ = new BehaviorSubject<boolean>(false)
   cardList = signal<ApiProxyItem[]>([])
 
   ngOnInit() {
@@ -152,10 +177,6 @@ export class PrintProxyComponent implements OnInit {
     )
   }
 
-  dismissModal() {
-    this.modal.dismiss()
-  }
-
   addCard(id: number) {
     this.cardList.update((current: ApiProxyItem[]) =>
       current.map((card: ApiProxyItem) =>
@@ -185,6 +206,7 @@ export class PrintProxyComponent implements OnInit {
         return proxyCard
       }),
     }
+    this.loading$.next(true)
     this.apiDataService
       .generateProxy(request)
       .pipe(
@@ -196,6 +218,7 @@ export class PrintProxyComponent implements OnInit {
           )
           return throwError(() => err)
         }),
+        finalize(() => this.loading$.next(false)),
       )
       .subscribe((blob) => {
         const url = window.URL.createObjectURL(blob)
@@ -237,5 +260,70 @@ export class PrintProxyComponent implements OnInit {
           : card,
       ),
     )
+  }
+
+  searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
+    text$: Observable<string>,
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards
+                .map((card) => card)
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
+
+  searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
+    text$: Observable<string>,
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.libraryQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards
+                .map((card) => card)
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
+
+  formatter = (x: { name: string }) => x.name
+
+  selectCardItem(
+    selectItemEvent: NgbTypeaheadSelectItemEvent<ApiCrypt | ApiLibrary>,
+    input: HTMLInputElement,
+  ) {
+    selectItemEvent.preventDefault()
+    input.value = ''
+    const item = selectItemEvent.item
+    if (this.cardList().some((card) => card.cardId === item.id)) {
+      return
+    }
+
+    const proxyCard: ApiProxyItem = {
+      cardId: item.id,
+      isCrypt: isCryptId(item.id),
+      isLibrary: isLibraryId(item.id),
+      amount: 1,
+      setOptions: [],
+    }
+    this.cardList.update((cardList) => [...cardList, proxyCard])
+    this.apiDataService
+      .getProxyOptions(item.id)
+      .pipe(
+        untilDestroyed(this),
+        filter((setOptions) => setOptions.length > 0),
+        tap((setOptions) => this.updateSetOptions(item.id, setOptions)),
+      )
+      .subscribe()
   }
 }

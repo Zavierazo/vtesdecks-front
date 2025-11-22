@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiCardToday, ApiCrypt } from '@models'
 import {
   NgbHighlight,
   NgbRating,
@@ -15,22 +16,20 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   distinctUntilChanged,
+  map,
   Observable,
   OperatorFunction,
   switchMap,
   tap,
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiCardToday } from '../../models/api-card-today'
-import { ApiCrypt } from '../../models/api-crypt'
-import { CryptQuery } from '../../state/crypt/crypt.query'
-import { CryptService } from '../../state/crypt/crypt.service'
-import { ApiDataService } from './../../services/api.data.service'
-import { LocalStorageService } from './../../services/local-storage.service'
 
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
+import { ApiDataService, LocalStorageService } from '@services'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { sortTrigramSimilarity } from '@utils'
 
 @UntilDestroy()
 @Component({
@@ -51,7 +50,6 @@ export class VtesdleComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private localStorageService = inject(LocalStorageService)
   private apiDataService = inject(ApiDataService)
-  private cryptService = inject(CryptService)
   private cryptQuery = inject(CryptQuery)
   private changeDetectorRef = inject(ChangeDetectorRef)
 
@@ -84,7 +82,18 @@ export class VtesdleComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
 
   formatter = (x: { name: string }) => x.name
 

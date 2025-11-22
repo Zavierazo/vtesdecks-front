@@ -6,11 +6,11 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiCollectionCard } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
 import { catchError, tap } from 'rxjs'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
-import { ToastService } from '../../../services/toast.service'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 

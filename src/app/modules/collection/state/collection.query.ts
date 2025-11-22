@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core'
+import { ApiCollectionBinder, ApiCollectionCard } from '@models'
 import { Observable } from 'rxjs'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
 import { CollectionQueryState, CollectionStore } from './collection.store'
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core'
 import { Params } from '@angular/router'
+import { ApiDeck } from '@models'
 import { Observable } from 'rxjs'
-import { ApiDeck } from './../../models/api-deck'
 import { DecksState, DecksStore } from './decks.store'
 @Injectable({
   providedIn: 'root',

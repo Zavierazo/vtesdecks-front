@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { DISCIPLINE_LIST } from '../../../utils/disciplines'
+import { DISCIPLINE_LIST } from '@utils'
 
 @Pipe({ name: 'disciplineTransloco' })
 export class DisciplineTranslocoPipe implements PipeTransform {

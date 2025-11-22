@@ -8,7 +8,7 @@
               [formControl]="nameFormControl">
           </div>
           <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
-            (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions"></app-toggle-icon>
+            (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
           <div ngbDropdown class="col-auto d-inline-block">
             <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
               [disabled]="sortByTrigramSimilarity">
@@ -53,7 +53,7 @@
         @if ((isMobileOrTablet$ | async) === false && (library$ | async)!) {
         <div class="col-4 filters-desktop">
           <div class="filters-desktop-container">
-            <ng-container *ngTemplateOutlet="filter"></ng-container>
+            <ng-container *ngTemplateOutlet="filter" />
           </div>
         </div>
         }
@@ -78,7 +78,7 @@
             @for (library of (library$ | async)! ; track trackByFn($index, library)) {
             <div class="col-6 col-md-auto">
               <app-library-grid-card [card]="getCard(library)"
-                (click)="openLibraryCard(library)"></app-library-grid-card>
+                (click)="openLibraryCard(library)" />
             </div>
             }
           </div>
@@ -86,7 +86,7 @@
           @for (library of (library$ | async)! ; track trackByFn($index, library)) {
           <ul class="col list-group">
             <app-library [card]="getCard(library)" (click)="openLibraryCard(library)"
-              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true"></app-library>
+              [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true" />
           </ul>
           }
           }
@@ -109,7 +109,7 @@
         (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-      <ng-container *ngTemplateOutlet="filter"></ng-container>
+      <ng-container *ngTemplateOutlet="filter" />
     </div>
     <div class="modal-footer">
       <div class="d-grid gap-2 w-100">

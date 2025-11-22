@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { AuthQuery } from '../../state/auth/auth.query'
+import { AuthQuery } from '@state/auth/auth.query'
 
 @Injectable({
   providedIn: 'root',

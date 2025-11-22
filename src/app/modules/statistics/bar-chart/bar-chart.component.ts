@@ -4,8 +4,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core'
+import { ApiStatistic } from '@models'
 import { ChartConfiguration, ChartData } from 'chart.js'
-import { ApiStatistic } from '../../../models/api-statistic'
 import { BaseChartDirective } from 'ng2-charts'
 
 @Component({

@@ -1,0 +1,21 @@
+<ng-container *transloco="let t; prefix: 'print_proxy'">
+  <div class="container py-4 d-flex flex-column justify-content-center align-items-center">
+    <h1>{{ t('title') }}</h1>
+    <div class="my-3 w-100">
+      <app-print-proxy #printProxy [cards]="[]" />
+    </div>
+    <div class="d-flex justify-content-center align-self-center w-100">
+      @if(printProxy.loading$ | async){
+      <div class="align-self-center m-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ t('loading') }}</span>
+        </div>
+      </div>
+      }@else {
+      <button type="button" ngbAutofocus class="btn btn-lg btn-primary m-3" (click)="printProxy.onPrint()">
+        {{ t('print') }}
+      </button>
+      }
+    </div>
+  </div>
+</ng-container>
