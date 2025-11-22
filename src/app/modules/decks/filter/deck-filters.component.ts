@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   NgbHighlight,
   NgbTooltip,
@@ -64,6 +64,7 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
     NgxSliderModule,
     NgbTooltip,
     CardProportionComponent,
+    TranslocoPipe,
     TranslocoFallbackPipe,
   ],
 })

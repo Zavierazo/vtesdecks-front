@@ -5,6 +5,7 @@
     "changes": [
       "Added proxy generator tool to create printable proxies for your decks.",
       "Added trigram similarity search to more card name searches across the site for better results.",
+      "Tags for V5 and 2-Player Format are now displayed as clickable buttons inside filter section. This makes it easier to quickly filter decks by V5 and Two-player format.",
       "Minor fixes and performance improvements."
     ]
   },

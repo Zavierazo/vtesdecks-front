@@ -16,8 +16,7 @@
     </label>
     <div id="tags" class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
-        <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)"
-          [term]="t" />
+        <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)" [term]="t" />
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
@@ -28,6 +27,16 @@
         @for (tag of tags; track tag) {
         <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onDeselectTag(tag)">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+        </span>
+        }
+        @if(!tags.includes('v5')) {
+        <span class="badge rounded-pill text-bg-secondary btn-badge" (click)="onSelectTag('v5')">
+          #{{ 'vtes.tags.v5' | transloco }}
+        </span>
+        }
+        @if(!tags.includes('2player')) {
+        <span class="badge rounded-pill text-bg-secondary btn-badge" (click)="onSelectTag('2player')">
+          #{{ 'vtes.tags.2player' | transloco }}
         </span>
         }
       </div>
@@ -124,28 +133,23 @@
     <div class="row g-2 mb-2">
       <div class="col-6">
         <app-card-proportion controlName="master" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('master')"
-          (valueChanges)="onProportionChange('master',$event)" />
+          [value]="getProportionValue('master')" (valueChanges)="onProportionChange('master',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="action" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('action')"
-          (valueChanges)="onProportionChange('action',$event)" />
+          [value]="getProportionValue('action')" (valueChanges)="onProportionChange('action',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="political" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('political')"
-          (valueChanges)="onProportionChange('political',$event)" />
+          [value]="getProportionValue('political')" (valueChanges)="onProportionChange('political',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="retainer" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('retainer')"
-          (valueChanges)="onProportionChange('retainer',$event)" />
+          [value]="getProportionValue('retainer')" (valueChanges)="onProportionChange('retainer',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="equipment" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('equipment')"
-          (valueChanges)="onProportionChange('equipment',$event)" />
+          [value]="getProportionValue('equipment')" (valueChanges)="onProportionChange('equipment',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="ally" [absolute]="absoluteProportion" [custom]="customProportion"
@@ -153,23 +157,19 @@
       </div>
       <div class="col-6">
         <app-card-proportion controlName="modifier" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('modifier')"
-          (valueChanges)="onProportionChange('modifier',$event)" />
+          [value]="getProportionValue('modifier')" (valueChanges)="onProportionChange('modifier',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="combat" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('combat')"
-          (valueChanges)="onProportionChange('combat',$event)" />
+          [value]="getProportionValue('combat')" (valueChanges)="onProportionChange('combat',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="reaction" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('reaction')"
-          (valueChanges)="onProportionChange('reaction',$event)" />
+          [value]="getProportionValue('reaction')" (valueChanges)="onProportionChange('reaction',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="event" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('event')"
-          (valueChanges)="onProportionChange('event',$event)" />
+          [value]="getProportionValue('event')" (valueChanges)="onProportionChange('event',$event)" />
       </div>
     </div>
     <div class="form-label text-primary fw-bold">{{ t('other_filters') }}</div>
