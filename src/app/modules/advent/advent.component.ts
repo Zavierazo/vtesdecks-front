@@ -5,6 +5,7 @@ import { ApiDataService } from '@services'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { AuthQuery } from '@state/auth/auth.query'
+import { isChristmas } from '@utils'
 import { ADVENT_DATA } from './advent.data'
 
 interface AdventDay {
@@ -35,6 +36,13 @@ export class AdventComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.adventData) {
+      // Add christmas effect if isn't christmas time
+      if (!isChristmas()) {
+        const node = document.createElement('script')
+        node.src = 'https://app.embed.im/snow.js'
+        node.defer = true
+        document.getElementsByTagName('head')[0].appendChild(node)
+      }
       this.apiDataService
         .getDecks(0, 100, {
           type: 'USER',
