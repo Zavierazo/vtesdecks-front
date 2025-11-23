@@ -186,6 +186,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'advent',
+    loadChildren: () =>
+      import('./app/modules/advent/advent.routes').then((m) => m.ADVENT_ROUTES),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('@shared/components/page-not-found/page-not-found.component').then(

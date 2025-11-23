@@ -1,0 +1,92 @@
+<main>
+  <div class="advent__header text-center my-5">
+    <h1 class="advent__title display-3 fw-bold text-danger mb-3 position-relative">
+      <span class="advent__snow">❄️</span>
+      {{ adventData.theme}}
+      <span class="advent__bell">❄️</span>
+    </h1>
+    <p class="advent__description text-muted fs-5 mx-auto" style="max-width: 600px;"
+      [innerHTML]="adventData.description">
+    </p>
+    @if(adventData.rules && adventData.rules.length > 0) {
+    <div class="text-center mt-4">
+      <h6 class="text-muted mb-2"><i class="fas fa-info-circle"></i> Event Rules</h6>
+      <ul class="text-muted small list-unstyled">
+        @for(rule of adventData.rules; track $index) {
+        <li>• {{ rule }}</li>
+        }
+      </ul>
+    </div>
+    }
+    @if(isAdventFinished && !isShowingPastYear) {
+    <div class="alert alert-success mx-auto mt-4" style="max-width: 600px;" role="alert">
+      <h4 class="alert-heading"><i class="fas fa-gift"></i> Advent Finished!</h4>
+      <p class="mb-0">🎄 The {{ adventData.year }} Christmas Advent has concluded! Thank you for participating in all 24
+        days of VTES deckbuilding challenges. We hope you enjoyed the festive experience!</p>
+    </div>
+    }
+    @if(isShowingPastYear) {
+    <div class="alert alert-info mx-auto mt-4" style="max-width: 600px;" role="alert">
+      <h4 class="alert-heading"><i class="fas fa-history"></i> Past Advent</h4>
+      <p class="mb-0">📅 You're viewing the {{ adventData.year }} Christmas Advent. All challenges are available to
+        explore!</p>
+
+    </div>
+    }
+    <a class="btn btn-primary btn-sm mt-2" [routerLink]="['/decks']" [queryParams]="{ tags: 'advent'+adventData.year }"
+      role="button">
+      <i class="bi bi-calendar-event"></i> View Advent {{ adventData.year }} Decks
+    </a>
+  </div>
+
+  @for(day of getAvailableDays(); track day.dayNumber) {
+  <article class="present" [class.present--available]="day.isAvailable" [class.present--future]="!day.isAvailable"
+    [class.present--completed]="day.isAvailable && day.isCompleted">
+    <div class="present__pane" [attr.data-day]="day.dayNumber">
+      <h2 class="present__date">
+        {{ day.dayNumber }}
+      </h2>
+    </div>
+    <div class="present__content">
+      @if(day.isAvailable && day.data) {
+      <div class="present__challenge">
+        @if(day.isCompleted) {
+        <div class="badge text-bg-success mb-2 d-none d-md-block">
+          <i class="fas fa-trophy"></i> Completed!
+        </div>
+        }
+        <h3 class="present__challenge-title">{{ day.data.title }}</h3>
+        <p class="present__challenge-content" [innerHTML]="day.data.content"></p>
+        @if(!isAdventFinished) {
+        <div class="present__challenge-action mt-3">
+          @if(day.isCompleted && day.deckId) {
+          <a class="btn btn-success btn-sm" [routerLink]="['/deck', day.deckId]" role="button" target="_blank"
+            rel="noopener noreferrer">
+            <i class="bi bi-eye"></i> View Deck
+          </a>
+          } @else {
+          <button *isLogged="true" class="btn btn-primary btn-sm"
+            (click)="onOpenInBuilder(adventData.year, day.dayNumber)" role="button">
+            <i class="bi bi-hammer"></i> Build
+          </button>
+          <button *isLogged="false" class="btn btn-primary btn-sm" (click)="onPromptLogin()">
+            <i class="bi bi-hammer"></i> Build
+          </button>
+          }
+        </div>
+        }@else {
+        <div class="present__challenge-action mt-3">
+          @if(day.isCompleted && day.deckId) {
+          <a class="btn btn-success btn-sm" [routerLink]="['/deck', day.deckId]" role="button" target="_blank"
+            rel="noopener noreferrer">
+            <i class="bi bi-eye"></i> View Deck
+          </a>
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </article>
+  }
+</main>

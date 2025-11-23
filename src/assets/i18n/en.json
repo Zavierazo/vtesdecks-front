@@ -152,7 +152,8 @@
     "file": "File",
     "limited_format": "Limited Format",
     "deck_copied": "Deck copied to clipboard",
-    "collection_tracker": "Collection Tracker"
+    "collection_tracker": "Collection Tracker",
+    "validation_errors": "{{errors}}"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",

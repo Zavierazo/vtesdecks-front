@@ -331,4 +331,8 @@ export class DeckBuilderQuery {
     if (card.number < number) return 'PARTIAL'
     return 'FULL'
   }
+
+  getValidation(): ((query: DeckBuilderQuery) => string[]) | undefined {
+    return this.store.getValue().validation
+  }
 }

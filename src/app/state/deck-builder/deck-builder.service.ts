@@ -1,3 +1,4 @@
+import { ADVENT_DATA, AdventData } from '@advent/advent.data'
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
@@ -49,6 +50,12 @@ export class DeckBuilderService {
             extra: deck.extra,
             saved: true,
           }))
+          if (deck.extra?.advent) {
+            this.initAdventRules(
+              deck.extra.advent.year.toString(),
+              deck.extra.advent.day.toString(),
+            )
+          }
           this.validateDeck()
         }),
         switchMap((deck) =>
@@ -74,6 +81,34 @@ export class DeckBuilderService {
     }
 
     return of({})
+  }
+
+  initAdventRules(advent: string, day: string): void {
+    const adventItem = ADVENT_DATA.find(
+      (item: AdventData) => item.year.toString() === advent,
+    )
+    const adventDayItem = adventItem
+      ? Object.entries(adventItem.days).find(([key]) => key === day)?.[1]
+      : undefined
+    if (adventItem && adventDayItem) {
+      const adventContent = adventDayItem.content.replace(/<\/?strong>/g, '**')
+      const adventDescription = `**Advent ${adventItem.year} - Day ${day}**\n\n**Name**: ${adventDayItem.title}\n\n${adventContent}`
+      this.store.update((state) => ({
+        ...state,
+        name: state.name ? state.name : `Advent${adventItem.year}: `,
+        description: state.description ? state.description : adventDescription,
+        extra: {
+          advent: {
+            year: adventItem.year,
+            day: parseInt(day),
+            title: adventDayItem.title,
+            content: adventDayItem.content,
+          },
+        },
+        validation: adventItem.validation,
+        customValidation: adventDayItem.validation,
+      }))
+    }
   }
 
   clone(): void {
@@ -277,7 +312,6 @@ export class DeckBuilderService {
         isValid = false
       }
     }
-    this.store.setCryptErrors(cryptErrors)
 
     const libraryErrors = []
     const librarySize = this.query.getLibrarySize()
@@ -328,6 +362,24 @@ export class DeckBuilderService {
         isValid = false
       }
     }
+
+    const customValidation = this.query.getValue().customValidation
+    if (customValidation) {
+      const {
+        cryptErrors: customCryptErrors,
+        libraryErrors: customLibraryErrors,
+      } = customValidation(this.query)
+      if (customCryptErrors && customCryptErrors.length > 0) {
+        cryptErrors.push(...customCryptErrors)
+        isValid = false
+      }
+      if (customLibraryErrors && customLibraryErrors.length > 0) {
+        libraryErrors.push(...customLibraryErrors)
+        isValid = false
+      }
+    }
+
+    this.store.setCryptErrors(cryptErrors)
     this.store.setLibraryErrors(libraryErrors)
 
     return isValid

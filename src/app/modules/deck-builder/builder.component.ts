@@ -152,7 +152,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   initDeck(): Observable<ApiDeckBuilder> {
     const id = this.route.snapshot.queryParams['id']
     const cloneDeck = history.state?.deck
-
     return this.deckBuilderService
       .init(id, cloneDeck)
       .pipe(tap(() => this.onDeckLoaded()))
@@ -177,6 +176,20 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       return
     }
     this.deckBuilderService.validateDeck()
+    const validation = this.deckBuilderQuery.getValidation()
+    if (validation) {
+      const errors = validation(this.deckBuilderQuery)
+      if (errors.length > 0) {
+        this.toastService.show(
+          this.translocoService.translate('deck_builder.validation_errors', {
+            errors: errors.join(', '),
+          }),
+          { classname: 'bg-danger text-light', delay: 10000 },
+        )
+        return
+      }
+    }
+
     if (
       this.deckBuilderQuery.getPublished() &&
       !this.deckBuilderQuery.isValidDeck()
@@ -452,6 +465,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   private onDeckLoaded() {
+    const { advent, day } = history.state
+    if (advent && day) {
+      this.deckBuilderService.initAdventRules(advent.toString(), day.toString())
+      this.deckBuilderService.validateDeck()
+    }
     this.form
       .get('name')
       ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })
@@ -464,6 +482,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     const limitedFormat = this.route.snapshot.queryParams['limitedFormat']
     if (limitedFormat) {
       this.deckBuilderService.setLimitedFormat(fromUrl(limitedFormat))
+      this.deckBuilderService.validateDeck()
     }
     this.changeDetector.markForCheck()
   }

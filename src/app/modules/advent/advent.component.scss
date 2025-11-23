@@ -1,0 +1,328 @@
+$perspective: 850px;
+$present-dimension: 15em;
+$present-dimension-mobile: 10rem;
+$date-dimension: calc($present-dimension / 5);
+$date-dimension-mobile: calc($present-dimension-mobile / 5);
+$bauble-dimension: calc($present-dimension / 4.5);
+$bauble-dimension-mobile: calc($present-dimension-mobile / 4.5);
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-20deg);
+  }
+  40% {
+    transform: rotate(20deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: MediumSeaGreen;
+  display: flex;
+  align-items: center;
+}
+main {
+  text-align: center;
+  margin: 0 auto;
+  max-width: $present-dimension * 4;
+
+  @media (max-width: 767px) {
+    max-width: calc(
+      $present-dimension-mobile * 2 + 3rem
+    ); // 2 columns on mobile with extra space
+    padding: 0 0.5rem; // Add horizontal padding
+    width: 100%;
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    max-width: $present-dimension * 3; // 3 columns on tablet
+  }
+
+  @media (min-width: 1200px) {
+    max-width: $present-dimension * 4; // 6 columns on desktop
+  }
+
+  @media (min-width: 1400px) {
+    max-width: $present-dimension * 8; // 8 columns on large desktop
+  }
+}
+.present {
+  position: relative;
+  display: inline-block;
+  width: $present-dimension;
+  height: $present-dimension;
+  margin: 0.5em;
+  perspective: $perspective;
+  z-index: 666;
+
+  @media (max-width: 767px) {
+    width: $present-dimension-mobile;
+    height: $present-dimension-mobile;
+    margin: 0.25rem;
+  }
+}
+.present__pane,
+.present__content {
+  width: inherit;
+  height: inherit;
+}
+.present__pane {
+  position: relative;
+  background: linear-gradient(135deg, #ff7961 50%, Tomato 50%);
+  transform-style: preserve-3d;
+  transform-origin: 0;
+  perspective: $perspective;
+  text-align: center;
+  box-shadow: 0 0 40px 0 rgba(black, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.present__date {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: $date-dimension;
+  height: $date-dimension;
+  margin: 0;
+  font-size: 2em;
+  line-height: $date-dimension;
+  background: #26a69a;
+  color: white;
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px 5px rgba(black, 0.15);
+
+  @media (max-width: 767px) {
+    width: $date-dimension-mobile;
+    height: $date-dimension-mobile;
+    line-height: $date-dimension-mobile;
+    font-size: 1.5em;
+  }
+}
+// hover styles
+.present:hover {
+  z-index: 999;
+}
+.present:hover .present__pane {
+  background: linear-gradient(135deg, #ff8a65 50%, #ff7961 50%);
+  transform: rotateY(-97deg);
+  perspective-origin: 0;
+  transition: all 0.25s ease-in;
+}
+.present:hover .present__date {
+  backface-visibility: hidden; // hide date
+}
+.present:hover .present__bauble {
+  display: inline-block;
+  transform-origin: 50% 0;
+  animation: shake 0.7s;
+}
+.present__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: SlateBlue;
+  box-shadow:
+    0 0 40px 0 rgba(black, 0.15),
+    inset 0 0 30px 20px rgba(black, 0.15);
+  z-index: -1;
+}
+.present__bauble {
+  position: relative;
+  width: $bauble-dimension;
+  height: $bauble-dimension;
+  background: Violet;
+  margin: 25% auto 0 auto;
+  font-size: $bauble-dimension;
+  line-height: $bauble-dimension;
+  border-radius: 50%;
+
+  @media (max-width: 767px) {
+    width: $bauble-dimension-mobile;
+    height: $bauble-dimension-mobile;
+    font-size: $bauble-dimension-mobile;
+    line-height: $bauble-dimension-mobile;
+  }
+}
+// rectangle that has pin
+.present__bauble::after {
+  content: '';
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  width: 30%;
+  height: 10%;
+  margin-left: -15%;
+  background: inherit;
+}
+// pin
+.present__bauble::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: 50%;
+  width: 12%;
+  height: 20%;
+  margin-left: -12%;
+  border: 0.35rem solid Violet;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+// Christmas header styles
+.advent__header {
+  margin-bottom: 3rem;
+}
+
+.advent__title {
+  color: #dc3545 !important;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.8);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+  font-family: 'Georgia', serif;
+  letter-spacing: 2px;
+}
+
+.advent__snow {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  font-size: 2rem;
+  animation: snowFloat 3s ease-in-out infinite;
+}
+
+.advent__bell {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  font-size: 2rem;
+  animation: bellRing 2s ease-in-out infinite;
+}
+
+.advent__description {
+  font-family: 'Georgia', serif;
+  line-height: 1.7;
+  font-style: italic;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    text-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(255, 255, 255, 1),
+      0 0 40px rgba(255, 215, 0, 0.6);
+  }
+}
+
+@keyframes snowFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(10deg);
+  }
+}
+
+@keyframes bellRing {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+}
+
+// Challenge content styles
+.present__challenge {
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.present__challenge-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #ffd700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.present__challenge-content {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+// Future days styling
+.present--future {
+  opacity: 0.5;
+  pointer-events: none;
+
+  .present__pane {
+    background: linear-gradient(135deg, #666 50%, #555 50%);
+  }
+
+  &:hover .present__pane {
+    background: linear-gradient(135deg, #666 50%, #555 50%);
+    transform: none;
+  }
+}
+
+// Available days with enhanced styling
+.present--available {
+  .present__pane {
+    background: linear-gradient(135deg, #2d9f2d 50%, #228b22 50%);
+  }
+
+  &:hover .present__pane {
+    background: linear-gradient(135deg, #3ab83a 50%, #2d9f2d 50%);
+  }
+}
+
+// Completed days styling
+.present--completed {
+  .present__pane {
+    background: linear-gradient(135deg, #ffd700 50%, #ffb347 50%);
+    box-shadow: 0 0 40px 0 rgba(black, 0.15);
+  }
+
+  &:hover .present__pane {
+    background: linear-gradient(135deg, #ffe55c 50%, #ffd700 50%);
+  }
+
+  .present__date {
+    background: #ff8c00;
+  }
+}

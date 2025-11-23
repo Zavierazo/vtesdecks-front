@@ -7,6 +7,7 @@ import {
   ApiDeckLimitedFormat,
 } from '@models'
 import { map, Observable } from 'rxjs'
+import { DeckBuilderQuery } from './deck-builder.query'
 
 export interface DeckBuilderState {
   id?: string
@@ -20,6 +21,11 @@ export interface DeckBuilderState {
   libraryErrors: string[]
   saved: boolean
   collectionCards?: ApiCollectionCard[]
+  validation?: (query: DeckBuilderQuery) => string[]
+  customValidation?: (query: DeckBuilderQuery) => {
+    cryptErrors?: string[]
+    libraryErrors?: string[]
+  }
 }
 
 const initialState: DeckBuilderState = {

@@ -50,6 +50,9 @@
       ],
       "@state/*": [
         "src/app/state/*"
+      ],
+      "@advent/*": [
+        "src/app/modules/advent/*"
       ]
     },
     "useDefineForClassFields": false
