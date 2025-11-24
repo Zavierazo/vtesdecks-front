@@ -1,41 +1,40 @@
-<main>
-  <div class="advent__header text-center my-5">
-    <h1 class="advent__title display-3 fw-bold text-danger mb-3 position-relative">
+<main *transloco="let t; prefix: 'advent'">
+  <div class="advent__header text-center mb-3 px-3">
+    <div class="advent__header-decoration mb-3">
+      <span class="advent__ornament">🎄</span>
+      <span class="advent__ornament advent__ornament--delayed">⭐</span>
+      <span class="advent__ornament advent__ornament--delayed-2">🎄</span>
+    </div>
+    <h1 class="advent__title display-3 fw-bold mb-2 position-relative">
       <span class="advent__snow">❄️</span>
-      {{ adventData.theme}}
+      {{ adventData.theme }}
       <span class="advent__bell">❄️</span>
     </h1>
-    <p class="advent__description text-muted fs-5 mx-auto" style="max-width: 600px;"
-      [innerHTML]="adventData.description">
+    <p class="advent__description fs-5 mx-auto mb-2" [innerHTML]="adventData.description">
     </p>
-    @if(adventData.rules && adventData.rules.length > 0) {
-    <div class="text-center mt-4">
-      <h6 class="text-muted mb-2"><i class="fas fa-info-circle"></i> Event Rules</h6>
-      <ul class="text-muted small list-unstyled">
+    @if(!isAdventFinished && adventData.rules && adventData.rules.length > 0) {
+    <div class="advent__rules mx-auto mt-2">
+      <h6 class="advent__rules-title mb-1">
+        <i class="fas fa-scroll"></i> {{ t('rules') }}
+      </h6>
+      <ul class="advent__rules-list">
         @for(rule of adventData.rules; track $index) {
-        <li>• {{ rule }}</li>
+        <li><i class="bi bi-star-fill text-warning"></i> {{ rule }}</li>
         }
       </ul>
     </div>
     }
-    @if(isAdventFinished && !isShowingPastYear) {
-    <div class="alert alert-success mx-auto mt-4" style="max-width: 600px;" role="alert">
-      <h4 class="alert-heading"><i class="fas fa-gift"></i> Advent Finished!</h4>
-      <p class="mb-0">🎄 The {{ adventData.year }} Christmas Advent has concluded! Thank you for participating in all 24
-        days of VTES deckbuilding challenges. We hope you enjoyed the festive experience!</p>
+    @if(isAdventFinished) {
+    <div class="advent__alert advent__alert--info mx-auto mt-4" role="alert">
+      <h4 class="advent__alert-title">
+        {{ t('advent_finished_title', { year: adventData.year })}}
+      </h4>
+      <p class="mb-0">📅 {{ t('advent_finished_subtitle') }}</p>
     </div>
     }
-    @if(isShowingPastYear) {
-    <div class="alert alert-info mx-auto mt-4" style="max-width: 600px;" role="alert">
-      <h4 class="alert-heading"><i class="fas fa-history"></i> Past Advent</h4>
-      <p class="mb-0">📅 You're viewing the {{ adventData.year }} Christmas Advent. All challenges are available to
-        explore!</p>
-
-    </div>
-    }
-    <a class="btn btn-primary btn-sm mt-2" [routerLink]="['/decks']" [queryParams]="{ tags: 'advent'+adventData.year }"
-      role="button">
-      <i class="bi bi-calendar-event"></i> View Advent {{ adventData.year }} Decks
+    <a class="advent__view-decks-btn mt-3" [routerLink]="['/decks']"
+      [queryParams]="{ tags: 'advent'+adventData.year, order: 'POPULAR' }" role="button">
+      <i class="bi bi-calendar-event"></i> {{ t('view_all_decks', { year: adventData.year }) }}
     </a>
   </div>
 
@@ -44,42 +43,45 @@
     [class.present--completed]="day.isAvailable && day.isCompleted">
     <div class="present__pane" [attr.data-day]="day.dayNumber">
       <h2 class="present__date">
+        @if(day.isAvailable && day.isCompleted) {
+        🎁
+        } @else {
         {{ day.dayNumber }}
+        }
       </h2>
     </div>
     <div class="present__content">
       @if(day.isAvailable && day.data) {
       <div class="present__challenge">
-        @if(day.isCompleted) {
-        <div class="badge text-bg-success mb-2 d-none d-md-block">
-          <i class="fas fa-trophy"></i> Completed!
+        <div class="present__challenge-header">
+          <h3 class="present__challenge-title">{{ day.data.title }}</h3>
         </div>
-        }
-        <h3 class="present__challenge-title">{{ day.data.title }}</h3>
-        <p class="present__challenge-content" [innerHTML]="day.data.content"></p>
+        <div class="present__challenge-body">
+          <p class="present__challenge-content" [innerHTML]="day.data.content"></p>
+        </div>
         @if(!isAdventFinished) {
-        <div class="present__challenge-action mt-3">
+        <div class="present__challenge-action">
           @if(day.isCompleted && day.deckId) {
-          <a class="btn btn-success btn-sm" [routerLink]="['/deck', day.deckId]" role="button" target="_blank"
-            rel="noopener noreferrer">
-            <i class="bi bi-eye"></i> View Deck
+          <a class="present__btn present__btn--success" [routerLink]="['/deck', day.deckId]" role="button"
+            target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-check-circle"></i> {{ t('day_completed', { day: day.dayNumber }) }}
           </a>
           } @else {
-          <button *isLogged="true" class="btn btn-primary btn-sm"
+          <button *isLogged="true" class="present__btn present__btn--primary"
             (click)="onOpenInBuilder(adventData.year, day.dayNumber)" role="button">
-            <i class="bi bi-hammer"></i> Build
+            <i class="bi bi-hammer"></i> {{ t('day_start') }}
           </button>
-          <button *isLogged="false" class="btn btn-primary btn-sm" (click)="onPromptLogin()">
-            <i class="bi bi-hammer"></i> Build
+          <button *isLogged="false" class="present__btn present__btn--primary" (click)="onPromptLogin()">
+            <i class="bi bi-box-arrow-in-right"></i> {{ t('day_login') }}
           </button>
           }
         </div>
         }@else {
-        <div class="present__challenge-action mt-3">
+        <div class="present__challenge-action">
           @if(day.isCompleted && day.deckId) {
-          <a class="btn btn-success btn-sm" [routerLink]="['/deck', day.deckId]" role="button" target="_blank"
-            rel="noopener noreferrer">
-            <i class="bi bi-eye"></i> View Deck
+          <a class="present__btn present__btn--success" [routerLink]="['/deck', day.deckId]" role="button"
+            target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-eye"></i> {{ t('day_completed', { day: day.dayNumber }) }}
           </a>
           }
         </div>

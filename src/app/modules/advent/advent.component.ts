@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
+import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { AuthQuery } from '@state/auth/auth.query'
-import { isChristmas } from '@utils'
+import { filter, switchMap } from 'rxjs'
 import { ADVENT_DATA } from './advent.data'
 
 interface AdventDay {
@@ -16,12 +18,13 @@ interface AdventDay {
   data?: { title: string; content: string }
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-advent',
   templateUrl: './advent.component.html',
   styleUrls: ['./advent.component.scss'],
   standalone: true,
-  imports: [RouterLink, IsLoggedDirective],
+  imports: [RouterLink, IsLoggedDirective, TranslocoDirective],
 })
 export class AdventComponent implements OnInit {
   apiDataService = inject(ApiDataService)
@@ -36,18 +39,18 @@ export class AdventComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.adventData) {
-      // Add christmas effect if isn't christmas time
-      if (!isChristmas()) {
-        const node = document.createElement('script')
-        node.src = 'https://app.embed.im/snow.js'
-        node.defer = true
-        document.getElementsByTagName('head')[0].appendChild(node)
-      }
-      this.apiDataService
-        .getDecks(0, 100, {
-          type: 'USER',
-          tags: 'advent' + this.adventData.year,
-        })
+      this.authQuery
+        .selectAuthenticated()
+        .pipe(
+          untilDestroyed(this),
+          filter((isAuth) => isAuth),
+          switchMap(() =>
+            this.apiDataService.getDecks(0, 100, {
+              type: 'USER',
+              tags: 'advent' + this.adventData.year,
+            }),
+          ),
+        )
         .subscribe((response) => {
           // Track completed days based on user's advent decks
           response.decks?.forEach((deck) => {
@@ -85,10 +88,6 @@ export class AdventComponent implements OnInit {
       return false
     }
     return this.today > this.adventData.endDate
-  }
-
-  get isShowingPastYear(): boolean {
-    return this.adventData ? this.adventData.year < this.currentYear : false
   }
 
   getAvailableDays(): AdventDay[] {

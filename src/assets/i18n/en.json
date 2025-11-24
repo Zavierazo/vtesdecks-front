@@ -810,5 +810,16 @@
     "card_type": "Types",
     "clans": "Clans",
     "disciplines": "Disciplines"
+  },
+  "advent": {
+    "home_title": "VTES Advent Calendar {{ year }}",
+    "home_subtitle": "24 Days of Deck Building Challenges - Click here to Join!",
+    "rules": "Rules",
+    "advent_finished_title": "The VTES Advent Calendar {{ year }} has ended!",
+    "advent_finished_subtitle": "Thank you to everyone who participated! See you next year for more deck-building fun! All challenges are available to explore!",
+    "view_all_decks": "View All Advent {{ year }} Decks",
+    "day_completed": "Day {{ day }} - View Deck",
+    "day_start": "Start Challenge",
+    "day_login": "Login to Start"
   }
 }

@@ -203,3 +203,118 @@
   background-color: #f96854;
   color: white;
 }
+
+// Advent Calendar Banner (integrated in hero section)
+.advent-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    #c41e3a 0%,
+    #165b33 25%,
+    #c41e3a 50%,
+    #165b33 75%,
+    #c41e3a 100%
+  );
+  background-size: 200% 200%;
+  animation: festiveGradient 8s ease infinite;
+  border-radius: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 20px rgba(196, 30, 58, 0.4),
+    0 0 30px rgba(22, 91, 51, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow:
+      0 6px 30px rgba(196, 30, 58, 0.5),
+      0 0 40px rgba(22, 91, 51, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.advent-banner-icon {
+  font-size: 3rem;
+  animation: bounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.advent-banner-text {
+  flex: 1;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.advent-banner-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+.advent-banner-subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.95;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: white;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes festiveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes stripeScroll {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  100% {
+    transform: translate(50px, 50px) rotate(45deg);
+  }
+}

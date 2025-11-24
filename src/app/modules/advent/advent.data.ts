@@ -25,14 +25,14 @@ export const ADVENT_DATA: AdventData[] = [
     year: 2025,
     theme: 'VTES Advent 2025',
     description:
-      '<strong>24 days. 24 deckbuilding challenges. Endless creativity.</strong><br> From clan-restricted builds to meme decks, combat nightmares and discipline-themed experiments, every day brings a fresh way to explore the VTES through deck design.',
+      '<strong>24 days. 24 deck-building challenges. Endless creativity.</strong><br> From clan-restricted builds to meme decks, combat nightmares and discipline-themed experiments, every day brings a fresh way to explore the VTES through deck design.',
     rules: [
       "Deck name must start with 'Advent2025:'",
       'Deck must be public to participate',
       'Deck must follow all standard VTES Deck Building rules',
     ],
     startDate: new Date('2025-12-01'),
-    endDate: new Date('2026-01-01'),
+    endDate: new Date('2025-12-31'),
     validation: (query: DeckBuilderQuery) => {
       const name = query.getName()
       if (!name) {

@@ -17,6 +17,7 @@ import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { AuthQuery } from '@state/auth/auth.query'
+import { getCurrentAdventData } from '@utils'
 import { switchMap, tap } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { HomeSectionComponent } from './home-section/home-section.component'
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
   deckHome?: ApiHome
   changelogAlert?: ApiChangelog
   showChangelogAlert = false
+  currentAdvent = getCurrentAdventData()
 
   ngOnInit() {
     // Fetch changelog for alert
