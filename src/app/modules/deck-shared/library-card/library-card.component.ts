@@ -24,7 +24,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { Shop, getShop } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { EMPTY, Observable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
@@ -157,13 +157,9 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   }
 
   private fetchShops(): void {
-    if (this.cardList[this.index].printOnDemand) {
-      this.shops$ = this.apiDataService
-        .getCardShops(this.cardList[this.index].id)
-        .pipe(untilDestroyed(this))
-    } else {
-      this.shops$ = EMPTY
-    }
+    this.shops$ = this.apiDataService
+      .getCardShops(this.cardList[this.index].id)
+      .pipe(untilDestroyed(this))
   }
 
   private fetchRulings(): void {
