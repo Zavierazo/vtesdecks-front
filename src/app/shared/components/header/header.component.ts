@@ -68,12 +68,15 @@ export class HeaderComponent implements OnInit {
 
   notificationUnreadCount$!: Observable<number | undefined>
 
+  isSupporter$!: Observable<boolean>
+
   isMobile$ = this.mediaService.observeMobileOrTablet()
 
   ngOnInit(): void {
     this.displayName$ = this.authQuery.selectDisplayName()
     this.profileImage$ = this.authQuery.selectProfileImage()
     this.notificationUnreadCount$ = this.authQuery.selectNotificationCount()
+    this.isSupporter$ = this.authQuery.selectSupporter()
   }
 
   openLoginModal() {

@@ -7,6 +7,9 @@
         <span class="me-2" [ngClass]="{ 'fw-bold' : comment.createdByCurrentUser}">
           {{ comment.fullName }}
         </span>
+        @if (comment.createdBySupporter) {
+        <i class="bi bi-patch-check-fill text-gold" title="Supporter"></i>
+        }
         @if(comment.createdByAdmin){
         <small class="badge bg-primary ms-2">
           {{ t('admin') }}
