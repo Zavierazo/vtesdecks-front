@@ -35,10 +35,9 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         .set('Pragma', 'no-cache')
         .set('Expires', '0'),
       // Add locale param to all api requests
-      params: request.params.set(
-        'locale',
-        this.translocoService.getActiveLang(),
-      ),
+      params: request.params
+        .set('locale', this.translocoService.getActiveLang())
+        .set('version', environment.appVersion),
     })
     return next
       .handle(httpRequest)

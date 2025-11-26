@@ -21,7 +21,6 @@ import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
-import { Shop, getShop } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
@@ -150,10 +149,6 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     this.fetchPreconstructedDecks()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
-  }
-
-  getShopInfo(code: string): Shop | undefined {
-    return getShop(code)
   }
 
   private fetchShops(): void {
