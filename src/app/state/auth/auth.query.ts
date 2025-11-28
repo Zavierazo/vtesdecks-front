@@ -56,7 +56,7 @@ export class AuthQuery {
   }
 
   serverDate(): Signal<Date | undefined> {
-    return this.store.selectSignal((state) => state.serverDate)
+    return this.store.selectServerDate()
   }
 
   isAuthenticated(): boolean {
@@ -89,10 +89,6 @@ export class AuthQuery {
 
   getDeckDisplayMode(): 'list' | 'grid' {
     return this.store.getValue().deckDisplayMode
-  }
-
-  getServerDate(): Date | undefined {
-    return this.store.getValue().serverDate
   }
 
   isSupporter(): boolean {

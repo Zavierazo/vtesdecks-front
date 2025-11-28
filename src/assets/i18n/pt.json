@@ -815,6 +815,7 @@
     "home_title": "Calendário do Advento VTES {{ year }}",
     "home_subtitle": "24 Dias de Desafios de Construção de Baralhos - Clique aqui para Participar!",
     "rules": "Regras",
+    "next_challenge_in": "Próximo desafio desbloqueia em",
     "advent_finished_title": "O Calendário do Advento VTES {{ year }} terminou!",
     "advent_finished_subtitle": "Obrigado a todos que participaram! Nos vemos no próximo ano para mais diversão construindo baralhos! Todos os desafios estão disponíveis para explorar!",
     "view_all_decks": "Ver Todos os Baralhos do Advento {{ year }}",

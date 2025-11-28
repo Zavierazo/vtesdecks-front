@@ -9,7 +9,6 @@ export interface AuthState extends ApiUser {
   builderDisplayMode: 'list' | 'grid'
   cardsDisplayMode: 'list' | 'grid'
   deckDisplayMode: 'list' | 'grid'
-  serverDate?: Date
 }
 
 const initialState: AuthState = {
@@ -27,6 +26,7 @@ export class AuthStore {
   private readonly cookieConsentService = inject(NgcCookieConsentService)
 
   static readonly storeName = 'auth'
+  private readonly serverDate = signal<Date | undefined>(undefined)
   private readonly state = signal<AuthState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly loading = signal<boolean>(false)
@@ -88,8 +88,7 @@ export class AuthStore {
   }
 
   updateServerDate(serverDate: Date) {
-    this.update({ ...this.getValue(), serverDate })
-    this.updateStorage()
+    this.serverDate.set(serverDate)
   }
 
   private updateStorage(useLocalStorage?: boolean): void {
@@ -107,8 +106,8 @@ export class AuthStore {
     return this.state$.pipe(map(selector))
   }
 
-  selectSignal<T>(selector: (state: AuthState) => T): Signal<T> {
-    return signal(selector(this.getValue()))
+  selectServerDate(): Signal<Date | undefined> {
+    return this.serverDate
   }
 
   selectLoading(): Observable<boolean> {

@@ -815,6 +815,7 @@
     "home_title": "Calendario de Adviento VTES {{ year }}",
     "home_subtitle": "24 días de Desafíos de Construcción de Mazos - ¡Haz clic aquí para unirte!",
     "rules": "Reglas",
+    "next_challenge_in": "Próximo desafío se desbloquea en",
     "advent_finished_title": "¡El Calendario de Adviento VTES {{ year }} ha terminado!",
     "advent_finished_subtitle": "¡Gracias a todos los que participaron! ¡Nos vemos el próximo año para más diversión construyendo mazos! ¡Todos los desafíos están disponibles para explorar!",
     "view_all_decks": "Ver Todos los Mazos de Adviento {{ year }}",

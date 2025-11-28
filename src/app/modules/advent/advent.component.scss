@@ -529,6 +529,33 @@ main {
   }
 }
 
+// Countdown styling
+.advent__countdown {
+  background: rgba(13, 110, 253, 0.08);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  max-width: 500px;
+  border: 1px solid rgba(13, 110, 253, 0.25);
+  font-size: 0.9rem;
+  color: #0d6efd;
+
+  i {
+    margin-right: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  strong {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+    margin-left: 0.3rem;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
 // Alert boxes styling
 .advent__alert {
   max-width: 700px;

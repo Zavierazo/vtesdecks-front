@@ -24,6 +24,11 @@
       </ul>
     </div>
     }
+    @if(!isAdventFinished && countdown()) {
+    <div class="advent__countdown mx-auto mt-3 fw-semibold">
+      <i class="bi bi-clock"></i> {{ t('next_challenge_in') }} {{ countdown() }}
+    </div>
+    }
     @if(isAdventFinished) {
     <div class="advent__alert advent__alert--info mx-auto mt-4" role="alert">
       <h4 class="advent__alert-title">

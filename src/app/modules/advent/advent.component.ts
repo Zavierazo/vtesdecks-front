@@ -1,4 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core'
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -7,7 +14,7 @@ import { ApiDataService } from '@services'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { AuthQuery } from '@state/auth/auth.query'
-import { filter, switchMap } from 'rxjs'
+import { distinctUntilChanged, filter, switchMap } from 'rxjs'
 import { ADVENT_DATA } from './advent.data'
 
 interface AdventDay {
@@ -26,7 +33,7 @@ interface AdventDay {
   standalone: true,
   imports: [RouterLink, IsLoggedDirective, TranslocoDirective],
 })
-export class AdventComponent implements OnInit {
+export class AdventComponent implements OnInit, OnDestroy {
   apiDataService = inject(ApiDataService)
   modalService = inject(NgbModal)
   authQuery = inject(AuthQuery)
@@ -37,12 +44,28 @@ export class AdventComponent implements OnInit {
   adventData = this.getAdventData()
   completedDays = new Map<number, string>()
 
+  private countdownInterval?: number
+  private serverDateOffset = 0
+  countdownTime = signal<{
+    hours: number
+    minutes: number
+    seconds: number
+  } | null>(null)
+
+  countdown = computed(() => {
+    const time = this.countdownTime()
+    if (!time) return null
+
+    return `${time.hours}h ${time.minutes}min ${time.seconds}sec`
+  })
+
   ngOnInit(): void {
     if (this.adventData) {
       this.authQuery
         .selectAuthenticated()
         .pipe(
           untilDestroyed(this),
+          distinctUntilChanged(),
           filter((isAuth) => isAuth),
           switchMap(() =>
             this.apiDataService.getDecks(0, 100, {
@@ -62,6 +85,24 @@ export class AdventComponent implements OnInit {
             }
           })
         })
+    }
+
+    // Start countdown interval
+    this.updateCountdown()
+    this.countdownInterval = window.setInterval(() => {
+      this.updateCountdown()
+    }, 1000)
+
+    // Calculate server date offset when we get the initial server date
+    const initialServerDate = this.today()
+    if (initialServerDate) {
+      this.serverDateOffset = initialServerDate.getTime() - Date.now()
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval)
     }
   }
 
@@ -135,6 +176,53 @@ export class AdventComponent implements OnInit {
   onOpenInBuilder(year: number, day: number): void {
     this.router.navigateByUrl('/decks/builder', {
       state: { advent: year, day },
+    })
+  }
+
+  private updateCountdown(): void {
+    // Get current server time by adding the offset to local time
+    const currentServerTime = new Date(Date.now() + this.serverDateOffset)
+
+    if (!this.adventData || !currentServerTime || this.isAdventFinished) {
+      this.countdownTime.set(null)
+      return
+    }
+
+    // Calculate current day number in UTC and check if next day has a challenge
+    const currentDay = currentServerTime.getUTCDate()
+    const nextDayNumber = currentDay + 1
+
+    if (
+      nextDayNumber > 24 ||
+      !this.adventData.days[nextDayNumber as keyof typeof this.adventData.days]
+    ) {
+      this.countdownTime.set(null)
+      return
+    }
+
+    // Calculate time until next midnight in UTC
+    const nextMidnight = new Date(
+      Date.UTC(
+        currentServerTime.getUTCFullYear(),
+        currentServerTime.getUTCMonth(),
+        currentServerTime.getUTCDate() + 1,
+        0,
+        0,
+        0,
+        0,
+      ),
+    )
+    const diff = nextMidnight.getTime() - currentServerTime.getTime()
+
+    if (diff <= 0) {
+      this.countdownTime.set(null)
+      return
+    }
+
+    this.countdownTime.set({
+      hours: Math.floor(diff / (1000 * 60 * 60)),
+      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((diff % (1000 * 60)) / 1000),
     })
   }
 }
