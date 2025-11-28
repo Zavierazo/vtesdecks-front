@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  computed,
   inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
@@ -52,7 +53,11 @@ export class HomeComponent implements OnInit {
   deckHome?: ApiHome
   changelogAlert?: ApiChangelog
   showChangelogAlert = false
-  currentAdvent = getCurrentAdventData()
+  serverDate = this.authQuery.serverDate()
+  currentAdvent = computed(() => {
+    const date = this.serverDate()
+    return date ? getCurrentAdventData(date) : null
+  })
 
   ngOnInit() {
     // Fetch changelog for alert

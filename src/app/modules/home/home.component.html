@@ -20,13 +20,13 @@
   <!-- Hero Section -->
   <section class="hero-section py-5 mb-4">
     <!-- Advent Calendar Banner -->
-    @if (currentAdvent) {
+    @if (currentAdvent(); as advent) {
     <div class="container mb-4">
       <a routerLink="/advent" class="text-decoration-none">
         <div class="advent-banner-content">
           <div class="advent-banner-icon d-none d-md-block">🎄</div>
           <div class="advent-banner-text">
-            <h2 class="advent-banner-title mb-2">🎅 {{ 'advent.home_title' | transloco: { year: currentAdvent.year } }}
+            <h2 class="advent-banner-title mb-2">🎅 {{ 'advent.home_title' | transloco: { year: advent.year } }}
             </h2>
             <p class="advent-banner-subtitle mb-0 d-none d-md-block">✨ {{ 'advent.home_subtitle' | transloco }} ✨</p>
           </div>

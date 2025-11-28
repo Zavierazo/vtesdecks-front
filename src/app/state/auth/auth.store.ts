@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { inject, Injectable, Signal, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { ApiUser } from '@models'
 import { LocalStorageService, SessionStorageService } from '@services'
@@ -9,6 +9,7 @@ export interface AuthState extends ApiUser {
   builderDisplayMode: 'list' | 'grid'
   cardsDisplayMode: 'list' | 'grid'
   deckDisplayMode: 'list' | 'grid'
+  serverDate?: Date
 }
 
 const initialState: AuthState = {
@@ -86,6 +87,11 @@ export class AuthStore {
     this.updateStorage()
   }
 
+  updateServerDate(serverDate: Date) {
+    this.update({ ...this.getValue(), serverDate })
+    this.updateStorage()
+  }
+
   private updateStorage(useLocalStorage?: boolean): void {
     if (
       useLocalStorage ||
@@ -99,6 +105,10 @@ export class AuthStore {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: AuthState) => any): Observable<any> {
     return this.state$.pipe(map(selector))
+  }
+
+  selectSignal<T>(selector: (state: AuthState) => T): Signal<T> {
+    return signal(selector(this.getValue()))
   }
 
   selectLoading(): Observable<boolean> {

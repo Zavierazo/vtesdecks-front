@@ -4,12 +4,14 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpResponse,
 } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { Observable, retry, timer } from 'rxjs'
+import { Observable, retry, tap, timer } from 'rxjs'
 import { environment } from '../environments/environment'
 import { ToastService } from './services/toast.service'
+import { AuthStore } from './state/auth/auth.store'
 
 export const retryCount = 10
 export const retryWaitMilliSeconds = 5000
@@ -18,6 +20,7 @@ export const retryWaitMilliSeconds = 5000
 export class HttpMonitorInterceptor implements HttpInterceptor {
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
+  private authStore = inject(AuthStore)
 
   intercept(
     request: HttpRequest<unknown>,
@@ -39,11 +42,10 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         .set('locale', this.translocoService.getActiveLang())
         .set('version', environment.appVersion),
     })
-    return next
-      .handle(httpRequest)
-      .pipe(
-        retry({ count: retryCount, delay: (error) => this.shouldRetry(error) }),
-      )
+    return next.handle(httpRequest).pipe(
+      tap((event) => this.updateServerDate(event)),
+      retry({ count: retryCount, delay: (error) => this.shouldRetry(error) }),
+    )
   }
 
   shouldRetry(error: HttpErrorResponse) {
@@ -58,5 +60,14 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
       return timer(retryWaitMilliSeconds)
     }
     throw error
+  }
+
+  updateServerDate(event: HttpEvent<unknown>) {
+    if (event instanceof HttpResponse) {
+      const dateHeader = event.headers.get('Date')
+      if (dateHeader) {
+        this.authStore.updateServerDate(new Date(dateHeader))
+      }
+    }
   }
 }

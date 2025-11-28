@@ -32,8 +32,8 @@ export class AdventComponent implements OnInit {
   authQuery = inject(AuthQuery)
   router = inject(Router)
 
-  today = new Date()
-  currentYear = this.today.getFullYear()
+  today = this.authQuery.serverDate()
+  currentYear = new Date().getFullYear()
   adventData = this.getAdventData()
   completedDays = new Map<number, string>()
 
@@ -84,22 +84,24 @@ export class AdventComponent implements OnInit {
   }
 
   get isAdventFinished(): boolean {
-    if (!this.adventData) {
+    const today = this.today()
+    if (!this.adventData || !today) {
       return false
     }
-    return this.today > this.adventData.endDate
+    return today > this.adventData.endDate
   }
 
   getAvailableDays(): AdventDay[] {
     const days: AdventDay[] = []
+    const today = this.today()
 
-    if (!this.adventData) {
+    if (!this.adventData || !today) {
       return days
     }
 
     // Check if we're showing a past year's advent
     const isCurrentYear = this.adventData.year === this.currentYear
-    const isAfterEndDate = this.today > this.adventData.endDate
+    const isAfterEndDate = today > this.adventData.endDate
 
     for (let dayNumber = 1; dayNumber <= 24; dayNumber++) {
       const dayDate = new Date(this.adventData.startDate)
@@ -108,7 +110,7 @@ export class AdventComponent implements OnInit {
       // For current year: show based on date
       // For past years: show all days as available
       const isAvailable = isCurrentYear
-        ? dayDate <= this.today && !isAfterEndDate
+        ? dayDate <= today && !isAfterEndDate
         : true
 
       const dayData =

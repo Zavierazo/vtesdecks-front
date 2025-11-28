@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable, Signal } from '@angular/core'
 import { ApiUser } from '@models'
 import { Observable } from 'rxjs'
 import { AuthStore } from './auth.store'
@@ -55,6 +55,10 @@ export class AuthQuery {
     return this.store.select((state) => state.deckDisplayMode || 'list')
   }
 
+  serverDate(): Signal<Date | undefined> {
+    return this.store.selectSignal((state) => state.serverDate)
+  }
+
   isAuthenticated(): boolean {
     return !!this.store.getValue().token
   }
@@ -85,6 +89,10 @@ export class AuthQuery {
 
   getDeckDisplayMode(): 'list' | 'grid' {
     return this.store.getValue().deckDisplayMode
+  }
+
+  getServerDate(): Date | undefined {
+    return this.store.getValue().serverDate
   }
 
   isSupporter(): boolean {
