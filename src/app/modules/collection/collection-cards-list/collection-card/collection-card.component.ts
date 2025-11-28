@@ -6,8 +6,8 @@ import {
   inject,
   input,
 } from '@angular/core'
-import { MediaService } from '../../../../services/media.service'
-import { isCryptId } from '../../../../utils/vtes-utils'
+import { MediaService } from '@services'
+import { isCryptId } from '@utils'
 import { CryptComponent } from '../../../deck-shared/crypt/crypt.component'
 import { LibraryComponent } from '../../../deck-shared/library/library.component'
 

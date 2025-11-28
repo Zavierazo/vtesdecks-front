@@ -11,6 +11,13 @@ import {
 } from '@angular/forms'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCrypt,
+  ApiDeckLimitedFormat,
+  ApiDeckLimitedFormatFilter,
+  ApiLibrary,
+  ApiSet,
+} from '@models'
+import {
   NgbActiveModal,
   NgbHighlight,
   NgbPopover,
@@ -18,9 +25,16 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, MediaService, ToastService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { SetQuery } from '@state/set/set.query'
+import { sortTrigramSimilarity } from '@utils'
 import {
   combineLatest,
   debounceTime,
+  map,
   mergeMap,
   Observable,
   of,
@@ -29,18 +43,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { ApiDeckLimitedFormat } from '../../../models/api-deck-limited-format'
-import { ApiDeckLimitedFormatFilter } from '../../../models/api-deck-limited-format-filter'
-import { ApiLibrary } from '../../../models/api-library'
-import { ApiSet } from '../../../models/api-set'
-import { ApiDataService } from '../../../services/api.data.service'
-import { MediaService } from '../../../services/media.service'
-import { ToastService } from '../../../services/toast.service'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { SetQuery } from '../../../state/set/set.query'
 import { toUrl } from './limited-format-utils'
 @UntilDestroy()
 @Component({
@@ -254,7 +256,15 @@ export class LimitedFormatModalComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       mergeMap((term) => combineLatest([of(term)])),
-      switchMap(([term]) => this.cryptQuery.selectByName(term, 10)),
+      switchMap(([term]) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
@@ -263,7 +273,15 @@ export class LimitedFormatModalComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       mergeMap((term) => combineLatest([of(term)])),
-      switchMap(([term]) => this.libraryQuery.selectByName(term, 10)),
+      switchMap(([term]) =>
+        this.libraryQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   formatter = (x: { name: string }) => x.name

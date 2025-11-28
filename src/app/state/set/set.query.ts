@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
+import { ApiSet, SetSortBy } from '@models'
 import { Observable } from 'rxjs'
-import { ApiSet, SetSortBy } from '../../models/api-set'
 import { SetStore } from './set.store'
 @Injectable({
   providedIn: 'root',

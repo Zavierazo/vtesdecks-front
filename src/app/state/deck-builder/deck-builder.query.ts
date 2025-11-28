@@ -1,15 +1,17 @@
 import { inject, Injectable } from '@angular/core'
+import {
+  ApiCard,
+  ApiClanStat,
+  ApiCollectionCard,
+  ApiCrypt,
+  ApiDeckLimitedFormat,
+  ApiDisciplineStat,
+  ApiLibrary,
+} from '@models'
+import { isCrypt, isLibrary, roundNumber } from '@utils'
 import { combineLatest, map, Observable } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
-import { ApiCollectionCard } from '../../models/api-collection-card'
-import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
-import { ApiDisciplineStat } from '../../models/api-discipline-stat'
-import { ApiLibrary } from '../../models/api-library'
-import { isCrypt, isLibrary, roundNumber } from '../../utils/vtes-utils'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
-import { ApiClanStat } from './../../models/api-clan-stat'
-import { ApiCrypt } from './../../models/api-crypt'
 import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
 
 @Injectable({
@@ -328,5 +330,9 @@ export class DeckBuilderQuery {
     if (!card) return 'NONE'
     if (card.number < number) return 'PARTIAL'
     return 'FULL'
+  }
+
+  getValidation(): ((query: DeckBuilderQuery) => string[]) | undefined {
+    return this.store.getValue().validation
   }
 }

@@ -17,12 +17,25 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import {
+  ApiCollectionCard,
+  ApiCrypt,
+  ApiI18n,
+  ApiLibrary,
+  ApiSet,
+} from '@models'
+import {
   NgbActiveModal,
   NgbHighlight,
   NgbTypeahead,
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ToastService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { SetQuery } from '@state/set/set.query'
+import { sortTrigramSimilarity } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
   BehaviorSubject,
@@ -35,16 +48,6 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
-import { ApiCrypt } from '../../../models/api-crypt'
-import { ApiI18n } from '../../../models/api-i18n'
-import { ApiLibrary } from '../../../models/api-library'
-import { ApiSet } from '../../../models/api-set'
-import { ToastService } from '../../../services/toast.service'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { SetQuery } from '../../../state/set/set.query'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
@@ -175,7 +178,7 @@ export class CardModalComponent implements OnInit {
           map(([libraryCards, cryptCards]) =>
             [...libraryCards, ...cryptCards]
               .map((card) => this.getSearchCard(card))
-              .sort((a, b) => (a.name > b.name ? 1 : -1)),
+              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
           ),
         ),
       ),

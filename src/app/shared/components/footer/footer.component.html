@@ -1,4 +1,4 @@
-<footer class="bg-primary text-center text-white" *transloco="let t; read: 'footer'">
+<footer class="bg-primary text-center text-white" *transloco="let t; prefix: 'footer'">
   <div class="container p-4">
     <section>
       <div class="row">
@@ -46,6 +46,6 @@
     </section>
   </div>
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-    v{{ appVersion }} © 2020-{{ now | date:'YY' }} {{ t('copyright') }}
+    v{{ appVersion }} © 2020-{{ now | date:'yy' }} {{ t('copyright') }}
   </div>
 </footer>

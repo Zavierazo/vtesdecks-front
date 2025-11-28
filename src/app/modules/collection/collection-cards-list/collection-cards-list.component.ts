@@ -20,6 +20,18 @@ import {
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCollectionCard,
+  ApiI18n,
+  ApiSet,
+  FILTER_CARD_NAME,
+  FILTER_CARD_TYPE,
+  FILTER_CLANS,
+  FILTER_DISCIPLINES,
+  FILTER_GROUP_BY,
+  FILTER_SET,
+  FILTER_TYPES,
+} from '@models'
+import {
   NgbDropdown,
   NgbDropdownButtonItem,
   NgbDropdownItem,
@@ -31,6 +43,13 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService, ToastService } from '@services'
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { AutofocusDirective } from '@shared/directives/auto-focus.directive'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { SetQuery } from '@state/set/set.query'
+import { sortTrigramSimilarity } from '@utils'
 import {
   catchError,
   combineLatest,
@@ -42,25 +61,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import {
-  ApiCollectionCard,
-  FILTER_CARD_NAME,
-  FILTER_CARD_TYPE,
-  FILTER_CLANS,
-  FILTER_DISCIPLINES,
-  FILTER_GROUP_BY,
-  FILTER_SET,
-  FILTER_TYPES,
-} from '../../../models/api-collection-card'
-import { ApiI18n } from '../../../models/api-i18n'
-import { ApiSet } from '../../../models/api-set'
-import { MediaService } from '../../../services/media.service'
-import { ToastService } from '../../../services/toast.service'
-import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component'
-import { AutofocusDirective } from '../../../shared/directives/auto-focus.directive'
-import { CryptQuery } from '../../../state/crypt/crypt.query'
-import { LibraryQuery } from '../../../state/library/library.query'
-import { SetQuery } from '../../../state/set/set.query'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardBulkEditModalComponent } from '../card-bulk-edit-modal/card-bulk-edit-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
@@ -299,7 +299,9 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
           this.cryptQuery.selectByName(term, 10),
         ]).pipe(
           map(([libraryCards, cryptCards]) =>
-            [...libraryCards, ...cryptCards].map((card) => card.id),
+            [...libraryCards, ...cryptCards]
+              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term))
+              .map((card) => card.id),
           ),
         ),
       ),

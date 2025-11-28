@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable, Signal } from '@angular/core'
+import { ApiUser } from '@models'
 import { Observable } from 'rxjs'
-import { ApiUser } from '../../models/api-user'
 import { AuthStore } from './auth.store'
 
 @Injectable({
@@ -53,6 +53,10 @@ export class AuthQuery {
 
   selectDeckDisplayMode(): Observable<'list' | 'grid'> {
     return this.store.select((state) => state.deckDisplayMode || 'list')
+  }
+
+  serverDate(): Signal<Date | undefined> {
+    return this.store.selectServerDate()
   }
 
   isAuthenticated(): boolean {

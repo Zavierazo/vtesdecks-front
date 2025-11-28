@@ -1,4 +1,4 @@
-import { ApiCard } from '../models/api-card'
+import { ApiCard } from '@models'
 import { trigramSimilarity } from './trigram-similarity'
 
 export function isCrypt(value: ApiCard): boolean {
@@ -53,10 +53,29 @@ export const isRegexSearch = (searchString: string): boolean => {
   return searchString.startsWith('/') && searchString.endsWith('/')
 }
 
+export const sortTrigramSimilarity = (
+  a: string,
+  b: string,
+  searchString: string,
+): number => {
+  if (searchString.length < 3) {
+    return a > b ? 1 : -1
+  }
+  const aWeight = trigramSimilarity(a, searchString)
+  const bWeight = trigramSimilarity(b, searchString)
+  if (aWeight === bWeight) {
+    return a > b ? 1 : -1
+  }
+  return aWeight > bWeight ? -1 : 1
+}
+
 export const searchIncludes = (
-  string: string,
+  string: string | undefined,
   searchString: string,
 ): boolean => {
+  if (!string) {
+    return false
+  }
   if (isRegexSearch(searchString)) {
     // Regex search
     try {

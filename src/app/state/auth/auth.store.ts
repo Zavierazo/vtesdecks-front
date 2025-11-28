@@ -1,10 +1,9 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { inject, Injectable, Signal, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiUser } from '@models'
+import { LocalStorageService, SessionStorageService } from '@services'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
-import { ApiUser } from '../../models/api-user'
-import { LocalStorageService } from '../../services/local-storage.service'
-import { SessionStorageService } from '../../services/session-storage.service'
 
 export interface AuthState extends ApiUser {
   builderDisplayMode: 'list' | 'grid'
@@ -27,6 +26,7 @@ export class AuthStore {
   private readonly cookieConsentService = inject(NgcCookieConsentService)
 
   static readonly storeName = 'auth'
+  private readonly serverDate = signal<Date | undefined>(undefined)
   private readonly state = signal<AuthState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly loading = signal<boolean>(false)
@@ -87,6 +87,10 @@ export class AuthStore {
     this.updateStorage()
   }
 
+  updateServerDate(serverDate: Date) {
+    this.serverDate.set(serverDate)
+  }
+
   private updateStorage(useLocalStorage?: boolean): void {
     if (
       useLocalStorage ||
@@ -100,6 +104,10 @@ export class AuthStore {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: AuthState) => any): Observable<any> {
     return this.state$.pipe(map(selector))
+  }
+
+  selectServerDate(): Signal<Date | undefined> {
+    return this.serverDate
   }
 
   selectLoading(): Observable<boolean> {

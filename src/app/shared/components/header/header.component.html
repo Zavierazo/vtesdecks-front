@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0" *transloco="let t; read: 'header'">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0" *transloco="let t; prefix: 'header'">
   <div class="container-fluid">
     <a [routerLink]="'/'" class="navbar-brand">
       <img class="header-logo" width="60" height="60" [src]="logoPath" alt="logo" />
@@ -59,6 +59,10 @@
             <a ngbDropdownItem routerLink="/statistics" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('statistics') }}
             </a>
+            <a ngbDropdownItem routerLink="/proxy-generator" [routerLinkActive]="['active']"
+              (click)="isCollapsed = true">
+              {{ t('proxy_generator') }}
+            </a>
             <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
               {{ t('table_seating') }}
             </button>
@@ -71,9 +75,9 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <app-lang-selector></app-lang-selector>
+        <app-lang-selector />
         @if (themeEnabled) {
-        <app-theme-selector></app-theme-selector>
+        <app-theme-selector />
         }
         <li
           class="nav-item nav-link position-relative notification me-0 me-lg-2 d-flex justify-content-start align-items-center"
@@ -108,6 +112,9 @@
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>
+            @if (isSupporter$ | async) {
+            <i class="bi bi-patch-check-fill text-gold ms-1" title="Supporter"></i>
+            }
           </a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
             <a ngbDropdownItem routerLink="/collection" [routerLinkActive]="['active']" (click)="isCollapsed = true">

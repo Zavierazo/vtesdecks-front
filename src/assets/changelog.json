@@ -1,13 +1,25 @@
 [
   {
+    "version": "2.55.0",
+    "date": "28th November, 2025",
+    "changes": [
+      "Added proxy generator tool to create printable proxies for your decks.",
+      "Improved card name searches by extending trigram similarity matching across more sections of the site.",
+      "V5 and Two-Player Format tags are now shown as clickable buttons in the filter panel for faster deck filtering.",
+      "Supporter users now display a special badge next to their name in comments and in the header.",
+      "Added a text icon to quickly preview full card text on hover.",
+      "As the year winds down… keep an eye on December. Something fun might be waiting 👀",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.54.0",
     "date": "19th November, 2025",
     "changes": [
       "Added card filters to the URL, allowing you to share specific searches.",
       "Added a share button to Crypt and Library pages to easily share individual cards.",
       "Added localized card text in the card modal when no localized image is available. Note: card texts are not available for all cards due to outdated data in the official CSV.",
-      "Fixed and updated all Print-on-Demand shop links and prices. They should now refresh correctly every day.",
-      "Minor fixes and performance improvements."
+      "Fixed and updated all Print-on-Demand shop links and prices. They should now refresh correctly every day."
     ]
   },
   {

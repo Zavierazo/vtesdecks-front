@@ -1,0 +1,99 @@
+<main *transloco="let t; prefix: 'advent'">
+  <div class="advent__header text-center mb-3 px-3">
+    <div class="advent__header-decoration mb-3">
+      <span class="advent__ornament">🎄</span>
+      <span class="advent__ornament advent__ornament--delayed">⭐</span>
+      <span class="advent__ornament advent__ornament--delayed-2">🎄</span>
+    </div>
+    <h1 class="advent__title display-3 fw-bold mb-2 position-relative">
+      <span class="advent__snow">❄️</span>
+      {{ adventData.theme }}
+      <span class="advent__bell">❄️</span>
+    </h1>
+    <p class="advent__description fs-5 mx-auto mb-2" [innerHTML]="adventData.description">
+    </p>
+    @if(!isAdventFinished && adventData.rules && adventData.rules.length > 0) {
+    <div class="advent__rules mx-auto mt-2">
+      <h6 class="advent__rules-title mb-1">
+        <i class="fas fa-scroll"></i> {{ t('rules') }}
+      </h6>
+      <ul class="advent__rules-list">
+        @for(rule of adventData.rules; track $index) {
+        <li><i class="bi bi-star-fill text-warning"></i> {{ rule }}</li>
+        }
+      </ul>
+    </div>
+    }
+    @if(!isAdventFinished && countdown()) {
+    <div class="advent__countdown mx-auto mt-3 fw-semibold">
+      <i class="bi bi-clock"></i> {{ t('next_challenge_in') }} {{ countdown() }}
+    </div>
+    }
+    @if(isAdventFinished) {
+    <div class="advent__alert advent__alert--info mx-auto mt-4" role="alert">
+      <h4 class="advent__alert-title">
+        {{ t('advent_finished_title', { year: adventData.year })}}
+      </h4>
+      <p class="mb-0">📅 {{ t('advent_finished_subtitle') }}</p>
+    </div>
+    }
+    <a class="advent__view-decks-btn mt-3" [routerLink]="['/decks']"
+      [queryParams]="{ tags: 'advent'+adventData.year, order: 'POPULAR' }" role="button">
+      <i class="bi bi-calendar-event"></i> {{ t('view_all_decks', { year: adventData.year }) }}
+    </a>
+  </div>
+
+  @for(day of getAvailableDays(); track day.dayNumber) {
+  <article class="present" [class.present--available]="day.isAvailable" [class.present--future]="!day.isAvailable"
+    [class.present--completed]="day.isAvailable && day.isCompleted">
+    <div class="present__pane" [attr.data-day]="day.dayNumber">
+      <h2 class="present__date">
+        @if(day.isAvailable && day.isCompleted) {
+        🎁
+        } @else {
+        {{ day.dayNumber }}
+        }
+      </h2>
+    </div>
+    <div class="present__content">
+      @if(day.isAvailable && day.data) {
+      <div class="present__challenge">
+        <div class="present__challenge-header">
+          <h3 class="present__challenge-title">{{ day.data.title }}</h3>
+        </div>
+        <div class="present__challenge-body">
+          <p class="present__challenge-content" [innerHTML]="day.data.content"></p>
+        </div>
+        @if(!isAdventFinished) {
+        <div class="present__challenge-action">
+          @if(day.isCompleted && day.deckId) {
+          <a class="present__btn present__btn--success" [routerLink]="['/deck', day.deckId]" role="button"
+            target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-check-circle"></i> {{ t('day_completed', { day: day.dayNumber }) }}
+          </a>
+          } @else {
+          <button *isLogged="true" class="present__btn present__btn--primary"
+            (click)="onOpenInBuilder(adventData.year, day.dayNumber)" role="button">
+            <i class="bi bi-hammer"></i> {{ t('day_start') }}
+          </button>
+          <button *isLogged="false" class="present__btn present__btn--primary" (click)="onPromptLogin()">
+            <i class="bi bi-box-arrow-in-right"></i> {{ t('day_login') }}
+          </button>
+          }
+        </div>
+        }@else {
+        <div class="present__challenge-action">
+          @if(day.isCompleted && day.deckId) {
+          <a class="present__btn present__btn--success" [routerLink]="['/deck', day.deckId]" role="button"
+            target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-eye"></i> {{ t('day_completed', { day: day.dayNumber }) }}
+          </a>
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </article>
+  }
+</main>

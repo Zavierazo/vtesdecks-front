@@ -10,6 +10,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { ApiCrypt, ApiLibrary, CardFilter } from '@models'
 import {
   NgbHighlight,
   NgbPopover,
@@ -17,24 +18,23 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { CryptService } from '@state/crypt/crypt.service'
+import { DecksQuery } from '@state/decks/decks.query'
+import { LibraryQuery } from '@state/library/library.query'
+import { LibraryService } from '@state/library/library.service'
+import { sortTrigramSimilarity } from '@utils'
 import {
   debounceTime,
+  map,
   Observable,
   OperatorFunction,
   switchMap,
   tap,
 } from 'rxjs'
 import { environment } from '../../../../../environments/environment'
-import { ApiCrypt } from '../../../../models/api-crypt'
-import { CardFilter } from '../../../../models/card-filter'
-import { MediaService } from '../../../../services/media.service'
-import { CardImagePipe } from '../../../../shared/pipes/card-image.pipe'
-import { CryptQuery } from '../../../../state/crypt/crypt.query'
-import { CryptService } from '../../../../state/crypt/crypt.service'
-import { DecksQuery } from '../../../../state/decks/decks.query'
-import { ApiLibrary } from './../../../../models/api-library'
-import { LibraryQuery } from './../../../../state/library/library.query'
-import { LibraryService } from './../../../../state/library/library.service'
 
 @UntilDestroy()
 @Component({
@@ -88,14 +88,33 @@ export class CardFilterComponent implements OnInit {
 
   searchCrypt: OperatorFunction<string, ApiCrypt[]> = (
     text$: Observable<string>,
-  ) => text$.pipe(switchMap((term) => this.cryptQuery.selectByName(term, 10)))
+  ) =>
+    text$.pipe(
+      switchMap((term) =>
+        this.cryptQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
+    )
 
   searchLibrary: OperatorFunction<string, ApiLibrary[]> = (
     text$: Observable<string>,
   ) =>
     text$.pipe(
       debounceTime(200),
-      switchMap((term) => this.libraryQuery.selectByName(term, 10)),
+      switchMap((term) =>
+        this.libraryQuery
+          .selectByName(term, 10)
+          .pipe(
+            map((cards) =>
+              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+            ),
+          ),
+      ),
     )
 
   formatter = (x: { name: string }) => x.name

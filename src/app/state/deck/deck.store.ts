@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { ApiDeck } from '@models'
 import { map, Observable } from 'rxjs'
-import { ApiDeck } from '../../models/api-deck'
 
 export interface DeckState {
   deck?: ApiDeck

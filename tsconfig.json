@@ -26,6 +26,33 @@
     "paths": {
       "chart.js/dist/types/utils": [
         "node_modules/chart.js/dist/types/utils.d.ts"
+      ],
+      "@models": [
+        "src/app/models/index.ts"
+      ],
+      "@services": [
+        "src/app/services/index.ts"
+      ],
+      "@utils": [
+        "src/app/utils/index.ts"
+      ],
+      "@shared/components/*": [
+        "src/app/shared/components/*"
+      ],
+      "@shared/directives/*": [
+        "src/app/shared/directives/*"
+      ],
+      "@shared/guards/*": [
+        "src/app/shared/guards/*"
+      ],
+      "@shared/pipes/*": [
+        "src/app/shared/pipes/*"
+      ],
+      "@state/*": [
+        "src/app/state/*"
+      ],
+      "@advent/*": [
+        "src/app/modules/advent/*"
       ]
     },
     "useDefineForClassFields": false

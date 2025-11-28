@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'deck_shared'">
+<ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (library$ | async; as library) {
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
@@ -30,7 +30,7 @@
         }
       </h6>
       @if(card.collection){
-      <app-collection-card-mini-stats [card]="card"></app-collection-card-mini-stats>
+      <app-collection-card-mini-stats [card]="card" />
       }
     </ng-template>
     <div class="row">
@@ -60,7 +60,7 @@
         }">
         @if(card.collection){
         <div class="float-start me-1">
-          <app-collection-card-tracker [card]="card"></app-collection-card-tracker>
+          <app-collection-card-tracker [card]="card" />
         </div>
         }
         @for (typeIcon of library.typeIcons; track typeIcon) {
@@ -141,7 +141,7 @@
     <ngx-skeleton-loader count="1" animation="progress" [theme]="{
         height: '20px',
         'margin-bottom': '0'
-      }"></ngx-skeleton-loader>
+      }" />
   </div>
   }
 </ng-container>

@@ -1,16 +1,15 @@
+import { TitleCasePipe } from '@angular/common'
 import { Component, Input, inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { TranslocoService, TranslocoPipe } from '@jsverse/transloco'
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco'
+import { TranslocoDatePipe } from '@jsverse/transloco-locale'
+import { ApiDeck } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, ToastService } from '@services'
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { TruncatePipe } from '@shared/pipes/truncate.pipe'
 import { filter, switchMap, tap } from 'rxjs'
-import { ApiDeck } from '../../models/api-deck'
-import { ApiDataService } from '../../services/api.data.service'
-import { ToastService } from '../../services/toast.service'
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
-import { TitleCasePipe } from '@angular/common'
-import { TruncatePipe } from '../../shared/pipes/truncate.pipe'
-import { TranslocoDatePipe } from '@jsverse/transloco-locale'
 
 @UntilDestroy()
 @Component({

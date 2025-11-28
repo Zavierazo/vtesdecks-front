@@ -7,5 +7,6 @@ export interface ApiComment {
   fullName: string
   profileImage: string
   createdByAdmin: boolean
+  createdBySupporter: boolean
   createdByCurrentUser: boolean
 }

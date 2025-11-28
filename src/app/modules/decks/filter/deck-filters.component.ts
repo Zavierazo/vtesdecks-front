@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   NgbHighlight,
   NgbTooltip,
@@ -22,6 +22,9 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
+import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { DecksQuery } from '@state/decks/decks.query'
 import {
   Observable,
   OperatorFunction,
@@ -33,13 +36,10 @@ import {
   merge,
   tap,
 } from 'rxjs'
-import { ApiDataService } from '../../../services/api.data.service'
-import { IsLoggedDirective } from '../../../shared/directives/is-logged.directive'
-import { DecksQuery } from '../../../state/decks/decks.query'
 import { CardFilterComponent } from './card-filter/card-filter.component'
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { TranslocoFallbackPipe } from '../../../shared/pipes/transloco-fallback'
+import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '../../deck-shared/path-filter/path-filter.component'
@@ -64,6 +64,7 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
     NgxSliderModule,
     NgbTooltip,
     CardProportionComponent,
+    TranslocoPipe,
     TranslocoFallbackPipe,
   ],
 })

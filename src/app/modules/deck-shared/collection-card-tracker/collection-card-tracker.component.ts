@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core'
-import { ApiCard } from './../../../models/api-card'
+import { ApiCard } from '@models'
 
 @Component({
   selector: 'app-collection-card-tracker',

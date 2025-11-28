@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common'
 import { Component, TemplateRef, inject } from '@angular/core'
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap'
-import { ToastService } from '../../../services/toast.service'
+import { ToastService } from '@services'
 
 @Component({
   selector: 'app-toasts',

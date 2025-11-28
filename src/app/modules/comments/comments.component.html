@@ -1,11 +1,11 @@
-<ng-container *transloco="let t; read: 'comments'">
+<ng-container *transloco="let t; prefix: 'comments'">
   <div class="mt-2 d-flex flex-row align-items-center p-3 form-color" *isLogged="true">
     <img [src]="profileImage$ | async" width="50" class="rounded-circle me-2" [alt]="t('profile_image')"
       onerror="this.src='/assets/img/default_user.png'">
     <div class="d-flex flex-column w-100 justify-content-center align-self-center">
       <div class="w-100 justify-content-center align-self-center text-start">
         <app-markdown-textarea [control]="commentControl" [placeholder]="t('comment_placeholder')"
-          [label]="t('comment')"></app-markdown-textarea>
+          [label]="t('comment')" />
       </div>
       <div class="mt-2">
         <button type="button" class="btn btn-outline-primary" (click)="addComment()">
@@ -21,7 +21,7 @@
   @if(comments.length > 0){
   <div class="mt-2 mb-4">
     @for(comment of comments; track comment.id){
-    <app-comment [comment]="comment"></app-comment>
+    <app-comment [comment]="comment" />
     }
   </div>
   }@else{

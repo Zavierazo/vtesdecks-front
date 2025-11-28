@@ -19,6 +19,7 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiDeckBuilder, ApiDeckLimitedFormat } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -29,26 +30,22 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, ToastService } from '@services'
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
+import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
+import { ComponentCanDeactivate } from '@shared/guards/can-deactivate-component.guard'
+import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
+import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
+import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
+import { getClanIcon, getDisciplineIcon } from '@utils'
 import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
-import { ApiDeckBuilder } from '../../models/api-deck-builder'
-import { ApiDeckLimitedFormat } from '../../models/api-deck-limited-format'
-import { ApiDataService } from '../../services/api.data.service'
-import { ToastService } from '../../services/toast.service'
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component'
-import { MarkdownTextareaComponent } from '../../shared/components/markdown-textarea/markdown-textarea.component'
-import { ToggleIconComponent } from '../../shared/components/toggle-icon/toggle-icon.component'
-import { ComponentCanDeactivate } from '../../shared/guards/can-deactivate-component.guard'
-import { AuthQuery } from '../../state/auth/auth.query'
-import { AuthService } from '../../state/auth/auth.service'
-import { DeckBuilderService } from '../../state/deck-builder/deck-builder.service'
-import { getClanIcon } from '../../utils/clans'
-import { getDisciplineIcon } from '../../utils/disciplines'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
-import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
+import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 import { environment } from './../../../environments/environment'
-import { DeckBuilderQuery } from './../../state/deck-builder/deck-builder.query'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
@@ -155,7 +152,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   initDeck(): Observable<ApiDeckBuilder> {
     const id = this.route.snapshot.queryParams['id']
     const cloneDeck = history.state?.deck
-
     return this.deckBuilderService
       .init(id, cloneDeck)
       .pipe(tap(() => this.onDeckLoaded()))
@@ -180,6 +176,20 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       return
     }
     this.deckBuilderService.validateDeck()
+    const validation = this.deckBuilderQuery.getValidation()
+    if (validation) {
+      const errors = validation(this.deckBuilderQuery)
+      if (errors.length > 0) {
+        this.toastService.show(
+          this.translocoService.translate('deck_builder.validation_errors', {
+            errors: errors.join(', '),
+          }),
+          { classname: 'bg-danger text-light', delay: 10000 },
+        )
+        return
+      }
+    }
+
     if (
       this.deckBuilderQuery.getPublished() &&
       !this.deckBuilderQuery.isValidDeck()
@@ -381,7 +391,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onPrint(): void {
-    const modalRef = this.modalService.open(PrintProxyComponent, {
+    const modalRef = this.modalService.open(PrintProxyModalComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,
@@ -455,6 +465,11 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   private onDeckLoaded() {
+    const { advent, day } = history.state
+    if (advent && day) {
+      this.deckBuilderService.initAdventRules(advent.toString(), day.toString())
+      this.deckBuilderService.validateDeck()
+    }
     this.form
       .get('name')
       ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })
@@ -467,6 +482,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     const limitedFormat = this.route.snapshot.queryParams['limitedFormat']
     if (limitedFormat) {
       this.deckBuilderService.setLimitedFormat(fromUrl(limitedFormat))
+      this.deckBuilderService.validateDeck()
     }
     this.changeDetector.markForCheck()
   }

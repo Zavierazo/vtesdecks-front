@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core'
 import { Params } from '@angular/router'
+import { ApiDecks } from '@models'
+import { ApiDataService } from '@services'
 import { EMPTY, Observable, tap } from 'rxjs'
-import { ApiDecks } from './../../models/api-decks'
-import { ApiDataService } from './../../services/api.data.service'
 import { DecksState, DecksStore } from './decks.store'
 @Injectable({
   providedIn: 'root',

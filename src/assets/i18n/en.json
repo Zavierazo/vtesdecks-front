@@ -152,7 +152,8 @@
     "file": "File",
     "limited_format": "Limited Format",
     "deck_copied": "Deck copied to clipboard",
-    "collection_tracker": "Collection Tracker"
+    "collection_tracker": "Collection Tracker",
+    "validation_errors": "{{errors}}"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
@@ -202,7 +203,7 @@
     "views": "Views",
     "comments": "Comments",
     "players_twd": "Players(TWD)",
-    "clear_filters": "Clear Filters",
+    "reset": "Reset",
     "back_to_top": "Back to top",
     "filters": "Filters",
     "show_filters": "Show filters",
@@ -223,7 +224,9 @@
     "print": "Print",
     "select_arial": "Select proxy image",
     "select_all": "Select All",
-    "reset": "Reset"
+    "reset": "Reset",
+    "add_crypt_card_placeholder": "Add Crypt card by name...",
+    "add_library_card_placeholder": "Add Library card by name..."
   },
   "filters": {
     "crypt_cards": "Crypt Cards",
@@ -232,7 +235,7 @@
     "number_of_copies": "number of copies",
     "any": "Any",
     "none": "None",
-    "clear_filters": "Clear Filters",
+    "reset": "Reset",
     "bookmarked": "Bookmarked",
     "tags": "Tags",
     "tags_placeholder": "Add Tags...",
@@ -287,7 +290,8 @@
     "logout": "Logout",
     "theme": "Theme",
     "notifications": "Notifications",
-    "unread_notifications": "unread notifications"
+    "unread_notifications": "unread notifications",
+    "proxy_generator": "Proxy Generator"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -309,7 +313,7 @@
     "see_more": "See More...",
     "patreon": "Support on Patreon",
     "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
-    "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️.",
+    "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️",
     "contact_support": "Contact Support",
     "whats_new": "What's new {{ date }}",
     "new": "New"
@@ -418,7 +422,8 @@
     "grid": "Grid",
     "list": "List",
     "cards": "cards",
-    "apply": "Apply"
+    "apply": "Apply",
+    "proxy_generator": "Proxy Generator"
   },
   "table_seating": {
     "title": "Table Seating",
@@ -612,7 +617,8 @@
       "vote": "vote",
       "mmpa": "mmpa",
       "v5": "v5",
-      "2player": "2player"
+      "2player": "2player",
+      "advent2025": "advent2025"
     },
     "taints": {
       "+Intercept": "+Intercept",
@@ -655,7 +661,8 @@
       "Scarce": "Scarce",
       "Blood Cursed": "Blood Cursed",
       "Circle": "Circle",
-      "Strike": "Strike"
+      "Strike": "Strike",
+      "Cannot Block": "Cannot Block"
     }
   },
   "limited_format": {
@@ -798,11 +805,23 @@
     "clan": "Clan",
     "discipline": "Discipline",
     "filters": "Filters",
-    "clear_filters": "Clear Filters",
+    "reset": "Reset",
     "active_filters": "Active filters",
     "apply_filters": "Apply Filters",
     "card_type": "Types",
     "clans": "Clans",
     "disciplines": "Disciplines"
+  },
+  "advent": {
+    "home_title": "VTES Advent Calendar {{ year }}",
+    "home_subtitle": "24 Days of Deck Building Challenges - Click here to Join!",
+    "rules": "Rules",
+    "next_challenge_in": "Next challenge unlocks in",
+    "advent_finished_title": "The VTES Advent Calendar {{ year }} has ended!",
+    "advent_finished_subtitle": "Thank you to everyone who participated! See you next year for more deck-building fun! All challenges are available to explore!",
+    "view_all_decks": "View All Advent {{ year }} Decks",
+    "day_completed": "Day {{ day }} - View Deck",
+    "day_start": "Start Challenge",
+    "day_login": "Login to Start"
   }
 }

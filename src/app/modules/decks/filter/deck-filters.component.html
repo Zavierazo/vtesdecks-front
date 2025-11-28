@@ -1,7 +1,7 @@
-<div class="mt-2" *transloco="let t; read: 'filters'">
+<div class="mt-2" *transloco="let t; prefix: 'filters'">
   <div class="d-grid gap-2 mb-3">
     <button type="button" class="btn btn-danger" (click)="reset()">
-      {{ t('clear_filters') }}
+      {{ t('reset') }}
     </button>
   </div>
   <form [formGroup]="filterForm">
@@ -16,8 +16,7 @@
     </label>
     <div id="tags" class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
-        <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)"
-          [term]="t"></ngb-highlight>
+        <ngb-highlight class="align-top ms-1" [result]="'#'+('vtes.tags.' +r | translocoFallback: r)" [term]="t" />
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
@@ -30,6 +29,16 @@
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
         }
+        @if(!tags.includes('v5')) {
+        <span class="badge rounded-pill text-bg-secondary btn-badge opacity-50" (click)="onSelectTag('v5')">
+          #{{ 'vtes.tags.v5' | transloco }}
+        </span>
+        }
+        @if(!tags.includes('2player')) {
+        <span class="badge rounded-pill text-bg-secondary btn-badge opacity-50" (click)="onSelectTag('2player')">
+          #{{ 'vtes.tags.2player' | transloco }}
+        </span>
+        }
       </div>
       }
     </div>
@@ -39,8 +48,7 @@
       <label class="form-check-label" for="singleClanCheck">{{ t('single_clan') }}</label>
     </div>
     <div id="clans" class="user-select-none mb-2">
-      <app-clan-filter [(clans)]="clans" (clansChange)="changeClanFilter()">
-      </app-clan-filter>
+      <app-clan-filter [(clans)]="clans" (clansChange)="changeClanFilter()" />
     </div>
     <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
     <div class="form-check form-switch d-inline-block ms-2">
@@ -50,15 +58,13 @@
     </div>
     <div id="disciplines" class="user-select-none mb-2">
       <app-discipline-filter [(disciplines)]="disciplines" [showSuperior]="false"
-        (disciplinesChange)="changeDisciplineFilter()">
-      </app-discipline-filter>
+        (disciplinesChange)="changeDisciplineFilter()" />
     </div>
     <label for="paths" class="form-label text-primary fw-bold">{{ t('paths') }}</label>
     <div id="paths" class="user-select-none mb-2">
-      <app-path-filter [(paths)]="paths" (pathsChange)="changePathFilter()">
-      </app-path-filter>
+      <app-path-filter [(paths)]="paths" (pathsChange)="changePathFilter()" />
     </div>
-    <app-card-filter #cardFilter></app-card-filter>
+    <app-card-filter #cardFilter />
     <div class="row g-1 mb-2" *isLogged="true">
       <div class="form-label text-primary fw-bold">
         <i class="bi bi-collection me-2"></i>{{ t('collection_tracker') }}
@@ -72,8 +78,7 @@
       <div class="col-12 mb-2">
         <label for="collectionPercentage" class="form-label text-secondary fw-bold">{{ t('deck_completion') }}</label>
         <ngx-slider id="collectionPercentage" [options]="{ floor: 0, ceil: 100, step: 5, showSelectionBar: true }"
-          formControlName="collectionPercentage">
-        </ngx-slider>
+          formControlName="collectionPercentage" />
       </div>
       }
     </div>
@@ -83,13 +88,11 @@
     <div class="row g-1 mb-2">
       <div class="col-12">
         <label for="librarySize" class="form-label text-secondary fw-bold">{{ t('library') }}</label>
-        <ngx-slider id="librarySize" [options]="{ floor: 40, ceil: 90, step: 1 }" formControlName="librarySize">
-        </ngx-slider>
+        <ngx-slider id="librarySize" [options]="{ floor: 40, ceil: 90, step: 1 }" formControlName="librarySize" />
       </div>
       <div class="col-12 mb-2">
         <label for="cryptSize" class="form-label text-secondary fw-bold">{{ t('crypt') }}</label>
-        <ngx-slider id="cryptSize" [options]="{ floor: 12, ceil: 40, step: 1 }" formControlName="cryptSize">
-        </ngx-slider>
+        <ngx-slider id="cryptSize" [options]="{ floor: 12, ceil: 40, step: 1 }" formControlName="cryptSize" />
       </div>
       <div class="col-12 mb-2">
         <label for="group" class="form-label text-secondary fw-bold">{{ t('group') }}</label>
@@ -100,18 +103,15 @@
               showTicks: true,
               showTicksValues: true,
               translate: translateGroupSlider
-            }" formControlName="group">
-        </ngx-slider>
+            }" formControlName="group" />
       </div>
       <div class="col-12 mb-2">
         <label for="year" class="form-label text-secondary fw-bold">{{ t('year') }}</label>
-        <ngx-slider id="year" [options]="{ floor: 1998, ceil: getCurrentYear(), step: 1 }" formControlName="year">
-        </ngx-slider>
+        <ngx-slider id="year" [options]="{ floor: 1998, ceil: getCurrentYear(), step: 1 }" formControlName="year" />
       </div>
       <div class="col-12 mb-2">
         <label for="players" class="form-label text-secondary fw-bold">{{ t('players') }}</label>
-        <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players">
-        </ngx-slider>
+        <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players" />
       </div>
     </div>
     <label class="form-label text-secondary fw-bold">{{ t('library_cards') }}</label>
@@ -133,52 +133,43 @@
     <div class="row g-2 mb-2">
       <div class="col-6">
         <app-card-proportion controlName="master" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('master')"
-          (valueChanges)="onProportionChange('master',$event)"></app-card-proportion>
+          [value]="getProportionValue('master')" (valueChanges)="onProportionChange('master',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="action" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('action')"
-          (valueChanges)="onProportionChange('action',$event)"></app-card-proportion>
+          [value]="getProportionValue('action')" (valueChanges)="onProportionChange('action',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="political" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('political')"
-          (valueChanges)="onProportionChange('political',$event)"></app-card-proportion>
+          [value]="getProportionValue('political')" (valueChanges)="onProportionChange('political',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="retainer" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('retainer')"
-          (valueChanges)="onProportionChange('retainer',$event)"></app-card-proportion>
+          [value]="getProportionValue('retainer')" (valueChanges)="onProportionChange('retainer',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="equipment" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('equipment')"
-          (valueChanges)="onProportionChange('equipment',$event)"></app-card-proportion>
+          [value]="getProportionValue('equipment')" (valueChanges)="onProportionChange('equipment',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="ally" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('ally')" (valueChanges)="onProportionChange('ally',$event)"></app-card-proportion>
+          [value]="getProportionValue('ally')" (valueChanges)="onProportionChange('ally',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="modifier" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('modifier')"
-          (valueChanges)="onProportionChange('modifier',$event)"></app-card-proportion>
+          [value]="getProportionValue('modifier')" (valueChanges)="onProportionChange('modifier',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="combat" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('combat')"
-          (valueChanges)="onProportionChange('combat',$event)"></app-card-proportion>
+          [value]="getProportionValue('combat')" (valueChanges)="onProportionChange('combat',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="reaction" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('reaction')"
-          (valueChanges)="onProportionChange('reaction',$event)"></app-card-proportion>
+          [value]="getProportionValue('reaction')" (valueChanges)="onProportionChange('reaction',$event)" />
       </div>
       <div class="col-6">
         <app-card-proportion controlName="event" [absolute]="absoluteProportion" [custom]="customProportion"
-          [value]="getProportionValue('event')"
-          (valueChanges)="onProportionChange('event',$event)"></app-card-proportion>
+          [value]="getProportionValue('event')" (valueChanges)="onProportionChange('event',$event)" />
       </div>
     </div>
     <div class="form-label text-primary fw-bold">{{ t('other_filters') }}</div>

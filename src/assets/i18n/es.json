@@ -152,7 +152,8 @@
     "file": "Archivo",
     "limited_format": "Formato Limitado",
     "deck_copied": "Lista copiada al portapapeles",
-    "collection_tracker": "Rastreador de Colección"
+    "collection_tracker": "Rastreador de Colección",
+    "validation_errors": "{{errors}}"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",
@@ -202,7 +203,7 @@
     "views": "Vistas",
     "comments": "Comentarios",
     "players_twd": "Jugadores (TWD)",
-    "clear_filters": "Borrar filtros",
+    "reset": "Reiniciar",
     "back_to_top": "Volver arriba",
     "filters": "Filtros",
     "show_filters": "Mostrar filtros",
@@ -223,7 +224,9 @@
     "print": "Imprimir",
     "select_arial": "Seleccionar imagen de proxy",
     "select_all": "Seleccionar Todo",
-    "reset": "Reiniciar"
+    "reset": "Reiniciar",
+    "add_crypt_card_placeholder": "Agregar carta de Cripta por nombre...",
+    "add_library_card_placeholder": "Agregar carta de Biblioteca por nombre..."
   },
   "filters": {
     "crypt_cards": "Cartas de Cripta",
@@ -232,7 +235,7 @@
     "number_of_copies": "número de copias",
     "any": "Cualquier",
     "none": "Ninguno",
-    "clear_filters": "Borrar filtros",
+    "reset": "Reiniciar",
     "bookmarked": "Favoritos",
     "tags": "Etiquetas",
     "tags_placeholder": "Agregar etiquetas...",
@@ -287,7 +290,8 @@
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
-    "unread_notifications": "notificaciones no leídas"
+    "unread_notifications": "notificaciones no leídas",
+    "proxy_generator": "Generador de Proxies"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -309,7 +313,7 @@
     "see_more": "Ver más...",
     "patreon": "Apoya en Patreon",
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
-    "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️.",
+    "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
     "contact_support": "Contactar Soporte",
     "whats_new": "Novedades {{ date }}",
     "new": "Nuevo"
@@ -416,7 +420,8 @@
     "grid": "Cuadrícula",
     "list": "Lista",
     "cards": "cartas",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "proxy_generator": "Generador de Proxies"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -611,7 +616,8 @@
       "vote": "voto",
       "mmpa": "mmpa",
       "v5": "v5",
-      "2player": "2jugadores"
+      "2player": "2jugadores",
+      "advent2025": "adviento2025"
     },
     "taints": {
       "+Intercept": "+Intercepción",
@@ -654,7 +660,8 @@
       "Scarce": "Escaso",
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo",
-      "Strike": "Ataque"
+      "Strike": "Ataque",
+      "Cannot Block": "No puede bloquear"
     }
   },
   "limited_format": {
@@ -797,11 +804,23 @@
     "clan": "Clan",
     "discipline": "Disciplina",
     "filters": "Filtros",
-    "clear_filters": "Limpiar Filtros",
+    "reset": "Reiniciar",
     "active_filters": "Filtros activos",
     "apply_filters": "Aplicar Filtros",
     "card_type": "Tipos",
     "clans": "Clanes",
     "disciplines": "Disciplinas"
+  },
+  "advent": {
+    "home_title": "Calendario de Adviento VTES {{ year }}",
+    "home_subtitle": "24 días de Desafíos de Construcción de Mazos - ¡Haz clic aquí para unirte!",
+    "rules": "Reglas",
+    "next_challenge_in": "Próximo desafío se desbloquea en",
+    "advent_finished_title": "¡El Calendario de Adviento VTES {{ year }} ha terminado!",
+    "advent_finished_subtitle": "¡Gracias a todos los que participaron! ¡Nos vemos el próximo año para más diversión construyendo mazos! ¡Todos los desafíos están disponibles para explorar!",
+    "view_all_decks": "Ver Todos los Mazos de Adviento {{ year }}",
+    "day_completed": "Día {{ day }} - Ver Mazo",
+    "day_start": "Comenzar Desafío",
+    "day_login": "Iniciar sesión para comenzar"
   }
 }

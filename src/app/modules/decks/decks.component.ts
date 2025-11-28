@@ -16,8 +16,14 @@ import {
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { MediaService } from '@services'
+import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { DecksQuery } from '@state/decks/decks.query'
+import { DecksService } from '@state/decks/decks.service'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   debounceTime,
@@ -29,14 +35,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { ApiDeck } from '../../models/api-deck'
-import { LoadingComponent } from '../../shared/components/loading/loading.component'
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
-import { DecksService } from '../../state/decks/decks.service'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
-import { MediaService } from './../../services/media.service'
-import { DecksQuery } from './../../state/decks/decks.query'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
 
 @UntilDestroy()

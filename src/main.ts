@@ -27,6 +27,7 @@ import {
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { GlobalErrorHandler } from '@services'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
 import {
   NgcCookieConsentConfig,
@@ -38,13 +39,12 @@ import {
 } from 'ngx-google-analytics'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
-import { GlobalErrorHandler } from './app/services/global-error.handler'
 
+import { AuthQuery } from '@state/auth/auth.query'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { MARKED_EXTENSIONS, provideMarkdown } from 'ngx-markdown'
 import { bracketsExtension } from './app/marked-extension'
-import { AuthQuery } from './app/state/auth/auth.query'
-import { CryptQuery } from './app/state/crypt/crypt.query'
-import { LibraryQuery } from './app/state/library/library.query'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -179,11 +179,23 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'proxy-generator',
+    loadChildren: () =>
+      import('./app/modules/proxy-generator/proxy-generator.routes').then(
+        (m) => m.PROXY_GENERATOR_ROUTES,
+      ),
+  },
+  {
+    path: 'advent',
+    loadChildren: () =>
+      import('./app/modules/advent/advent.routes').then((m) => m.ADVENT_ROUTES),
+  },
+  {
     path: '**',
     loadComponent: () =>
-      import(
-        './app/shared/components/page-not-found/page-not-found.component'
-      ).then((m) => m.PageNotFoundComponent),
+      import('@shared/components/page-not-found/page-not-found.component').then(
+        (m) => m.PageNotFoundComponent,
+      ),
   }, // Wildcard route for a 404 page
 ]
 

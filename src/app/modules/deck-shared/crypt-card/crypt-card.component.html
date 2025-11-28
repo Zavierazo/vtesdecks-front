@@ -1,17 +1,19 @@
-<ng-container *transloco="let t; read: 'deck_shared'">
+<ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (cardList[index]; as card) {
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
-        <div class="position-relative">
+        <div class="position-relative card-image-container">
           <img class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
             [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
             (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
-          @if(card.i18n && !card.i18n.image && card.i18n.text) {
-          <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2">
-            {{ card.i18n.text }}
+          <div class="card-text-icon position-absolute">
+            <i class="bi bi-file-text-fill"></i>
           </div>
-          }
+          <div
+            class="card-text-overlay position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2"
+            [innerHTML]="card.i18n?.text || card.text | cardText">
+          </div>
         </div>
         @if(setImageError) {
         <div class="text-center text-warning small my-2">
@@ -83,7 +85,7 @@
               triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
               {{ set }}&nbsp;
               <ng-template #setContent>
-                <app-set-tooltip [cardId]="card.id" [set]="set"></app-set-tooltip>
+                <app-set-tooltip [cardId]="card.id" [set]="set" />
               </ng-template>
             </span>
             }
@@ -110,7 +112,7 @@
             <div class="card-body px-2">
               @for (ruling of krcgRulings; track ruling; let last = $last) {
               <div class="py-2 border-dark" [class.border-bottom]="!last">
-                <app-ruling-text [ruling]="ruling"></app-ruling-text>
+                <app-ruling-text [ruling]="ruling" />
               </div>
               }
             </div>
@@ -125,18 +127,6 @@
               </h6>
             </div>
             <div class="card-body p-2">
-              @for (shop of (shops$ | async)!; track shop; let last = $last) {
-              <div class="d-flex align-items-center justify-content-between py-1 border-dark"
-                [class.border-bottom]="!last || decks.length > 0">
-                @if (getShopInfo(shop.platform); as shopInfo) {
-                <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
-                  [gaCategory]="shop.platform" [gaLabel]="card.name">
-                  <span class="badge bg-success me-2">{{ shopInfo.name }}</span>
-                  <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
-                </a>
-                }
-              </div>
-              }
               @for (deck of decks; track deck; let last = $last) {
               <div class="d-flex align-items-center py-1 border-dark" [class.border-bottom]="!last">
                 <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id"
@@ -149,12 +139,23 @@
                 </a>
               </div>
               }
+              @for (shop of (shops$ | async)!; track shop; let last = $last) {
+              <div class="d-flex align-items-center justify-content-between py-1 border-dark"
+                [class.border-bottom]="!last || decks.length > 0" [class.opacity-50]="!shop.inStock">
+                <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
+                  [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name"
+                  [class.text-decoration-line-through]="!shop.inStock">
+                  <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">{{
+                    shop.shopInfo.fullName }}</span>
+                  <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
+                </a>
+              </div>
+              }
             </div>
           </div>
           }
           }
-          <app-collection-card-stats [cardId]="card.id"
-            (routerClick)="modal.dismiss('Link click')"></app-collection-card-stats>
+          <app-collection-card-stats [cardId]="card.id" (routerClick)="modal.dismiss('Link click')" />
           <small class="float-end text-muted mt-2">#{{card.id}}</small>
         </div>
         <div class="modal-footer align-self-end">
@@ -167,11 +168,12 @@
               <i class="bi bi-stack"></i> {{ t('search') }}
             </button>
             @for (shop of (shops$ | async)!; track shop) {
-            @if (getShopInfo(shop.platform); as shopInfo) {
-            <a type="button" class="btn btn-sm btn-success col-auto me-1" [title]="t('buy', { name: shopInfo.name })"
-              [href]="shop.link" target="_blank" gaEvent="purchase" [gaCategory]="shop.platform" [gaLabel]="card.name">
+            @if(shop.inStock && shop.shopInfo.showButton){
+            <a type="button" class="btn btn-sm btn-success col-auto me-1"
+              [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" gaEvent="purchase"
+              [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name">
               <i class="bi bi-cart4"></i>
-              <span>&nbsp;{{ shopInfo.name }}</span><br />{{ shop.price | currency:shop.currency }}
+              <span>&nbsp;{{ shop.shopInfo.fullName }}</span><br />{{ shop.price | currency:shop.currency }}
             </a>
             }
             }

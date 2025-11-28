@@ -1,11 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
+import {
+  ApiClanStat,
+  ApiDisciplineStat,
+  ApiLibrary,
+  LibrarySortBy,
+} from '@models'
+import { LocalStorageService } from '@services'
+import { trigramSimilarity } from '@utils'
 import { map, Observable } from 'rxjs'
-import { ApiClanStat } from '../../models/api-clan-stat'
-import { ApiDisciplineStat } from '../../models/api-discipline-stat'
-import { LocalStorageService } from '../../services/local-storage.service'
-import { trigramSimilarity } from '../../utils/trigram-similarity'
-import { ApiLibrary, LibrarySortBy } from './../../models/api-library'
 
 export interface LibraryStats {
   total: number

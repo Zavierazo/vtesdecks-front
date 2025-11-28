@@ -116,6 +116,11 @@ $handleBgColor: var(--bs-primary-rgb);
 
 .btn-badge {
   cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &.opacity-50:hover {
+    opacity: 1 !important;
+  }
 }
 
 /** Disable select **/
@@ -164,4 +169,8 @@ blockquote p {
 /** Additional styles **/
 .fs-7 {
   font-size: 0.9rem !important;
+}
+
+.text-gold {
+  color: #ffd700;
 }

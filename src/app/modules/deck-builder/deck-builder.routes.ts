@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router'
-import { CanActivateUser } from '../../shared/guards/can-activate-user.guard'
-import { CanDeactivateComponent } from '../../shared/guards/can-deactivate-component.guard'
+import { CanActivateUser } from '@shared/guards/can-activate-user.guard'
+import { CanDeactivateComponent } from '@shared/guards/can-deactivate-component.guard'
 
 export const DECK_BUILDER_ROUTES: Routes = [
   {

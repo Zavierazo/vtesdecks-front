@@ -152,7 +152,8 @@
     "file": "Arquivo",
     "limited_format": "Formato Limitado",
     "deck_copied": "Baralho copiado para a área de transferência",
-    "collection_tracker": "Rastreador de Coleção"
+    "collection_tracker": "Rastreador de Coleção",
+    "validation_errors": "{{errors}}"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
@@ -202,7 +203,7 @@
     "views": "Visualizações",
     "comments": "Comentários",
     "players_twd": "Jogadores (TWD)",
-    "clear_filters": "Repor filtros",
+    "reset": "Repor",
     "back_to_top": "Voltar ao topo",
     "filters": "Filtros",
     "show_filters": "Mostrar filtros",
@@ -223,7 +224,9 @@
     "print": "Imprimir",
     "select_arial": "Selecione a imagem proxy",
     "select_all": "Selecionar Todos",
-    "reset": "Repor"
+    "reset": "Repor",
+    "add_crypt_card_placeholder": "Adicionar carta de Cripta pelo nome...",
+    "add_library_card_placeholder": "Adicionar carta de Biblioteca pelo nome..."
   },
   "filters": {
     "crypt_cards": "Cartões de cripta",
@@ -232,7 +235,7 @@
     "number_of_copies": "número de cópias",
     "any": "Qualquer",
     "none": "Nenhum",
-    "clear_filters": "Repor filtros",
+    "reset": "Repor",
     "bookmarked": "Favoritos",
     "tags": "Etiquetas",
     "tags_placeholder": "Adicionar etiquetas...",
@@ -288,7 +291,8 @@
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
-    "whats_new": "Novidades {{ date }}"
+    "whats_new": "Novidades {{ date }}",
+    "proxy_generator": "Gerador de Proxies"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
@@ -310,7 +314,7 @@
     "see_more": "Ver mais...",
     "patreon": "Apoie no Patreon",
     "patreon_message": "Este site é 100% gratuito e movido pela comunidade.<br>Se o VTES Decks te ajuda, considere nos apoiar no Patreon ❤️",
-    "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️.",
+    "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
     "contact_support": "Contatar Suporte",
     "whats_new": "Novidades {{ date }}",
     "new": "Novo"
@@ -417,7 +421,8 @@
     "grid": "Grade",
     "list": "Lista",
     "cards": "cartas",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "proxy_generator": "Gerador de Proxies"
   },
   "table_seating": {
     "title": "Assentamento de mesa",
@@ -611,7 +616,8 @@
       "vote": "voto",
       "mmpa": "mmpa",
       "v5": "v5",
-      "2player": "2jogadores"
+      "2player": "2jogadores",
+      "advent2025": "advento2025"
     },
     "taints": {
       "+Intercept": "+Interceptação",
@@ -654,7 +660,8 @@
       "Scarce": "Escasso",
       "Blood Cursed": "Maldição de Sangue",
       "Circle": "Círculo",
-      "Strike": "Golpe"
+      "Strike": "Golpe",
+      "Cannot Block": "Não pode bloquear"
     }
   },
   "limited_format": {
@@ -797,11 +804,23 @@
     "clan": "Clã",
     "discipline": "Disciplina",
     "filters": "Filtros",
-    "clear_filters": "Limpar Filtros",
+    "reset": "Repor",
     "active_filters": "Filtros ativos",
     "apply_filters": "Aplicar Filtros",
     "card_type": "Tipos",
     "clans": "Clãs",
     "disciplines": "Disciplinas"
+  },
+  "advent": {
+    "home_title": "Calendário do Advento VTES {{ year }}",
+    "home_subtitle": "24 Dias de Desafios de Construção de Baralhos - Clique aqui para Participar!",
+    "rules": "Regras",
+    "next_challenge_in": "Próximo desafio desbloqueia em",
+    "advent_finished_title": "O Calendário do Advento VTES {{ year }} terminou!",
+    "advent_finished_subtitle": "Obrigado a todos que participaram! Nos vemos no próximo ano para mais diversão construindo baralhos! Todos os desafios estão disponíveis para explorar!",
+    "view_all_decks": "Ver Todos os Baralhos do Advento {{ year }}",
+    "day_completed": "Dia {{ day }} - Ver Baralho",
+    "day_start": "Iniciar Desafio",
+    "day_login": "Conectar para Iniciar"
   }
 }

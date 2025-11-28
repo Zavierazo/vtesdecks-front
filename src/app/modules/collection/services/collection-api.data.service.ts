@@ -1,12 +1,14 @@
 import { HttpClient, HttpResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
+import {
+  ApiCollection,
+  ApiCollectionBinder,
+  ApiCollectionCard,
+  ApiCollectionImport,
+  ApiCollectionPage,
+} from '@models'
 import { map, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCollection } from '../../../models/api-collection'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
-import { ApiCollectionCard } from '../../../models/api-collection-card'
-import { ApiCollectionImport } from '../../../models/api-collection-import'
-import { ApiCollectionPage } from '../../../models/api-collection-page'
 import { CollectionQueryState } from '../state/collection.store'
 
 @Injectable({

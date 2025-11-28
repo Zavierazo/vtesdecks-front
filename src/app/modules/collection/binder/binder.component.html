@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'collection'">
+<ng-container *transloco="let t; prefix: 'collection'">
   @if(!isPublic){
   <nav class="mt-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -72,6 +72,6 @@
   </div>
   }
   <app-collection-cards-list [owned]="!isPublic" [editable]="!isPublic" [multiSelect]="multiSelect"
-    [showBinders]="false"></app-collection-cards-list>
+    [showBinders]="false" />
   }
 </ng-container>

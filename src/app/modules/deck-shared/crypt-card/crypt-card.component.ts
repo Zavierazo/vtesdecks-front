@@ -16,24 +16,19 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
+import { ApiCrypt, ApiDecks, ApiKrcgCard, ApiShop } from '@models'
 import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, MediaService, ToastService } from '@services'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { EMPTY, Observable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiDecks } from '../../../models/api-decks'
-import { ApiShop } from '../../../models/api-shop'
-import { ApiKrcgCard } from '../../../models/krcg/api-krcg-card'
-import { ToastService } from '../../../services/toast.service'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { Shop, getShop } from '../../../utils/shops'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
-import { ApiCrypt } from './../../../models/api-crypt'
-import { ApiDataService } from './../../../services/api.data.service'
-import { MediaService } from './../../../services/media.service'
 
 @UntilDestroy()
 @Component({
@@ -55,6 +50,7 @@ import { MediaService } from './../../../services/media.service'
     CardImagePipe,
     CollectionCardStatsComponent,
     LazyLoadImageModule,
+    CardTextPipe,
   ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
@@ -159,13 +155,9 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   }
 
   private fetchShops() {
-    if (this.cardList[this.index]?.printOnDemand) {
-      this.shops$ = this.apiDataService
-        .getCardShops(this.cardList[this.index].id)
-        .pipe(untilDestroyed(this))
-    } else {
-      this.shops$ = EMPTY
-    }
+    this.shops$ = this.apiDataService
+      .getCardShops(this.cardList[this.index].id)
+      .pipe(untilDestroyed(this))
   }
 
   private fetchRulings() {
@@ -184,10 +176,6 @@ export class CryptCardComponent implements OnInit, OnDestroy {
         cards: `${this.cardList[this.index].id}=1`,
       })
       .pipe(untilDestroyed(this))
-  }
-
-  getShopInfo(code: string): Shop | undefined {
-    return getShop(code)
   }
 
   setActiveSet(set?: string) {

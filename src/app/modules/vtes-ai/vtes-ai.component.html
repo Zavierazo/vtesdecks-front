@@ -1,4 +1,4 @@
-<div class="d-flex vtes-ai" *transloco="let t; read: 'vtes_ai'">
+<div class="d-flex vtes-ai" *transloco="let t; prefix: 'vtes_ai'">
 
   @if(!(isMobileOrTablet$ | async)){
   <nav class="d-flex flex-column flex-shrink-0 bg-black" style="width: 260px;">
@@ -93,7 +93,7 @@
         }
         @if(loading$ | async){
         <div class="row justify-content-start" #item>
-          <app-loading class="w-auto" [size]="2"></app-loading>
+          <app-loading class="w-auto" [size]="2" />
         </div>
         }
         }

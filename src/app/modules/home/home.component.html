@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'home'">
+<ng-container *transloco="let t; prefix: 'home'">
   @if (showChangelogAlert && changelogAlert) {
   <div class="hero-alert alert alert-info alert-dismissible fade show mb-0 rounded-0 border-0" role="alert">
     <div class="container">
@@ -16,8 +16,26 @@
     </div>
   </div>
   }
+
   <!-- Hero Section -->
   <section class="hero-section py-5 mb-4">
+    <!-- Advent Calendar Banner -->
+    @if (currentAdvent(); as advent) {
+    <div class="container mb-4">
+      <a routerLink="/advent" class="text-decoration-none">
+        <div class="advent-banner-content">
+          <div class="advent-banner-icon d-none d-md-block">🎄</div>
+          <div class="advent-banner-text">
+            <h2 class="advent-banner-title mb-2">🎅 {{ 'advent.home_title' | transloco: { year: advent.year } }}
+            </h2>
+            <p class="advent-banner-subtitle mb-0 d-none d-md-block">✨ {{ 'advent.home_subtitle' | transloco }} ✨</p>
+          </div>
+          <div class="advent-banner-icon d-none d-md-block">⭐</div>
+        </div>
+      </a>
+    </div>
+    }
+
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -30,7 +48,7 @@
                   <i class="bi bi-award"></i>
                   <span>{{ t('tournament_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -39,7 +57,7 @@
                   <i class="bi bi-people"></i>
                   <span>{{ t('community_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -49,7 +67,7 @@
                   <i class="bi bi-bag"></i>
                   <span>{{ t('preconstructed_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -72,7 +90,7 @@
                   <i class="bi bi-stack"></i>
                   <span>{{ t('user_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -81,7 +99,7 @@
                   <i class="bi bi-bookmark-star"></i>
                   <span>{{ t('bookmarked_decks') }}</span>
                   <small class="mt-2">
-                    <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500"></animated-digit>
+                    <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500" />
                   </small>
                 </a>
               </div>
@@ -97,6 +115,12 @@
                 <a routerLink="/cards/library" class="hero-card bg-secondary text-white">
                   <i class="bi bi-file-richtext"></i>
                   <span>{{ 'shared.library' | transloco }}</span>
+                </a>
+              </div>
+              <div class="col-6 col-md-4">
+                <a routerLink="/proxy-generator" class="hero-card bg-secondary text-white">
+                  <i class="bi bi-printer"></i>
+                  <span>{{ 'shared.proxy_generator' | transloco }}</span>
                 </a>
               </div>
             </div>
@@ -134,21 +158,17 @@
   <!-- Popular and Newest Decks -->
   <div class="row mt-3">
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_tournament')"
-      [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular">
-    </app-home-section>
+      [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular" />
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('popular_community')"
-      [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular">
-    </app-home-section>
+      [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular" />
   </div>
 
   <!-- Newest Decks -->
   <div class="row mt-3">
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_tournament')"
-      [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest">
-    </app-home-section>
+      [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest" />
     <app-home-section class="col-md-12 col-lg-6 my-3" [title]="t('newest_community')"
-      [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest">
-    </app-home-section>
+      [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest" />
   </div>
 
   <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7683446640" adFormat="auto" fullWidthResponsive="true" />

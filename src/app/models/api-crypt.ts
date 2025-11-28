@@ -5,22 +5,22 @@ export type CryptSortBy = keyof ApiCrypt | 'relevance' | 'trigramSimilarity'
 export interface ApiCrypt {
   id: number
   name: string
-  aka: string
+  aka?: string
   type: string
   clan: string
-  path: string
+  path?: string
   adv: boolean
   group: number
   capacity: number
   text: string
   sets: string[]
-  title: string
-  banned: string
+  title?: string
+  banned?: string
   artist: string
   image: string
   cropImage: string
   clanIcon: string
-  pathIcon: string
+  pathIcon?: string
   disciplines: string[]
   superiorDisciplines: string[]
   disciplineIcons: string[]

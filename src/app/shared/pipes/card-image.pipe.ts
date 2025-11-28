@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core'
+import { ApiI18n } from '@models'
 import { environment } from '../../../environments/environment'
-import { ApiI18n } from '../../models/api-i18n'
 
 @Pipe({ name: 'cardImage' })
 export class CardImagePipe implements PipeTransform {

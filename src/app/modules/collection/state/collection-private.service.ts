@@ -1,14 +1,14 @@
 import { HttpResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
-import { finalize, map, Observable, switchMap, tap } from 'rxjs'
-import { ApiCollection } from '../../../models/api-collection'
-import { ApiCollectionBinder } from '../../../models/api-collection-binder'
 import {
+  ApiCollection,
+  ApiCollectionBinder,
   ApiCollectionCard,
+  ApiCollectionImport,
+  ApiCollectionPage,
   FILTER_BINDER,
-} from '../../../models/api-collection-card'
-import { ApiCollectionImport } from '../../../models/api-collection-import'
-import { ApiCollectionPage } from '../../../models/api-collection-page'
+} from '@models'
+import { finalize, map, Observable, switchMap, tap } from 'rxjs'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
 import { CollectionQueryState } from './collection.store'

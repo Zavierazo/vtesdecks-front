@@ -3,24 +3,24 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  computed,
   inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiChangelog, ApiHome } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService, LocalStorageService } from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { LoginComponent } from '@shared/components/login/login.component'
+import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
+import { AuthQuery } from '@state/auth/auth.query'
+import { getCurrentAdventData } from '@utils'
 import { switchMap, tap } from 'rxjs'
 import { environment } from '../../../environments/environment'
-import { ApiChangelog } from '../../models/api-changelog'
-import { ApiHome } from '../../models/api-home'
-import { ApiDataService } from '../../services/api.data.service'
-import { LocalStorageService } from '../../services/local-storage.service'
-import { AdSenseComponent } from '../../shared/components/ad-sense/ad-sense.component'
-import { AnimatedDigitComponent } from '../../shared/components/animated-digit/animated-digit.component'
-import { LoginComponent } from '../../shared/components/login/login.component'
-import { IsLoggedDirective } from '../../shared/directives/is-logged.directive'
-import { IsSupporterDirective } from '../../shared/directives/is-supporter.directive'
-import { AuthQuery } from '../../state/auth/auth.query'
 import { HomeSectionComponent } from './home-section/home-section.component'
 
 @UntilDestroy()
@@ -53,6 +53,11 @@ export class HomeComponent implements OnInit {
   deckHome?: ApiHome
   changelogAlert?: ApiChangelog
   showChangelogAlert = false
+  serverDate = this.authQuery.serverDate()
+  currentAdvent = computed(() => {
+    const date = this.serverDate()
+    return date ? getCurrentAdventData(date) : null
+  })
 
   ngOnInit() {
     // Fetch changelog for alert

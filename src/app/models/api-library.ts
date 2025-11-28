@@ -5,10 +5,10 @@ export type LibrarySortBy = keyof ApiLibrary | 'relevance' | 'trigramSimilarity'
 export interface ApiLibrary {
   id: number
   name: string
-  aka: string
+  aka?: string
   type: string
   clans: string[]
-  path: string
+  path?: string
   poolCost: number
   bloodCost: number
   convictionCost: number
@@ -17,16 +17,16 @@ export interface ApiLibrary {
   flavor: string
   sets: string[]
   requirement: string
-  banned: string
+  banned?: string
   artist: string
-  capacity: string
+  capacity?: string
   image: string
   cropImage: string
   trifle: boolean
   disciplines: string[]
   typeIcons: string[]
   clanIcons: string[]
-  pathIcon: string
+  pathIcon?: string
   disciplineIcons: string[]
   sects: string[]
   titles: string[]

@@ -1,0 +1,30 @@
+<ng-container *transloco="let t; prefix: 'print_proxy'">
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center">
+      {{ t('title') }}
+    </h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <app-print-proxy #printProxy [cards]="cards" [title]="title" />
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex justify-content-center align-self-center w-100">
+      @if(printProxy.loading$ | async){
+      <div class="align-self-center me-3">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">{{ t('loading') }}</span>
+        </div>
+      </div>
+      }@else {
+      <button type="button" ngbAutofocus class="btn btn-success me-3" (click)="onPrint()">
+        {{ t('print') }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+        {{ 'shared.cancel' | transloco }}
+      </button>
+      }
+    </div>
+  </div>
+</ng-container>

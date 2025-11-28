@@ -7,18 +7,17 @@ import {
   OnInit,
   output,
 } from '@angular/core'
+import { ApiCard, ApiLibrary } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { LibraryQuery } from '@state/library/library.query'
+import { LibraryService } from '@state/library/library.service'
+import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { ApiCard } from '../../../models/api-card'
-import { ApiLibrary } from '../../../models/api-library'
-import { CardImagePipe } from '../../../shared/pipes/card-image.pipe'
-import { LibraryQuery } from '../../../state/library/library.query'
-import drawProbability from '../../../utils/draw-probability'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
-import { LibraryService } from './../../../state/library/library.service'
 
 @UntilDestroy()
 @Component({

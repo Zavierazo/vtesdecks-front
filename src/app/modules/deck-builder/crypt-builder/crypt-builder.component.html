@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'crypt_section'">
+<ng-container *transloco="let t; prefix: 'crypt_section'">
   <div class="modal-header">
     <h4 class="modal-title">{{ 'crypt_builder.title' | transloco }}</h4>
     <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
@@ -13,7 +13,7 @@
             [formControl]="nameFormControl">
         </div>
         <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
-          (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions"></app-toggle-icon>
+          (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
         <div ngbDropdown class="col-auto d-inline-block">
           <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
             [disabled]="sortByTrigramSimilarity">
@@ -70,7 +70,7 @@
     <div class="row">
       @if ((isMobileOrTablet$ | async) === false) {
       <div class="col-4">
-        <ng-container *ngTemplateOutlet="filter"></ng-container>
+        <ng-container *ngTemplateOutlet="filter" />
       </div>
       }
       <div [ngClass]="{
@@ -90,7 +90,7 @@
           @for (crypt of (crypt$ | async)! ; track crypt.id) {
           <div class="col-6 col-md-auto">
             <app-crypt-grid-card [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-              (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt-grid-card>
+              (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
           </div>
           }
         </div>
@@ -98,7 +98,7 @@
         @for (crypt of (crypt$ | async)! ; track crypt.id) {
         <ul class="col list-group">
           <app-crypt [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-            (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"></app-crypt>
+            (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
         </ul>
         }
         }
@@ -113,7 +113,7 @@
         (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-      <ng-container *ngTemplateOutlet="filter"></ng-container>
+      <ng-container *ngTemplateOutlet="filter" />
     </div>
     <div class="modal-footer">
       <div class="d-grid gap-2 w-100">

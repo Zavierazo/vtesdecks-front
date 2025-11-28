@@ -1,9 +1,13 @@
 import { Injectable, inject } from '@angular/core'
+import {
+  ApiCard,
+  ApiClanStat,
+  ApiCrypt,
+  ApiDisciplineStat,
+  CryptSortBy,
+} from '@models'
+import { searchIncludes } from '@utils'
 import { Observable, map } from 'rxjs'
-import { ApiCard } from '../../models/api-card'
-import { ApiClanStat } from '../../models/api-clan-stat'
-import { ApiCrypt, CryptSortBy } from './../../models/api-crypt'
-import { ApiDisciplineStat } from './../../models/api-discipline-stat'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
@@ -66,8 +70,8 @@ export class CryptQuery {
     return this.store.selectEntities(
       limit,
       (entity) =>
-        entity.name.toLowerCase().includes(name.toLowerCase()) ||
-        entity.i18n?.name?.toLowerCase().includes(name.toLowerCase()) ||
+        searchIncludes(entity.name, name) ||
+        searchIncludes(entity.i18n?.name, name) ||
         false,
     )
   }
@@ -75,7 +79,9 @@ export class CryptQuery {
   selectTitles(): Observable<string[]> {
     return this.store.selectAll().pipe(
       map((crypt) =>
-        crypt.filter((crypt) => crypt.title).map((crypt) => crypt.title),
+        crypt
+          .filter((crypt: ApiCrypt) => crypt.title !== undefined)
+          .map((crypt) => crypt.title!),
       ),
       map((titles) => [...new Set(titles)].sort()),
     )

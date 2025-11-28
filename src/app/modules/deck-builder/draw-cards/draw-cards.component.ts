@@ -3,17 +3,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   Input,
   OnInit,
   Signal,
   signal,
-  inject,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { ApiCard } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { isCrypt } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { ApiCard } from '../../../models/api-card'
-import { isCrypt } from '../../../utils/vtes-utils'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 
