@@ -283,7 +283,7 @@ export const ADVENT_DATA: AdventData[] = [
       13: {
         title: 'Glacial Politics',
         content:
-          '<strong>Rule</strong>: Your deck must focus on votes — include 10+ Political Action cards.',
+          '<strong>Rule</strong>: Your deck must focus on votes; include at least 10 Political Action cards.',
         validation: (query: DeckBuilderQuery) => {
           const politicalCards = query
             .getLibrary()
@@ -327,54 +327,215 @@ export const ADVENT_DATA: AdventData[] = [
         },
       },
       15: {
-        title: 'Print-On-Demand Purist',
+        title: 'Dual Identity',
         content:
-          '<strong>Rule</strong>: Use only cards currently available in PoD.',
+          '<strong>Rule</strong>: Use at least one vampire, with both their normal and advanced versions',
+        validation: (query: DeckBuilderQuery) => {
+          const advancedVampire = query
+            .getCrypt()
+            .filter((vampire) => vampire.adv)
+          const normalVampire = query
+            .getCrypt()
+            .filter((vampire) => !vampire.adv)
+          const hasDualVersion = normalVampire.some((normal) =>
+            advancedVampire.some(
+              (advanced) =>
+                advanced.name === normal.name && advanced.clan === normal.clan,
+            ),
+          )
+          if (!hasDualVersion) {
+            return {
+              cryptErrors: [
+                'Advent Rule: Crypt must include at least one vampire in both normal and advanced versions.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       16: {
-        title: 'Animal Kingdom Carol',
+        title: 'Legions of the Damned',
         content:
-          '<strong>Rule</strong>: Include at least 6 allies or retainers that are animals.',
+          '<strong>Rule</strong>: Include at least 12 allies or retainers.',
+        validation: (query: DeckBuilderQuery) => {
+          const animalAllies = query
+            .getLibrary()
+            .filter(
+              (card) =>
+                card.type.includes('Ally') || card.type.includes('Retainer'),
+            )
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (animalAllies < 12) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 12 allies or retainers.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       17: {
-        title: 'Discipline Twins',
+        title: 'Discipline Triplets',
         content:
-          '<strong>Rule</strong>: All vampires must share two disciplines in common.',
+          '<strong>Rule</strong>: All vampires must share three disciplines in common.',
+        validation: (query: DeckBuilderQuery) => {
+          const crypt = query.getCrypt()
+          if (crypt.length === 0) {
+            return {}
+          }
+          const commonDisciplines = crypt
+            .map((vampire) => vampire.disciplines)
+            .reduce((common, disciplines) =>
+              common.filter((d) => disciplines.includes(d)),
+            )
+          if (commonDisciplines.length < 3) {
+            return {
+              cryptErrors: [
+                'Advent Rule: All vampires must share at least three disciplines in common.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       18: {
         title: '24 Hours, 24 Actions',
         content:
           '<strong>Rule</strong>: Your library must contain exactly 24 action cards.',
+        validation: (query: DeckBuilderQuery) => {
+          const actionCards = query
+            .getLibrary()
+            .filter((card) => card.type.includes('Action'))
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (actionCards !== 24) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must contain exactly 24 action cards.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       19: {
-        title: 'The Anti-Meta Grinch',
+        title: 'Whispers in the Blizzard',
         content:
-          '<strong>Rule</strong>: Build something that deliberately counters a top-tier archetype.', //TODO: not possible to enforce
+          '<strong>Rule</strong>: Your deck must include at least 15 reaction cards.',
+        validation: (query: DeckBuilderQuery) => {
+          const reactionCards = query
+            .getLibrary()
+            .filter((card) => card.type.includes('Reaction'))
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (reactionCards < 15) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 15 reaction cards.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       20: {
-        title: 'Random Gift of the Day',
+        title: 'Deep Winter Sabbat',
         content:
-          "<strong>Rule</strong>: You must include a randomly chosen card (your own, or using VTESDecks' randomizer).", //TODO: not possible to enforce
+          '<strong>Rule</strong>: Your crypt must be exclusively Sabbat, and you must include at least 6 Black Hand cards.',
+        validation: (query: DeckBuilderQuery) => {
+          const crypt = query.getCrypt()
+          const nonSabbatVamps = crypt.filter(
+            (vampire) => vampire.sect !== 'Sabbat',
+          )
+          if (nonSabbatVamps.length > 0) {
+            return {
+              cryptErrors: [
+                'Advent Rule: Crypt must contain only Sabbat vampires.',
+              ],
+            }
+          }
+          const blackHandCards = query
+            .getLibrary()
+            .filter((card) => card.taints && card.taints.includes('Black Hand'))
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (blackHandCards < 6) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 6 Black Hand cards.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       21: {
-        title: 'The Peaceful Table',
+        title: 'Glittering Gifts',
         content:
-          '<strong>Rule</strong>: No damage-based cards (combat damage, aggravated, bleeds over +1, etc.).', //TODO: repeated
+          '<strong>Rule</strong>:You must include at least 10 equipment cards.',
+        validation: (query: DeckBuilderQuery) => {
+          const equipmentCards = query
+            .getLibrary()
+            .filter((card) => card.type.includes('Equipment'))
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (equipmentCards < 10) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 10 equipment cards.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       22: {
-        title: 'Three Kings Only',
+        title: 'Veil of Shadows',
         content:
-          '<strong>Rule</strong>: Crypt must contain vampires from three different clans.',
+          '<strong>Rule</strong>: Your deck must include at least 10 +Stealth / -Intercept cards.',
+
+        validation: (query: DeckBuilderQuery) => {
+          const stealthCards = query
+            .getLibrary()
+            .filter((card) => card.taints.includes('+Stealth / -Intercept'))
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (stealthCards < 10) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 10 +Stealth / -Intercept cards.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       23: {
-        title: 'Holiday Madness',
+        title: 'Hunger of the Long Night',
         content:
-          '<strong>Rule</strong>: Include at least 8 cards with Dementation or "madness" themes.',
+          '<strong>Rule</strong>: Include at least 12 cards that cost pool.',
+        validation: (query: DeckBuilderQuery) => {
+          const poolCostCards = query
+            .getLibrary()
+            .filter((card) => card.poolCost && card.poolCost > 0)
+            .map((card) => query.getCardNumber(card.id))
+            .reduce((sum, num) => sum + num, 0)
+          if (poolCostCards < 12) {
+            return {
+              libraryErrors: [
+                'Advent Rule: Library must include at least 12 cards that cost pool.',
+              ],
+            }
+          }
+          return {}
+        },
       },
       24: {
         title: 'The Grand Finale: Your Best Gift',
         content:
-          '<strong>Rule</strong>: Build your perfect deck — but it must include one hidden holiday-themed card (your choice).',
+          '<strong>Rule</strong>: Create your best deck and share it with the community as your holiday gift.',
       },
     },
   },
