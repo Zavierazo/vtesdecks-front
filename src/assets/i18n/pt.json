@@ -616,7 +616,8 @@
       "vote": "voto",
       "mmpa": "mmpa",
       "v5": "v5",
-      "2player": "2jogadores"
+      "2player": "2jogadores",
+      "advent2025": "advento2025"
     },
     "taints": {
       "+Intercept": "+Interceptação",
