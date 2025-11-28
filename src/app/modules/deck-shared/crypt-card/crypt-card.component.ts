@@ -21,6 +21,7 @@ import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
@@ -49,6 +50,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     CardImagePipe,
     CollectionCardStatsComponent,
     LazyLoadImageModule,
+    CardTextPipe,
   ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {

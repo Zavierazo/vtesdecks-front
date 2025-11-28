@@ -1,13 +1,14 @@
 [
   {
     "version": "2.55.0",
-    "date": "XXth November, 2025",
+    "date": "28th November, 2025",
     "changes": [
       "Added proxy generator tool to create printable proxies for your decks.",
-      "Added trigram similarity search to more card name searches across the site for better results.",
-      "Tags for V5 and 2-Player Format are now displayed as clickable buttons inside filter section. This makes it easier to quickly filter decks by V5 and Two-player format.",
-      "Added badge to supporter users next to their name in comments and header.",
-      "And as the year closes… keep an eye on December. Something fun may appear 👀",
+      "Improved card name searches by extending trigram similarity matching across more sections of the site.",
+      "V5 and Two-Player Format tags are now shown as clickable buttons in the filter panel for faster deck filtering.",
+      "Supporter users now display a special badge next to their name in comments and in the header.",
+      "Added a text icon to quickly preview full card text on hover.",
+      "As the year winds down… keep an eye on December. Something fun might be waiting 👀",
       "Minor fixes and performance improvements."
     ]
   },

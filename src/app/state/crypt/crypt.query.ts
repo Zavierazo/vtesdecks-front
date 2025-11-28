@@ -79,7 +79,9 @@ export class CryptQuery {
   selectTitles(): Observable<string[]> {
     return this.store.selectAll().pipe(
       map((crypt) =>
-        crypt.filter((crypt) => crypt.title).map((crypt) => crypt.title),
+        crypt
+          .filter((crypt: ApiCrypt) => crypt.title !== undefined)
+          .map((crypt) => crypt.title!),
       ),
       map((titles) => [...new Set(titles)].sort()),
     )

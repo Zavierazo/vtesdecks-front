@@ -3,15 +3,17 @@
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
-        <div class="position-relative">
+        <div class="position-relative card-image-container">
           <img class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
             [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
             (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
-          @if(card.i18n && !card.i18n.image && card.i18n.text) {
-          <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2">
-            {{ card.i18n.text }}
+          <div class="card-text-icon position-absolute">
+            <i class="bi bi-file-text-fill"></i>
           </div>
-          }
+          <div
+            class="card-text-overlay position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2"
+            [innerHTML]="card.i18n?.text || card.text | cardText">
+          </div>
         </div>
         @if(setImageError) {
         <div class="text-center text-warning small my-2">
