@@ -139,8 +139,10 @@
             </div>
           </div>
           }
-          @if ((preconstructedDecks$ | async)?.decks; as decks) {
-          @if (card.printOnDemand || decks.length > 0) {
+          @let preconstructedDecks = preconstructedDecks$ | async;
+          @let shops = shops$ | async;
+          @if (card.printOnDemand || (shops && shops.length > 0) || (preconstructedDecks &&
+          preconstructedDecks.decks.length > 0)) {
           <div class="card border-0 shadow-sm mt-3">
             <div class="card-header bg-secondary text-white py-2">
               <h6 class="mb-0 fw-bold">
@@ -148,8 +150,10 @@
               </h6>
             </div>
             <div class="card-body p-2">
-              @for (deck of decks; track deck; let last = $last) {
-              <div class="d-flex align-items-center py-1 border-dark" [class.border-bottom]="!last">
+              @if(preconstructedDecks){
+              @for (deck of preconstructedDecks.decks; track deck; let last = $last) {
+              <div class="d-flex align-items-center py-1 border-dark"
+                [class.border-bottom]="!last|| (shops && shops.length > 0)">
                 <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id"
                   (click)="modal.dismiss('Link click')">
                   @if( deck.filterCards?.[0]?.number; as number ){
@@ -160,21 +164,25 @@
                 </a>
               </div>
               }
-              @for (shop of (shops$ | async)!; track shop; let last = $last) {
+              }
+              @for (shop of shops; track shop; let last = $last) {
               <div class="d-flex align-items-center justify-content-between py-1 border-dark"
-                [class.border-bottom]="!last || decks.length > 0" [class.opacity-50]="!shop.inStock">
+                [class.border-bottom]="!last" [class.opacity-50]="!shop.inStock">
                 <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
                   [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name"
                   [class.text-decoration-line-through]="!shop.inStock">
-                  <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">{{
-                    shop.shopInfo.fullName }}</span>
+                  <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">
+                    {{ shop.shopInfo.fullName }}
+                    @if(shop.set){
+                    - {{ shop.set }}
+                    }
+                  </span>
                   <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
                 </a>
               </div>
               }
             </div>
           </div>
-          }
           }
           <app-collection-card-stats [cardId]="card.id" (routerClick)="modal.dismiss('Link click')" />
           <small class="float-end text-muted mt-2">#{{card.id}}</small>
