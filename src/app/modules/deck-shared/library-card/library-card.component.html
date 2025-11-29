@@ -1,5 +1,7 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (cardList[index]; as card) {
+  @let preconstructedDecks = preconstructedDecks$ | async;
+  @let shops = shops$ | async;
   <div class="library-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
@@ -139,8 +141,6 @@
             </div>
           </div>
           }
-          @let preconstructedDecks = preconstructedDecks$ | async;
-          @let shops = shops$ | async;
           @if (card.printOnDemand || (shops && shops.length > 0) || (preconstructedDecks &&
           preconstructedDecks.decks.length > 0)) {
           <div class="card border-0 shadow-sm mt-3">
@@ -196,7 +196,7 @@
               [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-search"></i> {{ t('search') }}
             </button>
-            @for (shop of (shops$ | async)!; track shop) {
+            @for (shop of shops; track shop) {
             @if(shop.inStock && shop.shopInfo.showButton){
             <a type="button" class="btn btn-sm btn-success col-auto me-1"
               [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" gaEvent="purchase"
