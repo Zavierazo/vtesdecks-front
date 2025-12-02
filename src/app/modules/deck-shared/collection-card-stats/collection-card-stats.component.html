@@ -8,8 +8,8 @@
         <span>
           <i class="bi bi-collection me-2"></i>{{ t('my_decks') }}
           <span class="badge ms-2" [ngClass]="{
-            'bg-danger': collectionStats.collectionNumber < collectionStats.decksNumber ,
-            'bg-dark':  collectionStats.collectionNumber >= collectionStats.decksNumber
+            'bg-danger': collectionStats.collectionNumber && collectionStats.collectionNumber < collectionStats.decksNumber ,
+            'bg-dark':  !collectionStats.collectionNumber || collectionStats.collectionNumber >= collectionStats.decksNumber
           }"
             [title]="t('cards_in_collection_tooltip', { collected: collectionStats.collectionNumber, total: collectionStats.decksNumber })">
             {{ collectionStats.decksNumber }}
