@@ -170,7 +170,7 @@
     "rulings": "Reglas",
     "sets": "Expansión",
     "artist": "Artista",
-    "where_find": "¿Dónde puedo encontrarlo?",
+    "where_find": "¿Dónde puedo conseguirla?",
     "search": "Buscar",
     "search_title": "Buscar mazo con esta carta",
     "buy": "Compra esta carta en {{ name }}",
@@ -184,6 +184,7 @@
     "my_collection": "¿Cuántas tengo?",
     "view_collection": "Ver en Colección",
     "tracked_collection": "Rastreado en Colección",
+    "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas en la colección",
     "share": "Compartir"
   },
   "decks": {
@@ -661,7 +662,19 @@
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo",
       "Strike": "Ataque",
-      "Cannot Block": "No puede bloquear"
+      "Cannot Block": "No puede bloquear",
+      "Animal": "Animal",
+      "Changeling": "Changeling",
+      "Demon": "Demonio",
+      "Dhampir": "Dhampir",
+      "Gargoyle": "Gárgola",
+      "Ghoul": "Ghoul",
+      "Mage": "Mago",
+      "Mortal": "Mortal",
+      "Mummy": "Momia",
+      "Werewolf": "Hombre Lobo",
+      "Wraith": "Aparición",
+      "Zombie": "Zombi"
     }
   },
   "limited_format": {

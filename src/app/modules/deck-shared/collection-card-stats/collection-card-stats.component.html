@@ -1,19 +1,24 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
-  @if ((collectionStats$() | async); as collectionStats) {
+  @if (collectionStats(); as collectionStats) {
   @if (collectionStats.decks && collectionStats.decks.total > 0) {
   <div class="card border-0 shadow-sm mt-3">
-    <div class="card-header bg-primary text-white py-2">
-      <h6 class="mb-0 fw-bold">
-        <i class="bi bi-collection me-2"></i>{{ t('my_decks') }}
-        <span class="badge text-dark ms-2" [ngClass]="{
-      'bg-danger': collectionStats.collectionNumber < collectionStats.decksNumber ,
-      'bg-light':  collectionStats.collectionNumber >= collectionStats.decksNumber
-     }">
-          {{ collectionStats.decksNumber }}
+    <div class="card-header bg-primary text-white py-2" role="button" (click)="decksCollapsed = !decksCollapsed"
+      (keyup.enter)="decksCollapsed = !decksCollapsed" (keyup.space)="decksCollapsed = !decksCollapsed" tabindex="0">
+      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-collection me-2"></i>{{ t('my_decks') }}
+          <span class="badge ms-2" [ngClass]="{
+            'bg-danger': collectionStats.collectionNumber < collectionStats.decksNumber ,
+            'bg-dark':  collectionStats.collectionNumber >= collectionStats.decksNumber
+          }"
+            [title]="t('cards_in_collection_tooltip', { collected: collectionStats.collectionNumber, total: collectionStats.decksNumber })">
+            {{ collectionStats.decksNumber }}
+          </span>
         </span>
+        <i class="bi" [class.bi-chevron-down]="!decksCollapsed" [class.bi-chevron-right]="decksCollapsed"></i>
       </h6>
     </div>
-    <div class="card-body p-2">
+    <div class="card-body p-2" [ngbCollapse]="decksCollapsed" #decksCollapse="ngbCollapse">
       @for (deck of collectionStats.decks.decks; track deck; let last = $last) {
       <div class="d-flex align-items-center py-1 border-dark" [class.border-bottom]="!last">
         <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id" (click)="routerClick.emit(true)">
@@ -32,13 +37,18 @@
   }
   @if (collectionStats.collectionNumber > 0) {
   <div class="card border-0 shadow-sm mt-3">
-    <div class="card-header bg-success text-white py-2">
-      <h6 class="mb-0 fw-bold">
-        <i class="bi bi-archive me-2"></i>{{ t('my_collection') }}
-        <span class="badge bg-light text-dark ms-2">{{ collectionStats.collectionNumber }}</span>
+    <div class="card-header bg-secondary text-white py-2" role="button"
+      (click)="collectionCollapsed = !collectionCollapsed" (keyup.enter)="collectionCollapsed = !collectionCollapsed"
+      (keyup.space)="collectionCollapsed = !collectionCollapsed" tabindex="0">
+      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-archive me-2"></i>{{ t('my_collection') }}
+          <span class="badge bg-dark ms-2">{{ collectionStats.collectionNumber }}</span>
+        </span>
+        <i class="bi" [class.bi-chevron-down]="!collectionCollapsed" [class.bi-chevron-right]="collectionCollapsed"></i>
       </h6>
     </div>
-    <div class="card-body p-2">
+    <div class="card-body p-2" [ngbCollapse]="collectionCollapsed" #collectionCollapse="ngbCollapse">
       @for (card of collectionStats.collectionCards; track card; let last = $last) {
       <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last">
         <div class="flex-grow-1">

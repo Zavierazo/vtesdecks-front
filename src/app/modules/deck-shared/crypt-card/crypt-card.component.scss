@@ -1,12 +1,22 @@
 .crypt-card {
   overflow: auto;
   overflow-x: hidden;
+
+  .modal-right-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
 }
 
-.card-image-container {
-  &:hover .card-text-icon {
-    opacity: 1;
-  }
+.modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.modal-footer {
+  flex: 0 0 auto;
 }
 
 .card-text-icon {
@@ -18,7 +28,6 @@
   border-radius: 4px;
   font-size: 1.1rem;
   cursor: pointer;
-  opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 10;
 

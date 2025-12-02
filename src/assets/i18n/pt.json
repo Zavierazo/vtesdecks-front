@@ -170,7 +170,7 @@
     "rulings": "Regras",
     "sets": "Expansões",
     "artist": "Artista",
-    "where_find": "Onde posso encontrar?",
+    "where_find": "Onde posso consegui-la?",
     "search": "Buscar",
     "search_title": "Buscar baralho com este cartão",
     "buy": "Compre este cartão em {{ name }}",
@@ -184,6 +184,7 @@
     "my_collection": "Quantas eu possuo?",
     "view_collection": "Ver na Coleção",
     "tracked_collection": "Rastreado na Coleção",
+    "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar"
   },
   "decks": {
@@ -661,7 +662,19 @@
       "Blood Cursed": "Maldição de Sangue",
       "Circle": "Círculo",
       "Strike": "Golpe",
-      "Cannot Block": "Não pode bloquear"
+      "Cannot Block": "Não pode bloquear",
+      "Animal": "Animal",
+      "Changeling": "Changeling",
+      "Demon": "Demônio",
+      "Dhampir": "Dampira",
+      "Gargoyle": "Gárgula",
+      "Ghoul": "Caniçal",
+      "Mage": "Mago",
+      "Mortal": "Mortal",
+      "Mummy": "Mumia",
+      "Werewolf": "Lobisomem",
+      "Wraith": "Aparição",
+      "Zombie": "Zombie"
     }
   },
   "limited_format": {

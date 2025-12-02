@@ -170,7 +170,7 @@
     "rulings": "Rulings",
     "sets": "Sets",
     "artist": "Artist",
-    "where_find": "Where can I find it?",
+    "where_find": "Where can I get it?",
     "search": "Search",
     "search_title": "Search deck with this card",
     "buy": "Buy this card on {{ name }}",
@@ -184,6 +184,7 @@
     "my_collection": "How many do I own?",
     "view_collection": "View in Collection",
     "tracked_collection": "Tracked in Collection",
+    "cards_in_collection_tooltip": "{{ collected }} out of {{ total }} cards in collection",
     "share": "Share"
   },
   "decks": {
@@ -662,7 +663,19 @@
       "Blood Cursed": "Blood Cursed",
       "Circle": "Circle",
       "Strike": "Strike",
-      "Cannot Block": "Cannot Block"
+      "Cannot Block": "Cannot Block",
+      "Animal": "Animal",
+      "Changeling": "Changeling",
+      "Demon": "Demon",
+      "Dhampir": "Dhampir",
+      "Gargoyle": "Gargoyle",
+      "Ghoul": "Ghoul",
+      "Mage": "Mage",
+      "Mortal": "Mortal",
+      "Mummy": "Mummy",
+      "Werewolf": "Werewolf",
+      "Wraith": "Wraith",
+      "Zombie": "Zombie"
     }
   },
   "limited_format": {
