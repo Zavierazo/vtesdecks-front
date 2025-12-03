@@ -1,7 +1,7 @@
 [
   {
     "version": "2.56.0",
-    "date": "XXth December, 2025",
+    "date": "5th December, 2025",
     "changes": [
       "Introduced collapsible sections in card modals for cleaner and easier navigation.",
       "Added card price information to both card modals and deck pages, including per-card prices and total deck cost. Prices are automatically shown in the user\\'s currency.",
