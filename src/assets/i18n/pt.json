@@ -86,9 +86,10 @@
     "tournament": "Torneio",
     "limited_format": "Formato Limitado",
     "players": "{{ count }} jogadores",
-    "buy_dtc": "Compre em DriveThruCards",
+    "buy_dtc": "Comprar em DriveThruCards",
     "source": "Fonte",
-    "twda": "Arquivo de baralhos ganhos do torneio",
+    "twda": "Arquivo de baralhos vencedores de torneios",
+    "price": "Preço",
     "views": "Visualizações",
     "rate_deck": "Deixe uma avaliação para esse baralho!",
     "votes": "{{ count }} votos",
@@ -166,8 +167,9 @@
     "limited_format_not_allowed": "{{ name }} não é permitido neste formato"
   },
   "deck_shared": {
-    "banned": "Banido",
+    "banned": "Banida",
     "rulings": "Regras",
+    "no_rulings": "Nenhuma regra disponível",
     "sets": "Expansões",
     "artist": "Artista",
     "where_find": "Onde posso consegui-la?",

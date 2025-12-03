@@ -20,6 +20,8 @@ export interface ApiDeckStats {
   avgCrypt: number
   minCrypt: number
   maxCrypt: number
+  price?: number
+  currency?: string
   cryptDisciplines: ApiDisciplineStat[]
   libraryDisciplines: ApiDisciplineStat[]
   libraryClans: ApiClanStat[]

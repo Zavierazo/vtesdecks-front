@@ -25,7 +25,7 @@
                 </div>
                 <div class="deck-meta">
                   <p class="mb-1">
-                    {{ t('created_by') }}
+                    <b>{{ t('created_by') }} </b>
                     <a class="text-decoration-none" routerLink="/decks" [queryParams]="{
                       author: deck.author,
                       type: deck.type
@@ -73,6 +73,12 @@
                   <p class="mb-1">
                     <b>{{ t('source') }}: </b>
                     <a class="text-decoration-none" [href]="deck.source" target="_blank">{{ t('twda') }}</a>
+                  </p>
+                  }
+                  @if(deck.stats.price) {
+                  <p class="mb-1">
+                    <b>{{ t('price') }}: </b>
+                    <span class="fw-semibold">{{ deck.stats.price | currency:deck.stats.currency }}</span>
                   </p>
                   }
                 </div>
@@ -355,8 +361,7 @@
       <app-library-list [libraryList]="deck.library" [displayMode]="(displayMode$ |async)!" />
       }
     </div>
-    <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto"
-      fullWidthResponsive="true" />
+    <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
     @if(similarDecks$ | async; as similarDecks) {
     <div class="col-12 d-flex justify-content-center mt-3">
       <h2>{{ t('similar_decks') }}</h2>

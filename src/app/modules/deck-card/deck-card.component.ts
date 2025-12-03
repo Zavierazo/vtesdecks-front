@@ -1,4 +1,4 @@
-import { NgClass, NgStyle, TitleCasePipe } from '@angular/common'
+import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,6 +31,7 @@ import { tap } from 'rxjs'
     NgClass,
     NgStyle,
     TitleCasePipe,
+    CurrencyPipe,
     TruncatePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,

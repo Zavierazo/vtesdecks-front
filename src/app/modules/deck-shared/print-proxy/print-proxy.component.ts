@@ -249,6 +249,10 @@ export class PrintProxyComponent implements OnInit {
     this.resetCards((card) => card.isCrypt, true)
   }
 
+  get hasMaxAmount(): boolean {
+    return this.cardList().some((card) => card.amount < card.maxAmount!)
+  }
+
   resetCards(isTypeCheck: (card: ApiProxyItem) => boolean, maxAmount: boolean) {
     this.cardList.update((current: ApiProxyItem[]) =>
       current.map((card: ApiProxyItem) =>

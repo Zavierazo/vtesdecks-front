@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common'
 import { Component, input, output } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCardInfo, ApiCrypt, ApiLibrary } from '@models'
 import { NgbCollapse, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
@@ -16,6 +16,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
   styleUrls: ['./card-info.component.scss'],
   imports: [
     TranslocoDirective,
+    TranslocoPipe,
     NgbTooltip,
     NgbCollapse,
     SetTooltipComponent,

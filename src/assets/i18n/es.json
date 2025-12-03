@@ -88,7 +88,8 @@
     "players": "{{ count }} jugadores",
     "buy_dtc": "Comprar en DriveThruCards",
     "source": "Fuente",
-    "twda": "Archivo de mazos ganadores del torneo",
+    "twda": "Archivo de mazos ganadores de torneos",
+    "price": "Precio",
     "views": "Visitas",
     "rate_deck": "¡Tómate un momento para puntuar este mazo!",
     "votes": "{{ count }} votos",
@@ -168,6 +169,7 @@
   "deck_shared": {
     "banned": "Prohibida",
     "rulings": "Reglas",
+    "no_rulings": "No hay reglas disponibles",
     "sets": "Expansión",
     "artist": "Artista",
     "where_find": "¿Dónde puedo conseguirla?",

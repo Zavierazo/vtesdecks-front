@@ -8,4 +8,7 @@ export interface ApiCardInfo {
   shopList: ApiShop[]
   rulingList?: ApiRuling[]
   collectionStats?: ApiCollectionCardStats
+  minPrice?: number
+  maxPrice?: number
+  currency?: string
 }

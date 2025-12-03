@@ -14,6 +14,11 @@
           <span class="small text-black">
             <i class="bi bi-stack me-1"></i>{{ deck.stats.library }}
           </span>
+          @if(deck.stats.price) {
+          <span class="small text-success fw-bold">
+            {{ deck.stats.price | currency:deck.stats.currency }}
+          </span>
+          }
         </div>
 
         <h2 class="deck-title fs-4 text-black text-center mb-0">

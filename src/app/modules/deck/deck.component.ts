@@ -1,5 +1,10 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass, TitleCasePipe } from '@angular/common'
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  NgClass,
+  TitleCasePipe,
+} from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -91,6 +96,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     LibraryListComponent,
     CommentsComponent,
     AsyncPipe,
+    CurrencyPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
     DisciplineTranslocoPipe,

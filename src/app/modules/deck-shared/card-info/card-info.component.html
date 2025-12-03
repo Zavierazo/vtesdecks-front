@@ -14,7 +14,6 @@
     <strong>{{ t('artist') }}: </strong>{{ card().artist }}
   </p>
   @if(cardInfo(); as cardInfo) {
-  @if (cardInfo?.rulingList; as rulings) {
   <div class="card border-0 shadow-sm mt-3">
     <div class="card-header bg-warning text-dark py-2" role="button" (click)="rulingsCollapsed = !rulingsCollapsed"
       (keyup.enter)="rulingsCollapsed = !rulingsCollapsed" (keyup.space)="rulingsCollapsed = !rulingsCollapsed"
@@ -22,7 +21,7 @@
       <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
         <span>
           <i class="bi bi-book me-2"></i>{{ t('rulings') }}
-          <span class="badge bg-dark ms-2">{{ rulings.length }}</span>
+          <span class="badge bg-dark ms-2">{{ cardInfo.rulingList?.length ?? 0 }}</span>
         </span>
         <span>
           <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
@@ -33,15 +32,20 @@
         </span>
       </h6>
     </div>
+    @if(cardInfo.rulingList?.length) {
     <div class="card-body px-2" [ngbCollapse]="rulingsCollapsed" #rulingsCollapse="ngbCollapse">
-      @for (ruling of rulings; track ruling; let last = $last) {
+      @for (ruling of cardInfo.rulingList; track ruling; let last = $last) {
       <div class="py-2 border-dark" [class.border-bottom]="!last">
         <app-ruling-text [ruling]="ruling" />
       </div>
       }
     </div>
+    } @else {
+    <div class="card-body px-2 text-muted text-center py-3" [ngbCollapse]="rulingsCollapsed">
+      <i class="bi bi-info-circle me-2"></i>{{ t('no_rulings') }}
+    </div>
+    }
   </div>
-  }
   @if (cardInfo && (cardInfo.shopList.length >0 || cardInfo.preconstructedDecks.length > 0)) {
   <div class="card border-0 shadow-sm mt-3">
     <div class="card-header bg-success text-white py-2" role="button" (click)="shopsCollapsed = !shopsCollapsed"
@@ -49,9 +53,16 @@
       <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
         <span>
           <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
-          <span class="badge bg-dark ms-2">
-            {{ cardInfo.preconstructedDecks.length + cardInfo.shopList.length }}
+          <span class="badge bg-dark ms-2">{{ cardInfo.preconstructedDecks.length + cardInfo.shopList.length }}</span>
+          @if(cardInfo.minPrice && cardInfo.maxPrice) {
+          <span class="badge bg-light text-black border ms-2">
+            @if(cardInfo.minPrice === cardInfo.maxPrice) {
+            {{ cardInfo.minPrice | currency:cardInfo.currency }}
+            } @else {
+            {{ cardInfo.minPrice | currency:cardInfo.currency }} - {{ cardInfo.maxPrice | currency:cardInfo.currency }}
+            }
           </span>
+          }
         </span>
         <i class="bi" [class.bi-chevron-down]="!shopsCollapsed" [class.bi-chevron-right]="shopsCollapsed"></i>
       </h6>
@@ -90,5 +101,12 @@
   @if(cardInfo?.collectionStats; as collectionStats) {
   <app-collection-card-stats [collectionStats]="collectionStats" (routerClick)="routerClick.emit(true)" />
   }
+  } @else {
+  <div class="text-center py-4">
+    <div class="spinner-border text-primary spinner-border-sm me-2" role="status">
+      <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+    </div>
+    <span class="text-muted">{{ 'shared.loading' | transloco }}...</span>
+  </div>
   }
 </ng-container>

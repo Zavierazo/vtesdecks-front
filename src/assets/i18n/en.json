@@ -89,6 +89,7 @@
     "buy_dtc": "Buy at DriveThruCards",
     "source": "Source",
     "twda": "Tournament Winning Deck Archive",
+    "price": "Price",
     "views": "Views",
     "rate_deck": "Take a second to rate this deck!",
     "votes": "{{ count }} votes",
@@ -168,6 +169,7 @@
   "deck_shared": {
     "banned": "Banned",
     "rulings": "Rulings",
+    "no_rulings": "No rulings available",
     "sets": "Sets",
     "artist": "Artist",
     "where_find": "Where can I get it?",
