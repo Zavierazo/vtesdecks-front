@@ -289,6 +289,7 @@
     "my_collection": "Mi Colección",
     "my_decks": "Mis mazos",
     "bookmarks": "Favoritos",
+    "public_profile": "Perfil Público",
     "profile_settings": "Configuración de Perfil",
     "logout": "Cerrar sesión",
     "theme": "Tema",
@@ -424,7 +425,8 @@
     "list": "Lista",
     "cards": "cartas",
     "apply": "Aplicar",
-    "proxy_generator": "Generador de Proxies"
+    "proxy_generator": "Generador de Proxies",
+    "supporter": "Miembro en Patreon"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -448,6 +450,17 @@
     "password_not_same": "No puede ser la misma que una contraseña anterior",
     "save": "Guardar Perfil",
     "error": "Se produjo un error al actualizar su configuración."
+  },
+  "user_public_profile": {
+    "deck": "mazo",
+    "decks": "mazos",
+    "public_decks": "Mazos",
+    "public_binders": "Colecciones",
+    "loading": "Cargando...",
+    "no_decks_found": "No se encontraron mazos públicos",
+    "no_binders_found": "No se encontraron carpetas públicas",
+    "cards": "cartas",
+    "view_all_decks": "Ver Todos los Mazos"
   },
   "verify_account": {
     "success": "¡Cuenta verificada!",

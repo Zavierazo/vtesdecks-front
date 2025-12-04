@@ -6,10 +6,10 @@
       <div class="d-flex flex-row align-items-center">
         <span class="me-2" [ngClass]="{ 'fw-bold' : comment.createdByCurrentUser}">
           {{ comment.fullName }}
+          @if (comment.createdBySupporter) {
+          <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
+          }
         </span>
-        @if (comment.createdBySupporter) {
-        <i class="bi bi-patch-check-fill text-gold" title="Supporter"></i>
-        }
         @if(comment.createdByAdmin){
         <small class="badge bg-primary ms-2">
           {{ t('admin') }}

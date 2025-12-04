@@ -2,6 +2,7 @@ import { ApiCard } from './api-card'
 import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
 import { ApiErrata } from './api-errata'
+import { ApiUser } from './api-user'
 
 export interface ApiDeck {
   id: string
@@ -16,6 +17,7 @@ export interface ApiDeck {
   players: number
   year: number
   author: string
+  user?: ApiUser
   url?: string
   source?: string
   description?: string

@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   NgbCollapse,
   NgbDropdown,
@@ -50,6 +50,7 @@ import { ThemeSelectorComponent } from '../theme-selector/theme-selector.compone
     LangSelectorComponent,
     ThemeSelectorComponent,
     AsyncPipe,
+    TranslocoPipe,
   ],
 })
 export class HeaderComponent implements OnInit {
@@ -62,6 +63,8 @@ export class HeaderComponent implements OnInit {
 
   isCollapsed = true
 
+  user$!: Observable<string | undefined>
+
   displayName$!: Observable<string | undefined>
 
   profileImage$!: Observable<string | undefined>
@@ -73,6 +76,7 @@ export class HeaderComponent implements OnInit {
   isMobile$ = this.mediaService.observeMobileOrTablet()
 
   ngOnInit(): void {
+    this.user$ = this.authQuery.selectUser()
     this.displayName$ = this.authQuery.selectDisplayName()
     this.profileImage$ = this.authQuery.selectProfileImage()
     this.notificationUnreadCount$ = this.authQuery.selectNotificationCount()

@@ -9,4 +9,12 @@ export const USER_ROUTES: Routes = [
     canActivate: [CanActivateUser],
     title: 'VTES Decks - Profile',
   },
+  {
+    path: ':username',
+    loadComponent: () =>
+      import('./user-public-profile/user-public-profile.component').then(
+        (m) => m.UserPublicProfileComponent,
+      ),
+    title: 'VTES Decks - User Profile',
+  },
 ]

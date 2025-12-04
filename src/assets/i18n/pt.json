@@ -187,7 +187,8 @@
     "view_collection": "Ver na Coleção",
     "tracked_collection": "Rastreado na Coleção",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
-    "share": "Compartilhar"
+    "share": "Compartilhar",
+    "supporter": "Membro no Patreon"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",
@@ -287,8 +288,9 @@
     "sign_up": "Cadastrar",
     "statistics": "Estatísticas",
     "my_collection": "Minha Coleção",
-    "my_decks": "Meus baralhos",
+    "my_decks": "Meus Baralhos",
     "bookmarks": "Favoritos",
+    "public_profile": "Perfil Público",
     "profile_settings": "Configurações de perfil",
     "logout": "Sair",
     "theme": "Tema",
@@ -449,6 +451,17 @@
     "password_not_same": "Não pode ser a mesma que a senha anterior",
     "save": "Salvar perfil",
     "error": "Ocorreu um erro ao atualizar suas configurações."
+  },
+  "user_public_profile": {
+    "deck": "baralho",
+    "decks": "baralhos",
+    "public_decks": "Baralhos",
+    "public_binders": "Coleções",
+    "loading": "Carregando...",
+    "no_decks_found": "Nenhum baralho público encontrado",
+    "no_binders_found": "Nenhuma coleção pública encontrada",
+    "cards": "cartas",
+    "view_all_decks": "Ver Todos os Baralhos"
   },
   "verify_account": {
     "success": "Conta verificada!",

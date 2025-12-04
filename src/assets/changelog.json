@@ -4,7 +4,8 @@
     "date": "5th December, 2025",
     "changes": [
       "Introduced collapsible sections in card modals for cleaner and easier navigation.",
-      "Added card price information to both card modals and deck pages, including per-card prices and total deck cost. Prices are automatically shown in the user\\'s currency.",
+      "Added public user profile pages, showcasing each user's public decks and collections.",
+      "Added card price information to both card modals and deck pages, including per-card prices and total deck cost. Prices are automatically shown in the user's currency.",
       "Note: Currently only Print-on-Demand shops are supported. More shops will be added soon for broader price coverage.",
       "Minor fixes and performance improvements."
     ]

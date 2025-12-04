@@ -113,7 +113,7 @@
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>
             @if (isSupporter$ | async) {
-            <i class="bi bi-patch-check-fill text-gold ms-1" title="Supporter"></i>
+            <i class="bi bi-patch-check-fill text-gold ms-1" [title]="'shared.supporter' | transloco"></i>
             }
           </a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
@@ -129,6 +129,10 @@
               <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
             </a>
             <hr class="dropdown-divider" />
+            <a ngbDropdownItem [routerLink]="'/user/' + (user$ | async)" [routerLinkActive]="['active']"
+              (click)="isCollapsed = true">
+              <i class="bi bi-person-circle"></i> {{ t('public_profile') }}
+            </a>
             <a ngbDropdownItem routerLink="/user/profile" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('profile_settings') }}
             </a>
