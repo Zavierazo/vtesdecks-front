@@ -11,13 +11,12 @@ import {
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiSet } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { SetQuery } from '@state/set/set.query'
 import { PATH_LIST } from '@utils'
-import { Observable, tap } from 'rxjs'
+import { tap } from 'rxjs'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
 
@@ -82,28 +81,27 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   taintGroup!: FormGroup
   cardTextControl!: FormControl
 
-  titles$!: Observable<string[]>
-  sects$!: Observable<string[]>
-  taints$!: Observable<string[]>
-  sets$!: Observable<ApiSet[]>
+  titles$ = this.cryptQuery.selectTitles()
+  sects$ = this.cryptQuery.selectSects()
+  taints$ = this.cryptQuery.selectTaints()
+  sets$ = this.setQuery.selectAll({
+    sortBy: 'releaseDate',
+    sortByOrder: 'desc',
+  })
   pathList = PATH_LIST
-  maxCapacity!: number
-  maxGroup!: number
+  maxCapacity = this.cryptQuery.getMaxCapacity()
+  maxGroup = this.cryptQuery.getMaxGroup()
+  initialized = false
 
   ngOnInit() {
-    this.maxCapacity = this.cryptQuery.getMaxCapacity()
-    this.maxGroup = this.cryptQuery.getMaxGroup()
-    this.titles$ = this.cryptQuery.selectTitles()
-    this.sects$ = this.cryptQuery.selectSects()
-    this.taints$ = this.cryptQuery.selectTaints()
-    this.sets$ = this.setQuery.selectAll({
-      sortBy: 'releaseDate',
-      sortByOrder: 'desc',
-    })
     this.initFormControls()
+    this.initialized = true
   }
 
   ngOnChanges() {
+    if (!this.initialized) {
+      return
+    }
     this.initFormControls()
   }
 
@@ -240,27 +238,38 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   }
 
   onChangeTaint() {
-    this.taintGroup = new FormGroup({})
-    this.cryptQuery.getTaints().forEach((taint) => {
-      this.taintGroup.addControl(
-        taint,
-        new FormControl(this.taints.includes(taint)),
-      )
-      this.taintGroup
-        .get(taint)
-        ?.valueChanges.pipe(
-          untilDestroyed(this),
-          tap((value) => {
-            const newTaints = this.taints.filter((t) => t !== taint)
-            if (value) {
-              newTaints.push(taint)
+    if (!this.taintGroup) {
+      this.taintGroup = new FormGroup({})
+    }
+    this.taints$
+      .pipe(
+        untilDestroyed(this),
+        tap((taints) => {
+          taints.forEach((taint) => {
+            if (!this.taintGroup.contains(taint)) {
+              this.taintGroup.addControl(
+                taint,
+                new FormControl(this.taints.includes(taint)),
+              )
+              this.taintGroup
+                .get(taint)
+                ?.valueChanges.pipe(
+                  untilDestroyed(this),
+                  tap((value) => {
+                    const newTaints = this.taints.filter((t) => t !== taint)
+                    if (value) {
+                      newTaints.push(taint)
+                    }
+                    this.taints = newTaints
+                    this.taintsChange.emit(this.taints)
+                  }),
+                )
+                .subscribe()
             }
-            this.taints = newTaints
-            this.taintsChange.emit(this.taints)
-          }),
-        )
-        .subscribe()
-    })
+          })
+        }),
+      )
+      .subscribe()
   }
 
   onChangeCardText() {

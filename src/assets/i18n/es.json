@@ -88,7 +88,8 @@
     "players": "{{ count }} jugadores",
     "buy_dtc": "Comprar en DriveThruCards",
     "source": "Fuente",
-    "twda": "Archivo de mazos ganadores del torneo",
+    "twda": "Archivo de mazos ganadores de torneos",
+    "price": "Precio",
     "views": "Visitas",
     "rate_deck": "¡Tómate un momento para puntuar este mazo!",
     "votes": "{{ count }} votos",
@@ -168,9 +169,10 @@
   "deck_shared": {
     "banned": "Prohibida",
     "rulings": "Reglas",
+    "no_rulings": "No hay reglas disponibles",
     "sets": "Expansión",
     "artist": "Artista",
-    "where_find": "¿Dónde puedo encontrarlo?",
+    "where_find": "¿Dónde puedo conseguirla?",
     "search": "Buscar",
     "search_title": "Buscar mazo con esta carta",
     "buy": "Compra esta carta en {{ name }}",
@@ -184,6 +186,7 @@
     "my_collection": "¿Cuántas tengo?",
     "view_collection": "Ver en Colección",
     "tracked_collection": "Rastreado en Colección",
+    "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas en la colección",
     "share": "Compartir"
   },
   "decks": {
@@ -286,6 +289,7 @@
     "my_collection": "Mi Colección",
     "my_decks": "Mis mazos",
     "bookmarks": "Favoritos",
+    "public_profile": "Perfil Público",
     "profile_settings": "Configuración de Perfil",
     "logout": "Cerrar sesión",
     "theme": "Tema",
@@ -421,7 +425,8 @@
     "list": "Lista",
     "cards": "cartas",
     "apply": "Aplicar",
-    "proxy_generator": "Generador de Proxies"
+    "proxy_generator": "Generador de Proxies",
+    "supporter": "Miembro en Patreon"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -445,6 +450,17 @@
     "password_not_same": "No puede ser la misma que una contraseña anterior",
     "save": "Guardar Perfil",
     "error": "Se produjo un error al actualizar su configuración."
+  },
+  "user_public_profile": {
+    "deck": "mazo",
+    "decks": "mazos",
+    "public_decks": "Mazos",
+    "public_binders": "Colecciones",
+    "loading": "Cargando...",
+    "no_decks_found": "No se encontraron mazos públicos",
+    "no_binders_found": "No se encontraron carpetas públicas",
+    "cards": "cartas",
+    "view_all_decks": "Ver Todos los Mazos"
   },
   "verify_account": {
     "success": "¡Cuenta verificada!",
@@ -661,7 +677,19 @@
       "Blood Cursed": "Sangre Maldita",
       "Circle": "Círculo",
       "Strike": "Ataque",
-      "Cannot Block": "No puede bloquear"
+      "Cannot Block": "No puede bloquear",
+      "Animal": "Animal",
+      "Changeling": "Changeling",
+      "Demon": "Demonio",
+      "Dhampir": "Dhampir",
+      "Gargoyle": "Gárgola",
+      "Ghoul": "Ghoul",
+      "Mage": "Mago",
+      "Mortal": "Mortal",
+      "Mummy": "Momia",
+      "Werewolf": "Hombre Lobo",
+      "Wraith": "Aparición",
+      "Zombie": "Zombi"
     }
   },
   "limited_format": {

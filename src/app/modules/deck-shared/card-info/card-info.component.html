@@ -1,0 +1,112 @@
+<ng-container *transloco="let t; prefix: 'deck_shared'">
+  <p><strong>{{ t('sets') }}:&nbsp;</strong>
+    @for (set of card().sets; track set) {
+    <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" tabindex="0"
+      triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
+      {{ set }}&nbsp;
+      <ng-template #setContent>
+        <app-set-tooltip [cardId]="card().id" [set]="set" />
+      </ng-template>
+    </span>
+    }
+  </p>
+  <p>
+    <strong>{{ t('artist') }}: </strong>{{ card().artist }}
+  </p>
+  @if(cardInfo(); as cardInfo) {
+  <div class="card border-0 shadow-sm mt-3">
+    <div class="card-header bg-warning text-dark py-2" role="button" (click)="rulingsCollapsed = !rulingsCollapsed"
+      (keyup.enter)="rulingsCollapsed = !rulingsCollapsed" (keyup.space)="rulingsCollapsed = !rulingsCollapsed"
+      tabindex="0">
+      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-book me-2"></i>{{ t('rulings') }}
+          <span class="badge bg-dark ms-2">{{ cardInfo.rulingList?.length ?? 0 }}</span>
+        </span>
+        <span>
+          <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
+            title="Edit Rulings" class="text-dark me-2" (click)="$event.stopPropagation()">
+            <i class="bi bi-pencil-square"></i>
+          </a>
+          <i class="bi" [class.bi-chevron-down]="!rulingsCollapsed" [class.bi-chevron-right]="rulingsCollapsed"></i>
+        </span>
+      </h6>
+    </div>
+    @if(cardInfo.rulingList?.length) {
+    <div class="card-body px-2" [ngbCollapse]="rulingsCollapsed" #rulingsCollapse="ngbCollapse">
+      @for (ruling of cardInfo.rulingList; track ruling; let last = $last) {
+      <div class="py-2 border-dark" [class.border-bottom]="!last">
+        <app-ruling-text [ruling]="ruling" />
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="card-body px-2 text-muted text-center py-3" [ngbCollapse]="rulingsCollapsed">
+      <i class="bi bi-info-circle me-2"></i>{{ t('no_rulings') }}
+    </div>
+    }
+  </div>
+  @if (cardInfo && (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0)) {
+  <div class="card border-0 shadow-sm mt-3">
+    <div class="card-header bg-success text-white py-2" role="button" (click)="shopsCollapsed = !shopsCollapsed"
+      (keyup.enter)="shopsCollapsed = !shopsCollapsed" (keyup.space)="shopsCollapsed = !shopsCollapsed" tabindex="0">
+      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
+          <span class="badge bg-dark ms-2">{{ cardInfo.preconstructedDecks.length + cardInfo.shopList.length }}</span>
+          @if(cardInfo.minPrice && cardInfo.maxPrice) {
+          <span class="badge bg-light text-black border ms-2">
+            @if(cardInfo.minPrice === cardInfo.maxPrice) {
+            {{ cardInfo.minPrice | currency:cardInfo.currency }}
+            } @else {
+            {{ cardInfo.minPrice | currency:cardInfo.currency }} - {{ cardInfo.maxPrice | currency:cardInfo.currency }}
+            }
+          </span>
+          }
+        </span>
+        <i class="bi" [class.bi-chevron-down]="!shopsCollapsed" [class.bi-chevron-right]="shopsCollapsed"></i>
+      </h6>
+    </div>
+    <div class="card-body p-2" [ngbCollapse]="shopsCollapsed" #shopsCollapse="ngbCollapse">
+      @for (deck of cardInfo.preconstructedDecks; track deck; let last = $last) {
+      <div class="d-flex align-items-center py-1 border-dark"
+        [class.border-bottom]="!last || cardInfo.shopList.length > 0">
+        <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id" (click)="routerClick.emit(true)">
+          @if( deck.filterCards?.[0]?.number; as number ){
+          <span class="badge bg-primary me-2">{{ number }}x</span>
+          }
+          <span class="fw-medium">{{ deck.name }}</span>
+          <span class="text-muted ms-2">({{ deck.year }})</span>
+        </a>
+      </div>
+      }
+      @for (shop of cardInfo.shopList; track shop; let last = $last) {
+      <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last "
+        [class.opacity-50]="!shop.inStock">
+        <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
+          [gaCategory]="shop.shopInfo.name" [gaLabel]="card().name" [class.text-decoration-line-through]="!shop.inStock">
+          <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">
+            {{ shop.shopInfo.fullName }}
+            @if(shop.set){
+            - {{ shop.set }}
+            }
+          </span>
+          <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
+        </a>
+      </div>
+      }
+    </div>
+  </div>
+  }
+  @if(cardInfo?.collectionStats; as collectionStats) {
+  <app-collection-card-stats [collectionStats]="collectionStats" (routerClick)="routerClick.emit(true)" />
+  }
+  } @else {
+  <div class="text-center py-4">
+    <div class="spinner-border text-primary spinner-border-sm me-2" role="status">
+      <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+    </div>
+    <span class="text-muted">{{ 'shared.loading' | transloco }}...</span>
+  </div>
+  }
+</ng-container>

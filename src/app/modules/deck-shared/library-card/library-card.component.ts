@@ -5,10 +5,10 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   OnInit,
-  inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
@@ -16,19 +16,17 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiDecks, ApiKrcgCard, ApiLibrary, ApiShop } from '@models'
-import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { ApiCardInfo, ApiLibrary } from '@models'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { Observable } from 'rxjs'
+import { catchError, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
-import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
-import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
+import { CardInfoComponent } from '../card-info/card-info.component'
 
 @UntilDestroy()
 @Component({
@@ -39,18 +37,15 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
   imports: [
     TranslocoDirective,
     NgClass,
-    NgbTooltip,
-    SetTooltipComponent,
-    RulingTextComponent,
     NgxGoogleAnalyticsModule,
-    RouterLink,
     AsyncPipe,
     TranslocoPipe,
-    CurrencyPipe,
     CardImagePipe,
-    CollectionCardStatsComponent,
     LazyLoadImageModule,
     CardTextPipe,
+    CardInfoComponent,
+    RouterLink,
+    CurrencyPipe,
   ],
 })
 export class LibraryCardComponent implements OnInit, OnDestroy {
@@ -65,9 +60,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   @Input() cardList!: ApiLibrary[]
   @Input() index!: number
   isMobile$!: Observable<boolean>
-  krcgCard$!: Observable<ApiKrcgCard>
-  preconstructedDecks$!: Observable<ApiDecks>
-  shops$!: Observable<ApiShop[]>
+  cardInfo$!: Observable<ApiCardInfo>
   defaultTouch = { x: 0, y: 0, time: 0 }
   activeSet?: string
   setImageError = false
@@ -75,9 +68,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     // Push fake state to capture dismiss modal on back button
     history.pushState(
       {
@@ -131,9 +122,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   @HostListener('window:keydown.ArrowDown')
   nextCard() {
     this.index = (this.index + 1) % this.cardList.length
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
@@ -146,32 +135,24 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     } else {
       this.index--
     }
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
 
-  private fetchShops(): void {
-    this.shops$ = this.apiDataService
-      .getCardShops(this.cardList[this.index].id)
-      .pipe(untilDestroyed(this))
-  }
-
-  private fetchRulings(): void {
-    this.krcgCard$ = this.apiDataService
-      .getKrcgCard(this.cardList[this.index].id)
-      .pipe(untilDestroyed(this))
-  }
-
-  private fetchPreconstructedDecks(): void {
-    this.preconstructedDecks$ = this.apiDataService
-      .getDecks(0, 10, {
-        type: 'PRECONSTRUCTED',
-        cards: `${this.cardList[this.index].id}=1`,
-      })
-      .pipe(untilDestroyed(this))
+  private fetchCardInfo(): void {
+    this.cardInfo$ = this.apiDataService
+      .getCardInfo(this.cardList[this.index].id)
+      .pipe(
+        untilDestroyed(this),
+        catchError((error) => {
+          this.toastService.show(
+            this.translocoService.translate('shared.unexpected_error'),
+            { classname: 'bg-danger text-light', delay: 5000 },
+          )
+          throw error
+        }),
+      )
   }
 
   setActiveSet(set?: string) {

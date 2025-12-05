@@ -4,8 +4,10 @@
       <li class="list-group-item list-group-item-primary">
         {{ t('crypt') }}
         <span class="float-end">
+          @if(hasMaxAmount){
           <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
             (click)="selectAllCrypt()" onkeydown="javascript:void(0)"></i>
+          }
           <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
             (click)="resetCryptCards()" onkeydown="javascript:void(0)"></i>
         </span>
@@ -48,8 +50,10 @@
       <li class="list-group-item list-group-item-primary">
         {{ t('library') }}
         <span class="float-end">
+          @if(hasMaxAmount){
           <i class="btn-icon bi bi-check2-all bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('select_all')"
             (click)="selectAllLibrary()" onkeydown="javascript:void(0)"></i>
+          }
           <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('reset')"
             (click)="resetLibraryCards()" onkeydown="javascript:void(0)"></i>
         </span>

@@ -89,6 +89,7 @@
     "buy_dtc": "Buy at DriveThruCards",
     "source": "Source",
     "twda": "Tournament Winning Deck Archive",
+    "price": "Price",
     "views": "Views",
     "rate_deck": "Take a second to rate this deck!",
     "votes": "{{ count }} votes",
@@ -168,9 +169,10 @@
   "deck_shared": {
     "banned": "Banned",
     "rulings": "Rulings",
+    "no_rulings": "No rulings available",
     "sets": "Sets",
     "artist": "Artist",
-    "where_find": "Where can I find it?",
+    "where_find": "Where can I get it?",
     "search": "Search",
     "search_title": "Search deck with this card",
     "buy": "Buy this card on {{ name }}",
@@ -184,6 +186,7 @@
     "my_collection": "How many do I own?",
     "view_collection": "View in Collection",
     "tracked_collection": "Tracked in Collection",
+    "cards_in_collection_tooltip": "{{ collected }} out of {{ total }} cards in collection",
     "share": "Share"
   },
   "decks": {
@@ -286,6 +289,7 @@
     "my_collection": "My Collection",
     "my_decks": "My Decks",
     "bookmarks": "Bookmarks",
+    "public_profile": "Public Profile",
     "profile_settings": "Profile Settings",
     "logout": "Logout",
     "theme": "Theme",
@@ -423,7 +427,8 @@
     "list": "List",
     "cards": "cards",
     "apply": "Apply",
-    "proxy_generator": "Proxy Generator"
+    "proxy_generator": "Proxy Generator",
+    "supporter": "Patreon Member"
   },
   "table_seating": {
     "title": "Table Seating",
@@ -447,6 +452,17 @@
     "password_not_same": "Can't be the same as a previous password",
     "save": "Save Profile",
     "error": "An error occurred while updating your settings."
+  },
+  "user_public_profile": {
+    "deck": "deck",
+    "decks": "decks",
+    "public_decks": "Decks",
+    "public_binders": "Collections",
+    "loading": "Loading...",
+    "no_decks_found": "No public decks found",
+    "no_binders_found": "No public collections found",
+    "cards": "cards",
+    "view_all_decks": "View All Decks"
   },
   "verify_account": {
     "success": "Account verified!",
@@ -662,7 +678,19 @@
       "Blood Cursed": "Blood Cursed",
       "Circle": "Circle",
       "Strike": "Strike",
-      "Cannot Block": "Cannot Block"
+      "Cannot Block": "Cannot Block",
+      "Animal": "Animal",
+      "Changeling": "Changeling",
+      "Demon": "Demon",
+      "Dhampir": "Dhampir",
+      "Gargoyle": "Gargoyle",
+      "Ghoul": "Ghoul",
+      "Mage": "Mage",
+      "Mortal": "Mortal",
+      "Mummy": "Mummy",
+      "Werewolf": "Werewolf",
+      "Wraith": "Wraith",
+      "Zombie": "Zombie"
     }
   },
   "limited_format": {

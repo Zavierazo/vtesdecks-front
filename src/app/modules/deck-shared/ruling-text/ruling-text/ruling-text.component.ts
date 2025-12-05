@@ -6,7 +6,7 @@ import {
   OnInit,
   inject,
 } from '@angular/core'
-import { ApiKrcgRuling, RulingText } from '@models'
+import { ApiRuling, RulingText } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { MediaService } from '@services'
 import { environment } from '../../../../../environments/environment'
@@ -21,7 +21,7 @@ import { environment } from '../../../../../environments/environment'
 export class RulingTextComponent implements OnInit {
   private mediaService = inject(MediaService)
 
-  @Input() ruling!: ApiKrcgRuling
+  @Input() ruling!: ApiRuling
 
   rulingsText: RulingText[] = []
 

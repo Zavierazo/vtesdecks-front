@@ -1,4 +1,4 @@
-import { NgClass, NgStyle, TitleCasePipe } from '@angular/common'
+import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,7 +17,7 @@ import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { TruncatePipe } from '@shared/pipes/truncate.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
-import { isCryptId } from '@utils'
+import { isCryptId, isSupporter } from '@utils'
 import { tap } from 'rxjs'
 
 @UntilDestroy()
@@ -31,6 +31,7 @@ import { tap } from 'rxjs'
     NgClass,
     NgStyle,
     TitleCasePipe,
+    CurrencyPipe,
     TruncatePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,
@@ -73,5 +74,9 @@ export class DeckCardComponent implements OnInit {
     } else {
       return this.libraryQuery.getEntity(id)?.name ?? ''
     }
+  }
+
+  get isSupporter(): boolean {
+    return isSupporter(this.deck().user?.roles)
   }
 }

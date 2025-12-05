@@ -235,6 +235,12 @@ export class CollectionApiDataService {
 
   // PUBLIC COLLECTIONS
 
+  getUserPublicCollections(username: string): Observable<ApiCollection> {
+    return this.httpClient.get<ApiCollection>(
+      `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/users/${username}/collection`,
+    )
+  }
+
   getPublicBinder(publicHash: string): Observable<ApiCollectionBinder> {
     return this.httpClient.get<ApiCollectionBinder>(
       `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}`,

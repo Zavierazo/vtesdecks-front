@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core'
 import {
   ApiAiAskRequest,
   ApiAiAskResponse,
+  ApiCardInfo,
   ApiCardToday,
   ApiChangelog,
   ApiCollectionCardStats,
@@ -15,21 +16,19 @@ import {
   ApiDecks,
   ApiHistoricStatistic,
   ApiHome,
-  ApiKrcgCard,
   ApiLibrary,
   ApiProxy,
   ApiProxyCardOption,
   ApiResetPassword,
   ApiResponse,
   ApiSet,
-  ApiShop,
   ApiUser,
   ApiUserCountry,
   ApiUserNotification,
   ApiUserSettings,
   ApiYearStatistic,
 } from '@models'
-import { catchError, Observable, of } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { SessionStorageService } from './session-storage.service'
 
@@ -202,7 +201,7 @@ export class ApiDataService {
 
   getDecks(
     offset: number,
-    limit: number = 20,
+    limit = 20,
     params?: { [key: string]: any },
   ): Observable<ApiDecks> {
     let httpParams = new HttpParams()
@@ -352,19 +351,6 @@ export class ApiDataService {
     )
   }
 
-  getKrcgCard(id: number): Observable<ApiKrcgCard> {
-    return this.httpClient
-      .get<ApiKrcgCard>(`https://api.krcg.org/card/${id}`)
-      .pipe(
-        catchError((err) => {
-          if (err.status === 404) {
-            return of()
-          }
-          throw err
-        }),
-      )
-  }
-
   getChangelog(): Observable<ApiChangelog[]> {
     return this.httpClient.get<ApiChangelog[]>(
       `${environment.api.baseUrl}${this.changelogPath}`,
@@ -383,9 +369,9 @@ export class ApiDataService {
     )
   }
 
-  getCardShops(cardId: number): Observable<ApiShop[]> {
-    return this.httpClient.get<ApiShop[]>(
-      `${environment.api.baseUrl}/cards/${cardId}/shops`,
+  getCardInfo(cardId: number): Observable<ApiCardInfo> {
+    return this.httpClient.get<ApiCardInfo>(
+      `${environment.api.baseUrl}/cards/${cardId}/info`,
     )
   }
 
@@ -413,15 +399,15 @@ export class ApiDataService {
     )
   }
 
-  readNotification(id: number): Observable<any> {
-    return this.httpClient.post<any>(
+  readNotification(id: number): Observable<unknown> {
+    return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/${id}/markAsRead`,
       {},
     )
   }
 
-  readAllNotification(): Observable<any> {
-    return this.httpClient.post<any>(
+  readAllNotification(): Observable<unknown> {
+    return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/markAsRead`,
       {},
     )

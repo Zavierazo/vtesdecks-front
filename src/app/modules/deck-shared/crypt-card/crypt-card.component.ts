@@ -5,10 +5,10 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   OnInit,
-  inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
@@ -16,19 +16,17 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiCrypt, ApiDecks, ApiKrcgCard, ApiShop } from '@models'
-import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { ApiCardInfo, ApiCrypt } from '@models'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { Observable } from 'rxjs'
+import { catchError, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
-import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
-import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
-import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
+import { CardInfoComponent } from '../card-info/card-info.component'
 
 @UntilDestroy()
 @Component({
@@ -39,18 +37,15 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
   imports: [
     TranslocoDirective,
     NgClass,
-    NgbTooltip,
-    SetTooltipComponent,
-    RulingTextComponent,
     NgxGoogleAnalyticsModule,
-    RouterLink,
     AsyncPipe,
     TranslocoPipe,
-    CurrencyPipe,
     CardImagePipe,
-    CollectionCardStatsComponent,
     LazyLoadImageModule,
     CardTextPipe,
+    CardInfoComponent,
+    RouterLink,
+    CurrencyPipe,
   ],
 })
 export class CryptCardComponent implements OnInit, OnDestroy {
@@ -62,13 +57,10 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
 
-  readonly DRIVE_THRU_CARDS_PLATFORM = 'DTC'
   @Input() cardList!: ApiCrypt[]
   @Input() index!: number
-  krcgCard$!: Observable<ApiKrcgCard>
-  preconstructedDecks$!: Observable<ApiDecks>
   isMobile$!: Observable<boolean>
-  shops$!: Observable<ApiShop[]>
+  cardInfo$!: Observable<ApiCardInfo>
   defaultTouch = { x: 0, y: 0, time: 0 }
   activeSet?: string
   setImageError = false
@@ -76,9 +68,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     // Push fake state to capture dismiss modal on back button
     history.pushState(
       {
@@ -132,9 +122,7 @@ export class CryptCardComponent implements OnInit, OnDestroy {
   @HostListener('window:keydown.ArrowDown')
   nextCard() {
     this.index = (this.index + 1) % this.cardList.length
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
@@ -147,35 +135,24 @@ export class CryptCardComponent implements OnInit, OnDestroy {
     } else {
       this.index--
     }
-    this.fetchRulings()
-    this.fetchShops()
-    this.fetchPreconstructedDecks()
+    this.fetchCardInfo()
     this.setActiveSet()
     this.changeDetectorRef.markForCheck()
   }
 
-  private fetchShops() {
-    this.shops$ = this.apiDataService
-      .getCardShops(this.cardList[this.index].id)
-      .pipe(untilDestroyed(this))
-  }
-
-  private fetchRulings() {
-    if (!this.cardList[this.index]) {
-      return
-    }
-    this.krcgCard$ = this.apiDataService
-      .getKrcgCard(this.cardList[this.index].id)
-      .pipe(untilDestroyed(this))
-  }
-
-  private fetchPreconstructedDecks(): void {
-    this.preconstructedDecks$ = this.apiDataService
-      .getDecks(0, 10, {
-        type: 'PRECONSTRUCTED',
-        cards: `${this.cardList[this.index].id}=1`,
-      })
-      .pipe(untilDestroyed(this))
+  private fetchCardInfo(): void {
+    this.cardInfo$ = this.apiDataService
+      .getCardInfo(this.cardList[this.index].id)
+      .pipe(
+        untilDestroyed(this),
+        catchError((error) => {
+          this.toastService.show(
+            this.translocoService.translate('shared.unexpected_error'),
+            { classname: 'bg-danger text-light', delay: 5000 },
+          )
+          throw error
+        }),
+      )
   }
 
   setActiveSet(set?: string) {

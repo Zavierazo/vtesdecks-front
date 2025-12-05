@@ -1,5 +1,6 @@
 import { inject, Injectable, Signal } from '@angular/core'
 import { ApiUser } from '@models'
+import { isSupporter } from '@utils'
 import { Observable } from 'rxjs'
 import { AuthStore } from './auth.store'
 
@@ -25,6 +26,10 @@ export class AuthQuery {
 
   selectAdmin(): Observable<boolean> {
     return this.store.select((user: ApiUser) => Boolean(user.admin))
+  }
+
+  selectUser(): Observable<string | undefined> {
+    return this.store.select((user: ApiUser) => user.user)
   }
 
   selectDisplayName(): Observable<string | undefined> {
@@ -92,6 +97,6 @@ export class AuthQuery {
   }
 
   isSupporter(): boolean {
-    return this.store.getValue().roles?.includes('supporter') ?? false
+    return isSupporter(this.store.getValue().roles)
   }
 }

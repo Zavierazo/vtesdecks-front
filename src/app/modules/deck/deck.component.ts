@@ -1,5 +1,10 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass, TitleCasePipe } from '@angular/common'
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  NgClass,
+  TitleCasePipe,
+} from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -49,7 +54,7 @@ import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
-import { getClanIcon, getDisciplineIcon } from '@utils'
+import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { Observable, switchMap, tap, timer } from 'rxjs'
@@ -91,6 +96,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     LibraryListComponent,
     CommentsComponent,
     AsyncPipe,
+    CurrencyPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
     DisciplineTranslocoPipe,
@@ -147,6 +153,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isRated = false
 
+  isSupporter = false
+
   collectionTracker = false
 
   cdnDomain = environment.cdnDomain
@@ -178,6 +186,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
       tap((deck) => {
         this.isBookmarked = deck?.favorite ?? false
         this.isRated = deck?.rated ?? false
+        this.isSupporter = isSupporter(deck?.user?.roles)
         const collectionTrackerOwner = deck?.owner ? deck.collection : false
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner

@@ -24,17 +24,48 @@
                   <h3 class="fw-bold mb-0">{{ deck.name | titlecase }}</h3>
                 </div>
                 <div class="deck-meta">
-                  <p class="mb-1">
-                    {{ t('created_by') }}
-                    <a class="text-decoration-none" routerLink="/decks" [queryParams]="{
+                  <p class="mb-1 d-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
+                    @if(deck.user){
+                    <a class="text-decoration-none d-inline-flex align-items-center"
+                      [routerLink]="'/user/' + deck.author">
+                      @if(deck.user.profileImage) {
+                      <img [src]="deck.user.profileImage" alt="" class="rounded-circle me-2" width="32" height="32">
+                      }
+                      <span>
+                        <strong>{{ deck.author }}</strong>
+                        @if(isSupporter){
+                        <i class="bi bi-patch-check-fill text-primary ms-1"
+                          [title]="'shared.supporter' | transloco"></i>
+                        }
+                      </span>
+                    </a>
+                    }@else {
+                    <b>{{ t('created_by') }}: </b>
+                    <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{
                       author: deck.author,
                       type: deck.type
                     }">
-                      <strong>{{ deck.author }}</strong>
+                      <strong>
+                        {{ deck.author }}
+                        @if(isSupporter){
+                        <i class="bi bi-patch-check-fill" [title]="'shared.supporter' | transloco"></i>
+                        }
+                      </strong>
                     </a>
-                    <span class="text-muted ms-2">
+                    }
+                    <span class="text-dark mx-1">•</span>
+                    <span class="text-muted d-none d-md-inline">
                       {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
                     </span>
+                    <span class="text-muted d-md-none">
+                      {{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}
+                    </span>
+                    @if(deck.stats.price) {
+                    <span class="text-dark mx-1">•</span>
+                    <span class="text-muted" [title]="t('price')">
+                      {{ deck.stats.price | currency:deck.stats.currency }}
+                    </span>
+                    }
                   </p>
                   @if (deck.tournament) {
                   <p class="mb-1">
@@ -355,15 +386,14 @@
       <app-library-list [libraryList]="deck.library" [displayMode]="(displayMode$ |async)!" />
       }
     </div>
-    <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto"
-      fullWidthResponsive="true" />
+    <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
     @if(similarDecks$ | async; as similarDecks) {
     <div class="col-12 d-flex justify-content-center mt-3">
       <h2>{{ t('similar_decks') }}</h2>
     </div>
     <div class="row">
       @for(deck of similarDecks; track deck) {
-      <app-deck-card class="col-12 col-md-6" [deck]="deck" (tagClick)="onTag($event)" />
+      <app-deck-card class="col-12 col-md-6" [deck]="deck" height="170px" (tagClick)="onTag($event)" />
       }
     </div>
     <div class="col-12 d-flex justify-content-center mt-3">

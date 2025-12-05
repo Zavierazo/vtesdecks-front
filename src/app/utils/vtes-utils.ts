@@ -1,6 +1,10 @@
 import { ApiCard } from '@models'
 import { trigramSimilarity } from './trigram-similarity'
 
+export function isSupporter(roles: string[] | undefined): boolean {
+  return roles?.includes('supporter') ?? false
+}
+
 export function isCrypt(value: ApiCard): boolean {
   return value.id >= 200000
 }

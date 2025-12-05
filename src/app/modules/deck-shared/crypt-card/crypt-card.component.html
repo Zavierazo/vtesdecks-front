@@ -1,7 +1,6 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (cardList[index]; as card) {
-  @let preconstructedDecks = preconstructedDecks$ | async;
-  @let shops = shops$ | async;
+  @let cardInfo = cardInfo$ | async;
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
@@ -32,7 +31,7 @@
         </div>
         }
       </div>
-      <div class="col-sm-12 col-md-7 ps-0">
+      <div class="modal-right-body col-sm-12 col-md-7 ps-0">
         <div class="modal-header">
           <h4 class="modal-title d-flex align-items-center">
             <i class="vtes vtes-big float-start" [ngClass]="card.clanIcon" [title]="card.clan"></i>
@@ -69,104 +68,26 @@
             (click)="modal.dismiss('Cross click')"></button>
         </div>
         <div class="modal-body flex-wrap">
-          <p>
-            @for (discipline of card.disciplineIcons; track discipline) {
-            <i class="vtes" [ngClass]="discipline"></i>
-            }
-            @if (card.adv) {
-            <i class="vtes float-end advanced"></i>
-            }
-            <span class="badge rounded-pill bg-danger float-end">
-              {{ card.capacity }}
-            </span>
-          </p>
-          <hr />
-          <p><strong>{{ t('sets') }}:&nbsp;</strong>
-            @for (set of card.sets; track set) {
-            <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" tabindex="0"
-              triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
-              {{ set }}&nbsp;
-              <ng-template #setContent>
-                <app-set-tooltip [cardId]="card.id" [set]="set" />
-              </ng-template>
-            </span>
-            }
-          </p>
-          <p>
-            <strong>{{ t('artist') }}: </strong>{{ card.artist }}
-            <!--TODO: Implement artist filter-->
-            <!--a class="text-decoration-none" routerLink="/cards/crypt"
-          [queryParams]="{ artist: card.artist }" (click)="modal.dismiss('Link click')">
-          {{ card.artist }}
-        </a-->
-          </p>
-          @if ((krcgCard$ | async)?.rulings; as krcgRulings) {
-          <div class="card border-0 shadow-sm mt-3">
-            <div class="card-header bg-warning text-dark py-2">
-              <h6 class="mb-0 fw-bold">
-                <i class="bi bi-book me-2"></i>{{ t('rulings') }}
-                <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card.id"
-                  title="Edit Rulings" class="float-end text-dark">
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-              </h6>
+          <div class="d-flex flex-column h-100">
+            <div class="flex-grow-0">
+              <p class="clearfix">
+                @for (discipline of card.disciplineIcons; track discipline) {
+                <i class="vtes" [ngClass]="discipline"></i>
+                }
+                @if (card.adv) {
+                <i class="vtes float-end advanced"></i>
+                }
+                <span class="badge rounded-pill bg-danger float-end">
+                  {{ card.capacity }}
+                </span>
+              </p>
+              <hr />
+              <app-card-info [card]="card" [cardInfo]="cardInfo" (routerClick)="modal.dismiss('Link click')" />
             </div>
-            <div class="card-body px-2">
-              @for (ruling of krcgRulings; track ruling; let last = $last) {
-              <div class="py-2 border-dark" [class.border-bottom]="!last">
-                <app-ruling-text [ruling]="ruling" />
-              </div>
-              }
-            </div>
+            <small class="mt-auto d-block text-end text-muted pt-2">#{{card.id}}</small>
           </div>
-          }
-          @if (card.printOnDemand || (shops && shops.length > 0) || (preconstructedDecks &&
-          preconstructedDecks.decks.length > 0)) {
-          <div class="card border-0 shadow-sm mt-3">
-            <div class="card-header bg-secondary text-white py-2">
-              <h6 class="mb-0 fw-bold">
-                <i class="bi bi-search me-2"></i>{{ t('where_find') }}
-              </h6>
-            </div>
-            <div class="card-body p-2">
-              @if(preconstructedDecks){
-              @for (deck of preconstructedDecks.decks; track deck; let last = $last) {
-              <div class="d-flex align-items-center py-1 border-dark"
-                [class.border-bottom]="!last|| (shops && shops.length > 0)">
-                <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id"
-                  (click)="modal.dismiss('Link click')">
-                  @if( deck.filterCards?.[0]?.number; as number ){
-                  <span class="badge bg-primary me-2">{{ number }}x</span>
-                  }
-                  <span class="fw-medium">{{ deck.name }}</span>
-                  <span class="text-muted ms-2">({{ deck.year }})</span>
-                </a>
-              </div>
-              }
-              }
-              @for (shop of shops; track shop; let last = $last) {
-              <div class="d-flex align-items-center justify-content-between py-1 border-dark"
-                [class.border-bottom]="!last " [class.opacity-50]="!shop.inStock">
-                <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
-                  [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name"
-                  [class.text-decoration-line-through]="!shop.inStock">
-                  <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">
-                    {{ shop.shopInfo.fullName }}
-                    @if(shop.set){
-                    - {{ shop.set }}
-                    }
-                  </span>
-                  <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
-                </a>
-              </div>
-              }
-            </div>
-          </div>
-          }
-          <app-collection-card-stats [cardId]="card.id" (routerClick)="modal.dismiss('Link click')" />
-          <small class="float-end text-muted mt-2">#{{card.id}}</small>
         </div>
-        <div class="modal-footer align-self-end">
+        <div class="modal-footer">
           <div class="row justify-content-start align-items-center w-100 g-2">
             <button type="button" class="btn btn-primary col-auto me-1" (click)="onShare()">
               <i class="bi bi-share me-2"></i>{{ t('share') }}
@@ -175,7 +96,7 @@
               [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-stack"></i> {{ t('search') }}
             </button>
-            @for (shop of shops; track shop) {
+            @for (shop of cardInfo?.shopList; track shop) {
             @if(shop.inStock && shop.shopInfo.showButton){
             <a type="button" class="btn btn-sm btn-success col-auto me-1"
               [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" gaEvent="purchase"

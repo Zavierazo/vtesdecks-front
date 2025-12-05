@@ -7,7 +7,11 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiComment } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -32,6 +36,7 @@ import { filter, Observable, switchMap } from 'rxjs'
     DateAsAgoPipe,
     MarkdownTextareaComponent,
     MarkdownTextComponent,
+    TranslocoPipe,
   ],
 })
 export class CommentComponent implements OnInit {

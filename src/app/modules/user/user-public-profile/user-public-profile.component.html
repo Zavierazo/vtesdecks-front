@@ -1,0 +1,123 @@
+<div class="container py-4" *transloco="let t; prefix: 'user_public_profile'">
+  <div class="row">
+    <!-- User Info Section -->
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="me-3">
+              <img [src]="user().profileImage || '/assets/img/default_user.png'"
+                alt="{{ user().displayName || username() }}" class="rounded-circle" width="80" height="80">
+            </div>
+            <div>
+              <h2 class="mb-1">
+                {{ user().displayName || username()}}
+                @if( isSupporter() ) {
+                <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
+                }
+              </h2>
+              <p class="text-muted mb-0">
+                <i class="bi bi-stack me-1"></i>
+                {{ (total$ | async) || 0 }} {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decks Section -->
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="bi bi-stack me-2"></i>
+            {{ t('public_decks') }}
+          </h4>
+        </div>
+        <div class="card-body">
+          @if (loading$ | async) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">{{ t('loading') }}</span>
+            </div>
+          </div>
+          } @else if ((decks$ | async)?.length === 0) {
+          <div class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <p class="text-muted mt-3">{{ t('no_decks_found') }}</p>
+          </div>
+          } @else {
+          <div class="row">
+            @for (deck of (decks$ | async); track deck.id) {
+            <div class="col-12 col-lg-6 col-xl-4 mb-3">
+              <app-deck-card [deck]="deck" height="170px" />
+            </div>
+            }
+          </div>
+          @if ((total$ | async) && (total$ | async)! > 6) {
+          <div class="text-center">
+            <a [routerLink]="'/decks'" [queryParams]="{
+              author: username(),
+              exactAuthor: true,
+              type: 'COMMUNITY',
+              order: 'POPULAR'
+       }" class="btn btn-primary">
+              {{ t('view_all_decks') }}
+            </a>
+          </div>
+          }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Binders Section -->
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="bi bi-collection me-2"></i>
+            {{ t('public_binders') }}
+          </h4>
+        </div>
+        <div class="card-body">
+          @if (collectionLoading()) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">{{ t('loading') }}</span>
+            </div>
+          </div>
+          } @else if (!collection() || collection()!.binders.length === 0) {
+          <div class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <p class="text-muted mt-3">{{ t('no_binders_found') }}</p>
+          </div>
+          } @else {
+          <div class="row">
+            @for (binder of collection()!.binders; track binder.id) {
+            <div class="col-12 col-lg-6 col-xl-4 mb-3">
+              <a [routerLink]="'/collection/binders/' + binder.publicHash" class="text-decoration-none">
+                <div class="card border h-100 hover-shadow">
+                  <div class="card-body">
+                    @if (binder.icon) {
+                    <div class="text-center mb-2">
+                      <i class="vtes {{ binder.icon }} fs-1"></i>
+                    </div>
+                    }
+                    <h5 class="card-title text-dark">{{ binder.name }}</h5>
+                    @if (binder.description) {
+                    <p class="card-text text-muted">{{ binder.description }}</p>
+                    }
+                  </div>
+                </div>
+              </a>
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

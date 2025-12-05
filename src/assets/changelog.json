@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.56.0",
+    "date": "5th December, 2025",
+    "changes": [
+      "Introduced collapsible sections in card modals for cleaner and easier navigation.",
+      "Added public user profile pages, showcasing each user's public decks and collections.",
+      "Added card price information to both card modals and deck pages, including per-card prices and total deck cost. Prices are automatically shown in the user's currency.",
+      "Note: Currently only Print-on-Demand shops are supported. More shops will be added soon for broader price coverage.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.55.0",
     "date": "28th November, 2025",
     "changes": [
@@ -8,8 +19,7 @@
       "V5 and Two-Player Format tags are now shown as clickable buttons in the filter panel for faster deck filtering.",
       "Supporter users now display a special badge next to their name in comments and in the header.",
       "Added a text icon to quickly preview full card text on hover.",
-      "As the year winds down… keep an eye on December. Something fun might be waiting 👀",
-      "Minor fixes and performance improvements."
+      "Advent calendar is live! Check the homepage daily for new surprises throughout December 2025."
     ]
   },
   {

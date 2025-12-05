@@ -3,10 +3,10 @@
   <div class="deck-card border border-2 rounded-2 hover-shadow my-1 position-relative d-flex flex-column" [ngClass]="{
     'border-secondary-subtle': !deck.owner,
     'border-primary': deck.owner
-  }" [ngStyle]="{'min-height':height}">
+  }" [ngStyle]="{'min-height':height()}">
     <!-- Top Section -->
     <div class="deck-header px-3 py-2">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="deck-header-grid mb-1">
         <div class="deck-stats d-flex gap-2 text-start">
           <span class="small text-black">
             <i class="bi bi-person-badge me-1"></i>{{ deck.stats.crypt }}
@@ -14,6 +14,11 @@
           <span class="small text-black">
             <i class="bi bi-stack me-1"></i>{{ deck.stats.library }}
           </span>
+          @if(deck.stats.price) {
+          <span class="small text-black fw-medium">
+            {{ deck.stats.price | currency:deck.stats.currency }}
+          </span>
+          }
         </div>
 
         <h2 class="deck-title fs-4 text-black text-center mb-0">
@@ -28,7 +33,7 @@
           {{ deck.name | titlecase | truncate: 30:true }}
         </h2>
 
-        <div class="deck-engagement d-flex gap-2 text-end">
+        <div class="deck-engagement d-flex gap-2 justify-content-end">
           <span class="small text-black d-flex align-items-center">
             <span>{{ deck.comments }}</span>
             <i class="bi bi-chat ms-1"></i>
@@ -92,7 +97,12 @@
       }
 
       <div class="deck-author-date small text-center">
-        <span class="text-dark">{{ deck.author | truncate: 25:true }}</span>
+        <span class="text-dark">
+          {{ deck.author | truncate: 25:true }}
+          @if(isSupporter){
+          <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
+          }
+        </span>
         <span class="text-dark mx-1">•</span>
         <span class="text-dark">{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
       </div>
