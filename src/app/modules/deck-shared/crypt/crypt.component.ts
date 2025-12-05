@@ -11,11 +11,10 @@ import {
 import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiCard, ApiCrypt } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CryptService } from '@state/crypt/crypt.service'
 import { drawProbability } from '@utils'
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
 import { Observable } from 'rxjs'
@@ -43,7 +42,6 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
 })
 export class CryptComponent implements OnInit {
   private cryptQuery = inject(CryptQuery)
-  private cryptService = inject(CryptService)
   private mediaService = inject(MediaService)
 
   @Input() card!: ApiCard
@@ -77,12 +75,6 @@ export class CryptComponent implements OnInit {
   cdnDomain = environment.cdnDomain
 
   ngOnInit() {
-    if (!this.cryptQuery.getEntity(this.card.id)) {
-      this.cryptService
-        .getCrypt(this.card.id)
-        .pipe(untilDestroyed(this))
-        .subscribe()
-    }
     this.crypt$ = this.cryptQuery.selectEntity(this.card.id)
     this.isMobile$ = this.mediaService.observeMobile()
   }

@@ -8,10 +8,9 @@ import {
   output,
 } from '@angular/core'
 import { ApiCard, ApiCrypt } from '@models'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { UntilDestroy } from '@ngneat/until-destroy'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CryptService } from '@state/crypt/crypt.service'
 import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
@@ -34,7 +33,6 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
 })
 export class CryptGridCardComponent implements OnInit {
   private cryptQuery = inject(CryptQuery)
-  private cryptService = inject(CryptService)
 
   card = input.required<ApiCard>()
   cryptSize = input<number>(12)
@@ -46,12 +44,6 @@ export class CryptGridCardComponent implements OnInit {
   crypt$!: Observable<ApiCrypt | undefined>
 
   ngOnInit(): void {
-    if (!this.cryptQuery.getEntity(this.card().id)) {
-      this.cryptService
-        .getCrypt(this.card().id)
-        .pipe(untilDestroyed(this))
-        .subscribe()
-    }
     this.crypt$ = this.cryptQuery.selectEntity(this.card().id)
   }
 

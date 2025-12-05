@@ -2,15 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { ApiLibrary } from '@models'
 import { ApiDataService } from '@services'
-import {
-  defaultIfEmpty,
-  EMPTY,
-  filter,
-  map,
-  Observable,
-  switchMap,
-  tap,
-} from 'rxjs'
+import { defaultIfEmpty, filter, map, Observable, switchMap, tap } from 'rxjs'
 import { LibraryQuery } from './library.query'
 import { LibraryState, LibraryStore } from './library.store'
 @Injectable({ providedIn: 'root' })
@@ -43,18 +35,5 @@ export class LibraryService {
       ),
       defaultIfEmpty([]),
     )
-  }
-
-  getLibrary(id: number): Observable<ApiLibrary | undefined> {
-    if (id < 100000 || id > 200000) {
-      return EMPTY
-    }
-    if (this.libraryQuery.hasEntity(id)) {
-      return this.libraryQuery.selectEntity(id)
-    } else {
-      return this.apiDataService
-        .getLibrary(id)
-        .pipe(tap((card: ApiLibrary) => this.libraryStore.upsert(id, card)))
-    }
   }
 }

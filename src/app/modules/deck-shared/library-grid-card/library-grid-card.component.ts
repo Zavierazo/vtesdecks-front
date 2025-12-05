@@ -8,10 +8,9 @@ import {
   output,
 } from '@angular/core'
 import { ApiCard, ApiLibrary } from '@models'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { UntilDestroy } from '@ngneat/until-destroy'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { LibraryQuery } from '@state/library/library.query'
-import { LibraryService } from '@state/library/library.service'
 import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
@@ -34,7 +33,6 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
 })
 export class LibraryGridCardComponent implements OnInit {
   private libraryQuery = inject(LibraryQuery)
-  private libraryService = inject(LibraryService)
 
   card = input.required<ApiCard>()
   librarySize = input<number>(60)
@@ -46,12 +44,6 @@ export class LibraryGridCardComponent implements OnInit {
   library$!: Observable<ApiLibrary | undefined>
 
   ngOnInit(): void {
-    if (!this.libraryQuery.getEntity(this.card().id)) {
-      this.libraryService
-        .getLibrary(this.card().id)
-        .pipe(untilDestroyed(this))
-        .subscribe()
-    }
     this.library$ = this.libraryQuery.selectEntity(this.card().id)
   }
 

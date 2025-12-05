@@ -2,15 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { ApiCrypt } from '@models'
 import { ApiDataService } from '@services'
-import {
-  defaultIfEmpty,
-  EMPTY,
-  filter,
-  map,
-  Observable,
-  switchMap,
-  tap,
-} from 'rxjs'
+import { defaultIfEmpty, filter, map, Observable, switchMap, tap } from 'rxjs'
 import { CryptQuery } from './crypt.query'
 import { CryptState, CryptStore } from './crypt.store'
 @Injectable({ providedIn: 'root' })
@@ -43,18 +35,5 @@ export class CryptService {
       ),
       defaultIfEmpty([]),
     )
-  }
-
-  getCrypt(id: number): Observable<ApiCrypt | undefined> {
-    if (this.cryptQuery.hasEntity(id) || id < 200000 || id > 300000) {
-      return EMPTY
-    }
-    if (this.cryptQuery.hasEntity(id)) {
-      return this.cryptQuery.selectEntity(id)
-    } else {
-      return this.apiDataService
-        .getCrypt(id)
-        .pipe(tap((card: ApiCrypt) => this.cryptStore.upsert(id, card)))
-    }
   }
 }

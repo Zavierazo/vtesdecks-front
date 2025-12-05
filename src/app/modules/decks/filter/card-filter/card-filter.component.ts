@@ -21,10 +21,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CryptService } from '@state/crypt/crypt.service'
 import { DecksQuery } from '@state/decks/decks.query'
 import { LibraryQuery } from '@state/library/library.query'
-import { LibraryService } from '@state/library/library.service'
 import { sortTrigramSimilarity } from '@utils'
 import {
   debounceTime,
@@ -57,9 +55,7 @@ export class CardFilterComponent implements OnInit {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly decksQuery = inject(DecksQuery)
-  private readonly cryptService = inject(CryptService)
   private readonly cryptQuery = inject(CryptQuery)
-  private readonly libraryService = inject(LibraryService)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly mediaService = inject(MediaService)
@@ -77,7 +73,6 @@ export class CardFilterComponent implements OnInit {
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.initStarVampire()
-    this.initCards()
   }
 
   reset() {
@@ -212,23 +207,5 @@ export class CardFilterComponent implements OnInit {
         ),
       )
       .subscribe()
-  }
-
-  private initCards() {
-    const cards = this.decksQuery.getParam('cards')
-    if (cards) {
-      this.cards = cards.split(',').map((card: string) => {
-        const crypt = card.split('=')
-        const id = Number(crypt[0])
-        return {
-          id,
-          count: Number(crypt[1]),
-        } as CardFilter
-      })
-      this.cards.forEach((card) => {
-        this.cryptService.getCrypt(card.id).subscribe()
-        this.libraryService.getLibrary(card.id).subscribe()
-      })
-    }
   }
 }
