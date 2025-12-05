@@ -5,10 +5,10 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   OnInit,
-  inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
@@ -24,7 +24,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { Observable } from 'rxjs'
+import { catchError, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { CardInfoComponent } from '../card-info/card-info.component'
 
@@ -143,7 +143,16 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
   private fetchCardInfo(): void {
     this.cardInfo$ = this.apiDataService
       .getCardInfo(this.cardList[this.index].id)
-      .pipe(untilDestroyed(this))
+      .pipe(
+        untilDestroyed(this),
+        catchError((error) => {
+          this.toastService.show(
+            this.translocoService.translate('shared.unexpected_error'),
+            { classname: 'bg-danger text-light', delay: 5000 },
+          )
+          throw error
+        }),
+      )
   }
 
   setActiveSet(set?: string) {
