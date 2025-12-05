@@ -21,7 +21,7 @@ export class LibraryService {
       .getAllLibrary()
       .pipe(tap((cards: ApiLibrary[]) => this.libraryStore.set(cards)))
     return this.apiDataService.getLibraryLastUpdate().pipe(
-      map((library) => library.lastUpdate),
+      map((library) => library?.lastUpdate),
       filter(
         (lastUpdate) =>
           lastUpdate !== this.libraryStore.getLastUpdate() ||

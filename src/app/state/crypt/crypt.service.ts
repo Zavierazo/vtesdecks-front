@@ -21,7 +21,7 @@ export class CryptService {
       .getAllCrypt()
       .pipe(tap((cards: ApiCrypt[]) => this.cryptStore.set(cards)))
     return this.apiDataService.getCryptLastUpdate().pipe(
-      map((crypt) => crypt.lastUpdate),
+      map((crypt) => crypt?.lastUpdate),
       filter(
         (lastUpdate) =>
           lastUpdate !== this.cryptStore.getLastUpdate() ||

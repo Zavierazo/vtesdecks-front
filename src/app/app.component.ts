@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
     this.apiDataService
       .getUserCountry()
       .subscribe((response) =>
-        this.googleTagConsentUpdateAdPersonalization(response.countryCode),
+        this.googleTagConsentUpdateAdPersonalization(response?.countryCode),
       )
     // Check expired session
     this.authService.refreshToken().subscribe()
