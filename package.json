@@ -39,6 +39,7 @@
     "@popperjs/core": "^2.11.8",
     "@sentry/angular": "^10.29.0",
     "@sentry/cli": "^2.58.2",
+    "@types/vanilla-tilt": "^1.4.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.1",
