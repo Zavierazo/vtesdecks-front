@@ -1,6 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg width="384" height="385" version="1.0" viewBox="0 0 288 289" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-  <path d="M24 144v120h240V24H24v120z"/>
-  <rect x="41.974" y="29.978" width="20" height="230" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 0px;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 212.952057, 4.122135)" bx:origin="-9.773428 0.511683"/>
-  <rect x="41.974" y="29.978" width="20" height="230" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 0px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, 286.491577, 209.152161)" bx:origin="-5.777643 0.5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="385" viewBox="0 0 288 289"><path d="M24 144v120h240V24H24z"/><path d="M41.974 29.978h20v230h-20z" style="fill:#d8d8d8;stroke:#000;stroke-width:0" transform="rotate(45 101.5 259.117)"/><path d="M41.974 29.978h20v230h-20z" style="fill:#d8d8d8;stroke:#000;stroke-width:0" transform="rotate(135 99.929 163.91)"/></svg>

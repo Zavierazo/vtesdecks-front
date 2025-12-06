@@ -24,6 +24,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
 import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
 import { MarkdownPipe } from 'ngx-markdown'
+import { delay, of, startWith, switchMap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -47,6 +48,11 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
   chats$ = this.query.selectEntities()
   activeChat$ = this.query.selectActiveChat()
   loading$ = this.query.selectLoading()
+  showThinking$ = this.loading$.pipe(
+    switchMap((loading) =>
+      loading ? of(true).pipe(delay(10000), startWith(false)) : of(false),
+    ),
+  )
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
 
   chatForm = new FormGroup({

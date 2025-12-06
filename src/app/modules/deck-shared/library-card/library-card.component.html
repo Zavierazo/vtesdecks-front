@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
         <div class="position-relative card-image-container">
-          <img class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbacklibrary.jpg'"
+          <img #cardImage class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbacklibrary.jpg'"
             [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
             (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
           <div class="card-text-icon position-absolute">

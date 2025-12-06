@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs'
 
 export interface AiChat {
   id: number
+  sessionId: string
   title: string
   chat: ApiAiMessage[]
 }

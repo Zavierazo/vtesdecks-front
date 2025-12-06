@@ -496,7 +496,8 @@
     "limitations": "Limitations",
     "limitation_1": "May occasionally generate incorrect information",
     "limitation_2": "Although it understands other languages, it is trained with the names and rules in English",
-    "limitation_3": "May not know about recent changes in the cards or the rules"
+    "limitation_3": "May not know about recent changes in the cards or the rules",
+    "thinking": "Thinking..."
   },
   "statistics": {
     "statistics": "Statistics",

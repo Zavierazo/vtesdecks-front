@@ -87,13 +87,13 @@
           </div>
         </div>
         }@else {
-        <div class="row p-3 text-black" [innerHTML]="message.content | markdown | async" #item>
+        <div class="chat-message row p-3 text-black" [innerHTML]="message.content | markdown | async" #item>
         </div>
         }
         }
         @if(loading$ | async){
-        <div class="row justify-content-start" #item>
-          <app-loading class="w-auto" [size]="2" />
+        <div class="row justify-content-start align-items-center" #item>
+          <app-loading class="w-auto" [size]="2" [margin]="2" [text]="(showThinking$ | async) ? t('thinking') : ''" />
         </div>
         }
         }

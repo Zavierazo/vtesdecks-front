@@ -1,14 +1,17 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common'
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   HostListener,
   inject,
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
@@ -25,6 +28,7 @@ import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { catchError, Observable } from 'rxjs'
+import VanillaTilt from 'vanilla-tilt'
 import { environment } from '../../../../environments/environment'
 import { CardInfoComponent } from '../card-info/card-info.component'
 
@@ -48,7 +52,7 @@ import { CardInfoComponent } from '../card-info/card-info.component'
     CurrencyPipe,
   ],
 })
-export class LibraryCardComponent implements OnInit, OnDestroy {
+export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   modal = inject(NgbActiveModal)
   private readonly apiDataService = inject(ApiDataService)
   private readonly mediaService = inject(MediaService)
@@ -59,6 +63,7 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
 
   @Input() cardList!: ApiLibrary[]
   @Input() index!: number
+  @ViewChild('cardImage') cardImage?: ElementRef
   isMobile$!: Observable<boolean>
   cardInfo$!: Observable<ApiCardInfo>
   defaultTouch = { x: 0, y: 0, time: 0 }
@@ -79,7 +84,22 @@ export class LibraryCardComponent implements OnInit, OnDestroy {
     )
   }
 
+  ngAfterViewInit() {
+    if (this.cardImage?.nativeElement) {
+      VanillaTilt.init(this.cardImage.nativeElement, {
+        max: 20,
+        speed: 300,
+        glare: true,
+        'max-glare': 0.8,
+        scale: 0.95,
+      })
+    }
+  }
+
   ngOnDestroy() {
+    if (this.cardImage?.nativeElement?.vanillaTilt) {
+      this.cardImage.nativeElement.vanillaTilt.destroy()
+    }
     if (window.history.state.modal) {
       history.back()
     }
