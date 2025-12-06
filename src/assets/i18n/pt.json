@@ -495,7 +495,8 @@
     "limitations": "Limitações",
     "limitation_1": "Pode gerar informações incorretamente ocasionalmente",
     "limitation_2": "Embora entenda outros idiomas, ele é treinado com os nomes e regras em inglês",
-    "limitation_3": "Não conheça as mudanças recentes nas cartas ou as regras"
+    "limitation_3": "Não conheça as mudanças recentes nas cartas ou as regras",
+    "thinking": "Pensando..."
   },
   "statistics": {
     "statistics": "Estadísticas",

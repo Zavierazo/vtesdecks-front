@@ -1,4 +1,9 @@
-<div class="row d-flex justify-content-center m-5">
+<div class="row d-flex justify-content-center align-items-center" [ngClass]="'m-'+margin">
   <div class="spinner-grow" [style]="'width: '+size+'rem; height: '+size+'rem;'" role="status">
   </div>
+  @if(text){
+  <div class="text-muted w-auto">
+    {{ text }}
+  </div>
+  }
 </div>

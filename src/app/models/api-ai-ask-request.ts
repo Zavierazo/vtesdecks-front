@@ -1,6 +1,7 @@
 import { ApiAiMessage } from './api-ai-message'
 
 export interface ApiAiAskRequest {
-  chatHistory: ApiAiMessage[]
+  sessionId: string
   question: string
+  chatHistory?: ApiAiMessage[]
 }
