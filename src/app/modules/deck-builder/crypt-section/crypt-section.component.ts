@@ -340,9 +340,14 @@ export class CryptSectionComponent implements OnInit {
     this.initQuery()
     this.scrollToTop()
     const isDefault =
-      groupSlider[0] === 1 && groupSlider[1] === this.cryptQuery.getMaxGroup()
+      Array.isArray(groupSlider) &&
+      groupSlider[0] === 1 &&
+      groupSlider[1] === this.cryptQuery.getMaxGroup()
     this.updateQueryParams({
-      ['group']: isDefault ? undefined : this.groupSlider.join(','),
+      ['group']:
+        isDefault || !Array.isArray(groupSlider)
+          ? undefined
+          : this.groupSlider.join(','),
     })
   }
 
@@ -351,10 +356,14 @@ export class CryptSectionComponent implements OnInit {
     this.initQuery()
     this.scrollToTop()
     const isDefault =
+      Array.isArray(capacitySlider) &&
       capacitySlider[0] === 1 &&
       capacitySlider[1] === this.cryptQuery.getMaxCapacity()
     this.updateQueryParams({
-      ['capacity']: isDefault ? undefined : this.capacitySlider.join(','),
+      ['capacity']:
+        isDefault || !Array.isArray(capacitySlider)
+          ? undefined
+          : this.capacitySlider.join(','),
     })
   }
 
