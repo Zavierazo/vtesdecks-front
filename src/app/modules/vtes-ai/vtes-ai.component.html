@@ -82,18 +82,18 @@
         @for(message of activeChat.chat; track $index){
         @if(message.type === 'HUMAN'){
         <div class="row justify-content-end" #item>
-          <div class="card bg-light p-3 py-2 text-center w-auto rounded-5">
+          <div class="card bg-light p-3 py-2 text-end w-auto rounded-5">
             {{ message.content }}
           </div>
         </div>
         }@else {
-        <div class="chat-message row p-3 text-black" [innerHTML]="message.content | markdown | async" #item>
+        <div class="chat-message row p-3 text-black text-start" [innerHTML]="message.content | markdown | async" #item>
         </div>
         }
         }
         @if(loading$ | async){
-        <div class="row justify-content-start align-items-center" #item>
-          <app-loading class="w-auto" [size]="2" [margin]="2" [text]="(showThinking$ | async) ? t('thinking') : ''" />
+        <div class="row justify-content-start align-items-center mt-2" #item>
+          <app-loading class="w-auto" [size]="2" [margin]="2" [text]="(thinking$ | async) ? t('thinking') : ''" />
         </div>
         }
         }

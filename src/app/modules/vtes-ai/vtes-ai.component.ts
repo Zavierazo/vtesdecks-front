@@ -48,9 +48,9 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
   chats$ = this.query.selectEntities()
   activeChat$ = this.query.selectActiveChat()
   loading$ = this.query.selectLoading()
-  showThinking$ = this.loading$.pipe(
+  thinking$ = this.loading$.pipe(
     switchMap((loading) =>
-      loading ? of(true).pipe(delay(10000), startWith(false)) : of(false),
+      loading ? of(true).pipe(delay(30000), startWith(false)) : of(false),
     ),
   )
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()

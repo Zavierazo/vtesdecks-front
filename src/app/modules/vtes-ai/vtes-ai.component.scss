@@ -31,3 +31,18 @@
   -o-transform: rotate(90deg);
   transform: rotate(90deg);
 }
+
+.chat-message {
+  ::ng-deep img {
+    max-width: 350px;
+    max-height: 350px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  ::ng-deep ul,
+  ::ng-deep ol {
+    padding-left: 2.5rem;
+  }
+}
