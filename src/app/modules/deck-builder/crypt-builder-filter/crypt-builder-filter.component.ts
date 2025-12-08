@@ -236,6 +236,9 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     if (!this.taintGroup) {
       this.taintGroup = new FormGroup({})
     }
+    if (!this.taints$) {
+      return
+    }
     this.taints$
       .pipe(
         untilDestroyed(this),
