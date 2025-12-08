@@ -499,7 +499,10 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const stealthCards = query
             .getLibrary()
-            .filter((card) => card.taints.includes('+Stealth / -Intercept'))
+            .filter(
+              (card) =>
+                card.taints && card.taints.includes('+Stealth / -Intercept'),
+            )
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (stealthCards < 10) {

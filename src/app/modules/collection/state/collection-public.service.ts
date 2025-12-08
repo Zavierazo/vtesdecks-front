@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { ApiCollectionBinder, ApiCollectionPage } from '@models'
-import { finalize, Observable, tap } from 'rxjs'
+import { EMPTY, finalize, Observable, tap } from 'rxjs'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
 import { CollectionQueryState } from './collection.store'
@@ -27,9 +27,12 @@ export class CollectionPublicService extends CollectionService {
 
   fetchCards(): Observable<ApiCollectionPage> {
     const { binders, query } = this.collectionStore.getValue()
+    if (!binders || binders.length === 0) {
+      return EMPTY
+    }
     this.collectionStore.setLoading(true)
     return this.collectionApiDataService
-      .getPublicBinderCards(binders![0].publicHash!, query)
+      .getPublicBinderCards(binders[0].publicHash!, query)
       .pipe(
         tap((data) => {
           this.collectionStore.update((state) => ({
@@ -45,8 +48,11 @@ export class CollectionPublicService extends CollectionService {
 
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
     const { binders } = this.collectionStore.getValue()
+    if (!binders || binders.length === 0) {
+      return EMPTY
+    }
     return this.collectionApiDataService.getPublicBinderCards(
-      binders![0].publicHash!,
+      binders[0].publicHash!,
       query,
     )
   }

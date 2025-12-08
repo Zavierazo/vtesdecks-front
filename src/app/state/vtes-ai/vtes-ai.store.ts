@@ -84,8 +84,9 @@ export class VtesAiStore {
   add(chat: AiChat) {
     this.state.update((chats) => [...chats, chat])
     // Remove chats when reaching the limit
-    if (this.getEntities().length > VtesAiStore.chat_history_limit) {
-      this.remove(this.getEntities()[0].id)
+    const entities = this.getEntities()
+    if (entities.length > VtesAiStore.chat_history_limit && entities[0]) {
+      this.remove(entities[0].id)
     }
     this.updateStorage()
   }

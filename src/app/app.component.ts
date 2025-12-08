@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
           switchMap(() => this.apiDataService.getChangelog()),
           tap((changelog: ApiChangelog[]) => {
             this.versionAvailable = true
-            if (changelog[0].showDialog) {
+            if (changelog.length > 0 && changelog[0].showDialog) {
               const changes = `Changes for version <strong>${
                 changelog[0].version
               }</strong>:

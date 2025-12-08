@@ -17,8 +17,11 @@ export class SetService {
       .getSets()
       .pipe(tap((sets: ApiSet[]) => this.setStore.set(sets)))
     return this.apiDataService.getSetLastUpdate().pipe(
-      map((sets) => sets.lastUpdate),
-      filter((lastUpdate) => lastUpdate !== this.setQuery.getLastUpdate()),
+      map((sets) => sets?.lastUpdate),
+      filter(
+        (lastUpdate) =>
+          !!lastUpdate && lastUpdate !== this.setQuery.getLastUpdate(),
+      ),
       switchMap(() => request$),
       defaultIfEmpty([]),
     )

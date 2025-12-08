@@ -120,6 +120,9 @@ export class PrintProxyComponent implements OnInit {
     cardId: number,
     setOptions: ApiProxyCardOption[],
   ): void {
+    if (setOptions.length === 0) {
+      return
+    }
     const setControl = new FormControl(setOptions[0].setAbbrev)
     if (setOptions.length === 1) {
       setControl.disable()
