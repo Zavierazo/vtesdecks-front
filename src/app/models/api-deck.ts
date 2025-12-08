@@ -1,6 +1,7 @@
 import { ApiCard } from './api-card'
 import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
+import { ApiDeckWarning } from './api-deck-warning'
 import { ApiErrata } from './api-errata'
 import { ApiUser } from './api-user'
 
@@ -36,6 +37,7 @@ export interface ApiDeck {
   rated?: boolean
   owner?: boolean
   erratas?: ApiErrata[]
+  warnings?: ApiDeckWarning[]
   tags?: string[]
   creationDate: Date
   modifyDate: Date

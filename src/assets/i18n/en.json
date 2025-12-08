@@ -98,6 +98,7 @@
     "clone": "Clone",
     "errata": "Errata",
     "errata_modified": "has been modified by an errata in",
+    "warnings": "Warnings",
     "total_crypt": "Total Crypt Cards",
     "disciplines_sup_inf": "{{ count }} Superior | Inferior",
     "total_library": "Total Library Cards",
@@ -692,6 +693,11 @@
       "Werewolf": "Werewolf",
       "Wraith": "Wraith",
       "Zombie": "Zombie"
+    },
+    "warning": {
+      "spoiler": "This deck contains unreleased cards and is not legal for tournaments.",
+      "tournament_legal_date": "This deck contains cards that are not legal for tournaments until {{ date }}.",
+      "banned_cards": "This deck contains banned cards"
     }
   },
   "limited_format": {

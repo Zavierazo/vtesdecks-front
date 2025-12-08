@@ -254,6 +254,16 @@
           }
         </div>
         }
+        @if (deck.warnings && deck.warnings.length > 0) {
+        <div class="alert alert-warning my-3" role="alert">
+          <h3><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ t('warnings') }}</h3>
+          @for (warning of deck.warnings; track warning) {
+          <p>
+            {{ warning.label | transloco: { date: warning.date } }}
+          </p>
+          }
+        </div>
+        }
       </section>
     </div>
     <div class="col-12 d-flex align-items-center mt-3">

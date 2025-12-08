@@ -98,6 +98,7 @@
     "clone": "Clonar",
     "errata": "Erratas",
     "errata_modified": "ha sido modificado por una errata el",
+    "warnings": "Avisos",
     "total_crypt": "Cartas de cripta",
     "disciplines_sup_inf": "{{ count }} superior | inferior",
     "total_library": "Cartas de biblioteca",
@@ -691,6 +692,11 @@
       "Werewolf": "Hombre Lobo",
       "Wraith": "Aparición",
       "Zombie": "Zombi"
+    },
+    "warning": {
+      "spoiler": "Este mazo contiene cartas aún no lanzadas y no es legal para torneos.",
+      "tournament_legal_date": "Este mazo contiene cartas que serán legales para torneos a partir del {{ date }}.",
+      "banned_cards": "Este mazo contiene cartas prohibidas y no es legal para torneos."
     }
   },
   "limited_format": {
