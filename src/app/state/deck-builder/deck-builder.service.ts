@@ -9,6 +9,7 @@ import {
   FILTER_GROUP_BY,
 } from '@models'
 import { ApiDataService } from '@services'
+import { getSetAbbrev } from '@utils'
 import {
   combineLatest,
   EMPTY,
@@ -277,7 +278,7 @@ export class DeckBuilderService {
         !limitedFormat.allowed.crypt[crypt.id] &&
         (limitedFormat.banned.crypt[crypt.id] ||
           !Object.keys(limitedFormat.sets).some((set) =>
-            crypt.sets.some((cryptSet) => cryptSet.split(':')[0] === set),
+            crypt.sets.some((cryptSet) => getSetAbbrev(cryptSet) === set),
           ))
       ) {
         cryptErrors.push(
@@ -348,7 +349,7 @@ export class DeckBuilderService {
         !limitedFormat.allowed.library[library.id] &&
         (limitedFormat.banned.library[library.id] ||
           !Object.keys(limitedFormat.sets).some((set) =>
-            library.sets.some((librarySet) => librarySet.split(':')[0] === set),
+            library.sets.some((librarySet) => getSetAbbrev(librarySet) === set),
           ))
       ) {
         libraryErrors.push(

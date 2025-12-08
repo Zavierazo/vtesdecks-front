@@ -4,16 +4,19 @@ import {
   ApiClanStat,
   ApiCrypt,
   ApiDisciplineStat,
+  ApiSet,
   CryptSortBy,
 } from '@models'
-import { searchIncludes } from '@utils'
-import { Observable, map } from 'rxjs'
+import { SetQuery } from '@state/set/set.query'
+import { getSetAbbrev, searchIncludes } from '@utils'
+import { Observable, map, switchMap } from 'rxjs'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
 })
 export class CryptQuery {
   private readonly store = inject(CryptStore)
+  private readonly setQuery = inject(SetQuery)
 
   selectEntity(id: number): Observable<ApiCrypt | undefined> {
     return this.store.selectEntity(id)
@@ -105,6 +108,25 @@ export class CryptQuery {
           .flat(),
       ),
       map((taints) => [...new Set(taints)].sort()),
+    )
+  }
+
+  selectSets(): Observable<ApiSet[]> {
+    return this.store.selectAll().pipe(
+      map((library) =>
+        library
+          .filter((library) => library.sets)
+          .map((library) => library.sets)
+          .flat(),
+      ),
+      map((sets) => [...new Set(sets)].map(getSetAbbrev)),
+      switchMap((setIds) =>
+        this.setQuery.selectAll({
+          filterBy: (set) => setIds.includes(set.abbrev),
+          sortBy: 'releaseDate',
+          sortByOrder: 'desc',
+        }),
+      ),
     )
   }
 

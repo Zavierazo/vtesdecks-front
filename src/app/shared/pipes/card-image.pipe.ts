@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core'
 import { ApiI18n } from '@models'
+import { getSetAbbrev } from '@utils'
 import { environment } from '../../../environments/environment'
 
 @Pipe({ name: 'cardImage' })
@@ -9,7 +10,7 @@ export class CardImagePipe implements PipeTransform {
     set?: string,
   ): string {
     if (set) {
-      const setAbbrev = set.split(':')[0].toLocaleLowerCase()
+      const setAbbrev = getSetAbbrev(set).toLocaleLowerCase()
       return `${environment.cdnDomain}/img/cards/sets/${setAbbrev}/${card.id}.jpg`
     } else if (card.i18n && card.i18n.image) {
       return environment.cdnDomain + card.i18n.image
