@@ -14,6 +14,10 @@
   i {
     line-height: 1;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .ai-widget-container {

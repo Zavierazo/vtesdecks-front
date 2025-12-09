@@ -296,7 +296,8 @@
     "theme": "Theme",
     "notifications": "Notifications",
     "unread_notifications": "unread notifications",
-    "proxy_generator": "Proxy Generator"
+    "proxy_generator": "Proxy Generator",
+    "vtes_ai_chat": "VTES AI Chat"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",

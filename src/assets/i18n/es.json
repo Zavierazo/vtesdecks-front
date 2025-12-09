@@ -296,7 +296,8 @@
     "theme": "Tema",
     "notifications": "Notificaciones",
     "unread_notifications": "notificaciones no leídas",
-    "proxy_generator": "Generador de Proxies"
+    "proxy_generator": "Generador de Proxies",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",

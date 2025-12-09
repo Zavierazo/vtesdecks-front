@@ -48,7 +48,11 @@
     }
     <div class="flex-grow-1 px-2 py-4" [class.overflow-hidden]="widgetMode()">
       @if(!widgetMode()){
-      <h1 class="text-black text-center mb-5 fw-semibold" style="font-size: 2rem;">{{ t('title') }}</h1>
+      <h1 class="text-black text-center mb-5 fw-semibold d-flex align-items-center justify-content-center gap-2"
+        style="font-size: 2rem;">
+        {{ t('title') }}
+        <span class="badge bg-warning text-dark fs-7">BETA</span>
+      </h1>
       }
       <div #scrollFrame class="container overflow-y-auto" [class.widget-scroll]="widgetMode()">
         @if((activeChat$ | async); as activeChat){
@@ -91,6 +95,9 @@
               </div>
               <div class="card bg-light p-2 text-center rounded-3 small">
                 {{ t('example_2')}}
+              </div>
+              <div class="card bg-light p-2 text-center rounded-3 small">
+                {{ t('example_3')}}
               </div>
             </div>
           </div>
