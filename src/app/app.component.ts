@@ -17,6 +17,7 @@ import { ApiChangelog } from './models/api-changelog'
 import { ApiDataService } from './services/api.data.service'
 import { ColorThemeService } from './services/color-theme.service'
 import { ToastService } from './services/toast.service'
+import { AiChatWidgetComponent } from './shared/components/ai-chat-widget/ai-chat-widget.component'
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from './shared/components/footer/footer.component'
 import { HeaderComponent } from './shared/components/header/header.component'
@@ -33,7 +34,13 @@ import { isChristmas, isHalloween } from './utils/vtes-utils'
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [HeaderComponent, RouterOutlet, FooterComponent, ToastsContainer],
+  imports: [
+    HeaderComponent,
+    RouterOutlet,
+    FooterComponent,
+    ToastsContainer,
+    AiChatWidgetComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService)

@@ -483,6 +483,9 @@
   "vtes_ai": {
     "title": "VTES AI Chat",
     "new_chat": "New chat",
+    "new": "New",
+    "maximize": "Maximize",
+    "close": "Close",
     "must_3_characters": "Must be at least 3 characters",
     "send_message": "Ask me a question about VTES",
     "history": "History",

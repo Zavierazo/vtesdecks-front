@@ -14,6 +14,14 @@ export class VtesAiService {
   init() {
     this.store.setLoading()
     const chats = this.store.getEntities()
+    const activeChat = this.store.getActiveEntity()
+
+    // If there's already an active chat, keep it
+    if (activeChat) {
+      return
+    }
+
+    // Otherwise, create a new chat if needed
     if (chats.length === 0 || chats[chats.length - 1].chat.length !== 0) {
       this.newChat()
     } else {

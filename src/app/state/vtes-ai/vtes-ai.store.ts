@@ -18,7 +18,7 @@ export class VtesAiStore {
   private readonly localStorage = inject(LocalStorageService)
 
   static readonly stateStoreName = 'vtes_ai_v1_state'
-  static readonly chat_history_limit = 5
+  static readonly chat_history_limit = 20
   private readonly state = signal<AiChat[]>([])
   private readonly state$ = toObservable(this.state)
   private readonly activeChat = signal<number>(0)
