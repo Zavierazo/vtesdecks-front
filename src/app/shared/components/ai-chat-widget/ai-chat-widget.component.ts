@@ -2,12 +2,14 @@ import { AsyncPipe } from '@angular/common'
 import { Component, effect, inject, OnInit, signal } from '@angular/core'
 import { NavigationEnd, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TruncatePipe } from '@shared/pipes/truncate.pipe'
+import { AuthQuery } from '@state/auth/auth.query'
 import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
 import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
 import { filter } from 'rxjs'
 import { VtesAiComponent } from '../../../modules/vtes-ai/vtes-ai.component'
+import { LoginComponent } from '../login/login.component'
 
 @Component({
   selector: 'app-ai-chat-widget',
@@ -27,6 +29,8 @@ export class AiChatWidgetComponent implements OnInit {
   private readonly router = inject(Router)
   private readonly vtesAiService = inject(VtesAiService)
   private readonly vtesAiQuery = inject(VtesAiQuery)
+  private readonly modalService = inject(NgbModal)
+  private readonly authQuery = inject(AuthQuery)
 
   isOpen = signal(false)
   isSelf = signal(false)
@@ -61,6 +65,10 @@ export class AiChatWidgetComponent implements OnInit {
   }
 
   toggleWidget() {
+    if (!this.authQuery.isAuthenticated()) {
+      this.modalService.open(LoginComponent)
+      return
+    }
     this.isOpen.set(!this.isOpen())
   }
 
