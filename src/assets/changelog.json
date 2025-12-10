@@ -1,7 +1,7 @@
 [
   {
     "version": "2.57.0",
-    "date": "12th December, 2025",
+    "date": "10th December, 2025",
     "changes": [
       "Added holographic effect to card images in the card modal for a more immersive experience.",
       "Introduced warning messages on decks that include unreleased or banned cards, helping users quickly understand tournament legality.",
