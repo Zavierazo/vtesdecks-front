@@ -188,7 +188,8 @@
     "view_collection": "Ver en Colección",
     "tracked_collection": "Rastreado en Colección",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas en la colección",
-    "share": "Compartir"
+    "share": "Compartir",
+    "show_more": "Mostrar más"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",

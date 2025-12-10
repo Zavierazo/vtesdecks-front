@@ -189,7 +189,8 @@
     "tracked_collection": "Rastreado na Coleção",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
-    "supporter": "Membro no Patreon"
+    "supporter": "Membro no Patreon",
+    "show_more": "Mostrar mais"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",

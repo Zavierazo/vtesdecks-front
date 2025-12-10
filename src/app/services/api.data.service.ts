@@ -22,6 +22,7 @@ import {
   ApiResetPassword,
   ApiResponse,
   ApiSet,
+  ApiShop,
   ApiUser,
   ApiUserCountry,
   ApiUserNotification,
@@ -372,6 +373,14 @@ export class ApiDataService {
   getCardInfo(cardId: number): Observable<ApiCardInfo> {
     return this.httpClient.get<ApiCardInfo>(
       `${environment.api.baseUrl}/cards/${cardId}/info`,
+    )
+  }
+
+  getCardShops(cardId: number, showAll: boolean): Observable<ApiShop[]> {
+    const params = new HttpParams().set('showAll', showAll)
+    return this.httpClient.get<ApiShop[]>(
+      `${environment.api.baseUrl}/cards/${cardId}/shops`,
+      { params },
     )
   }
 

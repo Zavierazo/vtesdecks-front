@@ -6,6 +6,7 @@ import { ApiShop } from './api-shop'
 export interface ApiCardInfo {
   preconstructedDecks: ApiDeck[]
   shopList: ApiShop[]
+  hasMoreShops: boolean
   rulingList?: ApiRuling[]
   collectionStats?: ApiCollectionCardStats
   minPrice?: number

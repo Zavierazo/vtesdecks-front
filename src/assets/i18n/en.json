@@ -188,7 +188,8 @@
     "view_collection": "View in Collection",
     "tracked_collection": "Tracked in Collection",
     "cards_in_collection_tooltip": "{{ collected }} out of {{ total }} cards in collection",
-    "share": "Share"
+    "share": "Share",
+    "show_more": "Show more"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
