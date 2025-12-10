@@ -58,7 +58,7 @@ export class SetQuery {
     return this.store.selectEntities(limitTo, filterBy, sortBy, sortByOrder)
   }
 
-  getLastUpdate(): Date {
+  getLastUpdate(): Date | undefined {
     return this.store.getEntities(undefined, 'lastUpdate', 'desc')[0]
       ?.lastUpdate
   }

@@ -369,11 +369,15 @@ export class LibrarySectionComponent implements OnInit {
     this.bloodCostSlider = bloodCostSlider
     this.initQuery()
     this.scrollToTop()
-    const isDefault = bloodCostSlider[0] === 0 && bloodCostSlider[1] === 4
+    const isDefault =
+      Array.isArray(bloodCostSlider) &&
+      bloodCostSlider[0] === 0 &&
+      bloodCostSlider[1] === 4
     this.updateQueryParams({
-      ['bloodCostSlider']: isDefault
-        ? undefined
-        : this.bloodCostSlider.join(','),
+      ['bloodCostSlider']:
+        isDefault || !Array.isArray(bloodCostSlider)
+          ? undefined
+          : this.bloodCostSlider.join(','),
     })
   }
 
@@ -382,9 +386,15 @@ export class LibrarySectionComponent implements OnInit {
     this.initQuery()
     this.scrollToTop()
 
-    const isDefault = poolCostSlider[0] === 0 && poolCostSlider[1] === 6
+    const isDefault =
+      Array.isArray(poolCostSlider) &&
+      poolCostSlider[0] === 0 &&
+      poolCostSlider[1] === 6
     this.updateQueryParams({
-      ['poolCostSlider']: isDefault ? undefined : this.poolCostSlider.join(','),
+      ['poolCostSlider']:
+        isDefault || !Array.isArray(poolCostSlider)
+          ? undefined
+          : this.poolCostSlider.join(','),
     })
   }
 

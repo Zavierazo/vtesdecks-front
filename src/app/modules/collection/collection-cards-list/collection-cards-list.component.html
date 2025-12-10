@@ -32,9 +32,11 @@
         <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
         <option [value]="'none'" [ngValue]="'none'">{{ t('none') }}</option>
         @for(set of sets$ | async; track set) {
+        @if(set.abbrev !== 'Spoiler'){
         <option [value]="set.abbrev" [ngValue]="set.abbrev">
           {{ set.fullName }} @if(set.releaseDate){<span class="text-muted">'{{ set.releaseDate | date:'yy'}}</span>}
         </option>
+        }
         }
       </select>
       <div ngbDropdown class="d-inline-block">

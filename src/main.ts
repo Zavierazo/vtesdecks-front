@@ -165,7 +165,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'ai',
+    path: 'vtes-ai',
     loadChildren: () =>
       import('./app/modules/vtes-ai/vtes-ai.routes').then(
         (m) => m.VTES_AI_ROUTES,

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { ApiAiAskRequest, ApiAiAskResponse } from '@models'
 import { ApiDataService } from '@services'
 import { catchError, finalize, Observable, of, tap } from 'rxjs'
+import { v4 as uuidv4 } from 'uuid'
 import { VtesAiStore } from './vtes-ai.store'
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,14 @@ export class VtesAiService {
   init() {
     this.store.setLoading()
     const chats = this.store.getEntities()
+    const activeChat = this.store.getActiveEntity()
+
+    // If there's already an active chat, keep it
+    if (activeChat) {
+      return
+    }
+
+    // Otherwise, create a new chat if needed
     if (chats.length === 0 || chats[chats.length - 1].chat.length !== 0) {
       this.newChat()
     } else {
@@ -26,6 +35,7 @@ export class VtesAiService {
     const newId = lastId + 1
     this.store.add({
       id: newId,
+      sessionId: uuidv4(),
       title: new Date().toLocaleString(),
       chat: [],
     })
@@ -42,6 +52,8 @@ export class VtesAiService {
       return of()
     }
     const request: ApiAiAskRequest = {
+      sessionId: chat.sessionId,
+      question,
       chatHistory:
         chat?.chat.filter(
           (c) =>
@@ -49,7 +61,6 @@ export class VtesAiService {
             !c.content.startsWith('Quota exceeded') ||
             !c.content.startsWith('Unexpected error'),
         ) ?? [],
-      question,
     }
     this.store.update(chat.id, (chat) => ({
       ...chat,

@@ -40,7 +40,7 @@ export class UserPublicProfileComponent implements OnInit {
 
   username = signal<string>('')
   user = signal<ApiUser>({})
-  isSupporter = computed(() => isSupporter(this.user().roles))
+  isSupporter = computed(() => isSupporter(this.user()?.roles))
   decks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
   loading$!: Observable<boolean>
@@ -74,7 +74,7 @@ export class UserPublicProfileComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap((decks) => {
-          if (decks.decks) {
+          if (decks.decks && decks.decks.length > 0) {
             this.user.set(decks.decks[0].user || {})
           }
         }),

@@ -98,6 +98,7 @@
     "clone": "Clonar",
     "errata": "Erratas",
     "errata_modified": "foi modificado por uma errata em",
+    "warnings": "Avisos",
     "total_crypt": "Cartões de cripta",
     "disciplines_sup_inf": "{{ count }} Superior | Inferior",
     "total_library": "Cartões de biblioteca",
@@ -188,7 +189,8 @@
     "tracked_collection": "Rastreado na Coleção",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
-    "supporter": "Membro no Patreon"
+    "supporter": "Membro no Patreon",
+    "show_more": "Mostrar mais"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",
@@ -297,7 +299,8 @@
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
     "whats_new": "Novidades {{ date }}",
-    "proxy_generator": "Gerador de Proxies"
+    "proxy_generator": "Gerador de Proxies",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
@@ -427,7 +430,8 @@
     "list": "Lista",
     "cards": "cartas",
     "apply": "Aplicar",
-    "proxy_generator": "Gerador de Proxies"
+    "proxy_generator": "Gerador de Proxies",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "table_seating": {
     "title": "Assentamento de mesa",
@@ -481,6 +485,9 @@
   "vtes_ai": {
     "title": "VTES AI Chat",
     "new_chat": "Novo chat",
+    "new": "Novo",
+    "maximize": "Maximizar",
+    "close": "Fechar",
     "must_3_characters": "Deve ter pelo menos 3 caracteres",
     "send_message": "Faça uma pergunta sobre VTES (Eu dou respostas melhores em inglês)",
     "history": "Histórico",
@@ -495,7 +502,8 @@
     "limitations": "Limitações",
     "limitation_1": "Pode gerar informações incorretamente ocasionalmente",
     "limitation_2": "Embora entenda outros idiomas, ele é treinado com os nomes e regras em inglês",
-    "limitation_3": "Não conheça as mudanças recentes nas cartas ou as regras"
+    "limitation_3": "Não conheça as mudanças recentes nas cartas ou as regras",
+    "thinking": "Pensando..."
   },
   "statistics": {
     "statistics": "Estadísticas",
@@ -690,6 +698,11 @@
       "Werewolf": "Lobisomem",
       "Wraith": "Aparição",
       "Zombie": "Zombie"
+    },
+    "warning": {
+      "spoiler": "Este baralho contém cartas ainda não lançadas e não é legal para torneios.",
+      "tournament_legal_date": "Este baralho não é legal para torneios até {{ date }}.",
+      "banned_cards": "Este baralho contém cartas proibidas e não é legal para torneios."
     }
   },
   "limited_format": {

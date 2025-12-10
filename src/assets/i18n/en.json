@@ -98,6 +98,7 @@
     "clone": "Clone",
     "errata": "Errata",
     "errata_modified": "has been modified by an errata in",
+    "warnings": "Warnings",
     "total_crypt": "Total Crypt Cards",
     "disciplines_sup_inf": "{{ count }} Superior | Inferior",
     "total_library": "Total Library Cards",
@@ -187,7 +188,8 @@
     "view_collection": "View in Collection",
     "tracked_collection": "Tracked in Collection",
     "cards_in_collection_tooltip": "{{ collected }} out of {{ total }} cards in collection",
-    "share": "Share"
+    "share": "Share",
+    "show_more": "Show more"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
@@ -295,7 +297,8 @@
     "theme": "Theme",
     "notifications": "Notifications",
     "unread_notifications": "unread notifications",
-    "proxy_generator": "Proxy Generator"
+    "proxy_generator": "Proxy Generator",
+    "vtes_ai_chat": "VTES AI Chat"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -428,7 +431,8 @@
     "cards": "cards",
     "apply": "Apply",
     "proxy_generator": "Proxy Generator",
-    "supporter": "Patreon Member"
+    "supporter": "Patreon Member",
+    "vtes_ai_chat": "VTES AI Chat"
   },
   "table_seating": {
     "title": "Table Seating",
@@ -482,6 +486,9 @@
   "vtes_ai": {
     "title": "VTES AI Chat",
     "new_chat": "New chat",
+    "new": "New",
+    "maximize": "Maximize",
+    "close": "Close",
     "must_3_characters": "Must be at least 3 characters",
     "send_message": "Ask me a question about VTES",
     "history": "History",
@@ -496,7 +503,8 @@
     "limitations": "Limitations",
     "limitation_1": "May occasionally generate incorrect information",
     "limitation_2": "Although it understands other languages, it is trained with the names and rules in English",
-    "limitation_3": "May not know about recent changes in the cards or the rules"
+    "limitation_3": "May not know about recent changes in the cards or the rules",
+    "thinking": "Thinking..."
   },
   "statistics": {
     "statistics": "Statistics",
@@ -691,6 +699,11 @@
       "Werewolf": "Werewolf",
       "Wraith": "Wraith",
       "Zombie": "Zombie"
+    },
+    "warning": {
+      "spoiler": "This deck contains unreleased cards and is not legal for tournaments.",
+      "tournament_legal_date": "This deck contains cards that are not legal for tournaments until {{ date }}.",
+      "banned_cards": "This deck contains banned cards"
     }
   },
   "limited_format": {

@@ -27,7 +27,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { LibraryQuery } from '@state/library/library.query'
-import { isRegexSearch, searchIncludes } from '@utils'
+import { getSetAbbrev, isRegexSearch, searchIncludes } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
@@ -365,7 +365,7 @@ export class LibraryBuilderComponent implements OnInit {
           }
           if (
             !Object.keys(limitedFormatState.sets).some((set) =>
-              entity.sets.some((entitySet) => entitySet.split(':')[0] === set),
+              entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
             )
           ) {
             return false

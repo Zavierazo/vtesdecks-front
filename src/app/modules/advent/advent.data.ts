@@ -499,7 +499,10 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const stealthCards = query
             .getLibrary()
-            .filter((card) => card.taints.includes('+Stealth / -Intercept'))
+            .filter(
+              (card) =>
+                card.taints && card.taints.includes('+Stealth / -Intercept'),
+            )
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (stealthCards < 10) {
@@ -533,9 +536,19 @@ export const ADVENT_DATA: AdventData[] = [
         },
       },
       24: {
-        title: 'The Grand Finale: Your Best Gift',
+        title: 'The Grand Finale: Barachiel Rising',
         content:
-          '<strong>Rule</strong>: Create your best deck and share it with the community as your holiday gift.',
+          '<strong>Rule</strong>: Build a deck featuring Barachiel, a new Salubri from the upcoming New Blood release.',
+        validation: (query: DeckBuilderQuery) => {
+          if (!query.getCrypt().some((vampire) => vampire.id === 250001)) {
+            return {
+              cryptErrors: [
+                'Advent Rule: Crypt must include Barachiel, the new Salubri from the upcoming New Blood release.',
+              ],
+            }
+          }
+          return {}
+        },
       },
     },
   },

@@ -14,7 +14,6 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
-import { SetQuery } from '@state/set/set.query'
 import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
@@ -43,7 +42,6 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
-  private setQuery = inject(SetQuery)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -86,10 +84,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   sects$ = this.libraryQuery.selectSects()
   titles$ = this.libraryQuery.selectTitles()
   taints$ = this.libraryQuery.selectTaints()
-  sets$ = this.setQuery.selectAll({
-    sortBy: 'releaseDate',
-    sortByOrder: 'desc',
-  })
+  sets$ = this.libraryQuery.selectSets()
   pathList = PATH_LIST
   initialized = false
 
@@ -240,6 +235,9 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   onChangeTaint() {
     if (!this.taintGroup) {
       this.taintGroup = new FormGroup({})
+    }
+    if (!this.taints$) {
+      return
     }
     this.taints$
       .pipe(

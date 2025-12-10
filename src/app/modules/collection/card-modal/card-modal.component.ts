@@ -35,7 +35,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { sortTrigramSimilarity } from '@utils'
+import { getSetAbbrev, sortTrigramSimilarity } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
   BehaviorSubject,
@@ -224,7 +224,7 @@ export class CardModalComponent implements OnInit {
       this.setQuery
         .getAll({ sortBy: 'releaseDate', sortByOrder: 'desc' })
         .filter((set) =>
-          item.sets.some((cardSet) => cardSet.split(':')[0] === set.abbrev),
+          item.sets.some((cardSet) => getSetAbbrev(cardSet) === set.abbrev),
         ),
     )
   }

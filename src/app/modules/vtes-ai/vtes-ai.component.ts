@@ -8,6 +8,7 @@ import {
   TemplateRef,
   ViewChildren,
   inject,
+  input,
   viewChild,
 } from '@angular/core'
 import {
@@ -17,13 +18,19 @@ import {
   Validators,
 } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
+import {
+  NgbDropdown,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbOffcanvas,
+} from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
 import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
 import { MarkdownPipe } from 'ngx-markdown'
+import { delay, of, startWith, switchMap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -36,6 +43,9 @@ import { MarkdownPipe } from 'ngx-markdown'
     AsyncPipe,
     LoadingComponent,
     MarkdownPipe,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
   ],
 })
 export class VtesAiComponent implements OnInit, AfterViewInit {
@@ -44,9 +54,16 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
   private readonly offcanvasService = inject(NgbOffcanvas)
   private readonly mediaService = inject(MediaService)
 
+  widgetMode = input(false)
+
   chats$ = this.query.selectEntities()
   activeChat$ = this.query.selectActiveChat()
   loading$ = this.query.selectLoading()
+  thinking$ = this.loading$.pipe(
+    switchMap((loading) =>
+      loading ? of(true).pipe(delay(30000), startWith(false)) : of(false),
+    ),
+  )
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
 
   chatForm = new FormGroup({

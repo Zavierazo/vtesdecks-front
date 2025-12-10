@@ -27,7 +27,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
-import { isRegexSearch, searchIncludes } from '@utils'
+import { getSetAbbrev, isRegexSearch, searchIncludes } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -341,7 +341,7 @@ export class CryptBuilderComponent implements OnInit {
           }
           if (
             !Object.keys(limitedFormatState.sets).some((set) =>
-              entity.sets.some((entitySet) => entitySet.split(':')[0] === set),
+              entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
             )
           ) {
             return false

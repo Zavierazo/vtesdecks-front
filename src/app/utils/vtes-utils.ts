@@ -21,6 +21,10 @@ export function isLibraryId(id: number): boolean {
   return id < 200000
 }
 
+export function getSetAbbrev(value: string): string {
+  return value.split(':')[0]
+}
+
 export function roundNumber(value: number, decimals: number): number {
   if (Number.isNaN(value)) {
     return value

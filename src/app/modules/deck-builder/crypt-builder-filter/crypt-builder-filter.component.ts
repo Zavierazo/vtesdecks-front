@@ -14,7 +14,6 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { SetQuery } from '@state/set/set.query'
 import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
 import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
@@ -41,7 +40,6 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
-  private setQuery = inject(SetQuery)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -84,10 +82,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   titles$ = this.cryptQuery.selectTitles()
   sects$ = this.cryptQuery.selectSects()
   taints$ = this.cryptQuery.selectTaints()
-  sets$ = this.setQuery.selectAll({
-    sortBy: 'releaseDate',
-    sortByOrder: 'desc',
-  })
+  sets$ = this.cryptQuery.selectSets()
   pathList = PATH_LIST
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
@@ -240,6 +235,9 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   onChangeTaint() {
     if (!this.taintGroup) {
       this.taintGroup = new FormGroup({})
+    }
+    if (!this.taints$) {
+      return
     }
     this.taints$
       .pipe(

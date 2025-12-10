@@ -13,7 +13,7 @@
   <p>
     <strong>{{ t('artist') }}: </strong>{{ card().artist }}
   </p>
-  @if(cardInfo(); as cardInfo) {
+  @if(displayCardInfo(); as cardInfo) {
   <div class="card border-0 shadow-sm mt-3">
     <div class="card-header bg-warning text-dark py-2" role="button" (click)="rulingsCollapsed = !rulingsCollapsed"
       (keyup.enter)="rulingsCollapsed = !rulingsCollapsed" (keyup.space)="rulingsCollapsed = !rulingsCollapsed"
@@ -84,7 +84,8 @@
       <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last "
         [class.opacity-50]="!shop.inStock">
         <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
-          [gaCategory]="shop.shopInfo.name" [gaLabel]="card().name" [class.text-decoration-line-through]="!shop.inStock">
+          [gaCategory]="shop.shopInfo.name" [gaLabel]="card().name"
+          [class.text-decoration-line-through]="!shop.inStock">
           <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">
             {{ shop.shopInfo.fullName }}
             @if(shop.set){
@@ -93,6 +94,18 @@
           </span>
           <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
         </a>
+      </div>
+      }
+      @if(cardInfo.hasMoreShops) {
+      <div class="text-center mt-2">
+        <button class="btn btn-sm btn-outline-primary" (click)="onLoadMoreShops()" [disabled]="loading()">
+          @if(loading()) {
+          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          } @else {
+          <i class="bi bi-cart-plus me-2"></i>
+          }
+          {{ t('show_more') }}
+        </button>
       </div>
       }
     </div>

@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs'
 
 export interface AiChat {
   id: number
+  sessionId: string
   title: string
   chat: ApiAiMessage[]
 }
@@ -17,7 +18,7 @@ export class VtesAiStore {
   private readonly localStorage = inject(LocalStorageService)
 
   static readonly stateStoreName = 'vtes_ai_v1_state'
-  static readonly chat_history_limit = 5
+  static readonly chat_history_limit = 20
   private readonly state = signal<AiChat[]>([])
   private readonly state$ = toObservable(this.state)
   private readonly activeChat = signal<number>(0)
@@ -83,8 +84,9 @@ export class VtesAiStore {
   add(chat: AiChat) {
     this.state.update((chats) => [...chats, chat])
     // Remove chats when reaching the limit
-    if (this.getEntities().length > VtesAiStore.chat_history_limit) {
-      this.remove(this.getEntities()[0].id)
+    const entities = this.getEntities()
+    if (entities.length > VtesAiStore.chat_history_limit && entities[0]) {
+      this.remove(entities[0].id)
     }
     this.updateStorage()
   }

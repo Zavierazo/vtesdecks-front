@@ -98,6 +98,7 @@
     "clone": "Clonar",
     "errata": "Erratas",
     "errata_modified": "ha sido modificado por una errata el",
+    "warnings": "Avisos",
     "total_crypt": "Cartas de cripta",
     "disciplines_sup_inf": "{{ count }} superior | inferior",
     "total_library": "Cartas de biblioteca",
@@ -187,7 +188,8 @@
     "view_collection": "Ver en Colección",
     "tracked_collection": "Rastreado en Colección",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas en la colección",
-    "share": "Compartir"
+    "share": "Compartir",
+    "show_more": "Mostrar más"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> mazos",
@@ -295,7 +297,8 @@
     "theme": "Tema",
     "notifications": "Notificaciones",
     "unread_notifications": "notificaciones no leídas",
-    "proxy_generator": "Generador de Proxies"
+    "proxy_generator": "Generador de Proxies",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -426,7 +429,8 @@
     "cards": "cartas",
     "apply": "Aplicar",
     "proxy_generator": "Generador de Proxies",
-    "supporter": "Miembro en Patreon"
+    "supporter": "Miembro en Patreon",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -480,6 +484,9 @@
   "vtes_ai": {
     "title": "VTES AI Chat",
     "new_chat": "Nuevo chat",
+    "new": "Nuevo",
+    "maximize": "Maximizar",
+    "close": "Cerrar",
     "must_3_characters": "Debe tener al menos 3 caracteres",
     "send_message": "Haz una pregunta sobre VTES (En inglés doy mejores respuestas)",
     "history": "Historial",
@@ -494,7 +501,8 @@
     "limitations": "Limitaciones",
     "limitation_1": "Puede generar información incorrectamente ocasionalmente",
     "limitation_2": "Aunque entiende otros idiomas, esta entrenado con los nombres y reglas en inglés",
-    "limitation_3": "No conoce los cambios recientes en las cartas o las reglas"
+    "limitation_3": "No conoce los cambios recientes en las cartas o las reglas",
+    "thinking": "Pensando..."
   },
   "statistics": {
     "statistics": "Estadísticas",
@@ -690,6 +698,11 @@
       "Werewolf": "Hombre Lobo",
       "Wraith": "Aparición",
       "Zombie": "Zombi"
+    },
+    "warning": {
+      "spoiler": "Este mazo contiene cartas aún no lanzadas y no es legal para torneos.",
+      "tournament_legal_date": "Este mazo contiene cartas que serán legales para torneos a partir del {{ date }}.",
+      "banned_cards": "Este mazo contiene cartas prohibidas y no es legal para torneos."
     }
   },
   "limited_format": {

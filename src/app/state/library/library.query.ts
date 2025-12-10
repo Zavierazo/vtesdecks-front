@@ -4,16 +4,19 @@ import {
   ApiClanStat,
   ApiDisciplineStat,
   ApiLibrary,
+  ApiSet,
   LibrarySortBy,
 } from '@models'
-import { searchIncludes } from '@utils'
-import { map, Observable } from 'rxjs'
+import { SetQuery } from '@state/set/set.query'
+import { getSetAbbrev, searchIncludes } from '@utils'
+import { map, Observable, switchMap } from 'rxjs'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
 })
 export class LibraryQuery {
   private readonly store = inject(LibraryStore)
+  private readonly setQuery = inject(SetQuery)
 
   selectEntity(id: number): Observable<ApiLibrary | undefined> {
     return this.store.selectEntity(id)
@@ -109,6 +112,25 @@ export class LibraryQuery {
           .flat(),
       ),
       map((taints) => [...new Set(taints)].sort()),
+    )
+  }
+
+  selectSets(): Observable<ApiSet[]> {
+    return this.store.selectAll().pipe(
+      map((library) =>
+        library
+          .filter((library) => library.sets)
+          .map((library) => library.sets)
+          .flat(),
+      ),
+      map((sets) => [...new Set(sets)].map(getSetAbbrev)),
+      switchMap((setIds) =>
+        this.setQuery.selectAll({
+          filterBy: (set) => setIds.includes(set.abbrev),
+          sortBy: 'releaseDate',
+          sortByOrder: 'desc',
+        }),
+      ),
     )
   }
 
