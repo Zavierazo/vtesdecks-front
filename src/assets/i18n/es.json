@@ -428,7 +428,8 @@
     "cards": "cartas",
     "apply": "Aplicar",
     "proxy_generator": "Generador de Proxies",
-    "supporter": "Miembro en Patreon"
+    "supporter": "Miembro en Patreon",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "table_seating": {
     "title": "Asignación de asientos",

@@ -105,22 +105,33 @@
               </div>
             </div>
             <div class="mt-1 row g-3 justify-content-center">
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <a routerLink="/cards/crypt" class="hero-card bg-secondary text-white">
                   <i class="bi bi-file-person"></i>
                   <span>{{ 'shared.crypt' | transloco }}</span>
                 </a>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <a routerLink="/cards/library" class="hero-card bg-secondary text-white">
                   <i class="bi bi-file-richtext"></i>
                   <span>{{ 'shared.library' | transloco }}</span>
                 </a>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <a routerLink="/proxy-generator" class="hero-card bg-secondary text-white">
                   <i class="bi bi-printer"></i>
                   <span>{{ 'shared.proxy_generator' | transloco }}</span>
+                </a>
+              </div>
+              <div class="col-6 col-md-3">
+                <a routerLink="/vtes-ai" class="hero-card bg-secondary text-white position-relative">
+                  <span
+                    class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fw-semibold"
+                    style="z-index: 2; font-size: 0.75rem;">
+                    <i class="bi bi-fs-sm bi-stars" style="font-size: 0.75rem;"></i> {{ t('new') }}
+                  </span>
+                  <i class="bi bi-chat-dots"></i>
+                  <span>{{ 'shared.vtes_ai_chat' | transloco }}</span>
                 </a>
               </div>
             </div>

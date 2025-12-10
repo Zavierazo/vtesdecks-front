@@ -429,7 +429,8 @@
     "list": "Lista",
     "cards": "cartas",
     "apply": "Aplicar",
-    "proxy_generator": "Gerador de Proxies"
+    "proxy_generator": "Gerador de Proxies",
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "table_seating": {
     "title": "Assentamento de mesa",

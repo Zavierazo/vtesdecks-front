@@ -430,7 +430,8 @@
     "cards": "cards",
     "apply": "Apply",
     "proxy_generator": "Proxy Generator",
-    "supporter": "Patreon Member"
+    "supporter": "Patreon Member",
+    "vtes_ai_chat": "VTES AI Chat"
   },
   "table_seating": {
     "title": "Table Seating",
