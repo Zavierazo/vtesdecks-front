@@ -5,7 +5,6 @@ import {
   ElementRef,
   OnInit,
   QueryList,
-  TemplateRef,
   ViewChildren,
   inject,
   input,
@@ -66,17 +65,19 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
   )
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
 
+  private isLoading = false
+
   chatForm = new FormGroup({
     question: new FormControl('', Validators.minLength(3)),
   })
 
   readonly scrollFrame = viewChild.required<ElementRef>('scrollFrame')
-  @ViewChildren('item') itemElements!: QueryList<any>
-  private scrollContainer: any
+  @ViewChildren('item') itemElements!: QueryList<unknown>
+  private scrollContainer!: HTMLElement
 
   ngAfterViewInit() {
     this.scrollContainer = this.scrollFrame().nativeElement
-    this.itemElements.changes.subscribe((_) => this.onItemElementsChanged())
+    this.itemElements.changes.subscribe(() => this.onItemElementsChanged())
   }
   private onItemElementsChanged(): void {
     this.scrollToBottom()
@@ -95,25 +96,23 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.service.init()
+    this.loading$.pipe(untilDestroyed(this)).subscribe((loading) => {
+      this.isLoading = loading
+    })
   }
 
   newChat() {
     this.service.newChat()
   }
+
   switchActiveChat(id: number) {
     this.service.switchActiveChat(id)
   }
 
   onAsk(question: string | null | undefined) {
-    if (this.chatForm.valid && question) {
+    if (this.chatForm.valid && question && !this.isLoading) {
       this.chatForm.reset()
       this.service.ask(question).pipe(untilDestroyed(this)).subscribe()
     }
-  }
-
-  openHistory(content: TemplateRef<any>): void {
-    this.offcanvasService.open(content, {
-      ariaLabelledBy: 'offcanvas-basic-title',
-    })
   }
 }
