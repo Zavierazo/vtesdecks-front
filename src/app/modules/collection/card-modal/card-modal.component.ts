@@ -2,8 +2,10 @@ import { AsyncPipe, DatePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   inject,
   OnInit,
+  ViewChild,
 } from '@angular/core'
 import {
   FormControl,
@@ -89,6 +91,8 @@ export class CardModalComponent implements OnInit {
   private setQuery = inject(SetQuery)
 
   activeModal = inject(NgbActiveModal)
+  @ViewChild('quantityInput') quantityInput?: ElementRef<HTMLInputElement>
+  @ViewChild('searchInput') searchInput?: ElementRef<HTMLInputElement>
   setImageError = false
   setOptions$ = new BehaviorSubject<ApiSet[]>([])
   defaultBinderId: number | null = null
@@ -116,6 +120,13 @@ export class CardModalComponent implements OnInit {
         tap(() => (this.setImageError = false)),
       )
       .subscribe()
+
+    // Focus search input when modal opens (only if not editing)
+    if (!this.cardCollectionId) {
+      setTimeout(() => {
+        this.searchInput?.nativeElement.focus()
+      }, 0)
+    }
   }
 
   initEdit(card: ApiCollectionCard) {
@@ -204,6 +215,11 @@ export class CardModalComponent implements OnInit {
       binder: this.defaultBinderId,
       notes: null,
     })
+    // Focus quantity input after a short delay to ensure the form is rendered
+    setTimeout(() => {
+      this.quantityInput?.nativeElement.focus()
+      this.quantityInput?.nativeElement.select()
+    }, 0)
   }
 
   private getSearchCard(card: ApiCrypt | ApiLibrary): SearchCard {
@@ -258,6 +274,10 @@ export class CardModalComponent implements OnInit {
                 binder: null,
                 notes: null,
               })
+              // Focus search input after reset
+              setTimeout(() => {
+                this.searchInput?.nativeElement.focus()
+              }, 0)
             } else {
               this.activeModal.close()
             }

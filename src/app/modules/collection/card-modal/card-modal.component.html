@@ -46,11 +46,12 @@
         }
       </div>
       <div class="col-sm-12 col-md-7 ps-0">
-        <form [formGroup]="formCard">
+        <form [formGroup]="formCard" (submit)="onSave(true)">
           <div class="form-group row">
             <label for="quantity" class="col-12 col-form-label text-primary fw-bold">{{ t('quantity') }}</label>
             <div class="col-12">
-              <input id="quantity" type="number" class="form-control" formControlName="quantity" min="1" />
+              <input #quantityInput id="quantity" type="number" class="form-control" formControlName="quantity"
+                min="1" />
             </div>
             @if (quantityControl.invalid && (quantityControl.dirty || quantityControl.touched)) {
             <div>
