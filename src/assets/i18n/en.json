@@ -504,7 +504,11 @@
     "limitation_1": "May occasionally generate incorrect information",
     "limitation_2": "Although it understands other languages, it is trained with the names and rules in English",
     "limitation_3": "May not know about recent changes in the cards or the rules",
-    "thinking": "Thinking..."
+    "thinking_1": "Thinking...",
+    "thinking_2": "Searching card rulings...",
+    "thinking_3": "Analyzing card interactions...",
+    "thinking_4": "Checking the rulebook...",
+    "thinking_5": "Finalizing the answer..."
   },
   "statistics": {
     "statistics": "Statistics",

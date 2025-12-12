@@ -64,7 +64,13 @@ export class HomeComponent implements OnInit {
     const lastAppVersionSeen = this.localStorage.getValue<string>(
       HomeComponent.CHANGELOG_ALERT_KEY,
     )
-    if (lastAppVersionSeen !== this.appVersion) {
+    const currentVersionSplit = this.appVersion.split('.')
+    const lastVersionSplit = lastAppVersionSeen?.split('.') || []
+    const majorMinorChanged =
+      currentVersionSplit[0] !== lastVersionSplit[0] ||
+      currentVersionSplit[1] !== lastVersionSplit[1]
+
+    if (!lastAppVersionSeen || majorMinorChanged) {
       this.apiDataService
         .getChangelog()
         .pipe(
@@ -80,7 +86,7 @@ export class HomeComponent implements OnInit {
               })
               if (entry) {
                 this.changelogAlert = entry
-                this.showChangelogAlert = this.appVersion !== lastAppVersionSeen
+                this.showChangelogAlert = true
                 this.changeDetector.markForCheck()
               }
             }
