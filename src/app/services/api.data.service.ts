@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import {
-  ApiAiAskRequest,
-  ApiAiAskResponse,
+  ApiAiAskAsyncRequest,
+  ApiAiAskAsyncResponse,
+  ApiAiAskStatusResponse,
   ApiCardInfo,
   ApiCardToday,
   ApiChangelog,
@@ -72,6 +73,7 @@ export class ApiDataService {
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
   private readonly aiAskPath = '/ai/ask'
+  private readonly aiAskAsyncPath = '/ai/ask/async'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
 
@@ -460,10 +462,16 @@ export class ApiDataService {
     )
   }
 
-  aiAsk(request: ApiAiAskRequest): Observable<ApiAiAskResponse> {
-    return this.httpClient.post<ApiAiAskResponse>(
-      `${environment.api.baseUrl}${this.aiAskPath}`,
+  aiAskAsync(request: ApiAiAskAsyncRequest): Observable<ApiAiAskAsyncResponse> {
+    return this.httpClient.post<ApiAiAskAsyncResponse>(
+      `${environment.api.baseUrl}${this.aiAskAsyncPath}`,
       request,
+    )
+  }
+
+  aiAskAsyncStatus(sessionId: string): Observable<ApiAiAskStatusResponse> {
+    return this.httpClient.get<ApiAiAskStatusResponse>(
+      `${environment.api.baseUrl}${this.aiAskAsyncPath}/${sessionId}`,
     )
   }
 

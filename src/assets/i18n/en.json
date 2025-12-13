@@ -508,7 +508,10 @@
     "thinking_2": "Searching card rulings...",
     "thinking_3": "Analyzing card interactions...",
     "thinking_4": "Checking the rulebook...",
-    "thinking_5": "Finalizing the answer..."
+    "thinking_5": "Finalizing the answer...",
+    "cancel": "Cancel",
+    "beta_notice_title": "Beta Feature:",
+    "beta_notice_message": "This AI assistant is in beta. Please report any bugs or feedback to help us improve!"
   },
   "statistics": {
     "statistics": "Statistics",

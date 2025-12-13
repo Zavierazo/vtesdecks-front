@@ -21,13 +21,13 @@ import {
   NgbDropdown,
   NgbDropdownMenu,
   NgbDropdownToggle,
-  NgbOffcanvas,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
 import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
+import { VtesAiStore } from '@state/vtes-ai/vtes-ai.store'
 import { MarkdownPipe } from 'ngx-markdown'
 import { map, of, switchMap, timer } from 'rxjs'
 
@@ -50,8 +50,8 @@ import { map, of, switchMap, timer } from 'rxjs'
 export class VtesAiComponent implements OnInit, AfterViewInit {
   private readonly service = inject(VtesAiService)
   private readonly query = inject(VtesAiQuery)
-  private readonly offcanvasService = inject(NgbOffcanvas)
   private readonly mediaService = inject(MediaService)
+  private readonly store = inject(VtesAiStore)
 
   widgetMode = input(false)
 
@@ -125,6 +125,13 @@ export class VtesAiComponent implements OnInit, AfterViewInit {
     if (this.chatForm.valid && question && !this.isLoading) {
       this.chatForm.reset()
       this.service.ask(question).pipe(untilDestroyed(this)).subscribe()
+    }
+  }
+
+  onCancel() {
+    const activeChat = this.store.getActiveEntity()
+    if (activeChat) {
+      this.service.cancelPolling(activeChat.id)
     }
   }
 }

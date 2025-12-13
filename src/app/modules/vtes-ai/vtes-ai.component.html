@@ -46,7 +46,7 @@
       </div>
     </div>
     }
-    <div class="flex-grow-1 px-2 py-4" [class.overflow-hidden]="widgetMode()">
+    <div class="flex-grow-1 px-2 py-3" [class.overflow-hidden]="widgetMode()">
       @if(!widgetMode()){
       <h1 class="text-black text-center mb-5 fw-semibold d-flex align-items-center justify-content-center gap-2"
         style="font-size: 2rem;">
@@ -57,6 +57,16 @@
       <div #scrollFrame class="container overflow-y-auto" [class.widget-scroll]="widgetMode()">
         @if((activeChat$ | async); as activeChat){
         @if(activeChat.chat.length === 0){
+        <div class="row g-2 mb-3">
+          <div class="col-12">
+            <div class="alert alert-warning d-flex align-items-start gap-2 mb-0 small border-0 rounded-3" role="alert">
+              <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-1"></i>
+              <div>
+                <strong>{{ t('beta_notice_title') }}</strong> {{ t('beta_notice_message') }}
+              </div>
+            </div>
+          </div>
+        </div>
         @if((isMobileOrTablet$ | async)){
         <div class="row g-2">
           <div class="col-12">
@@ -164,7 +174,7 @@
         }
         }
         @if(loading$ | async){
-        <div class="row justify-content-start align-items-center mt-2" #item>
+        <div class="row justify-content-start align-items-center mt-2 gap-2" #item>
           @let message = thinkingMessage$ | async;
           <app-loading class="w-auto" [size]="2" [margin]="2" [text]="message ? t(message) : undefined" />
         </div>
@@ -181,10 +191,17 @@
             <input formControlName="question" type="text"
               class="form-control px-4 py-3 pe-5 bg-light text-black border-1 rounded-4"
               [placeholder]="t('send_message')" />
-            <button class="ia-send-button btn position-absolute end-0 top-50 translate-middle-y me-2" type="submit"
-              [disabled]="!!(loading$ | async) || chatForm.invalid">
+            @if(loading$ | async){
+            <button class="input-button-background btn position-absolute end-0 top-50 translate-middle-y me-2"
+              (click)="onCancel()" [title]="t('cancel')">
+              <i class="bi bi-stop-fill"></i>
+            </button>
+            }@else{
+            <button class="input-button-background btn position-absolute end-0 top-50 translate-middle-y me-2"
+              type="submit" [disabled]="chatForm.invalid">
               <i class="bi bi-send"></i>
             </button>
+            }
           </div>
           @if(question?.invalid && (question?.dirty || question?.touched)){
           <div>
