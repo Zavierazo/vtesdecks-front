@@ -61,6 +61,7 @@ const generateTrigram = (input?: string) => [
  */
 export const trigramSimilarity = (input1?: string, input2?: string) => {
   if (input1 && input1.trim() && input1 === input2) return 1
+  if (input2 && input1?.toLowerCase().includes(input2.toLowerCase())) return 1
 
   const trigrams1 = generateTrigram(input1)
   const trigrams2 = generateTrigram(input2)
