@@ -37,7 +37,6 @@ export class CollectionFiltersModalComponent {
       clans: new FormControl<string[]>(filters.clans || []),
       disciplines: new FormControl<string[]>(filters.disciplines || []),
     })
-    console.log(this.form.value)
   }
 
   get typeControl() {
