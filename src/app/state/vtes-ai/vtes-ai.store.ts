@@ -34,10 +34,6 @@ export class VtesAiStore {
     const previousState = this.localStorage.getValue<AiChat[]>(
       VtesAiStore.stateStoreName,
     )
-    console.log(
-      'Loading previous AI chat state from localStorage',
-      previousState,
-    )
     if (previousState) {
       // Remove chats with messages
       this.set(previousState.filter((c) => c.chat.length > 0))
@@ -113,7 +109,6 @@ export class VtesAiStore {
   }
 
   updateTaskId(chatId: number, taskId?: string) {
-    console.log('Updating task ID for chat', chatId, 'to', taskId)
     this.update(chatId, (chat) => ({
       ...chat,
       taskId,
