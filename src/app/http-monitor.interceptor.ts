@@ -49,7 +49,10 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   }
 
   shouldRetry(error: HttpErrorResponse) {
-    if (error.status === 503 || error.status === 504 || error.status === 0) {
+    if (
+      !error.url?.includes('/ai/') && //TODO: remove when ai endpoint is stable
+      (error.status === 503 || error.status === 504 || error.status === 0)
+    ) {
       console.warn('Error ' + error.status + ' retrying...')
       this.toastService.show(
         this.translocoService.translate(
