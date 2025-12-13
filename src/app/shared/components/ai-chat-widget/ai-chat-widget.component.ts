@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common'
-import { Component, effect, inject, OnInit, signal } from '@angular/core'
+import { Component, inject, OnInit, signal } from '@angular/core'
 import { NavigationEnd, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -37,17 +37,6 @@ export class AiChatWidgetComponent implements OnInit {
 
   chats$ = this.vtesAiQuery.selectEntities()
   activeChat$ = this.vtesAiQuery.selectActiveChat()
-
-  constructor() {
-    // Block body scroll when widget is open
-    effect(() => {
-      if (this.isOpen()) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = ''
-      }
-    })
-  }
 
   ngOnInit() {
     // Check initial route

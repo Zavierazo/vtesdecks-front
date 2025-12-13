@@ -506,7 +506,10 @@
     "thinking_2": "Buscando reglas de cartas...",
     "thinking_3": "Analizando interacciones de cartas...",
     "thinking_4": "Consultando el reglamento...",
-    "thinking_5": "Finalizando la respuesta..."
+    "thinking_5": "Finalizando la respuesta...",
+    "cancel": "Cancelar",
+    "beta_notice_title": "Función Beta:",
+    "beta_notice_message": "Este asistente de IA está en beta. ¡Por favor, informa de cualquier error o sugerencia para ayudarnos a mejorar!"
   },
   "statistics": {
     "statistics": "Estadísticas",

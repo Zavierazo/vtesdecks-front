@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
-import { ApiAiMessage } from '@models'
+import { AiTaskStatus, ApiAiMessage } from '@models'
 import { LocalStorageService } from '@services'
 import { map, Observable } from 'rxjs'
 
@@ -9,6 +9,10 @@ export interface AiChat {
   sessionId: string
   title: string
   chat: ApiAiMessage[]
+  // Async task state
+  taskId?: string
+  taskStatus?: AiTaskStatus
+  isPolling?: boolean
 }
 
 @Injectable({
@@ -29,6 +33,10 @@ export class VtesAiStore {
   constructor() {
     const previousState = this.localStorage.getValue<AiChat[]>(
       VtesAiStore.stateStoreName,
+    )
+    console.log(
+      'Loading previous AI chat state from localStorage',
+      previousState,
     )
     if (previousState) {
       // Remove chats with messages
@@ -102,6 +110,28 @@ export class VtesAiStore {
 
   setActiveChat(id: number) {
     this.activeChat.update(() => id)
+  }
+
+  updateTaskId(chatId: number, taskId?: string) {
+    console.log('Updating task ID for chat', chatId, 'to', taskId)
+    this.update(chatId, (chat) => ({
+      ...chat,
+      taskId,
+    }))
+  }
+
+  updateTaskStatus(chatId: number, status: AiTaskStatus) {
+    this.update(chatId, (chat) => ({
+      ...chat,
+      taskStatus: status,
+    }))
+  }
+
+  updatePollingState(chatId: number, isPolling: boolean) {
+    this.update(chatId, (chat) => ({
+      ...chat,
+      isPolling,
+    }))
   }
 
   private updateStorage(): void {
