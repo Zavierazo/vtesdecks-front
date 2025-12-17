@@ -1,5 +1,14 @@
 [
   {
+    "version": "2.58.0",
+    "date": "19th December, 2025",
+    "changes": [
+      "Added all spoilers for the upcoming 'New Blood' set, including new cards and updated images.",
+      "AI chat: Fixed request timeouts and improved response accuracy for better user experience. I'll be actively reviewing user questions and progressively improving the AI's answers so it better understands and applies VTES rules.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.57.0",
     "date": "10th December, 2025",
     "changes": [

@@ -169,6 +169,7 @@
   },
   "deck_shared": {
     "banned": "Banned",
+    "unreleased": "Unreleased",
     "rulings": "Rulings",
     "no_rulings": "No rulings available",
     "sets": "Sets",

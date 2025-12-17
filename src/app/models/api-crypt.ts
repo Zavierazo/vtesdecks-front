@@ -29,6 +29,7 @@ export interface ApiCrypt {
   deckPopularity: number
   cardPopularity: number
   i18n?: ApiI18n
-  printOnDemand: boolean
+  printOnDemand?: boolean
+  unreleased?: boolean
   lastUpdate: Date
 }

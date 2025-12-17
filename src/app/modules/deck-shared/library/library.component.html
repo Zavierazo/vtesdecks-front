@@ -87,6 +87,9 @@
         @if (library.banned) {
         <span class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
         }
+        @if(library.unreleased){
+        <span class="ms-1 float-start badge text-bg-danger">{{ t('unreleased') }}</span>
+        }
         @if (library.trifle) {
         <span class="badge rounded-pill bg-light text-body d-none d-sm-inline ms-1 float-start">
           {{ 'vtes.type.trifle' | transloco }}

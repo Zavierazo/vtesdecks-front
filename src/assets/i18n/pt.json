@@ -169,6 +169,7 @@
   },
   "deck_shared": {
     "banned": "Banida",
+    "unreleased": "Não lançada",
     "rulings": "Regras",
     "no_rulings": "Nenhuma regra disponível",
     "sets": "Expansões",
