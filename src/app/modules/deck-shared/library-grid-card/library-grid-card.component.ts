@@ -7,7 +7,9 @@ import {
   OnInit,
   output,
 } from '@angular/core'
+import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiCard, ApiLibrary } from '@models'
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { LibraryQuery } from '@state/library/library.query'
@@ -29,6 +31,8 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
     LazyLoadImageModule,
     CollectionCardTrackerComponent,
     CollectionCardMiniStatsComponent,
+    NgbTooltip,
+    TranslocoPipe,
   ],
 })
 export class LibraryGridCardComponent implements OnInit {

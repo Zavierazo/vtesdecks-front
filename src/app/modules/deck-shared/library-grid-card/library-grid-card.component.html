@@ -19,6 +19,14 @@
     <img class="grid-img rounded mx-auto d-block img-fluid" [style.box-shadow]="stackedShadow"
       [defaultImage]="'/assets/img/cardbacklibrary.jpg'" [lazyLoad]="library | cardImage"
       [errorImage]="cdnDomain + library.image" [alt]="library.i18n?.name ?? library.name" [offset]="100" />
+    <!-- Warning icon for banned or unreleased -->
+    @if(library.banned || library.unreleased){
+    <span class="position-absolute top-0 end-0 m-2">
+      <i class="bi bi-exclamation-triangle-fill text-warning fs-4"
+        [ngbTooltip]="library.banned ? ('deck_shared.banned' | transloco) : ('deck_shared.unreleased' | transloco)"
+        placement="left" container="body"></i>
+    </span>
+    }
     @if(card().number > 0){
     <div class="draw-probability-badge position-absolute bottom-0 start-50 translate-middle badge bg-dark fs-7">
       @if( card().number > 0){
