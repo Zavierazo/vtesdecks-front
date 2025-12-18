@@ -86,7 +86,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const combatCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Combat'))
+            .filter((card) => card.types.includes('Combat'))
           if (combatCards.length > 0) {
             return {
               libraryErrors: ['Advent Rule: No combat cards allowed.'],
@@ -182,7 +182,7 @@ export const ADVENT_DATA: AdventData[] = [
           const librarySize = query.getLibrarySize()
           const combatCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Combat'))
+            .filter((card) => card.types.includes('Combat'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           const redPercentage = (combatCards / librarySize) * 100
@@ -203,7 +203,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const masterCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Master'))
+            .filter((card) => card.types.includes('Master'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (masterCards > 5) {
@@ -287,7 +287,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const politicalCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Political Action'))
+            .filter((card) => card.types.includes('Political Action'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (politicalCards < 10) {
@@ -362,7 +362,7 @@ export const ADVENT_DATA: AdventData[] = [
             .getLibrary()
             .filter(
               (card) =>
-                card.type.includes('Ally') || card.type.includes('Retainer'),
+                card.types.includes('Ally') || card.types.includes('Retainer'),
             )
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
@@ -407,7 +407,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const actionCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Action'))
+            .filter((card) => card.types.includes('Action'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (actionCards !== 24) {
@@ -427,7 +427,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const reactionCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Reaction'))
+            .filter((card) => card.types.includes('Reaction'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (reactionCards < 15) {
@@ -478,7 +478,7 @@ export const ADVENT_DATA: AdventData[] = [
         validation: (query: DeckBuilderQuery) => {
           const equipmentCards = query
             .getLibrary()
-            .filter((card) => card.type.includes('Equipment'))
+            .filter((card) => card.types.includes('Equipment'))
             .map((card) => query.getCardNumber(card.id))
             .reduce((sum, num) => sum + num, 0)
           if (equipmentCards < 10) {
