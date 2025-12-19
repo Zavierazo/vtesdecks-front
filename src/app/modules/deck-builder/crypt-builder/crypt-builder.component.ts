@@ -183,7 +183,8 @@ export class CryptBuilderComponent implements OnInit {
     } else if (
       sortBy === 'relevance' ||
       sortBy === 'deckPopularity' ||
-      sortBy === 'cardPopularity'
+      sortBy === 'cardPopularity' ||
+      sortBy === 'minPrice'
     ) {
       this.sortByOrder = 'desc'
     } else {

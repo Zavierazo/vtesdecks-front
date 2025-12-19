@@ -61,6 +61,7 @@
     "deck_popularity_title": "popularidad basada en la cantidad de mazos que contienen al menos una copia de la carta",
     "card_popularity": "Popularidad de la carta",
     "card_popularity_title": "popularidad basada en el número de copias de esta carta en todos los mazos",
+    "price": "Precio",
     "reset": "Reiniciar",
     "filters": "Filtros",
     "results": "{{ count }} resultados",
@@ -169,6 +170,7 @@
   },
   "deck_shared": {
     "banned": "Prohibida",
+    "unreleased": "No lanzada",
     "rulings": "Reglas",
     "no_rulings": "No hay reglas disponibles",
     "sets": "Expansión",
@@ -212,7 +214,9 @@
     "back_to_top": "Volver arriba",
     "filters": "Filtros",
     "show_filters": "Mostrar filtros",
-    "show_more": "Ver más"
+    "show_more": "Ver más",
+    "price_cheapest": "Precio: Menor",
+    "price_expensive": "Precio: Mayor"
   },
   "draw_cards": {
     "title": "Robar Cartas",
@@ -364,6 +368,7 @@
     "deck_popularity_title": "popularidad basada en la cantidad de mazos que contienen al menos una copia de la carta",
     "card_popularity": "Popularidad de la carta",
     "card_popularity_title": "popularidad basada en el número de copias de esta carta en todos los mazos",
+    "price": "Precio",
     "reset": "Reiniciar",
     "filters": "Filtros",
     "results": "{{ count }} resultados",

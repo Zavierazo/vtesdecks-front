@@ -53,14 +53,7 @@ export class VtesAiService {
       if (chat.taskStatus === 'PENDING' || chat.taskStatus === 'PROCESSING') {
         console.log('Resuming polling for task session:', chat.taskId)
         this.pollTaskStatus(chat.id, chat.taskId)
-      } else {
-        console.log(
-          'Task already completed or errored, status:',
-          chat.taskStatus,
-        )
       }
-    } else {
-      console.log('No active task session to resume')
     }
   }
 

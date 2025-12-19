@@ -61,6 +61,7 @@
     "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
     "card_popularity": "Card Popularity",
     "card_popularity_title": "popularity based on number of copies of this card over all decks",
+    "price": "Price",
     "reset": "Reset",
     "filters": "Filters",
     "results": "{{ count }} results",
@@ -169,6 +170,7 @@
   },
   "deck_shared": {
     "banned": "Banned",
+    "unreleased": "Unreleased",
     "rulings": "Rulings",
     "no_rulings": "No rulings available",
     "sets": "Sets",
@@ -212,7 +214,9 @@
     "back_to_top": "Back to top",
     "filters": "Filters",
     "show_filters": "Show filters",
-    "show_more": "Show more"
+    "show_more": "Show more",
+    "price_cheapest": "Price: Lowest",
+    "price_expensive": "Price: Highest"
   },
   "draw_cards": {
     "title": "Draw Cards",
@@ -364,6 +368,7 @@
     "deck_popularity_title": "popularity based on number of decks that contains at least one copy of the card",
     "card_popularity": "Card Popularity",
     "card_popularity_title": "popularity based on number of copies of this card over all decks",
+    "price": "Price",
     "reset": "Reset",
     "filters": "Filters",
     "results": "{{ count }} results",

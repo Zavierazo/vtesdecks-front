@@ -85,6 +85,11 @@
             {{ 'deck_shared.banned' | transloco }}
           </span>
           }
+          @if(crypt.unreleased){
+          <span class="ms-1 float-start badge text-bg-danger">
+            {{ 'deck_shared.unreleased' | transloco }}
+          </span>
+          }
         </div>
       </div>
     </div>

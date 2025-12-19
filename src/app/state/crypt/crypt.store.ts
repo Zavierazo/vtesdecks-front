@@ -293,8 +293,12 @@ export class CryptStore {
       return 0
     }
     if (sortByOrder === 'asc') {
+      if (a === undefined) return -1
+      if (b === undefined) return 1
       return a > b ? 1 : -1
     } else {
+      if (a === undefined) return 1
+      if (b === undefined) return -1
       return a < b ? 1 : -1
     }
   }

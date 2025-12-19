@@ -1,13 +1,23 @@
 [
   {
+    "version": "2.58.0",
+    "date": "19th December, 2025",
+    "changes": [
+      "Added all spoilers for the upcoming 'New Blood' set, including new cards and updated images.",
+      "AI chat: Fixed request timeouts and improved response accuracy for better user experience. I'll be actively reviewing user questions and progressively improving the AI's answers so it better understands and applies VTES rules.",
+      "Added card price information from CardGameGeek. Now you can see prices of almost all cards and decks.",
+      "Note: More shops will be added soon for broader price coverage. Thanks Fabio(CardGameGeek) for providing the data!",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.57.0",
     "date": "10th December, 2025",
     "changes": [
       "Added holographic effect to card images in the card modal for a more immersive experience.",
       "Introduced warning messages on decks that include unreleased or banned cards, helping users quickly understand tournament legality.",
       "Launched NEW AI chat feature, allowing users to ask questions about VTES rules, card interactions, and rulings directly within the app.",
-      "Reminder: For complex or specific interactions, even official rulings may require interpretation based on the current tournament environment. You should always ask an official VTES judge to confirm the ruling for competitive play.",
-      "Minor fixes and performance improvements."
+      "Reminder: For complex or specific interactions, even official rulings may require interpretation based on the current tournament environment. You should always ask an official VTES judge to confirm the ruling for competitive play."
     ]
   },
   {
