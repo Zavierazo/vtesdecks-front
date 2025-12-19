@@ -63,6 +63,13 @@ export class CardInfoComponent {
       return this.cardInfo()
     }
 
+    if (
+      cardInfo.shopList &&
+      cardInfo.shopList[0]?.cardId !== cardShops[0]?.cardId
+    ) {
+      return this.cardInfo()
+    }
+
     return {
       ...cardInfo,
       shopList: cardShops,
