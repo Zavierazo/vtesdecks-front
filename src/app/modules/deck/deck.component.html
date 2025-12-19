@@ -95,7 +95,7 @@
                   @if (deck.type==='PRECONSTRUCTED' && deck.url) {
                   <p class="mb-1">
                     <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
-                      gaEvent="purchase" gaCategory="dtc" [gaLabel]="deck.name">
+                      gaEvent="purchase" gaCategory="DTC-BANNER" [gaLabel]="deck.name">
                       <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
                     </a>
                   </p>
