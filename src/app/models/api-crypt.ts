@@ -31,5 +31,6 @@ export interface ApiCrypt {
   i18n?: ApiI18n
   printOnDemand?: boolean
   unreleased?: boolean
+  minPrice?: number
   lastUpdate: Date
 }

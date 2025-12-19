@@ -45,6 +45,10 @@
               [ngClass]="{'active': sortBy ==='cardPopularity'}" [title]="t('card_popularity_title')">
               {{ t('card_popularity') }}
             </button>
+            <button ngbDropdownItem (click)="onChangeSortBy('minPrice',$event)"
+              [ngClass]="{'active': sortBy ==='minPrice'}">
+              {{ t('price') }}
+            </button>
           </div>
         </div>
         @if (!(isMobileOrTablet$ | async)!) {

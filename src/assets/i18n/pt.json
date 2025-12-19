@@ -61,6 +61,7 @@
     "deck_popularity_title": "popularidade baseada em número de baralhos que contêm pelo menos um cartão copiado",
     "card_popularity": "Popularidade do cartão",
     "card_popularity_title": "popularidade baseada em número de cartões copiados em todos os baralhos",
+    "price": "Preço",
     "reset": "Repor",
     "filters": "Filtros",
     "results": "{{ count }} resultados",
@@ -214,7 +215,9 @@
     "back_to_top": "Voltar ao topo",
     "filters": "Filtros",
     "show_filters": "Mostrar filtros",
-    "show_more": "Ver mais"
+    "show_more": "Ver mais",
+    "price_cheapest": "Preço: Barato",
+    "price_expensive": "Preço: Caro"
   },
   "draw_cards": {
     "title": "Comprar Cartas",
@@ -367,6 +370,7 @@
     "deck_popularity_title": "popularidade baseada em número de baralhos que contêm pelo menos um cartão copiado",
     "card_popularity": "Popularidade do cartão",
     "card_popularity_title": "popularidade baseada em número de cartões copiados em todos os baralhos",
+    "price": "Preço",
     "reset": "Repor",
     "filters": "Filtros",
     "results": "{{ count }} resultados",

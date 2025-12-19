@@ -38,6 +38,10 @@
               [ngClass]="{'active': sortBy ==='cardPopularity'}" [title]="t('card_popularity_title')">
               {{ t('card_popularity') }}
             </button>
+            <button ngbDropdownItem (click)="onChangeSortBy('minPrice',$event)"
+              [ngClass]="{'active': sortBy ==='minPrice'}">
+              {{ t('price') }}
+            </button>
           </div>
         </div>
         @if (!(isMobileOrTablet$ | async)!) {
@@ -83,8 +87,7 @@
           @for (library of (library$ | async)! ; track library.id) {
           <div class="col-6 col-md-auto">
             <app-library-grid-card [card]="getCard(library)" [librarySize]="(librarySize$ | async)!"
-              [withControls]="true" (cardAdded)="addCard($event)"
-              (cardRemoved)="removeCard($event)" />
+              [withControls]="true" (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
           </div>
           }
         </div>

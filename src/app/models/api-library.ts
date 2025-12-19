@@ -37,5 +37,6 @@ export interface ApiLibrary {
   i18n?: ApiI18n
   printOnDemand?: boolean
   unreleased?: boolean
+  minPrice?: number
   lastUpdate: Date
 }

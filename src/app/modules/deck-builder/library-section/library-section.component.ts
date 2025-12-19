@@ -264,7 +264,11 @@ export class LibrarySectionComponent implements OnInit {
     event.stopPropagation()
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
-    } else if (sortBy === 'deckPopularity' || sortBy === 'cardPopularity') {
+    } else if (
+      sortBy === 'deckPopularity' ||
+      sortBy === 'cardPopularity' ||
+      sortBy === 'minPrice'
+    ) {
       this.sortByOrder = 'desc'
     } else {
       this.sortByOrder = 'asc'

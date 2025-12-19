@@ -5,6 +5,8 @@
     "changes": [
       "Added all spoilers for the upcoming 'New Blood' set, including new cards and updated images.",
       "AI chat: Fixed request timeouts and improved response accuracy for better user experience. I'll be actively reviewing user questions and progressively improving the AI's answers so it better understands and applies VTES rules.",
+      "Added card price information from CardGameGeek. Now you can see prices of almost all cards and decks.",
+      "Note: More shops will be added soon for broader price coverage. Thanks Fabio(CardGameGeek) for providing the data!",
       "Minor fixes and performance improvements."
     ]
   },
