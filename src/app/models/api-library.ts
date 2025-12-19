@@ -24,6 +24,7 @@ export interface ApiLibrary {
   cropImage: string
   trifle: boolean
   disciplines: string[]
+  types: string[]
   typeIcons: string[]
   clanIcons: string[]
   pathIcon?: string
