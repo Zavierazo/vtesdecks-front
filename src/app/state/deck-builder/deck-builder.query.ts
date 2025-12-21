@@ -308,6 +308,10 @@ export class DeckBuilderQuery {
     )
   }
 
+  isPreconstructedDeck(): boolean {
+    return this.store.getValue().id?.startsWith('preconstructed') ?? false
+  }
+
   selectCollection(): Observable<boolean> {
     return this.store.select((state) => state.collection)
   }

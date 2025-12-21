@@ -192,7 +192,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
     if (
       this.deckBuilderQuery.getPublished() &&
-      !this.deckBuilderQuery.isValidDeck()
+      !this.deckBuilderQuery.isValidDeck() &&
+      !this.deckBuilderQuery.isPreconstructedDeck()
     ) {
       this.toastService.show(
         this.translocoService.translate('deck_builder.invalid_public_deck'),
