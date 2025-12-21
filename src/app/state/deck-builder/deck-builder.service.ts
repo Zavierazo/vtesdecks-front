@@ -72,7 +72,10 @@ export class DeckBuilderService {
         ...state,
         name: '[COPY] ' + cloneDeck.name,
         description: cloneDeck.description,
-        extra: cloneDeck.extra,
+        extra: {
+          ...cloneDeck.extra,
+          advent: undefined,
+        },
         cards: [...cloneDeck.crypt!, ...cloneDeck.library!],
         published: false,
         collection: false,
