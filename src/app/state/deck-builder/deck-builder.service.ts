@@ -134,14 +134,11 @@ export class DeckBuilderService {
   importDeck(type: string, url: string): Observable<ApiDeckBuilder> {
     return this.apiDataService.getDeckBuilderImport(type, url).pipe(
       tap((deck) => {
-        this.store.reset()
         this.store.update((state) => ({
           ...state,
-          id: undefined,
-          name: deck.name,
-          description: deck.description,
+          name: state.name ? state.name : deck.name,
+          description: state.description ? state.description : deck.description,
           cards: deck.cards ?? [],
-          published: true,
           collection: false,
           saved: false,
         }))
