@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.59.0",
+    "date": "26th December, 2025",
+    "changes": [
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.58.0",
     "date": "19th December, 2025",
     "changes": [
