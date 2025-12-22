@@ -3,6 +3,7 @@
     "version": "2.59.0",
     "date": "26th December, 2025",
     "changes": [
+      "Added Sign in with Google functionality for easier and faster login/sign-up.",
       "Minor fixes and performance improvements."
     ]
   },

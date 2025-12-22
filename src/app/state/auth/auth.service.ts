@@ -20,6 +20,20 @@ export class AuthService {
     }
   }
 
+  loginOauth(token: string): Observable<ApiUser> {
+    this.authStore.setLoading(true)
+    return this.apiDataService.loginOauth(token).pipe(
+      tap((response: ApiUser) => {
+        this.authStore.setLoading()
+        if (response.message) {
+          this.authStore.setError(response.message)
+        } else {
+          this.authStore.updateToken(response, true)
+        }
+      }),
+    )
+  }
+
   generateToken(
     username: string,
     password: string,
