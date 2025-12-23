@@ -3,7 +3,9 @@
     "version": "2.59.0",
     "date": "26th December, 2025",
     "changes": [
-      "Added Sign in with Google functionality for easier and faster login/sign-up.",
+      "Added “Sign in with Google” for a faster and more convenient login and sign-up experience.",
+      "Added price tracking to the Collection Tracker, allowing users to view card values at a glance.",
+      "Introduced Suggested Retail Price (MSRP) for preconstructed decks, replacing the sum of individual card prices.",
       "Minor fixes and performance improvements."
     ]
   },
