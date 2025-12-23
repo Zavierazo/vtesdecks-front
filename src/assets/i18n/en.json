@@ -770,6 +770,8 @@
     "column_icon": "Icon",
     "column_description": "Description",
     "column_visibility": "Visibility",
+    "column_price": "Price",
+    "column_total_price": "Total Price",
     "all": "All",
     "crypt": "Crypt",
     "library": "Library",

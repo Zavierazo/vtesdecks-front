@@ -1,5 +1,11 @@
 import { animate, style, transition, trigger } from '@angular/animations'
-import { AsyncPipe, DatePipe, NgClass, NgTemplateOutlet } from '@angular/common'
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  DatePipe,
+  NgClass,
+  NgTemplateOutlet,
+} from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -117,6 +123,7 @@ export interface SearchCard {
     CollectionBinderComponent,
     CollectionSetComponent,
     NgTemplateOutlet,
+    CurrencyPipe,
   ],
   animations: [
     trigger('fadeOut', [
