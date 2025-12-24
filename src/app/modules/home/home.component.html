@@ -43,8 +43,15 @@
           <p class="lead mb-4 text-center">{{ t('welcome_subtitle') }}</p>
           <div class="hero-actions">
             <div class="row g-3 justify-content-center">
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-4 position-relative">
+                @if(deckHome?.tournamentNewest?.[0]?.recentlyCreated){
+                <span
+                  class="z-2 position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fs-8">
+                  <i class="bi bi-fs-sm bi-stars"></i> {{ t('new_decks') }}
+                </span>
+                }
                 <a routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT' }" class="hero-card bg-primary text-white">
+
                   <i class="bi bi-award"></i>
                   <span>{{ t('tournament_decks') }}</span>
                   <small class="mt-2">
@@ -52,7 +59,13 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-4 position-relative">
+                @if(deckHome?.communityNewest?.[0]?.recentlyCreated){
+                <span
+                  class="z-2 position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fs-8">
+                  <i class="bi bi-fs-sm bi-stars"></i> {{ t('new_decks') }}
+                </span>
+                }
                 <a routerLink="/decks" [queryParams]="{ type: 'COMMUNITY' }" class="hero-card bg-primary text-white">
                   <i class="bi bi-people"></i>
                   <span>{{ t('community_decks') }}</span>
@@ -126,9 +139,8 @@
               <div class="col-6 col-md-3">
                 <a routerLink="/vtes-ai" class="hero-card bg-secondary text-white position-relative">
                   <span
-                    class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fw-semibold"
-                    style="z-index: 2; font-size: 0.75rem;">
-                    <i class="bi bi-fs-sm bi-stars" style="font-size: 0.75rem;"></i> {{ t('new') }}
+                    class="z-2 position-absolute top-0 end-0 translate-middle badge rounded-pill bg-info text-dark shadow-sm fs-8">
+                    Beta
                   </span>
                   <i class="bi bi-chat-dots"></i>
                   <span>{{ 'shared.vtes_ai_chat' | transloco }}</span>
@@ -140,7 +152,7 @@
       </div>
     </div>
 
-    <!-- Buy me a coffee button -->
+    <!-- Patreon button -->
     <div class="container text-center mt-5" *appIsSupporter="false">
       <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
         class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow">

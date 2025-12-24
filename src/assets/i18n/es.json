@@ -327,7 +327,7 @@
     "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
     "contact_support": "Contactar Soporte",
     "whats_new": "Novedades {{ date }}",
-    "new": "Nuevo"
+    "new_decks": "Nuevos Mazos"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -435,7 +435,8 @@
     "apply": "Aplicar",
     "proxy_generator": "Generador de Proxies",
     "supporter": "Miembro en Patreon",
-    "vtes_ai_chat": "Chat IA de VTES"
+    "vtes_ai_chat": "Chat IA de VTES",
+    "new": "Nuevo"
   },
   "table_seating": {
     "title": "Asignación de asientos",
