@@ -4,6 +4,7 @@ import {
   importProvidersFrom,
   inject,
   provideAppInitializer,
+  provideZoneChangeDetection,
   SecurityContext,
 } from '@angular/core'
 
@@ -43,7 +44,7 @@ import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 import { AuthQuery } from '@state/auth/auth.query'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
-import { MARKED_EXTENSIONS, provideMarkdown } from 'ngx-markdown'
+import { MARKED_EXTENSIONS, provideMarkdown, SANITIZE } from 'ngx-markdown'
 import { bracketsExtension } from './app/marked-extension'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
@@ -227,6 +228,7 @@ Sentry.init({
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideZoneChangeDetection(),
     importProvidersFrom(
       CommonModule,
       NgbModule,
@@ -286,7 +288,10 @@ bootstrapApplication(AppComponent, {
     ),
     provideAnimations(),
     provideMarkdown({
-      sanitize: SecurityContext.NONE,
+      sanitize: {
+        provide: SANITIZE,
+        useValue: SecurityContext.NONE,
+      },
       markedExtensions: [
         {
           provide: MARKED_EXTENSIONS,

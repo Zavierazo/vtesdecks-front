@@ -18,11 +18,6 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom",
-      "ES2021.String"
-    ],
     "paths": {
       "chart.js/dist/types/utils": [
         "node_modules/chart.js/dist/types/utils.d.ts"

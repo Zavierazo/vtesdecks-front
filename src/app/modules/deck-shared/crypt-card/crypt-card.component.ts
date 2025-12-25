@@ -105,7 +105,7 @@ export class CryptCardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('window:popstate', ['$event'])
+  @HostListener('window:popstate')
   dismissModal() {
     this.modal.dismiss()
   }
