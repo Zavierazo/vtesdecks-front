@@ -55,15 +55,3 @@ th[appSortable].desc:before {
   transform: rotate(180deg);
   -ms-transform: rotate(180deg);
 }
-
-.leave-container {
-  opacity: 1;
-  transition: opacity 300ms ease-in;
-  @starting-style {
-    opacity: 0;
-  }
-}
-.leaving {
-  opacity: 0;
-  transition: opacity 300ms ease-out;
-}

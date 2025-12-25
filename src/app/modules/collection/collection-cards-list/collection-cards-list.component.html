@@ -151,7 +151,7 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody class="leave-container">
+      <tbody>
         @if(isLoading$ | async) {
         <tr class="table-progress">
           <td colspan="100%" style="text-align: center" class="p-0">
@@ -160,7 +160,7 @@
         </tr>
         }
         @for (card of cards$ | async; track `${card.cardId}-${card.set}-${card.binderId}`) {
-        <tr class="align-middle" animate.leaver="leaving">
+        <tr class="align-middle">
           <td>{{ card.number }}</td>
           <td>
             <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set" />
@@ -251,7 +251,7 @@
           }
         </tr>
       </thead>
-      <tbody class="leave-container">
+      <tbody>
         @if(isLoading$ | async) {
         <tr class="table-progress">
           <td colspan="100%" style="text-align: center" class="p-0">
@@ -260,7 +260,7 @@
         </tr>
         }
         @for (card of cards; track card.id; let i = $index) {
-        <tr class="align-middle" animate.leave="leaving">
+        <tr class="align-middle">
           @if(groupBy === null &&multiSelect()){
           <td>
             <input class="form-check-input" type="checkbox" [formControl]="selectedCards.at(i)">
