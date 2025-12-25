@@ -56,12 +56,14 @@ th[appSortable].desc:before {
   -ms-transform: rotate(180deg);
 }
 
-.card-fade-in {
+.leave-container {
   opacity: 1;
-  transition: opacity 300ms ease;
+  transition: opacity 300ms ease-in;
+  @starting-style {
+    opacity: 0;
+  }
 }
-
-.card-fade-out {
+.leaving {
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity 300ms ease-out;
 }
