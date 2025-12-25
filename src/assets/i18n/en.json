@@ -327,7 +327,7 @@
     "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️",
     "contact_support": "Contact Support",
     "whats_new": "What's new {{ date }}",
-    "new_decks": "New Decks"
+    "new": "New"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -437,8 +437,7 @@
     "apply": "Apply",
     "proxy_generator": "Proxy Generator",
     "supporter": "Patreon Member",
-    "vtes_ai_chat": "VTES AI Chat",
-    "new": "New"
+    "vtes_ai_chat": "VTES AI Chat"
   },
   "table_seating": {
     "title": "Table Seating",

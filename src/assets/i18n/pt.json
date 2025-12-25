@@ -329,7 +329,7 @@
     "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
     "contact_support": "Contatar Suporte",
     "whats_new": "Novidades {{ date }}",
-    "new_decks": "Novos Baralhos"
+    "new": "Novo"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -436,8 +436,7 @@
     "cards": "cartas",
     "apply": "Aplicar",
     "proxy_generator": "Gerador de Proxies",
-    "vtes_ai_chat": "Chat IA de VTES",
-    "new": "New"
+    "vtes_ai_chat": "Chat IA de VTES"
   },
   "table_seating": {
     "title": "Assentamento de mesa",

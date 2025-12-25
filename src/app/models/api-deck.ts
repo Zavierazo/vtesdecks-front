@@ -36,7 +36,6 @@ export interface ApiDeck {
   favorite?: boolean
   rated?: boolean
   owner?: boolean
-  recentlyCreated?: boolean
   erratas?: ApiErrata[]
   warnings?: ApiDeckWarning[]
   tags?: string[]
