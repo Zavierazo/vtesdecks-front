@@ -105,6 +105,11 @@
         </span>
         <span class="text-dark mx-1">•</span>
         <span class="text-dark">{{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}</span>
+        @if (deck.recentlyCreated) {
+        <span class="badge text-bg-success ms-1">
+          {{ 'shared.new' | transloco }}
+        </span>
+        }
       </div>
 
       @if (deck.tags; as tags) {
