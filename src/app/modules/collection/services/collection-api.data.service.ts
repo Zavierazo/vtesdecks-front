@@ -6,6 +6,7 @@ import {
   ApiCollectionCard,
   ApiCollectionImport,
   ApiCollectionPage,
+  ApiCollectionStats,
 } from '@models'
 import { map, Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
@@ -29,6 +30,12 @@ export class CollectionApiDataService {
   deleteCollection(): Observable<boolean> {
     return this.httpClient.delete<boolean>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}`,
+    )
+  }
+
+  getCollectionStats(): Observable<ApiCollectionStats> {
+    return this.httpClient.get<ApiCollectionStats>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/stats`,
     )
   }
 

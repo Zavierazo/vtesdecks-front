@@ -33,6 +33,11 @@
           </button>
         </div>
       </div>
+      <button class="btn text-primary" routerLink="/collection/stats" aria-label="Collection stats">
+        <i class="bi bi-bar-chart"></i>
+        {{ t('stats') }}
+        <span class="badge bg-success ms-1">{{ 'shared.new' | transloco }}</span>
+      </button>
       <button class="btn text-primary" (click)="onToggleMultiSelect()">
         <i class="bi" [ngClass]="{
           'bi-check-square': !multiSelect,
@@ -52,6 +57,10 @@
           <button ngbDropdownItem (click)="onExport()">
             {{ t('export')}}
           </button>
+          <a ngbDropdownItem routerLink="/collection/stats">
+            <i class="bi bi-bar-chart"></i>
+            {{ t('stats') }}
+          </a>
           <button ngbDropdownItem class="text-danger" (click)="onDelete()">
             <i class="bi bi-trash"></i>
             {{ t('collection_delete') }}
@@ -60,6 +69,5 @@
       </div>
     </div>
   </div>
-  <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true"
-    [multiSelect]="multiSelect" />
+  <app-collection-cards-list [owned]="true" [editable]="true" [showBinders]="true" [multiSelect]="multiSelect" />
 </ng-container>

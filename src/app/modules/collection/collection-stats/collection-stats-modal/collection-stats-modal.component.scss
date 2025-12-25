@@ -1,0 +1,17 @@
+.card-list {
+  max-height: 60vh;
+  overflow: auto;
+  padding-right: 0.5rem;
+}
+
+.card-list .list-group {
+  cursor: pointer;
+}
+
+.list-group.owned {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.list-group.missing {
+  opacity: 0.56;
+}

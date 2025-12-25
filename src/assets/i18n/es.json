@@ -326,8 +326,7 @@
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
     "contact_support": "Contactar Soporte",
-    "whats_new": "Novedades {{ date }}",
-    "new": "Nuevo"
+    "whats_new": "Novedades {{ date }}"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -435,7 +434,8 @@
     "apply": "Aplicar",
     "proxy_generator": "Generador de Proxies",
     "supporter": "Miembro en Patreon",
-    "vtes_ai_chat": "Chat IA de VTES"
+    "vtes_ai_chat": "Chat IA de VTES",
+    "new": "Nuevo"
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -864,7 +864,15 @@
     "apply_filters": "Aplicar Filtros",
     "card_type": "Tipos",
     "clans": "Clanes",
-    "disciplines": "Disciplinas"
+    "disciplines": "Disciplinas",
+    "stats": "Estadísticas",
+    "stats_detail": "<strong>{{ collected }}/{{ total }}</strong> · {{ cards }} cartas · {{ price }}",
+    "overall": "Global",
+    "types": "Tipos",
+    "sets": "Expansiones",
+    "missing_only": "Solo faltantes",
+    "show_all": "Mostrar todas",
+    "no_cards": "No se encontraron cartas"
   },
   "advent": {
     "home_title": "Calendario de Adviento VTES {{ year }}",
