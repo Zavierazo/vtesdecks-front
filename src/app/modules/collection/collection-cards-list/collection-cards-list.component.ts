@@ -1,4 +1,3 @@
-import { animate, style, transition, trigger } from '@angular/animations'
 import {
   AsyncPipe,
   CurrencyPipe,
@@ -124,17 +123,6 @@ export interface SearchCard {
     CollectionSetComponent,
     NgTemplateOutlet,
     CurrencyPipe,
-  ],
-  animations: [
-    trigger('fadeOut', [
-      transition(':leave', [animate('300ms ease', style({ opacity: 0 }))]),
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms ease', style({ opacity: 1 })),
-      ]),
-    ]),
   ],
 })
 export class CollectionCardsListComponent implements OnInit, AfterViewInit {

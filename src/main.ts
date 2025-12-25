@@ -18,7 +18,6 @@ import {
 } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms'
 import { bootstrapApplication } from '@angular/platform-browser'
-import { provideAnimations } from '@angular/platform-browser/animations'
 import {
   provideRouter,
   Router,
@@ -286,7 +285,6 @@ bootstrapApplication(AppComponent, {
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'disabled' }),
     ),
-    provideAnimations(),
     provideMarkdown({
       sanitize: {
         provide: SANITIZE,
