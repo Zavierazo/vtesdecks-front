@@ -1,13 +1,23 @@
 [
   {
+    "version": "2.59.0",
+    "date": "26 December, 2025",
+    "changes": [
+      "Added Sign in with Google for a faster and more seamless login and sign-up experience.",
+      "Added Suggested Retail Price (MSRP) for preconstructed decks, replacing the aggregated price of individual cards.",
+      "Added price tracking to the Collection Tracker, enabling quick access to individual card values.",
+      "Added a new statistics section to the Collection Tracker, providing deeper insights into collection value and composition.",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.58.0",
     "date": "19th December, 2025",
     "changes": [
       "Added all spoilers for the upcoming 'New Blood' set, including new cards and updated images.",
       "AI chat: Fixed request timeouts and improved response accuracy for better user experience. I'll be actively reviewing user questions and progressively improving the AI's answers so it better understands and applies VTES rules.",
       "Added card price information from CardGameGeek. Now you can see prices of almost all cards and decks.",
-      "Note: More shops will be added soon for broader price coverage. Thanks Fabio(CardGameGeek) for providing the data!",
-      "Minor fixes and performance improvements."
+      "Note: More shops will be added soon for broader price coverage. Thanks Fabio(CardGameGeek) for providing the data!"
     ]
   },
   {

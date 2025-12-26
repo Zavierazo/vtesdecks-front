@@ -25,6 +25,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { Observable, switchMap } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
 export enum Tabs {
   Login,
@@ -85,6 +86,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading$ = this.authQuery.selectLoading()
+    this.initializeGoogleSignIn()
   }
 
   ngAfterViewInit() {
@@ -94,7 +96,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     if (element) {
       element.style.visibility = 'visible'
     }
+    this.initializeGoogleSignInButtons()
   }
+
   ngOnDestroy() {
     const element = document.getElementsByClassName(
       'grecaptcha-badge',
@@ -114,6 +118,54 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get loginPassword() {
     return this.loginForm.get('password')
+  }
+
+  initializeGoogleSignIn() {
+    google.accounts.id.initialize({
+      client_id: environment.googleAccounts.clientId,
+      callback: (response: { credential: string }) =>
+        this.handleCredentialResponse(response),
+    })
+    google.accounts.id.prompt()
+  }
+
+  initializeGoogleSignInButtons() {
+    const googleSignInButton = document.getElementsByName(
+      'google-signin-button',
+    )
+    for (const button of Array.from(googleSignInButton)) {
+      google.accounts.id.renderButton(button, {
+        type: 'standard',
+        theme: 'filled_blue',
+        size: 'large',
+        text: 'signin_with',
+        shape: 'rectangular',
+      })
+    }
+  }
+
+  handleCredentialResponse(response: { credential: string }) {
+    const token = response.credential
+    this.authService.loginOauth(token).subscribe({
+      next: (user: ApiUser) => {
+        if (user.token) {
+          this.activeModal.close()
+        } else {
+          console.warn(user.message)
+          this.toastService.show(user.message!, {
+            classname: 'bg-danger text-light',
+            delay: 5000,
+          })
+        }
+      },
+      error: (error) => {
+        console.error(error.message)
+        this.toastService.show(error.message, {
+          classname: 'bg-danger text-light',
+          delay: 5000,
+        })
+      },
+    })
   }
 
   onLoginSubmit() {

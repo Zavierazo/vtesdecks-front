@@ -328,8 +328,7 @@
     "patreon_message": "Este site é 100% gratuito e movido pela comunidade.<br>Se o VTES Decks te ajuda, considere nos apoiar no Patreon ❤️",
     "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
     "contact_support": "Contatar Suporte",
-    "whats_new": "Novidades {{ date }}",
-    "new": "Novo"
+    "whats_new": "Novidades {{ date }}"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -436,7 +435,8 @@
     "cards": "cartas",
     "apply": "Aplicar",
     "proxy_generator": "Gerador de Proxies",
-    "vtes_ai_chat": "Chat IA de VTES"
+    "vtes_ai_chat": "Chat IA de VTES",
+    "new": "Novo"
   },
   "table_seating": {
     "title": "Assentamento de mesa",
@@ -769,6 +769,8 @@
     "column_icon": "Ícone",
     "column_description": "Descrição",
     "column_visibility": "Visibilidade",
+    "column_price": "Preço",
+    "column_total_price": "Preço Total",
     "all": "Todos",
     "crypt": "Cripta",
     "library": "Biblioteca",
@@ -862,7 +864,15 @@
     "apply_filters": "Aplicar Filtros",
     "card_type": "Tipos",
     "clans": "Clãs",
-    "disciplines": "Disciplinas"
+    "disciplines": "Disciplinas",
+    "stats": "Estatísticas",
+    "stats_detail": "<strong>{{ collected }}/{{ total }}</strong> · {{ cards }} cartas · {{ price }}",
+    "overall": "Global",
+    "types": "Tipos",
+    "sets": "Expansões",
+    "missing_only": "Apenas faltando",
+    "show_all": "Mostrar todas",
+    "no_cards": "Nenhuma carta encontrada"
   },
   "advent": {
     "home_title": "Calendário do Advento VTES {{ year }}",

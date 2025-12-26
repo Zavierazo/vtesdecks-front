@@ -146,6 +146,8 @@
           @if(groupBy === 'set'){
           <th scope="col" appSortable="set" (sort)="onSort($event)">{{ t('column_set') }}</th>
           }
+          <th scope="col" appSortable="price" (sort)="onSort($event)">{{ t('column_price') }}</th>
+          <th scope="col" appSortable="totalPrice" (sort)="onSort($event)">{{ t('column_total_price') }}</th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -158,7 +160,7 @@
         </tr>
         }
         @for (card of cards$ | async; track `${card.cardId}-${card.set}-${card.binderId}`) {
-        <tr class="align-middle" [@fadeIn] [@fadeOut]>
+        <tr class="align-middle">
           <td>{{ card.number }}</td>
           <td>
             <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set" />
@@ -173,6 +175,8 @@
             <app-collection-set [set]="card.set" />
           </td>
           }
+          <td>{{ card.price | currency:card.currency }}</td>
+          <td>{{ card.totalPrice | currency:card.currency }}</td>
           <td>
             <button class="btn btn-link p-0" (click)="onToggleGroup(card)">
               <i class="bi" [ngClass]="{
@@ -220,6 +224,8 @@
           <th scope="col" appSortable="condition" (sort)="onSort($event)">{{ t('column_condition') }}</th>
           <th scope="col" appSortable="language" (sort)="onSort($event)">{{ t('column_language') }}</th>
           <th scope="col" class="text-center">{{ t('column_notes') }}</th>
+          <th scope="col" appSortable="price" (sort)="onSort($event)">{{ t('column_price') }}</th>
+          <th scope="col" appSortable="totalPrice" (sort)="onSort($event)">{{ t('column_total_price') }}</th>
           <th scope="col" appSortable="modificationDate" (sort)="onSort($event)"><i class="bi bi-calendar"></i>
           </th>
           @if(editable){
@@ -235,6 +241,8 @@
           <th scope="col">{{ t('column_condition') }}</th>
           <th scope="col">{{ t('column_language') }}</th>
           <th scope="col" class="text-center">{{ t('column_notes') }}</th>
+          <th scope="col">{{ t('column_price') }}</th>
+          <th scope="col">{{ t('column_total_price') }}</th>
           <th scope="col"><i class="bi bi-calendar"></i>
           </th>
           @if(editable){
@@ -252,7 +260,7 @@
         </tr>
         }
         @for (card of cards; track card.id; let i = $index) {
-        <tr class="align-middle" [@fadeIn] [@fadeOut]>
+        <tr class="align-middle">
           @if(groupBy === null &&multiSelect()){
           <td>
             <input class="form-check-input" type="checkbox" [formControl]="selectedCards.at(i)">
@@ -311,6 +319,8 @@
             }
             }
           </td>
+          <td>{{ card.price | currency:card.currency }}</td>
+          <td>{{ card.totalPrice | currency:card.currency }}</td>
           <td>
             <span [ngbTooltip]="dateContent" triggers="mouseenter:mouseleave" container="body">
               <i class="bi bi-calendar-fill"></i>

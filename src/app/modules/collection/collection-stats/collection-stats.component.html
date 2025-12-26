@@ -1,0 +1,174 @@
+<div class="collection-stats" *transloco="let t; prefix: 'collection'">
+  <ng-container>
+    <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/collection">{{ t('title') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ t('stats') }}</li>
+      </ol>
+    </nav>
+    <h1 class="mb-3 d-flex align-items-center gap-2">
+      {{ t('stats') }}
+    </h1>
+    @if (stats) {
+    <section>
+      @let overallCollected = countOf(stats.overall.collected);
+      @let overallMissing = countOf(stats.overall.missing);
+      @let overallPct = pct(overallCollected, overallMissing);
+      <div class="d-grid">
+        <button class="card p-3 mb-3 text-start" (click)="openDetails('overall','overall', t('overall'))">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="mb-1">{{ t('overall') }}</h5>
+          </div>
+          <div class="small text-muted mt-1" [innerHTML]="t('stats_detail', {
+          cards: stats.overall.total,
+          collected: countOf(stats.overall.collected),
+          total: countOf(stats.overall.collected) + countOf(stats.overall.missing),
+          price: (stats.overall.price | currency:currency)
+          })">
+          </div>
+          <div class="progress mt-2" role="progressbar" [attr.aria-valuenow]="overallPct" aria-valuemin="0"
+            aria-valuemax="100">
+            <div class="progress-bar" [style.width.%]="overallPct">
+              {{ overallPct }}%
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <div class="row g-3">
+        @let cryptPct = pct(countOf(stats.crypt.collected), countOf(stats.crypt.missing));
+        <div class="col-12 col-md-6 d-grid">
+          <button class="card p-3 text-start" (click)="openDetails('crypt','crypt', t('crypt'))">
+            <h5 class="mb-1">{{ t('crypt') }}</h5>
+            <div class="small text-muted" [innerHTML]="t('stats_detail', {
+              cards: stats.crypt.total,
+              collected: countOf(stats.crypt.collected),
+              total: countOf(stats.crypt.collected) + countOf(stats.crypt.missing),
+              price: (stats.crypt.price | currency:currency)
+              })">
+            </div>
+            <div class="progress mt-2" role="progressbar" [attr.aria-valuenow]="cryptPct" aria-valuemin="0"
+              aria-valuemax="100">
+              <div class="progress-bar bg-info" [style.width.%]="cryptPct">
+                {{ cryptPct }}%
+              </div>
+            </div>
+          </button>
+        </div>
+        @let libraryPct = pct(countOf(stats.library.collected), countOf(stats.library.missing));
+        <div class="col-12 col-md-6 d-grid">
+          <button class="card p-3 text-start" (click)="openDetails('library','library', t('library'))">
+            <h5 class="mb-1">{{ t('library') }}</h5>
+            <div class="small text-muted" [innerHTML]="t('stats_detail', {
+              cards: stats.library.total,
+              collected: countOf(stats.library.collected),
+              total: countOf(stats.library.collected) + countOf(stats.library.missing),
+              price: (stats.library.price | currency:currency)
+              })">
+            </div>
+            <div class="progress mt-2" role="progressbar" [attr.aria-valuenow]="libraryPct" aria-valuemin="0"
+              aria-valuemax="100">
+              <div class="progress-bar bg-info" [style.width.%]="libraryPct">
+                {{ libraryPct }}%
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+    }
+
+    <section class="lists mt-4">
+      <div class="row">
+        <div class="col-12 col-md-4 mb-3">
+          <h4>{{ t('clans') }}</h4>
+          <ul class="list-group">
+            @for (clan of clans; track clan.key) {
+            <li class="section-item list-group-item d-flex justify-content-between align-items-center"
+              (click)="openDetails('clan', clan.key)" tabindex="0" role="button">
+              <div>
+                <div class="fw-bold">
+                  <i class="vtes me-2" [ngClass]="getClanIcon(clan.key)"></i>{{ clan.key }}
+                </div>
+                <div class="small text-muted" [innerHTML]="t('stats_detail', {
+                  cards: clan.total,
+                  collected: clan.collected ,
+                  total: clan.collected + clan.missing,
+                  price: (clan.price | currency:currency)
+                  })">
+                </div>
+              </div>
+              <div class="ms-3" style="min-width:120px;">
+                <div class="progress" role="progressbar" [attr.aria-valuenow]="clan.pct" aria-valuemin="0"
+                  aria-valuemax="100">
+                  <div class="progress-bar" [style.width.%]="clan.pct">{{ clan.pct }}%</div>
+                </div>
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3">
+          <h4>{{ t('types') }}</h4>
+          <ul class="list-group">
+            @for (type of types; track type.key) {
+            <li class="section-item list-group-item d-flex justify-content-between align-items-center"
+              (click)="openDetails('type', type.key)" tabindex="0" role="button">
+              <div>
+                <div class="fw-bold">
+                  <span class="me-1">
+                    <i class="vtes" [ngClass]="getLibraryTypeIcons(type.key)"></i>
+                  </span>
+                  {{ type.key }}
+                </div>
+                <div class="small text-muted" [innerHTML]="t('stats_detail', {
+                  cards: type.total,
+                  collected: type.collected,
+                  total: type.collected + type.missing,
+                  price: (type.price | currency:currency)
+                  })">
+                </div>
+              </div>
+              <div class="ms-3" style="min-width:120px;">
+                <div class="progress" role="progressbar" [attr.aria-valuenow]="type.pct" aria-valuemin="0"
+                  aria-valuemax="100">
+                  <div class="progress-bar bg-success" [style.width.%]="type.pct">{{ type.pct }}%</div>
+                </div>
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3">
+          <h4>{{ t('sets') }}</h4>
+          <ul class="list-group">
+            @for (set of sets; track set.key) {
+            @let setName = getSetFullName(set.key);
+            <li class="section-item list-group-item d-flex justify-content-between align-items-center"
+              (click)="openDetails('set', set.key, setName)" tabindex="0" role="button">
+              <div>
+                <div class="fw-bold">{{ setName }}</div>
+                <div class="small text-muted" [innerHTML]="t('stats_detail', {
+                  cards: set.total,
+                  collected: set.collected,
+                  total: set.collected + set.missing,
+                  price: (set.price | currency:currency)
+                  })">
+                </div>
+              </div>
+              <div class="ms-3" style="min-width:120px;">
+                <div class="progress" role="progressbar" [attr.aria-valuenow]="set.pct" aria-valuemin="0"
+                  aria-valuemax="100">
+                  <div class="progress-bar bg-warning" [style.width.%]="set.pct">{{ set.pct }}%</div>
+                </div>
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</div>

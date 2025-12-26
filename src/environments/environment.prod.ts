@@ -17,4 +17,8 @@ export const environment = {
   googleAdSense: {
     clientId: 'ca-pub-7379021241824282',
   },
+  googleAccounts: {
+    clientId:
+      '1086100732808-98o4m7f2dp9pjcsh3c3sosgrj97pa71n.apps.googleusercontent.com',
+  },
 }

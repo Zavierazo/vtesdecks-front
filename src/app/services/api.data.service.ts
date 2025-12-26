@@ -42,6 +42,7 @@ export class ApiDataService {
   private sessionStorageService = inject(SessionStorageService)
 
   private readonly loginPath = '/auth/login'
+  private readonly loginOauthPath = '/auth/oauth/login'
   private readonly registerPath = '/auth/create'
   private readonly countryPath = '/auth/country'
   private readonly forgotPasswordPath = '/auth/forgot-password'
@@ -88,6 +89,15 @@ export class ApiDataService {
     formData.append('g-recaptcha-response', recaptcha)
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.loginPath}`,
+      formData,
+    )
+  }
+
+  loginOauth(token: string): Observable<ApiUser> {
+    const formData = new FormData()
+    formData.append('token', token)
+    return this.httpClient.post<ApiUser>(
+      `${environment.api.baseUrl}${this.loginOauthPath}`,
       formData,
     )
   }

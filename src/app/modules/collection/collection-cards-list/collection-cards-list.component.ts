@@ -1,5 +1,10 @@
-import { animate, style, transition, trigger } from '@angular/animations'
-import { AsyncPipe, DatePipe, NgClass, NgTemplateOutlet } from '@angular/common'
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  DatePipe,
+  NgClass,
+  NgTemplateOutlet,
+} from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -117,17 +122,7 @@ export interface SearchCard {
     CollectionBinderComponent,
     CollectionSetComponent,
     NgTemplateOutlet,
-  ],
-  animations: [
-    trigger('fadeOut', [
-      transition(':leave', [animate('300ms ease', style({ opacity: 0 }))]),
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms ease', style({ opacity: 1 })),
-      ]),
-    ]),
+    CurrencyPipe,
   ],
 })
 export class CollectionCardsListComponent implements OnInit, AfterViewInit {

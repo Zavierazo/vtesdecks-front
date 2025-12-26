@@ -18,8 +18,8 @@ export interface ApiCollectionCard {
   condition?: 'MT' | 'NM' | 'EX' | 'GD' | 'LP' | 'PL' | 'PO'
   language?: string
   price?: number
+  totalPrice?: number
   currency?: string
-  fullArt?: boolean
   notes?: string
   creationDate?: Date
   modificationDate?: Date

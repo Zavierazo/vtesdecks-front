@@ -11,6 +11,7 @@ export class CollectionPublicService extends CollectionService {
   private readonly collectionApiDataService = inject(CollectionApiDataService)
 
   initialize(publicHash: string): Observable<ApiCollectionBinder> {
+    this.collectionStore.reset()
     this.collectionStore.setLoading(true)
     return this.collectionApiDataService.getPublicBinder(publicHash).pipe(
       tap((data) => {

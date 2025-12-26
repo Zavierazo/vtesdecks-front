@@ -73,10 +73,9 @@
         [class.border-bottom]="!last || cardInfo.shopList.length > 0">
         <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id" (click)="routerClick.emit(true)">
           @if( deck.filterCards?.[0]?.number; as number ){
-          <span class="badge bg-primary me-2">{{ number }}x</span>
+          <span class="badge bg-primary me-2">{{ number }}x {{ deck.name }} ({{ deck.year }})</span>
           }
-          <span class="fw-medium">{{ deck.name }}</span>
-          <span class="text-muted ms-2">({{ deck.year }})</span>
+          <span class="fw-medium">{{ deck.stats.price | currency:deck.stats.currency }}</span>
         </a>
       </div>
       }

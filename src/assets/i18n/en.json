@@ -326,8 +326,7 @@
     "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
     "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️",
     "contact_support": "Contact Support",
-    "whats_new": "What's new {{ date }}",
-    "new": "New"
+    "whats_new": "What's new {{ date }}"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -437,7 +436,8 @@
     "apply": "Apply",
     "proxy_generator": "Proxy Generator",
     "supporter": "Patreon Member",
-    "vtes_ai_chat": "VTES AI Chat"
+    "vtes_ai_chat": "VTES AI Chat",
+    "new": "New"
   },
   "table_seating": {
     "title": "Table Seating",
@@ -770,6 +770,8 @@
     "column_icon": "Icon",
     "column_description": "Description",
     "column_visibility": "Visibility",
+    "column_price": "Price",
+    "column_total_price": "Total Price",
     "all": "All",
     "crypt": "Crypt",
     "library": "Library",
@@ -863,7 +865,16 @@
     "apply_filters": "Apply Filters",
     "card_type": "Types",
     "clans": "Clans",
-    "disciplines": "Disciplines"
+    "disciplines": "Disciplines",
+    "stats": "Stats",
+    "stats_detail": "<strong>{{ collected }}/{{ total }}</strong> · {{ cards }} cards · {{ price }}",
+    "overall": "Overall",
+    "types": "Types",
+    "sets": "Sets",
+    "missing_only": "Missing only",
+    "show_all": "Show all",
+    "close": "Close",
+    "no_cards": "No cards found"
   },
   "advent": {
     "home_title": "VTES Advent Calendar {{ year }}",

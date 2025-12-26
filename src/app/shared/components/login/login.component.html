@@ -73,6 +73,10 @@
             {{ 'shared.loading' | transloco }}...
           </button>
           } @else {
+          <div class="w-100 d-flex justify-content-center mb-2 google-signin-container">
+            <div name="google-signin-button">
+            </div>
+          </div>
           <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="loginForm.invalid">
             {{ t('login') }}
           </button>
@@ -201,6 +205,10 @@
           </div>
           }
           <!-- Submit button -->
+          <div class="w-100 d-flex justify-content-center mb-2 google-signin-container">
+            <div name="google-signin-button">
+            </div>
+          </div>
           <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="registerForm.invalid">
             {{ t('create_account') }}
           </button>

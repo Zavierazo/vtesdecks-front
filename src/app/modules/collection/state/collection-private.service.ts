@@ -20,6 +20,7 @@ export class CollectionPrivateService extends CollectionService {
   private readonly collectionApiDataService = inject(CollectionApiDataService)
 
   initialize(binderId?: number): Observable<ApiCollection> {
+    this.collectionStore.reset()
     this.collectionStore.setLoading(true)
     if (binderId) {
       this.setFilter(FILTER_BINDER, binderId)

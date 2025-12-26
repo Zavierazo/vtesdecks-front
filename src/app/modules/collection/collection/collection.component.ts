@@ -1,7 +1,11 @@
 import { AsyncPipe, NgClass } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -29,6 +33,7 @@ import { CollectionQuery } from '../state/collection.query'
   styleUrls: ['./collection.component.scss'],
   imports: [
     TranslocoDirective,
+    TranslocoPipe,
     CollectionCardsListComponent,
     AsyncPipe,
     NgbDropdown,

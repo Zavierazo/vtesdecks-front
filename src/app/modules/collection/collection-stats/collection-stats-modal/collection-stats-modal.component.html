@@ -1,0 +1,83 @@
+<div *transloco="let t; prefix: 'collection'">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <div class="d-flex align-items-center ms-3">
+      <button type="button" class="btn btn-sm" [class.btn-primary]="missingOnly"
+        [class.btn-outline-secondary]="!missingOnly" (click)="toggleMissingOnly()">
+        {{ missingOnly ? t('show_all') : t('missing_only') }}
+      </button>
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+  </div>
+  <div class="modal-body">
+    @if (cryptCards.length && libraryCards.length) {
+    <ul ngbNav #nav="ngbNav" class="nav nav-tabs">
+      <li [ngbNavItem]="1" class="nav-item">
+        <button ngbNavLink class="nav-link" (click)="activeTab='crypt'">
+          {{ t('crypt') }} ({{ cryptCards.length }})
+        </button>
+        <ng-template ngbNavContent>
+          @if (cryptVisible.length) {
+          <div class="card-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+            [scrollWindow]="false" (scrolled)="onScroll()"
+            [infiniteScrollDisabled]="cryptVisible.length >= cryptCards.length">
+            @for (id of cryptVisible; track id) {
+            <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
+              <app-crypt [card]="{ id: id, number: 0 }" (click)="openCrypt(id)"></app-crypt>
+            </ul>
+            }
+          </div>
+          } @else {
+          <div class="text-muted">{{ t('no_cards') }}</div>
+          }
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" class="nav-item">
+        <button ngbNavLink class="nav-link" (click)="activeTab='library'">
+          {{ t('library') }} ({{ libraryCards.length }})
+        </button>
+        <ng-template ngbNavContent>
+          @if (libraryVisible.length) {
+          <div class="card-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+            [scrollWindow]="false" (scrolled)="onScroll()"
+            [infiniteScrollDisabled]="libraryVisible.length >= libraryCards.length">
+            @for (id of libraryVisible; track id) {
+            <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
+              <app-library [card]="{ id: id, number: 0 }" (click)="openLibrary(id)"></app-library>
+            </ul>
+            }
+          </div>
+          } @else {
+          <div class="text-muted">{{ t('no_cards') }}</div>
+          }
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-3"></div>
+    } @else {
+    @if (cryptCards.length) {
+    <div class="card-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+      [scrollWindow]="false" (scrolled)="onScroll()"
+      [infiniteScrollDisabled]="cryptVisible.length >= cryptCards.length">
+      @for (id of cryptVisible; track id) {
+      <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
+        <app-crypt [card]="{ id: id, number: 0 }" (click)="openCrypt(id)"></app-crypt>
+      </ul>
+      }
+    </div>
+    } @else if (libraryCards.length) {
+    <div class="card-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+      [scrollWindow]="false" (scrolled)="onScroll()"
+      [infiniteScrollDisabled]="libraryVisible.length >= libraryCards.length">
+      @for (id of libraryVisible; track id) {
+      <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
+        <app-library [card]="{ id: id, number: 0 }" (click)="openLibrary(id)"></app-library>
+      </ul>
+      }
+    </div>
+    } @else {
+    <div class="text-muted">{{ t('no_cards') }}</div>
+    }
+    }
+  </div>
+</div>
