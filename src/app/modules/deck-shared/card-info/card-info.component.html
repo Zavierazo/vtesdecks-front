@@ -75,7 +75,7 @@
           @if( deck.filterCards?.[0]?.number; as number ){
           <span class="badge bg-primary me-2">{{ number }}x {{ deck.name }} ({{ deck.year }})</span>
           }
-          <span class="fw-medium">{{ deck.stats.price | currency:deck.stats.currency }}</span>
+          <span class="fw-medium">{{ deck.stats.msrp | currency:deck.stats.currency }}</span>
         </a>
       </div>
       }
