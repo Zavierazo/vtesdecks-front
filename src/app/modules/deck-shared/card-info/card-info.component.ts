@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common'
+import { CurrencyPipe, TitleCasePipe } from '@angular/common'
 import {
   Component,
   computed,
@@ -39,6 +39,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     CollectionCardStatsComponent,
     LazyLoadImageModule,
     LocalePipe,
+    TitleCasePipe,
   ],
 })
 export class CardInfoComponent {
