@@ -14,9 +14,9 @@
           <span class="small text-black">
             <i class="bi bi-stack me-1"></i>{{ deck.stats.library }}
           </span>
-          @if(deck.stats.price) {
+          @if(deck.stats.msrp || deck.stats.price) {
           <span class="small text-black fw-medium">
-            {{ deck.stats.price | currency:deck.stats.currency:'symbol':'1.0-0' }}
+            {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency:'symbol':'1.0-0' }}
           </span>
           }
         </div>

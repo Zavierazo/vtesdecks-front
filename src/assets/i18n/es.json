@@ -118,7 +118,8 @@
     "edit": "Editar",
     "edit_as_admin": "Editar (como Admin)",
     "related_decks": "Mazos Similares",
-    "collection_tracker": "Rastreador de Colección"
+    "collection_tracker": "Rastreador de Colección",
+    "estimated_value": "Valor Estimado"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",

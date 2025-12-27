@@ -21,6 +21,7 @@ export interface ApiDeckStats {
   minCrypt: number
   maxCrypt: number
   price?: number
+  msrp?: number
   currency?: string
   cryptDisciplines: ApiDisciplineStat[]
   libraryDisciplines: ApiDisciplineStat[]

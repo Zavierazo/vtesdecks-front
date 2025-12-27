@@ -118,7 +118,8 @@
     "edit": "Edit",
     "edit_as_admin": "Edit (as Admin)",
     "similar_decks": "Similar Decks",
-    "collection_tracker": "Collection Tracker"
+    "collection_tracker": "Collection Tracker",
+    "estimated_value": "Estimated Value"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",

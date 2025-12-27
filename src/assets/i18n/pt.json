@@ -118,7 +118,8 @@
     "edit": "Editar",
     "edit_as_admin": "Editar (como Admin)",
     "similar_decks": "Baralhos Parecidos",
-    "collection_tracker": "Rastreador de Coleção"
+    "collection_tracker": "Rastreador de Coleção",
+    "estimated_value": "Valor Estimado"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",

@@ -60,10 +60,13 @@
                     <span class="text-muted d-md-none">
                       {{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}
                     </span>
-                    @if(deck.stats.price) {
+                    @if(deck.stats.price || deck.stats.msrp) {
                     <span class="text-dark mx-1">•</span>
                     <span class="text-muted" [title]="t('price')">
-                      {{ deck.stats.price | currency:deck.stats.currency }}
+                      {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency }}
+                      @if(deck.stats.msrp && deck.stats.price){
+                      ({{ t('estimated_value') }} {{ deck.stats.price | currency:deck.stats.currency }})
+                      }
                     </span>
                     }
                   </p>
