@@ -1,13 +1,20 @@
 [
   {
+    "version": "2.60.0",
+    "date": "2nd January, 2026",
+    "changes": [
+      "Added set Anthology I(2019) to differentiate cards from Anthology(2017). Current collection cards have been migrated to Anthology I(2019).",
+      "Minor fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.59.0",
-    "date": "26 December, 2025",
+    "date": "26th December, 2025",
     "changes": [
       "Added Sign in with Google for a faster and more seamless login and sign-up experience.",
       "Added Suggested Retail Price (MSRP) for preconstructed decks, replacing the aggregated price of individual cards.",
       "Added price tracking to the Collection Tracker, enabling quick access to individual card values.",
-      "Added a new statistics section to the Collection Tracker, providing deeper insights into collection value and composition.",
-      "Minor fixes and performance improvements."
+      "Added a new statistics section to the Collection Tracker, providing deeper insights into collection value and composition."
     ]
   },
   {
