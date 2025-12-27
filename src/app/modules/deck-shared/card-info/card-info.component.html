@@ -91,7 +91,7 @@
             - {{ shop.set }}
             }
             @if(shop.locale){
-            - {{ shop.locale | displayLocale }}
+            - {{ shop.locale | displayLocale | titlecase}}
             }
           </span>
           <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
