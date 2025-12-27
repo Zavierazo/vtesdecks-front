@@ -90,6 +90,9 @@
             @if(shop.set){
             - {{ shop.set }}
             }
+            @if(shop.locale){
+            - {{ shop.locale | displayLocale }}
+            }
           </span>
           <span class="fw-medium">{{ shop.price | currency:shop.currency }}</span>
         </a>

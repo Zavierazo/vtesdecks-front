@@ -13,6 +13,7 @@ import { ApiCardInfo, ApiCrypt, ApiLibrary, ApiShop } from '@models'
 import { NgbCollapse, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { LocalePipe } from '@shared/pipes/locale.pipe'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { finalize, tap } from 'rxjs'
@@ -37,6 +38,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     CurrencyPipe,
     CollectionCardStatsComponent,
     LazyLoadImageModule,
+    LocalePipe,
   ],
 })
 export class CardInfoComponent {
