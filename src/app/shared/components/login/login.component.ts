@@ -121,26 +121,30 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initializeGoogleSignIn() {
-    google.accounts.id.initialize({
-      client_id: environment.googleAccounts.clientId,
-      callback: (response: { credential: string }) =>
-        this.handleCredentialResponse(response),
-    })
-    google.accounts.id.prompt()
+    if (google && google.accounts && google.accounts.id) {
+      google.accounts.id.initialize({
+        client_id: environment.googleAccounts.clientId,
+        callback: (response: { credential: string }) =>
+          this.handleCredentialResponse(response),
+      })
+      google.accounts.id.prompt()
+    }
   }
 
   initializeGoogleSignInButtons() {
-    const googleSignInButton = document.getElementsByName(
-      'google-signin-button',
-    )
-    for (const button of Array.from(googleSignInButton)) {
-      google.accounts.id.renderButton(button, {
-        type: 'standard',
-        theme: 'filled_blue',
-        size: 'large',
-        text: 'signin_with',
-        shape: 'rectangular',
-      })
+    if (google && google.accounts && google.accounts.id) {
+      const googleSignInButton = document.getElementsByName(
+        'google-signin-button',
+      )
+      for (const button of Array.from(googleSignInButton)) {
+        google.accounts.id.renderButton(button, {
+          type: 'standard',
+          theme: 'filled_blue',
+          size: 'large',
+          text: 'signin_with',
+          shape: 'rectangular',
+        })
+      }
     }
   }
 
