@@ -1,5 +1,6 @@
 export * from './api.data.service'
 export * from './color-theme.service'
+export * from './deck-archetype-crud.service'
 export * from './global-error.handler'
 export * from './local-storage.service'
 export * from './media.service'

@@ -1,0 +1,89 @@
+<ng-container *transloco="let t; prefix: 'deck_archetype'">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ form.value.id ? t('edit') : t('create') }}</h5>
+    <form [formGroup]="form">
+      <div class="form-check form-switch ms-2 mb-0">
+        <input class="form-check-input" type="checkbox" id="enabled" formControlName="enabled" />
+        <label class="form-check-label small text-muted" for="enabled">{{ t('shared.enabled') }}</label>
+      </div>
+    </form>
+    <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+
+
+      <div class="mb-2">
+        <div class="row g-2 align-items-center">
+          <div class="col-3">
+            <label class="form-label" for="icon">{{ t('icon') }}</label>
+            <div class="d-flex align-items-center justify-content-between w-100">
+              <div class="d-flex align-items-center w-100">
+                <i class="vtes me-2" [ngClass]="iconValue"></i>
+                <select id="icon" class="form-select ms-2 me-3 flex-grow-1" formControlName="icon">
+                  <option value="">--</option>
+                  <optgroup label="Clans">
+                    @for(c of clans; track c){
+                    <option [value]="c.icon">{{ c.name }}</option>
+                    }
+                  </optgroup>
+                  <optgroup label="Disciplines">
+                    @for(d of disciplines; track d){
+                    <option [value]="d.icon">{{ d.name }}</option>
+                    @if(d.hasSuperior){
+                    <option [value]="d.iconSuperior">{{ d.name }} (sup)</option>
+                    }
+                    }
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <label class="form-label" for="name">{{ t('name') }}</label>
+            <input id="name" class="form-control" formControlName="name" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label" for="type">{{ t('type') }}</label>
+        <select id="type" class="form-select" formControlName="type">
+          <option value="">--</option>
+          <option value="Allies">Allies</option>
+          <option value="Wall">Wall</option>
+          <option value="Toolbox">Toolbox</option>
+          <option value="Rush">Rush</option>
+          <option value="Vote">Vote</option>
+          <option value="Powerbleed">Powerbleed</option>
+          <option value="Swarm">Swarm</option>
+          <option value="Stealth &amp; Bleed">Stealth &amp; Bleed</option>
+          <option value="Vote &amp; Bleed">Vote &amp; Bleed</option>
+          <option value="Lock &amp; Bleed">Lock &amp; Bleed</option>
+          <option value="Allies Rush">Allies Rush</option>
+          <option value="Allies Swarm">Allies Swarm</option>
+          <option value="Vote Swarm">Vote Swarm</option>
+          <option value="Bleed Swarm">Bleed Swarm</option>
+          <option value="Special">Special</option>
+          <option value="Combo">Combo</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label" for="deckId">{{ t('deckId') }}</label>
+        <input id="deckId" class="form-control" formControlName="deckId" />
+      </div>
+
+
+      <div class="mb-2">
+        <app-markdown-textarea [control]="descriptionControl" [placeholder]="t('description_placeholder')"
+          [label]="t('description')"></app-markdown-textarea>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="cancel()">{{ t('shared.cancel') }}</button>
+    <button class="btn btn-primary" (click)="save()">{{ t('shared.save') }}</button>
+  </div>
+</ng-container>

@@ -3,6 +3,7 @@
     "version": "2.60.0",
     "date": "2nd January, 2026",
     "changes": [
+      "Added card price information from TCGMarket. More shops will be added soon for broader price coverage.",
       "Added set Anthology I(2019) to differentiate cards from Anthology(2017). Current collection cards have been migrated to Anthology I(2019).",
       "Minor fixes and performance improvements."
     ]

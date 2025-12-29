@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.authStore.updateToken({} as ApiUser, false)
+    this.authStore.reset()
     this.authStore.setLoading()
     this.clearErrors()
   }

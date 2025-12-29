@@ -888,5 +888,24 @@
     "day_completed": "Day {{ day }} - View Deck",
     "day_start": "Start Challenge",
     "day_login": "Login to Start"
+  },
+  "deck_archetype": {
+    "title": "Archetypes",
+    "create": "Create Archetype",
+    "edit": "Edit Archetype",
+    "name": "Name",
+    "type": "Type",
+    "deckId": "Deck ID",
+    "icon": "Icon",
+    "description": "Description",
+    "decks_with_archetype": "Other decks",
+    "view_archetype_deck": "View deck",
+    "shared": {
+      "enabled": "Enabled",
+      "cancel": "Cancel",
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
   }
 }

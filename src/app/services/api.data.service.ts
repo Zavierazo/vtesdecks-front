@@ -12,6 +12,7 @@ import {
   ApiContact,
   ApiCrypt,
   ApiDeck,
+  ApiDeckArchetype,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
   ApiDecks,
@@ -73,10 +74,10 @@ export class ApiDataService {
   private readonly changelogPath = '/changelog'
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
-  private readonly aiAskPath = '/ai/ask'
   private readonly aiAskAsyncPath = '/ai/ask/async'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
+  private readonly deckArchetype = '/deck-archetype'
 
   login(
     username: string,
@@ -505,6 +506,48 @@ export class ApiDataService {
   ): Observable<ApiCollectionCardStats> {
     return this.httpClient.get<ApiCollectionCardStats>(
       `${environment.api.baseUrl}/user/collections/cards/${id}/stats?summary=${summary}`,
+    )
+  }
+
+  getAllDeckArchetypes(): Observable<ApiDeckArchetype[]> {
+    return this.httpClient.get<ApiDeckArchetype[]>(
+      `${environment.api.baseUrl}${this.deckArchetype}`,
+    )
+  }
+
+  getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
+    return this.httpClient.get<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
+    )
+  }
+
+  getDeckArchetypeByDeck(deckId: string): Observable<ApiDeckArchetype> {
+    return this.httpClient.get<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetype}/deck/${deckId}`,
+    )
+  }
+
+  createDeckArchetype(
+    archetype: ApiDeckArchetype,
+  ): Observable<ApiDeckArchetype> {
+    return this.httpClient.post<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetype}`,
+      archetype,
+    )
+  }
+
+  updateDeckArchetype(
+    archetype: ApiDeckArchetype,
+  ): Observable<ApiDeckArchetype> {
+    return this.httpClient.put<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetype}/${archetype.id}`,
+      archetype,
+    )
+  }
+
+  deleteDeckArchetype(id: number): Observable<boolean> {
+    return this.httpClient.delete<boolean>(
+      `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
     )
   }
 }
