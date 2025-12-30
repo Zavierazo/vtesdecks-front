@@ -900,6 +900,7 @@
     "deckId": "Deck ID",
     "icon": "Icon",
     "description": "Description",
+    "enabled": "Enabled",
     "decks_with_archetype": "Discover decks",
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
     "delete_title": "Delete this archetype?",

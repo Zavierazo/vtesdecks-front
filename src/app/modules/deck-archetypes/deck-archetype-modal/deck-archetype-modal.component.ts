@@ -6,7 +6,11 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms'
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { DeckArchetypeCrudService, ToastService } from '@services'
@@ -21,6 +25,7 @@ import { CLAN_LIST, DISCIPLINE_LIST } from '@utils'
     ReactiveFormsModule,
     TranslocoDirective,
     MarkdownTextareaComponent,
+    TranslocoPipe,
   ],
   templateUrl: './deck-archetype-modal.component.html',
   styleUrls: ['./deck-archetype-modal.component.scss'],

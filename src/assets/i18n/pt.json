@@ -898,6 +898,7 @@
     "deckId": "ID do Baralho",
     "icon": "Ícone",
     "description": "Descrição",
+    "enabled": "Ativado",
     "decks_with_archetype": "Descobrir baralhos",
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} baralhos)",
     "delete_title": "Excluir este arquétipo?",

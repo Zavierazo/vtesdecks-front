@@ -4,15 +4,13 @@
     <form [formGroup]="form">
       <div class="form-check form-switch ms-2 mb-0">
         <input class="form-check-input" type="checkbox" id="enabled" formControlName="enabled" />
-        <label class="form-check-label small text-muted" for="enabled">{{ t('shared.enabled') }}</label>
+        <label class="form-check-label small text-muted" for="enabled">{{ t('enabled') }}</label>
       </div>
     </form>
     <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-
-
       <div class="mb-2">
         <div class="row g-2 align-items-center">
           <div class="col-3">
@@ -83,7 +81,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="cancel()">{{ t('shared.cancel') }}</button>
-    <button class="btn btn-primary" (click)="save()">{{ t('shared.save') }}</button>
+    <button class="btn btn-secondary" (click)="cancel()">{{ 'shared.cancel' | transloco }}</button>
+    <button class="btn btn-primary" (click)="save()">{{ 'shared.apply' | transloco }}</button>
   </div>
 </ng-container>

@@ -44,8 +44,12 @@ export class DeckArchetypeCardComponent {
 
   delete(archetype: ApiDeckArchetype) {
     const modalRef = this.modalService.open(ConfirmDialogComponent)
-    modalRef.componentInstance.title = 'deck_archetype.delete_title'
-    modalRef.componentInstance.message = 'deck_archetype.delete_message'
+    modalRef.componentInstance.title = this.translocoService.translate(
+      'deck_archetype.delete_title',
+    )
+    modalRef.componentInstance.message = this.translocoService.translate(
+      'deck_archetype.delete_message',
+    )
     modalRef.result.then(() => {
       this.crud.delete(archetype.id).subscribe({
         error: (err) =>
