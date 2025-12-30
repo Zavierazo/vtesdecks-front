@@ -549,8 +549,8 @@ export class ApiDataService {
     )
   }
 
-  deleteDeckArchetype(id: number): Observable<boolean> {
-    return this.httpClient.delete<boolean>(
+  deleteDeckArchetype(id: number): Observable<void> {
+    return this.httpClient.delete<void>(
       `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
     )
   }

@@ -41,12 +41,10 @@ export class DeckArchetypeCrudService {
       )
   }
 
-  delete(id: number): Observable<boolean> {
+  delete(id: number): Observable<void> {
     return this.api.deleteDeckArchetype(id).pipe(
-      tap((ok) => {
-        if (ok) {
-          this._items$.next(this._items$.value.filter((i) => i.id !== id))
-        }
+      tap(() => {
+        this._items$.next(this._items$.value.filter((i) => i.id !== id))
       }),
     )
   }

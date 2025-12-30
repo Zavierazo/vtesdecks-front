@@ -4,12 +4,15 @@ import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { AuthQuery } from '@state/auth/auth.query'
+import { catchError, EMPTY, switchMap } from 'rxjs'
 import { DeckArchetypeModalComponent } from '../deck-archetype-modal/deck-archetype-modal.component'
 
+@UntilDestroy()
 @Component({
   selector: 'app-deck-archetype-card',
   templateUrl: './deck-archetype-card.component.html',
@@ -50,15 +53,32 @@ export class DeckArchetypeCardComponent {
     modalRef.componentInstance.message = this.translocoService.translate(
       'deck_archetype.delete_message',
     )
-    modalRef.result.then(() => {
-      this.crud.delete(archetype.id).subscribe({
-        error: (err) =>
-          this.toastService.show(
-            err?.message || this.translocoService.translate('error'),
-            { classname: 'bg-danger text-light', delay: 5000 },
-          ),
-      })
-    })
+    modalRef.closed
+      .pipe(
+        untilDestroyed(this),
+        switchMap((confirmed: boolean) => {
+          if (confirmed) {
+            return this.crud.delete(archetype.id)
+          }
+          return EMPTY
+        }),
+        catchError((error) => {
+          if (error.status === 400 && error.error) {
+            this.toastService.show(error.error, {
+              classname: 'bg-danger text-light',
+              delay: 5000,
+            })
+          } else {
+            console.error('Unexpected error:', error)
+            this.toastService.show(
+              this.translocoService.translate('shared.unexpected_error'),
+              { classname: 'bg-danger text-light', delay: 5000 },
+            )
+          }
+          throw error
+        }),
+      )
+      .subscribe()
   }
 
   get metaPercentage(): number {
