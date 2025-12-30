@@ -900,7 +900,7 @@
     "icon": "Icon",
     "description": "Description",
     "decks_with_archetype": "Other decks",
-    "meta": "Meta {{percentage}}% ({{count}} decks)",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
     "delete_title": "Delete this archetype?",
     "delete_message": "Archetype will be deleted. This action cannot be undone.",
     "show_from_last": "Show decks from the last",

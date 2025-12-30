@@ -9,6 +9,8 @@ export interface ApiDeckArchetype {
   deckCount: number
   metaCount: number
   metaTotal: number
+  price?: number
+  currency?: string
   creationDate: Date
   modificationDate: Date
 }

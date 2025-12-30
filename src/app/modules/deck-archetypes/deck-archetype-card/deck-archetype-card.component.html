@@ -46,8 +46,15 @@
     </div>
   </div>
   <div class="card-footer text-body-secondary">
-    {{ t('meta', { percentage: (metaPercentage | number:'1.0-2'), count: archetype.metaCount }) }}
-
+    <span class="float-start" [innerHTML]="t('meta', {
+      percentage: (metaPercentage | number:'1.0-2'),
+      count: archetype.metaCount
+    })"></span>
+    @if(archetype.price) {
+    <span class="float-end">
+      {{ archetype.price | currency: archetype.currency }}
+    </span>
+    }
   </div>
 </div>
 }

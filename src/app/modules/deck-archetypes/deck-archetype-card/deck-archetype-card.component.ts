@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe } from '@angular/common'
+import { AsyncPipe, CurrencyPipe, DecimalPipe } from '@angular/common'
 import { Component, inject, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
@@ -20,6 +20,7 @@ import { DeckArchetypeModalComponent } from '../deck-archetype-modal/deck-archet
     RouterLink,
     MarkdownTextComponent,
     DecimalPipe,
+    CurrencyPipe,
   ],
 })
 export class DeckArchetypeCardComponent {
