@@ -21,6 +21,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { getCurrentAdventData } from '@utils'
 import { switchMap, tap } from 'rxjs'
 import { environment } from '../../../environments/environment'
+import { HomeMetaGameComponent } from './home-meta-game/home-meta-game.component'
 import { HomeSectionComponent } from './home-section/home-section.component'
 
 @UntilDestroy()
@@ -38,6 +39,7 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     TranslocoPipe,
     AdSenseComponent,
     IsSupporterDirective,
+    HomeMetaGameComponent,
   ],
 })
 export class HomeComponent implements OnInit {

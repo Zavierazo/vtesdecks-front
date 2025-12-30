@@ -1,0 +1,13 @@
+<div class="card text-center shadow-2-strong h-100" *transloco="let t; prefix: 'home'">
+  <div class="view shadow-5-strong">
+    <h5>{{ t('metagame') }}</h5>
+  </div>
+  <div class="card-body p-0 py-2">
+    <app-deck-archetypes [limit]="6"></app-deck-archetypes>
+  </div>
+  <div class="card-footer white">
+    <a class="btn btn-success btn-rounded btn-lg" routerLink="/archetypes" role="button">
+      {{ t('see_more') }}
+    </a>
+  </div>
+</div>

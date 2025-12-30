@@ -1,30 +1,33 @@
 <ng-container *transloco="let t; prefix: 'deck_archetype'">
-  @let isMaintainer = isMaintainer$ | async;
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="mb-0 text-start">{{ t('title') }}</h3>
-    <div class="d-flex gap-2 align-items-center flex-nowrap">
-      {{ t('show_from_last') }}
-      <select class="form-select form-select-sm w-auto" [formControl]="metaTypeControl" aria-label="Select meta type">
-        <option value="TOURNAMENT_90">{{ t('meta_type.90_days') }}</option>
-        <option value="TOURNAMENT_180">{{ t('meta_type.180_days') }}</option>
-        <option value="TOURNAMENT_365">{{ t('meta_type.365_days') }}</option>
-        <option value="TOURNAMENT">{{ t('meta_type.all_time') }}</option>
-      </select>
-      @if (isMaintainer) {
-      <button class="btn btn-sm btn-primary" (click)="openModal()">
-        {{ t('create') }}
-      </button>
+  <section>
+    @let isMaintainer = isMaintainer$ | async;
+    @if(!limit){
+    <div class="container-fluid d-flex justify-content-between align-items-center my-4">
+      <h3 class="mb-0 text-start">{{ t('title') }}</h3>
+      <div class="d-flex gap-2 align-items-center flex-nowrap">
+        {{ t('show_from_last') }}
+        <select class="form-select form-select-sm w-auto" [formControl]="metaTypeControl" aria-label="Select meta type">
+          <option value="TOURNAMENT_90">{{ t('meta_type.90_days') }}</option>
+          <option value="TOURNAMENT_180">{{ t('meta_type.180_days') }}</option>
+          <option value="TOURNAMENT_365">{{ t('meta_type.365_days') }}</option>
+          <option value="TOURNAMENT">{{ t('meta_type.all_time') }}</option>
+        </select>
+        @if (isMaintainer) {
+        <button class="btn btn-sm btn-primary" (click)="openModal()">
+          {{ t('create') }}
+        </button>
+        }
+      </div>
+    </div>
+    }
+    <div class="container-fluid row g-3 card-deck-archetype text-start mb-3">
+      @if(archetypes$ | async; as archetypes){
+      @for (archetype of (limit ? (archetypes | slice:0:limit) : archetypes); track archetype.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+      </div>
+      }
       }
     </div>
-  </div>
-
-  <div class="row g-3 card-deck-archetype">
-    @if(archetypes$ | async; as archetypes){
-    @for (archetype of archetypes; track archetype.id) {
-    <div class="col-12 col-sm-6 col-md-4">
-      <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
-    </div>
-    }
-    }
-  </div>
+  </section>
 </ng-container>

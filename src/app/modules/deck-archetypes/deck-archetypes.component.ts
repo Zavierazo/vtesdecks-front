@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiDeckArchetype, MetaType } from '@models'
@@ -27,6 +27,9 @@ export class DeckArchetypesComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly crud = inject(DeckArchetypeCrudService)
   private readonly authQuery = inject(AuthQuery)
+
+  /** Optional maximum number of archetypes to display (used by homepage) */
+  @Input() limit?: number
 
   archetypes$!: Observable<ApiDeckArchetype[]>
   isMaintainer$ = this.authQuery.selectRole('maintainer')
