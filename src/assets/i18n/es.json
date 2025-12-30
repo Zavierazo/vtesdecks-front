@@ -327,7 +327,8 @@
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
     "contact_support": "Contactar Soporte",
-    "whats_new": "Novedades {{ date }}"
+    "whats_new": "Novedades {{ date }}",
+    "metagame": "Metajuego Actual"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -886,5 +887,27 @@
     "day_completed": "Día {{ day }} - Ver Mazo",
     "day_start": "Comenzar Desafío",
     "day_login": "Iniciar sesión para comenzar"
+  },
+  "deck_archetype": {
+    "title": "Metajuego Arquetipos",
+    "create": "Crear",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "name": "Nombre",
+    "type": "Tipo",
+    "deckId": "ID del Mazo",
+    "icon": "Icono",
+    "description": "Descripción",
+    "decks_with_archetype": "Descubrir mazos",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} mazos)",
+    "delete_title": "¿Eliminar este arquetipo?",
+    "delete_message": "El arquetipo será eliminado. Esta acción no se puede deshacer.",
+    "show_from_last": "Mostrar mazos de los últimos",
+    "meta_type": {
+      "90_days": "90 días",
+      "180_days": "180 días",
+      "365_days": "365 días",
+      "all_time": "Todo el tiempo"
+    }
   }
 }

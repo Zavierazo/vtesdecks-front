@@ -329,7 +329,8 @@
     "patreon_message": "Este site é 100% gratuito e movido pela comunidade.<br>Se o VTES Decks te ajuda, considere nos apoiar no Patreon ❤️",
     "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
     "contact_support": "Contatar Suporte",
-    "whats_new": "Novidades {{ date }}"
+    "whats_new": "Novidades {{ date }}",
+    "metagame": "Metajogo Atual"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -886,5 +887,27 @@
     "day_completed": "Dia {{ day }} - Ver Baralho",
     "day_start": "Iniciar Desafio",
     "day_login": "Conectar para Iniciar"
+  },
+  "deck_archetype": {
+    "title": "Metajogo de Arquétipos",
+    "create": "Criar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "name": "Nome",
+    "type": "Tipo",
+    "deckId": "ID do Baralho",
+    "icon": "Ícone",
+    "description": "Descrição",
+    "decks_with_archetype": "Descobrir baralhos",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} baralhos)",
+    "delete_title": "Excluir este arquétipo?",
+    "delete_message": "O arquétipo será excluído. Esta ação não pode ser desfeita.",
+    "show_from_last": "Mostrar arquétipos dos últimos",
+    "meta_type": {
+      "90_days": "90 Dias",
+      "180_days": "180 Dias",
+      "365_days": "365 Dias",
+      "all_time": "Todo o tempo"
+    }
   }
 }

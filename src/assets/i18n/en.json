@@ -892,7 +892,7 @@
   },
   "deck_archetype": {
     "title": "Metagame Archetypes",
-    "create": "Create Archetype",
+    "create": "Create",
     "edit": "Edit",
     "delete": "Delete",
     "name": "Name",
@@ -900,11 +900,11 @@
     "deckId": "Deck ID",
     "icon": "Icon",
     "description": "Description",
-    "decks_with_archetype": "Other decks",
+    "decks_with_archetype": "Discover decks",
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
     "delete_title": "Delete this archetype?",
     "delete_message": "Archetype will be deleted. This action cannot be undone.",
-    "show_from_last": "Show decks from the last",
+    "show_from_last": "Show archetypes from the last",
     "meta_type": {
       "90_days": "90 Days",
       "180_days": "180 Days",
