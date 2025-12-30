@@ -3,7 +3,7 @@ import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiDeckArchetype, MetaType } from '@models'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -16,13 +16,13 @@ import { DeckArchetypeModalComponent } from './deck-archetype-modal/deck-archety
   selector: 'app-deck-archetypes',
   templateUrl: './deck-archetypes.component.html',
   styleUrls: ['./deck-archetypes.component.scss'],
-  standalone: true,
   imports: [
     CommonModule,
     TranslocoDirective,
     ReactiveFormsModule,
     AsyncPipe,
     DeckArchetypeCardComponent,
+    NgbTooltip,
   ],
 })
 export class DeckArchetypesComponent implements OnInit {

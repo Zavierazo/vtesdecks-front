@@ -3,7 +3,12 @@
     @let isMaintainer = isMaintainer$ | async;
     @if(!limit){
     <div class="container-fluid d-flex justify-content-between align-items-center my-4">
-      <h3 class="mb-0 text-start">{{ t('title') }}</h3>
+      <h3 class="mb-0 text-start">
+        {{ t('title') }}
+        <i class="bi bi-question-circle fs-4 ms-2 text-secondary" [ngbTooltip]="t('tooltip')" placement="right"
+          triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
+      </h3>
+
       <div class="d-flex gap-2 align-items-center flex-nowrap">
         {{ t('show_from_last') }}
         <select class="form-select form-select-sm w-auto" [formControl]="metaTypeControl" aria-label="Select meta type">

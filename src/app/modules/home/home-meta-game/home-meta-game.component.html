@@ -1,6 +1,10 @@
 <div class="card text-center shadow-2-strong h-100" *transloco="let t; prefix: 'home'">
   <div class="view shadow-5-strong">
-    <h5>{{ t('metagame') }}</h5>
+    <h5>
+      {{ t('metagame') }}
+      <i class="bi bi-question-circle fs-5 ms-1 text-light" [ngbTooltip]="'deck_archetype.tooltip' | transloco"
+        placement="right" container="body" triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
+    </h5>
   </div>
   <div class="card-body p-0 py-2">
     <app-deck-archetypes [limit]="6"></app-deck-archetypes>
