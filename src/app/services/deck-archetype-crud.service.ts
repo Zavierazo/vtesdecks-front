@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core'
-import { ApiDeckArchetype } from '@models'
+import { ApiDeckArchetype, MetaType } from '@models'
 import { BehaviorSubject, Observable, tap } from 'rxjs'
 import { ApiDataService } from './api.data.service'
 
@@ -15,9 +15,9 @@ export class DeckArchetypeCrudService {
     return this._items$.asObservable()
   }
 
-  loadAll(): Observable<ApiDeckArchetype[]> {
+  loadAll(metaType: MetaType): Observable<ApiDeckArchetype[]> {
     return this.api
-      .getAllDeckArchetypes()
+      .getAllDeckArchetypes(metaType)
       .pipe(tap((items) => this._items$.next(items)))
   }
 

@@ -30,6 +30,7 @@ import {
   ApiUserNotification,
   ApiUserSettings,
   ApiYearStatistic,
+  MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
@@ -509,9 +510,12 @@ export class ApiDataService {
     )
   }
 
-  getAllDeckArchetypes(): Observable<ApiDeckArchetype[]> {
+  getAllDeckArchetypes(metaType: MetaType): Observable<ApiDeckArchetype[]> {
+    let httpParams = new HttpParams()
+    httpParams = httpParams.set('metaType', metaType)
     return this.httpClient.get<ApiDeckArchetype[]>(
       `${environment.api.baseUrl}${this.deckArchetype}`,
+      { params: httpParams },
     )
   }
 

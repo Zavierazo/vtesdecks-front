@@ -1,7 +1,8 @@
 import { AsyncPipe, CommonModule } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
+import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { ApiDeckArchetype } from '@models'
+import { ApiDeckArchetype, MetaType } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { DeckArchetypeCrudService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -17,6 +18,7 @@ import { DeckArchetypeModalComponent } from './deck-archetype-modal/deck-archety
   imports: [
     CommonModule,
     TranslocoDirective,
+    ReactiveFormsModule,
     AsyncPipe,
     DeckArchetypeCardComponent,
   ],
@@ -28,10 +30,16 @@ export class DeckArchetypesComponent implements OnInit {
 
   archetypes$!: Observable<ApiDeckArchetype[]>
   isMaintainer$ = this.authQuery.selectRole('maintainer')
+  metaTypeControl = new FormControl<MetaType>('TOURNAMENT_90')
 
   ngOnInit() {
     this.archetypes$ = this.crud.selectAll()
-    this.crud.loadAll().subscribe()
+    this.crud.loadAll(this.metaTypeControl.value!).subscribe()
+    this.metaTypeControl.valueChanges.subscribe(() => this.onMetaTypeChange())
+  }
+
+  onMetaTypeChange() {
+    this.crud.loadAll(this.metaTypeControl.value!).subscribe()
   }
 
   openModal() {
