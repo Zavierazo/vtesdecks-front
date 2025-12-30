@@ -1,0 +1,52 @@
+@if(archetype(); as archetype){
+@let isMaintainer = isMaintainer$ | async;
+<div class="card h-100" *transloco="let t; prefix: 'deck_archetype'">
+  <div class="card-header">
+    <h5 class="card-title d-flex flex-row align-items-center justify-content-start">
+      @if (archetype.icon) {
+      <span class="me-2">
+        <i class="vtes" [class]="archetype.icon"></i>
+      </span>
+      }
+      <a class="text-decoration-none" [routerLink]="['/deck', archetype.deckId]">{{ archetype.name }}</a>
+      @if (isMaintainer) {
+      <span class="text-success ms-2">
+        @if (archetype.enabled) {
+        ✓
+        } @else {
+        X
+        }
+      </span>
+      <div class="ms-2 d-flex align-items-end">
+        <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal(archetype)">
+          {{ t('edit') }}
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="delete(archetype)">
+          {{ t('delete') }}
+        </button>
+      </div>
+      }
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted small">{{ archetype.type }}</h6>
+  </div>
+  <div class="card-body d-flex flex-column">
+    <div class="card-text mb-3 text-muted small description-preview">
+      <app-markdown-text [data]="archetype.description"></app-markdown-text>
+    </div>
+    <div class="mt-auto d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <a class="btn btn-sm btn-outline-primary" [routerLink]="['/decks']" [queryParams]="{ archetype: archetype.id }">
+          {{ t('decks_with_archetype') }}
+          @if(archetype.deckCount > 0) {
+          ({{ archetype.deckCount }})
+          }
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-body-secondary">
+    Meta {{ metaPercentage | number:'1.0-2'}}% ({{ archetype.metaCount }} decks)
+
+  </div>
+</div>
+}

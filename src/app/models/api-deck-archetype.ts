@@ -6,6 +6,9 @@ export interface ApiDeckArchetype {
   description?: string
   deckId: string
   enabled: boolean
+  deckCount: number
+  metaCount: number
+  metaTotal: number
   creationDate: Date
   modificationDate: Date
 }

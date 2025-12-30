@@ -892,20 +892,15 @@
   "deck_archetype": {
     "title": "Archetypes",
     "create": "Create Archetype",
-    "edit": "Edit Archetype",
+    "edit": "Edit",
+    "delete": "Delete",
     "name": "Name",
     "type": "Type",
     "deckId": "Deck ID",
     "icon": "Icon",
     "description": "Description",
     "decks_with_archetype": "Other decks",
-    "view_archetype_deck": "View deck",
-    "shared": {
-      "enabled": "Enabled",
-      "cancel": "Cancel",
-      "save": "Save",
-      "edit": "Edit",
-      "delete": "Delete"
-    }
+    "delete_title": "Delete this archetype?",
+    "delete_message": "Archetype will be deleted. This action cannot be undone."
   }
 }
