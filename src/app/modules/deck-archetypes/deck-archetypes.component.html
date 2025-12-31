@@ -31,7 +31,9 @@
       @if(isMaintainer && limit === undefined) {
       @for (archetype of suggestions; track archetype.name) {
       <div class="col-12 col-md-6 col-lg-4">
-        <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+        <div class="suggestion h-100">
+          <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+        </div>
       </div>
       }
       }
