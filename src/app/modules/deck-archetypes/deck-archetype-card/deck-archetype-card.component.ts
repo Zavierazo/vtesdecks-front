@@ -1,5 +1,10 @@
 import { AsyncPipe, CurrencyPipe, DecimalPipe } from '@angular/common'
-import { Component, inject, input } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
@@ -17,6 +22,7 @@ import { DeckArchetypeModalComponent } from '../deck-archetype-modal/deck-archet
   selector: 'app-deck-archetype-card',
   templateUrl: './deck-archetype-card.component.html',
   styleUrls: ['./deck-archetype-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
     AsyncPipe,

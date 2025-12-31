@@ -890,7 +890,7 @@
   },
   "deck_archetype": {
     "title": "Metajogo de Arquétipos",
-    "tooltip": "Os dados do metagame são baseados em torneios dos últimos 180 dias (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
+    "tooltip": "Os dados do metagame são baseados em torneios dos último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
     "create": "Criar",
     "edit": "Editar",
     "delete": "Excluir",
@@ -905,11 +905,12 @@
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} baralhos)",
     "delete_title": "Excluir este arquétipo?",
     "delete_message": "O arquétipo será excluído. Esta ação não pode ser desfeita.",
-    "show_from_last": "Mostrar arquétipos dos últimos",
+    "show_from_last": "Mostrar o metajogo dos",
     "meta_type": {
-      "90_days": "90 Dias",
-      "180_days": "180 Dias",
-      "365_days": "365 Dias",
+      "90_days": "últimos 90 dias",
+      "180_days": "últimos 180 dias",
+      "365_days": "último ano",
+      "730_days": "últimos 2 anos",
       "all_time": "Todo o tempo"
     }
   }

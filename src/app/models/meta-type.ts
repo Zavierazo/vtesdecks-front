@@ -3,3 +3,4 @@ export type MetaType =
   | 'TOURNAMENT_90'
   | 'TOURNAMENT_180'
   | 'TOURNAMENT_365'
+  | 'TOURNAMENT_730'

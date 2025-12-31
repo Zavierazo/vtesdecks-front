@@ -15,6 +15,7 @@
           <option value="TOURNAMENT_90">{{ t('meta_type.90_days') }}</option>
           <option value="TOURNAMENT_180">{{ t('meta_type.180_days') }}</option>
           <option value="TOURNAMENT_365">{{ t('meta_type.365_days') }}</option>
+          <option value="TOURNAMENT_730">{{ t('meta_type.730_days') }}</option>
           <option value="TOURNAMENT">{{ t('meta_type.all_time') }}</option>
         </select>
         @if (isMaintainer) {
@@ -26,11 +27,13 @@
     </div>
     }
     <div class="container-fluid row g-3 card-deck-archetype text-start mb-3">
+      @if(suggestions$ | async; as suggestions){
       @if(isMaintainer && limit === undefined) {
-      @for (archetype of (suggestions$ | async); track archetype.name) {
+      @for (archetype of suggestions; track archetype.name) {
       <div class="col-12 col-md-6 col-lg-4">
         <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
       </div>
+      }
       }
       }
       @if(archetypes$ | async; as archetypes){

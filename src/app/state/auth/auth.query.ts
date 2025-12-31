@@ -103,4 +103,8 @@ export class AuthQuery {
   isSupporter(): boolean {
     return isSupporter(this.store.getValue().roles)
   }
+
+  isRole(role: string): boolean {
+    return this.store.getValue().roles?.includes(role) || false
+  }
 }

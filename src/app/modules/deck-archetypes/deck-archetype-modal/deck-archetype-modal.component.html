@@ -85,6 +85,11 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="cancel()">{{ 'shared.cancel' | transloco }}</button>
-    <button class="btn btn-primary" (click)="save()">{{ 'shared.apply' | transloco }}</button>
+    <button class="btn btn-primary" (click)="save()" [disabled]="loading">
+      @if (loading) {
+      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+      }
+      {{ 'shared.apply' | transloco }}
+    </button>
   </div>
 </ng-container>

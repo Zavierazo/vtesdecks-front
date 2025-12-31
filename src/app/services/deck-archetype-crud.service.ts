@@ -9,6 +9,7 @@ import { ApiDataService } from './api.data.service'
 export class DeckArchetypeCrudService {
   private readonly api = inject(ApiDataService)
 
+  private readonly _suggestions$ = new BehaviorSubject<ApiDeckArchetype[]>([])
   private readonly _items$ = new BehaviorSubject<ApiDeckArchetype[]>([])
 
   selectAll(): Observable<ApiDeckArchetype[]> {
@@ -16,7 +17,13 @@ export class DeckArchetypeCrudService {
   }
 
   selectSuggestions(): Observable<ApiDeckArchetype[]> {
-    return this.api.getSuggestionDeckArchetypes()
+    return this._suggestions$.asObservable()
+  }
+
+  loadSuggestions(): Observable<ApiDeckArchetype[]> {
+    return this.api
+      .getSuggestionDeckArchetypes()
+      .pipe(tap((items) => this._suggestions$.next(items)))
   }
 
   loadAll(metaType: MetaType): Observable<ApiDeckArchetype[]> {
@@ -26,11 +33,16 @@ export class DeckArchetypeCrudService {
   }
 
   create(archetype: ApiDeckArchetype): Observable<ApiDeckArchetype> {
-    return this.api
-      .createDeckArchetype(archetype)
-      .pipe(
-        tap((created) => this._items$.next([...this._items$.value, created])),
-      )
+    return this.api.createDeckArchetype(archetype).pipe(
+      tap((created) => this._items$.next([...this._items$.value, created])),
+      tap((created) =>
+        this._suggestions$.next([
+          ...this._suggestions$.value.filter(
+            (i) => i.deckId !== created.deckId,
+          ),
+        ]),
+      ),
+    )
   }
 
   update(archetype: ApiDeckArchetype): Observable<ApiDeckArchetype> {

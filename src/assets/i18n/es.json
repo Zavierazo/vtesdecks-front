@@ -890,7 +890,7 @@
   },
   "deck_archetype": {
     "title": "Metajuego Arquetipos",
-    "tooltip": "Los datos del metajuego se basan en torneos de los últimos 180 días (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
+    "tooltip": "Los datos del metajuego se basan en torneos de los último año (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
     "create": "Crear",
     "edit": "Editar",
     "delete": "Eliminar",
@@ -905,11 +905,12 @@
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} mazos)",
     "delete_title": "¿Eliminar este arquetipo?",
     "delete_message": "El arquetipo será eliminado. Esta acción no se puede deshacer.",
-    "show_from_last": "Mostrar mazos de los últimos",
+    "show_from_last": "Mostrar metajuego de",
     "meta_type": {
-      "90_days": "90 días",
-      "180_days": "180 días",
-      "365_days": "365 días",
+      "90_days": "ultimos 90 días",
+      "180_days": "ultimos 180 días",
+      "365_days": "último año",
+      "730_days": "últimos 2 años",
       "all_time": "Todo el tiempo"
     }
   }
