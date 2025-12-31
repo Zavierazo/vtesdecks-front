@@ -1,6 +1,6 @@
 @if(archetype(); as archetype){
 @let isMaintainer = isMaintainer$ | async;
-<div class="card h-100" *transloco="let t; prefix: 'deck_archetype'">
+<div class="card h-100" *transloco="let t; prefix: 'deck_metagame'">
   <div class="card-header">
     <h5 class="card-title d-flex flex-row align-items-center justify-content-start">
       @if (archetype.icon) {
@@ -52,8 +52,8 @@
     @if(archetype.id){
     <div class="float-end d-flex align-items-center gap-2 ms-auto">
       <a class="text-decoration-none text-primary d-inline-flex align-items-center" [routerLink]="['/decks']"
-        [queryParams]="{ archetype: archetype.id }" aria-label="{{ t('decks_with_archetype') }}">
-        {{ t('decks_with_archetype') }}
+        [queryParams]="{ archetype: archetype.id }" aria-label="{{ t('decks_with_metagame') }}">
+        {{ t('decks_with_metagame') }}
         @if(archetype.deckCount > 0) {
         <span class="badge bg-primary ms-2 deck-badge">{{ archetype.deckCount }}</span>
         }

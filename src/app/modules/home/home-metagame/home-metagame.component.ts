@@ -2,19 +2,19 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { DeckArchetypesComponent } from '../../deck-archetypes/deck-archetypes.component'
+import { DeckMetagameComponent } from '../../deck-metagame/deck-metagame.component'
 
 @Component({
-  selector: 'app-home-meta-game',
-  templateUrl: './home-meta-game.component.html',
-  styleUrls: ['./home-meta-game.component.scss'],
+  selector: 'app-home-metagame',
+  templateUrl: './home-metagame.component.html',
+  styleUrls: ['./home-metagame.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DeckArchetypesComponent,
+    DeckMetagameComponent,
     RouterLink,
     TranslocoDirective,
     TranslocoPipe,
     NgbTooltip,
   ],
 })
-export class HomeMetaGameComponent {}
+export class HomeMetagameComponent {}

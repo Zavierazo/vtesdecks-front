@@ -2,12 +2,12 @@
   <div class="view shadow-5-strong">
     <h5>
       {{ t('metagame') }}
-      <i class="bi bi-question-circle fs-5 ms-1 text-light" [ngbTooltip]="'deck_archetype.tooltip' | transloco"
+      <i class="bi bi-question-circle fs-5 ms-1 text-light" [ngbTooltip]="'deck_metagame.tooltip' | transloco"
         placement="right" container="body" triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
     </h5>
   </div>
   <div class="card-body p-0 py-2">
-    <app-deck-archetypes [limit]="6"></app-deck-archetypes>
+    <app-deck-metagame [limit]="6"></app-deck-metagame>
   </div>
   <div class="card-footer white">
     <a class="btn btn-success btn-rounded btn-lg" routerLink="/metagame" role="button">

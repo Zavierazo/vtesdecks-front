@@ -21,7 +21,7 @@ import { finalize } from 'rxjs'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-deck-archetype-modal',
+  selector: 'app-deck-metagame-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -30,10 +30,10 @@ import { finalize } from 'rxjs'
     MarkdownTextareaComponent,
     TranslocoPipe,
   ],
-  templateUrl: './deck-archetype-modal.component.html',
-  styleUrls: ['./deck-archetype-modal.component.scss'],
+  templateUrl: './deck-metagame-modal.component.html',
+  styleUrls: ['./deck-metagame-modal.component.scss'],
 })
-export class DeckArchetypeModalComponent {
+export class DeckMetagameModalComponent {
   modal = inject(NgbActiveModal)
 
   private readonly crud = inject(DeckArchetypeCrudService)

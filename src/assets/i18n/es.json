@@ -895,7 +895,7 @@
     "day_start": "Comenzar Desafío",
     "day_login": "Iniciar sesión para comenzar"
   },
-  "deck_archetype": {
+  "deck_metagame": {
     "title": "Mazos Metajuego",
     "tooltip": "Los datos del metajuego se basan en torneos de los último año (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
     "create": "Crear",
@@ -908,7 +908,7 @@
     "icon": "Icono",
     "description": "Descripción",
     "enabled": "Habilitado",
-    "decks_with_archetype": "Descubrir mazos",
+    "decks_with_metagame": "Descubrir mazos",
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} mazos)",
     "delete_title": "¿Eliminar este arquetipo?",
     "delete_message": "El arquetipo será eliminado. Esta acción no se puede deshacer.",

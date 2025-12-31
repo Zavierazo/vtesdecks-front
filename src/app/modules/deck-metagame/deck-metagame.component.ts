@@ -13,25 +13,25 @@ import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
-import { DeckArchetypeCardComponent } from './deck-archetype-card/deck-archetype-card.component'
-import { DeckArchetypeModalComponent } from './deck-archetype-modal/deck-archetype-modal.component'
+import { DeckMetagameCardComponent } from './deck-metagame-card/deck-metagame-card.component'
+import { DeckMetagameModalComponent } from './deck-metagame-modal/deck-metagame-modal.component'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-deck-archetypes',
-  templateUrl: './deck-archetypes.component.html',
-  styleUrls: ['./deck-archetypes.component.scss'],
+  selector: 'app-deck-metagame',
+  templateUrl: './deck-metagame.component.html',
+  styleUrls: ['./deck-metagame.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     TranslocoDirective,
     ReactiveFormsModule,
     AsyncPipe,
-    DeckArchetypeCardComponent,
+    DeckMetagameCardComponent,
     NgbTooltip,
   ],
 })
-export class DeckArchetypesComponent implements OnInit {
+export class DeckMetagameComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly crud = inject(DeckArchetypeCrudService)
   private readonly authQuery = inject(AuthQuery)
@@ -63,7 +63,7 @@ export class DeckArchetypesComponent implements OnInit {
   }
 
   openModal() {
-    const modalRef = this.modalService.open(DeckArchetypeModalComponent, {
+    const modalRef = this.modalService.open(DeckMetagameModalComponent, {
       size: 'lg',
       centered: true,
     })

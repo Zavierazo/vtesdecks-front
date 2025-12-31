@@ -15,13 +15,13 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { catchError, EMPTY, switchMap } from 'rxjs'
-import { DeckArchetypeModalComponent } from '../deck-archetype-modal/deck-archetype-modal.component'
+import { DeckMetagameModalComponent } from '../deck-metagame-modal/deck-metagame-modal.component'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-deck-archetype-card',
-  templateUrl: './deck-archetype-card.component.html',
-  styleUrls: ['./deck-archetype-card.component.scss'],
+  selector: 'app-deck-metagame-card',
+  templateUrl: './deck-metagame-card.component.html',
+  styleUrls: ['./deck-metagame-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
@@ -32,7 +32,7 @@ import { DeckArchetypeModalComponent } from '../deck-archetype-modal/deck-archet
     CurrencyPipe,
   ],
 })
-export class DeckArchetypeCardComponent {
+export class DeckMetagameCardComponent {
   private readonly modalService = inject(NgbModal)
   private readonly crud = inject(DeckArchetypeCrudService)
   private readonly authQuery = inject(AuthQuery)
@@ -44,7 +44,7 @@ export class DeckArchetypeCardComponent {
   isMaintainer$ = this.authQuery.selectRole('maintainer')
 
   openModal(archetype: ApiDeckArchetype) {
-    const modalRef = this.modalService.open(DeckArchetypeModalComponent, {
+    const modalRef = this.modalService.open(DeckMetagameModalComponent, {
       size: 'lg',
       centered: true,
     })
@@ -54,10 +54,10 @@ export class DeckArchetypeCardComponent {
   delete(archetype: ApiDeckArchetype) {
     const modalRef = this.modalService.open(ConfirmDialogComponent)
     modalRef.componentInstance.title = this.translocoService.translate(
-      'deck_archetype.delete_title',
+      'deck_metagame.delete_title',
     )
     modalRef.componentInstance.message = this.translocoService.translate(
-      'deck_archetype.delete_message',
+      'deck_metagame.delete_message',
     )
     modalRef.closed
       .pipe(

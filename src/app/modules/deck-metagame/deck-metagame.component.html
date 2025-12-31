@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; prefix: 'deck_archetype'">
+<ng-container *transloco="let t; prefix: 'deck_metagame'">
   <section>
     @let isMaintainer = isMaintainer$ | async;
     @if(!limit){
@@ -32,7 +32,7 @@
       @for (archetype of suggestions; track archetype.name) {
       <div class="col-12 col-md-6 col-lg-4">
         <div class="suggestion h-100">
-          <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+          <app-deck-metagame-card [archetype]="archetype"></app-deck-metagame-card>
         </div>
       </div>
       }
@@ -41,7 +41,7 @@
       @if(archetypes$ | async; as archetypes){
       @for (archetype of (limit ? (archetypes | slice:0:limit) : archetypes); track archetype.id) {
       <div class="col-12 col-md-6 col-lg-4">
-        <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+        <app-deck-metagame-card [archetype]="archetype"></app-deck-metagame-card>
       </div>
       }
       }

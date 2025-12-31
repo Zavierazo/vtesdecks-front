@@ -897,7 +897,7 @@
     "day_start": "Start Challenge",
     "day_login": "Login to Start"
   },
-  "deck_archetype": {
+  "deck_metagame": {
     "title": "Metagame Decks",
     "tooltip": "Metagame data is based on tournament results from the last 1 year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
     "create": "Create",
@@ -910,10 +910,10 @@
     "icon": "Icon",
     "description": "Description",
     "enabled": "Enabled",
-    "decks_with_archetype": "Discover decks",
+    "decks_with_metagame": "Discover decks",
     "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
-    "delete_title": "Delete this archetype?",
-    "delete_message": "Archetype will be deleted. This action cannot be undone.",
+    "delete_title": "Delete this metagame?",
+    "delete_message": "Metagame will be deleted. This action cannot be undone.",
     "show_from_last": "Show the metagame from",
     "meta_type": {
       "90_days": "90 days ago",

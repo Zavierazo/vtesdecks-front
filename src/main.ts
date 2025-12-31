@@ -193,8 +193,8 @@ const routes: Routes = [
   {
     path: 'metagame',
     loadChildren: () =>
-      import('./app/modules/deck-archetypes/deck-archetypes.routes').then(
-        (m) => m.DECK_ARCHETYPES_ROUTES,
+      import('./app/modules/deck-metagame/deck-metagame.routes').then(
+        (m) => m.DECK_METAGAME_ROUTES,
       ),
   },
   {
