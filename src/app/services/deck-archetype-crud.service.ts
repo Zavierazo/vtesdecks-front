@@ -15,6 +15,10 @@ export class DeckArchetypeCrudService {
     return this._items$.asObservable()
   }
 
+  selectSuggestions(): Observable<ApiDeckArchetype[]> {
+    return this.api.getSuggestionDeckArchetypes()
+  }
+
   loadAll(metaType: MetaType): Observable<ApiDeckArchetype[]> {
     return this.api
       .getAllDeckArchetypes(metaType)

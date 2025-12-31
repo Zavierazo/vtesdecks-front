@@ -8,12 +8,15 @@
         <i class="vtes vtes-small" [class]="archetype.icon"></i>
       </span>
       }
-      @if(archetype.deckId) {
+      @if(!archetype.id){
+      <button class="btn btn-link text-start fw-bold text-decoration-none" (click)="openModal(archetype)">{{
+        archetype.name }}</button>
+      } @else if(archetype.deckId) {
       <a class="text-decoration-none" [routerLink]="['/deck', archetype.deckId]">{{ archetype.name }}</a>
       }@else {
       {{ archetype.name }}
       }
-      @if (isMaintainer && archetype.id > 0) {
+      @if (isMaintainer && archetype.id &&archetype.id > 0) {
       <span class="text-success ms-2">
         @if (archetype.enabled) {
         ✓
@@ -46,6 +49,7 @@
       {{ archetype.price | currency: archetype.currency }}
     </span>
     }
+    @if(archetype.id){
     <div class="float-end d-flex align-items-center gap-2 ms-auto">
       <a class="text-decoration-none text-primary d-inline-flex align-items-center" [routerLink]="['/decks']"
         [queryParams]="{ archetype: archetype.id }" aria-label="{{ t('decks_with_archetype') }}">
@@ -55,6 +59,7 @@
         }
       </a>
     </div>
+    }
   </div>
 </div>
 }

@@ -58,7 +58,7 @@ export class DeckArchetypeCardComponent {
         untilDestroyed(this),
         switchMap((confirmed: boolean) => {
           if (confirmed) {
-            return this.crud.delete(archetype.id)
+            return this.crud.delete(archetype.id!)
           }
           return EMPTY
         }),

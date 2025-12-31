@@ -34,6 +34,7 @@ export class DeckArchetypesComponent implements OnInit {
   @Input() limit?: number
 
   archetypes$!: Observable<ApiDeckArchetype[]>
+  suggestions$ = this.crud.selectSuggestions()
   isMaintainer$ = this.authQuery.selectRole('maintainer')
   metaTypeControl = new FormControl<MetaType>('TOURNAMENT_180')
 

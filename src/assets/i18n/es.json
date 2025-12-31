@@ -897,6 +897,7 @@
     "name": "Nombre",
     "type": "Tipo",
     "deckId": "ID del Mazo",
+    "preview": "Vista previa",
     "icon": "Icono",
     "description": "Descripción",
     "enabled": "Habilitado",

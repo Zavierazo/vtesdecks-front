@@ -1,5 +1,5 @@
 export interface ApiDeckArchetype {
-  id: number
+  id?: number
   name: string
   icon?: string
   type: string

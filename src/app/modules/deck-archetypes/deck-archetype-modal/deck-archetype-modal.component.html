@@ -70,6 +70,9 @@
       <div class="mb-2">
         <label class="form-label" for="deckId">{{ t('deckId') }}</label>
         <input id="deckId" class="form-control" formControlName="deckId" />
+        <a class="text-decoration-none" [href]="'/deck/' + form.value.deckId" target="_blank" rel="noopener noreferrer">
+          {{ t('preview') }}
+        </a>
       </div>
 
 

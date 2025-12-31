@@ -897,6 +897,7 @@
     "name": "Nome",
     "type": "Tipo",
     "deckId": "ID do Baralho",
+    "preview": "Visualizar",
     "icon": "Ícone",
     "description": "Descrição",
     "enabled": "Ativado",

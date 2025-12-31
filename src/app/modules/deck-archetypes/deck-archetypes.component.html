@@ -26,6 +26,13 @@
     </div>
     }
     <div class="container-fluid row g-3 card-deck-archetype text-start mb-3">
+      @if(limit === undefined) {
+      @for (archetype of (suggestions$ | async); track archetype.name) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <app-deck-archetype-card [archetype]="archetype"></app-deck-archetype-card>
+      </div>
+      }
+      }
       @if(archetypes$ | async; as archetypes){
       @for (archetype of (limit ? (archetypes | slice:0:limit) : archetypes); track archetype.id) {
       <div class="col-12 col-md-6 col-lg-4">

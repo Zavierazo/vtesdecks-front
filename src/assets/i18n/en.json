@@ -899,6 +899,7 @@
     "name": "Name",
     "type": "Type",
     "deckId": "Deck ID",
+    "preview": "Preview",
     "icon": "Icon",
     "description": "Description",
     "enabled": "Enabled",

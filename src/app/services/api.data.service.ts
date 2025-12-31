@@ -519,6 +519,12 @@ export class ApiDataService {
     )
   }
 
+  getSuggestionDeckArchetypes(): Observable<ApiDeckArchetype[]> {
+    return this.httpClient.get<ApiDeckArchetype[]>(
+      `${environment.api.baseUrl}${this.deckArchetype}/suggestions`,
+    )
+  }
+
   getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
     return this.httpClient.get<ApiDeckArchetype>(
       `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
