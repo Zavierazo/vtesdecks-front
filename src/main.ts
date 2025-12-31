@@ -191,7 +191,7 @@ const routes: Routes = [
       import('./app/modules/advent/advent.routes').then((m) => m.ADVENT_ROUTES),
   },
   {
-    path: 'archetypes',
+    path: 'metagame',
     loadChildren: () =>
       import('./app/modules/deck-archetypes/deck-archetypes.routes').then(
         (m) => m.DECK_ARCHETYPES_ROUTES,

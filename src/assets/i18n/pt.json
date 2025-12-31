@@ -284,6 +284,12 @@
   "header": {
     "home": "Início",
     "decks": "Baralhos",
+    "all_decks": "Todos os Baralhos",
+    "metagame_decks": "Baralhos Metajogo",
+    "tournament_decks": "Baralhos de Torneio",
+    "community_decks": "Baralhos da Comunidade",
+    "preconstructed_decks": "Baralhos Preconstruídos",
+    "cards": "Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
@@ -296,7 +302,7 @@
     "statistics": "Estatísticas",
     "my_collection": "Minha Coleção",
     "my_decks": "Meus Baralhos",
-    "bookmarks": "Favoritos",
+    "bookmarks": "Meus Favoritos",
     "public_profile": "Perfil Público",
     "profile_settings": "Configurações de perfil",
     "logout": "Sair",
@@ -310,6 +316,7 @@
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
     "welcome_subtitle": "Descubra, Compartilhe e Construa os melhores baralhos de Vampire: The Eternal Struggle",
+    "metagame_decks": "Baralhos de Metajogo",
     "tournament_decks": "Baralhos de torneio",
     "community_decks": "Baralhos da comunidade",
     "preconstructed_decks": "Baralhos preconstruídos",
@@ -889,7 +896,7 @@
     "day_login": "Conectar para Iniciar"
   },
   "deck_archetype": {
-    "title": "Metajogo de Arquétipos",
+    "title": "Metajogo Baralhos",
     "tooltip": "Os dados do metagame são baseados em torneios dos último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
     "create": "Criar",
     "edit": "Editar",

@@ -283,6 +283,12 @@
   "header": {
     "home": "Home",
     "decks": "Decks",
+    "all_decks": "All Decks",
+    "metagame_decks": "Metagame Decks",
+    "tournament_decks": "Tournament Decks",
+    "community_decks": "Community Decks",
+    "preconstructed_decks": "Preconstructed Decks",
+    "cards": "Cards",
     "crypt": "Crypt",
     "library": "Library",
     "builder": "Builder",
@@ -295,7 +301,7 @@
     "statistics": "Statistics",
     "my_collection": "My Collection",
     "my_decks": "My Decks",
-    "bookmarks": "Bookmarks",
+    "bookmarks": "My Bookmarks",
     "public_profile": "Public Profile",
     "profile_settings": "Profile Settings",
     "logout": "Logout",
@@ -308,6 +314,7 @@
   "home": {
     "welcome_title": "Welcome to VTES Decks",
     "welcome_subtitle": "Discover, Share, and Build the best Vampire: The Eternal Struggle decks",
+    "metagame_decks": "Metagame Decks",
     "tournament_decks": "Tournament Decks",
     "community_decks": "Community Decks",
     "preconstructed_decks": "Preconstructed Decks",
@@ -891,7 +898,7 @@
     "day_login": "Login to Start"
   },
   "deck_archetype": {
-    "title": "Metagame Archetypes",
+    "title": "Metagame Decks",
     "tooltip": "Metagame data is based on tournament results from the last 1 year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
     "create": "Create",
     "edit": "Edit",
