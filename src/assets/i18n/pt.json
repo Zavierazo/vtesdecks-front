@@ -284,6 +284,12 @@
   "header": {
     "home": "Início",
     "decks": "Baralhos",
+    "all_decks": "Todos os Baralhos",
+    "metagame_decks": "Baralhos Metajogo",
+    "tournament_decks": "Baralhos de Torneio",
+    "community_decks": "Baralhos da Comunidade",
+    "preconstructed_decks": "Baralhos Preconstruídos",
+    "cards": "Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
@@ -296,7 +302,7 @@
     "statistics": "Estatísticas",
     "my_collection": "Minha Coleção",
     "my_decks": "Meus Baralhos",
-    "bookmarks": "Favoritos",
+    "bookmarks": "Meus Favoritos",
     "public_profile": "Perfil Público",
     "profile_settings": "Configurações de perfil",
     "logout": "Sair",
@@ -310,6 +316,7 @@
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
     "welcome_subtitle": "Descubra, Compartilhe e Construa os melhores baralhos de Vampire: The Eternal Struggle",
+    "metagame_decks": "Baralhos de Metajogo",
     "tournament_decks": "Baralhos de torneio",
     "community_decks": "Baralhos da comunidade",
     "preconstructed_decks": "Baralhos preconstruídos",
@@ -329,7 +336,8 @@
     "patreon_message": "Este site é 100% gratuito e movido pela comunidade.<br>Se o VTES Decks te ajuda, considere nos apoiar no Patreon ❤️",
     "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
     "contact_support": "Contatar Suporte",
-    "whats_new": "Novidades {{ date }}"
+    "whats_new": "Novidades {{ date }}",
+    "metagame": "Metajogo Atual"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -886,5 +894,31 @@
     "day_completed": "Dia {{ day }} - Ver Baralho",
     "day_start": "Iniciar Desafio",
     "day_login": "Conectar para Iniciar"
+  },
+  "deck_metagame": {
+    "title": "Metajogo Baralhos",
+    "tooltip": "Os dados do metagame são baseados em torneios do último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
+    "create": "Criar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "name": "Nome",
+    "type": "Tipo",
+    "deckId": "ID do Baralho",
+    "preview": "Visualizar",
+    "icon": "Ícone",
+    "description": "Descrição",
+    "enabled": "Ativado",
+    "decks_with_metagame": "Descobrir baralhos",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} baralhos)",
+    "delete_title": "Excluir este arquétipo?",
+    "delete_message": "O arquétipo será excluído. Esta ação não pode ser desfeita.",
+    "show_from_last": "Mostrar o metajogo dos",
+    "meta_type": {
+      "90_days": "últimos 90 dias",
+      "180_days": "últimos 180 dias",
+      "365_days": "último ano",
+      "730_days": "últimos 2 anos",
+      "all_time": "Todo o tempo"
+    }
   }
 }

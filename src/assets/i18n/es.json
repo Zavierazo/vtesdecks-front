@@ -283,6 +283,12 @@
   "header": {
     "home": "Inicio",
     "decks": "Mazos",
+    "all_decks": "Todos los Mazos",
+    "metagame_decks": "Mazos Metajuego",
+    "tournament_decks": "Mazos de Torneo",
+    "community_decks": "Mazos de Comunidad",
+    "preconstructed_decks": "Mazos Preconstruidos",
+    "cards": "Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
@@ -294,8 +300,8 @@
     "sign_up": "Registrarse",
     "statistics": "Estadísticas",
     "my_collection": "Mi Colección",
-    "my_decks": "Mis mazos",
-    "bookmarks": "Favoritos",
+    "my_decks": "Mis Mazos",
+    "bookmarks": "Mis Favoritos",
     "public_profile": "Perfil Público",
     "profile_settings": "Configuración de Perfil",
     "logout": "Cerrar sesión",
@@ -308,6 +314,7 @@
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
     "welcome_subtitle": "Descubre, Comparte y Crea los mejores mazos de Vampire: The Eternal Struggle",
+    "metagame_decks": "Mazos de Metajuego",
     "tournament_decks": "Mazos de Torneo",
     "community_decks": "Mazos de Comunidad",
     "preconstructed_decks": "Mazos Preconstruidos",
@@ -327,7 +334,8 @@
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
     "contact_support": "Contactar Soporte",
-    "whats_new": "Novedades {{ date }}"
+    "whats_new": "Novedades {{ date }}",
+    "metagame": "Metajuego Actual"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -886,5 +894,31 @@
     "day_completed": "Día {{ day }} - Ver Mazo",
     "day_start": "Comenzar Desafío",
     "day_login": "Iniciar sesión para comenzar"
+  },
+  "deck_metagame": {
+    "title": "Mazos Metajuego",
+    "tooltip": "Los datos del metajuego se basan en torneos del último año (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
+    "create": "Crear",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "name": "Nombre",
+    "type": "Tipo",
+    "deckId": "ID del Mazo",
+    "preview": "Vista previa",
+    "icon": "Icono",
+    "description": "Descripción",
+    "enabled": "Habilitado",
+    "decks_with_metagame": "Descubrir mazos",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} mazos)",
+    "delete_title": "¿Eliminar este arquetipo?",
+    "delete_message": "El arquetipo será eliminado. Esta acción no se puede deshacer.",
+    "show_from_last": "Mostrar metajuego de",
+    "meta_type": {
+      "90_days": "últimos 90 días",
+      "180_days": "últimos 180 días",
+      "365_days": "último año",
+      "730_days": "últimos 2 años",
+      "all_time": "Todo el tiempo"
+    }
   }
 }

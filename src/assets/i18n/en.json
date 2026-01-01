@@ -283,6 +283,12 @@
   "header": {
     "home": "Home",
     "decks": "Decks",
+    "all_decks": "All Decks",
+    "metagame_decks": "Metagame Decks",
+    "tournament_decks": "Tournament Decks",
+    "community_decks": "Community Decks",
+    "preconstructed_decks": "Preconstructed Decks",
+    "cards": "Cards",
     "crypt": "Crypt",
     "library": "Library",
     "builder": "Builder",
@@ -295,7 +301,7 @@
     "statistics": "Statistics",
     "my_collection": "My Collection",
     "my_decks": "My Decks",
-    "bookmarks": "Bookmarks",
+    "bookmarks": "My Bookmarks",
     "public_profile": "Public Profile",
     "profile_settings": "Profile Settings",
     "logout": "Logout",
@@ -308,6 +314,7 @@
   "home": {
     "welcome_title": "Welcome to VTES Decks",
     "welcome_subtitle": "Discover, Share, and Build the best Vampire: The Eternal Struggle decks",
+    "metagame_decks": "Metagame Decks",
     "tournament_decks": "Tournament Decks",
     "community_decks": "Community Decks",
     "preconstructed_decks": "Preconstructed Decks",
@@ -327,7 +334,8 @@
     "patreon_message": "This site is 100% free and powered by the community.<br>If VTES Decks helps you, consider supporting me on Patreon ❤️",
     "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️",
     "contact_support": "Contact Support",
-    "whats_new": "What's new {{ date }}"
+    "whats_new": "What's new {{ date }}",
+    "metagame": "Current Metagame"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -888,5 +896,31 @@
     "day_completed": "Day {{ day }} - View Deck",
     "day_start": "Start Challenge",
     "day_login": "Login to Start"
+  },
+  "deck_metagame": {
+    "title": "Metagame Decks",
+    "tooltip": "Metagame data is based on tournament results from the last year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "name": "Name",
+    "type": "Type",
+    "deckId": "Deck ID",
+    "preview": "Preview",
+    "icon": "Icon",
+    "description": "Description",
+    "enabled": "Enabled",
+    "decks_with_metagame": "Discover decks",
+    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
+    "delete_title": "Delete this metagame?",
+    "delete_message": "Metagame will be deleted. This action cannot be undone.",
+    "show_from_last": "Show the metagame from",
+    "meta_type": {
+      "90_days": "90 days ago",
+      "180_days": "180 days ago",
+      "365_days": "1 year ago",
+      "730_days": "2 years ago",
+      "all_time": "All-time"
+    }
   }
 }

@@ -18,7 +18,7 @@
   }
 
   <!-- Hero Section -->
-  <section class="hero-section py-5 mb-4">
+  <section class="hero-section py-5 mb-5">
     <!-- Advent Calendar Banner -->
     @if (currentAdvent(); as advent) {
     <div class="container mb-4">
@@ -43,7 +43,18 @@
           <p class="lead mb-4 text-center">{{ t('welcome_subtitle') }}</p>
           <div class="hero-actions">
             <div class="row g-3 justify-content-center">
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
+                <a routerLink="/metagame" class="hero-card bg-primary text-white position-relative">
+                  <span
+                    class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fw-semibold"
+                    style="z-index: 2; font-size: 0.75rem;">
+                    {{ 'shared.new' | transloco }}
+                  </span>
+                  <i class="bi bi-rocket-takeoff-fill"></i>
+                  <span>{{ t('metagame_decks') }}</span>
+                </a>
+              </div>
+              <div class="col-6 col-md-3">
                 <a routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT' }" class="hero-card bg-primary text-white">
                   <i class="bi bi-award"></i>
                   <span>{{ t('tournament_decks') }}</span>
@@ -52,7 +63,7 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <a routerLink="/decks" [queryParams]="{ type: 'COMMUNITY' }" class="hero-card bg-primary text-white">
                   <i class="bi bi-people"></i>
                   <span>{{ t('community_decks') }}</span>
@@ -61,7 +72,7 @@
                   </small>
                 </a>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <a routerLink="/decks" [queryParams]="{ type: 'PRECONSTRUCTED' }"
                   class="hero-card bg-primary text-white">
                   <i class="bi bi-bag"></i>
@@ -94,7 +105,7 @@
                   </small>
                 </a>
               </div>
-              <div class="d-none d-md-block col-6 col-md-3" *isLogged="true">
+              <div class="col-6 col-md-3" *isLogged="true">
                 <a routerLink="/decks" [queryParams]="{ favorite: true }" class="hero-card bg-success text-white">
                   <i class="bi bi-bookmark-star"></i>
                   <span>{{ t('bookmarked_decks') }}</span>
@@ -165,6 +176,9 @@
   <!-- VtesDecks Home Hero Responsive -->
 
   <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="6580167823" adFormat="auto" fullWidthResponsive="true" />
+
+  <!-- Top Metagame (homepage preview) -->
+  <app-home-metagame class="mt-3" />
 
   <!-- Popular and Newest Decks -->
   <div class="row mt-3">

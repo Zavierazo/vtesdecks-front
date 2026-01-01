@@ -17,17 +17,59 @@
             {{ t('home') }}
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/decks" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('decks') }}</a>
+        <li ngbDropdown class="nav-item" display="dynamic">
+          <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownDecks" role="button"
+            aria-expanded="false">
+            {{ t('decks') }}
+          </span>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownDecks">
+            <a ngbDropdownItem routerLink="/decks" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-stack"></i> {{ t('all_decks') }}
+            </a>
+            <a ngbDropdownItem routerLink="/metagame" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-rocket-takeoff-fill"></i> {{ t('metagame_decks') }}
+            </a>
+            <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT'}" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-award"></i> {{ t('tournament_decks') }}
+            </a>
+            <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'COMMUNITY'}" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-people"></i> {{ t('community_decks') }}
+            </a>
+            <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'PRECONSTRUCTED'}"
+              [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-bag"></i> {{ t('preconstructed_decks') }}
+            </a>
+            <hr *isLogged="true" class="dropdown-divider" />
+            <a *isLogged="true" ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'USER'}"
+              [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-stack"></i> {{ t('my_decks') }}
+            </a>
+            <a *isLogged="true" ngbDropdownItem routerLink="/decks" [queryParams]="{ favorite: true }"
+              [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
+            </a>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/cards/crypt" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('crypt') }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/cards/library" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">{{ t('library') }}</a>
+
+        <li ngbDropdown class="nav-item" display="dynamic">
+          <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownCards" role="button"
+            aria-expanded="false">
+            {{ t('cards') }}
+          </span>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownCards">
+            <a ngbDropdownItem routerLink="/cards/crypt" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-file-person"></i> {{ t('crypt') }}
+            </a>
+            <a ngbDropdownItem routerLink="/cards/library" [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{exact: true}" (click)="isCollapsed = true">
+              <i class="bi bi-file-richtext"></i> {{ t('library') }}
+            </a>
+          </div>
         </li>
         <li class="nav-item" *isLogged="true">
           <a class="nav-link" routerLink="/decks/builder" [routerLinkActive]="['active']"

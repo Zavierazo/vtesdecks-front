@@ -1,0 +1,65 @@
+@if(archetype(); as archetype){
+@let isMaintainer = isMaintainer$ | async;
+<div class="card h-100" *transloco="let t; prefix: 'deck_metagame'">
+  <div class="card-header">
+    <h5 class="card-title d-flex flex-row align-items-center justify-content-start">
+      @if (archetype.icon) {
+      <span class="me-2">
+        <i class="vtes vtes-small" [class]="archetype.icon"></i>
+      </span>
+      }
+      @if(!archetype.id){
+      <button class="btn btn-link text-start fw-bold text-decoration-none" (click)="openModal(archetype)">{{
+        archetype.name }}</button>
+      } @else if(archetype.deckId) {
+      <a class="text-decoration-none" [routerLink]="['/deck', archetype.deckId]">{{ archetype.name }}</a>
+      }@else {
+      {{ archetype.name }}
+      }
+      @if (isMaintainer && archetype.id &&archetype.id > 0) {
+      <span class="text-success ms-2">
+        @if (archetype.enabled) {
+        ✓
+        } @else {
+        X
+        }
+      </span>
+      <div class="ms-2 d-flex align-items-end">
+        <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal(archetype)">
+          {{ t('edit') }}
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="delete(archetype)">
+          {{ t('delete') }}
+        </button>
+      </div>
+      }
+    </h5>
+    <h6 class="card-subtitle text-muted small">{{ archetype.type }}</h6>
+  </div>
+  <div class="card-body d-flex flex-column text-muted small">
+    <app-markdown-text [data]="archetype.description"></app-markdown-text>
+  </div>
+  <div class="card-footer text-body-secondary small">
+    <span class="float-start" [innerHTML]="t('meta', {
+      percentage: (metaPercentage | number:'1.0-2'),
+      count: archetype.metaCount
+    })"></span>
+    @if(archetype.price) {
+    <span class="float-start ms-2">
+      {{ archetype.price | currency: archetype.currency }}
+    </span>
+    }
+    @if(archetype.id){
+    <div class="float-end d-flex align-items-center gap-2 ms-auto">
+      <a class="text-decoration-none text-primary d-inline-flex align-items-center" [routerLink]="['/decks']"
+        [queryParams]="{ archetype: archetype.id }" aria-label="{{ t('decks_with_metagame') }}">
+        {{ t('decks_with_metagame') }}
+        @if(archetype.deckCount > 0) {
+        <span class="badge bg-primary ms-2 deck-badge">{{ archetype.deckCount }}</span>
+        }
+      </a>
+    </div>
+    }
+  </div>
+</div>
+}

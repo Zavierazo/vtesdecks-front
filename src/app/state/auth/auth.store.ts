@@ -49,6 +49,21 @@ export class AuthStore {
     }
   }
 
+  reset() {
+    this.update({
+      ...this.getValue(),
+      user: undefined,
+      email: undefined,
+      token: undefined,
+      displayName: undefined,
+      profileImage: undefined,
+      admin: undefined,
+      roles: undefined,
+      notificationCount: undefined,
+    })
+    this.updateStorage()
+  }
+
   updateToken(response: ApiUser, remember: boolean) {
     const { token } = response
     this.update({ ...this.getValue(), ...response, token })

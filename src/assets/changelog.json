@@ -1,13 +1,24 @@
 [
   {
+    "version": "2.60.0",
+    "date": "1st January, 2026",
+    "changes": [
+      "Introduced a new Metagame Decks section highlighting popular deck archetypes in the current metagame.",
+      "Added card price data from TCGMarket, with support for additional shops coming soon to expand price coverage.",
+      "Added the HttB Reprint (2018) set to clearly differentiate it from HttB (2010). Existing collection cards have been migrated to HttBR (2018).",
+      "Added the KoT Reprint (2018) set to clearly differentiate it from KoT (2008). Existing collection cards have been migrated to KoTR (2018).",
+      "Added the Anthology I (2019) set to clearly differentiate it from Anthology (2017). Existing collection cards have been migrated to Anthology I (2019).",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.59.0",
-    "date": "26 December, 2025",
+    "date": "26th December, 2025",
     "changes": [
       "Added Sign in with Google for a faster and more seamless login and sign-up experience.",
       "Added Suggested Retail Price (MSRP) for preconstructed decks, replacing the aggregated price of individual cards.",
       "Added price tracking to the Collection Tracker, enabling quick access to individual card values.",
-      "Added a new statistics section to the Collection Tracker, providing deeper insights into collection value and composition.",
-      "Minor fixes and performance improvements."
+      "Added a new statistics section to the Collection Tracker, providing deeper insights into collection value and composition."
     ]
   },
   {

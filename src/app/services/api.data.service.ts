@@ -12,6 +12,7 @@ import {
   ApiContact,
   ApiCrypt,
   ApiDeck,
+  ApiDeckArchetype,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
   ApiDecks,
@@ -29,6 +30,7 @@ import {
   ApiUserNotification,
   ApiUserSettings,
   ApiYearStatistic,
+  MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
 import { environment } from '../../environments/environment'
@@ -73,10 +75,10 @@ export class ApiDataService {
   private readonly changelogPath = '/changelog'
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
-  private readonly aiAskPath = '/ai/ask'
   private readonly aiAskAsyncPath = '/ai/ask/async'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
+  private readonly deckArchetypePath = '/deck-archetype'
 
   login(
     username: string,
@@ -505,6 +507,57 @@ export class ApiDataService {
   ): Observable<ApiCollectionCardStats> {
     return this.httpClient.get<ApiCollectionCardStats>(
       `${environment.api.baseUrl}/user/collections/cards/${id}/stats?summary=${summary}`,
+    )
+  }
+
+  getAllDeckArchetypes(metaType: MetaType): Observable<ApiDeckArchetype[]> {
+    let httpParams = new HttpParams()
+    httpParams = httpParams.set('metaType', metaType)
+    return this.httpClient.get<ApiDeckArchetype[]>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}`,
+      { params: httpParams },
+    )
+  }
+
+  getSuggestionDeckArchetypes(): Observable<ApiDeckArchetype[]> {
+    return this.httpClient.get<ApiDeckArchetype[]>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}/suggestions`,
+    )
+  }
+
+  getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
+    return this.httpClient.get<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+    )
+  }
+
+  getDeckArchetypeByDeck(deckId: string): Observable<ApiDeckArchetype> {
+    return this.httpClient.get<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}/deck/${deckId}`,
+    )
+  }
+
+  createDeckArchetype(
+    archetype: ApiDeckArchetype,
+  ): Observable<ApiDeckArchetype> {
+    return this.httpClient.post<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}`,
+      archetype,
+    )
+  }
+
+  updateDeckArchetype(
+    archetype: ApiDeckArchetype,
+  ): Observable<ApiDeckArchetype> {
+    return this.httpClient.put<ApiDeckArchetype>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${archetype.id}`,
+      archetype,
+    )
+  }
+
+  deleteDeckArchetype(id: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
     )
   }
 }
