@@ -6,6 +6,6 @@ export const DECK_METAGAME_ROUTES: Routes = [
     loadComponent: () =>
       import('./deck-metagame.component').then((m) => m.DeckMetagameComponent),
     pathMatch: 'full',
-    title: 'VTES Decks - Archetypes',
+    title: 'VTES Decks - Metagame',
   },
 ]
