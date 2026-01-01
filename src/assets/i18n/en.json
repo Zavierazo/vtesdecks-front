@@ -899,7 +899,7 @@
   },
   "deck_metagame": {
     "title": "Metagame Decks",
-    "tooltip": "Metagame data is based on tournament results from the last 1 year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
+    "tooltip": "Metagame data is based on tournament results from the last year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
     "create": "Create",
     "edit": "Edit",
     "delete": "Delete",

@@ -78,7 +78,7 @@ export class ApiDataService {
   private readonly aiAskAsyncPath = '/ai/ask/async'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
-  private readonly deckArchetype = '/deck-archetype'
+  private readonly deckArchetypePath = '/deck-archetype'
 
   login(
     username: string,
@@ -514,26 +514,26 @@ export class ApiDataService {
     let httpParams = new HttpParams()
     httpParams = httpParams.set('metaType', metaType)
     return this.httpClient.get<ApiDeckArchetype[]>(
-      `${environment.api.baseUrl}${this.deckArchetype}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}`,
       { params: httpParams },
     )
   }
 
   getSuggestionDeckArchetypes(): Observable<ApiDeckArchetype[]> {
     return this.httpClient.get<ApiDeckArchetype[]>(
-      `${environment.api.baseUrl}${this.deckArchetype}/suggestions`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}/suggestions`,
     )
   }
 
   getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
     return this.httpClient.get<ApiDeckArchetype>(
-      `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
     )
   }
 
   getDeckArchetypeByDeck(deckId: string): Observable<ApiDeckArchetype> {
     return this.httpClient.get<ApiDeckArchetype>(
-      `${environment.api.baseUrl}${this.deckArchetype}/deck/${deckId}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}/deck/${deckId}`,
     )
   }
 
@@ -541,7 +541,7 @@ export class ApiDataService {
     archetype: ApiDeckArchetype,
   ): Observable<ApiDeckArchetype> {
     return this.httpClient.post<ApiDeckArchetype>(
-      `${environment.api.baseUrl}${this.deckArchetype}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}`,
       archetype,
     )
   }
@@ -550,14 +550,14 @@ export class ApiDataService {
     archetype: ApiDeckArchetype,
   ): Observable<ApiDeckArchetype> {
     return this.httpClient.put<ApiDeckArchetype>(
-      `${environment.api.baseUrl}${this.deckArchetype}/${archetype.id}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${archetype.id}`,
       archetype,
     )
   }
 
   deleteDeckArchetype(id: number): Observable<void> {
     return this.httpClient.delete<void>(
-      `${environment.api.baseUrl}${this.deckArchetype}/${id}`,
+      `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
     )
   }
 }

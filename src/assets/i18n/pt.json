@@ -897,7 +897,7 @@
   },
   "deck_metagame": {
     "title": "Metajogo Baralhos",
-    "tooltip": "Os dados do metagame são baseados em torneios dos último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
+    "tooltip": "Os dados do metagame são baseados em torneios do último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
     "create": "Criar",
     "edit": "Editar",
     "delete": "Excluir",
