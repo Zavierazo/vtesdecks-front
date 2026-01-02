@@ -67,8 +67,7 @@ export class AuthStore {
   updateToken(response: ApiUser, remember: boolean) {
     const { token } = response
     this.update({ ...this.getValue(), ...response, token })
-    const useLocalStorage =
-      Boolean(remember) && this.cookieConsentService.hasConsented()
+    const useLocalStorage = Boolean(remember)
     this.updateStorage(useLocalStorage)
   }
 
