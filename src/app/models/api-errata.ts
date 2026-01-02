@@ -1,5 +1,5 @@
 export interface ApiErrata {
-  id: number
+  cardId: number
   name: string
   effectiveDate: Date
   description: string

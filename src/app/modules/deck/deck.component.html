@@ -251,7 +251,7 @@
               <img [ngClass]="{
               'img-popover': !(isMobile$ | async)!,
               'img-popover-mobile': (isMobile$ | async)!
-            }" [src]="cdnDomain + '/img/cards/' + errata.id + '.jpg'" [alt]="errata.name" />
+            }" [src]="cdnDomain + '/img/cards/' + errata.cardId + '.jpg'" [alt]="errata.name" />
             </ng-template>
           </p>
           }
