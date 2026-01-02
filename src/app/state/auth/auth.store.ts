@@ -2,7 +2,6 @@ import { inject, Injectable, Signal, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { ApiUser } from '@models'
 import { LocalStorageService, SessionStorageService } from '@services'
-import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { map, Observable } from 'rxjs'
 
 export interface AuthState extends ApiUser {
@@ -23,7 +22,6 @@ const initialState: AuthState = {
 export class AuthStore {
   private readonly localStorage = inject(LocalStorageService)
   private readonly sessionStorage = inject(SessionStorageService)
-  private readonly cookieConsentService = inject(NgcCookieConsentService)
 
   static readonly storeName = 'auth'
   private readonly serverDate = signal<Date | undefined>(undefined)
@@ -67,8 +65,7 @@ export class AuthStore {
   updateToken(response: ApiUser, remember: boolean) {
     const { token } = response
     this.update({ ...this.getValue(), ...response, token })
-    const useLocalStorage =
-      Boolean(remember) && this.cookieConsentService.hasConsented()
+    const useLocalStorage = Boolean(remember)
     this.updateStorage(useLocalStorage)
   }
 
