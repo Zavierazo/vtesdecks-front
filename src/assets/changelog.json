@@ -3,6 +3,7 @@
     "version": "2.61.0",
     "date": "9th January, 2026",
     "changes": [
+      "Enhanced card search by aka name in Crypt and Library sections.",
       "Authentication now always sets essential cookies, regardless of cookie consent preferences, ensuring reliable login and session management.",
       "Minor bug fixes and performance improvements."
     ]

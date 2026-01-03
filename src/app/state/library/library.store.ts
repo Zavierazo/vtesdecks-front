@@ -294,8 +294,12 @@ export class LibraryStore {
     nameFilter?: string,
     sortByOrder?: 'asc' | 'desc',
   ): number {
-    const aWeight = trigramSimilarity(a.name, nameFilter)
-    const bWeight = trigramSimilarity(b.name, nameFilter)
+    const aNameWeight = trigramSimilarity(a.name, nameFilter)
+    const aAkaWeight = a.aka ? trigramSimilarity(a.aka, nameFilter) : 0
+    const bNameWeight = trigramSimilarity(b.name, nameFilter)
+    const bAkaWeight = b.aka ? trigramSimilarity(b.aka, nameFilter) : 0
+    const aWeight = Math.max(aNameWeight, aAkaWeight)
+    const bWeight = Math.max(bNameWeight, bAkaWeight)
     if (aWeight === bWeight) {
       return this.sort(a['name'], b['name'], 'asc')
     }
