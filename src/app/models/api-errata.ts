@@ -1,4 +1,4 @@
-export interface ApiErrata {
+export interface ApiCardErrata {
   cardId: number
   name: string
   effectiveDate: Date
