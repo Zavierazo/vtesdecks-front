@@ -8,15 +8,20 @@
         <i class="vtes vtes-small" [class]="archetype.icon"></i>
       </span>
       }
-      @if(!archetype.id){
-      <button class="btn btn-link text-start fw-bold text-decoration-none" (click)="openModal(archetype)">{{
-        archetype.name }}</button>
+      @if(archetype.id === undefined && isMaintainer){
+      <button class="btn btn-link text-start fw-bold text-decoration-none" (click)="openModal(archetype)">
+        {{ archetype.name }}
+      </button>
       } @else if(archetype.deckId) {
       <a class="text-decoration-none" [routerLink]="['/deck', archetype.deckId]">{{ archetype.name }}</a>
+      }@else if (archetype.id !== undefined) {
+      <a class="text-decoration-none" [routerLink]="['/decks']" [queryParams]="{ archetype: archetype.id }">
+        {{ archetype.name }}
+      </a>
       }@else {
       {{ archetype.name }}
       }
-      @if (isMaintainer && archetype.id &&archetype.id > 0) {
+      @if (isMaintainer && archetype.id && archetype.id > 0) {
       <span class="text-success ms-2">
         @if (archetype.enabled) {
         ✓
@@ -49,10 +54,10 @@
       {{ archetype.price | currency: archetype.currency }}
     </span>
     }
-    @if(archetype.id){
+    @if(archetype.id !== undefined) {
     <div class="float-end d-flex align-items-center gap-2 ms-auto">
       <a class="text-decoration-none text-primary d-inline-flex align-items-center" [routerLink]="['/decks']"
-        [queryParams]="{ archetype: archetype.id }" aria-label="{{ t('decks_with_metagame') }}">
+        [queryParams]="{ archetype: archetype.id }" [attr.aria-label]="t('decks_with_metagame')">
         {{ t('decks_with_metagame') }}
         @if(archetype.deckCount > 0) {
         <span class="badge bg-primary ms-2 deck-badge">{{ archetype.deckCount }}</span>
