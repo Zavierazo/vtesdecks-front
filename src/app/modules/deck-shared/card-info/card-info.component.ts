@@ -1,4 +1,4 @@
-import { CurrencyPipe, TitleCasePipe } from '@angular/common'
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common'
 import {
   Component,
   computed,
@@ -36,6 +36,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     NgxGoogleAnalyticsModule,
     RouterLink,
     CurrencyPipe,
+    DatePipe,
     CollectionCardStatsComponent,
     LazyLoadImageModule,
     LocalePipe,
@@ -50,6 +51,7 @@ export class CardInfoComponent {
   routerClick = output<boolean>()
 
   rulingsCollapsed = true
+  changesCollapsed = true
   shopsCollapsed = true
   loading = signal(false)
   cardShops = signal<ApiShop[] | null>(null)

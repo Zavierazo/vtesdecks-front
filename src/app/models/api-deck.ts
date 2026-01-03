@@ -2,7 +2,7 @@ import { ApiCard } from './api-card'
 import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
 import { ApiDeckWarning } from './api-deck-warning'
-import { ApiErrata } from './api-errata'
+import { ApiCardErrata } from './api-errata'
 import { ApiUser } from './api-user'
 
 export interface ApiDeck {
@@ -36,7 +36,7 @@ export interface ApiDeck {
   favorite?: boolean
   rated?: boolean
   owner?: boolean
-  erratas?: ApiErrata[]
+  erratas?: ApiCardErrata[]
   warnings?: ApiDeckWarning[]
   tags?: string[]
   creationDate: Date

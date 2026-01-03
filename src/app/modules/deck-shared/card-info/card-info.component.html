@@ -46,6 +46,47 @@
     </div>
     }
   </div>
+  @if(cardInfo && cardInfo.errataList && cardInfo.errataList.length > 0) {
+  <div class="card border-0 shadow-sm mt-3">
+    <div class="card-header bg-info text-dark py-2" role="button" (click)="changesCollapsed = !changesCollapsed"
+      (keyup.enter)="changesCollapsed = !changesCollapsed" (keyup.space)="changesCollapsed = !changesCollapsed"
+      tabindex="0">
+      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-clock-history me-2"></i>{{ t('changes') }}
+          <span class="badge bg-dark ms-2">{{ cardInfo.errataList.length }}</span>
+        </span>
+        <i class="bi" [class.bi-chevron-down]="!changesCollapsed" [class.bi-chevron-right]="changesCollapsed"></i>
+      </h6>
+    </div>
+    <div class="card-body px-2 py-3" [ngbCollapse]="changesCollapsed" #changesCollapse="ngbCollapse">
+      <div class="position-relative">
+        @for (errata of cardInfo.errataList; track errata.effectiveDate; let last = $last; let first = $first) {
+        <div class="d-flex gap-3 pb-3" [class.pb-0]="last">
+          <!-- Timeline line and dot -->
+          <div class="d-flex flex-column align-items-center flex-shrink-0">
+            <div class="timeline-dot rounded-circle bg-info border border-2 border-white position-relative z-1">
+            </div>
+            @if(!last) {
+            <div class="timeline-line flex-grow-1 bg-info opacity-25"></div>
+            }
+          </div>
+
+          <!-- Content -->
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-info text-dark fw-semibold">
+                <i class="bi bi-calendar-event me-1"></i>{{ errata.effectiveDate | date:'mediumDate' }}
+              </span>
+            </div>
+            <div class="text-break lh-base">{{ errata.description }}</div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
   @if (cardInfo && (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0)) {
   <div class="card border-0 shadow-sm mt-3">
     <div class="card-header bg-success text-white py-2" role="button" (click)="shopsCollapsed = !shopsCollapsed"

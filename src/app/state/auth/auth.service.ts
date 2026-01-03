@@ -20,7 +20,7 @@ export class AuthService {
     }
   }
 
-  loginOauth(token: string): Observable<ApiUser> {
+  loginOauth(token: string, remember: boolean): Observable<ApiUser> {
     this.authStore.setLoading(true)
     return this.apiDataService.loginOauth(token).pipe(
       tap((response: ApiUser) => {
@@ -28,7 +28,7 @@ export class AuthService {
         if (response.message) {
           this.authStore.setError(response.message)
         } else {
-          this.authStore.updateToken(response, true)
+          this.authStore.updateToken(response, remember)
         }
       }),
     )

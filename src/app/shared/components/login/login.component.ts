@@ -150,26 +150,28 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleCredentialResponse(response: { credential: string }) {
     const token = response.credential
-    this.authService.loginOauth(token).subscribe({
-      next: (user: ApiUser) => {
-        if (user.token) {
-          this.activeModal.close()
-        } else {
-          console.warn(user.message)
-          this.toastService.show(user.message!, {
+    this.authService
+      .loginOauth(token, this.loginForm.value.remember ?? false)
+      .subscribe({
+        next: (user: ApiUser) => {
+          if (user.token) {
+            this.activeModal.close()
+          } else {
+            console.warn(user.message)
+            this.toastService.show(user.message!, {
+              classname: 'bg-danger text-light',
+              delay: 5000,
+            })
+          }
+        },
+        error: (error) => {
+          console.error(error.message)
+          this.toastService.show(error.message, {
             classname: 'bg-danger text-light',
             delay: 5000,
           })
-        }
-      },
-      error: (error) => {
-        console.error(error.message)
-        this.toastService.show(error.message, {
-          classname: 'bg-danger text-light',
-          delay: 5000,
-        })
-      },
-    })
+        },
+      })
   }
 
   onLoginSubmit() {
