@@ -57,6 +57,7 @@ export class ApiDataService {
   private readonly userRefreshPath = '/user/refresh'
   private readonly userResetPasswordPath = '/user/reset-password'
   private readonly userDeckBuilderPath = '/user/decks/builder'
+  private readonly userFollowPath = '/user/follow'
   private readonly decksPath = '/decks'
   private readonly deckDetailPath = '/decks/'
   private readonly deckTagsPath = '/decks/tags'
@@ -558,6 +559,22 @@ export class ApiDataService {
   deleteDeckArchetype(id: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+    )
+  }
+
+  userFollow(user: string, follow: boolean): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userFollowPath}`,
+      {
+        user,
+        follow,
+      },
+    )
+  }
+
+  isUserFollowing(user: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(
+      `${environment.api.baseUrl}${this.userFollowPath}/${user}`,
     )
   }
 }

@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.61.0",
+    "date": "9th January, 2026",
+    "changes": [
+      "Introduced user follow feature: follow other users to get notified about their new decks and activities.",
+      "Added change history section in card modal to track significant card updates over time.",
+      "Enhanced card search by aka name in Crypt and Library sections.",
+      "Authentication now always sets essential cookies, regardless of cookie consent preferences, ensuring reliable login and session management.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.60.0",
     "date": "1st January, 2026",
     "changes": [
@@ -7,8 +18,7 @@
       "Added card price data from TCGMarket, with support for additional shops coming soon to expand price coverage.",
       "Added the HttB Reprint (2018) set to clearly differentiate it from HttB (2010). Existing collection cards have been migrated to HttBR (2018).",
       "Added the KoT Reprint (2018) set to clearly differentiate it from KoT (2008). Existing collection cards have been migrated to KoTR (2018).",
-      "Added the Anthology I (2019) set to clearly differentiate it from Anthology (2017). Existing collection cards have been migrated to Anthology I (2019).",
-      "Minor bug fixes and performance improvements."
+      "Added the Anthology I (2019) set to clearly differentiate it from Anthology (2017). Existing collection cards have been migrated to Anthology I (2019)."
     ]
   },
   {

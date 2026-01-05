@@ -173,6 +173,7 @@
     "banned": "Banida",
     "unreleased": "Não lançada",
     "rulings": "Regras",
+    "changes": "Histórico de Mudanças",
     "no_rulings": "Nenhuma regra disponível",
     "sets": "Expansões",
     "artist": "Artista",
@@ -289,7 +290,6 @@
     "tournament_decks": "Baralhos de Torneio",
     "community_decks": "Baralhos da Comunidade",
     "preconstructed_decks": "Baralhos Preconstruídos",
-    "cards": "Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
@@ -920,5 +920,12 @@
       "730_days": "últimos 2 anos",
       "all_time": "Todo o tempo"
     }
+  },
+  "follow": {
+    "follow": "Seguir",
+    "unfollow": "Seguindo",
+    "follow_tooltip": "Clique para seguir este usuário e receber notificações sobre seus novos baralhos e atividades.",
+    "unfollow_tooltip": "Você está seguindo este usuário. Clique para deixar de seguir.",
+    "follow_error": "Algo deu errado com a ação de seguir"
   }
 }

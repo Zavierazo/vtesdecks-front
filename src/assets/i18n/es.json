@@ -173,6 +173,7 @@
     "banned": "Prohibida",
     "unreleased": "No lanzada",
     "rulings": "Reglas",
+    "changes": "Historial de Cambios",
     "no_rulings": "No hay reglas disponibles",
     "sets": "Expansión",
     "artist": "Artista",
@@ -288,7 +289,6 @@
     "tournament_decks": "Mazos de Torneo",
     "community_decks": "Mazos de Comunidad",
     "preconstructed_decks": "Mazos Preconstruidos",
-    "cards": "Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
     "builder": "Editor",
@@ -920,5 +920,12 @@
       "730_days": "últimos 2 años",
       "all_time": "Todo el tiempo"
     }
+  },
+  "follow": {
+    "follow": "Seguir",
+    "unfollow": "Siguiendo",
+    "follow_tooltip": "Haz clic para seguir a este usuario y recibir notificaciones sobre sus nuevos mazos y actividades.",
+    "unfollow_tooltip": "Estás siguiendo a este usuario. Haz clic para dejar de seguir.",
+    "follow_error": "Algo salió mal con la acción de seguir"
   }
 }

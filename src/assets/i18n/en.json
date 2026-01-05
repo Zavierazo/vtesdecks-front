@@ -173,6 +173,7 @@
     "banned": "Banned",
     "unreleased": "Unreleased",
     "rulings": "Rulings",
+    "changes": "Change History",
     "no_rulings": "No rulings available",
     "sets": "Sets",
     "artist": "Artist",
@@ -288,7 +289,6 @@
     "tournament_decks": "Tournament Decks",
     "community_decks": "Community Decks",
     "preconstructed_decks": "Preconstructed Decks",
-    "cards": "Cards",
     "crypt": "Crypt",
     "library": "Library",
     "builder": "Builder",
@@ -922,5 +922,12 @@
       "730_days": "2 years ago",
       "all_time": "All-time"
     }
+  },
+  "follow": {
+    "follow": "Follow",
+    "unfollow": "Following",
+    "follow_tooltip": "Click to follow this user and receive notifications about their new decks and activities.",
+    "unfollow_tooltip": "You are following this user. Click to unfollow.",
+    "follow_error": "Something went wrong with the follow action"
   }
 }

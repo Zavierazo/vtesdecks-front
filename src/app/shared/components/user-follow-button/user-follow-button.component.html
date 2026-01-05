@@ -1,0 +1,15 @@
+@let isAuthenticated= isAuthenticated$ | async;
+@let currentUser= currentUser$ | async;
+@if( isAuthenticated && currentUser !== username()) {
+@let isFollowing= isFollowing$ | async;
+<button *transloco="let t; prefix: 'follow'" class="btn btn-sm ms-2" [ngClass]="{
+    'btn-primary': isFollowing === false,
+    'btn-outline-primary': isFollowing === true
+  }" [ngbTooltip]="isFollowing ? t('unfollow_tooltip') : t('follow_tooltip')" (click)="toggleFollow()">
+  <i class="bi me-1" [ngClass]="{
+    'bi-person-plus': isFollowing === false,
+    'bi-person-check': isFollowing === true
+  }"></i>
+  {{ isFollowing ? t('unfollow') : t('follow') }}
+</button>
+}

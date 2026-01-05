@@ -45,6 +45,7 @@ import { AnimatedDigitComponent } from '@shared/components/animated-digit/animat
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
+import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -108,6 +109,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     DeckCardComponent,
     ToggleIconComponent,
     CryptGridCardComponent,
+    UserFollowButtonComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {

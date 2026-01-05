@@ -11,6 +11,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCollection, ApiDeck, ApiUser } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { isSupporter } from '@utils'
@@ -30,6 +31,7 @@ import { DeckCardComponent } from '../../deck-card/deck-card.component'
     AsyncPipe,
     RouterLink,
     TranslocoPipe,
+    UserFollowButtonComponent,
   ],
 })
 export class UserPublicProfileComponent implements OnInit {
