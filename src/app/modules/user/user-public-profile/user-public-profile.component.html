@@ -15,6 +15,9 @@
                 @if( isSupporter() ) {
                 <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
                 }
+                @if(username()){
+                <app-user-follow-button [username]="username()" />
+                }
               </h2>
               <p class="text-muted mb-0">
                 <i class="bi bi-stack me-1"></i>

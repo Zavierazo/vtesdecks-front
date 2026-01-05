@@ -27,7 +27,7 @@
                   <p class="mb-1 d-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
                     @if(deck.user){
                     <a class="text-decoration-none d-inline-flex align-items-center"
-                      [routerLink]="'/user/' + deck.author">
+                      [routerLink]="'/user/' + deck.user.user">
                       @if(deck.user.profileImage) {
                       <img [src]="deck.user.profileImage" alt="" class="rounded-circle me-2" width="32" height="32">
                       }
@@ -39,6 +39,9 @@
                         }
                       </span>
                     </a>
+                    @if(deck.user.user) {
+                    <app-user-follow-button [username]="deck.user.user" />
+                    }
                     }@else {
                     <b>{{ t('created_by') }}: </b>
                     <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{

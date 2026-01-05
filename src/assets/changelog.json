@@ -3,6 +3,7 @@
     "version": "2.61.0",
     "date": "9th January, 2026",
     "changes": [
+      "Introduced user follow feature: follow other users to get notified about their new decks and activities.",
       "Added change history section in card modal to track significant card updates over time.",
       "Enhanced card search by aka name in Crypt and Library sections.",
       "Authentication now always sets essential cookies, regardless of cookie consent preferences, ensuring reliable login and session management.",
