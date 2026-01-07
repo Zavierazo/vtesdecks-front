@@ -461,6 +461,7 @@
     "settings": "Profile Settings",
     "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
     "display_name": "Display Name",
+    "profile_image": "Profile Image URL (Override Gravatar)",
     "old_password": "Old Password",
     "old_password_placeholder": "Leave blank if you don't want to change it",
     "new_password": "New Password",

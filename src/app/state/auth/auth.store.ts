@@ -79,11 +79,6 @@ export class AuthStore {
     this.updateStorage()
   }
 
-  updateDisplayName(displayName: string) {
-    this.update({ ...this.getValue(), displayName })
-    this.updateStorage()
-  }
-
   updateBuilderDisplayMode(builderDisplayMode: 'list' | 'grid') {
     this.update({ ...this.getValue(), builderDisplayMode })
     this.updateStorage()

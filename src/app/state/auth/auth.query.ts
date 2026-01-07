@@ -84,6 +84,10 @@ export class AuthQuery {
     return this.store.getValue().displayName
   }
 
+  getProfileImage(): string | undefined {
+    return this.store.getValue().profileImage
+  }
+
   getEmail(): string | undefined {
     return this.store.getValue().email
   }

@@ -459,6 +459,7 @@
     "settings": "Configuración de perfil",
     "profile_image_alert": " Para la imagen de perfil utilizamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Tu Gravatar es una imagen y un perfil público que te sigue de un lugar a otro cuando haces cosas como comentar o publicar en un blog.",
     "display_name": "Nombre para mostrar",
+    "profile_image": "URL de la imagen de perfil (Sobrescribir Gravatar)",
     "old_password": "Contraseña anterior",
     "old_password_placeholder": "Déjalo en blanco si no quieres cambiarla.",
     "new_password": "Nueva contraseña",
