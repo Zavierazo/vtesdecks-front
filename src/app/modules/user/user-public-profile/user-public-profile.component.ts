@@ -11,6 +11,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCollection, ApiDeck, ApiUser } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
@@ -39,6 +40,7 @@ export class UserPublicProfileComponent implements OnInit {
   private decksService = inject(DecksService)
   private decksQuery = inject(DecksQuery)
   private collectionApiService = inject(CollectionApiDataService)
+  private apiDataService = inject(ApiDataService)
 
   username = signal<string>('')
   user = signal<ApiUser>({})
@@ -58,30 +60,34 @@ export class UserPublicProfileComponent implements OnInit {
       const username = params['username']
       if (username) {
         this.username.set(username)
+        this.loadUserData(username)
         this.loadUserDecks(username)
         this.loadUserBinders(username)
       }
     })
   }
 
-  private loadUserDecks(username: string) {
-    this.decksService.init({
-      author: username,
-      exactAuthor: true,
-      type: 'COMMUNITY',
-      order: 'POPULAR',
-    })
-    this.decksService
-      .getMore(6)
+  private loadUserData(username: string) {
+    this.apiDataService
+      .getPublicUser(username)
       .pipe(
         untilDestroyed(this),
-        tap((decks) => {
-          if (decks.decks && decks.decks.length > 0) {
-            this.user.set(decks.decks[0].user || {})
+        tap((user) => {
+          if (user) {
+            this.user.set(user)
           }
         }),
       )
       .subscribe()
+  }
+
+  private loadUserDecks(username: string) {
+    this.decksService.init({
+      username,
+      type: 'COMMUNITY',
+      order: 'POPULAR',
+    })
+    this.decksService.getMore(6).pipe(untilDestroyed(this)).subscribe()
   }
 
   private loadUserBinders(username: string) {

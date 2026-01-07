@@ -48,6 +48,7 @@ export class ApiDataService {
   private readonly registerPath = '/auth/create'
   private readonly countryPath = '/auth/country'
   private readonly forgotPasswordPath = '/auth/forgot-password'
+  private readonly publicUserPath = '/public/user'
   private readonly userValidatePath = '/user/validate'
   private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
@@ -575,6 +576,12 @@ export class ApiDataService {
   isUserFollowing(user: string): Observable<boolean> {
     return this.httpClient.get<boolean>(
       `${environment.api.baseUrl}${this.userFollowPath}/${user}`,
+    )
+  }
+
+  getPublicUser(username: string): Observable<ApiUser> {
+    return this.httpClient.get<ApiUser>(
+      `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
     )
   }
 }
