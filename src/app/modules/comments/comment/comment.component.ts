@@ -7,6 +7,7 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { RouterLink } from '@angular/router'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -37,6 +38,7 @@ import { filter, Observable, switchMap } from 'rxjs'
     MarkdownTextareaComponent,
     MarkdownTextComponent,
     TranslocoPipe,
+    RouterLink,
   ],
 })
 export class CommentComponent implements OnInit {
