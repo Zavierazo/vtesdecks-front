@@ -4,6 +4,7 @@ import {
   Component,
   OnInit,
   inject,
+  input,
   output,
   viewChild,
 } from '@angular/core'
@@ -77,6 +78,7 @@ export class DeckFiltersComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
 
   readonly resetFilters = output<void>()
+  type = input.required<string>()
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
