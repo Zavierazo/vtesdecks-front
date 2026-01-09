@@ -44,7 +44,7 @@
     "capacity": "Capacité",
     "title": "Titre",
     "sect": "Secte",
-    "taints": "Capacités",
+    "taints": "Taints",
     "limited_format": "Format Limité",
     "card_text": "Texte de la carte",
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
@@ -103,7 +103,7 @@
     "total_crypt": "Total Cartes de Crypte",
     "disciplines_sup_inf": "{{ count }} Supérieur | Inférieur",
     "total_library": "Total Cartes de Bibliothèque",
-    "total_pool_cost": "Coût total en Influence",
+    "total_pool_cost": "Coût total en pool",
     "total_blood_cost": "Coût total en Sang",
     "no_discipline": "Sans discipline",
     "rate_failed": "Une erreur est survenue lors de la notation du deck",
@@ -243,7 +243,7 @@
     "crypt_cards": "Cartes de Crypte",
     "star_vampire": "Avec Star Vampire",
     "library_cards": "Cartes de Bibliothèque",
-    "number_of_copies": "Nombre d'exemplaires",
+    "number_of_copies": "nombre d'exemplaires",
     "any": "N'importe lequel",
     "none": "Aucun",
     "reset": "Réinitialiser",
@@ -294,7 +294,7 @@
     "builder": "Constructeur",
     "collection": "Collection",
     "tools": "Outils",
-    "table_seating": "Placement à table",
+    "table_seating": "Ordre de jeu",
     "contact": "Contact",
     "login": "Connexion",
     "sign_up": "Inscription",
@@ -338,11 +338,11 @@
     "metagame": "Metagame actuel"
   },
   "import_amaranth": {
-    "title": "Importer depuis Amaranth",
+    "title": "Importer Amaranth",
     "placeholder": "https://amaranth.vtes.co.nz/#deck/..."
   },
   "import_vdb": {
-    "title": "Importer depuis VDB",
+    "title": "Importer VDB",
     "placeholder": "https://vdb.im/decks?id=..."
   },
   "language": {
@@ -360,8 +360,8 @@
     "sect": "Secte",
     "title": "Titre",
     "blood_cost": "Coût en Sang",
-    "pool_cost": "Coût en Influence",
-    "taints": "Capacités",
+    "pool_cost": "Coût en pool",
+    "taints": "Taints",
     "limited_format": "Format Limité",
     "card_text": "Texte de la carte",
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
@@ -427,7 +427,7 @@
     "delete": "Supprimer",
     "import": "Importer",
     "close": "Fermer",
-    "loading": "Chargement...",
+    "loading": "Chargement",
     "field_required": "{{ field }} est requis.",
     "service_temporarily_unavailable": "Service temporairement indisponible. Veuillez patienter...",
     "crypt": "Crypte",
@@ -449,7 +449,7 @@
     "new": "Nouveau"
   },
   "table_seating": {
-    "title": "Placement à table",
+    "title": "Ordre de jeu",
     "active_player": "Joueur actif",
     "player_name": "Nom du joueur",
     "add_player": "Ajouter un joueur",
@@ -518,7 +518,7 @@
     "limitations": "Limitations",
     "limitation_1": "Peut occasionnellement générer des informations incorrectes",
     "limitation_2": "Bien qu'il comprenne d'autres langues, il est entraîné sur les noms et règles en anglais",
-    "limitation_3": "Peut ne pas être au courant des changements très récents",
+    "limitation_3": "Peut ne pas être au courant des changements récents",
     "thinking_1": "Réflexion...",
     "thinking_2": "Recherche des rulings de cartes...",
     "thinking_3": "Analyse des interactions entre cartes...",
@@ -553,7 +553,7 @@
       "combat": "Combat",
       "reaction": "Réaction",
       "event": "Événement",
-      "trifle": "Bagatelle"
+      "trifle": "Triviale"
     },
     "discipline": {
       "abombwe": "Abombwe",
@@ -698,7 +698,7 @@
       "Reduce a Bleed": "Réduire un saignement",
       "Wake": "Réveil",
       "Create vampire": "Créer un vampire",
-      "Burn Option": "Option de brûlage",
+      "Burn Option": "brûlage",
       "Reflex": "Réflexe",
       "Multi-Type": "Multi-Type",
       "Multi-Discipline": "Multi-Discipline",
@@ -892,7 +892,7 @@
     "rules": "Règles",
     "next_challenge_in": "Le prochain défi se débloque dans",
     "advent_finished_title": "Le Calendrier de l'Avent VTES {{ year }} est terminé !",
-    "advent_finished_subtitle": "Merci à tous les participants ! À l'année prochaine pour de nouveaux défis ! Tous les défis restent consultables !",
+    "advent_finished_subtitle": "Merci à tous les participants ! À l'année prochaine ! Tous les défis restent consultables !",
     "view_all_decks": "Voir tous les decks de l'Avent {{ year }}",
     "day_completed": "Jour {{ day }} - Voir le deck",
     "day_start": "Commencer le défi",
