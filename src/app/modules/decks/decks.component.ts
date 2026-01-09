@@ -22,7 +22,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
-import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
@@ -59,7 +58,6 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     LoadingComponent,
     NgbTooltip,
     AsyncPipe,
-    IsSupporterDirective,
   ],
 })
 export class DecksComponent implements OnInit {
