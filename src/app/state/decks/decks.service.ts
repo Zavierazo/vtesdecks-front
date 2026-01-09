@@ -14,10 +14,20 @@ export class DecksService {
   static readonly initLimit = 20
   static readonly limit = 10
 
-  init(params: Params) {
+  init(params: Params): boolean {
+    const currentParams = this.decksStore.getValue().params
+    if (
+      currentParams &&
+      Object.keys(currentParams).length > 0 &&
+      JSON.stringify(currentParams) === JSON.stringify(params)
+    ) {
+      // params did not change, so no need to re-initialize
+      return false
+    }
     this.decksStore.remove()
     this.decksStore.updatePage(true, 0)
     this.decksStore.updateParams(params)
+    return true
   }
 
   getMore(overrideLimit?: number): Observable<ApiDecks> {

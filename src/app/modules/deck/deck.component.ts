@@ -22,7 +22,7 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
-import { ApiCard, ApiDeck } from '@models'
+import { ApiCard, ApiDeck, ApiDecks } from '@models'
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -53,8 +53,6 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
-import { DecksQuery } from '@state/decks/decks.query'
-import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
@@ -130,8 +128,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router)
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
-  private readonly decksQuery = inject(DecksQuery)
-  private readonly decksService = inject(DecksService)
 
   id!: string
 
@@ -143,7 +139,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   deck$!: Observable<ApiDeck | undefined>
 
-  similarDecks$ = this.decksQuery.selectAll()
+  similarDecks$!: Observable<ApiDecks>
 
   isMobile$!: Observable<boolean>
 
@@ -195,9 +191,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
       }),
     )
-    this.route.paramMap.subscribe((params) =>
-      this.fetchSimilarDecks(params.get('id')),
-    )
+    this.route.paramMap.subscribe(() => this.fetchSimilarDecks())
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -205,12 +199,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
     this.authService.updateDeckDisplayMode(displayModeValue)
   }
 
-  fetchSimilarDecks(deckId: string | null) {
-    this.decksService.init({ bySimilarity: deckId })
-    this.decksService
-      .getMore(DeckComponent.similarDecksLimit)
-      .pipe(untilDestroyed(this))
-      .subscribe()
+  fetchSimilarDecks() {
+    this.similarDecks$ = this.deckService.getSimilarDecks(
+      DeckComponent.similarDecksLimit,
+    )
   }
 
   ngAfterViewInit(): void {
