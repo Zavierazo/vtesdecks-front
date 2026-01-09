@@ -3,10 +3,11 @@
     "version": "2.62.0",
     "date": "16th January, 2026",
     "changes": [
-      "Allow users to set a custom profile image URL, overriding the default Gravatar image.",
-      "Added link to public user profile in comments",
-      "Added the Kickstarter Unleashed (2021) set to clearly differentiate it from Anarch Unbound, Danse Macabre and The Unaligned (2013-2016 PDF expansions). Existing collection cards have been migrated to Kickstarter Unleashed (2021).",
-      "Fixed public user profile where some decks were not displayed correctly.",
+      "UX Improvement: Returning to the deck list on mobile now preserves your applied filters.",
+      "Feature: Added support for custom profile image URLs (overriding Gravatar).",
+      "Feature: Usernames in comments now link to public profiles.",
+      "Added 'Kickstarter Unleashed (2021)' to distinguish it from 'Anarch Unbound' and 'The Unaligned'. Existing cards were migrated automatically.",
+      "Fix: Resolved an issue preventing some decks from appearing on public profiles.",
       "Minor bug fixes and performance improvements."
     ]
   },
