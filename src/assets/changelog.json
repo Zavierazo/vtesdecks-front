@@ -3,7 +3,7 @@
     "version": "2.62.0",
     "date": "16th January, 2026",
     "changes": [
-      "Added French localization. Bonjour, bienvenue! Initial translation could be wrong or incomplete. Contributions are welcome.",
+      "Added French localization — Bonjour, bienvenue! The translation is a first draft and may contain errors or missing parts. Feedback and contributions are warmly welcome!",
       "UX Improvement: Returning to the deck list on mobile now preserves your applied filters.",
       "Feature: Added Limited Format filter to Crypt and Library sections.",
       "Feature: Added support for custom profile image URLs (overriding Gravatar).",

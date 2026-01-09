@@ -900,7 +900,7 @@
   },
   "deck_metagame": {
     "title": "Decks Metagame",
-    "tooltip": "Les données du metagame sont basées sur les résultats des tournois de l'année écoulée (ajustable). Les decks sont groupés par archétype. Seuls les archétypes avec au moins deux victoires dans des tournois de plus de 20 joueurs sont inclus, et ils doivent avoir soit une victoire dans un tournoi de plus de 50 joueurs, soit quatre victoires au total.",
+    "tooltip": "Les données du metagame sont basées sur les résultats des tournois de l'année écoulée (ajustable). Decks groupés par archétype. Seuls les archétypes avec au moins deux victoires dans des tournois de plus de 20 joueurs sont inclus, et ils doivent avoir soit une victoire dans un tournoi de plus de 50 joueurs, soit quatre victoires au total.",
     "create": "Créer",
     "edit": "Modifier",
     "delete": "Supprimer",
