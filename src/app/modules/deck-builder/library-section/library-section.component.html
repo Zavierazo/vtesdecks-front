@@ -135,6 +135,8 @@
       [(bloodCostSlider)]="bloodCostSlider" (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)"
       [(poolCostSlider)]="poolCostSlider" (poolCostSliderChange)="onChangePoolCostSliderFilter($event)"
       [(title)]="title" (titleChange)="onChangeTitleFilter($event)" [(cardText)]="cardText"
-      (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)" />
+      (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)"
+      [predefinedLimitedFormat]="predefinedLimitedFormat"
+      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" />
   </ng-template>
 </ng-container>

@@ -12,6 +12,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { PATH_LIST } from '@utils'
@@ -40,6 +41,7 @@ import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/d
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
+  private apiDataService = inject(ApiDataService)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -67,9 +69,12 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly taintsChange = output<string[]>()
   @Input() cardText!: string
   readonly cardTextChange = output<string>()
+  @Input() predefinedLimitedFormat?: string
+  readonly predefinedLimitedFormatChange = output<string>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
+  predefinedLimitedFormatControl!: FormControl
   groupSliderControl!: FormControl
   capacitySliderControl!: FormControl
   titleControl!: FormControl
@@ -84,6 +89,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   taints$ = this.cryptQuery.selectTaints()
   sets$ = this.cryptQuery.selectSets()
   pathList = PATH_LIST
+  predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
   initialized = false
@@ -111,6 +117,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangePath()
     this.onChangeTaint()
     this.onChangeCardText()
+    this.onChangePredefinedLimitedFormat()
   }
 
   onChangeClanFilter(clans: string[]) {
@@ -149,6 +156,21 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.limitedFormat = value
           this.limitedFormatChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangePredefinedLimitedFormat() {
+    this.predefinedLimitedFormatControl = new FormControl(
+      this.predefinedLimitedFormat,
+    )
+    this.predefinedLimitedFormatControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.predefinedLimitedFormat = value
+          this.predefinedLimitedFormatChange.emit(value)
         }),
       )
       .subscribe()

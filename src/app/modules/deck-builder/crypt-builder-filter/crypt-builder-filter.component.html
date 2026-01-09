@@ -53,6 +53,19 @@
         showTicksValues: true
       }" [formControl]="capacitySliderControl" />
   </div>
+  @if ( limitedFormat === undefined ) {
+  <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="limitedFormatSelect" [formControl]="predefinedLimitedFormatControl">
+      <option selected></option>
+      @for (format of (predefinedLimitedFormats$ | async); track format.id) {
+      <option [value]="format.id">
+        {{ format.name }}
+      </option>
+      }
+    </select>
+    <label for="limitedFormatSelect">{{ t('limited_format') }}</label>
+  </div>
+  }
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="set" [formControl]="setControl">
       <option selected></option>

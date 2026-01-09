@@ -110,6 +110,7 @@ export class LibrarySectionComponent implements OnInit {
   set!: string
   taints: string[] = []
   cardText!: string
+  predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
@@ -236,6 +237,9 @@ export class LibrarySectionComponent implements OnInit {
           this.openLibraryCard(card)
         }
       }, 1000)
+    }
+    if (queryParams['predefinedLimitedFormat']) {
+      this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
     this.initQuery()
@@ -420,6 +424,15 @@ export class LibrarySectionComponent implements OnInit {
     })
   }
 
+  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
+    this.predefinedLimitedFormat = predefinedLimitedFormat
+    this.initQuery()
+    this.scrollToTop()
+    this.updateQueryParams({
+      ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
+    })
+  }
+
   initQuery() {
     this.limitTo = LibrarySectionComponent.PAGE_SIZE
     this.updateQuery()
@@ -520,6 +533,13 @@ export class LibrarySectionComponent implements OnInit {
       if (entity.i18n?.text) {
         return searchIncludes(entity.i18n.text, this.cardText)
       } else {
+        return false
+      }
+    }
+    if (this.predefinedLimitedFormat) {
+      if (
+        !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
+      ) {
         return false
       }
     }

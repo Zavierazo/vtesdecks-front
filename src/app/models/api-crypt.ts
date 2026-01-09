@@ -32,5 +32,6 @@ export interface ApiCrypt {
   printOnDemand?: boolean
   unreleased?: boolean
   minPrice?: number
+  limitedFormats?: number[]
   lastUpdate: Date
 }
