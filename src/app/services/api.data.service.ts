@@ -497,9 +497,9 @@ export class ApiDataService {
     )
   }
 
-  getProxyOptions(id: number): Observable<ApiProxyCardOption[]> {
+  getProxyOptions(ids: number[]): Observable<ApiProxyCardOption[]> {
     return this.httpClient.get<ApiProxyCardOption[]>(
-      `${environment.api.baseUrl}${this.proxyOptionsPath}${id}`,
+      `${environment.api.baseUrl}${this.proxyOptionsPath}${ids}`,
     )
   }
 

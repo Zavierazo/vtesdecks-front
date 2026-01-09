@@ -104,16 +104,26 @@ export class PrintProxyComponent implements OnInit {
   }
 
   private fetchProxyOptions() {
-    this.cards.forEach((card) => {
-      this.apiDataService
-        .getProxyOptions(card.id)
-        .pipe(
-          untilDestroyed(this),
-          filter((setOptions) => setOptions.length > 0),
-          tap((setOptions) => this.updateSetOptions(card.id, setOptions)),
-        )
-        .subscribe()
-    })
+    const cardIds = this.cards.map((card) => card.id)
+    this.apiDataService
+      .getProxyOptions(cardIds)
+      .pipe(
+        untilDestroyed(this),
+        filter((cardOptions) => cardOptions.length > 0),
+        tap((cardOptions) => {
+          cardOptions
+            .reduce((map, option) => {
+              const options = map.get(option.cardId) ?? []
+              options.push(option)
+              map.set(option.cardId, options)
+              return map
+            }, new Map<number, ApiProxyCardOption[]>())
+            .forEach((setOptions, cardId) =>
+              this.updateSetOptions(cardId, setOptions),
+            )
+        }),
+      )
+      .subscribe()
   }
 
   private updateSetOptions(
@@ -325,7 +335,7 @@ export class PrintProxyComponent implements OnInit {
     }
     this.cardList.update((cardList) => [...cardList, proxyCard])
     this.apiDataService
-      .getProxyOptions(item.id)
+      .getProxyOptions([item.id])
       .pipe(
         untilDestroyed(this),
         filter((setOptions) => setOptions.length > 0),
