@@ -110,6 +110,7 @@ export class CryptSectionComponent implements OnInit {
   set!: string
   taints: string[] = []
   cardText!: string
+  artist!: string
   predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
@@ -228,6 +229,9 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['cardText']) {
       this.cardText = queryParams['cardText']
     }
+    if (queryParams['artist']) {
+      this.artist = queryParams['artist']
+    }
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
         const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
@@ -261,6 +265,7 @@ export class CryptSectionComponent implements OnInit {
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
     this.cardText = ''
+    this.artist = ''
   }
 
   onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
@@ -428,6 +433,16 @@ export class CryptSectionComponent implements OnInit {
       ['cardText']: this.cardText || undefined,
     })
   }
+
+  onChangeArtistFilter(artist: string) {
+    this.artist = artist
+    this.initQuery()
+    this.scrollToTop()
+    this.updateQueryParams({
+      ['artist']: this.artist || undefined,
+    })
+  }
+
   onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
     this.predefinedLimitedFormat = predefinedLimitedFormat
     this.initQuery()
@@ -510,6 +525,11 @@ export class CryptSectionComponent implements OnInit {
       if (
         !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
       ) {
+        return false
+      }
+    }
+    if (this.artist) {
+      if (!searchIncludes(entity.artist, this.artist)) {
         return false
       }
     }

@@ -140,6 +140,7 @@
       (taintsChange)="onChangeTaintsFilter($event)" [(cardText)]="cardText"
       (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)"
       [predefinedLimitedFormat]="predefinedLimitedFormat"
-      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" />
+      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" [artist]="artist"
+      (artistChange)="onChangeArtistFilter($event)" />
   </ng-template>
 </ng-container>

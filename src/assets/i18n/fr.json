@@ -48,7 +48,9 @@
     "limited_format": "Format Limité",
     "card_text": "Texte de la carte",
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
-    "set": "Extension"
+    "set": "Extension",
+    "artist": "Artiste",
+    "artist_placeholder": "Entrez le nom de l'artiste..."
   },
   "crypt_section": {
     "card_name": "Nom de la carte",
@@ -365,7 +367,9 @@
     "limited_format": "Format Limité",
     "card_text": "Texte de la carte",
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
-    "set": "Extension"
+    "set": "Extension",
+    "artist": "Artiste",
+    "artist_placeholder": "Entrez le nom de l'artiste..."
   },
   "library_section": {
     "card_name": "Nom de la carte",

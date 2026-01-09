@@ -92,6 +92,7 @@ export class CryptBuilderComponent implements OnInit {
   set!: string
   taints!: string[]
   cardText!: string
+  artist!: string
   predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
@@ -168,6 +169,7 @@ export class CryptBuilderComponent implements OnInit {
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
     this.cardText = ''
+    this.artist = ''
     this.initQuery()
   }
 
@@ -257,6 +259,11 @@ export class CryptBuilderComponent implements OnInit {
 
   onChangeCardTextFilter(cardText: string) {
     this.cardText = cardText
+    this.initQuery()
+  }
+
+  onChangeArtistFilter(artist: string) {
+    this.artist = artist
     this.initQuery()
   }
 
@@ -360,6 +367,11 @@ export class CryptBuilderComponent implements OnInit {
               Number(this.predefinedLimitedFormat),
             )
           ) {
+            return false
+          }
+        }
+        if (this.artist) {
+          if (!searchIncludes(entity.artist, this.artist)) {
             return false
           }
         }

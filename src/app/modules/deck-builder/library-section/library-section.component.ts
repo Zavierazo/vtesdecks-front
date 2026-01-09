@@ -110,6 +110,7 @@ export class LibrarySectionComponent implements OnInit {
   set!: string
   taints: string[] = []
   cardText!: string
+  artist!: string
   predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
@@ -220,6 +221,9 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['cardText']) {
       this.cardText = queryParams['cardText']
     }
+    if (queryParams['artist']) {
+      this.artist = queryParams['artist']
+    }
     if (queryParams['bloodCostSlider']) {
       this.bloodCostSlider = queryParams['bloodCostSlider']
         .split(',')
@@ -261,6 +265,7 @@ export class LibrarySectionComponent implements OnInit {
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
     this.cardText = ''
+    this.artist = ''
   }
 
   onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
@@ -424,6 +429,15 @@ export class LibrarySectionComponent implements OnInit {
     })
   }
 
+  onChangeArtistFilter(artist: string) {
+    this.artist = artist
+    this.initQuery()
+    this.scrollToTop()
+    this.updateQueryParams({
+      ['artist']: this.artist || undefined,
+    })
+  }
+
   onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
     this.predefinedLimitedFormat = predefinedLimitedFormat
     this.initQuery()
@@ -540,6 +554,11 @@ export class LibrarySectionComponent implements OnInit {
       if (
         !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
       ) {
+        return false
+      }
+    }
+    if (this.artist) {
+      if (!searchIncludes(entity.artist, this.artist)) {
         return false
       }
     }

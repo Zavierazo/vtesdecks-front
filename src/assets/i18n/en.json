@@ -48,7 +48,9 @@
     "limited_format": "Limited Format",
     "card_text": "Card Text",
     "card_text_placeholder": "Enter text or use /your-regex/",
-    "set": "Set"
+    "set": "Set",
+    "artist": "Artist",
+    "artist_placeholder": "Enter artist name..."
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -365,7 +367,9 @@
     "limited_format": "Limited Format",
     "card_text": "Card Text",
     "card_text_placeholder": "Enter text or use /your-regex/",
-    "set": "Set"
+    "set": "Set",
+    "artist": "Artist",
+    "artist_placeholder": "Enter artist name..."
   },
   "library_section": {
     "card_name": "Card Name",

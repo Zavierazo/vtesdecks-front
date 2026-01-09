@@ -71,6 +71,8 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly cardTextChange = output<string>()
   @Input() predefinedLimitedFormat?: string
   readonly predefinedLimitedFormatChange = output<string>()
+  @Input() artist!: string
+  readonly artistChange = output<string>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
@@ -83,6 +85,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
+  artistControl!: FormControl
 
   titles$ = this.cryptQuery.selectTitles()
   sects$ = this.cryptQuery.selectSects()
@@ -118,6 +121,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
+    this.onChangeArtist()
   }
 
   onChangeClanFilter(clans: string[]) {
@@ -300,6 +304,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.cardText = value
           this.cardTextChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeArtist() {
+    this.artistControl = new FormControl(this.artist)
+    this.artistControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.artist = value
+          this.artistChange.emit(value)
         }),
       )
       .subscribe()

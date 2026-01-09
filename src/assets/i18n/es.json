@@ -48,7 +48,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto de la carta",
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
-    "set": "Expansion"
+    "set": "Expansion",
+    "artist": "Artista",
+    "artist_placeholder": "Introduce el nombre del artista..."
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -365,7 +367,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto de la carta",
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
-    "set": "Expansion"
+    "set": "Expansion",
+    "artist": "Artista",
+    "artist_placeholder": "Introduce el nombre del artista..."
   },
   "library_section": {
     "card_name": "Nombre de carta",
