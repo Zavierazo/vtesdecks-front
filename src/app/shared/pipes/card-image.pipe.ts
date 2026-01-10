@@ -13,7 +13,7 @@ export class CardImagePipe implements PipeTransform {
       const setAbbrev = getSetAbbrev(set).toLocaleLowerCase()
       return `${environment.cdnDomain}/img/cards/sets/${setAbbrev}/${card.id}.jpg`
     } else if (card.i18n && card.i18n.image) {
-      return environment.cdnDomain + card.i18n.image
+      return environment.i18nCdnDomain + card.i18n.image
     } else if (card.image) {
       return environment.cdnDomain + card.image
     } else {

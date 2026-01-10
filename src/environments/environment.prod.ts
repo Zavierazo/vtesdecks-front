@@ -4,6 +4,7 @@ export const environment = {
   domain: 'vtesdecks.com',
   apiDomain: 'api.vtesdecks.com',
   cdnDomain: 'https://cdn.vtesdecks.com',
+  i18nCdnDomain: 'https://i18n-cdn.vtesdecks.com',
   production: true,
   api: {
     baseUrl: 'https://api.vtesdecks.com/1.0',
