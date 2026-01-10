@@ -1,15 +1,16 @@
 [
   {
     "version": "2.62.0",
-    "date": "16th January, 2026",
+    "date": "10th January, 2026",
     "changes": [
-      "Added French localization — Bonjour, bienvenue! The translation is a first draft and may contain errors or missing parts. Feedback and contributions are warmly welcome!",
-      "UX Improvement: Returning to the deck list on mobile now preserves your applied filters.",
-      "Feature: Added Limited Format & Artist filter to Crypt and Library sections.",
-      "Feature: Added support for custom profile image URLs (overriding Gravatar).",
-      "Feature: Usernames in comments now link to public profiles.",
-      "Added 'Kickstarter Unleashed (2021)' to distinguish it from 'Anarch Unbound' and 'The Unaligned'. Existing cards were migrated automatically.",
-      "Fix: Resolved an issue preventing some decks from appearing on public profiles.",
+      "Localization: Added French language support. This is an initial draft and may contain inaccuracies or missing translations. Feedback and contributions are very welcome.",
+      "UX: On mobile, returning to the deck list now preserves previously applied filters.",
+      "UX: Added follower and following counts with direct links on user profile pages.",
+      "UX: Usernames in comments now link to their public profiles.",
+      "Feature: Added Limited Format and Artist filters to the Crypt and Library sections.",
+      "Feature: Added support for custom profile image URLs, overriding Gravatar when provided.",
+      "Data: Added 'Kickstarter Unleashed (2021)' as a distinct set to differentiate it from 'Anarch Unbound' and 'The Unaligned'. Existing cards were migrated automatically.",
+      "Fix: Resolved an issue where some decks did not appear on public profile pages.",
       "Minor bug fixes and performance improvements."
     ]
   },
