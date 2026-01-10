@@ -13,7 +13,7 @@ export interface AuthState extends ApiUser {
 const initialState: AuthState = {
   builderDisplayMode: 'list',
   cardsDisplayMode: 'list',
-  deckDisplayMode: 'list',
+  deckDisplayMode: 'grid',
 }
 
 @Injectable({
