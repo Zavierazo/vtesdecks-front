@@ -130,6 +130,7 @@ export class LibrarySectionComponent implements OnInit {
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
+
     this.listenScroll()
     this.initFilters()
   }
@@ -224,6 +225,12 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['artist']) {
       this.artist = queryParams['artist']
     }
+    this.route.queryParams.subscribe((param) => {
+      // Used when coming from card info artist link
+      if (param['artist']) {
+        this.onChangeArtistFilter(param['artist'])
+      }
+    })
     if (queryParams['bloodCostSlider']) {
       this.bloodCostSlider = queryParams['bloodCostSlider']
         .split(',')

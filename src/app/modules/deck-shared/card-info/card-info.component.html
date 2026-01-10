@@ -13,8 +13,8 @@
   <p>
     <strong>{{ t('artist') }}: </strong>
     @for(artist of artists(); track artist; let last= $last ){
-    <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist.trim() }"
-      target="_blank">
+    <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist }"
+      (click)="routerClick.emit(true)">
       {{ artist }}
     </a>
     @if(!last) {

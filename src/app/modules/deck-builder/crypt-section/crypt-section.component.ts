@@ -232,6 +232,12 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['artist']) {
       this.artist = queryParams['artist']
     }
+    this.route.queryParams.subscribe((param) => {
+      // Used when coming from card info artist link
+      if (param['artist']) {
+        this.onChangeArtistFilter(param['artist'])
+      }
+    })
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
         const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
