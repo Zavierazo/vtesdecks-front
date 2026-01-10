@@ -15,7 +15,7 @@
     @for(artist of artists(); track artist; let last= $last ){
     <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist.trim() }"
       target="_blank">
-      {{ artist.trim() }}
+      {{ artist }}
     </a>
     @if(!last) {
     <span class="text-dark mx-1">•</span>

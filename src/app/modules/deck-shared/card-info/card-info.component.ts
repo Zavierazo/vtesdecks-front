@@ -106,15 +106,4 @@ export class CardInfoComponent {
       )
       .subscribe()
   }
-
-  goToArtist(artist: string): void {
-    this.router
-      .navigate(['/cards/library'], {
-        queryParams: { artist: artist.trim() },
-        queryParamsHandling: 'merge',
-      })
-      .then(() => {
-        this.router.navigated = false
-      })
-  }
 }
