@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCollection, ApiDeck, ApiPublicUser } from '@models'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
@@ -33,6 +34,8 @@ import { DeckCardComponent } from '../../deck-card/deck-card.component'
     RouterLink,
     TranslocoPipe,
     UserFollowButtonComponent,
+    NgbPopover,
+    NgTemplateOutlet,
   ],
 })
 export class UserPublicProfileComponent implements OnInit {
@@ -45,6 +48,8 @@ export class UserPublicProfileComponent implements OnInit {
   username = signal<string>('')
   user = signal<ApiPublicUser | undefined>(undefined)
   isSupporter = computed(() => isSupporter(this.user()?.roles))
+  followersCount = computed(() => this.user()?.followers?.length || 0)
+  followingCount = computed(() => this.user()?.following?.length || 0)
   decks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
   loading$!: Observable<boolean>

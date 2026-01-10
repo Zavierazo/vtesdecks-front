@@ -19,10 +19,56 @@
                 <app-user-follow-button [username]="username()" />
                 }
               </h2>
-              <p class="text-muted mb-0">
+              <p class="text-muted mb-2">
                 <i class="bi bi-stack me-1"></i>
                 {{ (total$ | async) || 0 }} {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
               </p>
+              <div class="d-flex gap-3">
+                <span class="follow-stat" [ngbPopover]="followersPopover" triggers="click" container="body"
+                  placement="bottom" #followersBtn="ngbPopover">
+                  <strong>{{ followersCount() }}</strong>
+                  <span class="text-muted ms-1">{{ t('followers') }}</span>
+                  <ng-template #followersPopover>
+                    <ng-container *ngTemplateOutlet="userListTemplate; context: {
+                      users: user()?.followers,
+                      count: followersCount(),
+                      emptyMessage: t('no_followers'),
+                      popover: followersBtn
+                    }"></ng-container>
+                  </ng-template>
+                </span>
+                <span class="follow-stat" [ngbPopover]="followingPopover" triggers="click" container="body"
+                  placement="bottom" #followingBtn="ngbPopover">
+                  <strong>{{ followingCount() }}</strong>
+                  <span class="text-muted ms-1">{{ t('following') }}</span>
+                  <ng-template #followingPopover>
+                    <ng-container *ngTemplateOutlet="userListTemplate; context: {
+                      users: user()?.following,
+                      count: followingCount(),
+                      emptyMessage: t('no_following'),
+                      popover: followingBtn
+                    }"></ng-container>
+                  </ng-template>
+                </span>
+              </div>
+
+              <!-- Reusable user list template -->
+              <ng-template #userListTemplate let-users="users" let-count="count" let-emptyMessage="emptyMessage"
+                let-popover="popover">
+                <div class="popover-users">
+                  @if (count === 0) {
+                  <div class="p-2 text-center text-muted">{{ emptyMessage }}</div>
+                  } @else {
+                  @for (user of users; track user.user) {
+                  <a [routerLink]="'/user/' + user.user" class="user-item" (click)="popover.close()">
+                    <img [src]="user.profileImage || '/assets/img/default_user.png'" [alt]="user.displayName"
+                      class="user-avatar">
+                    <span class="user-name">{{ user.displayName }}</span>
+                  </a>
+                  }
+                  }
+                </div>
+              </ng-template>
 
             </div>
           </div>

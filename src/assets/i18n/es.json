@@ -483,7 +483,11 @@
     "no_decks_found": "No se encontraron mazos públicos",
     "no_binders_found": "No se encontraron carpetas públicas",
     "cards": "cartas",
-    "view_all_decks": "Ver Todos los Mazos"
+    "view_all_decks": "Ver Todos Los Mazos",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "no_followers": "Aún no tiene seguidores",
+    "no_following": "No sigue a nadie aún"
   },
   "verify_account": {
     "success": "¡Cuenta verificada!",

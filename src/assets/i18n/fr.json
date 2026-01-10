@@ -485,7 +485,11 @@
     "no_decks_found": "Aucun deck public trouvé",
     "no_binders_found": "Aucune collection publique trouvée",
     "cards": "cartes",
-    "view_all_decks": "Voir tous les decks"
+    "view_all_decks": "Voir tous les decks",
+    "followers": "Abonnés",
+    "following": "Abonnements",
+    "no_followers": "Aucun abonné pour le moment",
+    "no_following": "Aucun abonnement pour le moment"
   },
   "verify_account": {
     "success": "Compte vérifié !",
@@ -930,7 +934,7 @@
   },
   "follow": {
     "follow": "Suivre",
-    "unfollow": "Abonné",
+    "unfollow": "Suivi",
     "follow_tooltip": "Cliquez pour suivre cet utilisateur et recevoir des notifications sur ses nouveaux decks.",
     "unfollow_tooltip": "Vous suivez cet utilisateur. Cliquez pour ne plus le suivre.",
     "follow_error": "Une erreur est survenue lors de l'action de suivi"

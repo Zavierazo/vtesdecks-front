@@ -485,7 +485,11 @@
     "no_decks_found": "No public decks found",
     "no_binders_found": "No public collections found",
     "cards": "cards",
-    "view_all_decks": "View All Decks"
+    "view_all_decks": "View All Decks",
+    "followers": "Followers",
+    "following": "Following",
+    "no_followers": "No followers yet",
+    "no_following": "Not following anyone yet"
   },
   "verify_account": {
     "success": "Account verified!",

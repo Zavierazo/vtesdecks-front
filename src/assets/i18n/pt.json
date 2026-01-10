@@ -484,7 +484,11 @@
     "no_decks_found": "Nenhum baralho público encontrado",
     "no_binders_found": "Nenhuma coleção pública encontrada",
     "cards": "cartas",
-    "view_all_decks": "Ver Todos os Baralhos"
+    "view_all_decks": "Ver Todos Os Baralhos",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "no_followers": "Nenhum seguidor ainda",
+    "no_following": "Não segue ninguém ainda"
   },
   "verify_account": {
     "success": "Conta verificada!",
