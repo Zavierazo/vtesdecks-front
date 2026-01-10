@@ -48,7 +48,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto de la carta",
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
-    "set": "Expansion"
+    "set": "Expansion",
+    "artist": "Artista",
+    "artist_placeholder": "Introduce el nombre del artista..."
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -264,7 +266,7 @@
     "card_proportion_tooltip": "Personalizar proporciones de cartas",
     "custom": "Personalizar",
     "other_filters": "Otros filtros",
-    "name": "Nombre",
+    "name": "Nombre del mazo",
     "author": "Autor",
     "card_text": "Texto de la carta",
     "limited_format": "Formato Limitado",
@@ -365,7 +367,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto de la carta",
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
-    "set": "Expansion"
+    "set": "Expansion",
+    "artist": "Artista",
+    "artist_placeholder": "Introduce el nombre del artista..."
   },
   "library_section": {
     "card_name": "Nombre de carta",
@@ -459,6 +463,7 @@
     "settings": "Configuración de perfil",
     "profile_image_alert": " Para la imagen de perfil utilizamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Tu Gravatar es una imagen y un perfil público que te sigue de un lugar a otro cuando haces cosas como comentar o publicar en un blog.",
     "display_name": "Nombre para mostrar",
+    "profile_image": "URL de la imagen de perfil (Sobrescribir Gravatar)",
     "old_password": "Contraseña anterior",
     "old_password_placeholder": "Déjalo en blanco si no quieres cambiarla.",
     "new_password": "Nueva contraseña",
@@ -478,7 +483,11 @@
     "no_decks_found": "No se encontraron mazos públicos",
     "no_binders_found": "No se encontraron carpetas públicas",
     "cards": "cartas",
-    "view_all_decks": "Ver Todos los Mazos"
+    "view_all_decks": "Ver Todos Los Mazos",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "no_followers": "Aún no tiene seguidores",
+    "no_following": "No sigue a nadie aún"
   },
   "verify_account": {
     "success": "¡Cuenta verificada!",

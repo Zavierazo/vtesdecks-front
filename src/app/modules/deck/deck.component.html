@@ -408,7 +408,7 @@
       <h2>{{ t('similar_decks') }}</h2>
     </div>
     <div class="row">
-      @for(deck of similarDecks; track deck) {
+      @for(deck of similarDecks.decks; track deck) {
       <app-deck-card class="col-12 col-md-6" [deck]="deck" height="170px" (tagClick)="onTag($event)" />
       }
     </div>

@@ -112,13 +112,13 @@ export class AuthService {
   }
 
   updateSettings(settings: ApiUserSettings): Observable<ApiResponse> {
-    return this.apiDataService.updateSettings(settings).pipe(
-      tap((response: ApiResponse) => {
-        if (response.successful) {
-          this.authStore.updateDisplayName(settings.displayName)
-        }
-      }),
-    )
+    return this.apiDataService
+      .updateSettings(settings)
+      .pipe(
+        switchMap((response: ApiResponse) =>
+          this.refreshToken().pipe(switchMap(() => of(response))),
+        ),
+      )
   }
 
   updateBuilderDisplayMode(displayMode: 'list' | 'grid'): void {

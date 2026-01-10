@@ -64,11 +64,15 @@ export class ProfileComponent implements OnInit {
     this.email$ = this.authQuery.selectEmail()
     this.displayName$ = this.authQuery.selectDisplayName()
     this.profileImage$ = this.authQuery.selectProfileImage()
+    const profileImage = this.authQuery.getProfileImage()
     this.form = new FormGroup(
       {
         displayName: new FormControl(
           this.authQuery.getDisplayName(),
           Validators.required,
+        ),
+        profileImage: new FormControl(
+          profileImage?.includes('gravatar.com') ? '' : profileImage,
         ),
         password: new FormControl(null),
         newPassword: new FormControl(null, [
@@ -86,6 +90,10 @@ export class ProfileComponent implements OnInit {
 
   get displayName() {
     return this.form.get('displayName')
+  }
+
+  get profileImage() {
+    return this.form.get('profileImage')
   }
 
   get password() {
@@ -106,6 +114,7 @@ export class ProfileComponent implements OnInit {
     }
     const settings: ApiUserSettings = {
       displayName: this.form.get('displayName')!.value,
+      profileImage: this.form.get('profileImage')?.value,
       password: this.form.get('password')?.value,
       newPassword: this.form.get('newPassword')?.value,
     }

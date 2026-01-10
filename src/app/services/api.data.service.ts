@@ -21,6 +21,7 @@ import {
   ApiLibrary,
   ApiProxy,
   ApiProxyCardOption,
+  ApiPublicUser,
   ApiResetPassword,
   ApiResponse,
   ApiSet,
@@ -48,6 +49,7 @@ export class ApiDataService {
   private readonly registerPath = '/auth/create'
   private readonly countryPath = '/auth/country'
   private readonly forgotPasswordPath = '/auth/forgot-password'
+  private readonly publicUserPath = '/public/user'
   private readonly userValidatePath = '/user/validate'
   private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
@@ -496,9 +498,9 @@ export class ApiDataService {
     )
   }
 
-  getProxyOptions(id: number): Observable<ApiProxyCardOption[]> {
+  getProxyOptions(ids: number[]): Observable<ApiProxyCardOption[]> {
     return this.httpClient.get<ApiProxyCardOption[]>(
-      `${environment.api.baseUrl}${this.proxyOptionsPath}${id}`,
+      `${environment.api.baseUrl}${this.proxyOptionsPath}${ids}`,
     )
   }
 
@@ -575,6 +577,12 @@ export class ApiDataService {
   isUserFollowing(user: string): Observable<boolean> {
     return this.httpClient.get<boolean>(
       `${environment.api.baseUrl}${this.userFollowPath}/${user}`,
+    )
+  }
+
+  getPublicUser(username: string): Observable<ApiPublicUser> {
+    return this.httpClient.get<ApiPublicUser>(
+      `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
     )
   }
 }

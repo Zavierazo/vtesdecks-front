@@ -13,7 +13,7 @@ export interface AuthState extends ApiUser {
 const initialState: AuthState = {
   builderDisplayMode: 'list',
   cardsDisplayMode: 'list',
-  deckDisplayMode: 'list',
+  deckDisplayMode: 'grid',
 }
 
 @Injectable({
@@ -76,11 +76,6 @@ export class AuthStore {
 
   updateNotificationCount(notificationCount: number) {
     this.update({ ...this.getValue(), notificationCount })
-    this.updateStorage()
-  }
-
-  updateDisplayName(displayName: string) {
-    this.update({ ...this.getValue(), displayName })
     this.updateStorage()
   }
 

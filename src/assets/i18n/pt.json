@@ -48,7 +48,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto do cartão",
     "card_text_placeholder": "Digite o texto ou use /seu-regex/",
-    "set": "Expansão"
+    "set": "Expansão",
+    "artist": "Artista",
+    "artist_placeholder": "Digite o nome do artista..."
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
@@ -265,7 +267,7 @@
     "card_proportion_tooltip": "Personalizar proporções de cartões",
     "custom": "Personalizar",
     "other_filters": "Outros filtros",
-    "name": "Nome",
+    "name": "Nome do baralho",
     "author": "Autor",
     "card_text": "Texto do cartão",
     "limited_format": "Formato Limitado",
@@ -367,7 +369,9 @@
     "limited_format": "Formato Limitado",
     "card_text": "Texto do cartão",
     "card_text_placeholder": "Digite o texto ou use /seu-regex/",
-    "set": "Expansão"
+    "set": "Expansão",
+    "artist": "Artista",
+    "artist_placeholder": "Digite o nome do artista..."
   },
   "library_section": {
     "card_name": "Nome do cartão",
@@ -460,6 +464,7 @@
     "settings": "Configurações de perfil",
     "profile_image_alert": " Para a imagem de perfil usamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Seu Gravatar é uma imagem e um perfil público que segue você de um lugar para outro quando faz coisas como comentário ou publica em uma página de blog.",
     "display_name": "Nome de exibição",
+    "profile_image": "URL da imagem de perfil (Substituir Gravatar)",
     "old_password": "Senha anterior",
     "old_password_placeholder": "Deixe em branco se você não quiser mudar.",
     "new_password": "Nova senha",
@@ -479,7 +484,11 @@
     "no_decks_found": "Nenhum baralho público encontrado",
     "no_binders_found": "Nenhuma coleção pública encontrada",
     "cards": "cartas",
-    "view_all_decks": "Ver Todos os Baralhos"
+    "view_all_decks": "Ver Todos Os Baralhos",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "no_followers": "Nenhum seguidor ainda",
+    "no_following": "Não segue ninguém ainda"
   },
   "verify_account": {
     "success": "Conta verificada!",

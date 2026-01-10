@@ -110,6 +110,8 @@ export class LibrarySectionComponent implements OnInit {
   set!: string
   taints: string[] = []
   cardText!: string
+  artist!: string
+  predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
@@ -128,6 +130,7 @@ export class LibrarySectionComponent implements OnInit {
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
+
     this.listenScroll()
     this.initFilters()
   }
@@ -219,6 +222,15 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['cardText']) {
       this.cardText = queryParams['cardText']
     }
+    if (queryParams['artist']) {
+      this.artist = queryParams['artist']
+    }
+    this.route.queryParams.subscribe((param) => {
+      // Used when coming from card info artist link
+      if (param['artist']) {
+        this.onChangeArtistFilter(param['artist'])
+      }
+    })
     if (queryParams['bloodCostSlider']) {
       this.bloodCostSlider = queryParams['bloodCostSlider']
         .split(',')
@@ -236,6 +248,9 @@ export class LibrarySectionComponent implements OnInit {
           this.openLibraryCard(card)
         }
       }, 1000)
+    }
+    if (queryParams['predefinedLimitedFormat']) {
+      this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
     this.initQuery()
@@ -257,6 +272,7 @@ export class LibrarySectionComponent implements OnInit {
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
     this.cardText = ''
+    this.artist = ''
   }
 
   onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
@@ -420,6 +436,24 @@ export class LibrarySectionComponent implements OnInit {
     })
   }
 
+  onChangeArtistFilter(artist: string) {
+    this.artist = artist
+    this.initQuery()
+    this.scrollToTop()
+    this.updateQueryParams({
+      ['artist']: this.artist || undefined,
+    })
+  }
+
+  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
+    this.predefinedLimitedFormat = predefinedLimitedFormat
+    this.initQuery()
+    this.scrollToTop()
+    this.updateQueryParams({
+      ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
+    })
+  }
+
   initQuery() {
     this.limitTo = LibrarySectionComponent.PAGE_SIZE
     this.updateQuery()
@@ -520,6 +554,18 @@ export class LibrarySectionComponent implements OnInit {
       if (entity.i18n?.text) {
         return searchIncludes(entity.i18n.text, this.cardText)
       } else {
+        return false
+      }
+    }
+    if (this.predefinedLimitedFormat) {
+      if (
+        !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
+      ) {
+        return false
+      }
+    }
+    if (this.artist) {
+      if (!searchIncludes(entity.artist, this.artist)) {
         return false
       }
     }

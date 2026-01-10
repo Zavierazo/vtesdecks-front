@@ -105,6 +105,10 @@ export class DecksComponent implements OnInit {
     this.initMainForm()
   }
 
+  get type(): string {
+    return this.mainForm.get('type')?.value
+  }
+
   onScroll(): void {
     if (this.decksQuery.getHasMore()) {
       this.decksService.getMore().pipe(untilDestroyed(this)).subscribe()

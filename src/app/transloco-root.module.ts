@@ -13,6 +13,7 @@ import { TranslocoHttpLoader } from './transloco-loader'
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', icon: 'assets/icons/lang/en.svg', title: 'English' },
   { code: 'es', icon: 'assets/icons/lang/es.svg', title: 'Español' },
+  { code: 'fr', icon: 'assets/icons/lang/fr.svg', title: 'Français' },
   { code: 'pt', icon: 'assets/icons/lang/pt.svg', title: 'Português' },
 ]
 export const DEFAULT_LANGUAGE = SUPPORTED_LANGUAGES[0]

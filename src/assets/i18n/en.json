@@ -48,7 +48,9 @@
     "limited_format": "Limited Format",
     "card_text": "Card Text",
     "card_text_placeholder": "Enter text or use /your-regex/",
-    "set": "Set"
+    "set": "Set",
+    "artist": "Artist",
+    "artist_placeholder": "Enter artist name..."
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -264,7 +266,7 @@
     "card_proportion_tooltip": "Customize Card Proportions",
     "custom": "Custom",
     "other_filters": "Other Filters",
-    "name": "Name",
+    "name": "Deck Name",
     "author": "Author",
     "card_text": "Card Text",
     "limited_format": "Limited Format",
@@ -365,7 +367,9 @@
     "limited_format": "Limited Format",
     "card_text": "Card Text",
     "card_text_placeholder": "Enter text or use /your-regex/",
-    "set": "Set"
+    "set": "Set",
+    "artist": "Artist",
+    "artist_placeholder": "Enter artist name..."
   },
   "library_section": {
     "card_name": "Card Name",
@@ -461,6 +465,7 @@
     "settings": "Profile Settings",
     "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
     "display_name": "Display Name",
+    "profile_image": "Profile Image URL (Override Gravatar)",
     "old_password": "Old Password",
     "old_password_placeholder": "Leave blank if you don't want to change it",
     "new_password": "New Password",
@@ -480,7 +485,11 @@
     "no_decks_found": "No public decks found",
     "no_binders_found": "No public collections found",
     "cards": "cards",
-    "view_all_decks": "View All Decks"
+    "view_all_decks": "View All Decks",
+    "followers": "Followers",
+    "following": "Following",
+    "no_followers": "No followers yet",
+    "no_following": "Not following anyone yet"
   },
   "verify_account": {
     "success": "Account verified!",

@@ -11,6 +11,12 @@
         <label class="form-check-label" for="favoriteCheck">{{ t('bookmarked') }}</label>
       </div>
     </div>
+    @if(type() === 'PRECONSTRUCTED') {
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
+      <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
+    </div>
+    }
     <label for="tags" class="form-label text-primary fw-bold">
       <i class="bi bi-tags me-2"></i>{{ t('tags') }}
     </label>
@@ -173,10 +179,12 @@
       </div>
     </div>
     <div class="form-label text-primary fw-bold">{{ t('other_filters') }}</div>
+    @if(type() !== 'PRECONSTRUCTED') {
     <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />
       <label for="deckName" class="text-primary"><i class="bi bi-type me-2"></i>{{ t('name') }}</label>
     </div>
+    }
     <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckLimitedFormat" [placeholder]="t('limited_format')"
         formControlName="limitedFormat" />

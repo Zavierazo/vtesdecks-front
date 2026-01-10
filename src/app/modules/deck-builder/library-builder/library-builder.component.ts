@@ -92,6 +92,8 @@ export class LibraryBuilderComponent implements OnInit {
   set!: string
   taints!: string[]
   cardText!: string
+  artist!: string
+  predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -156,6 +158,7 @@ export class LibraryBuilderComponent implements OnInit {
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
     this.cardText = ''
+    this.artist = ''
     this.initQuery()
   }
 
@@ -245,6 +248,16 @@ export class LibraryBuilderComponent implements OnInit {
 
   onChangeCardTextFilter(cardText: string) {
     this.cardText = cardText
+    this.initQuery()
+  }
+
+  onChangeArtistFilter(artist: string) {
+    this.artist = artist
+    this.initQuery()
+  }
+
+  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
+    this.predefinedLimitedFormat = predefinedLimitedFormat
     this.initQuery()
   }
 
@@ -369,6 +382,20 @@ export class LibraryBuilderComponent implements OnInit {
               entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
             )
           ) {
+            return false
+          }
+        }
+        if (this.predefinedLimitedFormat) {
+          if (
+            !entity.limitedFormats?.includes(
+              Number(this.predefinedLimitedFormat),
+            )
+          ) {
+            return false
+          }
+        }
+        if (this.artist) {
+          if (!searchIncludes(entity.artist, this.artist)) {
             return false
           }
         }

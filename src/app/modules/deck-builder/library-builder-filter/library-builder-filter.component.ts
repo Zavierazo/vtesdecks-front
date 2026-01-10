@@ -12,6 +12,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
 import { PATH_LIST } from '@utils'
@@ -42,6 +43,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
+  private apiDataService = inject(ApiDataService)
 
   @Input() limitedFormat?: boolean
   readonly limitedFormatChange = output<boolean>()
@@ -69,9 +71,14 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly taintsChange = output<string[]>()
   @Input() cardText!: string
   readonly cardTextChange = output<string>()
+  @Input() predefinedLimitedFormat?: string
+  readonly predefinedLimitedFormatChange = output<string>()
+  @Input() artist!: string
+  readonly artistChange = output<string>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
+  predefinedLimitedFormatControl!: FormControl
   sectControl!: FormControl
   pathControl!: FormControl
   titleControl!: FormControl
@@ -80,12 +87,14 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   poolCostSliderControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
+  artistControl!: FormControl
 
   sects$ = this.libraryQuery.selectSects()
   titles$ = this.libraryQuery.selectTitles()
   taints$ = this.libraryQuery.selectTaints()
   sets$ = this.libraryQuery.selectSets()
   pathList = PATH_LIST
+  predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   initialized = false
 
   ngOnInit() {
@@ -111,6 +120,8 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangePoolCostSlider()
     this.onChangeTaint()
     this.onChangeCardText()
+    this.onChangePredefinedLimitedFormat()
+    this.onChangeArtist()
   }
 
   onChangeTypeFilter(types: string[]) {
@@ -149,6 +160,21 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.limitedFormat = value
           this.limitedFormatChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangePredefinedLimitedFormat() {
+    this.predefinedLimitedFormatControl = new FormControl(
+      this.predefinedLimitedFormat,
+    )
+    this.predefinedLimitedFormatControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.predefinedLimitedFormat = value
+          this.predefinedLimitedFormatChange.emit(value)
         }),
       )
       .subscribe()
@@ -278,6 +304,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         tap((value) => {
           this.cardText = value
           this.cardTextChange.emit(value)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeArtist() {
+    this.artistControl = new FormControl(this.artist)
+    this.artistControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.artist = value
+          this.artistChange.emit(value)
         }),
       )
       .subscribe()

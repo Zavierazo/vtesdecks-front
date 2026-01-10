@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCardInfo, ApiCrypt, ApiLibrary, ApiShop } from '@models'
 import { NgbCollapse, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
@@ -44,9 +44,18 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
   ],
 })
 export class CardInfoComponent {
-  private readonly apiDataService = inject(ApiDataService)
+  private apiDataService = inject(ApiDataService)
+  private router = inject(Router)
 
   card = input.required<ApiCrypt | ApiLibrary>()
+  artists = computed(() => [
+    ...new Set(
+      this.card()
+        .artist.split(';')
+        .map((artist) => artist.trim())
+        .filter((artist) => artist.length > 0),
+    ),
+  ])
   cardInfo = input<ApiCardInfo | null>()
   routerClick = output<boolean>()
 

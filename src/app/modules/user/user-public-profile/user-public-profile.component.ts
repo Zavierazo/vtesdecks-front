@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,8 +9,10 @@ import {
 } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCollection, ApiDeck, ApiUser } from '@models'
+import { ApiCollection, ApiDeck, ApiPublicUser } from '@models'
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { ApiDataService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
@@ -32,6 +34,8 @@ import { DeckCardComponent } from '../../deck-card/deck-card.component'
     RouterLink,
     TranslocoPipe,
     UserFollowButtonComponent,
+    NgbPopover,
+    NgTemplateOutlet,
   ],
 })
 export class UserPublicProfileComponent implements OnInit {
@@ -39,10 +43,13 @@ export class UserPublicProfileComponent implements OnInit {
   private decksService = inject(DecksService)
   private decksQuery = inject(DecksQuery)
   private collectionApiService = inject(CollectionApiDataService)
+  private apiDataService = inject(ApiDataService)
 
   username = signal<string>('')
-  user = signal<ApiUser>({})
+  user = signal<ApiPublicUser | undefined>(undefined)
   isSupporter = computed(() => isSupporter(this.user()?.roles))
+  followersCount = computed(() => this.user()?.followers?.length || 0)
+  followingCount = computed(() => this.user()?.following?.length || 0)
   decks$!: Observable<ApiDeck[]>
   total$!: Observable<number>
   loading$!: Observable<boolean>
@@ -58,30 +65,34 @@ export class UserPublicProfileComponent implements OnInit {
       const username = params['username']
       if (username) {
         this.username.set(username)
+        this.loadUserData(username)
         this.loadUserDecks(username)
         this.loadUserBinders(username)
       }
     })
   }
 
-  private loadUserDecks(username: string) {
-    this.decksService.init({
-      author: username,
-      exactAuthor: true,
-      type: 'COMMUNITY',
-      order: 'POPULAR',
-    })
-    this.decksService
-      .getMore(6)
+  private loadUserData(username: string) {
+    this.apiDataService
+      .getPublicUser(username)
       .pipe(
         untilDestroyed(this),
-        tap((decks) => {
-          if (decks.decks && decks.decks.length > 0) {
-            this.user.set(decks.decks[0].user || {})
+        tap((user) => {
+          if (user) {
+            this.user.set(user)
           }
         }),
       )
       .subscribe()
+  }
+
+  private loadUserDecks(username: string) {
+    this.decksService.init({
+      username,
+      type: 'COMMUNITY',
+      order: 'POPULAR',
+    })
+    this.decksService.getMore(6).pipe(untilDestroyed(this)).subscribe()
   }
 
   private loadUserBinders(username: string) {

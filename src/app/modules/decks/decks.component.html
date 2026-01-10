@@ -69,13 +69,13 @@
       @if (!(isMobileOrTablet$ | async)!) {
       <div class="col-3 filters-desktop">
         <div class="filters-desktop-container">
-          <app-deck-filters #filters (resetFilters)="reset()" />
+          <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
         </div>
       </div>
       }
       <main class="p-0" [ngClass]="{
-        'col-12': (isMobileOrTablet$ | async),
-        'col-9': !(isMobileOrTablet$ | async)
+        'col-12': (isMobileOrTablet$ | async) === true,
+        'col-9': (isMobileOrTablet$ | async) === false
       }">
         <div class="decks-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
           [infiniteScrollDisabled]="(isLoading$ | async) ?? false" (scrolled)="onScroll()">
@@ -131,7 +131,7 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
     </div>
     <div class="offcanvas-body">
-      <app-deck-filters #filters (resetFilters)="reset()" />
+      <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
     </div>
     <div class="offcanvas-footer">
       <div class="d-grid gap-2">

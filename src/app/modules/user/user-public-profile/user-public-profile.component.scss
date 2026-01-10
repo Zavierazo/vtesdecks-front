@@ -19,3 +19,51 @@
 .rounded-circle {
   object-fit: cover;
 }
+
+.follow-stat {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  strong {
+    font-size: 1.1rem;
+  }
+}
+
+::ng-deep .popover-users {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  min-width: 250px;
+  max-width: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+
+  .user-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--bs-body-color);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--bs-secondary-bg);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 0.75rem;
+    }
+
+    .user-name {
+      font-weight: 500;
+    }
+  }
+}

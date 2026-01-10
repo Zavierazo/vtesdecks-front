@@ -17,11 +17,6 @@
     </div>
   </div>
   }
-  <div class="form-floating my-2">
-    <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text_placeholder')"
-      [formControl]="cardTextControl" />
-    <label for="deckCardText" class="text-primary">{{ t('card_text') }}</label>
-  </div>
   <label for="type" class="form-label text-primary fw-bold">{{ t('type') }}</label>
   <div id="type" class="row g-1">
     <app-library-type-filter [(types)]="types" (typesChange)="onChangeTypeFilter($event)" />
@@ -35,6 +30,39 @@
   <div id="clans" class="row g-1">
     <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true" />
   </div>
+  <div class="row g-1 mt-2">
+    <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>
+    <ngx-slider id="bloodCost" [options]="{
+        floor: 0,
+        ceil: 4,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true
+      }" [formControl]="bloodCostSliderControl" />
+  </div>
+  <div class="row g-1 mt-2">
+    <label for="poolCost" class="form-label text-primary fw-bold">{{ t('pool_cost') }}</label>
+    <ngx-slider id="poolCost" [options]="{
+        floor: 0,
+        ceil: 6,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true
+      }" [formControl]="poolCostSliderControl" />
+  </div>
+  @if ( limitedFormat === undefined ) {
+  <div class="row g-1 form-floating mt-2">
+    <select class="form-select" id="limitedFormatSelect" [formControl]="predefinedLimitedFormatControl">
+      <option selected></option>
+      @for (format of (predefinedLimitedFormats$ | async); track format.id) {
+      <option [value]="format.id">
+        {{ format.name }}
+      </option>
+      }
+    </select>
+    <label for="limitedFormatSelect">{{ t('limited_format') }}</label>
+  </div>
+  }
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="set" [formControl]="setControl">
       <option selected></option>
@@ -85,25 +113,15 @@
     </select>
     <label for="path">{{ t('path') }}</label>
   </div>
-  <div class="row g-1 mt-2">
-    <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>
-    <ngx-slider id="bloodCost" [options]="{
-        floor: 0,
-        ceil: 4,
-        step: 1,
-        showTicks: true,
-        showTicksValues: true
-      }" [formControl]="bloodCostSliderControl" />
+  <div class="form-floating my-2">
+    <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text_placeholder')"
+      [formControl]="cardTextControl" />
+    <label for="deckCardText" class="text-primary">{{ t('card_text') }}</label>
   </div>
-  <div class="row g-1 mt-2">
-    <label for="poolCost" class="form-label text-primary fw-bold">{{ t('pool_cost') }}</label>
-    <ngx-slider id="poolCost" [options]="{
-        floor: 0,
-        ceil: 6,
-        step: 1,
-        showTicks: true,
-        showTicksValues: true
-      }" [formControl]="poolCostSliderControl" />
+  <div class="form-floating my-2">
+    <input type="text" class="form-control" id="artist" [placeholder]="t('artist_placeholder')"
+      [formControl]="artistControl" />
+    <label for="artist" class="text-primary">{{ t('artist') }}</label>
   </div>
   <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
   <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">

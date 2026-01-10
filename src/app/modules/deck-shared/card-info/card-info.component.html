@@ -11,7 +11,16 @@
     }
   </p>
   <p>
-    <strong>{{ t('artist') }}: </strong>{{ card().artist }}
+    <strong>{{ t('artist') }}: </strong>
+    @for(artist of artists(); track artist; let last= $last ){
+    <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist }"
+      (click)="routerClick.emit(true)">
+      {{ artist }}
+    </a>
+    @if(!last) {
+    <span class="text-dark mx-1">•</span>
+    }
+    }
   </p>
   @if(displayCardInfo(); as cardInfo) {
   <div class="card border-0 shadow-sm mt-3">

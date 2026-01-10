@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core'
-import { ApiDeck } from '@models'
+import { ApiDeck, ApiDecks } from '@models'
 import { ApiDataService } from '@services'
 import { Observable, tap } from 'rxjs'
 import { DeckStore } from './deck.store'
@@ -18,6 +18,12 @@ export class DeckService {
     return this.apiDataService
       .getDeck(id, collectionTracker)
       .pipe(tap((deck) => this.updateDeck(deck)))
+  }
+
+  getSimilarDecks(limit: number): Observable<ApiDecks> {
+    return this.apiDataService.getDecks(0, limit, {
+      bySimilarity: this.deckStore.getValue().deck!.id,
+    })
   }
 
   toggleCollectionTracker(collectionTracker: boolean): Observable<boolean> {
