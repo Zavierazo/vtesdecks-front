@@ -21,6 +21,7 @@ import {
   ApiLibrary,
   ApiProxy,
   ApiProxyCardOption,
+  ApiPublicUser,
   ApiResetPassword,
   ApiResponse,
   ApiSet,
@@ -579,8 +580,8 @@ export class ApiDataService {
     )
   }
 
-  getPublicUser(username: string): Observable<ApiUser> {
-    return this.httpClient.get<ApiUser>(
+  getPublicUser(username: string): Observable<ApiPublicUser> {
+    return this.httpClient.get<ApiPublicUser>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
     )
   }

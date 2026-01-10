@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCollection, ApiDeck, ApiUser } from '@models'
+import { ApiCollection, ApiDeck, ApiPublicUser } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
@@ -43,7 +43,7 @@ export class UserPublicProfileComponent implements OnInit {
   private apiDataService = inject(ApiDataService)
 
   username = signal<string>('')
-  user = signal<ApiUser>({})
+  user = signal<ApiPublicUser | undefined>(undefined)
   isSupporter = computed(() => isSupporter(this.user()?.roles))
   decks$!: Observable<ApiDeck[]>
   total$!: Observable<number>

@@ -6,12 +6,12 @@
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="me-3">
-              <img [src]="user().profileImage || '/assets/img/default_user.png'"
-                alt="{{ user().displayName || username() }}" class="rounded-circle" width="80" height="80">
+              <img [src]="user()?.profileImage || '/assets/img/default_user.png'"
+                [alt]="user()?.displayName || username()" class="rounded-circle" width="80" height="80">
             </div>
             <div>
               <h2 class="mb-1">
-                {{ user().displayName || username()}}
+                {{ user()?.displayName || username()}}
                 @if( isSupporter() ) {
                 <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
                 }
@@ -23,6 +23,7 @@
                 <i class="bi bi-stack me-1"></i>
                 {{ (total$ | async) || 0 }} {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
               </p>
+
             </div>
           </div>
         </div>
