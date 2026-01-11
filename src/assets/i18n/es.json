@@ -121,7 +121,12 @@
     "edit_as_admin": "Editar (como Admin)",
     "related_decks": "Mazos Similares",
     "collection_tracker": "Rastreador de Colección",
-    "estimated_value": "Valor Estimado"
+    "estimated_value": "Valor Estimado",
+    "sort_by_quantity": "Cantidad",
+    "sort_by_name": "Nombre",
+    "sort_by_capacity": "Capacidad",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Grupo"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -159,7 +164,12 @@
     "limited_format": "Formato Limitado",
     "deck_copied": "Lista copiada al portapapeles",
     "collection_tracker": "Rastreador de Colección",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Cantidad",
+    "sort_by_name": "Nombre",
+    "sort_by_capacity": "Capacidad",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Grupo"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",

@@ -124,7 +124,7 @@
     </section>
   </div>
   <div class="col-12 d-flex align-items-center mt-3">
-    <div class="flex-grow-1"></div>
+    <div class="flex-grow-1 d-md-none"></div>
     <div class="d-flex align-items-top justify-content-center">
       <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
       <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
@@ -133,15 +133,42 @@
       </span>
     </div>
     <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
-      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions" />
+      <ng-container *ngTemplateOutlet="cryptButtons" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
   <div class="d-md-none mt-3 d-flex justify-content-center">
+    <ng-container *ngTemplateOutlet="cryptButtons" />
+  </div>
+  <ng-template #cryptButtons>
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
       [options]="displayModeOptions" />
-  </div>
+    <div ngbDropdown class="d-inline-block ms-3">
+      <button type="button" class="btn btn-primary" id="dropdownSortByCrypt" ngbDropdownToggle>
+        <i class="bi bi-sort-alpha-down"></i>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
+        @let cryptSortBy = cryptSortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
+          [ngClass]="{'active': cryptSortBy ==='quantity'}">
+          {{ t('sort_by_quantity') }}
+        </button>
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
+          {{ t('sort_by_name') }}
+        </button>
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
+          [ngClass]="{'active': cryptSortBy ==='capacity'}">
+          {{ t('sort_by_capacity') }}
+        </button>
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': cryptSortBy ==='clan'}">
+          {{ t('sort_by_clan') }}
+        </button>
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('group')" [ngClass]="{'active': cryptSortBy ==='group'}">
+          {{ t('sort_by_group') }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
   @if ((cryptErrors$ | async)!.length > 0) {
   <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
     @for (error of (cryptErrors$ | async)!; track error) {
@@ -151,7 +178,23 @@
     }
   </ul>
   }
-  <div class="col-12 text-center mt-2">
+  <div class="col-12 text-center mt-3">
+    <div class="row">
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (minCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-md-0">MIN</p>
+      </div>
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (maxCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-md-0">MAX</p>
+      </div>
+      <div class="col-4">
+        <p class="fw-bold mb-1">{{ (avgCrypt$ | async) ?? 0 }}</p>
+        <p class="text-uppercase mb-0">AVG</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 text-center mt-3">
     <div class="row justify-content-center">
       @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat.disciplines) {
       <h5 class="col-auto d-flex justify-content-center"
@@ -185,26 +228,8 @@
     }
     }
   </div>
-  <div class="col-12 text-center mt-3">
-    <div class="row">
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (minCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-md-0">MIN</p>
-      </div>
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (maxCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-md-0">MAX</p>
-      </div>
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (avgCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-0">AVG</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-12 d-flex align-items-center mt-3">
-
-    <div class="flex-grow-1"></div>
-
+  <div class="col-12 d-flex align-items-center mt-5">
+    <div class="flex-grow-1 d-md-none"></div>
     <div class="d-flex align-items-top  justify-content-center">
       <h1 (click)="openLibraryBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
       <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
@@ -221,15 +246,32 @@
       </div>
     </div>
     <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
-      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions" />
+      <ng-container *ngTemplateOutlet="libraryButtons" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
   <div class="d-md-none mt-3 d-flex justify-content-center">
+    <ng-container *ngTemplateOutlet="libraryButtons" />
+  </div>
+  <ng-template #libraryButtons>
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
       [options]="displayModeOptions" />
-  </div>
+    <div ngbDropdown class="d-inline-block ms-3">
+      <button type="button" class="btn btn-primary" id="dropdownSortByLibrary" ngbDropdownToggle>
+        <i class="bi bi-sort-alpha-down"></i>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
+        @let librarySortBy = librarySortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
+          [ngClass]="{'active': librarySortBy ==='quantity'}">
+          {{ t('sort_by_quantity') }}
+        </button>
+        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
+          {{ t('sort_by_name') }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
   @if ((libraryErrors$ | async)!.length > 0) {
   <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
     @for (error of (libraryErrors$ | async)!; track error) {
@@ -271,8 +313,9 @@
   </div>
   <div class="col-12 mt-3">
     @if ((libraryList$ | async)!; as libraryList) {
-    <app-library-list [libraryList]="libraryList" [displayMode]="(displayMode$ |async)!" [withControls]="true"
-      (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
+    <app-library-list [libraryList]="libraryList" [sortBy]="(librarySortBy$ | async)!"
+      [displayMode]="(displayMode$ |async)!" [withControls]="true" (cardAdded)="addCard($event)"
+      (cardRemoved)="removeCard($event)" />
     }
   </div>
 </main>

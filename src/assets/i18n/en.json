@@ -121,7 +121,12 @@
     "edit_as_admin": "Edit (as Admin)",
     "similar_decks": "Similar Decks",
     "collection_tracker": "Collection Tracker",
-    "estimated_value": "Estimated Value"
+    "estimated_value": "Estimated Value",
+    "sort_by_quantity": "Quantity",
+    "sort_by_name": "Name",
+    "sort_by_capacity": "Capacity",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Group"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -159,7 +164,12 @@
     "limited_format": "Limited Format",
     "deck_copied": "Deck copied to clipboard",
     "collection_tracker": "Collection Tracker",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Quantity",
+    "sort_by_name": "Name",
+    "sort_by_capacity": "Capacity",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Group"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",

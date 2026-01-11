@@ -2,6 +2,8 @@ import { ApiI18n } from './api-i18n'
 
 export type LibrarySortBy = keyof ApiLibrary | 'relevance' | 'trigramSimilarity'
 
+export type DeckLibrarySortBy = 'name' | 'quantity'
+
 export interface ApiLibrary {
   id: number
   name: string

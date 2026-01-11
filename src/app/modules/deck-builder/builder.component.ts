@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { AsyncPipe, NgClass } from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,7 +19,12 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiDeckBuilder, ApiDeckLimitedFormat } from '@models'
+import {
+  ApiDeckBuilder,
+  ApiDeckLimitedFormat,
+  DeckCryptSortBy,
+  DeckLibrarySortBy,
+} from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -78,6 +83,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
     MarkdownTextareaComponent,
     ToggleIconComponent,
     CryptGridCardComponent,
+    NgTemplateOutlet,
   ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
@@ -97,12 +103,14 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   form!: FormGroup
   deckId$ = this.deckBuilderQuery.selectDeckId()
   cryptList$ = this.deckBuilderQuery.selectCrypt()
+  cryptSortBy$ = this.deckBuilderQuery.selectCryptSortBy()
   cryptSize$ = this.deckBuilderQuery.selectCryptSize()
   cryptDisciplines$ = this.deckBuilderQuery.selectCryptDisciplines()
   minCrypt$ = this.deckBuilderQuery.selectMinCrypt()
   maxCrypt$ = this.deckBuilderQuery.selectMaxCrypt()
   avgCrypt$ = this.deckBuilderQuery.selectAvgCrypt()
   libraryList$ = this.deckBuilderQuery.selectLibrary()
+  librarySortBy$ = this.deckBuilderQuery.selectLibrarySortBy()
   librarySize$ = this.deckBuilderQuery.selectLibrarySize()
   libraryPoolCost$ = this.deckBuilderQuery.selectLibraryPoolCost()
   libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
@@ -517,5 +525,13 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .updateCollection(!this.deckBuilderQuery.getCollection())
       .pipe(untilDestroyed(this))
       .subscribe()
+  }
+
+  onChangeSortByLibrary(sortBy: DeckLibrarySortBy): void {
+    this.deckBuilderService.setLibrarySortBy(sortBy)
+  }
+
+  onChangeSortByCrypt(sortBy: DeckCryptSortBy): void {
+    this.deckBuilderService.setCryptSortBy(sortBy)
   }
 }

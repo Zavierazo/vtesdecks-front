@@ -3,6 +3,7 @@ import {
   AsyncPipe,
   CurrencyPipe,
   NgClass,
+  NgTemplateOutlet,
   TitleCasePipe,
 } from '@angular/common'
 import {
@@ -22,7 +23,13 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
-import { ApiCard, ApiDeck, ApiDecks } from '@models'
+import {
+  ApiCard,
+  ApiDeck,
+  ApiDecks,
+  DeckCryptSortBy,
+  DeckLibrarySortBy,
+} from '@models'
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -108,6 +115,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     ToggleIconComponent,
     CryptGridCardComponent,
     UserFollowButtonComponent,
+    NgTemplateOutlet,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
@@ -156,6 +164,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
   collectionTracker = false
 
   cdnDomain = environment.cdnDomain
+
+  sortByLibrary: DeckLibrarySortBy = 'quantity'
+
+  sortByCrypt: DeckCryptSortBy = 'quantity'
 
   displayMode$ = this.authQuery.selectDeckDisplayMode()
   displayModeOptions = [
@@ -383,6 +395,46 @@ export class DeckComponent implements OnInit, AfterViewInit {
           .pipe(untilDestroyed(this))
           .subscribe()
       }
+    }
+  }
+
+  onChangeSortByLibrary(sortBy: DeckLibrarySortBy): void {
+    this.sortByLibrary = sortBy
+  }
+
+  onChangeSortByCrypt(sortBy: DeckCryptSortBy): void {
+    this.sortByCrypt = sortBy
+  }
+
+  get cryptCards(): ApiCard[] | undefined {
+    return this.deckQuery.getDeck()?.crypt?.sort((a, b) => {
+      if (this.sortByCrypt === 'quantity') {
+        return this.sort(b.number, a.number)
+      } else {
+        const cardA = this.cryptQuery.getEntity(a.id)
+        const cardB = this.cryptQuery.getEntity(b.id)
+        return this.sort(
+          cardA![this.sortByCrypt],
+          cardB![this.sortByCrypt],
+          this.sortByCrypt === 'capacity' ? 'desc' : 'asc',
+        )
+      }
+    })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private sort(a: any, b: any, sortByOrder: 'asc' | 'desc' = 'asc'): number {
+    if (a === b) {
+      return 0
+    }
+    if (sortByOrder === 'asc') {
+      if (a === undefined) return -1
+      if (b === undefined) return 1
+      return a > b ? 1 : -1
+    } else {
+      if (a === undefined) return 1
+      if (b === undefined) return -1
+      return a < b ? 1 : -1
     }
   }
 }

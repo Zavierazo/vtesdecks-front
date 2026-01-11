@@ -7,6 +7,8 @@ import {
   ApiDeckLimitedFormat,
   ApiDisciplineStat,
   ApiLibrary,
+  DeckCryptSortBy,
+  DeckLibrarySortBy,
 } from '@models'
 import { isCrypt, isLibrary, roundNumber } from '@utils'
 import { combineLatest, map, Observable } from 'rxjs'
@@ -44,23 +46,54 @@ export class DeckBuilderQuery {
       this.selectCollectionCards(),
     ]).pipe(
       map(([cryptCards, collectionCards]) => {
-        return cryptCards.map(
-          (card: ApiCard) =>
-            ({
-              ...card,
-              collection: this.getCollectionType(
-                card.id,
-                card.number,
-                collectionCards,
-              ),
-            }) as ApiCard,
-        )
+        return cryptCards
+          .map(
+            (card: ApiCard) =>
+              ({
+                ...card,
+                collection: this.getCollectionType(
+                  card.id,
+                  card.number,
+                  collectionCards,
+                ),
+              }) as ApiCard,
+          )
+          .sort((a: ApiCard, b: ApiCard) => {
+            const sortByCrypt = this.store.getValue().cryptSortBy
+            if (sortByCrypt === 'quantity') {
+              return this.sort(b.number, a.number)
+            } else {
+              const cardA = this.cryptQuery.getEntity(a.id)
+              const cardB = this.cryptQuery.getEntity(b.id)
+              return this.sort(
+                cardA![sortByCrypt],
+                cardB![sortByCrypt],
+                sortByCrypt === 'capacity' ? 'desc' : 'asc',
+              )
+            }
+          })
       }),
     )
   }
 
   private selectCryptCards() {
     return this.store.select((state) => state.cards.filter(isCrypt))
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private sort(a: any, b: any, sortByOrder: 'asc' | 'desc' = 'asc'): number {
+    if (a === b) {
+      return 0
+    }
+    if (sortByOrder === 'asc') {
+      if (a === undefined) return -1
+      if (b === undefined) return 1
+      return a > b ? 1 : -1
+    } else {
+      if (a === undefined) return 1
+      if (b === undefined) return -1
+      return a < b ? 1 : -1
+    }
   }
 
   selectCryptSize(): Observable<number> {
@@ -338,5 +371,13 @@ export class DeckBuilderQuery {
 
   getValidation(): ((query: DeckBuilderQuery) => string[]) | undefined {
     return this.store.getValue().validation
+  }
+
+  selectCryptSortBy(): Observable<DeckCryptSortBy> {
+    return this.store.select((state) => state.cryptSortBy)
+  }
+
+  selectLibrarySortBy(): Observable<DeckLibrarySortBy> {
+    return this.store.select((state) => state.librarySortBy)
   }
 }

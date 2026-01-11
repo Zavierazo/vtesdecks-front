@@ -3,6 +3,7 @@
     "version": "2.63.0",
     "date": "16th January, 2026",
     "changes": [
+      "Added sort options to crypt/library in deck page and deck builder.",
       "Fix issue for public profile with non existing users.",
       "Minor bug fixes and performance improvements."
     ]

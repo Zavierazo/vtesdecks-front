@@ -273,7 +273,7 @@
       </section>
     </div>
     <div class="col-12 d-flex align-items-center mt-3">
-      <div class="flex-grow-1"></div>
+      <div class="flex-grow-1 d-md-none"></div>
       <div class="d-flex align-items-top  justify-content-center">
         <h1>{{ 'shared.crypt' | transloco }}</h1>
         <span class="circle_number ms-2" [title]="t('total_crypt')">
@@ -281,47 +281,42 @@
         </span>
       </div>
       <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
-        <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-          [options]="displayModeOptions" />
+        <ng-container *ngTemplateOutlet="cryptButtons" />
       </div>
       <div class="d-md-none flex-grow-1"></div>
     </div>
     <div class="d-md-none mt-3 d-flex justify-content-center">
+      <ng-container *ngTemplateOutlet="cryptButtons" />
+    </div>
+
+    <ng-template #cryptButtons>
       <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
         [options]="displayModeOptions" />
-    </div>
-    <div class="col-12 text-center mt-2">
-      <div class="row justify-content-center">
-        @for (disciplineStat of deck.stats.cryptDisciplines; track disciplineStat) {
-        <h5 class="col-auto d-flex justify-content-center"
-          [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
-          <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-          &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
-        </h5>
-        }
-      </div>
-    </div>
-    <div class="col-12 mt-3">
-      @if((displayMode$ |async) === 'grid') {
-      <div class="row m-2 g-2 justify-content-center">
-        @for (crypt of deck.crypt; track crypt) {
-        <div class="col-6 col-md-auto">
-          <app-crypt-grid-card [card]="crypt" [cryptSize]="deck.stats.crypt"
-            (click)="openCryptCard(crypt, deck.crypt!)" />
+      <div ngbDropdown class="d-inline-block ms-3">
+        <button type="button" class="btn btn-primary" id="dropdownSortByCrypt" ngbDropdownToggle>
+          <i class="bi bi-sort-alpha-down"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
+          <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
+            [ngClass]="{'active': sortByCrypt ==='quantity'}">
+            {{ t('sort_by_quantity') }}
+          </button>
+          <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': sortByCrypt ==='name'}">
+            {{ t('sort_by_name') }}
+          </button>
+          <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
+            [ngClass]="{'active': sortByCrypt ==='capacity'}">
+            {{ t('sort_by_capacity') }}
+          </button>
+          <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': sortByCrypt ==='clan'}">
+            {{ t('sort_by_clan') }}
+          </button>
+          <button ngbDropdownItem (click)="onChangeSortByCrypt('group')" [ngClass]="{'active': sortByCrypt ==='group'}">
+            {{ t('sort_by_group') }}
+          </button>
         </div>
-        }
       </div>
-      }@else{
-      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-        @for (crypt of deck.crypt; track crypt) {
-        <ul class="col list-group">
-          <app-crypt [card]="crypt" [cryptSize]="deck.stats.crypt" (click)="openCryptCard(crypt, deck.crypt!)"
-            [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true" />
-        </ul>
-        }
-      </div>
-      }
-    </div>
+    </ng-template>
     <div class="col-12 text-center mt-3">
       <div class="row">
         <div class="col-4">
@@ -338,32 +333,81 @@
         </div>
       </div>
     </div>
-    <div class="col-12 d-flex align-items-center mt-3">
-      <div class="flex-grow-1"></div>
-      <div class="d-flex align-items-top  justify-content-center">
+    <div class="col-12 text-center mt-3">
+      <div class="row justify-content-center">
+        @for (disciplineStat of deck.stats.cryptDisciplines; track disciplineStat) {
+        <h5 class="col-auto d-flex justify-content-center"
+          [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
+          <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
+          &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
+        </h5>
+        }
+      </div>
+    </div>
+    <div class="col-12 mt-3">
+      @if((displayMode$ |async) === 'grid') {
+      <div class="row m-2 g-2 justify-content-center">
+        @for (crypt of cryptCards; track crypt) {
+        <div class="col-6 col-md-auto">
+          <app-crypt-grid-card [card]="crypt" [cryptSize]="deck.stats.crypt"
+            (click)="openCryptCard(crypt, cryptCards!)" />
+        </div>
+        }
+      </div>
+      }@else{
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+        @for (crypt of cryptCards; track crypt) {
+        <ul class="col list-group">
+          <app-crypt [card]="crypt" [cryptSize]="deck.stats.crypt" (click)="openCryptCard(crypt, cryptCards!)"
+            [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true" />
+        </ul>
+        }
+      </div>
+      }
+    </div>
+    <div class="col-12 d-flex align-items-center mt-5">
+      <div class="flex-grow-1 d-md-none"></div>
+      <div class="d-flex align-items-top justify-content-center">
         <h1>{{ 'shared.library' | transloco }}</h1>
         <span class="circle_number ms-2" [title]="t('total_library')">
           {{ deck.stats.library }}
         </span>
         <div>
           <div class="costx ms-2" [title]="t('total_pool_cost')">
-            {{ deck.stats.poolCost }}<i class="vtes poolcost"></i>
+            {{ deck.stats.poolCost }} <i class="vtes poolcost"></i>
           </div>
           <div class="costx ms-2" [title]="t('total_blood_cost')">
-            {{ deck.stats.bloodCost }}<i class="vtes bloodcost"></i>
+            {{ deck.stats.bloodCost }} <i class="vtes bloodcost"></i>
           </div>
         </div>
       </div>
       <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
-        <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-          [options]="displayModeOptions" />
+        <ng-container *ngTemplateOutlet="libraryButtons" />
       </div>
       <div class="d-md-none flex-grow-1"></div>
     </div>
     <div class="d-md-none mt-3 d-flex justify-content-center">
+      <ng-container *ngTemplateOutlet="libraryButtons" />
+    </div>
+    <ng-template #libraryButtons>
       <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
         [options]="displayModeOptions" />
-    </div>
+      <div ngbDropdown class="d-inline-block ms-3">
+        <button type="button" class="btn btn-primary" id="dropdownSortByLibrary" ngbDropdownToggle>
+          <i class="bi bi-sort-alpha-down"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
+          <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
+            [ngClass]="{'active': sortByLibrary ==='quantity'}">
+            {{ t('sort_by_quantity') }}
+          </button>
+          <button ngbDropdownItem (click)="onChangeSortByLibrary('name')"
+            [ngClass]="{'active': sortByLibrary ==='name'}">
+            {{ t('sort_by_name') }}
+          </button>
+        </div>
+      </div>
+    </ng-template>
 
     <div class="col-12 text-center mt-2">
       <div class="row justify-content-center">
@@ -399,7 +443,7 @@
     </div>
     <div class="col-12 mt-3">
       @if (deck.library) {
-      <app-library-list [libraryList]="deck.library" [displayMode]="(displayMode$ |async)!" />
+      <app-library-list [libraryList]="deck.library" [sortBy]="sortByLibrary" [displayMode]="(displayMode$ |async)!" />
       }
     </div>
     <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
