@@ -48,14 +48,18 @@ export class CardInfoComponent {
   private router = inject(Router)
 
   card = input.required<ApiCrypt | ApiLibrary>()
-  artists = computed(() => [
-    ...new Set(
-      this.card()
-        .artist.split(';')
-        .map((artist) => artist.trim())
-        .filter((artist) => artist.length > 0),
-    ),
-  ])
+  artists = computed(() =>
+    this.card().artist
+      ? [
+          ...new Set(
+            this.card()
+              .artist.split(';')
+              .map((artist) => artist.trim())
+              .filter((artist) => artist.length > 0),
+          ),
+        ]
+      : undefined,
+  )
   cardInfo = input<ApiCardInfo | null>()
   routerClick = output<boolean>()
 

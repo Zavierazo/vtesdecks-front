@@ -10,9 +10,10 @@
     </span>
     }
   </p>
+  @if(artists(); as artists){
   <p>
     <strong>{{ t('artist') }}: </strong>
-    @for(artist of artists(); track artist; let last= $last ){
+    @for(artist of artists; track artist; let last= $last ){
     <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist }"
       (click)="routerClick.emit(true)">
       {{ artist }}
@@ -22,6 +23,7 @@
     }
     }
   </p>
+  }
   @if(displayCardInfo(); as cardInfo) {
   <div class="card border-0 shadow-sm mt-3">
     <div class="card-header bg-warning text-dark py-2" role="button" (click)="rulingsCollapsed = !rulingsCollapsed"
