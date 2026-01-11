@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.63.0",
+    "date": "16th January, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.62.0",
     "date": "10th January, 2026",
     "changes": [
@@ -10,8 +17,7 @@
       "Feature: Added Limited Format and Artist filters to the Crypt and Library sections.",
       "Feature: Added support for custom profile image URLs, overriding Gravatar when provided.",
       "Data: Added 'Kickstarter Unleashed (2021)' as a distinct set to differentiate it from 'Anarch Unbound', 'Danse Macabre' and 'The Unaligned'. Existing collection cards were migrated automatically.",
-      "Fix: Resolved an issue where some decks did not appear on public profile pages.",
-      "Minor bug fixes and performance improvements."
+      "Fix: Resolved an issue where some decks did not appear on public profile pages."
     ]
   },
   {
