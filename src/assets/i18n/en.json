@@ -489,7 +489,8 @@
     "followers": "Followers",
     "following": "Following",
     "no_followers": "No followers yet",
-    "no_following": "Not following anyone yet"
+    "no_following": "Not following anyone yet",
+    "user_not_found": "User not found"
   },
   "verify_account": {
     "success": "Account verified!",

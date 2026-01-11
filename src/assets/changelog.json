@@ -3,6 +3,7 @@
     "version": "2.63.0",
     "date": "16th January, 2026",
     "changes": [
+      "Fix issue for public profile with non existing users.",
       "Minor bug fixes and performance improvements."
     ]
   },

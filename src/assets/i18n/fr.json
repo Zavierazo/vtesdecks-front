@@ -489,7 +489,8 @@
     "followers": "Abonnés",
     "following": "Abonnements",
     "no_followers": "Aucun abonné pour le moment",
-    "no_following": "Aucun abonnement pour le moment"
+    "no_following": "Aucun abonnement pour le moment",
+    "user_not_found": "Utilisateur non trouvé"
   },
   "verify_account": {
     "success": "Compte vérifié !",

@@ -488,7 +488,8 @@
     "followers": "Seguidores",
     "following": "Seguindo",
     "no_followers": "Nenhum seguidor ainda",
-    "no_following": "Não segue ninguém ainda"
+    "no_following": "Não segue ninguém ainda",
+    "user_not_found": "Usuário não encontrado"
   },
   "verify_account": {
     "success": "Conta verificada!",
