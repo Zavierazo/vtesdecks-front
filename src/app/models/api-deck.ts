@@ -3,7 +3,7 @@ import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
 import { ApiDeckWarning } from './api-deck-warning'
 import { ApiCardErrata } from './api-errata'
-import { ApiUser } from './api-user'
+import { ApiPublicUser } from './api-public-user'
 
 export interface ApiDeck {
   id: string
@@ -18,7 +18,7 @@ export interface ApiDeck {
   players: number
   year: number
   author: string
-  user?: ApiUser
+  user?: ApiPublicUser
   url?: string
   source?: string
   description?: string
