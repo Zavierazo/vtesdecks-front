@@ -1,0 +1,82 @@
+<ng-container *transloco="let t; prefix: 'search_bar'">
+  <div class="modal-header">
+    <div class="d-flex w-100 input-group" role="search">
+      <span class="input-group-text" id="basic-addon1">
+        <i class="bi bi-search"></i>
+      </span>
+      <input class="form-control me-2" type="search" [placeholder]="t('search_placeholder')"
+        [attr.aria-label]="t('search_placeholder')" [formControl]="queryControl" (keydown)="onKeydown($event)" />
+    </div>
+  </div>
+  <div class="modal-body results" #modalBody>
+    @if(cardResults().length === 0 && deckResults().length === 0 && userResults().length === 0){
+    <h5 class="text-center text-primary"> {{ t('no_results') }}</h5>
+    }
+    @if(cardResults().length > 0){
+    <h5 class="text-primary">{{ t('card_results') }}</h5>
+    @for (card of cardResults(); track card.id; let i = $index) {
+    <button class="btn btn-link text-decoration-none text-black w-100 d-flex align-items-center mb-2 search-result-item"
+      [class.selected]="selectedIndex() === i" (click)="selectResult(i)">
+      <strong>{{ card.name }}</strong>
+    </button>
+    }
+    }
+    @if(deckResults().length > 0){
+    <h5 class="text-primary">{{ t('deck_results') }}</h5>
+    @for (deck of deckResults(); track deck.id; let i = $index) {
+    <button class="btn btn-link text-decoration-none text-black w-100 d-flex align-items-center mb-2 search-result-item"
+      [class.selected]="selectedIndex() === (cardResults().length + i)"
+      (click)="selectResult(cardResults().length +  i)">
+      <div>
+        <strong>{{ deck.name }}</strong>
+      </div>
+    </button>
+    }
+    }
+    @if(userResults().length > 0){
+    <h5 class="text-primary">{{ t('user_results') }}</h5>
+    @for (user of userResults(); track user.user; let i = $index) {
+    <button class="btn btn-link text-decoration-none text-black w-100 d-flex align-items-center mb-2 search-result-item"
+      [class.selected]="selectedIndex() === (cardResults().length + deckResults().length + i)"
+      (click)="selectResult(cardResults().length + deckResults().length + i)">
+      <img [src]="user.profileImage" class="rounded-circle me-2" alt="Avatar" width="40" height="40" />
+      <div>
+        <div>
+          <strong>{{ user.displayName }}</strong>
+          <span class="text-muted ms-1 fs-7">(@{{ user.user }})</span>
+        </div>
+      </div>
+    </button>
+    }
+    }
+  </div>
+  <div class="modal-footer justify-content-start d-none d-md-flex flex-wrap gap-2">
+    <div>
+      <button class="btn btn-sm btn-secondary" [disabled]="true">
+        <i class="bi bi-arrow-return-left"></i>
+      </button>
+      <span>
+        {{ t('to_select') }}
+      </span>
+    </div>
+    <div>
+      <button class="btn btn-sm btn-secondary me-1" [disabled]="true">
+        <i class="bi bi-arrow-up"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary" [disabled]="true">
+        <i class="bi bi-arrow-down"></i>
+      </button>
+      <span>
+        {{ t('to_navigate') }}
+      </span>
+    </div>
+    <div>
+      <button class="btn btn-sm btn-secondary" [disabled]="true">
+        esc
+      </button>
+      <span>
+        {{ t('to_close') }}
+      </span>
+    </div>
+  </div>
+</ng-container>

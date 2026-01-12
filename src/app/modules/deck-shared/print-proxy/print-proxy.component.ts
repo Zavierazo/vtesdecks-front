@@ -105,25 +105,27 @@ export class PrintProxyComponent implements OnInit {
 
   private fetchProxyOptions() {
     const cardIds = this.cards.map((card) => card.id)
-    this.apiDataService
-      .getProxyOptions(cardIds)
-      .pipe(
-        untilDestroyed(this),
-        filter((cardOptions) => cardOptions.length > 0),
-        tap((cardOptions) => {
-          cardOptions
-            .reduce((map, option) => {
-              const options = map.get(option.cardId) ?? []
-              options.push(option)
-              map.set(option.cardId, options)
-              return map
-            }, new Map<number, ApiProxyCardOption[]>())
-            .forEach((setOptions, cardId) =>
-              this.updateSetOptions(cardId, setOptions),
-            )
-        }),
-      )
-      .subscribe()
+    if (cardIds.length > 0) {
+      this.apiDataService
+        .getProxyOptions(cardIds)
+        .pipe(
+          untilDestroyed(this),
+          filter((cardOptions) => cardOptions.length > 0),
+          tap((cardOptions) => {
+            cardOptions
+              .reduce((map, option) => {
+                const options = map.get(option.cardId) ?? []
+                options.push(option)
+                map.set(option.cardId, options)
+                return map
+              }, new Map<number, ApiProxyCardOption[]>())
+              .forEach((setOptions, cardId) =>
+                this.updateSetOptions(cardId, setOptions),
+              )
+          }),
+        )
+        .subscribe()
+    }
   }
 
   private updateSetOptions(

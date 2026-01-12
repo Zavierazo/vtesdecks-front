@@ -4,6 +4,12 @@
       <img class="header-logo" width="60" height="60" [src]="logoPath" alt="logo" />
       <img class="header-logo-text" width="100" height="60" src="/assets/img/logo_text.png" alt="vtes decks" />
     </a>
+    <button class="btn btn-outline-light d-block d-lg-none" type="button" (click)="openSearchModal()">
+      <i class="bi bi-search"></i>
+      <span class="ms-1 d-none d-sm-inline">
+        {{ t('search') }}
+      </span>
+    </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"
       aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation"
       (click)="isCollapsed = !isCollapsed">
@@ -115,6 +121,12 @@
         </li>
       </ul>
       <ul class="navbar-nav">
+        <button class="btn btn-outline-light d-none d-lg-block me-2" type="button" (click)="openSearchModal()">
+          <i class="bi bi-search"></i>
+          <span class="ms-1">
+            {{ t('search') }}
+          </span>
+        </button>
         <app-lang-selector />
         @if (themeEnabled) {
         <app-theme-selector />

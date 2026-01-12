@@ -3,9 +3,12 @@
     "version": "2.63.0",
     "date": "16th January, 2026",
     "changes": [
-      "Feature: Sort options to crypt/library in deck page and deck builder.",
-      "Fix: Cards filter not showing cards after refresh or going back from deck page.",
-      "Fix: Add error handling for public profile with non existing users.",
+      "Feature: Added a global search bar in the navigation for instant access to cards, decks, and users.",
+      "Feature: Added advanced sorting for Crypt and Library cards in the Deck Page and Deck Builder.",
+      "Feature: Integrated eBay price data from strategic vendors, achieving comprehensive price coverage across the entire card database.",
+      "UX: Enhanced navigation to persist filters and scroll position when returning from deck pages.",
+      "Fix: Resolved an issue where deck card filters failed to persist after a refresh or returning from a deck page.",
+      "Fix: Implemented error handling for public profile links of non-existent users.",
       "Minor bug fixes and performance improvements."
     ]
   },

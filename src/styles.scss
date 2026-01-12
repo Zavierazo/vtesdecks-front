@@ -182,3 +182,15 @@ blockquote p {
 .text-gold {
   color: #ffd700;
 }
+
+/** Search result item **/
+.search-result-item {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover,
+  &.selected {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}

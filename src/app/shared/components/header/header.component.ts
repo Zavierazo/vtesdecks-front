@@ -27,6 +27,7 @@ import { IsLoggedDirective } from '../../directives/is-logged.directive'
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
+import { SearchBarComponent } from '../search-bar/search-bar.component'
 import { TableSeatingComponent } from '../table-seating/table-seating.component'
 import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component'
 
@@ -109,6 +110,11 @@ export class HeaderComponent implements OnInit {
     this.modalService.open(TableSeatingComponent, { size: 'xl' })
   }
 
+  openSearchModal() {
+    this.isCollapsed = true
+    this.modalService.open(SearchBarComponent, { size: 'xl' })
+  }
+
   get logoPath(): string {
     if (isChristmas()) {
       return '/assets/img/logo_christmas.png'
@@ -118,6 +124,7 @@ export class HeaderComponent implements OnInit {
       return '/assets/img/logo.png'
     }
   }
+
   get themeEnabled(): boolean {
     return this.colorThemeService.enabled
   }

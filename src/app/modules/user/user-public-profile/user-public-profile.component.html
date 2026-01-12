@@ -13,8 +13,9 @@
               <h2 class="mb-1">
                 {{ user()?.displayName || username()}}
                 @if( isSupporter() ) {
-                <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
+                <i class="bi bi-patch-check-fill text-primary me-2" [title]="'shared.supporter' | transloco"></i>
                 }
+                <span class="text-muted fs-5">(@{{ user()?.user }})</span>
                 @if(user() && username()){
                 <app-user-follow-button [username]="username()" />
                 }

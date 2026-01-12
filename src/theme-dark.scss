@@ -20,3 +20,10 @@
 .text-black-50 {
   color: rgba(var(--bs-white-rgb), 0.5) !important;
 }
+
+.search-result-item {
+  &:hover,
+  &.selected {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}

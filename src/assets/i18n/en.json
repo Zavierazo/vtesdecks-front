@@ -321,7 +321,8 @@
     "notifications": "Notifications",
     "unread_notifications": "unread notifications",
     "proxy_generator": "Proxy Generator",
-    "vtes_ai_chat": "VTES AI Chat"
+    "vtes_ai_chat": "VTES AI Chat",
+    "search": "Search"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -949,5 +950,15 @@
     "follow_tooltip": "Click to follow this user and receive notifications about their new decks and activities.",
     "unfollow_tooltip": "You are following this user. Click to unfollow.",
     "follow_error": "Something went wrong with the follow action"
+  },
+  "search_bar": {
+    "search_placeholder": "Search for decks, cards, users...",
+    "to_select": "to select",
+    "to_navigate": "to navigate",
+    "to_close": "to close",
+    "no_results": "No results found",
+    "card_results": "Card Results",
+    "deck_results": "Deck Results",
+    "user_results": "User Results"
   }
 }

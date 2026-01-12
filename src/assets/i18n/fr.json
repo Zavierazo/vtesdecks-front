@@ -321,7 +321,8 @@
     "notifications": "Notifications",
     "unread_notifications": "notifications non lues",
     "proxy_generator": "Générateur de Proxy",
-    "vtes_ai_chat": "Chat VTES AI"
+    "vtes_ai_chat": "Chat VTES AI",
+    "search": "Recherche"
   },
   "home": {
     "welcome_title": "Bienvenue sur VTES Decks",
@@ -949,5 +950,15 @@
     "follow_tooltip": "Cliquez pour suivre cet utilisateur et recevoir des notifications sur ses nouveaux decks.",
     "unfollow_tooltip": "Vous suivez cet utilisateur. Cliquez pour ne plus le suivre.",
     "follow_error": "Une erreur est survenue lors de l'action de suivi"
+  },
+  "search_bar": {
+    "search_placeholder": "Rechercher des decks, des cartes, des utilisateurs...",
+    "to_select": "pour sélectionner",
+    "to_navigate": "pour naviguer",
+    "to_close": "pour fermer",
+    "no_results": "Aucun résultat trouvé",
+    "card_results": "Résultats des cartes",
+    "deck_results": "Résultats des decks",
+    "user_results": "Résultats des utilisateurs"
   }
 }
