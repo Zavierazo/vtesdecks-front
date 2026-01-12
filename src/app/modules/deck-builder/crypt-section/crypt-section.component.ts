@@ -244,7 +244,7 @@ export class CryptSectionComponent implements OnInit {
         if (card) {
           this.openCryptCard(card)
         }
-      }, 1000)
+      }, 300)
     }
     if (queryParams['predefinedLimitedFormat']) {
       this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']

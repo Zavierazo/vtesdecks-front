@@ -247,7 +247,7 @@ export class LibrarySectionComponent implements OnInit {
         if (card) {
           this.openLibraryCard(card)
         }
-      }, 1000)
+      }, 300)
     }
     if (queryParams['predefinedLimitedFormat']) {
       this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
