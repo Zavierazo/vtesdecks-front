@@ -10,6 +10,7 @@ export interface DecksState {
   offset: number
   total: number
   restorableDecks: ApiDeck[]
+  lastViewedDeckId: string | null
 }
 
 const initialState: DecksState = {
@@ -18,6 +19,7 @@ const initialState: DecksState = {
   offset: 0,
   total: 0,
   restorableDecks: [],
+  lastViewedDeckId: null,
 }
 
 @Injectable({
@@ -58,6 +60,13 @@ export class DecksStore {
     this.update((state) => ({
       ...state,
       restorableDecks,
+    }))
+  }
+
+  setLastViewedDeckId(deckId: string | null) {
+    this.update((state) => ({
+      ...state,
+      lastViewedDeckId: deckId,
     }))
   }
 
@@ -106,5 +115,9 @@ export class DecksStore {
 
   selectEntities(): Observable<ApiDeck[]> {
     return this.entities$
+  }
+
+  isEmpty(): boolean {
+    return this.entities().length === 0
   }
 }

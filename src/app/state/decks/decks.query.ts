@@ -45,4 +45,8 @@ export class DecksQuery {
   getOffset(): number {
     return this.store.getValue().offset
   }
+
+  getLastViewedDeckId(): string | null {
+    return this.store.getValue().lastViewedDeckId
+  }
 }

@@ -16,6 +16,7 @@ import { MediaService } from '@services'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { TruncatePipe } from '@shared/pipes/truncate.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { DecksService } from '@state/decks/decks.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId, isSupporter } from '@utils'
 import { tap } from 'rxjs'
@@ -42,6 +43,7 @@ export class DeckCardComponent implements OnInit {
   private readonly mediaService = inject(MediaService)
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
+  private readonly decksService = inject(DecksService)
 
   deck = input.required<ApiDeck>()
   height = input<string>('auto')
@@ -58,6 +60,10 @@ export class DeckCardComponent implements OnInit {
         tap((isMobileOrTablet) => (this.isMobileOrTablet = isMobileOrTablet)),
       )
       .subscribe()
+  }
+
+  onDeckClick(): void {
+    this.decksService.setLastViewedDeckId(this.deck().id)
   }
 
   onTagClick(tag: string, event: MouseEvent): void {

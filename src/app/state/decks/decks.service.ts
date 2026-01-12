@@ -17,11 +17,11 @@ export class DecksService {
   init(params: Params): boolean {
     const currentParams = this.decksStore.getValue().params
     if (
-      currentParams &&
-      Object.keys(currentParams).length > 0 &&
+      !this.decksStore.isEmpty() &&
+      Object.keys(currentParams).length === Object.keys(params).length &&
       JSON.stringify(currentParams) === JSON.stringify(params)
     ) {
-      // params did not change, so no need to re-initialize
+      // No need to re-initialize if params are the same and store is not empty
       return false
     }
     this.decksStore.remove()
@@ -42,6 +42,14 @@ export class DecksService {
         .pipe(tap((decks) => this.updateDecks(decks, limit)))
     }
     return EMPTY
+  }
+
+  clearLastViewedDeck(): void {
+    this.decksStore.setLastViewedDeckId(null)
+  }
+
+  setLastViewedDeckId(deckId: string): void {
+    this.decksStore.setLastViewedDeckId(deckId)
   }
 
   private updateDecks(response: ApiDecks, limit: number) {
