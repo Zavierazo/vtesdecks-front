@@ -17,11 +17,14 @@ import {
   ApiPublicUser,
   ApiSearchResponse,
 } from '@models'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId } from '@utils'
 import {
+  catchError,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -29,6 +32,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { CryptCardComponent } from 'src/app/modules/deck-shared/crypt-card/crypt-card.component'
+import { LibraryCardComponent } from 'src/app/modules/deck-shared/library-card/library-card.component'
 
 @UntilDestroy()
 @Component({
@@ -40,8 +45,11 @@ import {
 })
 export class SearchBarComponent implements OnInit {
   activeModal = inject(NgbActiveModal)
+  private modalService = inject(NgbModal)
   private apiDataService = inject(ApiDataService)
   private router = inject(Router)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
 
   queryControl = new FormControl<string>('')
   cardResults = signal<(ApiCrypt | ApiLibrary)[]>([])
@@ -59,7 +67,9 @@ export class SearchBarComponent implements OnInit {
         filter((query): query is string => query !== null),
         switchMap((query: string) =>
           query.length >= 3
-            ? this.apiDataService.search(query)
+            ? this.apiDataService
+                .search(query)
+                .pipe(catchError(() => of({ cards: [], decks: [], users: [] })))
             : of({ cards: [], decks: [], users: [] }),
         ),
         tap((results: ApiSearchResponse) => {
@@ -111,7 +121,12 @@ export class SearchBarComponent implements OnInit {
     if (index < cardResults.length) {
       // Selected a card
       const card = cardResults[index]
-      this.router.navigateByUrl(this.getCardUrl(card))
+      // this.router.navigateByUrl(this.getCardUrl(card))
+      if (isCryptId(card.id)) {
+        this.openCryptCard(card.id)
+      } else {
+        this.openLibraryCard(card.id)
+      }
     } else if (index < cardResults.length + deckResults.length) {
       // Selected a deck
       const deck = deckResults[index - cardResults.length]
@@ -124,16 +139,6 @@ export class SearchBarComponent implements OnInit {
     this.activeModal.close()
   }
 
-  getCardUrl(card: ApiCrypt | ApiLibrary): string {
-    return this.router
-      .createUrlTree(['cards', isCryptId(card.id) ? 'crypt' : 'library'], {
-        queryParams: {
-          cardId: card.id,
-        },
-      })
-      .toString()
-  }
-
   private scrollToSelected(): void {
     setTimeout(
       () =>
@@ -143,5 +148,27 @@ export class SearchBarComponent implements OnInit {
         }),
       100,
     )
+  }
+
+  private openCryptCard(cardId: number): void {
+    const modalRef = this.modalService.open(CryptCardComponent, {
+      size: 'lg',
+      centered: true,
+      scrollable: true,
+    })
+    const cryptList = [this.cryptQuery.getEntity(cardId)]
+    modalRef.componentInstance.cardList = cryptList
+    modalRef.componentInstance.index = 0
+  }
+
+  private openLibraryCard(cardId: number): void {
+    const modalRef = this.modalService.open(LibraryCardComponent, {
+      size: 'lg',
+      centered: true,
+      scrollable: true,
+    })
+    const libraryList = [this.libraryQuery.getEntity(cardId)]
+    modalRef.componentInstance.cardList = libraryList
+    modalRef.componentInstance.index = 0
   }
 }

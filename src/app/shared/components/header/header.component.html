@@ -6,7 +6,7 @@
     </a>
     <button class="btn btn-outline-light d-block d-lg-none" type="button" (click)="openSearchModal()">
       <i class="bi bi-search"></i>
-      <span class="ms-1 d-none d-sm-inline">
+      <span class="ms-1 search-text-mobile">
         {{ t('search') }}
       </span>
     </button>
@@ -87,10 +87,6 @@
             {{ t('tools') }}
           </span>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-            <a ngbDropdownItem href="https://bloodlibrary.info/" target="_blank" (click)="isCollapsed = true"
-              gaEvent="referral" gaCategory="bloodLibrary">
-              Blood Library
-            </a>
             <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
               (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
               Codex of the Damned
@@ -121,7 +117,8 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <button class="btn btn-outline-light d-none d-lg-block me-2" type="button" (click)="openSearchModal()">
+        <button class="search-button-desktop btn btn-outline-light d-none d-lg-block me-2" type="button"
+          (click)="openSearchModal()">
           <i class="bi bi-search"></i>
           <span class="ms-1">
             {{ t('search') }}
