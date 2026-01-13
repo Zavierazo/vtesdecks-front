@@ -3,7 +3,7 @@
     "version": "2.63.0",
     "date": "16th January, 2026",
     "changes": [
-      "Feature: Added a global search bar in the navigation for instant access to cards, decks, and users.",
+      "Feature: Added a global search bar in the header for quick access to cards, decks, and users.",
       "Feature: Added advanced sorting for Crypt and Library cards in the Deck Page and Deck Builder.",
       "Feature: Integrated eBay price data from strategic vendors, achieving comprehensive price coverage across the entire card database.",
       "UX: Enhanced navigation to persist filters and scroll position when returning from deck pages.",
