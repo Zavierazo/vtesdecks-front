@@ -1,5 +1,6 @@
 import {
   AsyncPipe,
+  Location,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -86,6 +87,7 @@ export class CryptSectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
+  private location = inject(Location)
 
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
@@ -135,12 +137,32 @@ export class CryptSectionComponent implements OnInit {
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
+    const currentParams = this.location.path().split('?')[1]
+    const currentSearchParams = new URLSearchParams(currentParams || '')
+    const mergedParams: Record<string, string> = {}
+
+    // First, copy all current params from URL
+    currentSearchParams.forEach((value, key) => {
+      mergedParams[key] = value
     })
+
+    // Then, apply new params (overwrite or delete)
+    Object.keys(params).forEach((key) => {
+      if (params[key] === undefined || params[key] === null) {
+        delete mergedParams[key]
+      } else {
+        mergedParams[key] = params[key]!
+      }
+    })
+
+    // Create URL with merged params
+    const urlTree = this.router.createUrlTree([], {
+      relativeTo: this.route,
+      queryParams: mergedParams,
+    })
+
+    // Update URL without navigation
+    this.location.replaceState(urlTree.toString())
   }
 
   get nameFilter(): string | undefined {
@@ -158,7 +180,13 @@ export class CryptSectionComponent implements OnInit {
   }
 
   openModal(content: TemplateRef<unknown>) {
-    this.modalService.open(content)
+    this.modalService
+      .open(content)
+      .dismissed.pipe(
+        untilDestroyed(this),
+        tap(() => this.scrollToTop()),
+      )
+      .subscribe()
   }
 
   onScroll() {
@@ -250,7 +278,7 @@ export class CryptSectionComponent implements OnInit {
       this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
-    this.initQuery()
+    this.initQuery(true)
   }
 
   private initDefaults() {
@@ -290,7 +318,6 @@ export class CryptSectionComponent implements OnInit {
     }
     this.sortBy = sortBy
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['sortBy']: this.sortBy,
       ['sortByOrder']: this.sortByOrder,
@@ -304,7 +331,6 @@ export class CryptSectionComponent implements OnInit {
         debounceTime(500),
         tap(() => {
           this.initQuery()
-          this.scrollToTop()
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
@@ -314,7 +340,6 @@ export class CryptSectionComponent implements OnInit {
   onChangePrintOnDemand(printOnDemand: boolean) {
     this.printOnDemand = printOnDemand
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['printOnDemand']: this.printOnDemand ? 'true' : undefined,
     })
@@ -323,7 +348,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeClanFilter(clans: string[]) {
     this.clans = clans
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['clans']: this.clans.length > 0 ? this.clans.join(',') : undefined,
     })
@@ -332,14 +356,12 @@ export class CryptSectionComponent implements OnInit {
   onChangeDisciplineFilter(disciplines: string[]) {
     this.disciplines = disciplines
     this.initQuery()
-    this.scrollToTop()
     this.onChangeDisciplines()
   }
 
   onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
     this.superiorDisciplines = superiorDisciplines
     this.initQuery()
-    this.scrollToTop()
     this.onChangeDisciplines()
   }
 
@@ -357,7 +379,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeGroupSliderFilter(groupSlider: number[]) {
     this.groupSlider = groupSlider
     this.initQuery()
-    this.scrollToTop()
     const isDefault =
       Array.isArray(groupSlider) &&
       groupSlider[0] === 1 &&
@@ -373,7 +394,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeCapacitySliderFilter(capacitySlider: number[]) {
     this.capacitySlider = capacitySlider
     this.initQuery()
-    this.scrollToTop()
     const isDefault =
       Array.isArray(capacitySlider) &&
       capacitySlider[0] === 1 &&
@@ -389,7 +409,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeTitleFilter(title: string) {
     this.title = title
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['title']: this.title || undefined,
     })
@@ -398,7 +417,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeSetFilter(set: string) {
     this.set = set
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['set']: this.set || undefined,
     })
@@ -407,7 +425,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['sect']: this.sect || undefined,
     })
@@ -416,7 +433,6 @@ export class CryptSectionComponent implements OnInit {
   onChangePathFilter(path: string) {
     this.path = path
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['path']: this.path || undefined,
     })
@@ -425,7 +441,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['taints']: this.taints.length > 0 ? this.taints.join(',') : undefined,
     })
@@ -434,7 +449,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeCardTextFilter(cardText: string) {
     this.cardText = cardText
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['cardText']: this.cardText || undefined,
     })
@@ -443,7 +457,6 @@ export class CryptSectionComponent implements OnInit {
   onChangeArtistFilter(artist: string) {
     this.artist = artist
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['artist']: this.artist || undefined,
     })
@@ -452,15 +465,17 @@ export class CryptSectionComponent implements OnInit {
   onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
     this.predefinedLimitedFormat = predefinedLimitedFormat
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
     })
   }
 
-  initQuery() {
+  initQuery(firstInitialize = false) {
     this.limitTo = CryptSectionComponent.PAGE_SIZE
     this.updateQuery()
+    if (!firstInitialize && !this.mediaService.isMobileOrTablet()) {
+      this.scrollToTop()
+    }
   }
 
   private readonly filterBy: (entity: ApiCrypt, index?: number) => boolean = (

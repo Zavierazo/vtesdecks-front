@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout'
-import { Injectable, NgZone, inject } from '@angular/core'
+import { inject, Injectable, NgZone } from '@angular/core'
 import { map, merge, Observable, Observer, startWith } from 'rxjs'
 
 @Injectable({
@@ -18,6 +18,27 @@ export class MediaService {
   constructor() {
     this.mobileQuery = this.media.matchMedia(this.mobileMediaQuery)
     this.tabletQuery = this.media.matchMedia(this.tabletMediaQuery)
+  }
+
+  /**
+   * check if the current resolution is mobile
+   */
+  isMobile(): boolean {
+    return this.mobileQuery.matches
+  }
+
+  /**
+   * check if the current resolution is tablet
+   */
+  isTablet(): boolean {
+    return this.tabletQuery.matches
+  }
+
+  /**
+   * check if the current resolution is mobile or tablet
+   */
+  isMobileOrTablet(): boolean {
+    return this.isMobile() || this.isTablet()
   }
 
   /**
