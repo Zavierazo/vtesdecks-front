@@ -7,6 +7,22 @@ import {
   OnInit,
   inject,
 } from '@angular/core'
+
+// Type declaration for Google Sign-In
+declare global {
+  interface Window {
+    google?: {
+      accounts?: {
+        id?: {
+          initialize: (config: any) => void
+          prompt: () => void
+          renderButton: (element: Element, config: any) => void
+        }
+      }
+    }
+  }
+}
+
 import {
   AbstractControl,
   FormControl,
@@ -121,23 +137,23 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initializeGoogleSignIn() {
-    if (google && google.accounts && google.accounts.id) {
-      google.accounts.id.initialize({
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.initialize({
         client_id: environment.googleAccounts.clientId,
         callback: (response: { credential: string }) =>
           this.handleCredentialResponse(response),
       })
-      google.accounts.id.prompt()
+      window.google.accounts.id.prompt()
     }
   }
 
   initializeGoogleSignInButtons() {
-    if (google && google.accounts && google.accounts.id) {
+    if (window.google?.accounts?.id) {
       const googleSignInButton = document.getElementsByName(
         'google-signin-button',
       )
       for (const button of Array.from(googleSignInButton)) {
-        google.accounts.id.renderButton(button, {
+        window.google.accounts.id.renderButton(button, {
           type: 'standard',
           theme: 'filled_blue',
           size: 'large',
