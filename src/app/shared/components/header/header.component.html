@@ -4,6 +4,12 @@
       <img class="header-logo" width="60" height="60" [src]="logoPath" alt="logo" />
       <img class="header-logo-text" width="100" height="60" src="/assets/img/logo_text.png" alt="vtes decks" />
     </a>
+    <button class="btn btn-outline-light d-block d-lg-none" type="button" (click)="openSearchModal()">
+      <i class="bi bi-search"></i>
+      <span class="ms-1 search-text-mobile">
+        {{ t('search') }}
+      </span>
+    </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"
       aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation"
       (click)="isCollapsed = !isCollapsed">
@@ -81,10 +87,6 @@
             {{ t('tools') }}
           </span>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-            <a ngbDropdownItem href="https://bloodlibrary.info/" target="_blank" (click)="isCollapsed = true"
-              gaEvent="referral" gaCategory="bloodLibrary">
-              Blood Library
-            </a>
             <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
               (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
               Codex of the Damned
@@ -115,6 +117,13 @@
         </li>
       </ul>
       <ul class="navbar-nav">
+        <button class="search-button-desktop btn btn-outline-light d-none d-lg-block me-2" type="button"
+          (click)="openSearchModal()">
+          <i class="bi bi-search"></i>
+          <span class="ms-1">
+            {{ t('search') }}
+          </span>
+        </button>
         <app-lang-selector />
         @if (themeEnabled) {
         <app-theme-selector />

@@ -24,6 +24,7 @@ import {
   ApiPublicUser,
   ApiResetPassword,
   ApiResponse,
+  ApiSearchResponse,
   ApiSet,
   ApiShop,
   ApiUser,
@@ -583,6 +584,14 @@ export class ApiDataService {
   getPublicUser(username: string): Observable<ApiPublicUser> {
     return this.httpClient.get<ApiPublicUser>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
+    )
+  }
+
+  search(query: string): Observable<ApiSearchResponse> {
+    const params = new HttpParams().set('query', query)
+    return this.httpClient.get<ApiSearchResponse>(
+      `${environment.api.baseUrl}/search`,
+      { params },
     )
   }
 }

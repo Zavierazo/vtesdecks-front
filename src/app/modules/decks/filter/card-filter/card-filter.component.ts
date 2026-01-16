@@ -72,6 +72,17 @@ export class CardFilterComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
+    const cards = this.decksQuery.getParam('cards')
+    if (cards) {
+      cards.split(',').forEach((card: string) => {
+        const [cardId, countString] = card.split('=')
+        const id = Number(cardId)
+        const count = Number(countString)
+        if (!isNaN(id) && !isNaN(count)) {
+          this.cards.push({ id, count })
+        }
+      })
+    }
     this.initStarVampire()
   }
 

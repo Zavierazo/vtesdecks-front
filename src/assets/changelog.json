@@ -1,5 +1,18 @@
 [
   {
+    "version": "2.63.0",
+    "date": "16th January, 2026",
+    "changes": [
+      "Feature: Added a global search bar in the header for quick access to cards, decks, and users.",
+      "Feature: Added advanced sorting for Crypt and Library cards in the Deck Page and Deck Builder.",
+      "Feature: Integrated eBay price data from strategic vendors, achieving comprehensive price coverage across the entire card database.",
+      "UX: Enhanced navigation to persist filters and scroll position when returning from deck pages.",
+      "Fix: Resolved an issue where deck card filters failed to persist after a refresh or returning from a deck page.",
+      "Fix: Implemented error handling for public profile links of non-existent users.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.62.0",
     "date": "10th January, 2026",
     "changes": [
@@ -10,8 +23,7 @@
       "Feature: Added Limited Format and Artist filters to the Crypt and Library sections.",
       "Feature: Added support for custom profile image URLs, overriding Gravatar when provided.",
       "Data: Added 'Kickstarter Unleashed (2021)' as a distinct set to differentiate it from 'Anarch Unbound', 'Danse Macabre' and 'The Unaligned'. Existing collection cards were migrated automatically.",
-      "Fix: Resolved an issue where some decks did not appear on public profile pages.",
-      "Minor bug fixes and performance improvements."
+      "Fix: Resolved an issue where some decks did not appear on public profile pages."
     ]
   },
   {

@@ -1,5 +1,6 @@
 import {
   AsyncPipe,
+  Location,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -86,6 +87,7 @@ export class LibrarySectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
+  private location = inject(Location)
 
   private static readonly PAGE_SIZE = 40
   nameFormControl = new FormControl('')
@@ -136,12 +138,32 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
+    const currentParams = this.location.path().split('?')[1]
+    const currentSearchParams = new URLSearchParams(currentParams || '')
+    const mergedParams: Record<string, string> = {}
+
+    // First, copy all current params from URL
+    currentSearchParams.forEach((value, key) => {
+      mergedParams[key] = value
     })
+
+    // Then, apply new params (overwrite or delete)
+    Object.keys(params).forEach((key) => {
+      if (params[key] === undefined || params[key] === null) {
+        delete mergedParams[key]
+      } else {
+        mergedParams[key] = params[key]!
+      }
+    })
+
+    // Create URL with merged params
+    const urlTree = this.router.createUrlTree([], {
+      relativeTo: this.route,
+      queryParams: mergedParams,
+    })
+
+    // Update URL without navigation
+    this.location.replaceState(urlTree.toString())
   }
 
   get nameFilter(): string | undefined {
@@ -159,7 +181,13 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   openModal(content: TemplateRef<unknown>) {
-    this.modalService.open(content)
+    this.modalService
+      .open(content)
+      .dismissed.pipe(
+        untilDestroyed(this),
+        tap(() => this.scrollToTop()),
+      )
+      .subscribe()
   }
 
   onScroll() {
@@ -247,13 +275,13 @@ export class LibrarySectionComponent implements OnInit {
         if (card) {
           this.openLibraryCard(card)
         }
-      }, 1000)
+      }, 300)
     }
     if (queryParams['predefinedLimitedFormat']) {
       this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
-    this.initQuery()
+    this.initQuery(true)
   }
 
   private initDefaults() {
@@ -291,7 +319,6 @@ export class LibrarySectionComponent implements OnInit {
     }
     this.sortBy = sortBy
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['sortBy']: this.sortBy,
       ['sortByOrder']: this.sortByOrder,
@@ -305,7 +332,6 @@ export class LibrarySectionComponent implements OnInit {
         debounceTime(500),
         tap(() => {
           this.initQuery()
-          this.scrollToTop()
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
@@ -315,7 +341,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangePrintOnDemand(printOnDemand: boolean) {
     this.printOnDemand = printOnDemand
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['printOnDemand']: this.printOnDemand ? 'true' : undefined,
     })
@@ -324,7 +349,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeTypesFilter(types: string[]) {
     this.types = types
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['types']: this.types.length > 0 ? this.types.join(',') : undefined,
     })
@@ -333,7 +357,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeClanFilter(clans: string[]) {
     this.clans = clans
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['clans']: this.clans.length > 0 ? this.clans.join(',') : undefined,
     })
@@ -342,7 +365,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeDisciplineFilter(disciplines: string[]) {
     this.disciplines = disciplines
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['disciplines']:
         this.disciplines.length > 0 ? this.disciplines.join(',') : undefined,
@@ -352,7 +374,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeSectFilter(sect: string) {
     this.sect = sect
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['sect']: this.sect || undefined,
     })
@@ -361,7 +382,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangePathFilter(path: string) {
     this.path = path
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['path']: this.path || undefined,
     })
@@ -370,7 +390,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeTitleFilter(title: string) {
     this.title = title
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['title']: this.title || undefined,
     })
@@ -379,7 +398,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeSetFilter(set: string) {
     this.set = set
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['set']: this.set || undefined,
     })
@@ -388,7 +406,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeBloodCostSliderFilter(bloodCostSlider: number[]) {
     this.bloodCostSlider = bloodCostSlider
     this.initQuery()
-    this.scrollToTop()
     const isDefault =
       Array.isArray(bloodCostSlider) &&
       bloodCostSlider[0] === 0 &&
@@ -404,7 +421,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangePoolCostSliderFilter(poolCostSlider: number[]) {
     this.poolCostSlider = poolCostSlider
     this.initQuery()
-    this.scrollToTop()
 
     const isDefault =
       Array.isArray(poolCostSlider) &&
@@ -421,7 +437,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeTaintsFilter(taints: string[]) {
     this.taints = taints
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['taints']: this.taints.length > 0 ? this.taints.join(',') : undefined,
     })
@@ -430,7 +445,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeCardTextFilter(cardText: string) {
     this.cardText = cardText
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['cardText']: this.cardText || undefined,
     })
@@ -439,7 +453,6 @@ export class LibrarySectionComponent implements OnInit {
   onChangeArtistFilter(artist: string) {
     this.artist = artist
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['artist']: this.artist || undefined,
     })
@@ -448,15 +461,17 @@ export class LibrarySectionComponent implements OnInit {
   onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
     this.predefinedLimitedFormat = predefinedLimitedFormat
     this.initQuery()
-    this.scrollToTop()
     this.updateQueryParams({
       ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
     })
   }
 
-  initQuery() {
+  initQuery(firstInitialize = false) {
     this.limitTo = LibrarySectionComponent.PAGE_SIZE
     this.updateQuery()
+    if (!firstInitialize && !this.mediaService.isMobileOrTablet()) {
+      this.scrollToTop()
+    }
   }
 
   private readonly filterBy: (entity: ApiLibrary, index?: number) => boolean = (

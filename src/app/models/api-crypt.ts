@@ -2,6 +2,13 @@ import { ApiI18n } from './api-i18n'
 
 export type CryptSortBy = keyof ApiCrypt | 'relevance' | 'trigramSimilarity'
 
+export type DeckCryptSortBy =
+  | 'name'
+  | 'capacity'
+  | 'clan'
+  | 'group'
+  | 'quantity'
+
 export interface ApiCrypt {
   id: number
   name: string

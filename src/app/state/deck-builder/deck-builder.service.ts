@@ -6,6 +6,8 @@ import {
   ApiDeck,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
+  DeckCryptSortBy,
+  DeckLibrarySortBy,
   FILTER_GROUP_BY,
 } from '@models'
 import { ApiDataService } from '@services'
@@ -235,6 +237,14 @@ export class DeckBuilderService {
     this.store.setLimitedFormat(format)
     this.validateDeck()
     this.store.setSaved(false)
+  }
+
+  setCryptSortBy(sortBy: DeckCryptSortBy) {
+    this.store.setCryptSortBy(sortBy)
+  }
+
+  setLibrarySortBy(sortBy: DeckLibrarySortBy) {
+    this.store.setLibrarySortBy(sortBy)
   }
 
   validateDeck(): boolean {

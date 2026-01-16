@@ -11,3 +11,21 @@
   width: fit-content;
   cursor: pointer;
 }
+
+.search-text-mobile {
+  display: none;
+
+  @media (min-width: 375px) {
+    display: inline-block;
+  }
+}
+
+.search-button-desktop {
+  min-width: 250px;
+  text-align: left;
+
+  @media (max-width: 1400px) {
+    min-width: auto;
+    text-align: center;
+  }
+}

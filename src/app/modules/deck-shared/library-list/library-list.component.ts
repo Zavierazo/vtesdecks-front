@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard } from '@models'
+import { ApiCard, DeckLibrarySortBy } from '@models'
 import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
@@ -67,6 +67,8 @@ export class LibraryListComponent implements OnInit {
   ]
   @Input() libraryList!: ApiCard[]
 
+  @Input() sortBy: DeckLibrarySortBy = 'quantity'
+
   @Input() withControls = false
 
   @Input() displayMode: 'list' | 'grid' = 'list'
@@ -107,7 +109,33 @@ export class LibraryListComponent implements OnInit {
   }
 
   libraryCards(type: string): ApiCard[] {
-    return this.libraryList.filter((card) => card.type === type)
+    return this.libraryList
+      .filter((card) => card.type === type)
+      .sort((a, b) => {
+        if (this.sortBy === 'quantity') {
+          return this.sort(b.number, a.number)
+        } else {
+          const cardA = this.libraryQuery.getEntity(a.id)
+          const cardB = this.libraryQuery.getEntity(b.id)
+          return this.sort(cardA![this.sortBy], cardB![this.sortBy])
+        }
+      })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private sort(a: any, b: any, sortByOrder: 'asc' | 'desc' = 'asc'): number {
+    if (a === b) {
+      return 0
+    }
+    if (sortByOrder === 'asc') {
+      if (a === undefined) return -1
+      if (b === undefined) return 1
+      return a > b ? 1 : -1
+    } else {
+      if (a === undefined) return 1
+      if (b === undefined) return -1
+      return a < b ? 1 : -1
+    }
   }
 
   percentageSize(type: string): number {

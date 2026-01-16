@@ -121,7 +121,12 @@
     "edit_as_admin": "Editar (como Admin)",
     "similar_decks": "Baralhos Parecidos",
     "collection_tracker": "Rastreador de Coleção",
-    "estimated_value": "Valor Estimado"
+    "estimated_value": "Valor Estimado",
+    "sort_by_quantity": "Quantidade",
+    "sort_by_name": "Nome",
+    "sort_by_capacity": "Capacidade",
+    "sort_by_clan": "Clã",
+    "sort_by_group": "Grupo"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",
@@ -159,7 +164,12 @@
     "limited_format": "Formato Limitado",
     "deck_copied": "Baralho copiado para a área de transferência",
     "collection_tracker": "Rastreador de Coleção",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Quantidade",
+    "sort_by_name": "Nome",
+    "sort_by_capacity": "Capacidade",
+    "sort_by_clan": "Clã",
+    "sort_by_group": "Grupo"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
@@ -313,7 +323,8 @@
     "unread_notifications": "notificações não lidas",
     "whats_new": "Novidades {{ date }}",
     "proxy_generator": "Gerador de Proxies",
-    "vtes_ai_chat": "Chat IA de VTES"
+    "vtes_ai_chat": "Chat IA de VTES",
+    "search": "Pesquisar"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",
@@ -488,7 +499,8 @@
     "followers": "Seguidores",
     "following": "Seguindo",
     "no_followers": "Nenhum seguidor ainda",
-    "no_following": "Não segue ninguém ainda"
+    "no_following": "Não segue ninguém ainda",
+    "user_not_found": "Usuário não encontrado"
   },
   "verify_account": {
     "success": "Conta verificada!",
@@ -936,5 +948,15 @@
     "follow_tooltip": "Clique para seguir este usuário e receber notificações sobre seus novos baralhos e atividades.",
     "unfollow_tooltip": "Você está seguindo este usuário. Clique para deixar de seguir.",
     "follow_error": "Algo deu errado com a ação de seguir"
+  },
+  "search_bar": {
+    "search_placeholder": "Pesquisar baralhos, usuários, cartas...",
+    "to_select": "para selecionar",
+    "to_navigate": "para navegar",
+    "to_close": "para fechar",
+    "no_results": "Nenhum resultado encontrado",
+    "card_results": "Resultados de Cartas",
+    "deck_results": "Resultados de Baralhos",
+    "user_results": "Resultados de Usuários"
   }
 }

@@ -103,6 +103,11 @@ export class DecksComponent implements OnInit {
     this.hasMore$ = this.decksQuery.selectHasMore()
     this.listenScroll()
     this.initMainForm()
+    const lastViewedDeckId = this.decksQuery.getLastViewedDeckId()
+    // Scroll to last viewed deck if exists
+    if (lastViewedDeckId) {
+      this.scrollToDeck(lastViewedDeckId)
+    }
   }
 
   get type(): string {
@@ -125,6 +130,17 @@ export class DecksComponent implements OnInit {
     this.document
       .querySelector('.scroll-container')
       ?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  scrollToDeck(deckId: string): void {
+    setTimeout(() => {
+      const element = this.document.getElementById(deckId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Clear the stored deck ID after scrolling to avoid repeated scrolls
+        this.decksService.clearLastViewedDeck()
+      }
+    }, 500)
   }
 
   reset(): void {

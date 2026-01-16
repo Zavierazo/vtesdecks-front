@@ -121,7 +121,12 @@
     "edit_as_admin": "Modifier (en tant qu'Admin)",
     "similar_decks": "Decks similaires",
     "collection_tracker": "Suivi de collection",
-    "estimated_value": "Valeur estimée"
+    "estimated_value": "Valeur estimée",
+    "sort_by_quantity": "Quantité",
+    "sort_by_name": "Nom",
+    "sort_by_capacity": "Capacité",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Groupe"
   },
   "deck_builder": {
     "deck_not_exists": "Le deck n'existe pas. Veuillez réessayer plus tard.",
@@ -159,7 +164,12 @@
     "limited_format": "Format Limité",
     "deck_copied": "Deck copié dans le presse-papiers",
     "collection_tracker": "Suivi de collection",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Quantité",
+    "sort_by_name": "Nom",
+    "sort_by_capacity": "Capacité",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Groupe"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La Crypte doit contenir au moins {{ minCrypt }} cartes",
@@ -311,7 +321,8 @@
     "notifications": "Notifications",
     "unread_notifications": "notifications non lues",
     "proxy_generator": "Générateur de Proxy",
-    "vtes_ai_chat": "Chat VTES AI"
+    "vtes_ai_chat": "Chat VTES AI",
+    "search": "Recherche"
   },
   "home": {
     "welcome_title": "Bienvenue sur VTES Decks",
@@ -489,7 +500,8 @@
     "followers": "Abonnés",
     "following": "Abonnements",
     "no_followers": "Aucun abonné pour le moment",
-    "no_following": "Aucun abonnement pour le moment"
+    "no_following": "Aucun abonnement pour le moment",
+    "user_not_found": "Utilisateur non trouvé"
   },
   "verify_account": {
     "success": "Compte vérifié !",
@@ -938,5 +950,15 @@
     "follow_tooltip": "Cliquez pour suivre cet utilisateur et recevoir des notifications sur ses nouveaux decks.",
     "unfollow_tooltip": "Vous suivez cet utilisateur. Cliquez pour ne plus le suivre.",
     "follow_error": "Une erreur est survenue lors de l'action de suivi"
+  },
+  "search_bar": {
+    "search_placeholder": "Rechercher des decks, des cartes, des utilisateurs...",
+    "to_select": "pour sélectionner",
+    "to_navigate": "pour naviguer",
+    "to_close": "pour fermer",
+    "no_results": "Aucun résultat trouvé",
+    "card_results": "Résultats des cartes",
+    "deck_results": "Résultats des decks",
+    "user_results": "Résultats des utilisateurs"
   }
 }

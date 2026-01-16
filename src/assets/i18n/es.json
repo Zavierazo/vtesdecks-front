@@ -121,7 +121,12 @@
     "edit_as_admin": "Editar (como Admin)",
     "related_decks": "Mazos Similares",
     "collection_tracker": "Rastreador de Colección",
-    "estimated_value": "Valor Estimado"
+    "estimated_value": "Valor Estimado",
+    "sort_by_quantity": "Cantidad",
+    "sort_by_name": "Nombre",
+    "sort_by_capacity": "Capacidad",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Grupo"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -159,7 +164,12 @@
     "limited_format": "Formato Limitado",
     "deck_copied": "Lista copiada al portapapeles",
     "collection_tracker": "Rastreador de Colección",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Cantidad",
+    "sort_by_name": "Nombre",
+    "sort_by_capacity": "Capacidad",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Grupo"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",
@@ -311,7 +321,8 @@
     "notifications": "Notificaciones",
     "unread_notifications": "notificaciones no leídas",
     "proxy_generator": "Generador de Proxies",
-    "vtes_ai_chat": "Chat IA de VTES"
+    "vtes_ai_chat": "Chat IA de VTES",
+    "search": "Buscar"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -487,7 +498,8 @@
     "followers": "Seguidores",
     "following": "Siguiendo",
     "no_followers": "Aún no tiene seguidores",
-    "no_following": "No sigue a nadie aún"
+    "no_following": "No sigue a nadie aún",
+    "user_not_found": "Usuario no encontrado"
   },
   "verify_account": {
     "success": "¡Cuenta verificada!",
@@ -936,5 +948,15 @@
     "follow_tooltip": "Haz clic para seguir a este usuario y recibir notificaciones sobre sus nuevos mazos y actividades.",
     "unfollow_tooltip": "Estás siguiendo a este usuario. Haz clic para dejar de seguir.",
     "follow_error": "Algo salió mal con la acción de seguir"
+  },
+  "search_bar": {
+    "search_placeholder": "Buscar mazos, cartas, usuarios...",
+    "to_select": "para seleccionar",
+    "to_navigate": "para navegar",
+    "to_close": "para cerrar",
+    "no_results": "No se encontraron resultados",
+    "card_results": "Resultados de Cartas",
+    "deck_results": "Resultados de Mazos",
+    "user_results": "Resultados de Usuarios"
   }
 }

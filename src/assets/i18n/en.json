@@ -121,7 +121,12 @@
     "edit_as_admin": "Edit (as Admin)",
     "similar_decks": "Similar Decks",
     "collection_tracker": "Collection Tracker",
-    "estimated_value": "Estimated Value"
+    "estimated_value": "Estimated Value",
+    "sort_by_quantity": "Quantity",
+    "sort_by_name": "Name",
+    "sort_by_capacity": "Capacity",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Group"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -159,7 +164,12 @@
     "limited_format": "Limited Format",
     "deck_copied": "Deck copied to clipboard",
     "collection_tracker": "Collection Tracker",
-    "validation_errors": "{{errors}}"
+    "validation_errors": "{{errors}}",
+    "sort_by_quantity": "Quantity",
+    "sort_by_name": "Name",
+    "sort_by_capacity": "Capacity",
+    "sort_by_clan": "Clan",
+    "sort_by_group": "Group"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
@@ -311,7 +321,8 @@
     "notifications": "Notifications",
     "unread_notifications": "unread notifications",
     "proxy_generator": "Proxy Generator",
-    "vtes_ai_chat": "VTES AI Chat"
+    "vtes_ai_chat": "VTES AI Chat",
+    "search": "Search"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -489,7 +500,8 @@
     "followers": "Followers",
     "following": "Following",
     "no_followers": "No followers yet",
-    "no_following": "Not following anyone yet"
+    "no_following": "Not following anyone yet",
+    "user_not_found": "User not found"
   },
   "verify_account": {
     "success": "Account verified!",
@@ -938,5 +950,15 @@
     "follow_tooltip": "Click to follow this user and receive notifications about their new decks and activities.",
     "unfollow_tooltip": "You are following this user. Click to unfollow.",
     "follow_error": "Something went wrong with the follow action"
+  },
+  "search_bar": {
+    "search_placeholder": "Search for decks, cards, users...",
+    "to_select": "to select",
+    "to_navigate": "to navigate",
+    "to_close": "to close",
+    "no_results": "No results found",
+    "card_results": "Card Results",
+    "deck_results": "Deck Results",
+    "user_results": "User Results"
   }
 }

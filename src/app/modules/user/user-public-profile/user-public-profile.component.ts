@@ -2,22 +2,26 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiCollection, ApiDeck, ApiPublicUser } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService } from '@services'
+import { ApiDataService, ToastService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { isSupporter } from '@utils'
-import { Observable, tap } from 'rxjs'
+import { catchError, Observable, tap } from 'rxjs'
 import { CollectionApiDataService } from '../../collection/services/collection-api.data.service'
 import { DeckCardComponent } from '../../deck-card/deck-card.component'
 
@@ -44,6 +48,8 @@ export class UserPublicProfileComponent implements OnInit {
   private decksQuery = inject(DecksQuery)
   private collectionApiService = inject(CollectionApiDataService)
   private apiDataService = inject(ApiDataService)
+  private toastService = inject(ToastService)
+  private translocoService = inject(TranslocoService)
 
   username = signal<string>('')
   user = signal<ApiPublicUser | undefined>(undefined)
@@ -77,10 +83,15 @@ export class UserPublicProfileComponent implements OnInit {
       .getPublicUser(username)
       .pipe(
         untilDestroyed(this),
-        tap((user) => {
-          if (user) {
-            this.user.set(user)
-          }
+        tap((user) => this.user.set(user)),
+        catchError((error) => {
+          this.toastService.show(
+            this.translocoService.translate(
+              'user_public_profile.user_not_found',
+            ),
+            { classname: 'bg-danger text-light', delay: 5000 },
+          )
+          throw error
         }),
       )
       .subscribe()

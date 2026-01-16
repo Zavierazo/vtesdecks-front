@@ -5,6 +5,8 @@ import {
   ApiCollectionCard,
   ApiDeckExtra,
   ApiDeckLimitedFormat,
+  DeckCryptSortBy,
+  DeckLibrarySortBy,
 } from '@models'
 import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
@@ -18,7 +20,9 @@ export interface DeckBuilderState {
   published: boolean
   cards: ApiCard[]
   cryptErrors: string[]
+  cryptSortBy: DeckCryptSortBy
   libraryErrors: string[]
+  librarySortBy: DeckLibrarySortBy
   saved: boolean
   collectionCards?: ApiCollectionCard[]
   validation?: (query: DeckBuilderQuery) => string[]
@@ -31,7 +35,9 @@ export interface DeckBuilderState {
 const initialState: DeckBuilderState = {
   cards: [],
   cryptErrors: [],
+  cryptSortBy: 'quantity',
   libraryErrors: [],
+  librarySortBy: 'quantity',
   published: true,
   saved: true,
   collection: false,
@@ -104,6 +110,20 @@ export class DeckBuilderStore {
     this.update((state) => ({
       ...state,
       extra: format ? { limitedFormat: format } : undefined,
+    }))
+  }
+
+  setCryptSortBy(sortBy: DeckCryptSortBy): void {
+    this.update((state) => ({
+      ...state,
+      cryptSortBy: sortBy,
+    }))
+  }
+
+  setLibrarySortBy(sortBy: DeckLibrarySortBy): void {
+    this.update((state) => ({
+      ...state,
+      librarySortBy: sortBy,
     }))
   }
 
