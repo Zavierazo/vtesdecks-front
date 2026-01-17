@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
   <p><strong>{{ t('sets') }}:&nbsp;</strong>
-    @for (set of card().sets; track set) {
+    @for (set of card().sets; track $index) {
     <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" tabindex="0"
       triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
       {{ set }}&nbsp;
@@ -13,7 +13,7 @@
   @if(artists(); as artists){
   <p>
     <strong>{{ t('artist') }}: </strong>
-    @for(artist of artists; track artist; let last= $last ){
+    @for(artist of artists; track $index; let last= $last ){
     <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist }"
       (click)="routerClick.emit(true)">
       {{ artist }}
@@ -45,7 +45,7 @@
     </div>
     @if(cardInfo.rulingList?.length) {
     <div class="card-body px-2" [ngbCollapse]="rulingsCollapsed" #rulingsCollapse="ngbCollapse">
-      @for (ruling of cardInfo.rulingList; track ruling; let last = $last) {
+      @for (ruling of cardInfo.rulingList; track $index; let last = $last) {
       <div class="py-2 border-dark" [class.border-bottom]="!last">
         <app-ruling-text [ruling]="ruling" />
       </div>
@@ -120,7 +120,7 @@
       </h6>
     </div>
     <div class="card-body p-2" [ngbCollapse]="shopsCollapsed" #shopsCollapse="ngbCollapse">
-      @for (deck of cardInfo.preconstructedDecks; track deck; let last = $last) {
+      @for (deck of cardInfo.preconstructedDecks; track deck.id; let last = $last) {
       <div class="d-flex align-items-center py-1 border-dark"
         [class.border-bottom]="!last || cardInfo.shopList.length > 0">
         <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/'+deck.id" (click)="routerClick.emit(true)">
@@ -131,7 +131,7 @@
         </a>
       </div>
       }
-      @for (shop of cardInfo.shopList; track shop; let last = $last) {
+      @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
       <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last "
         [class.opacity-50]="!shop.inStock">
         <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"

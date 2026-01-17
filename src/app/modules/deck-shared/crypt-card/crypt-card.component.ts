@@ -70,6 +70,7 @@ export class CryptCardComponent implements OnInit, AfterViewInit, OnDestroy {
   activeSet?: string
   setImageError = false
   cdnDomain = environment.cdnDomain
+  private isDismissing = false
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
@@ -100,14 +101,18 @@ export class CryptCardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.cardImage?.nativeElement?.vanillaTilt) {
       this.cardImage.nativeElement.vanillaTilt.destroy()
     }
-    if (window.history.state.modal) {
+    if (!this.isDismissing && window.history.state?.modal) {
+      this.isDismissing = true
       history.back()
     }
   }
 
   @HostListener('window:popstate')
   dismissModal() {
-    this.modal.dismiss()
+    if (!this.isDismissing) {
+      this.isDismissing = true
+      this.modal.dismiss()
+    }
   }
 
   get hasMore(): boolean {

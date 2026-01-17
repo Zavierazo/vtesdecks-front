@@ -23,7 +23,7 @@
         }
         @if(!(isMobile$ | async)! && card.sets && card.sets.length > 1) {
         <div class="d-flex flex-wrap my-2 justify-content-center align-items-center">
-          @for (set of card.sets; track set) {
+          @for (set of card.sets; track $index) {
           <span class="badge me-1"
             [ngClass]="{ 'text-bg-secondary': activeSet !== set, 'text-bg-primary border border-primary border-1': activeSet === set }"
             tabindex="0" (click)="setActiveSet(set)" [title]="set" role="button">{{ set }}</span>
@@ -71,7 +71,7 @@
           <div class="d-flex flex-column h-100">
             <div class="flex-grow-0">
               <p class="clearfix">
-                @for (discipline of card.disciplineIcons; track discipline) {
+                @for (discipline of card.disciplineIcons; track $index) {
                 <i class="vtes" [ngClass]="discipline"></i>
                 }
                 @if (card.adv) {
@@ -96,7 +96,7 @@
               [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-stack"></i> {{ t('search') }}
             </button>
-            @for (shop of cardInfo?.shopList; track shop) {
+            @for (shop of cardInfo?.shopList; track shop.link) {
             @if(shop.inStock && shop.shopInfo.showButton){
             <a type="button" class="btn btn-sm btn-success col-auto me-1"
               [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" gaEvent="purchase"
