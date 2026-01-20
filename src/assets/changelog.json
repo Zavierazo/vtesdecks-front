@@ -3,8 +3,9 @@
     "version": "2.64.0",
     "date": "23th January, 2026",
     "changes": [
-      "Improved the card collection add flow by displaying cards already present in the collection.",
-      "Enhanced the preconstructed deck collection bulk add to support adding multiple decks at once.",
+      "Feature: Improved the card collection add flow by displaying cards already present in the collection.",
+      "UX: Added delete deck button in deck view for easier deck management.",
+      "UX: Enhanced the preconstructed deck collection bulk add to support adding multiple decks at once.",
       "Minor bug fixes and performance improvements."
     ]
   },

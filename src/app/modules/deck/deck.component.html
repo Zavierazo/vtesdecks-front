@@ -215,6 +215,12 @@
                         <i class="bi bi-clipboard me-2"></i>TWD
                       </a>
                     </div>
+                    @if(deck.owner){
+                    <button class="btn btn-outline-danger ms-2" (click)="deleteDeck()">
+                      <i class="bi bi-trash-fill"></i>
+                      {{ t('delete') }}
+                    </button>
+                    }
                   </div>
                 </div>
               </div>

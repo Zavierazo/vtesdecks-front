@@ -126,7 +126,8 @@
     "sort_by_name": "Name",
     "sort_by_capacity": "Capacity",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Group"
+    "sort_by_group": "Group",
+    "delete": "Delete"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",

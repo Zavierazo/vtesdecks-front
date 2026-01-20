@@ -49,6 +49,7 @@ import {
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
@@ -58,12 +59,13 @@ import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
-import { Observable, switchMap, tap, timer } from 'rxjs'
+import { filter, Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
@@ -124,6 +126,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly titleService = inject(Title)
   private readonly deckQuery = inject(DeckQuery)
   private readonly deckService = inject(DeckService)
+  private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly authQuery = inject(AuthQuery)
   private readonly authService = inject(AuthService)
   private readonly toastService = inject(ToastService)
@@ -404,6 +407,51 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onChangeSortByCrypt(sortBy: DeckCryptSortBy): void {
     this.sortByCrypt = sortBy
+  }
+
+  deleteDeck(): void {
+    const deckId = this.deckQuery.getDeck()?.id
+    if (deckId) {
+      const modalRef = this.modalService.open(ConfirmDialogComponent, {
+        size: 'sm',
+        centered: true,
+      })
+      modalRef.componentInstance.title = this.translocoService.translate(
+        'deck_builder.delete_title',
+      )
+      modalRef.componentInstance.message = this.translocoService.translate(
+        'deck_builder.delete_message',
+      )
+      modalRef.closed
+        .pipe(
+          untilDestroyed(this),
+          filter((result) => result),
+          switchMap(() =>
+            this.deckBuilderService.deleteDeck(deckId).pipe(
+              untilDestroyed(this),
+              tap(() => {
+                this.toastService.show(
+                  this.translocoService.translate(
+                    'deck_builder.delete_successful',
+                  ),
+                  { classname: 'bg-success text-light', delay: 5000 },
+                )
+                this.router.navigate(['/decks'], {
+                  queryParams: { type: 'USER' },
+                })
+              }),
+            ),
+          ),
+        )
+        .subscribe({
+          error: () => {
+            this.toastService.show(
+              this.translocoService.translate('shared.unexpected_error'),
+              { classname: 'bg-danger text-light', delay: 10000 },
+            )
+          },
+        })
+    }
   }
 
   get cryptCards(): ApiCard[] | undefined {

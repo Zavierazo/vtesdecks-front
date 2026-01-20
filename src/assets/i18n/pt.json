@@ -126,7 +126,8 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "delete": "Eliminar"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",

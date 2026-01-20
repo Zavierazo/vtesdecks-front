@@ -126,7 +126,8 @@
     "sort_by_name": "Nombre",
     "sort_by_capacity": "Capacidad",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "delete": "Borrar"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
