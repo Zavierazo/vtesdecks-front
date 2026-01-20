@@ -57,7 +57,6 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
   isLoading$ = this.decksQuery.selectLoading()
   decks$ = this.decksQuery.selectAll()
   total$ = this.decksQuery.selectTotal()
-  addingCards$ = this.addingCardsSubject.asObservable()
 
   ngOnInit(): void {
     // Initialize the decks service with preconstructed filter
@@ -95,7 +94,7 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
   }
 
   onAddDeckToCollection(deck: ApiDeck): void {
-    this.addingCardsSubject.next(true)
+    this.getDeckCopiesControl(deck.id).disable()
     this.apiDataService
       .getDeck(deck.id)
       .pipe(
@@ -143,7 +142,7 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
           throw error
         }),
         finalize(() => {
-          this.addingCardsSubject.next(false)
+          this.getDeckCopiesControl(deck.id).enable()
         }),
       )
       .subscribe()
