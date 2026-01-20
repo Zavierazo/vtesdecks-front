@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
       currentVersionSplit[0] !== lastVersionSplit[0] ||
       currentVersionSplit[1] !== lastVersionSplit[1]
 
-    if (!lastAppVersionSeen || majorMinorChanged) {
+    if (lastAppVersionSeen && majorMinorChanged) {
       this.apiDataService
         .getChangelog()
         .pipe(
