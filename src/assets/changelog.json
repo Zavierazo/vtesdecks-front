@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.64.0",
+    "date": "23th January, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.63.0",
     "date": "16th January, 2026",
     "changes": [
@@ -8,8 +15,7 @@
       "Feature: Integrated eBay price data from strategic vendors, achieving comprehensive price coverage across the entire card database.",
       "UX: Enhanced navigation to persist filters and scroll position when returning from deck pages.",
       "Fix: Resolved an issue where deck card filters failed to persist after a refresh or returning from a deck page.",
-      "Fix: Implemented error handling for public profile links of non-existent users.",
-      "Minor bug fixes and performance improvements."
+      "Fix: Implemented error handling for public profile links of non-existent users."
     ]
   },
   {
