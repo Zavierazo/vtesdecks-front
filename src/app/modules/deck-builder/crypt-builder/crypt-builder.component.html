@@ -82,7 +82,7 @@
       'col-8': (isMobileOrTablet$ | async) === false
     }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" infiniteScrollContainer=".modal-body"
         [fromRoot]="true" [alwaysCallback]="true" (scrolled)="onScroll()">
-        @if ((crypt$ | async)!.length === 0) {
+        @if ((crypt$ | async)?.length === 0) {
         <div class="d-flex justify-content-center mt-2">
           <button type="button" class="btn btn-danger btn-lg" (click)="initFilters()">
             {{ t('reset_filters') }}
@@ -91,7 +91,7 @@
         }
         @if((displayMode$ |async) === 'grid') {
         <div class="row mx-2 mb-2 g-1 justify-content-center">
-          @for (crypt of (crypt$ | async)! ; track crypt.id) {
+          @for (crypt of crypt$ | async; track crypt.id) {
           <div class="col-6 col-md-auto">
             <app-crypt-grid-card [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
               (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
@@ -99,7 +99,7 @@
           }
         </div>
         }@else{
-        @for (crypt of (crypt$ | async)! ; track crypt.id) {
+        @for (crypt of crypt$ | async; track crypt.id) {
         <ul class="col list-group">
           <app-crypt [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
             (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
