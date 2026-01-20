@@ -131,8 +131,6 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
                 ),
                 { classname: 'bg-success text-light', delay: 5000 },
               )
-
-              this.activeModal.close(true)
             }),
           )
         }),
