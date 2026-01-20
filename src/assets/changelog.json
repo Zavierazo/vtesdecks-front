@@ -3,6 +3,7 @@
     "version": "2.64.0",
     "date": "23th January, 2026",
     "changes": [
+      "Improved collection add from preconstructed decks to allow adding multiple preconstructed decks.",
       "Minor bug fixes and performance improvements."
     ]
   },
