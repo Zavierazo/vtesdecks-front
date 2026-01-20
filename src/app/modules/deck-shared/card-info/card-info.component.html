@@ -1,11 +1,12 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
   <p><strong>{{ t('sets') }}:&nbsp;</strong>
     @for (set of card().sets; track $index) {
-    <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" tabindex="0"
-      triggers="mouseenter:mouseleave" container="body" (click)="tooltip.open()" (keyup)="tooltip.open()">
-      {{ set }}&nbsp;
+    <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" placement="top"
+      [ngClass]="{ 'text-bg-secondary': activeSet() !== set, 'text-bg-primary border border-primary border-1': activeSet() === set }"
+      triggers="mouseenter:mouseleave" container="body" (click)="setActiveSet(set)" role="button" tabindex="0">
+      {{ set }}
       <ng-template #setContent>
-        <app-set-tooltip [cardId]="card().id" [set]="set" />
+        <app-set-tooltip [cardId]="card().id" [set]="set" [showImage]="(isMobile$ | async) === false" />
       </ng-template>
     </span>
     }

@@ -22,6 +22,7 @@ export class SetTooltipComponent implements OnInit {
   @Input() cardId!: number
   @Input() set!: string
   @Input() proxySetOption$!: Observable<ApiProxyCardOption>
+  @Input() showImage = true
   isMobile$ = this.mediaService.observeMobile()
   name!: string
   releaseYear?: number

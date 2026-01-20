@@ -2,6 +2,7 @@
 @if(releaseYear){
 <span>-&nbsp;{{ releaseYear }}</span>
 }
+@if(showImage){
 @if(!imageError){
 <img #image [ngClass]="{
   'set-img-popover': !(isMobile$ | async)!,
@@ -11,4 +12,5 @@
 <div class="text-center text-warning small mb-2">
   {{ 'deck_shared.set_image_not_available' | transloco }}
 </div>
+}
 }

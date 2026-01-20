@@ -4,6 +4,7 @@
     "date": "23th January, 2026",
     "changes": [
       "Feature: Improved the card collection add flow by displaying cards already present in the collection.",
+      "UX: Enhanced cards sets tooltips in crypt/card modals for mobile devices. Unify the display of set images and badges across the site.",
       "UX: Added delete deck button in deck view for easier deck management.",
       "UX: Enhanced the preconstructed deck collection bulk add to support adding multiple decks at once.",
       "Minor bug fixes and performance improvements."

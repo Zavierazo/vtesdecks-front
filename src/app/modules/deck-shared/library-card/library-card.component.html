@@ -21,15 +21,6 @@
           {{ 'deck_shared.set_image_not_available' | transloco }}
         </div>
         }
-        @if(!(isMobile$ | async)! && card.sets && card.sets.length > 1) {
-        <div class="d-flex flex-wrap my-2 justify-content-center align-items-center">
-          @for (set of card.sets; track $index) {
-          <span class="badge me-1"
-            [ngClass]="{ 'text-bg-secondary': activeSet !== set, 'text-bg-primary border border-primary border-1': activeSet === set }"
-            tabindex="0" (click)="setActiveSet(set)" [title]="set" role="button">{{ set }}</span>
-          }
-        </div>
-        }
       </div>
       <div class="modal-right-body col-sm-12 col-md-7 ps-0">
         <div class="modal-header">
@@ -104,7 +95,8 @@
               <i class="vtes float-end me-1" [ngClass]="clanIcon"></i>
               }
 
-              <app-card-info [card]="card" [cardInfo]="cardInfo" (routerClick)="modal.dismiss('Link click')" />
+              <app-card-info [card]="card" [cardInfo]="cardInfo" [activeSet]="activeSet"
+                (changeActiveSet)="setActiveSet($event)" (routerClick)="modal.dismiss('Link click')" />
             </div>
             <small class="mt-auto d-block text-end text-muted pt-2">#{{card.id}}</small>
           </div>
