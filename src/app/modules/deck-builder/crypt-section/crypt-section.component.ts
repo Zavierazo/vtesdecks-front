@@ -89,7 +89,7 @@ export class CryptSectionComponent implements OnInit {
   private router = inject(Router)
   private location = inject(Location)
 
-  private static readonly PAGE_SIZE = 40
+  private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
   isMobile$!: Observable<boolean>

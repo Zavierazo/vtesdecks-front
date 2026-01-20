@@ -70,7 +70,7 @@ export class CryptBuilderComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
 
-  private static readonly PAGE_SIZE = 20
+  private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
   cryptSize$!: Observable<number>
