@@ -53,6 +53,13 @@
               <input #quantityInput id="quantity" type="number" class="form-control" formControlName="quantity"
                 min="1" />
             </div>
+            @if(!cardCollectionId){
+            <div>
+              <small class="text-muted">
+                {{ t('quantity_description') }}
+              </small>
+            </div>
+            }
             @if (quantityControl.invalid && (quantityControl.dirty || quantityControl.touched)) {
             <div>
               @if (quantityControl.errors?.['required']) {
@@ -136,6 +143,68 @@
         </form>
       </div>
     </div>
+    @if(existingCards$ | async; as existingCardsData){
+    @if(existingCardsData.content && existingCardsData.content.length > 0){
+    <div class="row mt-3">
+      <div class="col-12">
+        <h6 class="text-primary fw-bold cursor-pointer" (click)="isExistingCardsCollapsed = !isExistingCardsCollapsed"
+          (keydown.enter)="isExistingCardsCollapsed = !isExistingCardsCollapsed"
+          (keydown.space)="isExistingCardsCollapsed = !isExistingCardsCollapsed" tabindex="0" role="button">
+          <i class="bi" [class.bi-chevron-right]="isExistingCardsCollapsed"
+            [class.bi-chevron-down]="!isExistingCardsCollapsed"></i>
+          {{ t('existing_cards_in_collection') }} ({{ existingCardsData.totalElements }})
+        </h6>
+        <div class="table-responsive" [ngbCollapse]="isExistingCardsCollapsed">
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th scope="col">{{ t('column_number') }}</th>
+                <th scope="col">{{ t('column_set') }}</th>
+                <th scope="col">{{ t('column_binder') }}</th>
+                <th scope="col">{{ t('column_condition') }}</th>
+                <th scope="col">{{ t('column_language') }}</th>
+                <th scope="col" class="text-center">{{ t('column_notes') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(existingCard of existingCardsData.content; track existingCard.id){
+              <tr class="align-middle">
+                <td>{{ existingCard.number }}</td>
+                <td>
+                  <app-collection-set [set]="existingCard.set" />
+                </td>
+                <td class="text-center">
+                  <app-collection-binder [binderId]="existingCard.binderId" />
+                </td>
+                <td>
+                  @if(existingCard.condition){
+                  @if(existingCard.condition | condition; as cardCondition) {
+                  <span class="badge" [class]="cardCondition.badgeClass">
+                    {{ cardCondition.label }}
+                  </span>
+                  }
+                  }
+                </td>
+                <td>{{ existingCard.language }}</td>
+                <td class="text-center">
+                  @if(existingCard.notes){
+                  <span [ngbTooltip]="noteContent" triggers="mouseenter:mouseleave" container="body">
+                    <i class="bi bi-sticky-fill"></i>
+                  </span>
+                  <ng-template #noteContent>
+                    {{ existingCard.notes }}
+                  </ng-template>
+                  }
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    }
+    }
     }
   </div>
   <div class="modal-footer">

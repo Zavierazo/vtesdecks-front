@@ -3,7 +3,8 @@
     "version": "2.64.0",
     "date": "23th January, 2026",
     "changes": [
-      "Improved collection add from preconstructed decks to allow adding multiple preconstructed decks.",
+      "Improved the card collection add flow by displaying cards already present in the collection.",
+      "Enhanced the preconstructed deck collection bulk add to support adding multiple decks at once.",
       "Minor bug fixes and performance improvements."
     ]
   },

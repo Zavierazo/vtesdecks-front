@@ -853,6 +853,8 @@
     "must_3_characters": "Doit faire au moins 3 caractères",
     "min_quantity": "Au moins une carte est requise",
     "max_quantity": "Vous ne pouvez pas ajouter plus de {{ max }} cartes",
+    "existing_cards_in_collection": "Cartes Existantes dans la Collection",
+    "quantity_description": "Si la carte existe déjà dans votre collection, cela augmentera sa quantité.",
     "move_to_binder": "Déplacer vers un classeur",
     "move_to_binder_message": "Combien de cartes voulez-vous déplacer dans un classeur ?",
     "any_set": "N'importe quelle extension",
