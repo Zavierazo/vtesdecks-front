@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common'
+import { AsyncPipe, DatePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -85,7 +85,6 @@ export interface SearchCard {
     CardImagePipe,
     AsyncPipe,
     DatePipe,
-    CurrencyPipe,
     LazyLoadImageModule,
     CollectionSetComponent,
     CollectionBinderComponent,
