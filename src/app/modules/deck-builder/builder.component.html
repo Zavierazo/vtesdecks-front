@@ -149,12 +149,12 @@
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
         @let cryptSortBy = cryptSortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
+          {{ t('sort_by_name') }}
+        </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
           [ngClass]="{'active': cryptSortBy ==='quantity'}">
           {{ t('sort_by_quantity') }}
-        </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
-          {{ t('sort_by_name') }}
         </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
           [ngClass]="{'active': cryptSortBy ==='capacity'}">
@@ -262,12 +262,12 @@
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
         @let librarySortBy = librarySortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
+          {{ t('sort_by_name') }}
+        </button>
         <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
           [ngClass]="{'active': librarySortBy ==='quantity'}">
           {{ t('sort_by_quantity') }}
-        </button>
-        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
-          {{ t('sort_by_name') }}
         </button>
       </div>
     </div>
