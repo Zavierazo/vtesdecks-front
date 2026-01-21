@@ -35,9 +35,9 @@ export interface DeckBuilderState {
 const initialState: DeckBuilderState = {
   cards: [],
   cryptErrors: [],
-  cryptSortBy: 'quantity',
+  cryptSortBy: 'name',
   libraryErrors: [],
-  librarySortBy: 'quantity',
+  librarySortBy: 'name',
   published: true,
   saved: true,
   collection: false,
