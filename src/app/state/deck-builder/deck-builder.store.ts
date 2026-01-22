@@ -173,7 +173,7 @@ export class DeckBuilderStore {
       cards: [],
       cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
       cryptErrors: [],
-      cryptSortBy: 'name',
+      cryptSortBy: 'capacity',
       libraryErrors: [],
       librarySortBy: 'name',
       published: true,

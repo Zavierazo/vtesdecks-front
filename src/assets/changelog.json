@@ -5,6 +5,7 @@
     "changes": [
       "Feature: Improved the card collection add flow by showing which cards are already present in the collection.",
       "UX: The deck builder now preserves previously applied filters when closing the crypt or library modals.",
+      "UX: The deck builder now defaults to sorting by capacity in the crypt and by name in the library, preventing unexpected resorting when adding cards.",
       "UX: Improved card set tooltips in crypt and card modals on mobile devices, with unified display of set images and badges across the site.",
       "UX: Added a delete deck button to the deck view for easier deck management.",
       "UX: Enhanced the preconstructed deck bulk add feature to support adding multiple decks at once.",

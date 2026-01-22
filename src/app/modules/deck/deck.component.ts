@@ -168,9 +168,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   cdnDomain = environment.cdnDomain
 
-  sortByLibrary: DeckLibrarySortBy = 'quantity'
+  sortByCrypt: DeckCryptSortBy = 'capacity'
 
-  sortByCrypt: DeckCryptSortBy = 'quantity'
+  sortByLibrary: DeckLibrarySortBy = 'name'
 
   displayMode$ = this.authQuery.selectDeckDisplayMode()
   displayModeOptions = [

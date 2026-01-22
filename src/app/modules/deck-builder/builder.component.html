@@ -149,16 +149,16 @@
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
         @let cryptSortBy = cryptSortBy$ | async;
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
-          {{ t('sort_by_name') }}
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
+          [ngClass]="{'active': cryptSortBy ==='capacity'}">
+          {{ t('sort_by_capacity') }}
         </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
           [ngClass]="{'active': cryptSortBy ==='quantity'}">
           {{ t('sort_by_quantity') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
-          [ngClass]="{'active': cryptSortBy ==='capacity'}">
-          {{ t('sort_by_capacity') }}
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
+          {{ t('sort_by_name') }}
         </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': cryptSortBy ==='clan'}">
           {{ t('sort_by_clan') }}
