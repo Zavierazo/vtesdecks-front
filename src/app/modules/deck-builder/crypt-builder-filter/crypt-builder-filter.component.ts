@@ -11,6 +11,7 @@ import {
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
@@ -43,36 +44,8 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
   private apiDataService = inject(ApiDataService)
 
-  @Input() limitedFormat?: boolean
-  readonly limitedFormatChange = output<boolean>()
-  @Input() printOnDemand?: boolean
-  readonly printOnDemandChange = output<boolean>()
-  @Input() clans!: string[]
-  readonly clansChange = output<string[]>()
-  @Input() disciplines!: string[]
-  readonly disciplinesChange = output<string[]>()
-  @Input() superiorDisciplines!: string[]
-  readonly superiorDisciplinesChange = output<string[]>()
-  @Input() groupSlider!: number[]
-  readonly groupSliderChange = output<number[]>()
-  @Input() capacitySlider!: number[]
-  readonly capacitySliderChange = output<number[]>()
-  @Input() title!: string
-  readonly titleChange = output<string>()
-  @Input() sect!: string
-  readonly sectChange = output<string>()
-  @Input() path!: string
-  readonly pathChange = output<string>()
-  @Input() set!: string
-  readonly setChange = output<string>()
-  @Input() taints!: string[]
-  readonly taintsChange = output<string[]>()
-  @Input() cardText!: string
-  readonly cardTextChange = output<string>()
-  @Input() predefinedLimitedFormat?: string
-  readonly predefinedLimitedFormatChange = output<string>()
-  @Input() artist!: string
-  readonly artistChange = output<string>()
+  @Input() filter!: CryptFilter
+  readonly filterChange = output<CryptFilter>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
@@ -125,41 +98,41 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   }
 
   onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.clansChange.emit(clans)
+    this.filter.clans = clans
+    this.filterChange.emit(this.filter)
   }
 
   onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.disciplinesChange.emit(disciplines)
+    this.filter.disciplines = disciplines
+    this.filterChange.emit(this.filter)
   }
 
   onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
-    this.superiorDisciplines = superiorDisciplines
-    this.superiorDisciplinesChange.emit(superiorDisciplines)
+    this.filter.superiorDisciplines = superiorDisciplines
+    this.filterChange.emit(this.filter)
   }
 
   onChangePrintOnDemand() {
-    this.printOnDemandControl = new FormControl(this.printOnDemand)
+    this.printOnDemandControl = new FormControl(this.filter.printOnDemand)
     this.printOnDemandControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.printOnDemand = value
-          this.printOnDemandChange.emit(value)
+          this.filter.printOnDemand = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeLimitedFormat() {
-    this.limitedFormatControl = new FormControl(this.limitedFormat)
+    this.limitedFormatControl = new FormControl(this.filter.limitedFormat)
     this.limitedFormatControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.limitedFormat = value
-          this.limitedFormatChange.emit(value)
+          this.filter.limitedFormat = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
@@ -167,92 +140,92 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   onChangePredefinedLimitedFormat() {
     this.predefinedLimitedFormatControl = new FormControl(
-      this.predefinedLimitedFormat,
+      this.filter.predefinedLimitedFormat,
     )
     this.predefinedLimitedFormatControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.predefinedLimitedFormat = value
-          this.predefinedLimitedFormatChange.emit(value)
+          this.filter.predefinedLimitedFormat = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeGroupSlider() {
-    this.groupSliderControl = new FormControl(this.groupSlider)
+    this.groupSliderControl = new FormControl(this.filter.groupSlider)
     this.groupSliderControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.groupSlider = value
-          this.groupSliderChange.emit(value)
+          this.filter.groupSlider = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeCapacitySlider() {
-    this.capacitySliderControl = new FormControl(this.capacitySlider)
+    this.capacitySliderControl = new FormControl(this.filter.capacitySlider)
     this.capacitySliderControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.capacitySlider = value
-          this.capacitySliderChange.emit(value)
+          this.filter.capacitySlider = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeTitle() {
-    this.titleControl = new FormControl(this.title)
+    this.titleControl = new FormControl(this.filter.title)
     this.titleControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.title = value
-          this.titleChange.emit(value)
+          this.filter.title = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeSet() {
-    this.setControl = new FormControl(this.set)
+    this.setControl = new FormControl(this.filter.set)
     this.setControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.set = value
-          this.setChange.emit(value)
+          this.filter.set = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeSect() {
-    this.sectControl = new FormControl(this.sect)
+    this.sectControl = new FormControl(this.filter.sect)
     this.sectControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.sect = value
-          this.sectChange.emit(value)
+          this.filter.sect = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangePath() {
-    this.pathControl = new FormControl(this.path)
+    this.pathControl = new FormControl(this.filter.path)
     this.pathControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.path = value
-          this.pathChange.emit(value)
+          this.filter.path = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
@@ -273,22 +246,29 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
             if (!this.taintGroup.contains(taint)) {
               this.taintGroup.addControl(
                 taint,
-                new FormControl(this.taints.includes(taint)),
+                new FormControl(this.filter.taints?.includes(taint)),
               )
               this.taintGroup
                 .get(taint)
                 ?.valueChanges.pipe(
                   untilDestroyed(this),
                   tap((value) => {
-                    const newTaints = this.taints.filter((t) => t !== taint)
+                    const newTaints =
+                      this.filter.taints?.filter((t) => t !== taint) ?? []
                     if (value) {
                       newTaints.push(taint)
                     }
-                    this.taints = newTaints
-                    this.taintsChange.emit(this.taints)
+                    this.filter.taints = newTaints
+                    this.filterChange.emit(this.filter)
                   }),
                 )
                 .subscribe()
+            } else {
+              this.taintGroup
+                .get(taint)
+                ?.patchValue(this.filter.taints?.includes(taint), {
+                  emitEvent: false,
+                })
             }
           })
         }),
@@ -297,26 +277,26 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   }
 
   onChangeCardText() {
-    this.cardTextControl = new FormControl(this.cardText)
+    this.cardTextControl = new FormControl(this.filter.cardText)
     this.cardTextControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.cardText = value
-          this.cardTextChange.emit(value)
+          this.filter.cardText = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeArtist() {
-    this.artistControl = new FormControl(this.artist)
+    this.artistControl = new FormControl(this.filter.artist)
     this.artistControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.artist = value
-          this.artistChange.emit(value)
+          this.filter.artist = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()

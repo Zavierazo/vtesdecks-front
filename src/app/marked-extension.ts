@@ -30,8 +30,9 @@ export function bracketsExtension(
     renderer(token) {
       const cardName = token['text']
       const cryptCard = cryptQuery.getAll({
-        filterBy: (crypt) =>
-          crypt.name.toLowerCase() === cardName.toLowerCase(),
+        filter: {
+          nameExact: cardName,
+        },
       })
 
       const libraryCard = libraryQuery.getAll({

@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptSortBy } from '@models'
+import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
 import {
   NgbActiveModal,
   NgbDropdown,
@@ -27,7 +27,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
-import { getSetAbbrev, isRegexSearch, searchIncludes } from '@utils'
+import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -71,29 +71,16 @@ export class CryptBuilderComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef)
 
   private static readonly PAGE_SIZE = 50
-  nameFormControl = new FormControl('')
+  nameFormControl = new FormControl(this.deckBuilderQuery.getCryptFilter().name)
   crypt$!: Observable<ApiCrypt[]>
-  cryptSize$!: Observable<number>
-  isMobile$!: Observable<boolean>
-  isMobileOrTablet$!: Observable<boolean>
+  cryptSize$ = this.deckBuilderQuery.selectCryptSize()
+  cryptFilter$ = this.deckBuilderQuery.selectCryptFilter()
+  isMobile$ = this.mediaService.observeMobile()
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
 
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
-  limitedFormat?: boolean
-  clans!: string[]
-  disciplines!: string[]
-  superiorDisciplines!: string[]
-  groupSlider!: number[]
-  capacitySlider!: number[]
-  title!: string
-  sect!: string
-  path!: string
-  set!: string
-  taints!: string[]
-  cardText!: string
-  artist!: string
-  predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -110,9 +97,6 @@ export class CryptBuilderComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.cryptSize$ = this.deckBuilderQuery.selectCryptSize()
-    this.isMobile$ = this.mediaService.observeMobile()
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.initFilters()
     this.onChangeNameFilter()
   }
@@ -140,41 +124,50 @@ export class CryptBuilderComponent implements OnInit {
     this.updateQuery()
   }
 
-  initFilters() {
-    if (this.deckBuilderQuery.getLimitedFormat() !== undefined) {
-      this.limitedFormat = true
-    }
+  resetFilters() {
+    this.deckBuilderService.resetCryptFilter()
     this.nameFormControl.patchValue('', { emitEvent: false })
-    this.clans = []
-    this.disciplines = []
-    this.superiorDisciplines = []
+    this.initFilters()
+  }
+
+  private initFilters() {
+    if (this.deckBuilderQuery.getLimitedFormat() !== undefined) {
+      this.deckBuilderService.updateCryptFilter((filter) => ({
+        ...filter,
+        limitedFormat: true,
+        customLimitedFormat: this.deckBuilderQuery.getLimitedFormat(),
+      }))
+    } else {
+      this.deckBuilderService.updateCryptFilter((filter) => ({
+        ...filter,
+        limitedFormat: undefined,
+        customLimitedFormat: undefined,
+      }))
+    }
+
     const minGroup = this.deckBuilderQuery.getMinGroupCrypt()
     const maxGroup = this.deckBuilderQuery.getMaxGroupCrypt()
     if (minGroup > maxGroup) {
-      this.groupSlider = [maxGroup, minGroup]
+      this.deckBuilderService.updateCryptFilter((filter) => ({
+        ...filter,
+        groupSlider: [maxGroup, minGroup],
+      }))
     } else if (minGroup < maxGroup) {
-      this.groupSlider = [minGroup, maxGroup]
+      this.deckBuilderService.updateCryptFilter((filter) => ({
+        ...filter,
+        groupSlider: [minGroup, maxGroup],
+      }))
     } else {
-      this.groupSlider = [
-        Math.max(minGroup - 1, 1),
-        Math.min(minGroup + 1, this.cryptQuery.getMaxGroup()),
-      ]
+      this.deckBuilderService.updateCryptFilter((filter) => ({
+        ...filter,
+        groupSlider: [
+          Math.max(minGroup - 1, 1),
+          Math.min(minGroup + 1, this.cryptQuery.getMaxGroup()),
+        ],
+      }))
     }
-    this.capacitySlider = [1, this.cryptQuery.getMaxCapacity()]
-    this.title = ''
-    this.sect = ''
-    this.path = ''
-    this.set = ''
-    this.taints = []
     this.sortBy = 'relevance'
     this.sortByOrder = 'desc'
-    this.cardText = ''
-    this.artist = ''
-    this.initQuery()
-  }
-
-  onChangeLimitedFormat(limitedFormat: boolean) {
-    this.limitedFormat = limitedFormat
     this.initQuery()
   }
 
@@ -202,73 +195,19 @@ export class CryptBuilderComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         debounceTime(500),
+        tap((value) =>
+          this.deckBuilderService.updateCryptFilter((filter) => ({
+            ...filter,
+            name: value || '',
+          })),
+        ),
         tap(() => this.initQuery()),
       )
       .subscribe()
   }
 
-  onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.initQuery()
-  }
-
-  onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.initQuery()
-  }
-
-  onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
-    this.superiorDisciplines = superiorDisciplines
-    this.initQuery()
-  }
-
-  onChangeGroupSliderFilter(groupSlider: number[]) {
-    this.groupSlider = groupSlider
-    this.initQuery()
-  }
-
-  onChangeCapacitySliderFilter(capacitySlider: number[]) {
-    this.capacitySlider = capacitySlider
-    this.initQuery()
-  }
-
-  onChangeTitleFilter(title: string) {
-    this.title = title
-    this.initQuery()
-  }
-
-  onChangeSetFilter(set: string) {
-    this.set = set
-    this.initQuery()
-  }
-
-  onChangeSectFilter(sect: string) {
-    this.sect = sect
-    this.initQuery()
-  }
-
-  onChangePathFilter(path: string) {
-    this.path = path
-    this.initQuery()
-  }
-
-  onChangeTaintsFilter(taints: string[]) {
-    this.taints = taints
-    this.initQuery()
-  }
-
-  onChangeCardTextFilter(cardText: string) {
-    this.cardText = cardText
-    this.initQuery()
-  }
-
-  onChangeArtistFilter(artist: string) {
-    this.artist = artist
-    this.initQuery()
-  }
-
-  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
-    this.predefinedLimitedFormat = predefinedLimitedFormat
+  onChangeCryptFilter(filter: CryptFilter) {
+    this.deckBuilderService.updateCryptFilter(() => filter)
     this.initQuery()
   }
 
@@ -280,106 +219,9 @@ export class CryptBuilderComponent implements OnInit {
   private updateQuery() {
     this.crypt$ = this.cryptQuery.selectAll({
       limitTo: this.limitTo,
-      filterBy: (entity) => {
-        const name = this.nameFilter
-        if (name && !searchIncludes(entity.name, name)) {
-          if (entity.i18n?.name) {
-            return searchIncludes(entity.i18n.name, name)
-          } else if (entity.aka) {
-            return searchIncludes(entity.aka, name)
-          } else {
-            return false
-          }
-        }
-        if (this.clans.length > 0 && !this.clans.includes(entity.clan)) {
-          return false
-        }
-        for (const discipline of this.disciplines) {
-          if (!entity.disciplines.includes(discipline)) {
-            return false
-          }
-        }
-        for (const superiorDiscipline of this.superiorDisciplines) {
-          if (!entity.superiorDisciplines.includes(superiorDiscipline)) {
-            return false
-          }
-        }
-        const groupMin = this.groupSlider[0]
-        const groupMax = this.groupSlider[1]
-        const group = entity.group
-        if (group > 0 && (group < groupMin || group > groupMax)) {
-          return false
-        }
-        const capacityMin = this.capacitySlider[0]
-        const capacityMax = this.capacitySlider[1]
-        if (entity.capacity < capacityMin || entity.capacity > capacityMax) {
-          return false
-        }
-        if (this.title && entity.title !== this.title) {
-          return false
-        }
-        if (this.sect && entity.sect !== this.sect) {
-          return false
-        }
-        if (this.path && entity.path !== this.path) {
-          return false
-        }
-        if (this.set) {
-          return entity.sets.some((set) => set.startsWith(this.set + ':'))
-        }
-        for (const taint of this.taints) {
-          if (!entity.taints.includes(taint)) {
-            return false
-          }
-        }
-        if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
-          if (entity.i18n?.text) {
-            return searchIncludes(entity.i18n.text, this.cardText)
-          } else {
-            return false
-          }
-        }
-        const limitedFormatState = this.deckBuilderQuery.getLimitedFormat()
-        if (this.limitedFormat && limitedFormatState) {
-          if (limitedFormatState.banned.crypt[entity.id]) {
-            return false
-          }
-          if (limitedFormatState.banned.library[entity.id]) {
-            return false
-          }
-          if (limitedFormatState.allowed.crypt[entity.id]) {
-            return true
-          }
-          if (limitedFormatState.allowed.library[entity.id]) {
-            return true
-          }
-          if (
-            !Object.keys(limitedFormatState.sets).some((set) =>
-              entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
-            )
-          ) {
-            return false
-          }
-        }
-        if (this.predefinedLimitedFormat) {
-          if (
-            !entity.limitedFormats?.includes(
-              Number(this.predefinedLimitedFormat),
-            )
-          ) {
-            return false
-          }
-        }
-        if (this.artist) {
-          if (!searchIncludes(entity.artist, this.artist)) {
-            return false
-          }
-        }
-        return true
-      },
+      filter: this.deckBuilderQuery.getCryptFilter(),
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      nameFilter: this.nameFilter,
       crypt: {
         total: this.deckBuilderQuery.getCryptSize(),
         minGroup: this.deckBuilderQuery.getMinGroupCrypt(),

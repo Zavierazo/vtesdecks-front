@@ -1,13 +1,15 @@
-import { Injectable, signal } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import {
   ApiCard,
   ApiCollectionCard,
   ApiDeckExtra,
   ApiDeckLimitedFormat,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
 } from '@models'
+import { CryptQuery } from '@state/crypt/crypt.query'
 import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
 
@@ -19,6 +21,7 @@ export interface DeckBuilderState {
   collection: boolean
   published: boolean
   cards: ApiCard[]
+  cryptFilter: CryptFilter
   cryptErrors: string[]
   cryptSortBy: DeckCryptSortBy
   libraryErrors: string[]
@@ -32,22 +35,12 @@ export interface DeckBuilderState {
   }
 }
 
-const initialState: DeckBuilderState = {
-  cards: [],
-  cryptErrors: [],
-  cryptSortBy: 'name',
-  libraryErrors: [],
-  librarySortBy: 'name',
-  published: true,
-  saved: true,
-  collection: false,
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class DeckBuilderStore {
-  private readonly state = signal<DeckBuilderState>(initialState)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly state = signal<DeckBuilderState>(this.getInitialState())
   private readonly state$ = toObservable(this.state)
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
@@ -149,8 +142,15 @@ export class DeckBuilderStore {
   }
 
   reset(): void {
-    this.state.update(() => initialState)
+    this.state.update(() => this.getInitialState())
     this.loading.update(() => false)
+  }
+
+  resetCryptFilter(): void {
+    this.update((state) => ({
+      ...state,
+      cryptFilter: this.getInitialState().cryptFilter,
+    }))
   }
 
   setLoading(value = false) {
@@ -166,5 +166,19 @@ export class DeckBuilderStore {
       ...state,
       collectionCards,
     }))
+  }
+
+  private getInitialState(): DeckBuilderState {
+    return {
+      cards: [],
+      cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
+      cryptErrors: [],
+      cryptSortBy: 'name',
+      libraryErrors: [],
+      librarySortBy: 'name',
+      published: true,
+      saved: true,
+      collection: false,
+    }
   }
 }

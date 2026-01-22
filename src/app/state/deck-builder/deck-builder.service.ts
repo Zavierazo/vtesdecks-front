@@ -6,6 +6,7 @@ import {
   ApiDeck,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
   FILTER_GROUP_BY,
@@ -237,6 +238,17 @@ export class DeckBuilderService {
     this.store.setLimitedFormat(format)
     this.validateDeck()
     this.store.setSaved(false)
+  }
+
+  resetCryptFilter() {
+    this.store.resetCryptFilter()
+  }
+
+  updateCryptFilter(updateFn: (value: CryptFilter) => CryptFilter) {
+    this.store.update((state) => ({
+      ...state,
+      cryptFilter: updateFn(state.cryptFilter),
+    }))
   }
 
   setCryptSortBy(sortBy: DeckCryptSortBy) {

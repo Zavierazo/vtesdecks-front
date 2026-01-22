@@ -7,6 +7,7 @@ import {
   ApiDeckLimitedFormat,
   ApiDisciplineStat,
   ApiLibrary,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
 } from '@models'
@@ -379,5 +380,13 @@ export class DeckBuilderQuery {
 
   selectLibrarySortBy(): Observable<DeckLibrarySortBy> {
     return this.store.select((state) => state.librarySortBy)
+  }
+
+  getCryptFilter(): CryptFilter {
+    return this.store.getValue().cryptFilter
+  }
+
+  selectCryptFilter(): Observable<CryptFilter> {
+    return this.store.select((state) => state.cryptFilter)
   }
 }
