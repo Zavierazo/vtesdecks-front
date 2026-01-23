@@ -85,9 +85,9 @@ export class DeckBuilderStore {
   removeCard(id: number): void {
     this.update((state) => ({
       ...state,
-      cards: state.cards.map((c) =>
-        c.id === id ? { ...c, number: c.number - 1 } : c,
-      ),
+      cards: state.cards
+        .map((c) => (c.id === id ? { ...c, number: c.number - 1 } : c))
+        .filter((c) => c.number >= 0),
     }))
   }
 

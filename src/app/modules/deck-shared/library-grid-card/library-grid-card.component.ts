@@ -41,6 +41,7 @@ export class LibraryGridCardComponent implements OnInit {
   card = input.required<ApiCard>()
   librarySize = input<number>(60)
   withControls = input<boolean>(false)
+  withDelete = input<boolean>(false)
   readonly cardAdded = output<number>()
   readonly cardRemoved = output<number>()
 

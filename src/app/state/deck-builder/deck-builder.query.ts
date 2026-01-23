@@ -61,6 +61,10 @@ export class DeckBuilderQuery {
               }) as ApiCard,
           )
           .sort((a: ApiCard, b: ApiCard) => {
+            // Cards with number === 0 always go last
+            if (a.number === 0 && b.number !== 0) return 1
+            if (a.number !== 0 && b.number === 0) return -1
+
             const sortByCrypt = this.store.getValue().cryptSortBy
             if (sortByCrypt === 'quantity') {
               return this.sort(b.number, a.number)

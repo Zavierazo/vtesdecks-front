@@ -16,8 +16,9 @@
     <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed(libraryType)" class="row m-2 g-2 justify-content-start">
       @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
       <app-library-grid-card class="col-6 col-md-auto" [card]="library" [librarySize]="librarySize"
-        [withControls]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
-        (click)="openLibraryCard(library, libraryList!)" />
+        [withControls]="withControls" [withDelete]="withControls" (cardAdded)="cardAdded.emit($event)"
+        (cardRemoved)="cardRemoved.emit($event)" (click)="openLibraryCard(library, libraryList!)"
+        [class.considering-card]="library.number === 0" />
       }
     </div>
     }
@@ -31,10 +32,10 @@
     @for (library of libraryCards(libraryType); track trackByFn($index, library)) {
     <div>
       <app-library [card]="library" [librarySize]="librarySize" [withControls]="withControls"
-        (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
+        [withDelete]="withControls" (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)"
         (click)="openLibraryCard(library, libraryList!)"
-        [disablePopover]="!withControls && (isMobileOrTablet$ | async)!"
-        [disableClickPopover]="!withControls" />
+        [disablePopover]="!withControls && (isMobileOrTablet$ | async)!" [disableClickPopover]="!withControls"
+        [class.considering-card]="library.number === 0" />
     </div>
     }
   </ul>

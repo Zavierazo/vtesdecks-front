@@ -112,6 +112,10 @@ export class LibraryListComponent implements OnInit {
     return this.libraryList
       .filter((card) => card.type === type)
       .sort((a, b) => {
+        // Cards with number === 0 always go last
+        if (a.number === 0 && b.number !== 0) return 1
+        if (a.number !== 0 && b.number === 0) return -1
+
         if (this.sortBy === 'quantity') {
           return this.sort(b.number, a.number)
         } else {

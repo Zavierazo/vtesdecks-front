@@ -212,7 +212,8 @@
       @for (crypt of cryptList; track crypt.id) {
       <div class="col-6 col-md-auto">
         <app-crypt-grid-card [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
+          [withDelete]="true" (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"
+          [class.considering-card]="crypt.number === 0" />
       </div>
       }
     </div>
@@ -220,8 +221,9 @@
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
       @for (crypt of cryptList; track crypt.id) {
       <ul class="col list-group">
-        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
+        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [withDelete]="true"
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"
+          [class.considering-card]="crypt.number === 0" />
       </ul>
       }
     </div>
