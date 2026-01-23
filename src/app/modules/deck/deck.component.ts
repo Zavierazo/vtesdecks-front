@@ -62,6 +62,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
+import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
@@ -126,6 +127,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly titleService = inject(Title)
   private readonly deckQuery = inject(DeckQuery)
   private readonly deckService = inject(DeckService)
+  private readonly decksService = inject(DecksService)
   private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly authQuery = inject(AuthQuery)
   private readonly authService = inject(AuthService)
@@ -436,6 +438,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
                   ),
                   { classname: 'bg-success text-light', delay: 5000 },
                 )
+                this.decksService.reset()
                 this.router.navigate(['/decks'], {
                   queryParams: { type: 'USER' },
                 })
