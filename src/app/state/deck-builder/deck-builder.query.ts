@@ -269,6 +269,7 @@ export class DeckBuilderQuery {
     return this.store
       .getValue()
       .cards.filter(isCrypt)
+      .filter((card) => card.number > 0)
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
   }
 
@@ -283,6 +284,7 @@ export class DeckBuilderQuery {
     return this.store
       .getValue()
       .cards.filter(isLibrary)
+      .filter((card) => card.number > 0)
       .map((card) => this.libraryQuery.getEntity(card.id) as ApiLibrary)
   }
 
