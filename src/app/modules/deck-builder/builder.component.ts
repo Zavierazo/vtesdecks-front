@@ -321,8 +321,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openCryptBuilder() {
     this.modalService.open(CryptBuilderComponent, {
-      fullscreen: 'xl',
-      size: 'xl',
+      fullscreen: true,
       centered: true,
       scrollable: true,
     })
@@ -330,8 +329,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   openLibraryBuilder() {
     this.modalService.open(LibraryBuilderComponent, {
-      fullscreen: 'xl',
-      size: 'xl',
+      fullscreen: true,
       centered: true,
       scrollable: true,
     })
