@@ -92,8 +92,8 @@ export class CryptSectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
-  isMobile$!: Observable<boolean>
-  isMobileOrTablet$!: Observable<boolean>
+  isMobile$ = this.mediaService.observeMobile()
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
 
@@ -116,8 +116,6 @@ export class CryptSectionComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.isMobile$ = this.mediaService.observeMobile()
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.listenScroll()
     this.initFilters()
   }
@@ -280,6 +278,7 @@ export class CryptSectionComponent implements OnInit {
     this.nameFormControl.patchValue(this.cryptFilter.name ?? '', {
       emitEvent: false,
     })
+    this.cryptFilter.printOnDemand = false
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }

@@ -17,7 +17,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary, LibrarySortBy } from '@models'
+import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -33,7 +33,7 @@ import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { LibraryQuery } from '@state/library/library.query'
-import { isRegexSearch, searchIncludes } from '@utils'
+import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
@@ -92,28 +92,15 @@ export class LibrarySectionComponent implements OnInit {
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
   library$!: Observable<ApiLibrary[]>
-  isMobile$!: Observable<boolean>
-  isMobileOrTablet$!: Observable<boolean>
+  isMobile$ = this.mediaService.observeMobile()
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   sortBy: LibrarySortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
-  printOnDemand = false
-  types: string[] = []
-  clans: string[] = []
-  disciplines: string[] = []
-  sect!: string
-  path!: string
-  bloodCostSlider: number[] = [0, 4]
-  poolCostSlider: number[] = [0, 6]
-  title!: string
-  set!: string
-  taints: string[] = []
-  cardText!: string
-  artist!: string
-  predefinedLimitedFormat?: string
+  libraryFilter = this.libraryQuery.getDefaultLibraryFilter()
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
@@ -130,9 +117,6 @@ export class LibrarySectionComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.isMobile$ = this.mediaService.observeMobile()
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
-
     this.listenScroll()
     this.initFilters()
   }
@@ -210,36 +194,37 @@ export class LibrarySectionComponent implements OnInit {
     this.initDefaults()
     const queryParams = this.route.snapshot.queryParams
     if (queryParams['name']) {
+      this.libraryFilter.name = queryParams['name']
       this.nameFormControl.patchValue(queryParams['name'], {
         emitEvent: false,
       })
     }
     if (queryParams['printOnDemand']) {
-      this.printOnDemand = queryParams['printOnDemand'] === 'true'
+      this.libraryFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
     if (queryParams['set']) {
-      this.set = queryParams['set']
+      this.libraryFilter.set = queryParams['set']
     }
     if (queryParams['title']) {
-      this.title = queryParams['title']
+      this.libraryFilter.title = queryParams['title']
     }
     if (queryParams['sect']) {
-      this.sect = queryParams['sect']
+      this.libraryFilter.sect = queryParams['sect']
     }
     if (queryParams['path']) {
-      this.path = queryParams['path']
+      this.libraryFilter.path = queryParams['path']
     }
     if (queryParams['types']) {
-      this.types = queryParams['types'].split(',')
+      this.libraryFilter.types = queryParams['types'].split(',')
     }
     if (queryParams['clans']) {
-      this.clans = queryParams['clans'].split(',')
+      this.libraryFilter.clans = queryParams['clans'].split(',')
     }
     if (queryParams['disciplines']) {
-      this.disciplines = queryParams['disciplines'].split(',')
+      this.libraryFilter.disciplines = queryParams['disciplines'].split(',')
     }
     if (queryParams['taints']) {
-      this.taints = queryParams['taints'].split(',')
+      this.libraryFilter.taints = queryParams['taints'].split(',')
     }
     if (queryParams['sortBy']) {
       this.sortBy = queryParams['sortBy']
@@ -248,24 +233,27 @@ export class LibrarySectionComponent implements OnInit {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
-      this.cardText = queryParams['cardText']
+      this.libraryFilter.cardText = queryParams['cardText']
     }
     if (queryParams['artist']) {
-      this.artist = queryParams['artist']
+      this.libraryFilter.artist = queryParams['artist']
     }
     this.route.queryParams.subscribe((param) => {
       // Used when coming from card info artist link
       if (param['artist']) {
-        this.onChangeArtistFilter(param['artist'])
+        this.onChangeLibraryFilter({
+          ...this.libraryFilter,
+          artist: param['artist'],
+        })
       }
     })
     if (queryParams['bloodCostSlider']) {
-      this.bloodCostSlider = queryParams['bloodCostSlider']
+      this.libraryFilter.bloodCostSlider = queryParams['bloodCostSlider']
         .split(',')
         .map((v: string) => +v)
     }
     if (queryParams['poolCostSlider']) {
-      this.poolCostSlider = queryParams['poolCostSlider']
+      this.libraryFilter.poolCostSlider = queryParams['poolCostSlider']
         .split(',')
         .map((v: string) => +v)
     }
@@ -278,29 +266,21 @@ export class LibrarySectionComponent implements OnInit {
       }, 300)
     }
     if (queryParams['predefinedLimitedFormat']) {
-      this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
+      this.libraryFilter.predefinedLimitedFormat =
+        queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
     this.initQuery(true)
   }
 
   private initDefaults() {
-    this.nameFormControl.patchValue('', { emitEvent: false })
-    this.printOnDemand = false
-    this.types = []
-    this.disciplines = []
-    this.clans = []
-    this.title = ''
-    this.sect = ''
-    this.path = ''
-    this.set = ''
-    this.bloodCostSlider = [0, 4]
-    this.poolCostSlider = [0, 6]
-    this.taints = []
+    this.libraryFilter = this.libraryQuery.getDefaultLibraryFilter()
+    this.nameFormControl.patchValue(this.libraryFilter.name ?? '', {
+      emitEvent: false,
+    })
+    this.libraryFilter.printOnDemand = false
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
-    this.cardText = ''
-    this.artist = ''
   }
 
   onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
@@ -332,138 +312,61 @@ export class LibrarySectionComponent implements OnInit {
         debounceTime(500),
         tap(() => {
           this.initQuery()
+          this.libraryFilter.name = this.nameFilter || ''
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
       .subscribe()
   }
 
-  onChangePrintOnDemand(printOnDemand: boolean) {
-    this.printOnDemand = printOnDemand
-    this.initQuery()
-    this.updateQueryParams({
-      ['printOnDemand']: this.printOnDemand ? 'true' : undefined,
-    })
-  }
+  onChangeLibraryFilter(filter: LibraryFilter) {
+    this.libraryFilter = filter
 
-  onChangeTypesFilter(types: string[]) {
-    this.types = types
-    this.initQuery()
+    const isDefaultBloodCost =
+      Array.isArray(this.libraryFilter.bloodCostSlider) &&
+      this.libraryFilter.bloodCostSlider[0] === 0 &&
+      this.libraryFilter.bloodCostSlider[1] === 4
+    const isDefaultPoolCost =
+      Array.isArray(this.libraryFilter.poolCostSlider) &&
+      this.libraryFilter.poolCostSlider[0] === 0 &&
+      this.libraryFilter.poolCostSlider[1] === 6
     this.updateQueryParams({
-      ['types']: this.types.length > 0 ? this.types.join(',') : undefined,
-    })
-  }
-
-  onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.initQuery()
-    this.updateQueryParams({
-      ['clans']: this.clans.length > 0 ? this.clans.join(',') : undefined,
-    })
-  }
-
-  onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.initQuery()
-    this.updateQueryParams({
+      ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
+      ['types']:
+        this.libraryFilter.types && this.libraryFilter.types.length > 0
+          ? this.libraryFilter.types.join(',')
+          : undefined,
+      ['clans']:
+        this.libraryFilter.clans && this.libraryFilter.clans.length > 0
+          ? this.libraryFilter.clans.join(',')
+          : undefined,
       ['disciplines']:
-        this.disciplines.length > 0 ? this.disciplines.join(',') : undefined,
-    })
-  }
-
-  onChangeSectFilter(sect: string) {
-    this.sect = sect
-    this.initQuery()
-    this.updateQueryParams({
-      ['sect']: this.sect || undefined,
-    })
-  }
-
-  onChangePathFilter(path: string) {
-    this.path = path
-    this.initQuery()
-    this.updateQueryParams({
-      ['path']: this.path || undefined,
-    })
-  }
-
-  onChangeTitleFilter(title: string) {
-    this.title = title
-    this.initQuery()
-    this.updateQueryParams({
-      ['title']: this.title || undefined,
-    })
-  }
-
-  onChangeSetFilter(set: string) {
-    this.set = set
-    this.initQuery()
-    this.updateQueryParams({
-      ['set']: this.set || undefined,
-    })
-  }
-
-  onChangeBloodCostSliderFilter(bloodCostSlider: number[]) {
-    this.bloodCostSlider = bloodCostSlider
-    this.initQuery()
-    const isDefault =
-      Array.isArray(bloodCostSlider) &&
-      bloodCostSlider[0] === 0 &&
-      bloodCostSlider[1] === 4
-    this.updateQueryParams({
+        this.libraryFilter.disciplines &&
+        this.libraryFilter.disciplines.length > 0
+          ? this.libraryFilter.disciplines.join(',')
+          : undefined,
+      ['sect']: this.libraryFilter.sect || undefined,
+      ['path']: this.libraryFilter.path || undefined,
+      ['title']: this.libraryFilter.title || undefined,
+      ['set']: this.libraryFilter.set || undefined,
       ['bloodCostSlider']:
-        isDefault || !Array.isArray(bloodCostSlider)
+        isDefaultBloodCost || !Array.isArray(this.libraryFilter.bloodCostSlider)
           ? undefined
-          : this.bloodCostSlider.join(','),
-    })
-  }
-
-  onChangePoolCostSliderFilter(poolCostSlider: number[]) {
-    this.poolCostSlider = poolCostSlider
-    this.initQuery()
-
-    const isDefault =
-      Array.isArray(poolCostSlider) &&
-      poolCostSlider[0] === 0 &&
-      poolCostSlider[1] === 6
-    this.updateQueryParams({
+          : this.libraryFilter.bloodCostSlider.join(','),
       ['poolCostSlider']:
-        isDefault || !Array.isArray(poolCostSlider)
+        isDefaultPoolCost || !Array.isArray(this.libraryFilter.poolCostSlider)
           ? undefined
-          : this.poolCostSlider.join(','),
+          : this.libraryFilter.poolCostSlider.join(','),
+      ['taints']:
+        this.libraryFilter.taints && this.libraryFilter.taints.length > 0
+          ? this.libraryFilter.taints.join(',')
+          : undefined,
+      ['cardText']: this.libraryFilter.cardText || undefined,
+      ['artist']: this.libraryFilter.artist || undefined,
+      ['predefinedLimitedFormat']:
+        this.libraryFilter.predefinedLimitedFormat || undefined,
     })
-  }
-
-  onChangeTaintsFilter(taints: string[]) {
-    this.taints = taints
     this.initQuery()
-    this.updateQueryParams({
-      ['taints']: this.taints.length > 0 ? this.taints.join(',') : undefined,
-    })
-  }
-
-  onChangeCardTextFilter(cardText: string) {
-    this.cardText = cardText
-    this.initQuery()
-    this.updateQueryParams({
-      ['cardText']: this.cardText || undefined,
-    })
-  }
-
-  onChangeArtistFilter(artist: string) {
-    this.artist = artist
-    this.initQuery()
-    this.updateQueryParams({
-      ['artist']: this.artist || undefined,
-    })
-  }
-
-  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
-    this.predefinedLimitedFormat = predefinedLimitedFormat
-    this.initQuery()
-    this.updateQueryParams({
-      ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
-    })
   }
 
   initQuery(firstInitialize = false) {
@@ -474,128 +377,14 @@ export class LibrarySectionComponent implements OnInit {
     }
   }
 
-  private readonly filterBy: (entity: ApiLibrary, index?: number) => boolean = (
-    entity,
-  ) => {
-    const name = this.nameFilter
-    if (name && !searchIncludes(entity.name, name)) {
-      if (entity.i18n?.name) {
-        return searchIncludes(entity.i18n.name, name)
-      } else if (entity.aka) {
-        return searchIncludes(entity.aka, name)
-      } else {
-        return false
-      }
-    }
-    if (this.printOnDemand && !entity.printOnDemand) {
-      return false
-    }
-    if (this.types?.length > 0) {
-      let typeMatch = false
-      for (const type of this.types) {
-        const types = entity.type.split('/')
-        if (types.includes(type)) {
-          typeMatch = true
-        }
-      }
-      if (!typeMatch) {
-        return false
-      }
-    }
-    if (this.clans?.length > 0) {
-      let clanMatch = false
-      for (const clan of this.clans) {
-        if (
-          (clan === 'none' && entity.clans.length === 0) ||
-          entity.clans.includes(clan)
-        ) {
-          clanMatch = true
-        }
-      }
-      if (!clanMatch) {
-        return false
-      }
-    }
-    if (this.disciplines) {
-      for (const discipline of this.disciplines) {
-        if (discipline === 'none' && entity.disciplines.length === 0) {
-          continue
-        } else if (!entity.disciplines.includes(discipline)) {
-          return false
-        }
-      }
-    }
-    if (this.sect) {
-      if (this.sect === 'none') {
-        return entity.sects.length === 0
-      } else if (!entity.sects.includes(this.sect)) {
-        return false
-      }
-    }
-    if (this.path && entity.path !== this.path) {
-      return false
-    }
-    if (this.title) {
-      if (this.title === 'none') {
-        return entity.titles.length === 0
-      } else if (!entity.titles.includes(this.title)) {
-        return false
-      }
-    }
-    if (this.set) {
-      return entity.sets.some((set) => set.startsWith(this.set + ':'))
-    }
-    const bloodCostMin = this.bloodCostSlider[0]
-    const bloodCostMax = this.bloodCostSlider[1]
-    const bloodCost = entity.bloodCost ?? 0
-    if (
-      bloodCost != -1 &&
-      (bloodCost < bloodCostMin || bloodCost > bloodCostMax)
-    ) {
-      return false
-    }
-    const poolCostMin = this.poolCostSlider[0]
-    const poolCostMax = this.poolCostSlider[1]
-    const poolCost = entity.poolCost ?? 0
-    if (poolCost != -1 && (poolCost < poolCostMin || poolCost > poolCostMax)) {
-      return false
-    }
-    for (const taint of this.taints) {
-      if (!entity.taints.includes(taint)) {
-        return false
-      }
-    }
-    if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
-      if (entity.i18n?.text) {
-        return searchIncludes(entity.i18n.text, this.cardText)
-      } else {
-        return false
-      }
-    }
-    if (this.predefinedLimitedFormat) {
-      if (
-        !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
-      ) {
-        return false
-      }
-    }
-    if (this.artist) {
-      if (!searchIncludes(entity.artist, this.artist)) {
-        return false
-      }
-    }
-    return true
-  }
-
   private updateQuery() {
     this.library$ = this.libraryQuery
       .selectAll({
-        filterBy: this.filterBy,
+        filter: this.libraryFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-        nameFilter: this.nameFilter,
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
@@ -628,10 +417,9 @@ export class LibrarySectionComponent implements OnInit {
       scrollable: true,
     })
     const libraryList = this.libraryQuery.getAll({
-      filterBy: this.filterBy,
+      filter: this.libraryFilter,
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      nameFilter: this.nameFilter,
     })
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)

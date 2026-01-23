@@ -77,7 +77,6 @@ export class CryptBuilderComponent implements OnInit {
   cryptFilter$ = this.deckBuilderQuery.selectCryptFilter()
   isMobile$ = this.mediaService.observeMobile()
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
-
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'

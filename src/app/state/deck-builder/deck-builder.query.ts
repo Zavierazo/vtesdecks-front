@@ -10,6 +10,7 @@ import {
   CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
+  LibraryFilter,
 } from '@models'
 import { isCrypt, isLibrary, roundNumber } from '@utils'
 import { combineLatest, map, Observable } from 'rxjs'
@@ -388,5 +389,13 @@ export class DeckBuilderQuery {
 
   selectCryptFilter(): Observable<CryptFilter> {
     return this.store.select((state) => state.cryptFilter)
+  }
+
+  getLibraryFilter(): LibraryFilter {
+    return this.store.getValue().libraryFilter
+  }
+
+  selectLibraryFilter(): Observable<LibraryFilter> {
+    return this.store.select((state) => state.libraryFilter)
   }
 }

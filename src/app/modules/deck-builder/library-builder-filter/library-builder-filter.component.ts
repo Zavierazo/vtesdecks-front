@@ -11,6 +11,7 @@ import {
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { LibraryFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
@@ -45,36 +46,8 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
   private apiDataService = inject(ApiDataService)
 
-  @Input() limitedFormat?: boolean
-  readonly limitedFormatChange = output<boolean>()
-  @Input() printOnDemand?: boolean
-  readonly printOnDemandChange = output<boolean>()
-  @Input() types!: string[]
-  readonly typesChange = output<string[]>()
-  @Input() clans!: string[]
-  readonly clansChange = output<string[]>()
-  @Input() disciplines!: string[]
-  readonly disciplinesChange = output<string[]>()
-  @Input() sect!: string
-  readonly sectChange = output<string>()
-  @Input() path!: string
-  readonly pathChange = output<string>()
-  @Input() title!: string
-  readonly titleChange = output<string>()
-  @Input() set!: string
-  readonly setChange = output<string>()
-  @Input() bloodCostSlider!: number[]
-  readonly bloodCostSliderChange = output<number[]>()
-  @Input() poolCostSlider!: number[]
-  readonly poolCostSliderChange = output<number[]>()
-  @Input() taints!: string[]
-  readonly taintsChange = output<string[]>()
-  @Input() cardText!: string
-  readonly cardTextChange = output<string>()
-  @Input() predefinedLimitedFormat?: string
-  readonly predefinedLimitedFormatChange = output<string>()
-  @Input() artist!: string
-  readonly artistChange = output<string>()
+  @Input() filter!: LibraryFilter
+  readonly filterChange = output<LibraryFilter>()
 
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
@@ -125,41 +98,41 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   }
 
   onChangeTypeFilter(types: string[]) {
-    this.types = types
-    this.typesChange.emit(types)
+    this.filter.types = types
+    this.filterChange.emit(this.filter)
   }
 
   onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.clansChange.emit(clans)
+    this.filter.clans = clans
+    this.filterChange.emit(this.filter)
   }
 
   onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.disciplinesChange.emit(disciplines)
+    this.filter.disciplines = disciplines
+    this.filterChange.emit(this.filter)
   }
 
   onChangePrintOnDemand() {
-    this.printOnDemandControl = new FormControl(this.printOnDemand)
+    this.printOnDemandControl = new FormControl(this.filter.printOnDemand)
     this.printOnDemandControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.printOnDemand = value
-          this.printOnDemandChange.emit(value)
+          this.filter.printOnDemand = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeLimitedFormat() {
-    this.limitedFormatControl = new FormControl(this.limitedFormat)
+    this.limitedFormatControl = new FormControl(this.filter.limitedFormat)
     this.limitedFormatControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.limitedFormat = value
-          this.limitedFormatChange.emit(value)
+          this.filter.limitedFormat = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
@@ -167,92 +140,92 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   onChangePredefinedLimitedFormat() {
     this.predefinedLimitedFormatControl = new FormControl(
-      this.predefinedLimitedFormat,
+      this.filter.predefinedLimitedFormat,
     )
     this.predefinedLimitedFormatControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.predefinedLimitedFormat = value
-          this.predefinedLimitedFormatChange.emit(value)
+          this.filter.predefinedLimitedFormat = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeSect() {
-    this.sectControl = new FormControl(this.sect)
+    this.sectControl = new FormControl(this.filter.sect)
     this.sectControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.sect = value
-          this.sectChange.emit(value)
+          this.filter.sect = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangePath() {
-    this.pathControl = new FormControl(this.path)
+    this.pathControl = new FormControl(this.filter.path)
     this.pathControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.path = value
-          this.pathChange.emit(value)
+          this.filter.path = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeTitle() {
-    this.titleControl = new FormControl(this.title)
+    this.titleControl = new FormControl(this.filter.title)
     this.titleControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.title = value
-          this.titleChange.emit(value)
+          this.filter.title = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeSet() {
-    this.setControl = new FormControl(this.set)
+    this.setControl = new FormControl(this.filter.set)
     this.setControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.set = value
-          this.setChange.emit(value)
+          this.filter.set = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeBloodCostSlider() {
-    this.bloodCostSliderControl = new FormControl(this.bloodCostSlider)
+    this.bloodCostSliderControl = new FormControl(this.filter.bloodCostSlider)
     this.bloodCostSliderControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.bloodCostSlider = value
-          this.bloodCostSliderChange.emit(value)
+          this.filter.bloodCostSlider = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangePoolCostSlider() {
-    this.poolCostSliderControl = new FormControl(this.poolCostSlider)
+    this.poolCostSliderControl = new FormControl(this.filter.poolCostSlider)
     this.poolCostSliderControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.poolCostSlider = value
-          this.poolCostSliderChange.emit(value)
+          this.filter.poolCostSlider = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
@@ -273,22 +246,29 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
             if (!this.taintGroup.contains(taint)) {
               this.taintGroup.addControl(
                 taint,
-                new FormControl(this.taints.includes(taint)),
+                new FormControl(this.filter.taints?.includes(taint)),
               )
               this.taintGroup
                 .get(taint)
                 ?.valueChanges.pipe(
                   untilDestroyed(this),
                   tap((value) => {
-                    const newTaints = this.taints.filter((t) => t !== taint)
+                    const newTaints =
+                      this.filter.taints?.filter((t) => t !== taint) ?? []
                     if (value) {
                       newTaints.push(taint)
                     }
-                    this.taints = newTaints
-                    this.taintsChange.emit(this.taints)
+                    this.filter.taints = newTaints
+                    this.filterChange.emit(this.filter)
                   }),
                 )
                 .subscribe()
+            } else {
+              this.taintGroup
+                .get(taint)
+                ?.patchValue(this.filter.taints?.includes(taint), {
+                  emitEvent: false,
+                })
             }
           })
         }),
@@ -297,26 +277,26 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   }
 
   onChangeCardText() {
-    this.cardTextControl = new FormControl(this.cardText)
+    this.cardTextControl = new FormControl(this.filter.cardText)
     this.cardTextControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.cardText = value
-          this.cardTextChange.emit(value)
+          this.filter.cardText = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()
   }
 
   onChangeArtist() {
-    this.artistControl = new FormControl(this.artist)
+    this.artistControl = new FormControl(this.filter.artist)
     this.artistControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.artist = value
-          this.artistChange.emit(value)
+          this.filter.artist = value
+          this.filterChange.emit(this.filter)
         }),
       )
       .subscribe()

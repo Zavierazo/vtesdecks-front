@@ -8,8 +8,10 @@ import {
   CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
+  LibraryFilter,
 } from '@models'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
 
@@ -24,6 +26,7 @@ export interface DeckBuilderState {
   cryptFilter: CryptFilter
   cryptErrors: string[]
   cryptSortBy: DeckCryptSortBy
+  libraryFilter: LibraryFilter
   libraryErrors: string[]
   librarySortBy: DeckLibrarySortBy
   saved: boolean
@@ -39,11 +42,12 @@ export interface DeckBuilderState {
   providedIn: 'root',
 })
 export class DeckBuilderStore {
-  private readonly cryptQuery = inject(CryptQuery)
-  private readonly state = signal<DeckBuilderState>(this.getInitialState())
-  private readonly state$ = toObservable(this.state)
-  private readonly loading = signal<boolean>(false)
-  private readonly loading$ = toObservable(this.loading)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
+  private state = signal<DeckBuilderState>(this.getInitialState())
+  private state$ = toObservable(this.state)
+  private loading = signal<boolean>(false)
+  private loading$ = toObservable(this.loading)
 
   updateName(name: string): void {
     this.update((state) => ({ ...state, name }))
@@ -153,6 +157,13 @@ export class DeckBuilderStore {
     }))
   }
 
+  resetLibraryFilter(): void {
+    this.update((state) => ({
+      ...state,
+      libraryFilter: this.getInitialState().libraryFilter,
+    }))
+  }
+
   setLoading(value = false) {
     this.loading.update(() => value)
   }
@@ -174,6 +185,7 @@ export class DeckBuilderStore {
       cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
       cryptErrors: [],
       cryptSortBy: 'capacity',
+      libraryFilter: this.libraryQuery.getDefaultLibraryFilter(),
       libraryErrors: [],
       librarySortBy: 'name',
       published: true,
