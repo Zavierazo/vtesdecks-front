@@ -464,9 +464,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
       } else {
         const cardA = this.cryptQuery.getEntity(a.id)
         const cardB = this.cryptQuery.getEntity(b.id)
+        if (!cardA || !cardB) {
+          return this.sort(b.number, a.number)
+        }
         return this.sort(
-          cardA![this.sortByCrypt],
-          cardB![this.sortByCrypt],
+          cardA[this.sortByCrypt],
+          cardB[this.sortByCrypt],
           this.sortByCrypt === 'capacity' ? 'desc' : 'asc',
         )
       }
