@@ -3,14 +3,14 @@
     "version": "2.64.0",
     "date": "23th January, 2026",
     "changes": [
-      "Feature: Improved the card collection add flow by showing which cards are already present in the collection.",
-      "UX: The deck builder now preserves previously applied filters when closing the crypt or library modals.",
-      "UX: The deck builder now defaults to sorting by capacity in the crypt and by name in the library, preventing unexpected resorting when adding cards.",
-      "UX: Now when you remove cards in the deck builder, the card remains visible with a count of zero, allowing for easier re-adding without losing context.",
-      "UX: Improved card set tooltips in crypt and card modals on mobile devices, with unified display of set images and badges across the site.",
-      "UX: Added a delete deck button to the deck view for easier deck management.",
-      "UX: Enhanced the preconstructed deck bulk add feature to support adding multiple decks at once.",
-      "Fix: Resetting filters now correctly restores the taint selectors to their initial state.",
+      "Improved card collection add flow, showing which cards are already owned.",
+      "Deck builder now preserves filters when closing crypt and library modals.",
+      "Deck builder default sorting updated (crypt by capacity, library by name).",
+      "Deck builder removed cards remain visible with a count of zero for easier re-adding.",
+      "Improved card set tooltips on mobile with a unified display across the site.",
+      "Added a delete deck button to the deck view for easier deck management.",
+      "Preconstructed deck bulk add now supports multiple decks at once.",
+      "Fixed filter reset to correctly restore taint selectors.",
       "Minor bug fixes and performance improvements."
     ]
   },
