@@ -168,18 +168,16 @@ export class DeckBuilderService {
         extra: deck.extra,
       } as ApiDeckBuilder)
       .pipe(
-        tap((savedDeck) => {
-          const savedCards = savedDeck.cards ?? []
-          const consideringCards = deck.cards.filter((c) => c.number === 0)
+        tap((deck) => {
           this.store.update((state) => ({
             ...state,
-            id: savedDeck.id,
-            name: savedDeck.name,
-            description: savedDeck.description,
-            cards: [...savedCards, ...consideringCards],
-            extra: savedDeck.extra,
-            published: savedDeck.published ?? false,
-            collection: savedDeck.collection ?? false,
+            id: deck.id,
+            name: deck.name,
+            description: deck.description,
+            cards: deck.cards ?? [],
+            extra: deck.extra,
+            published: deck.published ?? false,
+            collection: deck.collection ?? false,
             saved: true,
           }))
           this.validateDeck()
