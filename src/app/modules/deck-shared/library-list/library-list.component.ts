@@ -121,7 +121,10 @@ export class LibraryListComponent implements OnInit {
         } else {
           const cardA = this.libraryQuery.getEntity(a.id)
           const cardB = this.libraryQuery.getEntity(b.id)
-          return this.sort(cardA![this.sortBy], cardB![this.sortBy])
+          if (!cardA || !cardB) {
+            return this.sort(b.number, a.number)
+          }
+          return this.sort(cardA[this.sortBy], cardB[this.sortBy])
         }
       })
   }

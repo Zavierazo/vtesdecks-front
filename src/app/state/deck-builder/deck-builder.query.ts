@@ -71,9 +71,12 @@ export class DeckBuilderQuery {
             } else {
               const cardA = this.cryptQuery.getEntity(a.id)
               const cardB = this.cryptQuery.getEntity(b.id)
+              if (!cardA || !cardB) {
+                return this.sort(b.number, a.number)
+              }
               return this.sort(
-                cardA![sortByCrypt],
-                cardB![sortByCrypt],
+                cardA[sortByCrypt],
+                cardB[sortByCrypt],
                 sortByCrypt === 'capacity' ? 'desc' : 'asc',
               )
             }
