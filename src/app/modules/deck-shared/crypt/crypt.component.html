@@ -1,7 +1,7 @@
 @if(crypt$ | async; as crypt){
 <!-- eslint-disable-next-line -->
-<a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
-  [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+<a class="list-group-item list-group-item-action disable-select crypt-item" #popover="ngbPopover"
+  [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
   (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="background && {
     background: 'url('+ cdnDomain + crypt.cropImage + ') scroll',
     'background-repeat': 'no-repeat',
@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-6 lh-1">
       <div class="row">
         <div class="col-12">
           @for(discipline of crypt.disciplineIcons; track discipline){
