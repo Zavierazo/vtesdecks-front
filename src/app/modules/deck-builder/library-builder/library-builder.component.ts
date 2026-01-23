@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary, LibrarySortBy } from '@models'
+import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import {
   NgbActiveModal,
   NgbDropdown,
@@ -27,7 +27,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { LibraryQuery } from '@state/library/library.query'
-import { getSetAbbrev, isRegexSearch, searchIncludes } from '@utils'
+import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
@@ -70,30 +70,18 @@ export class LibraryBuilderComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
 
-  private static readonly PAGE_SIZE = 20
-  nameFormControl = new FormControl('')
+  private static readonly PAGE_SIZE = 50
+  nameFormControl = new FormControl(
+    this.deckBuilderQuery.getLibraryFilter().name,
+  )
   library$!: Observable<ApiLibrary[]>
-  librarySize$!: Observable<number>
-  isMobile$!: Observable<boolean>
-  isMobileOrTablet$!: Observable<boolean>
-
+  librarySize$ = this.deckBuilderQuery.selectLibrarySize()
+  libraryFilter$ = this.deckBuilderQuery.selectLibraryFilter()
+  isMobile$ = this.mediaService.observeMobile()
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
   sortBy!: LibrarySortBy
   sortByOrder!: 'asc' | 'desc'
-  limitedFormat?: boolean
-  types!: string[]
-  clans!: string[]
-  disciplines!: string[]
-  sect!: string
-  path!: string
-  bloodCostSlider!: number[]
-  poolCostSlider!: number[]
-  title!: string
-  set!: string
-  taints!: string[]
-  cardText!: string
-  artist!: string
-  predefinedLimitedFormat?: string
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -110,9 +98,6 @@ export class LibraryBuilderComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.librarySize$ = this.deckBuilderQuery.selectLibrarySize()
-    this.isMobile$ = this.mediaService.observeMobile()
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.initFilters()
     this.onChangeNameFilter()
   }
@@ -140,30 +125,28 @@ export class LibraryBuilderComponent implements OnInit {
     this.updateQuery()
   }
 
-  initFilters() {
-    if (this.deckBuilderQuery.getLimitedFormat() !== undefined) {
-      this.limitedFormat = true
-    }
+  resetFilters() {
+    this.deckBuilderService.resetLibraryFilter()
     this.nameFormControl.patchValue('', { emitEvent: false })
-    this.types = []
-    this.disciplines = []
-    this.clans = []
-    this.title = ''
-    this.sect = ''
-    this.path = ''
-    this.set = ''
-    this.bloodCostSlider = [0, 4]
-    this.poolCostSlider = [0, 6]
-    this.taints = []
-    this.sortBy = 'relevance'
-    this.sortByOrder = 'desc'
-    this.cardText = ''
-    this.artist = ''
-    this.initQuery()
+    this.initFilters()
   }
 
-  onChangeLimitedFormat(limitedFormat: boolean) {
-    this.limitedFormat = limitedFormat
+  private initFilters() {
+    if (this.deckBuilderQuery.getLimitedFormat() !== undefined) {
+      this.deckBuilderService.updateLibraryFilter((filter) => ({
+        ...filter,
+        limitedFormat: true,
+        customLimitedFormat: this.deckBuilderQuery.getLimitedFormat(),
+      }))
+    } else {
+      this.deckBuilderService.updateLibraryFilter((filter) => ({
+        ...filter,
+        limitedFormat: undefined,
+        customLimitedFormat: undefined,
+      }))
+    }
+    this.sortBy = 'relevance'
+    this.sortByOrder = 'desc'
     this.initQuery()
   }
 
@@ -191,73 +174,19 @@ export class LibraryBuilderComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         debounceTime(500),
+        tap((value) =>
+          this.deckBuilderService.updateLibraryFilter((filter) => ({
+            ...filter,
+            name: value || '',
+          })),
+        ),
         tap(() => this.initQuery()),
       )
       .subscribe()
   }
 
-  onChangeTypesFilter(types: string[]) {
-    this.types = types
-    this.initQuery()
-  }
-
-  onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.initQuery()
-  }
-
-  onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.initQuery()
-  }
-
-  onChangeSectFilter(sect: string) {
-    this.sect = sect
-    this.initQuery()
-  }
-
-  onChangePathFilter(path: string) {
-    this.path = path
-    this.initQuery()
-  }
-
-  onChangeTitleFilter(title: string) {
-    this.title = title
-    this.initQuery()
-  }
-
-  onChangeSetFilter(set: string) {
-    this.set = set
-    this.initQuery()
-  }
-
-  onChangeBloodCostSliderFilter(bloodCostSlider: number[]) {
-    this.bloodCostSlider = bloodCostSlider
-    this.initQuery()
-  }
-
-  onChangePoolCostSliderFilter(poolCostSlider: number[]) {
-    this.poolCostSlider = poolCostSlider
-    this.initQuery()
-  }
-
-  onChangeTaintsFilter(taints: string[]) {
-    this.taints = taints
-    this.initQuery()
-  }
-
-  onChangeCardTextFilter(cardText: string) {
-    this.cardText = cardText
-    this.initQuery()
-  }
-
-  onChangeArtistFilter(artist: string) {
-    this.artist = artist
-    this.initQuery()
-  }
-
-  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
-    this.predefinedLimitedFormat = predefinedLimitedFormat
+  onChangeLibraryFilter(filter: LibraryFilter) {
+    this.deckBuilderService.updateLibraryFilter(() => filter)
     this.initQuery()
   }
 
@@ -269,141 +198,9 @@ export class LibraryBuilderComponent implements OnInit {
   private updateQuery() {
     this.library$ = this.libraryQuery.selectAll({
       limitTo: this.limitTo,
-      filterBy: (entity) => {
-        const name = this.nameFilter
-        if (name && !searchIncludes(entity.name, name)) {
-          if (entity.i18n?.name) {
-            return searchIncludes(entity.i18n.name, name)
-          } else if (entity.aka) {
-            return searchIncludes(entity.aka, name)
-          } else {
-            return false
-          }
-        }
-        if (this.types.length > 0) {
-          let typeMatch = false
-          for (const type of this.types) {
-            const types = entity.type.split('/')
-            if (types.includes(type)) {
-              typeMatch = true
-            }
-          }
-          if (!typeMatch) {
-            return false
-          }
-        }
-        if (this.clans.length > 0) {
-          let clanMatch = false
-          for (const clan of this.clans) {
-            if (
-              (clan === 'none' && entity.clans.length === 0) ||
-              entity.clans.includes(clan)
-            ) {
-              clanMatch = true
-            }
-          }
-          if (!clanMatch) {
-            return false
-          }
-        }
-        for (const discipline of this.disciplines) {
-          if (discipline === 'none' && entity.disciplines.length === 0) {
-            continue
-          } else if (!entity.disciplines.includes(discipline)) {
-            return false
-          }
-        }
-        if (this.sect) {
-          if (this.sect === 'none') {
-            return entity.sects.length === 0
-          } else if (!entity.sects.includes(this.sect)) {
-            return false
-          }
-        }
-        if (this.path && entity.path !== this.path) {
-          return false
-        }
-        if (this.title) {
-          if (this.title === 'none') {
-            return entity.titles.length === 0
-          } else if (!entity.titles.includes(this.title)) {
-            return false
-          }
-        }
-        if (this.set) {
-          return entity.sets.some((set) => set.startsWith(this.set + ':'))
-        }
-        const bloodCostMin = this.bloodCostSlider[0]
-        const bloodCostMax = this.bloodCostSlider[1]
-        const bloodCost = entity.bloodCost ?? 0
-        if (
-          bloodCost != -1 &&
-          (bloodCost < bloodCostMin || bloodCost > bloodCostMax)
-        ) {
-          return false
-        }
-        const poolCostMin = this.poolCostSlider[0]
-        const poolCostMax = this.poolCostSlider[1]
-        const poolCost = entity.poolCost ?? 0
-        if (
-          poolCost != -1 &&
-          (poolCost < poolCostMin || poolCost > poolCostMax)
-        ) {
-          return false
-        }
-        for (const taint of this.taints) {
-          if (!entity.taints.includes(taint)) {
-            return false
-          }
-        }
-        if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
-          if (entity.i18n?.text) {
-            return searchIncludes(entity.i18n.text, this.cardText)
-          } else {
-            return false
-          }
-        }
-        const limitedFormatState = this.deckBuilderQuery.getLimitedFormat()
-        if (this.limitedFormat && limitedFormatState) {
-          if (limitedFormatState.banned.crypt[entity.id]) {
-            return false
-          }
-          if (limitedFormatState.banned.library[entity.id]) {
-            return false
-          }
-          if (limitedFormatState.allowed.crypt[entity.id]) {
-            return true
-          }
-          if (limitedFormatState.allowed.library[entity.id]) {
-            return true
-          }
-          if (
-            !Object.keys(limitedFormatState.sets).some((set) =>
-              entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
-            )
-          ) {
-            return false
-          }
-        }
-        if (this.predefinedLimitedFormat) {
-          if (
-            !entity.limitedFormats?.includes(
-              Number(this.predefinedLimitedFormat),
-            )
-          ) {
-            return false
-          }
-        }
-        if (this.artist) {
-          if (!searchIncludes(entity.artist, this.artist)) {
-            return false
-          }
-        }
-        return true
-      },
+      filter: this.deckBuilderQuery.getLibraryFilter(),
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      nameFilter: this.nameFilter,
       stats: {
         total: this.deckBuilderQuery.getLibrarySize(),
         disciplines: this.deckBuilderQuery.getLibraryDisciplines(),

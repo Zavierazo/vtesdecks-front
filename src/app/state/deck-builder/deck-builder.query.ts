@@ -7,8 +7,10 @@ import {
   ApiDeckLimitedFormat,
   ApiDisciplineStat,
   ApiLibrary,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
+  LibraryFilter,
 } from '@models'
 import { isCrypt, isLibrary, roundNumber } from '@utils'
 import { combineLatest, map, Observable } from 'rxjs'
@@ -59,6 +61,10 @@ export class DeckBuilderQuery {
               }) as ApiCard,
           )
           .sort((a: ApiCard, b: ApiCard) => {
+            // Cards with number === 0 always go last
+            if (a.number === 0 && b.number !== 0) return 1
+            if (a.number !== 0 && b.number === 0) return -1
+
             const sortByCrypt = this.store.getValue().cryptSortBy
             if (sortByCrypt === 'quantity') {
               return this.sort(b.number, a.number)
@@ -263,6 +269,7 @@ export class DeckBuilderQuery {
     return this.store
       .getValue()
       .cards.filter(isCrypt)
+      .filter((card) => card.number > 0)
       .map((card) => this.cryptQuery.getEntity(card.id) as ApiCrypt)
   }
 
@@ -277,6 +284,7 @@ export class DeckBuilderQuery {
     return this.store
       .getValue()
       .cards.filter(isLibrary)
+      .filter((card) => card.number > 0)
       .map((card) => this.libraryQuery.getEntity(card.id) as ApiLibrary)
   }
 
@@ -379,5 +387,21 @@ export class DeckBuilderQuery {
 
   selectLibrarySortBy(): Observable<DeckLibrarySortBy> {
     return this.store.select((state) => state.librarySortBy)
+  }
+
+  getCryptFilter(): CryptFilter {
+    return this.store.getValue().cryptFilter
+  }
+
+  selectCryptFilter(): Observable<CryptFilter> {
+    return this.store.select((state) => state.cryptFilter)
+  }
+
+  getLibraryFilter(): LibraryFilter {
+    return this.store.getValue().libraryFilter
+  }
+
+  selectLibraryFilter(): Observable<LibraryFilter> {
+    return this.store.select((state) => state.libraryFilter)
   }
 }

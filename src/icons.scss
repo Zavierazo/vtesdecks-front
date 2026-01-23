@@ -5,17 +5,20 @@ i.vtes {
   flex-grow: 1;
   margin: 0;
   width: 1.6em;
-  height: 1.6em;
-  filter: drop-shadow(1px 1px 2px white);
+  height: auto;
+  max-height: 1.6em;
+  filter: drop-shadow(1px 1px 3px white);
 
   &-small {
     width: 1.3em;
-    height: 1.3em;
+    height: auto;
+    max-height: 1.3em;
   }
 
   &-big {
     width: 2em;
-    height: 2em;
+    height: auto;
+    max-height: 2em;
   }
 }
 
@@ -179,16 +182,19 @@ i.visionary {
 /* Paths */
 i.path {
   &.vtes {
-    height: 1.5em;
     width: 1.2em;
+    height: auto;
+    max-height: 1.5em;
     &-small {
-      height: 1.1em;
       width: 0.9em;
+      height: auto;
+      max-height: 1.1em;
     }
 
     &-big {
-      height: 2em;
       width: 1.6em;
+      height: auto;
+      max-height: 2em;
     }
   }
 }
@@ -199,12 +205,15 @@ i.pathcathari {
   content: url(/assets/img/icons/paths/pathcathari.svg);
   &.vtes {
     width: 1.6em;
+    height: auto;
     &-small {
       width: 1.2em;
+      height: auto;
     }
 
     &-big {
       width: 2.2em;
+      height: auto;
     }
   }
 }
@@ -435,84 +444,103 @@ i.flight {
 
   &.vtes {
     width: 2.2em;
-    height: 1.4em;
+    height: auto;
+    max-height: 1.4em;
   }
 
   &.vtes-small {
     width: 1.6em;
-    height: 1.1em;
+    height: auto;
+    max-height: 1.1em;
   }
 
   &.vtes-big {
     width: 2.3em;
-    height: 1.7em;
+    height: auto;
+    max-height: 1.7em;
   }
 }
 
 i.bloodx {
   content: url(/assets/img/icons/misc/bloodx.png);
   width: 1em;
+  height: auto;
 }
 i.blood1 {
   content: url(/assets/img/icons/misc/blood1.png);
   width: 1em;
+  height: auto;
 }
 i.blood2 {
   content: url(/assets/img/icons/misc/blood2.png);
   width: 1em;
+  height: auto;
 }
 i.blood3 {
   content: url(/assets/img/icons/misc/blood3.png);
   width: 1em;
+  height: auto;
 }
 i.blood4 {
   content: url(/assets/img/icons/misc/blood4.png);
   width: 1em;
+  height: auto;
 }
 i.bloodcost {
   content: url(/assets/img/icons/misc/bloodcost.png);
   width: 0.9em;
+  height: auto;
 }
 i.poolx {
   content: url(/assets/img/icons/misc/poolx.png);
   width: 0.9em;
+  height: auto;
 }
 i.poolx {
   content: url(/assets/img/icons/misc/poolx.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool1 {
   content: url(/assets/img/icons/misc/pool1.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool2 {
   content: url(/assets/img/icons/misc/pool2.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool3 {
   content: url(/assets/img/icons/misc/pool3.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool4 {
   content: url(/assets/img/icons/misc/pool4.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool5 {
   content: url(/assets/img/icons/misc/pool5.png);
   width: 0.9em;
+  height: auto;
 }
 i.pool6 {
   content: url(/assets/img/icons/misc/pool6.png);
   width: 0.9em;
+  height: auto;
 }
 i.poolcost {
   content: url(/assets/img/icons/misc/poolcost.png);
   width: 0.9em;
+  height: auto;
 }
 i.advanced {
   content: url(/assets/img/icons/misc/advanced.svg);
   width: 0.9em;
   max-width: 0.9em;
+  height: auto;
 }
 i.directedaction {
   content: url(/assets/img/icons/misc/directedaction.gif);
@@ -566,8 +594,10 @@ i.retainer {
 i.crypt_back {
   content: url(/assets/img/icons/misc/crypt_back.jpg);
   width: 2em;
+  height: auto;
 }
 i.library_back {
   content: url(/assets/img/icons/misc/library_back.jpg);
   width: 2em;
+  height: auto;
 }

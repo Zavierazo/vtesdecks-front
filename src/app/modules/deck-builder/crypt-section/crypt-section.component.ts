@@ -17,7 +17,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptSortBy } from '@models'
+import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -33,7 +33,7 @@ import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { isRegexSearch, searchIncludes } from '@utils'
+import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
@@ -89,32 +89,18 @@ export class CryptSectionComponent implements OnInit {
   private router = inject(Router)
   private location = inject(Location)
 
-  private static readonly PAGE_SIZE = 40
+  private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
   crypt$!: Observable<ApiCrypt[]>
-  isMobile$!: Observable<boolean>
-  isMobileOrTablet$!: Observable<boolean>
+  isMobile$ = this.mediaService.observeMobile()
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
   sortBy: CryptSortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
-  printOnDemand = false
-  clans: string[] = []
-  disciplines: string[] = []
-  superiorDisciplines: string[] = []
-  groupSlider: number[] = [1, this.cryptQuery.getMaxGroup()]
-  capacitySlider: number[] = [1, this.cryptQuery.getMaxCapacity()]
-  title!: string
-  sect!: string
-  path!: string
-  set!: string
-  taints: string[] = []
-  cardText!: string
-  artist!: string
-  predefinedLimitedFormat?: string
-
+  cryptFilter = this.cryptQuery.getDefaultCryptFilter()
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
     {
@@ -130,8 +116,6 @@ export class CryptSectionComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.isMobile$ = this.mediaService.observeMobile()
-    this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.listenScroll()
     this.initFilters()
   }
@@ -209,44 +193,48 @@ export class CryptSectionComponent implements OnInit {
     this.initDefaults()
     const queryParams = this.route.snapshot.queryParams
     if (queryParams['name']) {
+      this.cryptFilter.name = queryParams['name']
       this.nameFormControl.patchValue(queryParams['name'], {
         emitEvent: false,
       })
     }
     if (queryParams['printOnDemand']) {
-      this.printOnDemand = queryParams['printOnDemand'] === 'true'
+      this.cryptFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
     if (queryParams['set']) {
-      this.set = queryParams['set']
+      this.cryptFilter.set = queryParams['set']
     }
     if (queryParams['title']) {
-      this.title = queryParams['title']
+      this.cryptFilter.title = queryParams['title']
     }
     if (queryParams['sect']) {
-      this.sect = queryParams['sect']
+      this.cryptFilter.sect = queryParams['sect']
     }
     if (queryParams['path']) {
-      this.path = queryParams['path']
+      this.cryptFilter.path = queryParams['path']
     }
     if (queryParams['clans']) {
-      this.clans = queryParams['clans'].split(',')
+      this.cryptFilter.clans = queryParams['clans'].split(',')
     }
     if (queryParams['disciplines']) {
-      this.disciplines = queryParams['disciplines'].split(',')
+      this.cryptFilter.disciplines = queryParams['disciplines'].split(',')
     }
     if (queryParams['superiorDisciplines']) {
-      this.superiorDisciplines = queryParams['superiorDisciplines'].split(',')
+      this.cryptFilter.superiorDisciplines =
+        queryParams['superiorDisciplines'].split(',')
     }
     if (queryParams['group']) {
-      this.groupSlider = queryParams['group'].split(',').map((v: string) => +v)
+      this.cryptFilter.groupSlider = queryParams['group']
+        .split(',')
+        .map((v: string) => +v)
     }
     if (queryParams['capacity']) {
-      this.capacitySlider = queryParams['capacity']
+      this.cryptFilter.capacitySlider = queryParams['capacity']
         .split(',')
         .map((v: string) => +v)
     }
     if (queryParams['taints']) {
-      this.taints = queryParams['taints'].split(',')
+      this.cryptFilter.taints = queryParams['taints'].split(',')
     }
     if (queryParams['sortBy']) {
       this.sortBy = queryParams['sortBy']
@@ -255,15 +243,18 @@ export class CryptSectionComponent implements OnInit {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
-      this.cardText = queryParams['cardText']
+      this.cryptFilter.cardText = queryParams['cardText']
     }
     if (queryParams['artist']) {
-      this.artist = queryParams['artist']
+      this.cryptFilter.artist = queryParams['artist']
     }
     this.route.queryParams.subscribe((param) => {
       // Used when coming from card info artist link
       if (param['artist']) {
-        this.onChangeArtistFilter(param['artist'])
+        this.onChangeCryptFilter({
+          ...this.cryptFilter,
+          artist: param['artist'],
+        })
       }
     })
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
@@ -275,31 +266,21 @@ export class CryptSectionComponent implements OnInit {
       }, 300)
     }
     if (queryParams['predefinedLimitedFormat']) {
-      this.predefinedLimitedFormat = queryParams['predefinedLimitedFormat']
+      this.cryptFilter.predefinedLimitedFormat =
+        queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
     this.initQuery(true)
   }
 
   private initDefaults() {
-    this.nameFormControl.patchValue('', {
+    this.cryptFilter = this.cryptQuery.getDefaultCryptFilter()
+    this.nameFormControl.patchValue(this.cryptFilter.name ?? '', {
       emitEvent: false,
     })
-    this.printOnDemand = false
-    this.set = ''
-    this.title = ''
-    this.sect = ''
-    this.path = ''
-    this.clans = []
-    this.disciplines = []
-    this.superiorDisciplines = []
-    this.groupSlider = [1, this.cryptQuery.getMaxGroup()]
-    this.capacitySlider = [1, this.cryptQuery.getMaxCapacity()]
-    this.taints = []
+    this.cryptFilter.printOnDemand = false
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
-    this.cardText = ''
-    this.artist = ''
   }
 
   onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
@@ -331,143 +312,60 @@ export class CryptSectionComponent implements OnInit {
         debounceTime(500),
         tap(() => {
           this.initQuery()
+          this.cryptFilter.name = this.nameFilter || ''
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
       .subscribe()
   }
 
-  onChangePrintOnDemand(printOnDemand: boolean) {
-    this.printOnDemand = printOnDemand
-    this.initQuery()
+  onChangeCryptFilter(filter: CryptFilter) {
+    this.cryptFilter = filter
+    const isDefaultGroup =
+      Array.isArray(this.cryptFilter.groupSlider) &&
+      this.cryptFilter.groupSlider[0] === 1 &&
+      this.cryptFilter.groupSlider[1] === this.cryptQuery.getMaxGroup()
+    const isDefaultCapacity =
+      Array.isArray(this.cryptFilter.capacitySlider) &&
+      this.cryptFilter.capacitySlider[0] === 1 &&
+      this.cryptFilter.capacitySlider[1] === this.cryptQuery.getMaxCapacity()
     this.updateQueryParams({
-      ['printOnDemand']: this.printOnDemand ? 'true' : undefined,
-    })
-  }
-
-  onChangeClanFilter(clans: string[]) {
-    this.clans = clans
-    this.initQuery()
-    this.updateQueryParams({
-      ['clans']: this.clans.length > 0 ? this.clans.join(',') : undefined,
-    })
-  }
-
-  onChangeDisciplineFilter(disciplines: string[]) {
-    this.disciplines = disciplines
-    this.initQuery()
-    this.onChangeDisciplines()
-  }
-
-  onChangeSuperiorDisciplineFilter(superiorDisciplines: string[]) {
-    this.superiorDisciplines = superiorDisciplines
-    this.initQuery()
-    this.onChangeDisciplines()
-  }
-
-  private onChangeDisciplines() {
-    this.updateQueryParams({
-      ['disciplines']:
-        this.disciplines.length > 0 ? this.disciplines.join(',') : undefined,
-      ['superiorDisciplines']:
-        this.superiorDisciplines.length > 0
-          ? this.superiorDisciplines.join(',')
+      ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
+      ['clans']:
+        this.cryptFilter.clans && this.cryptFilter.clans.length > 0
+          ? this.cryptFilter.clans.join(',')
           : undefined,
-    })
-  }
-
-  onChangeGroupSliderFilter(groupSlider: number[]) {
-    this.groupSlider = groupSlider
-    this.initQuery()
-    const isDefault =
-      Array.isArray(groupSlider) &&
-      groupSlider[0] === 1 &&
-      groupSlider[1] === this.cryptQuery.getMaxGroup()
-    this.updateQueryParams({
+      ['disciplines']:
+        this.cryptFilter.disciplines && this.cryptFilter.disciplines.length > 0
+          ? this.cryptFilter.disciplines.join(',')
+          : undefined,
+      ['superiorDisciplines']:
+        this.cryptFilter.superiorDisciplines &&
+        this.cryptFilter.superiorDisciplines.length > 0
+          ? this.cryptFilter.superiorDisciplines.join(',')
+          : undefined,
       ['group']:
-        isDefault || !Array.isArray(groupSlider)
+        isDefaultGroup || !Array.isArray(this.cryptFilter.groupSlider)
           ? undefined
-          : this.groupSlider.join(','),
-    })
-  }
-
-  onChangeCapacitySliderFilter(capacitySlider: number[]) {
-    this.capacitySlider = capacitySlider
-    this.initQuery()
-    const isDefault =
-      Array.isArray(capacitySlider) &&
-      capacitySlider[0] === 1 &&
-      capacitySlider[1] === this.cryptQuery.getMaxCapacity()
-    this.updateQueryParams({
+          : this.cryptFilter.groupSlider.join(','),
       ['capacity']:
-        isDefault || !Array.isArray(capacitySlider)
+        isDefaultCapacity || !Array.isArray(this.cryptFilter.capacitySlider)
           ? undefined
-          : this.capacitySlider.join(','),
+          : this.cryptFilter.capacitySlider.join(','),
+      ['title']: this.cryptFilter.title || undefined,
+      ['set']: this.cryptFilter.set || undefined,
+      ['sect']: this.cryptFilter.sect || undefined,
+      ['path']: this.cryptFilter.path || undefined,
+      ['taints']:
+        this.cryptFilter.taints && this.cryptFilter.taints.length > 0
+          ? this.cryptFilter.taints.join(',')
+          : undefined,
+      ['cardText']: this.cryptFilter.cardText || undefined,
+      ['artist']: this.cryptFilter.artist || undefined,
+      ['predefinedLimitedFormat']:
+        this.cryptFilter.predefinedLimitedFormat || undefined,
     })
-  }
-
-  onChangeTitleFilter(title: string) {
-    this.title = title
     this.initQuery()
-    this.updateQueryParams({
-      ['title']: this.title || undefined,
-    })
-  }
-
-  onChangeSetFilter(set: string) {
-    this.set = set
-    this.initQuery()
-    this.updateQueryParams({
-      ['set']: this.set || undefined,
-    })
-  }
-
-  onChangeSectFilter(sect: string) {
-    this.sect = sect
-    this.initQuery()
-    this.updateQueryParams({
-      ['sect']: this.sect || undefined,
-    })
-  }
-
-  onChangePathFilter(path: string) {
-    this.path = path
-    this.initQuery()
-    this.updateQueryParams({
-      ['path']: this.path || undefined,
-    })
-  }
-
-  onChangeTaintsFilter(taints: string[]) {
-    this.taints = taints
-    this.initQuery()
-    this.updateQueryParams({
-      ['taints']: this.taints.length > 0 ? this.taints.join(',') : undefined,
-    })
-  }
-
-  onChangeCardTextFilter(cardText: string) {
-    this.cardText = cardText
-    this.initQuery()
-    this.updateQueryParams({
-      ['cardText']: this.cardText || undefined,
-    })
-  }
-
-  onChangeArtistFilter(artist: string) {
-    this.artist = artist
-    this.initQuery()
-    this.updateQueryParams({
-      ['artist']: this.artist || undefined,
-    })
-  }
-
-  onChangePredefinedLimitedFormatFilter(predefinedLimitedFormat: string) {
-    this.predefinedLimitedFormat = predefinedLimitedFormat
-    this.initQuery()
-    this.updateQueryParams({
-      ['predefinedLimitedFormat']: this.predefinedLimitedFormat || undefined,
-    })
   }
 
   initQuery(firstInitialize = false) {
@@ -478,94 +376,14 @@ export class CryptSectionComponent implements OnInit {
     }
   }
 
-  private readonly filterBy: (entity: ApiCrypt, index?: number) => boolean = (
-    entity,
-  ) => {
-    const name = this.nameFilter
-    if (name && !searchIncludes(entity.name, name)) {
-      if (entity.i18n?.name) {
-        return searchIncludes(entity.i18n.name, name)
-      } else if (entity.aka) {
-        return searchIncludes(entity.aka, name)
-      } else {
-        return false
-      }
-    }
-    if (this.printOnDemand && !entity.printOnDemand) {
-      return false
-    }
-    if (this.clans?.length > 0 && !this.clans?.includes(entity.clan)) {
-      return false
-    }
-    for (const discipline of this.disciplines) {
-      if (!entity.disciplines.includes(discipline)) {
-        return false
-      }
-    }
-    for (const superiorDiscipline of this.superiorDisciplines) {
-      if (!entity.superiorDisciplines.includes(superiorDiscipline)) {
-        return false
-      }
-    }
-    const groupMin = this.groupSlider[0]
-    const groupMax = this.groupSlider[1]
-    const group = entity.group
-    if (group > 0 && (group < groupMin || group > groupMax)) {
-      return false
-    }
-    const capacityMin = this.capacitySlider[0]
-    const capacityMax = this.capacitySlider[1]
-    if (entity.capacity < capacityMin || entity.capacity > capacityMax) {
-      return false
-    }
-    if (this.title && entity.title !== this.title) {
-      return false
-    }
-    if (this.sect && entity.sect !== this.sect) {
-      return false
-    }
-    if (this.path && entity.path !== this.path) {
-      return false
-    }
-    if (this.set) {
-      return entity.sets.some((set) => set.startsWith(this.set + ':'))
-    }
-    for (const taint of this.taints) {
-      if (!entity.taints.includes(taint)) {
-        return false
-      }
-    }
-    if (this.cardText && !searchIncludes(entity.text, this.cardText)) {
-      if (entity.i18n?.text) {
-        return searchIncludes(entity.i18n.text, this.cardText)
-      } else {
-        return false
-      }
-    }
-    if (this.predefinedLimitedFormat) {
-      if (
-        !entity.limitedFormats?.includes(Number(this.predefinedLimitedFormat))
-      ) {
-        return false
-      }
-    }
-    if (this.artist) {
-      if (!searchIncludes(entity.artist, this.artist)) {
-        return false
-      }
-    }
-    return true
-  }
-
   private updateQuery() {
     this.crypt$ = this.cryptQuery
       .selectAll({
-        filterBy: this.filterBy,
+        filter: this.cryptFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-        nameFilter: this.nameFilter,
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
@@ -587,10 +405,9 @@ export class CryptSectionComponent implements OnInit {
       scrollable: true,
     })
     const cryptList = this.cryptQuery.getAll({
-      filterBy: this.filterBy,
+      filter: this.cryptFilter,
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      nameFilter: this.nameFilter,
     })
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = cryptList.indexOf(card)

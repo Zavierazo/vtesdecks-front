@@ -127,17 +127,6 @@
     <strong class="float-end">
       {{ t('results', { count: (resultsCount$ | async)! }) }}
     </strong>
-    <app-library-builder-filter [(printOnDemand)]="printOnDemand" (printOnDemandChange)="onChangePrintOnDemand($event)"
-      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
-      (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
-      [(path)]="path" (pathChange)="onChangePathFilter($event)" [(taints)]="taints"
-      (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types" (typesChange)="onChangeTypesFilter($event)"
-      [(bloodCostSlider)]="bloodCostSlider" (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)"
-      [(poolCostSlider)]="poolCostSlider" (poolCostSliderChange)="onChangePoolCostSliderFilter($event)"
-      [(title)]="title" (titleChange)="onChangeTitleFilter($event)" [(cardText)]="cardText"
-      (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)"
-      [predefinedLimitedFormat]="predefinedLimitedFormat"
-      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" [artist]="artist"
-      (artistChange)="onChangeArtistFilter($event)" />
+    <app-library-builder-filter [filter]="libraryFilter" (filterChange)="onChangeLibraryFilter($event)" />
   </ng-template>
 </ng-container>

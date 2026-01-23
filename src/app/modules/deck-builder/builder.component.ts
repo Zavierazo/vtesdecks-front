@@ -44,6 +44,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
+import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon } from '@utils'
 import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -93,6 +94,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly authService = inject(AuthService)
   private readonly deckBuilderQuery = inject(DeckBuilderQuery)
   private readonly deckBuilderService = inject(DeckBuilderService)
+  private readonly decksService = inject(DecksService)
   private readonly toastService = inject(ToastService)
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
@@ -213,13 +215,14 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .saveDeck()
       .pipe(
         untilDestroyed(this),
-        tap(() =>
+        tap(() => {
           this.toastService.show(
             this.translocoService.translate('deck_builder.deck_saved'),
             { classname: 'bg-success text-light', delay: 5000 },
-          ),
-        ),
-        tap(() => this.onDeckLoaded()),
+          )
+          this.decksService.reset()
+          this.onDeckLoaded()
+        }),
       )
       .subscribe({
         error: (error) => {
@@ -287,6 +290,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
                   ),
                   { classname: 'bg-success text-light', delay: 5000 },
                 )
+                this.decksService.reset()
                 this.router.navigate(['/decks'], {
                   queryParams: { type: 'USER' },
                 })

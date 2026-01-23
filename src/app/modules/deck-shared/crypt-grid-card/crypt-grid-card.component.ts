@@ -41,6 +41,7 @@ export class CryptGridCardComponent implements OnInit {
   card = input.required<ApiCard>()
   cryptSize = input<number>(12)
   withControls = input<boolean>(false)
+  withDelete = input<boolean>(false)
   readonly cardAdded = output<number>()
   readonly cardRemoved = output<number>()
 

@@ -1,4 +1,10 @@
-import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common'
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  DatePipe,
+  NgClass,
+  TitleCasePipe,
+} from '@angular/common'
 import {
   Component,
   computed,
@@ -7,12 +13,12 @@ import {
   output,
   signal,
 } from '@angular/core'
-import { Router, RouterLink } from '@angular/router'
+import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiCardInfo, ApiCrypt, ApiLibrary, ApiShop } from '@models'
 import { NgbCollapse, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService } from '@services'
+import { ApiDataService, MediaService } from '@services'
 import { LocalePipe } from '@shared/pipes/locale.pipe'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
@@ -41,13 +47,16 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     LazyLoadImageModule,
     LocalePipe,
     TitleCasePipe,
+    NgClass,
+    AsyncPipe,
   ],
 })
 export class CardInfoComponent {
   private apiDataService = inject(ApiDataService)
-  private router = inject(Router)
+  private mediaService = inject(MediaService)
 
   card = input.required<ApiCrypt | ApiLibrary>()
+  activeSet = input<string | null>()
   artists = computed(() =>
     this.card().artist
       ? [
@@ -62,7 +71,9 @@ export class CardInfoComponent {
   )
   cardInfo = input<ApiCardInfo | null>()
   routerClick = output<boolean>()
+  changeActiveSet = output<string>()
 
+  isMobile$ = this.mediaService.observeMobile()
   rulingsCollapsed = true
   changesCollapsed = true
   shopsCollapsed = true
@@ -94,6 +105,10 @@ export class CardInfoComponent {
       hasMoreShops: false,
     }
   })
+
+  setActiveSet(set: string): void {
+    this.changeActiveSet.emit(set)
+  }
 
   onLoadMoreShops(): void {
     const currentCardInfo = this.cardInfo()

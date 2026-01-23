@@ -6,9 +6,11 @@ import {
   ApiDeck,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
   FILTER_GROUP_BY,
+  LibraryFilter,
 } from '@models'
 import { ApiDataService } from '@services'
 import { getSetAbbrev } from '@utils'
@@ -237,6 +239,28 @@ export class DeckBuilderService {
     this.store.setLimitedFormat(format)
     this.validateDeck()
     this.store.setSaved(false)
+  }
+
+  resetCryptFilter() {
+    this.store.resetCryptFilter()
+  }
+
+  updateCryptFilter(updateFn: (value: CryptFilter) => CryptFilter) {
+    this.store.update((state) => ({
+      ...state,
+      cryptFilter: updateFn(state.cryptFilter),
+    }))
+  }
+
+  resetLibraryFilter() {
+    this.store.resetLibraryFilter()
+  }
+
+  updateLibraryFilter(updateFn: (value: LibraryFilter) => LibraryFilter) {
+    this.store.update((state) => ({
+      ...state,
+      libraryFilter: updateFn(state.libraryFilter),
+    }))
   }
 
   setCryptSortBy(sortBy: DeckCryptSortBy) {

@@ -30,12 +30,19 @@ export function bracketsExtension(
     renderer(token) {
       const cardName = token['text']
       const cryptCard = cryptQuery.getAll({
-        filterBy: (crypt) =>
-          crypt.name.toLowerCase() === cardName.toLowerCase(),
+        filter: {
+          name: cardName,
+        },
+        sortBy: 'trigramSimilarity',
+        sortByOrder: 'desc',
       })
 
       const libraryCard = libraryQuery.getAll({
-        filterBy: (card) => card.name.toLowerCase() === cardName.toLowerCase(),
+        filter: {
+          name: cardName,
+        },
+        sortBy: 'trigramSimilarity',
+        sortByOrder: 'desc',
       })
 
       if (cryptCard.length > 0) {

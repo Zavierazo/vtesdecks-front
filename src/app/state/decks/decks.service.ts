@@ -14,6 +14,10 @@ export class DecksService {
   static readonly initLimit = 20
   static readonly limit = 10
 
+  reset(): void {
+    this.decksStore.reset()
+  }
+
   init(params: Params): boolean {
     const currentParams = this.decksStore.getValue().params
     if (
@@ -24,7 +28,7 @@ export class DecksService {
       // No need to re-initialize if params are the same and store is not empty
       return false
     }
-    this.decksStore.remove()
+    this.decksStore.reset()
     this.decksStore.updatePage(true, 0)
     this.decksStore.updateParams(params)
     return true

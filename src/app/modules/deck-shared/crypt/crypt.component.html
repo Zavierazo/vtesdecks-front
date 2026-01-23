@@ -35,20 +35,24 @@
   <div class="row align-items-center">
     <div class="col-6">
       <div class="row">
-        @if(withControls && (card.number || maxNumber)){
+        @if(withControls && (card.number || maxNumber || withDelete)){
         <div class="col-auto">
           <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
-              'bi-square btn-transparent': card.number <= 0,
-              'bi-x-square text-danger': card.number > 0 &&card.number <= 1,
-              'bi-dash-square': card.number > 1
+              'bi-x-square text-danger': card.number <= 0,
+              'bi-dash-square': card.number > 0
               }" aria-hidden="true" (click)="removeCard($event)"></i>
         </div>
         }
-        @if(!withDrawProbability && (card.number || maxNumber)){
+        @if(!withDrawProbability && (card.number || maxNumber || withDelete)){
         <div class="col-auto bg-primary-subtle deck_number h-100" [ngClass]="{
           'mt-2': withControls
         }">
-          {{ card.number }}@if(maxNumber){<span>/{{ maxNumber }}</span>}
+          @if(card.number || maxNumber){
+          {{ card.number }}
+          }
+          @if(maxNumber){
+          /
+          <span>{{ maxNumber }}</span>}
         </div>
         }
         @if(withControls){
@@ -93,7 +97,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-6 lh-1">
       <div class="row">
         <div class="col-12">
           @for(discipline of crypt.disciplineIcons; track discipline){

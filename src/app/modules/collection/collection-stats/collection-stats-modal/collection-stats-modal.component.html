@@ -23,7 +23,8 @@
             [infiniteScrollDisabled]="cryptVisible.length >= cryptCards.length">
             @for (id of cryptVisible; track id) {
             <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
-              <app-crypt [card]="{ id: id, number: 0 }" (click)="openCrypt(id)"></app-crypt>
+              <app-crypt [card]="{ id: id, number: 0 }" [disablePopover]="(isMobileOrTablet$ | async)!"
+                [disableClickPopover]="true" (click)="openCrypt(id)"></app-crypt>
             </ul>
             }
           </div>
@@ -43,7 +44,8 @@
             [infiniteScrollDisabled]="libraryVisible.length >= libraryCards.length">
             @for (id of libraryVisible; track id) {
             <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
-              <app-library [card]="{ id: id, number: 0 }" (click)="openLibrary(id)"></app-library>
+              <app-library [card]="{ id: id, number: 0 }" [disablePopover]="(isMobileOrTablet$ | async)!"
+                [disableClickPopover]="true" (click)="openLibrary(id)"></app-library>
             </ul>
             }
           </div>
@@ -61,7 +63,8 @@
       [infiniteScrollDisabled]="cryptVisible.length >= cryptCards.length">
       @for (id of cryptVisible; track id) {
       <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
-        <app-crypt [card]="{ id: id, number: 0 }" (click)="openCrypt(id)"></app-crypt>
+        <app-crypt [card]="{ id: id, number: 0 }" [disablePopover]="(isMobileOrTablet$ | async)!"
+          [disableClickPopover]="true" (click)="openCrypt(id)"></app-crypt>
       </ul>
       }
     </div>
@@ -71,7 +74,8 @@
       [infiniteScrollDisabled]="libraryVisible.length >= libraryCards.length">
       @for (id of libraryVisible; track id) {
       <ul class="col list-group" [class.owned]="owned.includes(id)" [class.missing]="missing.includes(id)">
-        <app-library [card]="{ id: id, number: 0 }" (click)="openLibrary(id)"></app-library>
+        <app-library [card]="{ id: id, number: 0 }" [disablePopover]="(isMobileOrTablet$ | async)!"
+          [disableClickPopover]="true" (click)="openLibrary(id)"></app-library>
       </ul>
       }
     </div>

@@ -126,7 +126,8 @@
     "sort_by_name": "Nombre",
     "sort_by_capacity": "Capacidad",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "delete": "Borrar"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -852,6 +853,8 @@
     "must_3_characters": "Debe tener al menos 3 caracteres",
     "min_quantity": "Se requiere al menos una carta",
     "max_quantity": "No puedes agregar más de {{ max }} cartas",
+    "existing_cards_in_collection": "Cartas Existentes en la Colección",
+    "quantity_description": "Si la carta ya existe en tu colección, esto aumentará su cantidad.",
     "move_to_binder": "Mover a Carpeta",
     "move_to_binder_message": "¿Cuántas cartas deseas mover a una carpeta?",
     "any_set": "Cualquier expansión",

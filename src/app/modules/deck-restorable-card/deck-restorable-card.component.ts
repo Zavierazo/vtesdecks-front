@@ -9,6 +9,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { TruncatePipe } from '@shared/pipes/truncate.pipe'
+import { DecksService } from '@state/decks/decks.service'
 import { filter, switchMap, tap } from 'rxjs'
 
 @UntilDestroy()
@@ -19,6 +20,7 @@ import { filter, switchMap, tap } from 'rxjs'
   imports: [TitleCasePipe, TruncatePipe, TranslocoPipe, TranslocoDatePipe],
 })
 export class DeckRestorableCardComponent {
+  private readonly decksService = inject(DecksService)
   private readonly router = inject(Router)
   private readonly modalService = inject(NgbModal)
   private readonly translocoService = inject(TranslocoService)
@@ -54,6 +56,7 @@ export class DeckRestorableCardComponent {
                 ),
                 { classname: 'bg-success text-light', delay: 5000 },
               )
+              this.decksService.reset()
               this.router.navigate(['/decks/builder'], { queryParams: { id } })
             }),
           ),

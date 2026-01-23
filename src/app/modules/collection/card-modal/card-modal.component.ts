@@ -20,14 +20,18 @@ import {
 } from '@jsverse/transloco'
 import {
   ApiCollectionCard,
+  ApiCollectionPage,
   ApiCrypt,
   ApiI18n,
   ApiLibrary,
   ApiSet,
+  FILTER_CARD_ID,
 } from '@models'
 import {
   NgbActiveModal,
+  NgbCollapse,
   NgbHighlight,
+  NgbTooltip,
   NgbTypeahead,
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
@@ -50,6 +54,9 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
+import { CollectionBinderComponent } from '../collection-cards-list/collection-binder/collection-binder.component'
+import CollectionSetComponent from '../collection-cards-list/collection-set/collection-set.component'
+import { ConditionPipe } from '../pipes/condition.pipe'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionQuery } from '../state/collection.query'
 
@@ -79,6 +86,11 @@ export interface SearchCard {
     AsyncPipe,
     DatePipe,
     LazyLoadImageModule,
+    CollectionSetComponent,
+    CollectionBinderComponent,
+    ConditionPipe,
+    NgbTooltip,
+    NgbCollapse,
   ],
 })
 export class CardModalComponent implements OnInit {
@@ -98,6 +110,7 @@ export class CardModalComponent implements OnInit {
   defaultBinderId: number | null = null
   binders$ = this.collectionQuery.selectBinders()
   loading$ = this.collectionQuery.selectLoadingBackground()
+  isExistingCardsCollapsed = true
   formCard = new FormGroup({
     id: new FormControl<number | null>(null),
     card: new FormControl<SearchCard | null>(null, Validators.required),
@@ -112,6 +125,7 @@ export class CardModalComponent implements OnInit {
     notes: new FormControl<string | null>(null),
   })
   cdnDomain = environment.cdnDomain
+  existingCards$!: Observable<ApiCollectionPage>
 
   ngOnInit() {
     this.setControl.valueChanges
@@ -220,6 +234,14 @@ export class CardModalComponent implements OnInit {
       this.quantityInput?.nativeElement.focus()
       this.quantityInput?.nativeElement.select()
     }, 0)
+
+    this.existingCards$ = this.collectionService.getCards({
+      page: 0,
+      pageSize: 100,
+      sortBy: 'number',
+      sortDirection: 'desc',
+      filters: [[FILTER_CARD_ID, item.id]],
+    })
   }
 
   private getSearchCard(card: ApiCrypt | ApiLibrary): SearchCard {

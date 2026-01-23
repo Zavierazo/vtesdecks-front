@@ -104,10 +104,6 @@ export class DecksStore {
     this.entities.update((current) => [...current, ...entities])
   }
 
-  remove() {
-    this.entities.update(() => [])
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: DecksState) => any): Observable<any> {
     return this.state$.pipe(map(selector))

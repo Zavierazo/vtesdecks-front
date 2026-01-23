@@ -4,10 +4,11 @@ import {
   ApiClanStat,
   ApiDisciplineStat,
   ApiLibrary,
+  LibraryFilter,
   LibrarySortBy,
 } from '@models'
 import { LocalStorageService } from '@services'
-import { trigramSimilarity } from '@utils'
+import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
 import { map, Observable } from 'rxjs'
 
 export interface LibraryStats {
@@ -84,10 +85,9 @@ export class LibraryStore {
 
   selectEntities(
     limitTo?: number,
-    filterFn?: (entity: ApiLibrary) => boolean,
+    filter?: LibraryFilter,
     sortBy?: LibrarySortBy,
     sortByOrder?: 'asc' | 'desc',
-    nameFilter?: string,
     stats?: LibraryStats,
   ): Observable<ApiLibrary[]> {
     if (stats) {
@@ -96,8 +96,10 @@ export class LibraryStore {
     return this.entities$.pipe(
       map((current) => {
         let entities = [...current]
-        if (filterFn) {
-          entities = entities.filter(filterFn)
+        if (filter) {
+          entities = entities.filter((entity) =>
+            this.filterEntity(entity, filter),
+          )
         }
         if (sortBy) {
           if (sortBy === 'relevance') {
@@ -115,7 +117,7 @@ export class LibraryStore {
             })
           } else if (sortBy === 'trigramSimilarity') {
             entities = entities.sort((a, b) =>
-              this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+              this.sortTrigramSimilarity(a, b, filter?.name, sortByOrder),
             )
           } else {
             entities = entities.sort((a, b) =>
@@ -138,18 +140,17 @@ export class LibraryStore {
   }
 
   getEntities(
-    filterFn?: (entity: ApiLibrary) => boolean,
+    filter?: LibraryFilter,
     sortBy?: LibrarySortBy,
     sortByOrder?: 'asc' | 'desc',
-    nameFilter?: string,
   ): ApiLibrary[] {
     let entities = this.entities()
-    if (filterFn) {
-      entities = entities.filter(filterFn)
+    if (filter) {
+      entities = entities.filter((entity) => this.filterEntity(entity, filter))
     }
     if (sortBy === 'trigramSimilarity') {
       entities = entities.sort((a, b) =>
-        this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+        this.sortTrigramSimilarity(a, b, filter?.name, sortByOrder),
       )
     } else if (sortBy && sortBy !== 'relevance') {
       entities = entities.sort((a, b) =>
@@ -320,5 +321,145 @@ export class LibraryStore {
       if (b === undefined) return -1
       return a < b ? 1 : -1
     }
+  }
+  private filterEntity(entity: ApiLibrary, filter: LibraryFilter): boolean {
+    const name = filter.name
+    if (name && !searchIncludes(entity.name, name)) {
+      if (entity.i18n?.name) {
+        return searchIncludes(entity.i18n.name, name)
+      } else if (entity.aka) {
+        return searchIncludes(entity.aka, name)
+      } else {
+        return false
+      }
+    }
+    if (filter.printOnDemand && !entity.printOnDemand) {
+      return false
+    }
+    if (filter.types && filter.types.length > 0) {
+      let typeMatch = false
+      for (const type of filter.types) {
+        const types = entity.type.split('/')
+        if (types.includes(type)) {
+          typeMatch = true
+        }
+      }
+      if (!typeMatch) {
+        return false
+      }
+    }
+    if (filter.clans && filter.clans.length > 0) {
+      let clanMatch = false
+      for (const clan of filter.clans) {
+        if (
+          (clan === 'none' && entity.clans.length === 0) ||
+          entity.clans.includes(clan)
+        ) {
+          clanMatch = true
+        }
+      }
+      if (!clanMatch) {
+        return false
+      }
+    }
+    if (filter.disciplines) {
+      for (const discipline of filter.disciplines) {
+        if (discipline === 'none' && entity.disciplines.length === 0) {
+          continue
+        } else if (!entity.disciplines.includes(discipline)) {
+          return false
+        }
+      }
+    }
+    if (filter.sect) {
+      if (filter.sect === 'none') {
+        return entity.sects.length === 0
+      } else if (!entity.sects.includes(filter.sect)) {
+        return false
+      }
+    }
+    if (filter.path && entity.path !== filter.path) {
+      return false
+    }
+    if (filter.title) {
+      if (filter.title === 'none') {
+        return entity.titles.length === 0
+      } else if (!entity.titles.includes(filter.title)) {
+        return false
+      }
+    }
+    if (filter.set) {
+      return entity.sets.some((set) => set.startsWith(filter.set + ':'))
+    }
+    if (filter.bloodCostSlider) {
+      const bloodCostMin = filter.bloodCostSlider[0]
+      const bloodCostMax = filter.bloodCostSlider[1]
+      const bloodCost = entity.bloodCost ?? 0
+      if (
+        bloodCost != -1 &&
+        (bloodCost < bloodCostMin || bloodCost > bloodCostMax)
+      ) {
+        return false
+      }
+    }
+    if (filter.poolCostSlider) {
+      const poolCostMin = filter.poolCostSlider[0]
+      const poolCostMax = filter.poolCostSlider[1]
+      const poolCost = entity.poolCost ?? 0
+      if (
+        poolCost != -1 &&
+        (poolCost < poolCostMin || poolCost > poolCostMax)
+      ) {
+        return false
+      }
+    }
+    if (filter.taints) {
+      for (const taint of filter.taints) {
+        if (!entity.taints.includes(taint)) {
+          return false
+        }
+      }
+    }
+    if (filter.cardText && !searchIncludes(entity.text, filter.cardText)) {
+      if (entity.i18n?.text) {
+        return searchIncludes(entity.i18n.text, filter.cardText)
+      } else {
+        return false
+      }
+    }
+    if (filter.limitedFormat && filter.customLimitedFormat) {
+      if (filter.customLimitedFormat.banned.crypt[entity.id]) {
+        return false
+      }
+      if (filter.customLimitedFormat.banned.library[entity.id]) {
+        return false
+      }
+      if (filter.customLimitedFormat.allowed.crypt[entity.id]) {
+        return true
+      }
+      if (filter.customLimitedFormat.allowed.library[entity.id]) {
+        return true
+      }
+      if (
+        !Object.keys(filter.customLimitedFormat.sets).some((set) =>
+          entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
+        )
+      ) {
+        return false
+      }
+    }
+    if (filter.predefinedLimitedFormat) {
+      if (
+        !entity.limitedFormats?.includes(Number(filter.predefinedLimitedFormat))
+      ) {
+        return false
+      }
+    }
+    if (filter.artist) {
+      if (!searchIncludes(entity.artist, filter.artist)) {
+        return false
+      }
+    }
+    return true
   }
 }

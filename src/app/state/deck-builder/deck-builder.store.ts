@@ -1,13 +1,17 @@
-import { Injectable, signal } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import {
   ApiCard,
   ApiCollectionCard,
   ApiDeckExtra,
   ApiDeckLimitedFormat,
+  CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
+  LibraryFilter,
 } from '@models'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
 
@@ -19,8 +23,10 @@ export interface DeckBuilderState {
   collection: boolean
   published: boolean
   cards: ApiCard[]
+  cryptFilter: CryptFilter
   cryptErrors: string[]
   cryptSortBy: DeckCryptSortBy
+  libraryFilter: LibraryFilter
   libraryErrors: string[]
   librarySortBy: DeckLibrarySortBy
   saved: boolean
@@ -32,25 +38,16 @@ export interface DeckBuilderState {
   }
 }
 
-const initialState: DeckBuilderState = {
-  cards: [],
-  cryptErrors: [],
-  cryptSortBy: 'name',
-  libraryErrors: [],
-  librarySortBy: 'name',
-  published: true,
-  saved: true,
-  collection: false,
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class DeckBuilderStore {
-  private readonly state = signal<DeckBuilderState>(initialState)
-  private readonly state$ = toObservable(this.state)
-  private readonly loading = signal<boolean>(false)
-  private readonly loading$ = toObservable(this.loading)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
+  private state = signal<DeckBuilderState>(this.getInitialState())
+  private state$ = toObservable(this.state)
+  private loading = signal<boolean>(false)
+  private loading$ = toObservable(this.loading)
 
   updateName(name: string): void {
     this.update((state) => ({ ...state, name }))
@@ -90,7 +87,7 @@ export class DeckBuilderStore {
       ...state,
       cards: state.cards
         .map((c) => (c.id === id ? { ...c, number: c.number - 1 } : c))
-        .filter((c) => c.number > 0),
+        .filter((c) => c.number >= 0),
     }))
   }
 
@@ -149,8 +146,22 @@ export class DeckBuilderStore {
   }
 
   reset(): void {
-    this.state.update(() => initialState)
+    this.state.update(() => this.getInitialState())
     this.loading.update(() => false)
+  }
+
+  resetCryptFilter(): void {
+    this.update((state) => ({
+      ...state,
+      cryptFilter: this.getInitialState().cryptFilter,
+    }))
+  }
+
+  resetLibraryFilter(): void {
+    this.update((state) => ({
+      ...state,
+      libraryFilter: this.getInitialState().libraryFilter,
+    }))
   }
 
   setLoading(value = false) {
@@ -166,5 +177,20 @@ export class DeckBuilderStore {
       ...state,
       collectionCards,
     }))
+  }
+
+  private getInitialState(): DeckBuilderState {
+    return {
+      cards: [],
+      cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
+      cryptErrors: [],
+      cryptSortBy: 'capacity',
+      libraryFilter: this.libraryQuery.getDefaultLibraryFilter(),
+      libraryErrors: [],
+      librarySortBy: 'name',
+      published: true,
+      saved: true,
+      collection: false,
+    }
   }
 }

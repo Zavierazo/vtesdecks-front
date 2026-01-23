@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'library_section'">
   <div class="modal-header">
     <h4 class="modal-title">{{ 'library_builder.title' | transloco }}</h4>
-    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+    <button type="button" class="btn-close me-2" [attr.aria-label]="'shared.close' | transloco"
       (click)="modal.dismiss()"></button>
 
   </div>
@@ -46,7 +46,7 @@
         </div>
         @if (!(isMobileOrTablet$ | async)!) {
         <div class="col-auto d-inline-block">
-          <button type="button" class="btn btn-danger" (click)="initFilters()">
+          <button type="button" class="btn btn-danger" (click)="resetFilters()">
             <i class="bi bi-arrow-clockwise"></i>{{ t('reset') }}
           </button>
         </div>
@@ -77,7 +77,7 @@
         [fromRoot]="true" [alwaysCallback]="true" (scrolled)="onScroll()">
         @if ((library$ | async)?.length === 0) {
         <div class="d-flex justify-content-center mt-2">
-          <button type="button" class="btn btn-danger btn-lg" (click)="initFilters()">
+          <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
             {{ t('reset_filters') }}
           </button>
         </div>
@@ -122,17 +122,9 @@
   </ng-template>
 
   <ng-template #filter>
-    <app-library-builder-filter [(limitedFormat)]="limitedFormat" (limitedFormatChange)="onChangeLimitedFormat($event)"
-      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
-      (disciplinesChange)="onChangeDisciplineFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
-      [(path)]="path" (pathChange)="onChangePathFilter($event)" [(taints)]="taints"
-      (taintsChange)="onChangeTaintsFilter($event)" [(types)]="types" (typesChange)="onChangeTypesFilter($event)"
-      [(bloodCostSlider)]="bloodCostSlider" (bloodCostSliderChange)="onChangeBloodCostSliderFilter($event)"
-      [(poolCostSlider)]="poolCostSlider" (poolCostSliderChange)="onChangePoolCostSliderFilter($event)"
-      [(title)]="title" (titleChange)="onChangeTitleFilter($event)" [(cardText)]="cardText"
-      (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)"
-      [predefinedLimitedFormat]="predefinedLimitedFormat"
-      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" [artist]="artist"
-      (artistChange)="onChangeArtistFilter($event)" />
+
+    @if(libraryFilter$ | async;as libraryFilter) {
+    <app-library-builder-filter [filter]="libraryFilter" (filterChange)="onChangeLibraryFilter($event)" />
+    }
   </ng-template>
 </ng-container>

@@ -1,8 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
-import { ApiClanStat, ApiCrypt, ApiDisciplineStat, CryptSortBy } from '@models'
+import {
+  ApiClanStat,
+  ApiCrypt,
+  ApiDisciplineStat,
+  CryptFilter,
+  CryptSortBy,
+} from '@models'
 import { LocalStorageService } from '@services'
-import { trigramSimilarity } from '@utils'
+import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
 import { map, Observable } from 'rxjs'
 
 export interface CryptStats {
@@ -79,10 +85,9 @@ export class CryptStore {
 
   selectEntities(
     limitTo?: number,
-    filterFn?: (entity: ApiCrypt) => boolean,
+    filter?: CryptFilter,
     sortBy?: CryptSortBy,
     sortByOrder?: 'asc' | 'desc',
-    nameFilter?: string,
     stats?: CryptStats,
   ): Observable<ApiCrypt[]> {
     if (stats) {
@@ -91,8 +96,10 @@ export class CryptStore {
     return this.entities$.pipe(
       map((current) => {
         let entities = [...current]
-        if (filterFn) {
-          entities = entities.filter(filterFn)
+        if (filter) {
+          entities = entities.filter((entity) =>
+            this.filterEntity(entity, filter),
+          )
         }
         // Check if sortBy is a valid key of ApiCrypt
         if (sortBy) {
@@ -111,7 +118,7 @@ export class CryptStore {
             })
           } else if (sortBy === 'trigramSimilarity') {
             entities = entities.sort((a, b) =>
-              this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+              this.sortTrigramSimilarity(a, b, filter?.name, sortByOrder),
             )
           } else {
             entities = entities.sort((a, b) =>
@@ -134,18 +141,17 @@ export class CryptStore {
   }
 
   getEntities(
-    filterFn?: (entity: ApiCrypt) => boolean,
+    filter?: CryptFilter,
     sortBy?: CryptSortBy,
     sortByOrder?: 'asc' | 'desc',
-    nameFilter?: string,
   ): ApiCrypt[] {
     let entities = this.entities()
-    if (filterFn) {
-      entities = entities.filter(filterFn)
+    if (filter) {
+      entities = entities.filter((entity) => this.filterEntity(entity, filter))
     }
     if (sortBy === 'trigramSimilarity') {
       entities = entities.sort((a, b) =>
-        this.sortTrigramSimilarity(a, b, nameFilter, sortByOrder),
+        this.sortTrigramSimilarity(a, b, filter?.name, sortByOrder),
       )
     } else if (sortBy && sortBy !== 'relevance') {
       entities = entities.sort((a, b) =>
@@ -305,5 +311,117 @@ export class CryptStore {
       if (b === undefined) return -1
       return a < b ? 1 : -1
     }
+  }
+
+  private filterEntity(entity: ApiCrypt, filter: CryptFilter): boolean {
+    const name = filter.name
+    if (name && !searchIncludes(entity.name, name)) {
+      if (entity.i18n?.name) {
+        return searchIncludes(entity.i18n.name, name)
+      } else if (entity.aka) {
+        return searchIncludes(entity.aka, name)
+      } else {
+        return false
+      }
+    }
+    if (filter.printOnDemand && !entity.printOnDemand) {
+      return false
+    }
+    if (
+      filter.clans &&
+      filter.clans.length > 0 &&
+      !filter.clans.includes(entity.clan)
+    ) {
+      return false
+    }
+    if (filter.disciplines) {
+      for (const discipline of filter.disciplines) {
+        if (!entity.disciplines.includes(discipline)) {
+          return false
+        }
+      }
+    }
+    if (filter.superiorDisciplines) {
+      for (const superiorDiscipline of filter.superiorDisciplines) {
+        if (!entity.superiorDisciplines.includes(superiorDiscipline)) {
+          return false
+        }
+      }
+    }
+    if (filter.groupSlider) {
+      const groupMin = filter.groupSlider[0]
+      const groupMax = filter.groupSlider[1]
+      const group = entity.group
+      if (group > 0 && (group < groupMin || group > groupMax)) {
+        return false
+      }
+    }
+    if (filter.capacitySlider) {
+      const capacityMin = filter.capacitySlider[0]
+      const capacityMax = filter.capacitySlider[1]
+      if (entity.capacity < capacityMin || entity.capacity > capacityMax) {
+        return false
+      }
+    }
+    if (filter.title && entity.title !== filter.title) {
+      return false
+    }
+    if (filter.sect && entity.sect !== filter.sect) {
+      return false
+    }
+    if (filter.path && entity.path !== filter.path) {
+      return false
+    }
+    if (filter.set) {
+      return entity.sets.some((set) => set.startsWith(filter.set + ':'))
+    }
+    if (filter.taints) {
+      for (const taint of filter.taints) {
+        if (!entity.taints.includes(taint)) {
+          return false
+        }
+      }
+    }
+    if (filter.cardText && !searchIncludes(entity.text, filter.cardText)) {
+      if (entity.i18n?.text) {
+        return searchIncludes(entity.i18n.text, filter.cardText)
+      } else {
+        return false
+      }
+    }
+    if (filter.limitedFormat && filter.customLimitedFormat) {
+      if (filter.customLimitedFormat.banned.crypt[entity.id]) {
+        return false
+      }
+      if (filter.customLimitedFormat.banned.library[entity.id]) {
+        return false
+      }
+      if (filter.customLimitedFormat.allowed.crypt[entity.id]) {
+        return true
+      }
+      if (filter.customLimitedFormat.allowed.library[entity.id]) {
+        return true
+      }
+      if (
+        !Object.keys(filter.customLimitedFormat.sets).some((set) =>
+          entity.sets.some((entitySet) => getSetAbbrev(entitySet) === set),
+        )
+      ) {
+        return false
+      }
+    }
+    if (filter.predefinedLimitedFormat) {
+      if (
+        !entity.limitedFormats?.includes(Number(filter.predefinedLimitedFormat))
+      ) {
+        return false
+      }
+    }
+    if (filter.artist) {
+      if (!searchIncludes(entity.artist, filter.artist)) {
+        return false
+      }
+    }
+    return true
   }
 }

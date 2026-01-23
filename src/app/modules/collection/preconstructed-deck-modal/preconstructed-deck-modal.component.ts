@@ -23,7 +23,7 @@ import { ApiDataService, ToastService } from '@services'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { BehaviorSubject, catchError, finalize, switchMap, tap } from 'rxjs'
+import { catchError, finalize, switchMap, tap } from 'rxjs'
 import { CollectionPrivateService } from '../state/collection-private.service'
 
 @UntilDestroy()
@@ -50,14 +50,11 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
   private readonly collectionService = inject(CollectionPrivateService)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
-
-  private readonly addingCardsSubject = new BehaviorSubject<boolean>(false)
   private readonly deckCopiesMap = new Map<string, FormControl<number>>()
 
   isLoading$ = this.decksQuery.selectLoading()
   decks$ = this.decksQuery.selectAll()
   total$ = this.decksQuery.selectTotal()
-  addingCards$ = this.addingCardsSubject.asObservable()
 
   ngOnInit(): void {
     // Initialize the decks service with preconstructed filter
@@ -95,7 +92,7 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
   }
 
   onAddDeckToCollection(deck: ApiDeck): void {
-    this.addingCardsSubject.next(true)
+    this.getDeckCopiesControl(deck.id).disable()
     this.apiDataService
       .getDeck(deck.id)
       .pipe(
@@ -131,8 +128,6 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
                 ),
                 { classname: 'bg-success text-light', delay: 5000 },
               )
-
-              this.activeModal.close(true)
             }),
           )
         }),
@@ -145,7 +140,7 @@ export class PreconstructedDeckModalComponent implements OnInit, OnDestroy {
           throw error
         }),
         finalize(() => {
-          this.addingCardsSubject.next(false)
+          this.getDeckCopiesControl(deck.id).enable()
         }),
       )
       .subscribe()

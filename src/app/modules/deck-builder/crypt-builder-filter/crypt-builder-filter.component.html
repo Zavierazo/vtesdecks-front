@@ -1,5 +1,5 @@
 <ng-container *transloco="let t; prefix: 'crypt_builder_filter'">
-  @if ( limitedFormat !==undefined) {
+  @if ( filter.limitedFormat !==undefined) {
   <div class="row g-1 mb-2 items-center">
     <div class="form-check form-switch form-check-inline">
       <input class="form-check-input" type="checkbox" role="switch" id="limitedFormatCheck"
@@ -8,7 +8,7 @@
     </div>
   </div>
   }
-  @if ( printOnDemand !==undefined) {
+  @if ( filter.printOnDemand !==undefined) {
   <div class="row g-1 mb-2 items-center">
     <div class="form-check form-switch form-check-inline">
       <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"
@@ -17,16 +17,20 @@
     </div>
   </div>
   }
+  @if(filter.clans){
   <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
   <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" />
+    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" />
   </div>
+  }
+  @if(filter.disciplines && filter.superiorDisciplines){
   <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
   <div id="disciplines" class="row g-1">
-    <app-discipline-filter [(disciplines)]="disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
-      [(superiorDisciplines)]="superiorDisciplines"
+    <app-discipline-filter [(disciplines)]="filter.disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
+      [(superiorDisciplines)]="filter.superiorDisciplines"
       (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" />
   </div>
+  }
   <div class="row g-1 mt-2">
     <label for="group" class="form-label text-primary fw-bold">{{ t('group') }}</label>
     <ngx-slider id="group" [options]="{
@@ -48,7 +52,7 @@
         showTicksValues: true
       }" [formControl]="capacitySliderControl" />
   </div>
-  @if ( limitedFormat === undefined ) {
+  @if ( filter.limitedFormat === undefined ) {
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="limitedFormatSelect" [formControl]="predefinedLimitedFormatControl">
       <option selected></option>

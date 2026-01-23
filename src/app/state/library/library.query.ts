@@ -8,8 +8,9 @@ import {
   LibrarySortBy,
 } from '@models'
 import { SetQuery } from '@state/set/set.query'
-import { getSetAbbrev, searchIncludes } from '@utils'
+import { getSetAbbrev } from '@utils'
 import { map, Observable, switchMap } from 'rxjs'
+import { LibraryFilter } from 'src/app/models/library-filter'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
@@ -31,52 +32,43 @@ export class LibraryQuery {
   }
 
   getAll({
-    filterBy,
+    filter,
     sortBy,
     sortByOrder,
-    nameFilter,
   }: {
-    filterBy?: (entity: ApiLibrary) => boolean
+    filter?: LibraryFilter
     sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
-    nameFilter?: string
   }): ApiLibrary[] {
-    return this.store.getEntities(filterBy, sortBy, sortByOrder, nameFilter)
+    return this.store.getEntities(filter, sortBy, sortByOrder)
   }
 
   selectAll({
     limitTo,
-    filterBy,
+    filter,
     sortBy,
     sortByOrder,
-    nameFilter,
     stats,
   }: {
     limitTo?: number
-    filterBy?: (entity: ApiLibrary) => boolean
+    filter?: LibraryFilter
     sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
-    nameFilter?: string
     stats?: LibraryStats
   }): Observable<ApiLibrary[]> {
     return this.store.selectEntities(
       limitTo,
-      filterBy,
+      filter,
       sortBy,
       sortByOrder,
-      nameFilter,
       stats,
     )
   }
 
   selectByName(name: string, limit = 5): Observable<ApiLibrary[]> {
-    return this.store.selectEntities(
-      limit,
-      (entity) =>
-        searchIncludes(entity.name, name) ||
-        searchIncludes(entity.i18n?.name, name) ||
-        false,
-    )
+    return this.store.selectEntities(limit, {
+      name,
+    })
   }
 
   selectSects(): Observable<string[]> {
@@ -196,5 +188,23 @@ export class LibraryQuery {
     })
     clans.sort((a, b) => b.number - a.number)
     return clans
+  }
+
+  getDefaultLibraryFilter(): LibraryFilter {
+    return {
+      name: '',
+      types: [],
+      clans: [],
+      disciplines: [],
+      bloodCostSlider: [0, 4],
+      poolCostSlider: [0, 6],
+      title: '',
+      sect: '',
+      path: '',
+      set: '',
+      taints: [],
+      cardText: '',
+      artist: '',
+    }
   }
 }

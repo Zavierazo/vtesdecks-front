@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +15,7 @@ import {
   NgbModal,
   NgbNavModule,
 } from '@ng-bootstrap/ng-bootstrap'
+import { MediaService } from '@services'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId, isLibraryId } from '@utils'
@@ -34,6 +36,7 @@ import { LibraryComponent } from '../../../deck-shared/library/library.component
     LibraryComponent,
     InfiniteScrollDirective,
     NgbNavModule,
+    AsyncPipe,
   ],
 })
 export class CollectionStatsModalComponent implements OnInit, OnChanges {
@@ -41,6 +44,7 @@ export class CollectionStatsModalComponent implements OnInit, OnChanges {
   private modalService = inject(NgbModal)
   private cryptQuery = inject(CryptQuery)
   private libraryQuery = inject(LibraryQuery)
+  private mediaService = inject(MediaService)
 
   @Input() title = ''
   @Input() owned: number[] = []
@@ -64,6 +68,7 @@ export class CollectionStatsModalComponent implements OnInit, OnChanges {
   private cryptEntities: ApiCrypt[] = []
   private libraryEntities: ApiLibrary[] = []
 
+  isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   activeTab: 'crypt' | 'library' = 'library'
 
   isCryptId = isCryptId

@@ -52,6 +52,8 @@ export class CryptComponent implements OnInit {
 
   @Input() withControls = false
 
+  @Input() withDelete = false
+
   @Input() disablePopover = false
 
   @Input() disableClickPopover = false

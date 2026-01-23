@@ -106,7 +106,7 @@
               {{ t('save') }}
             </button>
             @if ((deckId$ | async)!!) {
-            <button type="button" class="btn btn-primary m-2" (click)="deleteDeck()">
+            <button type="button" class="btn btn-danger m-2" (click)="deleteDeck()">
               <i class="bi bi-trash-fill"></i>
               {{ t('delete') }}
             </button>
@@ -149,16 +149,16 @@
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
         @let cryptSortBy = cryptSortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
+          [ngClass]="{'active': cryptSortBy ==='capacity'}">
+          {{ t('sort_by_capacity') }}
+        </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
           [ngClass]="{'active': cryptSortBy ==='quantity'}">
           {{ t('sort_by_quantity') }}
         </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
           {{ t('sort_by_name') }}
-        </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
-          [ngClass]="{'active': cryptSortBy ==='capacity'}">
-          {{ t('sort_by_capacity') }}
         </button>
         <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': cryptSortBy ==='clan'}">
           {{ t('sort_by_clan') }}
@@ -212,7 +212,8 @@
       @for (crypt of cryptList; track crypt.id) {
       <div class="col-6 col-md-auto">
         <app-crypt-grid-card [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
+          [withDelete]="true" (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"
+          [class.considering-card]="crypt.number === 0" />
       </div>
       }
     </div>
@@ -220,8 +221,9 @@
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
       @for (crypt of cryptList; track crypt.id) {
       <ul class="col list-group">
-        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
+        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [withDelete]="true"
+          (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"
+          [class.considering-card]="crypt.number === 0" />
       </ul>
       }
     </div>
@@ -262,12 +264,12 @@
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
         @let librarySortBy = librarySortBy$ | async;
+        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
+          {{ t('sort_by_name') }}
+        </button>
         <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
           [ngClass]="{'active': librarySortBy ==='quantity'}">
           {{ t('sort_by_quantity') }}
-        </button>
-        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
-          {{ t('sort_by_name') }}
         </button>
       </div>
     </div>

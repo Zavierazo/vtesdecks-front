@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'crypt_section'">
   <div class="modal-header">
     <h4 class="modal-title">{{ 'crypt_builder.title' | transloco }}</h4>
-    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+    <button type="button" class="btn-close me-2" [attr.aria-label]="'shared.close' | transloco"
       (click)="modal.dismiss()"></button>
 
   </div>
@@ -53,7 +53,7 @@
         </div>
         @if (!(isMobileOrTablet$ | async)!) {
         <div class="col-auto d-inline-block">
-          <button type="button" class="btn btn-danger" (click)="initFilters()">
+          <button type="button" class="btn btn-danger" (click)="resetFilters()">
             <i class="bi bi-arrow-clockwise"></i>{{ t('reset') }}
           </button>
         </div>
@@ -84,7 +84,7 @@
         [fromRoot]="true" [alwaysCallback]="true" (scrolled)="onScroll()">
         @if ((crypt$ | async)?.length === 0) {
         <div class="d-flex justify-content-center mt-2">
-          <button type="button" class="btn btn-danger btn-lg" (click)="initFilters()">
+          <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
             {{ t('reset_filters') }}
           </button>
         </div>
@@ -129,18 +129,8 @@
   </ng-template>
 
   <ng-template #filter>
-    <app-crypt-builder-filter [(limitedFormat)]="limitedFormat" (limitedFormatChange)="onChangeLimitedFormat($event)"
-      [(clans)]="clans" (clansChange)="onChangeClanFilter($event)" [(disciplines)]="disciplines"
-      (disciplinesChange)="onChangeDisciplineFilter($event)" [(superiorDisciplines)]="superiorDisciplines"
-      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" [(groupSlider)]="groupSlider"
-      (groupSliderChange)="onChangeGroupSliderFilter($event)" [(capacitySlider)]="capacitySlider"
-      (capacitySliderChange)="onChangeCapacitySliderFilter($event)" [(title)]="title"
-      (titleChange)="onChangeTitleFilter($event)" [(sect)]="sect" (sectChange)="onChangeSectFilter($event)"
-      [(path)]="path" (pathChange)="onChangePathFilter($event)" [(taints)]="taints"
-      (taintsChange)="onChangeTaintsFilter($event)" [(cardText)]="cardText"
-      (cardTextChange)="onChangeCardTextFilter($event)" [(set)]="set" (setChange)="onChangeSetFilter($event)"
-      [predefinedLimitedFormat]="predefinedLimitedFormat"
-      (predefinedLimitedFormatChange)="onChangePredefinedLimitedFormatFilter($event)" [artist]="artist"
-      (artistChange)="onChangeArtistFilter($event)" />
+    @if(cryptFilter$ | async;as cryptFilter) {
+    <app-crypt-builder-filter [filter]="cryptFilter" (filterChange)="onChangeCryptFilter($event)" />
+    }
   </ng-template>
 </ng-container>

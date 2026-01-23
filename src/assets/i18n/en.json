@@ -126,7 +126,8 @@
     "sort_by_name": "Name",
     "sort_by_capacity": "Capacity",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Group"
+    "sort_by_group": "Group",
+    "delete": "Delete"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
@@ -853,6 +854,8 @@
     "must_3_characters": "Must be at least 3 characters",
     "min_quantity": "At least one card is required",
     "max_quantity": "You can not add more than {{ max }} cards",
+    "existing_cards_in_collection": "Existing Cards in Collection",
+    "quantity_description": "If card already exists in your collection, this will increase its quantity.",
     "move_to_binder": "Move to Binder",
     "move_to_binder_message": "How many cards do you want to move into a binder?",
     "any_set": "Any Set",

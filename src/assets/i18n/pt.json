@@ -126,7 +126,8 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "delete": "Eliminar"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",
@@ -852,6 +853,8 @@
     "must_3_characters": "Deve ter pelo menos 3 caracteres",
     "min_quantity": "Pelo menos uma carta é obrigatória",
     "max_quantity": "Você não pode adicionar mais que {{ max }} cartas",
+    "existing_cards_in_collection": "Cartas Existentes na Coleção",
+    "quantity_description": "Se a carta já existir na sua coleção, isso aumentará sua quantidade.",
     "move_to_binder": "Mover para Carpeta",
     "move_to_binder_message": "Quantas cartas deseja mover para uma carpeta?",
     "any_set": "Qualquer Expansão",

@@ -5,10 +5,11 @@ import {
   ApiCrypt,
   ApiDisciplineStat,
   ApiSet,
+  CryptFilter,
   CryptSortBy,
 } from '@models'
 import { SetQuery } from '@state/set/set.query'
-import { getSetAbbrev, searchIncludes } from '@utils'
+import { getSetAbbrev } from '@utils'
 import { Observable, map, switchMap } from 'rxjs'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
@@ -31,52 +32,43 @@ export class CryptQuery {
   }
 
   getAll({
-    filterBy,
+    filter,
     sortBy,
     sortByOrder,
-    nameFilter,
   }: {
-    filterBy?: (entity: ApiCrypt) => boolean
+    filter?: CryptFilter
     sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
-    nameFilter?: string
   }): ApiCrypt[] {
-    return this.store.getEntities(filterBy, sortBy, sortByOrder, nameFilter)
+    return this.store.getEntities(filter, sortBy, sortByOrder)
   }
 
   selectAll({
     limitTo,
-    filterBy,
+    filter,
     sortBy,
     sortByOrder,
-    nameFilter,
     crypt,
   }: {
     limitTo?: number
-    filterBy?: (entity: ApiCrypt) => boolean
+    filter?: CryptFilter
     sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
-    nameFilter?: string
     crypt?: CryptStats
   }): Observable<ApiCrypt[]> {
     return this.store.selectEntities(
       limitTo,
-      filterBy,
+      filter,
       sortBy,
       sortByOrder,
-      nameFilter,
       crypt,
     )
   }
 
   selectByName(name: string, limit = 5): Observable<ApiCrypt[]> {
-    return this.store.selectEntities(
-      limit,
-      (entity) =>
-        searchIncludes(entity.name, name) ||
-        searchIncludes(entity.i18n?.name, name) ||
-        false,
-    )
+    return this.store.selectEntities(limit, {
+      name,
+    })
   }
 
   selectTitles(): Observable<string[]> {
@@ -233,5 +225,23 @@ export class CryptQuery {
     })
     disciplines.sort((a, b) => b.superior - a.superior)
     return disciplines
+  }
+
+  getDefaultCryptFilter(): CryptFilter {
+    return {
+      name: '',
+      clans: [],
+      disciplines: [],
+      superiorDisciplines: [],
+      groupSlider: [1, this.getMaxGroup()],
+      capacitySlider: [1, this.getMaxCapacity()],
+      title: '',
+      sect: '',
+      path: '',
+      set: '',
+      taints: [],
+      cardText: '',
+      artist: '',
+    }
   }
 }
