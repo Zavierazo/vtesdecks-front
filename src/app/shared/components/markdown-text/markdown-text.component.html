@@ -1,1 +1,3 @@
-<markdown [data]="dataSanitized()" [disableSanitizer]="true" emoji />
+<ng-container *appLazyRender>
+  <markdown [data]="data() | markdownSanitize" [disableSanitizer]="true" emoji />
+</ng-container>

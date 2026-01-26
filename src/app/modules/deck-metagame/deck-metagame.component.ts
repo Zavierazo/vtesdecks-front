@@ -45,10 +45,7 @@ export class DeckMetagameComponent implements OnInit {
   metaTypeControl = new FormControl<MetaType>('TOURNAMENT_365')
 
   ngOnInit() {
-    this.crud
-      .loadAll(this.metaTypeControl.value!)
-      .pipe(untilDestroyed(this))
-      .subscribe()
+    this.onMetaTypeChange()
     if (this.authQuery.isRole('maintainer')) {
       this.crud.loadSuggestions().pipe(untilDestroyed(this)).subscribe()
     }
