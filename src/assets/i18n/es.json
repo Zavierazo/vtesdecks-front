@@ -688,6 +688,7 @@
     },
     "taints": {
       "+Intercept": "+Intercepción",
+      "+Master Phase": "+Fase Heril",
       "+Stealth": "+Sigilo",
       "+Bleed": "+Sangrado",
       "+Strength": "+Fuerza",

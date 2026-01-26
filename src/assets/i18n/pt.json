@@ -688,6 +688,7 @@
     },
     "taints": {
       "+Intercept": "+Interceptação",
+      "+Master Phase": "+Fase Mestre",
       "+Stealth": "+Furtividade",
       "+Bleed": "+Bleed",
       "+Strength": "+Força",

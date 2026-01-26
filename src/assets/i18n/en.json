@@ -689,6 +689,7 @@
     },
     "taints": {
       "+Intercept": "+Intercept",
+      "+Master Phase": "+Master Phase",
       "+Stealth": "+Stealth",
       "+Bleed": "+Bleed",
       "+Strength": "+Strength",
