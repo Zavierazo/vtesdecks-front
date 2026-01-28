@@ -3,6 +3,7 @@
     "version": "2.65.0",
     "date": "31th January, 2026",
     "changes": [
+      "Fixed duplicate preconstructed decks from appearing in the Collection Tracker on slow connections.",
       "Minor bug fixes and performance improvements."
     ]
   },
