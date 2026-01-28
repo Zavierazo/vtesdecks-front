@@ -186,8 +186,8 @@ export class DeckBuilderService {
       )
   }
 
-  deleteDeck(deckId: string): Observable<boolean> {
-    return this.apiDataService.deleteDeckBuilder(deckId).pipe(
+  deleteDeck(deckId: string, permanent: boolean): Observable<boolean> {
+    return this.apiDataService.deleteDeckBuilder(deckId, permanent).pipe(
       tap((result) => {
         if (result) {
           this.store.reset()

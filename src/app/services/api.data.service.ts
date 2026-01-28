@@ -351,9 +351,10 @@ export class ApiDataService {
     )
   }
 
-  deleteDeckBuilder(id: string): Observable<boolean> {
+  deleteDeckBuilder(id: string, permanent: boolean): Observable<boolean> {
     return this.httpClient.delete<boolean>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}`,
+      { params: { permanent } },
     )
   }
 

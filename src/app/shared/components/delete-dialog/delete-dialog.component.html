@@ -1,0 +1,20 @@
+<ng-container *transloco="let t">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t(titleLabel) }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close(false)"></button>
+  </div>
+  <div class="modal-body">
+    <p [innerHTML]="t(messageLabel)"></p>
+  </div>
+  <div class="modal-footer" *transloco="let t">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close(false)">
+      {{ t('shared.cancel') }}
+    </button>
+    <button type="button" class="btn btn-primary" ngbAutofocus (click)="modal.close('DELETE')">
+      {{ t('shared.delete') }}
+    </button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('PERMANENT')">
+      {{ t('shared.delete_permanently') }}
+    </button>
+  </div>
+</ng-container>

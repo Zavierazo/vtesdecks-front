@@ -441,6 +441,7 @@
     "ok": "Ok",
     "cancel": "Cancel",
     "delete": "Delete",
+    "delete_permanently": "Delete Permanently",
     "import": "Import",
     "close": "Close",
     "loading": "Loading",

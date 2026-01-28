@@ -442,6 +442,8 @@
   "shared": {
     "ok": "Ok",
     "cancel": "Cancelar",
+    "delete": "Deletar",
+    "delete_permanently": "Deletar Permanentemente",
     "import": "Importar",
     "close": "Fechar",
     "loading": "Carregando",
