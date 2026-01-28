@@ -36,7 +36,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
-import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { ComponentCanDeactivate } from '@shared/guards/can-deactivate-component.guard'
@@ -265,37 +265,35 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   deleteDeck() {
     const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
-      const modalRef = this.modalService.open(ConfirmDialogComponent, {
-        size: 'sm',
+      const modalRef = this.modalService.open(DeleteDialogComponent, {
+        size: 'md',
         centered: true,
       })
-      modalRef.componentInstance.title = this.translocoService.translate(
-        'deck_builder.delete_title',
-      )
-      modalRef.componentInstance.message = this.translocoService.translate(
-        'deck_builder.delete_message',
-      )
+      modalRef.componentInstance.titleLabel = 'deck_builder.delete_title'
+      modalRef.componentInstance.messageLabel = 'deck_builder.delete_message'
       modalRef.closed
         .pipe(
           untilDestroyed(this),
           filter((result) => result),
-          switchMap(() =>
-            this.deckBuilderService.deleteDeck(deckId).pipe(
-              untilDestroyed(this),
-              tap(() => {
-                this.onDeckLoaded()
-                this.toastService.show(
-                  this.translocoService.translate(
-                    'deck_builder.delete_successful',
-                  ),
-                  { classname: 'bg-success text-light', delay: 5000 },
-                )
-                this.decksService.reset()
-                this.router.navigate(['/decks'], {
-                  queryParams: { type: 'USER' },
-                })
-              }),
-            ),
+          switchMap((result) =>
+            this.deckBuilderService
+              .deleteDeck(deckId, result === 'PERMANENT')
+              .pipe(
+                untilDestroyed(this),
+                tap(() => {
+                  this.onDeckLoaded()
+                  this.toastService.show(
+                    this.translocoService.translate(
+                      'deck_builder.delete_successful',
+                    ),
+                    { classname: 'bg-success text-light', delay: 5000 },
+                  )
+                  this.decksService.reset()
+                  this.router.navigate(['/decks'], {
+                    queryParams: { type: 'USER' },
+                  })
+                }),
+              ),
           ),
         )
         .subscribe({

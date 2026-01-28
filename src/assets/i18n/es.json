@@ -440,6 +440,8 @@
   "shared": {
     "ok": "Aceptar",
     "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "delete_permanently": "Eliminar permanentemente",
     "import": "Importar",
     "close": "Cerrar",
     "loading": "Cargando",

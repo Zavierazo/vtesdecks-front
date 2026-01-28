@@ -13,8 +13,8 @@
       </small>
     </div>
 
-    <div class="deck-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100"
-      [scrollWindow]="false" (scrolled)="onScroll()">
+    <div class="deck-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+      [scrollWindow]="false" [infiniteScrollDisabled]="(isLoading$ | async) ?? false" (scrolled)="onScroll()">
       @if (decks$ | async; as decks) {
       @if (decks.length === 0 && (isLoading$ | async) === false) {
       <div class="text-center p-4">
