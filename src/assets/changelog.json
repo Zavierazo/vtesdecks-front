@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.65.0",
+    "date": "31th January, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.64.0",
     "date": "23th January, 2026",
     "changes": [
@@ -10,8 +17,7 @@
       "Improved card set tooltips on mobile with a unified display across the site.",
       "Added a delete deck button to the deck view for easier deck management.",
       "Preconstructed deck bulk add now supports multiple decks at once.",
-      "Fixed filter reset to correctly restore taint selectors.",
-      "Minor bug fixes and performance improvements."
+      "Fixed filter reset to correctly restore taint selectors."
     ]
   },
   {
