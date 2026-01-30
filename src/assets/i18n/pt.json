@@ -137,7 +137,7 @@
     "deck_saved": "Baralho salvo com sucesso! Você pode agora compartilhar com seus amigos!",
     "link_copied": "Link copiado para a área de transferência",
     "delete_title": "Eliminar este baralho?",
-    "delete_message": "O baralho será eliminado. O baralho estará disponível por 60 dias após a sua eliminação para poder ser restaurado.",
+    "delete_message": "<p>Será mantido por 60 dias e pode ser restaurado durante esse tempo.</p><p>Se você o eliminar permanentemente, <strong>não poderá ser recuperado.</strong></p>",
     "delete_successful": "Baralho eliminado",
     "name": "Nome",
     "description": "Descrição",

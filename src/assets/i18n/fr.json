@@ -137,7 +137,7 @@
     "deck_saved": "Deck enregistré avec succès ! Vous pouvez maintenant le partager avec vos amis !!",
     "link_copied": "Lien copié dans le presse-papiers",
     "delete_title": "Supprimer ce deck ?",
-    "delete_message": "Le deck sera supprimé. Il restera disponible pendant 60 jours pour une éventuelle restauration.",
+    "delete_message": "<p>Il sera conservé pendant 60 jours et pourra être restauré pendant cette période.</p><p>Si vous le supprimez définitivement, <strong>il ne pourra pas être récupéré.</strong></p>",
     "delete_successful": "Deck supprimé",
     "name": "Nom",
     "description": "Description",

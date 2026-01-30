@@ -137,7 +137,7 @@
     "deck_saved": "Deck saved successfully! You can now share it with your friends!!",
     "link_copied": "Link copied to clipboard",
     "delete_title": "Delete this deck?",
-    "delete_message": "Deck will be deleted. The deck will be available for 60 days after deletion to be restored.",
+    "delete_message": "<p>It will be kept for 60 days and can be restored during that time.</p><p>If you permanently delete it, <strong>it cannot be recovered.</strong></p>",
     "delete_successful": "Deck deleted",
     "name": "Name",
     "description": "Description",

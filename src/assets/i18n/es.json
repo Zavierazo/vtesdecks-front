@@ -137,7 +137,7 @@
     "deck_saved": "¡Mazo guardado exitosamente! Ahora puedes compartirlo con tus amigos!",
     "link_copied": "Enlace copiado al portapapeles",
     "delete_title": "¿Eliminar este mazo?",
-    "delete_message": "El mazo será eliminado. El mazo estará disponible durante 60 días después de su eliminación para poder ser restaurado.",
+    "delete_message": "<p>Se mantendrá durante 60 días y podrá restaurarse durante ese tiempo.</p><p>Si lo eliminas permanentemente, <strong>no se podrá recuperar.</strong></p>",
     "delete_successful": "Mazo eliminado",
     "name": "Nombre",
     "description": "Descripción",
