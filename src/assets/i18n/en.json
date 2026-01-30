@@ -316,7 +316,7 @@
     "my_decks": "My Decks",
     "bookmarks": "My Bookmarks",
     "public_profile": "Public Profile",
-    "profile_settings": "Profile Settings",
+    "settings": "Settings",
     "logout": "Logout",
     "theme": "Theme",
     "notifications": "Notifications",
@@ -475,7 +475,7 @@
     "player": "Player"
   },
   "user_profile": {
-    "settings": "Profile Settings",
+    "profile_settings": "Profile Settings",
     "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
     "display_name": "Display Name",
     "profile_image": "Profile Image URL (Override Gravatar)",
@@ -486,8 +486,9 @@
     "password_requirements": "Password requirements",
     "password_requirements_detail": "To create a new password, you have to meet all of the following requirements:",
     "password_not_same": "Can't be the same as a previous password",
-    "save": "Save Profile",
-    "error": "An error occurred while updating your settings."
+    "save": "Save",
+    "error": "An error occurred while updating your settings.",
+    "security_settings": "Security Settings"
   },
   "user_public_profile": {
     "deck": "deck",

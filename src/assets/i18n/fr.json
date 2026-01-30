@@ -316,7 +316,7 @@
     "my_decks": "Mes Decks",
     "bookmarks": "Mes Favoris",
     "public_profile": "Profil Public",
-    "profile_settings": "Paramètres du Profil",
+    "settings": "Paramètres",
     "logout": "Déconnexion",
     "theme": "Thème",
     "notifications": "Notifications",
@@ -475,7 +475,7 @@
     "player": "Joueur"
   },
   "user_profile": {
-    "settings": "Paramètres du Profil",
+    "profile_settings": "Paramètres de profil",
     "profile_image_alert": " Pour l'image de profil, nous utilisons <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Votre Gravatar est une image et un profil public qui vous suit partout sur le web.",
     "display_name": "Nom d'affichage",
     "profile_image": "URL de l'image de profil (Remplace Gravatar)",
@@ -486,8 +486,9 @@
     "password_requirements": "Exigences du mot de passe",
     "password_requirements_detail": "Pour créer un nouveau mot de passe, vous devez remplir les critères suivants :",
     "password_not_same": "Ne peut pas être identique à un précédent mot de passe",
-    "save": "Enregistrer le profil",
-    "error": "Une erreur est survenue lors de la mise à jour de vos paramètres."
+    "save": "Enregistrer",
+    "error": "Une erreur est survenue lors de la mise à jour de vos paramètres.",
+    "security_settings": "Paramètres de sécurité"
   },
   "user_public_profile": {
     "deck": "deck",

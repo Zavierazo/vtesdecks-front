@@ -3,11 +3,13 @@ import { CanActivateUser } from '@shared/guards/can-activate-user.guard'
 
 export const USER_ROUTES: Routes = [
   {
-    path: 'profile',
+    path: 'settings',
     loadComponent: () =>
-      import('./profile/profile.component').then((m) => m.ProfileComponent),
+      import('./user-settings/user-settings.component').then(
+        (m) => m.UserSettingsComponent,
+      ),
     canActivate: [CanActivateUser],
-    title: 'VTES Decks - Profile',
+    title: 'VTES Decks - User Settings',
   },
   {
     path: ':username',

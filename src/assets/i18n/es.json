@@ -316,7 +316,7 @@
     "my_decks": "Mis Mazos",
     "bookmarks": "Mis Favoritos",
     "public_profile": "Perfil Público",
-    "profile_settings": "Configuración de Perfil",
+    "settings": "Configuración",
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
@@ -474,7 +474,7 @@
     "player": "Jugador"
   },
   "user_profile": {
-    "settings": "Configuración de perfil",
+    "profile_settings": "Configuración de perfil",
     "profile_image_alert": " Para la imagen de perfil utilizamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Tu Gravatar es una imagen y un perfil público que te sigue de un lugar a otro cuando haces cosas como comentar o publicar en un blog.",
     "display_name": "Nombre para mostrar",
     "profile_image": "URL de la imagen de perfil (Sobrescribir Gravatar)",
@@ -485,8 +485,9 @@
     "password_requirements": "Requisitos de contraseña",
     "password_requirements_detail": "Para crear una nueva contraseña, debe cumplir con todos los requisitos:",
     "password_not_same": "No puede ser la misma que una contraseña anterior",
-    "save": "Guardar Perfil",
-    "error": "Se produjo un error al actualizar su configuración."
+    "save": "Guardar",
+    "error": "Se produjo un error al actualizar su configuración.",
+    "security_settings": "Configuración de seguridad"
   },
   "user_public_profile": {
     "deck": "mazo",
