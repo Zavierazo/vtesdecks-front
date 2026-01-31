@@ -46,7 +46,7 @@ export class DeckCardComponent implements OnInit {
   private readonly decksService = inject(DecksService)
 
   deck = input.required<ApiDeck>()
-  height = input<string>('auto')
+  height = input<string>('160px')
 
   readonly tagClick = output<string>()
 
