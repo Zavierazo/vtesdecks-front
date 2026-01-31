@@ -110,12 +110,8 @@ export class DeckCardComponent implements OnInit {
   loadPreview(): void {
     const currentDeck = this.deck()
 
-    // Don't load if already loaded, loading, or if filterCards exist
-    if (
-      this.previewLoaded() ||
-      this.previewLoading() ||
-      currentDeck.filterCards
-    ) {
+    // Don't load if already loaded or loading
+    if (this.previewLoaded() || this.previewLoading()) {
       return
     }
 

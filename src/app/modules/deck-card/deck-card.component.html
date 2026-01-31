@@ -8,7 +8,7 @@
     <!-- Top Section -->
     <div class="deck-header px-3 pt-2 pb-1">
       <div class="deck-header-grid mb-1">
-        <div class="deck-stats d-flex gap-2 text-start align-items-center">
+        <div class="deck-stats d-flex gap-2 text-start align-items-start">
           <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium text-body">
             <i class="bi bi-person-badge"></i>
             <span class="ms-1">{{ deck.stats.crypt }}</span>
@@ -34,7 +34,7 @@
           </span>
           {{ deck.name | titlecase | truncate: 40:true }}
         </h2>
-        <div class="deck-engagement d-flex gap-2 justify-content-end align-items-center">
+        <div class="deck-engagement d-flex gap-2 justify-content-end align-items-end">
           <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
             [class.opacity-50]="deck.comments === 0">
             <span class="fw-medium">{{ deck.comments }}</span>
@@ -82,8 +82,8 @@
           'rating-medium': rate >= 3 && rate < 4,
           'rating-high': rate >= 4
         }">
-          <span class="fw-bold">{{ rate }}</span>
-          <i class="bi ms-1" [ngClass]="{
+          <span class="fw-bold me-1">{{ rate }}</span>
+          <i class="bi" [ngClass]="{
               'bi-star': rate < 3,
               'bi-star-half': rate >= 3 && rate < 4,
               'bi-star-fill': rate >= 4
@@ -154,7 +154,6 @@
     <div (click)="togglePreview($event)" (keydown.enter)="togglePreview($event)" (keydown.space)="togglePreview($event)"
       role="button" tabindex="0">
       <!-- Preview Toggle Button -->
-      @if(!deck.filterCards ) {
       <div class="preview-toggle text-center border-top border-opacity-10">
         <button
           class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
@@ -162,10 +161,9 @@
           <i class="bi transition-transform" [ngClass]="showPreview() ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
         </button>
       </div>
-      }
 
       <!-- Deck Preview Section -->
-      @if(!deck.filterCards && (previewCrypt() || previewLibrary())) {
+      @if(previewCrypt() || previewLibrary()) {
 
       <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
         <div class="d-flex gap-3 justify-content-center flex-wrap small">
@@ -274,7 +272,7 @@
         </div>
       </div>
       }
-      @if(previewLoading() && !deck.filterCards) {
+      @if(previewLoading()) {
       <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
         <div class="d-flex justify-content-center">
           <div class="spinner-border spinner-border-sm text-secondary" role="status">
