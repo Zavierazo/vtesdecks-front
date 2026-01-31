@@ -182,6 +182,9 @@
                   <button class="btn btn-outline-primary" (click)="onPrint()">
                     <i class="bi bi-printer me-2"></i>{{ 'deck_shared.print' | transloco }}
                   </button>
+                  <button class="btn btn-outline-primary" (click)="onCompare()">
+                    <i class="bi bi-arrows-collapse me-2"></i>{{ t('compare') }}
+                  </button>
                   <div ngbDropdown class="d-inline-block">
                     <button class="btn btn-outline-primary" ngbDropdownToggle>
                       <i class="bi bi-download me-2"></i>{{ t('export') }}
@@ -274,6 +277,14 @@
             {{ warning.label | transloco: { date: warning.date } }}
           </p>
           }
+        </div>
+        }
+        @if (comparisonDeckId) {
+        <div class="position-relative">
+          <button type="button" class="btn btn-sm btn-close position-absolute end-0 top-0 mt-3 me-3"
+            (click)="compare(null)" [attr.aria-label]="'deck_comparison.close_comparison' | transloco">
+          </button>
+          <app-deck-comparison [currentDeck]="deck" [comparisonDeckId]="comparisonDeckId" />
         </div>
         }
       </section>

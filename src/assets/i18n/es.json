@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacidad",
     "sort_by_clan": "Clan",
     "sort_by_group": "Grupo",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "compare": "Comparar"
+  },
+  "deck_comparison": {
+    "title": "Comparar Mazo",
+    "enter_deck_url": "Introduce URL del Mazo",
+    "enter_deck_url_hint": "Pega un enlace a cualquier mazo para comparar",
+    "or_select_recent": "O selecciona de los mazos visitados recientemente",
+    "comparing_with": "Comparando con",
+    "comparison_hint": "Verde muestra cartas añadidas al mazo actual, rojo muestra cartas eliminadas",
+    "no_differences": "Ambos mazos son idénticos",
+    "comparison_load_error": "No se pudo cargar el mazo de comparación",
+    "loading_comparison": "Cargando comparación...",
+    "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",

@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
     "sort_by_group": "Grupo",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "compare": "Comparar"
+  },
+  "deck_comparison": {
+    "title": "Comparar Baralho",
+    "enter_deck_url": "Digite a URL do Baralho",
+    "enter_deck_url_hint": "Cole um link para qualquer baralho para comparar",
+    "or_select_recent": "Ou selecione dos baralhos visitados recentemente",
+    "comparing_with": "Comparando com",
+    "comparison_hint": "Verde mostra cartas adicionadas ao baralho atual, vermelho mostra cartas removidas",
+    "no_differences": "Ambos os baralhos são idênticos",
+    "comparison_load_error": "Não foi possível carregar o baralho de comparação",
+    "loading_comparison": "Carregando comparação...",
+    "close_comparison": "Fechar comparação"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",

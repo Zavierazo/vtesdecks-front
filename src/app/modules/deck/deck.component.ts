@@ -43,6 +43,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ApiDataService,
+  DeckHistoryService,
   MediaService,
   PreviousRouteService,
   ToastService,
@@ -75,6 +76,8 @@ import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
+import { DeckComparisonModalComponent } from '../deck-shared/deck-comparison-modal/deck-comparison-modal.component'
+import { DeckComparisonComponent } from '../deck-shared/deck-comparison/deck-comparison.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
@@ -119,6 +122,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     CryptGridCardComponent,
     UserFollowButtonComponent,
     NgTemplateOutlet,
+    DeckComparisonComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
@@ -141,8 +145,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router)
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
+  private readonly deckHistoryService = inject(DeckHistoryService)
 
   id!: string
+
+  comparisonDeckId: string | null = null
 
   isLoading$!: Observable<boolean>
 
@@ -206,6 +213,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
+        if (deck) {
+          this.deckHistoryService.addVisitedDeck(
+            deck.id,
+            deck.name,
+            deck.author,
+          )
+        }
       }),
     )
     this.route.paramMap.subscribe(() => this.fetchSimilarDecks())
@@ -453,6 +467,27 @@ export class DeckComponent implements OnInit, AfterViewInit {
           },
         })
     }
+  }
+
+  onCompare(): void {
+    const modalRef = this.modalService.open(DeckComparisonModalComponent, {
+      size: 'md',
+      centered: true,
+    })
+    const lastVisited = this.deckHistoryService
+      .getLastVisitedDecks()
+      .filter((d) => d.id !== this.id)
+    modalRef.componentInstance.setLastVisitedDecks(lastVisited)
+    modalRef.closed.pipe(untilDestroyed(this)).subscribe((result) => {
+      if (result?.deckId) {
+        this.compare(result.deckId)
+      }
+    })
+  }
+
+  compare(deckId: string | null): void {
+    this.comparisonDeckId = deckId
+    this.changeDetectorRef.detectChanges()
   }
 
   get cryptCards(): ApiCard[] | undefined {

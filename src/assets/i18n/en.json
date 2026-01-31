@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacity",
     "sort_by_clan": "Clan",
     "sort_by_group": "Group",
-    "delete": "Delete"
+    "delete": "Delete",
+    "compare": "Compare"
+  },
+  "deck_comparison": {
+    "title": "Compare Deck",
+    "enter_deck_url": "Enter Deck URL",
+    "enter_deck_url_hint": "Paste a link to any deck to compare",
+    "or_select_recent": "Or select from recently visited decks",
+    "comparing_with": "Comparing with",
+    "comparison_hint": "Green shows cards added to current deck, red shows cards removed",
+    "no_differences": "Both decks are identical",
+    "comparison_load_error": "Could not load comparison deck",
+    "loading_comparison": "Loading comparison...",
+    "close_comparison": "Close comparison"
   },
   "deck_builder": {
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
