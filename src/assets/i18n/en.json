@@ -231,7 +231,8 @@
     "show_filters": "Show filters",
     "show_more": "Show more",
     "price_cheapest": "Price: Lowest",
-    "price_expensive": "Price: Highest"
+    "price_expensive": "Price: Highest",
+    "deck_preview": "Deck Preview"
   },
   "draw_cards": {
     "title": "Draw Cards",

@@ -231,7 +231,8 @@
     "show_filters": "Mostrar filtros",
     "show_more": "Ver más",
     "price_cheapest": "Precio: Menor",
-    "price_expensive": "Precio: Mayor"
+    "price_expensive": "Precio: Mayor",
+    "deck_preview": "Vista previa"
   },
   "draw_cards": {
     "title": "Robar Cartas",

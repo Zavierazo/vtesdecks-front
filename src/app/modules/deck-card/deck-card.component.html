@@ -149,6 +149,142 @@
       </div>
       }
     </div>
+
+    @if(enablePreview()){
+    <div (click)="togglePreview($event)" (keydown.enter)="togglePreview($event)" (keydown.space)="togglePreview($event)"
+      role="button" tabindex="0">
+      <!-- Preview Toggle Button -->
+      @if(!deck.filterCards ) {
+      <div class="preview-toggle text-center border-top border-opacity-10">
+        <button
+          class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+          <span class="small">{{ 'decks.deck_preview' | transloco }}</span>
+          <i class="bi transition-transform" [ngClass]="showPreview() ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+        </button>
+      </div>
+      }
+
+      <!-- Deck Preview Section -->
+      @if(!deck.filterCards && (previewCrypt() || previewLibrary())) {
+
+      <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
+        <div class="d-flex gap-3 justify-content-center flex-wrap small">
+          @if(previewCrypt(); as cryptCards) {
+          <div class="preview-section">
+            <div class="text-muted fw-medium mb-1 text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.05em;">
+              <i class="bi bi-person-badge me-1"></i>
+              {{ 'shared.crypt' | transloco }}
+              [{{ deck.stats.crypt }}]
+
+            </div>
+            <div class="d-flex flex-wrap gap-1">
+              @for (card of cryptCards; track card.id) {
+              @if(getCardName(card.id); as cardName) {
+              <span class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2" [ngbPopover]="imgPopover"
+                [disablePopover]="isMobileOrTablet" triggers="mouseenter:mouseleave" container="body">
+                <span class="text-primary fw-bold me-1" style="font-size: 0.7rem;">{{ card.number }}x</span>
+                <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
+              </span>
+              <ng-template #imgPopover>
+                <img class="img-popover" [src]="card | cardImage" [alt]="cardName" />
+              </ng-template>
+              }
+              }
+            </div>
+          </div>
+          }
+          @if(previewLibrary(); as libraryCards) {
+          <div class="preview-section">
+            <div class="text-muted fw-medium mb-1 text-uppercase d-flex flex-wrap align-items-center gap-1"
+              style="font-size: 0.65rem; letter-spacing: 0.05em;">
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="bi bi-stack"></i>
+                {{ 'shared.library' | transloco }}
+                [{{ deck.stats.library }}]
+              </span>
+              @if(deck.stats.master){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes master"></i>
+                {{ deck.stats.master }}
+              </span>
+              }
+              @if(deck.stats.action){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes action"></i>{{ deck.stats.action }}
+              </span>
+              }
+              @if(deck.stats.politicalAction){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes political"></i>{{ deck.stats.politicalAction }}
+              </span>
+              }
+              @if(deck.stats.equipment){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes equipment"></i>{{ deck.stats.equipment }}
+              </span>
+              }
+              @if(deck.stats.retainer){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes retainer"></i>{{ deck.stats.retainer }}
+              </span>
+              }
+              @if(deck.stats.ally){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes ally"></i>{{ deck.stats.ally }}
+              </span>
+              }
+              @if(deck.stats.actionModifier){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes modifier"></i>{{ deck.stats.actionModifier }}
+              </span>
+              }
+              @if(deck.stats.combat){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes combat"></i>{{ deck.stats.combat }}
+              </span>
+              }
+              @if(deck.stats.reaction){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes reaction"></i>{{ deck.stats.reaction }}
+              </span>
+              }
+              @if(deck.stats.event){
+              <span class="d-inline-flex align-items-center gap-1">
+                <i class="vtes event"></i>{{ deck.stats.event }}
+              </span>
+              }
+            </div>
+            <div class="d-flex flex-wrap gap-1">
+              @for (card of libraryCards; track card.id) {
+              @if(getCardName(card.id); as cardName) {
+              <span class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2" [ngbPopover]="imgPopover"
+                [disablePopover]="isMobileOrTablet" triggers="mouseenter:mouseleave" container="body">
+                <span class="text-primary fw-bold me-1" style="font-size: 0.7rem;">{{ card.number }}x</span>
+                <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
+              </span>
+              <ng-template #imgPopover>
+                <img class="img-popover" [src]="card | cardImage" [alt]="cardName" />
+              </ng-template>
+              }
+
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+      @if(previewLoading() && !deck.filterCards) {
+      <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border spinner-border-sm text-secondary" role="status">
+            <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
   </div>
 </a>
 }

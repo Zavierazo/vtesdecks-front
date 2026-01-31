@@ -232,7 +232,8 @@
     "show_filters": "Mostrar filtros",
     "show_more": "Ver mais",
     "price_cheapest": "Preço: Barato",
-    "price_expensive": "Preço: Caro"
+    "price_expensive": "Preço: Caro",
+    "deck_preview": "Vista previa"
   },
   "draw_cards": {
     "title": "Comprar Cartas",

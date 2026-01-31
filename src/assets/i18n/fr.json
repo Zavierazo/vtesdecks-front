@@ -231,7 +231,8 @@
     "show_filters": "Afficher les filtres",
     "show_more": "En voir plus",
     "price_cheapest": "Prix : Le moins cher",
-    "price_expensive": "Prix : Le plus cher"
+    "price_expensive": "Prix : Le plus cher",
+    "deck_preview": "Aperçu du deck"
   },
   "draw_cards": {
     "title": "Tirage de cartes",

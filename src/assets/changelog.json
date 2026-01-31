@@ -3,6 +3,7 @@
     "version": "2.65.0",
     "date": "31th January, 2026",
     "changes": [
+      "Added deck preview in deck list to quickly view deck contents without opening the deck.",
       "Added option to delete decks permanently. Normally deleted decks are kept for 60 days before being removed permanently.",
       "Fixed duplicate preconstructed decks from appearing in the Collection Tracker on slow connections.",
       "Minor bug fixes and performance improvements."
