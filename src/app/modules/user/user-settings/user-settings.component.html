@@ -13,11 +13,11 @@
   </div>
   <div class="col-md-9 border-right">
     <form class="p-3 py-5" [formGroup]="form" (ngSubmit)="submit()">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="text-right">{{ t('settings') }}</h4>
-      </div>
-      <div class="row">
+      <div class="row fs-7">
         <ngb-alert type="warning" [dismissible]="false" [innerHTML]="t('profile_image_alert')" />
+      </div>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-right">{{ t('profile_settings') }}</h4>
       </div>
       <div class="row mt-2">
         <div class="col-md-12">
@@ -41,6 +41,9 @@
           <input type="text" class="form-control" placeholder="https://www.example.com/avatar.jpg"
             formControlName="profileImage" autocomplete="photo">
         </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <h4 class="text-right">{{ t('security_settings') }}</h4>
       </div>
       <div class="row mb-4 mt-2">
         <div class="col-md-6">

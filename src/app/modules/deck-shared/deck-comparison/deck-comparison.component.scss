@@ -1,0 +1,42 @@
+.deck-comparison {
+  max-width: 100%;
+}
+
+.diff-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.diff-item {
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
+  }
+}
+
+.card-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.diff-badge {
+  flex-shrink: 0;
+
+  .badge {
+    font-size: 0.85rem;
+
+    small {
+      opacity: 0.85;
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+.img-popover {
+  width: 80vw;
+  max-width: 300px;
+  height: auto;
+}

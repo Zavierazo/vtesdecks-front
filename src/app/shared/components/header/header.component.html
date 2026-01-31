@@ -182,8 +182,8 @@
               (click)="isCollapsed = true">
               <i class="bi bi-person-circle"></i> {{ t('public_profile') }}
             </a>
-            <a ngbDropdownItem routerLink="/user/profile" [routerLinkActive]="['active']" (click)="isCollapsed = true">
-              {{ t('profile_settings') }}
+            <a ngbDropdownItem routerLink="/user/settings" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+              {{ t('settings') }}
             </a>
             <a ngbDropdownItem href="javascript:void(0)" (click)="logout()">
               {{ t('logout') }}

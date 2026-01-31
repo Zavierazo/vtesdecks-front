@@ -1,0 +1,18 @@
+.tag-pill {
+  background: rgba(var(--bs-secondary-rgb), 0.08);
+  border: 1px solid rgba(var(--bs-secondary-rgb), 0.15);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &.active {
+    border-color: rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  &:hover {
+    background: rgba(var(--bs-primary-rgb), 0.12);
+    border-color: rgba(var(--bs-primary-rgb), 0.5);
+    color: var(--bs-primary);
+    transform: translateY(-1px);
+    opacity: 1 !important;
+  }
+}

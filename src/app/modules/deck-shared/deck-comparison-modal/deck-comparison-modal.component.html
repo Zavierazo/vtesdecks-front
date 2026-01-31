@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'deck_comparison.title' | transloco }}</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-4">
+    <label for="deckUrl" class="form-label fw-semibold">
+      {{ 'deck_comparison.enter_deck_url' | transloco }}
+    </label>
+    <div class="input-group">
+      <input type="text" class="form-control" id="deckUrl" [formControl]="deckUrlControl"
+        placeholder="https://vtesdecks.com/deck/..." />
+      <button class="btn btn-primary" type="button" (click)="selectDeckByUrl()" [disabled]="!deckUrlControl.value">
+        {{ 'deck.compare' | transloco }}
+      </button>
+    </div>
+    <div class="form-text">
+      {{ 'deck_comparison.enter_deck_url_hint' | transloco }}
+    </div>
+  </div>
+
+  @if(lastVisitedDecks().length > 0) {
+  <div>
+    <div class="form-label fw-semibold">
+      {{ 'deck_comparison.or_select_recent' | transloco }}
+    </div>
+    <div class="list-group">
+      @for(deck of lastVisitedDecks(); track deck.id) {
+      <button type="button"
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+        (click)="selectDeck(deck.id)">
+        <div>
+          <div class="fw-medium">{{ deck.name }}</div>
+          <small class="text-muted">{{ deck.author }}</small>
+        </div>
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      }
+    </div>
+  </div>
+  }
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">
+    {{ 'shared.cancel' | transloco }}
+  </button>
+</div>

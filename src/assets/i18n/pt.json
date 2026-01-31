@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
     "sort_by_group": "Grupo",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "compare": "Comparar"
+  },
+  "deck_comparison": {
+    "title": "Comparar Baralho",
+    "enter_deck_url": "Digite a URL do Baralho",
+    "enter_deck_url_hint": "Cole um link para qualquer baralho para comparar",
+    "or_select_recent": "Ou selecione dos baralhos visitados recentemente",
+    "comparing_with": "Comparando com",
+    "comparison_hint": "Verde mostra cartas adicionadas ao baralho atual, vermelho mostra cartas removidas",
+    "no_differences": "Ambos os baralhos são idênticos",
+    "comparison_load_error": "Não foi possível carregar o baralho de comparação",
+    "loading_comparison": "Carregando comparação...",
+    "close_comparison": "Fechar comparação"
   },
   "deck_builder": {
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",
@@ -137,7 +150,7 @@
     "deck_saved": "Baralho salvo com sucesso! Você pode agora compartilhar com seus amigos!",
     "link_copied": "Link copiado para a área de transferência",
     "delete_title": "Eliminar este baralho?",
-    "delete_message": "O baralho será eliminado. O baralho estará disponível por 60 dias após a sua eliminação para poder ser restaurado.",
+    "delete_message": "<p>Será mantido por 60 dias e pode ser restaurado durante esse tempo.</p><p>Se você o eliminar permanentemente, <strong>não poderá ser recuperado.</strong></p>",
     "delete_successful": "Baralho eliminado",
     "name": "Nome",
     "description": "Descrição",
@@ -232,7 +245,8 @@
     "show_filters": "Mostrar filtros",
     "show_more": "Ver mais",
     "price_cheapest": "Preço: Barato",
-    "price_expensive": "Preço: Caro"
+    "price_expensive": "Preço: Caro",
+    "deck_preview": "Vista previa"
   },
   "draw_cards": {
     "title": "Comprar Cartas",
@@ -317,7 +331,7 @@
     "my_decks": "Meus Baralhos",
     "bookmarks": "Meus Favoritos",
     "public_profile": "Perfil Público",
-    "profile_settings": "Configurações de perfil",
+    "settings": "Configurações",
     "logout": "Sair",
     "theme": "Tema",
     "notifications": "Notificações",
@@ -442,6 +456,8 @@
   "shared": {
     "ok": "Ok",
     "cancel": "Cancelar",
+    "delete": "Deletar",
+    "delete_permanently": "Deletar Permanentemente",
     "import": "Importar",
     "close": "Fechar",
     "loading": "Carregando",
@@ -473,7 +489,7 @@
     "player": "Jogador"
   },
   "user_profile": {
-    "settings": "Configurações de perfil",
+    "profile_settings": "Configurações de perfil",
     "profile_image_alert": " Para a imagem de perfil usamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Seu Gravatar é uma imagem e um perfil público que segue você de um lugar para outro quando faz coisas como comentário ou publica em uma página de blog.",
     "display_name": "Nome de exibição",
     "profile_image": "URL da imagem de perfil (Substituir Gravatar)",
@@ -484,8 +500,9 @@
     "password_requirements": "Requisitos de senha",
     "password_requirements_detail": "Para criar uma nova senha, você deve ter todos os seguintes requisitos:",
     "password_not_same": "Não pode ser a mesma que a senha anterior",
-    "save": "Salvar perfil",
-    "error": "Ocorreu um erro ao atualizar suas configurações."
+    "save": "Salvar",
+    "error": "Ocorreu um erro ao atualizar suas configurações.",
+    "security_settings": "Configurações de segurança"
   },
   "user_public_profile": {
     "deck": "baralho",

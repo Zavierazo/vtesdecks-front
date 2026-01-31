@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
     "sort_by_group": "Groupe",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "compare": "Comparer"
+  },
+  "deck_comparison": {
+    "title": "Comparer le Deck",
+    "enter_deck_url": "Entrez l'URL du Deck",
+    "enter_deck_url_hint": "Collez un lien vers n'importe quel deck pour comparer",
+    "or_select_recent": "Ou sélectionnez parmi les decks récemment visités",
+    "comparing_with": "Comparaison avec",
+    "comparison_hint": "Le vert montre les cartes ajoutées au deck actuel, le rouge montre les cartes supprimées",
+    "no_differences": "Les deux decks sont identiques",
+    "comparison_load_error": "Impossible de charger le deck de comparaison",
+    "loading_comparison": "Chargement de la comparaison...",
+    "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
     "deck_not_exists": "Le deck n'existe pas. Veuillez réessayer plus tard.",
@@ -137,7 +150,7 @@
     "deck_saved": "Deck enregistré avec succès ! Vous pouvez maintenant le partager avec vos amis !!",
     "link_copied": "Lien copié dans le presse-papiers",
     "delete_title": "Supprimer ce deck ?",
-    "delete_message": "Le deck sera supprimé. Il restera disponible pendant 60 jours pour une éventuelle restauration.",
+    "delete_message": "<p>Il sera conservé pendant 60 jours et pourra être restauré pendant cette période.</p><p>Si vous le supprimez définitivement, <strong>il ne pourra pas être récupéré.</strong></p>",
     "delete_successful": "Deck supprimé",
     "name": "Nom",
     "description": "Description",
@@ -231,7 +244,8 @@
     "show_filters": "Afficher les filtres",
     "show_more": "En voir plus",
     "price_cheapest": "Prix : Le moins cher",
-    "price_expensive": "Prix : Le plus cher"
+    "price_expensive": "Prix : Le plus cher",
+    "deck_preview": "Aperçu du deck"
   },
   "draw_cards": {
     "title": "Tirage de cartes",
@@ -316,7 +330,7 @@
     "my_decks": "Mes Decks",
     "bookmarks": "Mes Favoris",
     "public_profile": "Profil Public",
-    "profile_settings": "Paramètres du Profil",
+    "settings": "Paramètres",
     "logout": "Déconnexion",
     "theme": "Thème",
     "notifications": "Notifications",
@@ -441,6 +455,7 @@
     "ok": "Ok",
     "cancel": "Annuler",
     "delete": "Supprimer",
+    "delete_permanently": "Supprimer définitivement",
     "import": "Importer",
     "close": "Fermer",
     "loading": "Chargement",
@@ -474,7 +489,7 @@
     "player": "Joueur"
   },
   "user_profile": {
-    "settings": "Paramètres du Profil",
+    "profile_settings": "Paramètres de profil",
     "profile_image_alert": " Pour l'image de profil, nous utilisons <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Votre Gravatar est une image et un profil public qui vous suit partout sur le web.",
     "display_name": "Nom d'affichage",
     "profile_image": "URL de l'image de profil (Remplace Gravatar)",
@@ -485,8 +500,9 @@
     "password_requirements": "Exigences du mot de passe",
     "password_requirements_detail": "Pour créer un nouveau mot de passe, vous devez remplir les critères suivants :",
     "password_not_same": "Ne peut pas être identique à un précédent mot de passe",
-    "save": "Enregistrer le profil",
-    "error": "Une erreur est survenue lors de la mise à jour de vos paramètres."
+    "save": "Enregistrer",
+    "error": "Une erreur est survenue lors de la mise à jour de vos paramètres.",
+    "security_settings": "Paramètres de sécurité"
   },
   "user_public_profile": {
     "deck": "deck",

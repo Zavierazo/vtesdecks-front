@@ -43,13 +43,14 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ApiDataService,
+  DeckHistoryService,
   MediaService,
   PreviousRouteService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
-import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
@@ -75,6 +76,8 @@ import { ClanTranslocoPipe } from '../deck-shared/clan-transloco/clan-transloco.
 import { CryptCardComponent } from '../deck-shared/crypt-card/crypt-card.component'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
+import { DeckComparisonModalComponent } from '../deck-shared/deck-comparison-modal/deck-comparison-modal.component'
+import { DeckComparisonComponent } from '../deck-shared/deck-comparison/deck-comparison.component'
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
@@ -119,6 +122,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
     CryptGridCardComponent,
     UserFollowButtonComponent,
     NgTemplateOutlet,
+    DeckComparisonComponent,
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
@@ -141,8 +145,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router)
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
+  private readonly deckHistoryService = inject(DeckHistoryService)
 
   id!: string
+
+  comparisonDeckId: string | null = null
 
   isLoading$!: Observable<boolean>
 
@@ -206,6 +213,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
+        if (deck) {
+          this.deckHistoryService.addVisitedDeck(
+            deck.id,
+            deck.name,
+            deck.author,
+          )
+        }
       }),
     )
     this.route.paramMap.subscribe(() => this.fetchSimilarDecks())
@@ -414,36 +428,34 @@ export class DeckComponent implements OnInit, AfterViewInit {
   deleteDeck(): void {
     const deckId = this.deckQuery.getDeck()?.id
     if (deckId) {
-      const modalRef = this.modalService.open(ConfirmDialogComponent, {
-        size: 'sm',
+      const modalRef = this.modalService.open(DeleteDialogComponent, {
+        size: 'md',
         centered: true,
       })
-      modalRef.componentInstance.title = this.translocoService.translate(
-        'deck_builder.delete_title',
-      )
-      modalRef.componentInstance.message = this.translocoService.translate(
-        'deck_builder.delete_message',
-      )
+      modalRef.componentInstance.titleLabel = 'deck_builder.delete_title'
+      modalRef.componentInstance.messageLabel = 'deck_builder.delete_message'
       modalRef.closed
         .pipe(
           untilDestroyed(this),
           filter((result) => result),
-          switchMap(() =>
-            this.deckBuilderService.deleteDeck(deckId).pipe(
-              untilDestroyed(this),
-              tap(() => {
-                this.toastService.show(
-                  this.translocoService.translate(
-                    'deck_builder.delete_successful',
-                  ),
-                  { classname: 'bg-success text-light', delay: 5000 },
-                )
-                this.decksService.reset()
-                this.router.navigate(['/decks'], {
-                  queryParams: { type: 'USER' },
-                })
-              }),
-            ),
+          switchMap((result) =>
+            this.deckBuilderService
+              .deleteDeck(deckId, result === 'PERMANENT')
+              .pipe(
+                untilDestroyed(this),
+                tap(() => {
+                  this.toastService.show(
+                    this.translocoService.translate(
+                      'deck_builder.delete_successful',
+                    ),
+                    { classname: 'bg-success text-light', delay: 5000 },
+                  )
+                  this.decksService.reset()
+                  this.router.navigate(['/decks'], {
+                    queryParams: { type: 'USER' },
+                  })
+                }),
+              ),
           ),
         )
         .subscribe({
@@ -455,6 +467,27 @@ export class DeckComponent implements OnInit, AfterViewInit {
           },
         })
     }
+  }
+
+  onCompare(): void {
+    const modalRef = this.modalService.open(DeckComparisonModalComponent, {
+      size: 'md',
+      centered: true,
+    })
+    const lastVisited = this.deckHistoryService
+      .getLastVisitedDecks()
+      .filter((d) => d.id !== this.id)
+    modalRef.componentInstance.setLastVisitedDecks(lastVisited)
+    modalRef.closed.pipe(untilDestroyed(this)).subscribe((result) => {
+      if (result?.deckId) {
+        this.compare(result.deckId)
+      }
+    })
+  }
+
+  compare(deckId: string | null): void {
+    this.comparisonDeckId = deckId
+    this.changeDetectorRef.detectChanges()
   }
 
   get cryptCards(): ApiCard[] | undefined {

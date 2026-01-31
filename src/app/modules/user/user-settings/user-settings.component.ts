@@ -29,9 +29,9 @@ import { Observable, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  selector: 'app-user-settings',
+  templateUrl: './user-settings.component.html',
+  styleUrls: ['./user-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
@@ -42,7 +42,7 @@ import { Observable, tap } from 'rxjs'
     TranslocoPipe,
   ],
 })
-export class ProfileComponent implements OnInit {
+export class UserSettingsComponent implements OnInit {
   private authQuery = inject(AuthQuery)
   private authService = inject(AuthService)
   private changeDetectorRef = inject(ChangeDetectorRef)

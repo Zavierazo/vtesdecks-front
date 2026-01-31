@@ -1,0 +1,110 @@
+<div class="deck-comparison mt-3 p-3 bg-light border rounded-3">
+  @if(loading()) {
+  <div class="text-center py-4">
+    <div class="spinner-border spinner-border-sm text-primary" role="status">
+      <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+    </div>
+    <p class="mt-2 text-muted">{{ 'deck_comparison.loading_comparison' | transloco }}</p>
+  </div>
+  } @else if(comparisonDeck()) {
+  <div class="comparison-header mb-3">
+    <h5 class="mb-2">
+      <i class="bi bi-arrows-collapse me-2"></i>{{ 'deck_comparison.comparing_with' | transloco }}:
+      <strong>{{ comparisonDeck()!.name }}</strong>
+    </h5>
+    <p class="text-muted small mb-0">
+      {{ 'deck_comparison.comparison_hint' | transloco }}
+    </p>
+  </div>
+
+  <div class="row">
+    @if(cryptDiffs().length > 0) {
+    <div class="col-12 col-md-6 mb-3">
+      <h6 class="fw-bold mb-2">
+        <i class="bi bi-person-badge me-1"></i>{{ 'shared.crypt' | transloco }}
+        <span class="badge bg-secondary ms-1">{{ cryptDiffs().length }}</span>
+      </h6>
+      <div class="diff-list">
+        @for(diff of cryptDiffs(); track diff.id) {
+        <div class="diff-item p-2 mb-1 rounded-2 d-flex justify-content-between align-items-center" [ngClass]="{
+          'bg-success-subtle': diff.difference > 0,
+          'bg-danger-subtle': diff.difference < 0
+        }" #popover="ngbPopover" [disablePopover]="(isMobileOrTablet$ | async) === true" [ngbPopover]="imgPopover"
+          triggers="mouseenter:mouseleave" container="body">
+          <span class="card-name text-truncate me-2">{{ diff.name }}</span>
+          <div class="diff-badge">
+            @if(diff.difference > 0) {
+            <span class="badge bg-success">
+              +{{ diff.difference }}
+              ({{ diff.currentQuantity }})
+            </span>
+            } @else {
+            <span class="badge bg-danger">
+              {{ diff.difference }}
+              @if(diff.currentQuantity > 0) {
+              ({{ diff.currentQuantity }})
+              }
+            </span>
+            }
+          </div>
+          <ng-template #imgPopover>
+            <img class="img-popover" [src]="{id: diff.id } | cardImage" [alt]="diff.name" />
+          </ng-template>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    @if(libraryDiffs().length > 0) {
+    <div class="col-12 col-md-6 mb-3">
+      <h6 class="fw-bold mb-2">
+        <i class="bi bi-stack me-1"></i>{{ 'shared.library' | transloco }}
+        <span class="badge bg-secondary ms-1">{{ libraryDiffs().length }}</span>
+      </h6>
+      <div class="diff-list">
+        @for(diff of libraryDiffs(); track diff.id) {
+        <div class="diff-item p-2 mb-1 rounded-2 d-flex justify-content-between align-items-center" [ngClass]="{
+          'bg-success-subtle': diff.difference > 0,
+          'bg-danger-subtle': diff.difference < 0
+        }" #popover="ngbPopover" [disablePopover]="(isMobileOrTablet$ | async) === true" [ngbPopover]="imgPopover"
+          triggers="mouseenter:mouseleave" container="body">
+          <span class="card-name text-truncate me-2">{{ diff.name }}</span>
+          <div class="diff-badge">
+            @if(diff.difference > 0) {
+            <span class="badge bg-success">
+              +{{ diff.difference }}
+              ({{ diff.currentQuantity }})
+            </span>
+            } @else {
+            <span class="badge bg-danger">
+              {{ diff.difference }}
+              @if(diff.currentQuantity > 0) {
+              ({{ diff.currentQuantity }})
+              }
+            </span>
+            }
+          </div>
+          <ng-template #imgPopover>
+            <img class="img-popover" [src]="{id: diff.id }| cardImage" [alt]="diff.name" />
+          </ng-template>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    @if(cryptDiffs().length === 0 && libraryDiffs().length === 0) {
+    <div class="col-12">
+      <div class="alert alert-info mb-0">
+        <i class="bi bi-info-circle me-2"></i>{{ 'deck_comparison.no_differences' | transloco }}
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="alert alert-danger mb-0">
+    <i class="bi bi-exclamation-triangle me-2"></i>{{ 'deck_comparison.comparison_load_error' | transloco }}
+  </div>
+  }
+</div>

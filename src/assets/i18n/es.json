@@ -127,7 +127,20 @@
     "sort_by_capacity": "Capacidad",
     "sort_by_clan": "Clan",
     "sort_by_group": "Grupo",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "compare": "Comparar"
+  },
+  "deck_comparison": {
+    "title": "Comparar Mazo",
+    "enter_deck_url": "Introduce URL del Mazo",
+    "enter_deck_url_hint": "Pega un enlace a cualquier mazo para comparar",
+    "or_select_recent": "O selecciona de los mazos visitados recientemente",
+    "comparing_with": "Comparando con",
+    "comparison_hint": "Verde muestra cartas añadidas al mazo actual, rojo muestra cartas eliminadas",
+    "no_differences": "Ambos mazos son idénticos",
+    "comparison_load_error": "No se pudo cargar el mazo de comparación",
+    "loading_comparison": "Cargando comparación...",
+    "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
@@ -137,7 +150,7 @@
     "deck_saved": "¡Mazo guardado exitosamente! Ahora puedes compartirlo con tus amigos!",
     "link_copied": "Enlace copiado al portapapeles",
     "delete_title": "¿Eliminar este mazo?",
-    "delete_message": "El mazo será eliminado. El mazo estará disponible durante 60 días después de su eliminación para poder ser restaurado.",
+    "delete_message": "<p>Se mantendrá durante 60 días y podrá restaurarse durante ese tiempo.</p><p>Si lo eliminas permanentemente, <strong>no se podrá recuperar.</strong></p>",
     "delete_successful": "Mazo eliminado",
     "name": "Nombre",
     "description": "Descripción",
@@ -231,7 +244,8 @@
     "show_filters": "Mostrar filtros",
     "show_more": "Ver más",
     "price_cheapest": "Precio: Menor",
-    "price_expensive": "Precio: Mayor"
+    "price_expensive": "Precio: Mayor",
+    "deck_preview": "Vista previa"
   },
   "draw_cards": {
     "title": "Robar Cartas",
@@ -316,7 +330,7 @@
     "my_decks": "Mis Mazos",
     "bookmarks": "Mis Favoritos",
     "public_profile": "Perfil Público",
-    "profile_settings": "Configuración de Perfil",
+    "settings": "Configuración",
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
@@ -440,6 +454,8 @@
   "shared": {
     "ok": "Aceptar",
     "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "delete_permanently": "Eliminar permanentemente",
     "import": "Importar",
     "close": "Cerrar",
     "loading": "Cargando",
@@ -472,7 +488,7 @@
     "player": "Jugador"
   },
   "user_profile": {
-    "settings": "Configuración de perfil",
+    "profile_settings": "Configuración de perfil",
     "profile_image_alert": " Para la imagen de perfil utilizamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Tu Gravatar es una imagen y un perfil público que te sigue de un lugar a otro cuando haces cosas como comentar o publicar en un blog.",
     "display_name": "Nombre para mostrar",
     "profile_image": "URL de la imagen de perfil (Sobrescribir Gravatar)",
@@ -483,8 +499,9 @@
     "password_requirements": "Requisitos de contraseña",
     "password_requirements_detail": "Para crear una nueva contraseña, debe cumplir con todos los requisitos:",
     "password_not_same": "No puede ser la misma que una contraseña anterior",
-    "save": "Guardar Perfil",
-    "error": "Se produjo un error al actualizar su configuración."
+    "save": "Guardar",
+    "error": "Se produjo un error al actualizar su configuración.",
+    "security_settings": "Configuración de seguridad"
   },
   "user_public_profile": {
     "deck": "mazo",

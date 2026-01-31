@@ -1,7 +1,19 @@
 [
   {
+    "version": "2.65.0",
+    "date": "31st January, 2026",
+    "changes": [
+      "Added a deck comparison tool to compare two decks side by side and highlight card quantity differences.",
+      "Added deck preview in deck lists to quickly view contents without opening the deck.",
+      "Card shops now show the cheapest option first for your language.",
+      "Added the option to permanently delete decks. Deleted decks are still kept for 60 days by default.",
+      "Fixed duplicate preconstructed decks appearing in the Collection Tracker on slow connections.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.64.0",
-    "date": "23th January, 2026",
+    "date": "23rd January, 2026",
     "changes": [
       "Improved card collection add flow, showing which cards are already owned.",
       "Deck builder now preserves filters when closing crypt and library modals.",
@@ -10,8 +22,7 @@
       "Improved card set tooltips on mobile with a unified display across the site.",
       "Added a delete deck button to the deck view for easier deck management.",
       "Preconstructed deck bulk add now supports multiple decks at once.",
-      "Fixed filter reset to correctly restore taint selectors.",
-      "Minor bug fixes and performance improvements."
+      "Fixed filter reset to correctly restore taint selectors."
     ]
   },
   {

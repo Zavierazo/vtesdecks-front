@@ -1,0 +1,13 @@
+.list-group-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+  }
+}
+
+.list-group {
+  max-height: 300px;
+  overflow-y: auto;
+}
