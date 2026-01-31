@@ -31,17 +31,23 @@
       @if (tags) {
       <div class="d-flex flex-wrap justify-content-start gap-2 my-2">
         @for (tag of tags; track tag) {
-        <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onDeselectTag(tag)">
+        <span
+          class="tag-pill active d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
+          (click)="onDeselectTag(tag)">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
         }
         @if(!tags.includes('v5')) {
-        <span class="badge rounded-pill text-bg-secondary btn-badge opacity-50" (click)="onSelectTag('v5')">
+        <span
+          class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer opacity-50"
+          (click)="onSelectTag('v5')">
           #{{ 'vtes.tags.v5' | transloco }}
         </span>
         }
         @if(!tags.includes('2player')) {
-        <span class="badge rounded-pill text-bg-secondary btn-badge opacity-50" (click)="onSelectTag('2player')">
+        <span
+          class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer opacity-50"
+          (click)="onSelectTag('2player')">
           #{{ 'vtes.tags.2player' | transloco }}
         </span>
         }
