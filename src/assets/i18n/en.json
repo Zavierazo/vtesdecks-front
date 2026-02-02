@@ -952,7 +952,7 @@
     "description": "Description",
     "enabled": "Enabled",
     "decks_with_metagame": "Discover decks",
-    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} decks)",
+    "meta": "Meta {{percentage}}% of all decks ({{count}} in this period)",
     "delete_title": "Delete this metagame?",
     "delete_message": "Metagame will be deleted. This action cannot be undone.",
     "show_from_last": "Show the metagame from",

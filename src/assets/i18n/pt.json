@@ -951,7 +951,7 @@
     "description": "Descrição",
     "enabled": "Ativado",
     "decks_with_metagame": "Descobrir baralhos",
-    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} baralhos)",
+    "meta": "Meta {{percentage}}% de todos os baralhos ({{count}} neste período)",
     "delete_title": "Excluir este arquétipo?",
     "delete_message": "O arquétipo será excluído. Esta ação não pode ser desfeita.",
     "show_from_last": "Mostrar o metajogo dos",

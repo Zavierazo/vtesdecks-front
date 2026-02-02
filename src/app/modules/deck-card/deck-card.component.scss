@@ -2,6 +2,7 @@
 
 .deck-card {
   min-width: 300px;
+  container-type: inline-size;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.12),
@@ -160,7 +161,7 @@
 
   // Responsive adjustments
   .deck-stats {
-    @media (max-width: 600px) {
+    @container (max-width: 500px) {
       flex-direction: column !important;
       align-items: flex-start;
       gap: 0.25rem !important;
@@ -168,7 +169,7 @@
   }
 
   .deck-engagement {
-    @media (max-width: 600px) {
+    @container (max-width: 500px) {
       flex-direction: column !important;
       align-items: flex-end;
       gap: 0.25rem !important;
@@ -202,7 +203,6 @@
 
   // Active state
   &:active {
-    transform: translateY(0);
     box-shadow:
       0 2px 4px rgba(0, 0, 0, 0.12),
       0 1px 2px rgba(0, 0, 0, 0.08);

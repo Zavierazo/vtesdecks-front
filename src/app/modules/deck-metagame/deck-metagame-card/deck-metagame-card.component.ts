@@ -8,7 +8,7 @@ import {
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
@@ -30,6 +30,7 @@ import { DeckMetagameModalComponent } from '../deck-metagame-modal/deck-metagame
     MarkdownTextComponent,
     DecimalPipe,
     CurrencyPipe,
+    NgbTooltip,
   ],
 })
 export class DeckMetagameCardComponent {

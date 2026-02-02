@@ -951,7 +951,7 @@
     "description": "Descripción",
     "enabled": "Habilitado",
     "decks_with_metagame": "Descubrir mazos",
-    "meta": "Meta <strong>{{percentage}}%</strong> ({{count}} mazos)",
+    "meta": "Meta {{percentage}}% de todos los mazos ({{count}} en este período)",
     "delete_title": "¿Eliminar este arquetipo?",
     "delete_message": "El arquetipo será eliminado. Esta acción no se puede deshacer.",
     "show_from_last": "Mostrar metajuego de",
