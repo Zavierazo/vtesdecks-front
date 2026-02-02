@@ -13,11 +13,6 @@
           <i class="bi bi-patch-check-fill text-primary" [title]="'shared.supporter' | transloco"></i>
           }
         </span>
-        @if(comment.createdByAdmin){
-        <small class="badge bg-primary ms-2">
-          {{ t('admin') }}
-        </small>
-        }
       </div> <small>{{ comment.modified | dateAsAgo }}</small>
     </div>
     @if (!isEditing){
