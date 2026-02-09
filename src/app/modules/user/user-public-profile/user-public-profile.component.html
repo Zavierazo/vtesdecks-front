@@ -113,8 +113,7 @@
           @if ((total$ | async) && (total$ | async)! > 6) {
           <div class="text-center">
             <a [routerLink]="'/decks'" [queryParams]="{
-              author: username(),
-              exactAuthor: true,
+              username: username(),
               type: 'COMMUNITY',
               order: 'POPULAR'
        }" class="btn btn-primary">
