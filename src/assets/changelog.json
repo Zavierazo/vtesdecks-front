@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.66.0",
+    "date": "28th February, 2026",
+    "changes": [
+      "Add New Blood III - Ravnos, Tzimisce, Salubri set",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.65.0",
     "date": "31st January, 2026",
     "changes": [
@@ -7,8 +15,7 @@
       "Added deck preview in deck lists to quickly view contents without opening the deck.",
       "Card shops now show the cheapest option first for your language.",
       "Added the option to permanently delete decks. Deleted decks are still kept for 60 days by default.",
-      "Fixed duplicate preconstructed decks appearing in the Collection Tracker on slow connections.",
-      "Minor bug fixes and performance improvements."
+      "Fixed duplicate preconstructed decks appearing in the Collection Tracker on slow connections."
     ]
   },
   {
