@@ -2,7 +2,15 @@
   "workbench.colorCustomizations": {
     "activityBar.background": "#540D4A",
     "titleBar.activeBackground": "#761267",
-    "titleBar.activeForeground": "#FEFCFE"
+    "titleBar.activeForeground": "#FEFCFE",
+    "titleBar.inactiveBackground": "#540D4A",
+    "titleBar.inactiveForeground": "#FEFCFE",
+    "statusBar.background": "#540D4A",
+    "statusBar.foreground": "#FEFCFE",
+    "statusBar.debuggingBackground": "#540D4A",
+    "statusBar.debuggingForeground": "#FEFCFE",
+    "statusBar.noFolderBackground": "#540D4A",
+    "statusBar.noFolderForeground": "#FEFCFE"
   },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
