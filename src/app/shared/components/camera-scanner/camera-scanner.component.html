@@ -14,6 +14,7 @@
       <video #video autoplay playsinline muted></video>
       <img #freeze alt="Captured frame" />
       <canvas #canvas style="display: none;"></canvas>
+      <canvas #overlay class="detection-overlay"></canvas>
 
       <!-- Idle State -->
       @if(appState() === 'idle'){
@@ -26,7 +27,11 @@
       <!-- Frame Overlay -->
       @if(appState() === 'camera'){
       <div class="frame-overlay">
-        <div class="card-guide"></div>
+        @if(!detectedQuad()){
+        <div class="card-guide" [class.locking]="stabilityProgress() > 0">
+          <div class="card-guide-fill" [style.height.%]="stabilityProgress()"></div>
+        </div>
+        }
       </div>
       }
 
@@ -46,10 +51,27 @@
       </button>
       }
       @if(appState() === 'camera'){
-      <button class="btn btn-danger w-100 mb-2" (click)="doScan()">
-        <i class="bi bi-scan me-2"></i>
-        {{ t('scan_card') }}
-      </button>
+      <div class="mb-2">
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <small class="text-muted fst-italic">
+            @if(isLoadingCV()){
+            <span class="spinner-border spinner-border-sm me-1" style="width:.75rem;height:.75rem"></span>{{
+            t('loading_cv') }}
+            } @else if(stabilityProgress() === 0){
+            <i class="bi bi-viewfinder me-1"></i>{{ t('align_card') }}
+            } @else {
+            <i class="bi bi-check2-circle me-1 text-success"></i>{{ t('hold_still') }}
+            }
+          </small>
+          <button class="btn btn-sm btn-outline-secondary" (click)="doScan()">
+            <i class="bi bi-camera me-1"></i>{{ t('scan_card') }}
+          </button>
+        </div>
+        <div class="auto-detect-bar-bg">
+          <div class="auto-detect-bar" [style.width.%]="stabilityProgress()" [class.locking]="stabilityProgress() > 0">
+          </div>
+        </div>
+      </div>
       }
       @if(appState() === 'result'){
       <button class="btn btn-primary w-100 mb-2" (click)="scanAgain()">
@@ -65,13 +87,7 @@
       }
     </div>
 
-    <!-- Tip -->
-    @if(appState() === 'camera'){
-    <p class="small fst-italic text-center text-muted mb-3">
-      <i class="bi bi-info-circle me-1"></i>
-      {{ t('tip') }}
-    </p>
-    }
+
 
     <!-- Result Panel -->
     @if(appState() === 'result' && scanResult()){

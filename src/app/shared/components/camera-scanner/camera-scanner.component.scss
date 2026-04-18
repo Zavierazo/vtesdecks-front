@@ -37,6 +37,16 @@
   pointer-events: none;
 }
 
+// Canvas overlay for detected card quad
+.detection-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .card-guide {
   position: absolute;
   height: 88%;
@@ -47,6 +57,17 @@
   border: 2px solid var(--bs-warning);
   border-radius: 4px;
   box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+
+  &.locking {
+    border-color: var(--bs-success);
+
+    &::before,
+    &::after {
+      border-color: var(--bs-success);
+    }
+  }
 
   &::before,
   &::after {
@@ -56,6 +77,8 @@
     height: 18px;
     border-color: var(--bs-warning);
     border-style: solid;
+    transition: border-color 0.3s ease;
+    z-index: 1;
   }
 
   &::before {
@@ -68,6 +91,38 @@
     bottom: -2px;
     right: -2px;
     border-width: 0 3px 3px 0;
+  }
+}
+
+.card-guide-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(var(--bs-success-rgb), 0.2);
+  transition: height 0.15s ease;
+  pointer-events: none;
+}
+
+// Auto-detect progress bar below viewport
+.auto-detect-bar-bg {
+  height: 4px;
+  background: var(--bs-secondary-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.auto-detect-bar {
+  height: 100%;
+  width: 0;
+  background: var(--bs-warning);
+  border-radius: 2px;
+  transition:
+    width 0.15s ease,
+    background-color 0.3s ease;
+
+  &.locking {
+    background: var(--bs-success);
   }
 }
 
