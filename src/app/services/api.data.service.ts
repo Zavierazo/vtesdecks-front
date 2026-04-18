@@ -5,6 +5,8 @@ import {
   ApiAiAskAsyncResponse,
   ApiAiAskStatusResponse,
   ApiCardInfo,
+  ApiCardScanRequest,
+  ApiCardScanResponse,
   ApiCardToday,
   ApiChangelog,
   ApiCollectionCardStats,
@@ -72,6 +74,7 @@ export class ApiDataService {
   private readonly cardLibraryPath = '/cards/library'
   private readonly cardLibraryLastUpdatePath = '/cards/library/lastUpdate'
   private readonly cardLibraryDetailPath = '/cards/library/'
+  private readonly cardScanPath = '/cards/scan'
   private readonly cardTodayPath = '/vtesdle/todayCard'
   private readonly commentsDeckPath = '/comments/decks/'
   private readonly contactPath = '/contact'
@@ -270,6 +273,13 @@ export class ApiDataService {
   getLibraryLastUpdate(): Observable<ApiLibrary> {
     return this.httpClient.get<ApiLibrary>(
       `${environment.api.baseUrl}${this.cardLibraryLastUpdatePath}`,
+    )
+  }
+
+  scanCard(request: ApiCardScanRequest): Observable<ApiCardScanResponse> {
+    return this.httpClient.post<ApiCardScanResponse>(
+      `${environment.api.baseUrl}${this.cardScanPath}`,
+      request,
     )
   }
 

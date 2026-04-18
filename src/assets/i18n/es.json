@@ -337,7 +337,8 @@
     "unread_notifications": "notificaciones no leídas",
     "proxy_generator": "Generador de Proxies",
     "vtes_ai_chat": "Chat IA de VTES",
-    "search": "Buscar"
+    "search": "Buscar",
+    "scan_card": "Escanear Carta"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -979,5 +980,22 @@
     "card_results": "Resultados de Cartas",
     "deck_results": "Resultados de Mazos",
     "user_results": "Resultados de Usuarios"
+  },
+  "camera_scanner": {
+    "title": "Escáner de Cartas",
+    "enable_camera": "Activar Cámara",
+    "scan_card": "Escanear Carta",
+    "scan_again": "Escanear de Nuevo",
+    "scanning": "Escaneando...",
+    "id_only": "Solo carta (ignorar set)",
+    "no_alternatives": "Solo mejor resultado",
+    "fast_mode": "Modo rápido",
+    "tip": "Coloca la carta bien iluminada y centrada en el marco",
+    "result": "Resultado",
+    "not_found": "No se pudo identificar la carta. Intenta con mejor iluminación.",
+    "set": "Set",
+    "time": "Tiempo",
+    "score": "Puntuación",
+    "alternatives": "Otras Posibilidades"
   }
 }

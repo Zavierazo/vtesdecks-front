@@ -1,0 +1,221 @@
+// Camera viewport with video/image handling
+.camera-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  video,
+  img {
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+
+  video {
+    object-fit: cover;
+  }
+
+  img {
+    object-fit: contain;
+  }
+
+  video[style*='display: block'],
+  img[style*='display: block'] {
+    display: block !important;
+  }
+}
+
+// Frame overlay for card scanning guide
+.frame-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.card-guide {
+  position: absolute;
+  height: 88%;
+  aspect-ratio: 5/7;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--bs-warning);
+  border-radius: 4px;
+  box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.4);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--bs-warning);
+    border-style: solid;
+  }
+
+  &::before {
+    top: -2px;
+    left: -2px;
+    border-width: 3px 0 0 3px;
+  }
+
+  &::after {
+    bottom: -2px;
+    right: -2px;
+    border-width: 0 3px 3px 0;
+  }
+}
+
+// Flash effect on scan
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.08s;
+
+  &.active {
+    opacity: 0.4;
+  }
+}
+
+// Scan line animation
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--bs-warning),
+    transparent
+  );
+  opacity: 0;
+  top: 0;
+
+  &.scanning {
+    opacity: 0.8;
+    animation: scandown 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes scandown {
+  0% {
+    top: 10%;
+  }
+  50% {
+    top: 90%;
+  }
+  100% {
+    top: 10%;
+  }
+}
+
+// Result card clickable hover effect
+.result-card {
+  transition: background-color 0.2s;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+  }
+}
+
+// Result image sizing
+.result-image {
+  width: 100px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+// Custom confidence bar
+.confidence-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: var(--bs-secondary-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.confidence-bar {
+  height: 100%;
+  border-radius: 3px;
+  background-color: var(--bs-success);
+  transition: width 0.5s ease;
+
+  &.medium {
+    background-color: var(--bs-warning);
+  }
+
+  &.low {
+    background-color: var(--bs-danger);
+  }
+}
+
+.confidence-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 45px;
+  text-align: right;
+
+  &.high {
+    color: var(--bs-success);
+  }
+
+  &.medium {
+    color: var(--bs-warning);
+  }
+
+  &.low {
+    color: var(--bs-danger);
+  }
+}
+
+// Alternative items with hover effect
+.alt-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+  }
+}
+
+.alt-thumb {
+  width: 50px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--bs-border-color);
+  flex-shrink: 0;
+}
+
+.confidence-bar-sm {
+  height: 4px;
+  background: var(--bs-secondary-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+// Mobile responsive adjustments
+@media (max-width: 600px) {
+  .camera-viewport {
+    aspect-ratio: 3/4;
+    height: 56vh;
+  }
+
+  .result-image {
+    width: 80px;
+  }
+}
