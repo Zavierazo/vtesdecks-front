@@ -373,7 +373,7 @@ export class CameraScannerComponent implements OnDestroy {
         )
         const closed = t(new cv.Mat())
         cv.morphologyEx(edges, closed, cv.MORPH_CLOSE, kernel)
-        const quad = this.largestCardQuad(cv, t, closed, width, height)
+        const quad = this.largestCardQuad(cv, t, closed, pixels, width, height)
         if (quad) return quad
       }
       return null
@@ -397,6 +397,7 @@ export class CameraScannerComponent implements OnDestroy {
     t: (m: any) => any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     binary: any,
+    pixels: Uint8ClampedArray,
     width: number,
     height: number,
   ): number[][] | null {
@@ -462,17 +463,70 @@ export class CameraScannerComponent implements OnDestroy {
       // Card 63×88 mm → W/H = 0.716 (portrait).
       // Art box ≈ 63×38 mm → W/H ≈ 1.66 — naturally excluded by the 1.05 upper bound.
       // Text box ≈ 63×44 mm → W/H ≈ 1.43 — also excluded.
-      // No hierarchy or dark-border check needed: the ratio filter alone disambiguates
-      // the full card from every internal card element.
       if (ratio < 0.45 || ratio > 1.05) continue
 
       candidates.push({ area, quad: ordered })
     }
 
-    // Largest qualifying quad wins — the full card outline always has more area than
-    // any individual internal element that happens to pass the ratio filter.
+    // Largest qualifying quad that also has a dark border wins.
+    // hasDarkBorder is the key false-positive filter: every VTES card has a black
+    // border, so any quad whose edges don't contain dark pixels is rejected.
+    // Without this, background objects (books, hands, walls) with the right
+    // area/ratio pass and cause constant jitter.
     candidates.sort((a, b) => b.area - a.area)
-    return candidates[0]?.quad ?? null
+    for (const { quad } of candidates) {
+      if (this.hasDarkBorder(pixels, width, height, quad)) return quad
+    }
+    return null
+  }
+
+  private hasDarkBorder(
+    pixels: Uint8ClampedArray,
+    width: number,
+    height: number,
+    quad: number[][],
+  ): boolean {
+    const SAMPLES = 50
+    const DARK_THRESHOLD = 100
+    const MIN_RATIO = 0.25 // at least 25% of edge samples must be dark
+    const INWARD_PX = 4 // shift inward so we sample the card border, not the background
+
+    const cx = (quad[0][0] + quad[1][0] + quad[2][0] + quad[3][0]) / 4
+    const cy = (quad[0][1] + quad[1][1] + quad[2][1] + quad[3][1]) / 4
+
+    let dark = 0
+    let total = 0
+
+    for (let side = 0; side < 4; side++) {
+      const p1 = quad[side]
+      const p2 = quad[(side + 1) % 4]
+
+      for (let s = 0; s <= SAMPLES; s++) {
+        const frac = s / SAMPLES
+        let sx = p1[0] + frac * (p2[0] - p1[0])
+        let sy = p1[1] + frac * (p2[1] - p1[1])
+        const dx = cx - sx
+        const dy = cy - sy
+        const dist = Math.hypot(dx, dy)
+        if (dist > 0) {
+          sx += (dx / dist) * INWARD_PX
+          sy += (dy / dist) * INWARD_PX
+        }
+        const px = Math.round(sx)
+        const py = Math.round(sy)
+        if (px < 0 || px >= width || py < 0 || py >= height) continue
+        total++
+        const i = (py * width + px) * 4
+        if (
+          pixels[i] < DARK_THRESHOLD &&
+          pixels[i + 1] < DARK_THRESHOLD &&
+          pixels[i + 2] < DARK_THRESHOLD
+        )
+          dark++
+      }
+    }
+
+    return total > 0 && dark / total >= MIN_RATIO
   }
 
   private orderCorners(pts: number[][]): number[][] {
