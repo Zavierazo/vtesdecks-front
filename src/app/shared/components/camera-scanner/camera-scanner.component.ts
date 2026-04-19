@@ -358,20 +358,19 @@ export class CameraScannerComponent implements OnDestroy {
       const blurred = t(new cv.Mat())
       cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0)
 
-      // Two Canny passes: the first uses tighter thresholds (less noise, good for
-      // light cards with strong edges). The second uses looser thresholds so the
-      // card-to-background edge is detected even on dark/low-contrast cards.
-      // A 7×7 MORPH_CLOSE kernel reliably seals corner gaps that a 5×5 kernel misses,
-      // ensuring the card border forms a closed ring in the edge image.
-      const kernel = t(
-        cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(7, 7)),
-      )
-      for (const [lo, hi] of [
-        [30, 80],
-        [15, 50],
-      ] as [number, number][]) {
+      // Two Canny passes with separate kernel sizes:
+      // Pass 1 — tight thresholds + 5×5 close: less noise, good for light cards.
+      // Pass 2 — looser thresholds + 9×9 close: bridges larger corner gaps on dark
+      //   cards where the card-to-background gradient is faint.
+      for (const [lo, hi, kSize] of [
+        [30, 90, 5],
+        [20, 60, 9],
+      ] as [number, number, number][]) {
         const edges = t(new cv.Mat())
         cv.Canny(blurred, edges, lo, hi)
+        const kernel = t(
+          cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(kSize, kSize)),
+        )
         const closed = t(new cv.Mat())
         cv.morphologyEx(edges, closed, cv.MORPH_CLOSE, kernel)
         const quad = this.largestCardQuad(cv, t, closed, width, height)
@@ -407,7 +406,7 @@ export class CameraScannerComponent implements OnDestroy {
       binary,
       contours,
       hierarchy,
-      cv.RETR_LIST,
+      cv.RETR_EXTERNAL,
       cv.CHAIN_APPROX_SIMPLE,
     )
 
