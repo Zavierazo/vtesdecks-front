@@ -355,129 +355,23 @@ export class CameraScannerComponent implements OnDestroy {
       const src = t(cv.matFromArray(height, width, cv.CV_8UC4, pixels))
       const gray = t(new cv.Mat())
       cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY)
-
       const blurred = t(new cv.Mat())
       cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0)
 
-      const edges = t(new cv.Mat())
-      cv.Canny(blurred, edges, 25, 90)
-
-      // 5×5 close: seals small gaps without fusing the card with background objects
-      const closed = t(new cv.Mat())
-      const kernel = t(
-        cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(5, 5)),
-      )
-      cv.morphologyEx(edges, closed, cv.MORPH_CLOSE, kernel)
-
-      const contours = t(new cv.MatVector())
-      const hierarchy = t(new cv.Mat())
-      // RETR_TREE gives full parent-child relationships.
-      // A VTES card = outer border contour (parent) that CONTAINS the art-box contour (child).
-      // Previous approaches used RETR_LIST/RETR_EXTERNAL and couldn't distinguish between
-      // the outer border and the inner art box — both pass area/ratio/dark-border filters.
-      cv.findContours(
-        closed,
-        contours,
-        hierarchy,
-        cv.RETR_TREE,
-        cv.CHAIN_APPROX_SIMPLE,
-      )
-
-      const frameArea = width * height
-      const minArea = frameArea * 0.04
-      const maxArea = frameArea * 0.85
-
-      // Build a lookup: contour index → quad (if it passes area + ratio filter)
-      const quadByIdx: { idx: number; area: number; quad: number[][] }[] = []
-
-      for (let i = 0; i < contours.size(); i++) {
-        const contour = contours.get(i)
-        const area = cv.contourArea(contour)
-        if (area < minArea || area > maxArea) continue
-
-        const hull = t(new cv.Mat())
-        cv.convexHull(contour, hull)
-
-        const perimeter = cv.arcLength(hull, true)
-        let quad: number[][] | null = null
-        for (const eps of [0.02, 0.03, 0.04, 0.05, 0.07, 0.1]) {
-          const approx = new cv.Mat()
-          cv.approxPolyDP(hull, approx, eps * perimeter, true)
-          if (approx.rows === 4) {
-            quad = []
-            for (let j = 0; j < 4; j++) {
-              quad.push([approx.data32S[j * 2], approx.data32S[j * 2 + 1]])
-            }
-            approx.delete()
-            break
-          }
-          approx.delete()
-        }
-        if (!quad) continue
-
-        const ordered = this.orderCorners(quad)
-        const topW = Math.hypot(
-          ordered[1][0] - ordered[0][0],
-          ordered[1][1] - ordered[0][1],
-        )
-        const botW = Math.hypot(
-          ordered[2][0] - ordered[3][0],
-          ordered[2][1] - ordered[3][1],
-        )
-        const leftH = Math.hypot(
-          ordered[3][0] - ordered[0][0],
-          ordered[3][1] - ordered[0][1],
-        )
-        const rightH = Math.hypot(
-          ordered[2][0] - ordered[1][0],
-          ordered[2][1] - ordered[1][1],
-        )
-        const avgW = (topW + botW) / 2
-        const avgH = (leftH + rightH) / 2
-        if (avgH < 1) continue
-        const ratio = avgW / avgH
-        // Card is 63×88 mm (ratio 0.716). Allow for perspective: 0.45–1.05.
-        // Art box alone would also pass this — that's intentional; we reject it via hierarchy.
-        if (ratio < 0.45 || ratio > 1.05) continue
-
-        quadByIdx.push({ idx: i, area, quad: ordered })
+      // Two Canny passes: the first uses tighter thresholds (less noise, good for
+      // light cards with strong edges). The second uses looser thresholds so the
+      // card-to-background edge is detected even on dark/low-contrast cards.
+      // A 7×7 MORPH_CLOSE kernel reliably seals corner gaps that a 5×5 kernel misses,
+      // ensuring the card border forms a closed ring in the edge image.
+      const kernel = t(cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(7, 7)))
+      for (const [lo, hi] of [[30, 80], [15, 50]] as [number, number][]) {
+        const edges = t(new cv.Mat())
+        cv.Canny(blurred, edges, lo, hi)
+        const closed = t(new cv.Mat())
+        cv.morphologyEx(edges, closed, cv.MORPH_CLOSE, kernel)
+        const quad = this.largestCardQuad(cv, t, closed, width, height)
+        if (quad) return quad
       }
-
-      // Sort largest-first so we evaluate outer-border candidates before inner ones
-      quadByIdx.sort((a, b) => b.area - a.area)
-
-      // Build index set for O(1) child lookup
-      const idxSet = new Set<number>(quadByIdx.map((q) => q.idx))
-
-      // PRIMARY — hierarchy check:
-      // A trading card outer border has at least one child contour that is ALSO a quad
-      // (the art box). The ratio of child-area to parent-area is 0.25–0.80 for typical cards.
-      // hierarchy.data32S layout per contour: [next_sibling, prev_sibling, first_child, parent]
-      for (const outer of quadByIdx) {
-        let childIdx = hierarchy.data32S[outer.idx * 4 + 2] // first_child
-        while (childIdx >= 0) {
-          if (idxSet.has(childIdx)) {
-            const inner = quadByIdx.find((q) => q.idx === childIdx)
-            if (inner) {
-              const areaRatio = inner.area / outer.area
-              if (areaRatio > 0.25 && areaRatio < 0.8) {
-                return outer.quad // confirmed: outer border contains art-box quad
-              }
-            }
-          }
-          childIdx = hierarchy.data32S[childIdx * 4] // next sibling
-        }
-      }
-
-      // FALLBACK — if outer border wasn't fully closed (e.g. fingers cover corners),
-      // hierarchy won't find the pair. Return the largest qualifying quad whose
-      // edges carry dark pixels (the card black frame).
-      for (const { quad } of quadByIdx) {
-        if (this.hasDarkBorder(pixels, width, height, quad)) {
-          return quad
-        }
-      }
-
       return null
     } catch {
       return null
@@ -492,79 +386,71 @@ export class CameraScannerComponent implements OnDestroy {
     }
   }
 
-  /**
-   * Samples 60 points per side along the quad edges, shifted 3px inward toward the
-   * centroid so samples land inside the card's black border even when the detected
-   * quad is slightly larger than the card. Also enforces a per-side minimum so that
-   * a quad where even one edge has no dark pixels (e.g. an edge running along a white
-   * wall) is rejected — the previous total-only check let those through.
-   */
-  private hasDarkBorder(
-    pixels: Uint8ClampedArray,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private largestCardQuad(
+    cv: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    t: (m: any) => any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    binary: any,
     width: number,
     height: number,
-    quad: number[][],
-  ): boolean {
-    const SAMPLES_PER_SIDE = 60
-    const DARK_THRESHOLD = 110
-    const MIN_TOTAL_RATIO = 0.35
-    // Each individual side must have ≥20% dark pixels to avoid a quad where 3 sides
-    // happen to be dark but the 4th runs along a bright background.
-    const MIN_PER_SIDE_RATIO = 0.2
-    const INWARD_PX = 3 // shift sample toward centroid to land on black border
+  ): number[][] | null {
+    const contours = t(new cv.MatVector())
+    const hierarchy = t(new cv.Mat())
+    cv.findContours(binary, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
 
-    const cx = (quad[0][0] + quad[1][0] + quad[2][0] + quad[3][0]) / 4
-    const cy = (quad[0][1] + quad[1][1] + quad[2][1] + quad[3][1]) / 4
+    const frameArea = width * height
+    const candidates: { area: number; quad: number[][] }[] = []
 
-    let totalDark = 0
-    let totalSampled = 0
+    for (let i = 0; i < contours.size(); i++) {
+      const area = cv.contourArea(contours.get(i))
+      if (area < frameArea * 0.05 || area > frameArea * 0.92) continue
 
-    for (let side = 0; side < 4; side++) {
-      const p1 = quad[side]
-      const p2 = quad[(side + 1) % 4]
-      let sideDark = 0
-      let sideSampled = 0
+      const hull = t(new cv.Mat())
+      cv.convexHull(contours.get(i), hull)
+      const perimeter = cv.arcLength(hull, true)
 
-      for (let s = 0; s <= SAMPLES_PER_SIDE; s++) {
-        const frac = s / SAMPLES_PER_SIDE
-        let sx = p1[0] + frac * (p2[0] - p1[0])
-        let sy = p1[1] + frac * (p2[1] - p1[1])
-
-        // Shift sample INWARD_PX toward the centroid so it lands inside the card border
-        const dx = cx - sx
-        const dy = cy - sy
-        const dist = Math.hypot(dx, dy)
-        if (dist > 0) {
-          sx += (dx / dist) * INWARD_PX
-          sy += (dy / dist) * INWARD_PX
+      let quad: number[][] | null = null
+      for (const eps of [0.02, 0.03, 0.04, 0.06, 0.08]) {
+        const approx = new cv.Mat()
+        cv.approxPolyDP(hull, approx, eps * perimeter, true)
+        if (approx.rows === 4) {
+          quad = []
+          for (let j = 0; j < 4; j++) {
+            quad.push([approx.data32S[j * 2], approx.data32S[j * 2 + 1]])
+          }
+          approx.delete()
+          break
         }
-
-        const px = Math.round(sx)
-        const py = Math.round(sy)
-        sideSampled++
-
-        if (px < 0 || px >= width || py < 0 || py >= height) continue
-
-        const idx = (py * width + px) * 4
-        if (
-          pixels[idx] < DARK_THRESHOLD &&
-          pixels[idx + 1] < DARK_THRESHOLD &&
-          pixels[idx + 2] < DARK_THRESHOLD
-        ) {
-          sideDark++
-        }
+        approx.delete()
       }
+      if (!quad) continue
 
-      // Fail fast: this side has almost no dark pixels → quad is wrong
-      if (sideSampled > 0 && sideDark / sideSampled < MIN_PER_SIDE_RATIO) {
-        return false
-      }
+      const ordered = this.orderCorners(quad)
+      const topW = Math.hypot(ordered[1][0] - ordered[0][0], ordered[1][1] - ordered[0][1])
+      const botW = Math.hypot(ordered[2][0] - ordered[3][0], ordered[2][1] - ordered[3][1])
+      const leftH = Math.hypot(ordered[3][0] - ordered[0][0], ordered[3][1] - ordered[0][1])
+      const rightH = Math.hypot(ordered[2][0] - ordered[1][0], ordered[2][1] - ordered[1][1])
+      const avgW = (topW + botW) / 2
+      const avgH = (leftH + rightH) / 2
+      if (avgH < 1) continue
+      const ratio = avgW / avgH
 
-      totalDark += sideDark
-      totalSampled += sideSampled
+      // Card 63×88 mm → W/H = 0.716 (portrait).
+      // Art box ≈ 63×38 mm → W/H ≈ 1.66 — naturally excluded by the 1.05 upper bound.
+      // Text box ≈ 63×44 mm → W/H ≈ 1.43 — also excluded.
+      // No hierarchy or dark-border check needed: the ratio filter alone disambiguates
+      // the full card from every internal card element.
+      if (ratio < 0.45 || ratio > 1.05) continue
+
+      candidates.push({ area, quad: ordered })
     }
 
-    return totalSampled > 0 && totalDark / totalSampled >= MIN_TOTAL_RATIO
+    // Largest qualifying quad wins — the full card outline always has more area than
+    // any individual internal element that happens to pass the ratio filter.
+    candidates.sort((a, b) => b.area - a.area)
+    return candidates[0]?.quad ?? null
   }
 
   private orderCorners(pts: number[][]): number[][] {
