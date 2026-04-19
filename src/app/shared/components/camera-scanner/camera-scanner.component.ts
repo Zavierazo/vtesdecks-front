@@ -363,8 +363,13 @@ export class CameraScannerComponent implements OnDestroy {
       // card-to-background edge is detected even on dark/low-contrast cards.
       // A 7×7 MORPH_CLOSE kernel reliably seals corner gaps that a 5×5 kernel misses,
       // ensuring the card border forms a closed ring in the edge image.
-      const kernel = t(cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(7, 7)))
-      for (const [lo, hi] of [[30, 80], [15, 50]] as [number, number][]) {
+      const kernel = t(
+        cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(7, 7)),
+      )
+      for (const [lo, hi] of [
+        [30, 80],
+        [15, 50],
+      ] as [number, number][]) {
         const edges = t(new cv.Mat())
         cv.Canny(blurred, edges, lo, hi)
         const closed = t(new cv.Mat())
@@ -398,7 +403,13 @@ export class CameraScannerComponent implements OnDestroy {
   ): number[][] | null {
     const contours = t(new cv.MatVector())
     const hierarchy = t(new cv.Mat())
-    cv.findContours(binary, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
+    cv.findContours(
+      binary,
+      contours,
+      hierarchy,
+      cv.RETR_LIST,
+      cv.CHAIN_APPROX_SIMPLE,
+    )
 
     const frameArea = width * height
     const candidates: { area: number; quad: number[][] }[] = []
@@ -428,10 +439,22 @@ export class CameraScannerComponent implements OnDestroy {
       if (!quad) continue
 
       const ordered = this.orderCorners(quad)
-      const topW = Math.hypot(ordered[1][0] - ordered[0][0], ordered[1][1] - ordered[0][1])
-      const botW = Math.hypot(ordered[2][0] - ordered[3][0], ordered[2][1] - ordered[3][1])
-      const leftH = Math.hypot(ordered[3][0] - ordered[0][0], ordered[3][1] - ordered[0][1])
-      const rightH = Math.hypot(ordered[2][0] - ordered[1][0], ordered[2][1] - ordered[1][1])
+      const topW = Math.hypot(
+        ordered[1][0] - ordered[0][0],
+        ordered[1][1] - ordered[0][1],
+      )
+      const botW = Math.hypot(
+        ordered[2][0] - ordered[3][0],
+        ordered[2][1] - ordered[3][1],
+      )
+      const leftH = Math.hypot(
+        ordered[3][0] - ordered[0][0],
+        ordered[3][1] - ordered[0][1],
+      )
+      const rightH = Math.hypot(
+        ordered[2][0] - ordered[1][0],
+        ordered[2][1] - ordered[1][1],
+      )
       const avgW = (topW + botW) / 2
       const avgH = (leftH + rightH) / 2
       if (avgH < 1) continue
