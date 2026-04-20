@@ -17,6 +17,7 @@ import { ApiDataService } from '@services'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId } from '@utils'
+import jscanify from 'jscanify/client'
 import { catchError, of, tap } from 'rxjs'
 import { CryptCardComponent } from 'src/app/modules/deck-shared/crypt-card/crypt-card.component'
 import { LibraryCardComponent } from 'src/app/modules/deck-shared/library-card/library-card.component'
@@ -59,6 +60,7 @@ export class CameraScannerComponent implements OnDestroy {
   detectedQuad = signal<number[][] | null>(null)
   isLoadingCV = signal(false)
 
+  private scanner: jscanify | null = null
   private detectionCanvas: HTMLCanvasElement | null = null
   private lastQuad: number[][] | null = null
   private stabilityCount = 0
@@ -94,6 +96,7 @@ export class CameraScannerComponent implements OnDestroy {
       this.changeDetectorRef.markForCheck()
       try {
         await this.loadOpenCV()
+        this.scanner = new jscanify()
       } catch {
         console.warn('OpenCV.js failed to load — card detection disabled')
       }
@@ -158,7 +161,7 @@ export class CameraScannerComponent implements OnDestroy {
     ctx.drawImage(video, 0, 0, dc.width, dc.height)
     const pixels = ctx.getImageData(0, 0, dc.width, dc.height).data
 
-    const quad = this.findCardQuad(pixels, dc.width, dc.height)
+    const quad = this.findCardQuad(dc, pixels)
 
     if (quad) {
       if (this.lastQuad) {
@@ -336,148 +339,59 @@ export class CameraScannerComponent implements OnDestroy {
   }
 
   private findCardQuad(
+    dc: HTMLCanvasElement,
     pixels: Uint8ClampedArray,
-    width: number,
-    height: number,
   ): number[][] | null {
     const cv = this.cv
-    if (!cv?.Mat) return null
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mats: any[] = []
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const t = (m: any) => {
-      mats.push(m)
-      return m
-    }
+    if (!cv?.Mat || !this.scanner) return null
 
     try {
-      const src = t(cv.matFromArray(height, width, cv.CV_8UC4, pixels))
-      const gray = t(new cv.Mat())
-      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY)
-      const blurred = t(new cv.Mat())
-      cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0)
+      // Read detection canvas into an OpenCV Mat (RGBA) and run jscanify's detection
+      const img = cv.imread(dc)
+      const contour = this.scanner.findPaperContour(img)
+      img.delete()
 
-      // Two Canny passes with separate kernel sizes:
-      // Pass 1 — tight thresholds + 5×5 close: less noise, good for light cards.
-      // Pass 2 — looser thresholds + 9×9 close: bridges larger corner gaps on dark
-      //   cards where the card-to-background gradient is faint.
-      for (const [lo, hi, kSize] of [
-        [30, 90, 5],
-        [20, 60, 9],
-      ] as [number, number, number][]) {
-        const edges = t(new cv.Mat())
-        cv.Canny(blurred, edges, lo, hi)
-        const kernel = t(
-          cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(kSize, kSize)),
-        )
-        const closed = t(new cv.Mat())
-        cv.morphologyEx(edges, closed, cv.MORPH_CLOSE, kernel)
-        const quad = this.largestCardQuad(cv, t, closed, pixels, width, height)
-        if (quad) return quad
-      }
-      return null
-    } catch {
-      return null
-    } finally {
-      mats.forEach((m) => {
-        try {
-          m.delete()
-        } catch {
-          /* ignore */
-        }
-      })
-    }
-  }
+      if (!contour) return null
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private largestCardQuad(
-    cv: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    t: (m: any) => any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    binary: any,
-    pixels: Uint8ClampedArray,
-    width: number,
-    height: number,
-  ): number[][] | null {
-    const contours = t(new cv.MatVector())
-    const hierarchy = t(new cv.Mat())
-    cv.findContours(
-      binary,
-      contours,
-      hierarchy,
-      cv.RETR_EXTERNAL,
-      cv.CHAIN_APPROX_SIMPLE,
-    )
+      // Area filter: card must cover between 5% and 92% of the frame
+      const frameArea = dc.width * dc.height
+      const area = cv.contourArea(contour)
+      if (area < frameArea * 0.05 || area > frameArea * 0.92) return null
 
-    const frameArea = width * height
-    const candidates: { area: number; quad: number[][] }[] = []
+      // jscanify extracts the 4 corners using minAreaRect centre + per-quadrant farthest point
+      const {
+        topLeftCorner: tl,
+        topRightCorner: tr,
+        bottomRightCorner: br,
+        bottomLeftCorner: bl,
+      } = this.scanner.getCornerPoints(contour)
 
-    for (let i = 0; i < contours.size(); i++) {
-      const area = cv.contourArea(contours.get(i))
-      if (area < frameArea * 0.05 || area > frameArea * 0.92) continue
+      if (!tl || !tr || !br || !bl) return null
 
-      const hull = t(new cv.Mat())
-      cv.convexHull(contours.get(i), hull)
-      const perimeter = cv.arcLength(hull, true)
+      // [TL, TR, BR, BL] — clockwise from top-left, matching warpCard's expectation
+      const quad: number[][] = [
+        [tl.x, tl.y],
+        [tr.x, tr.y],
+        [br.x, br.y],
+        [bl.x, bl.y],
+      ]
 
-      let quad: number[][] | null = null
-      for (const eps of [0.02, 0.03, 0.04, 0.06, 0.08]) {
-        const approx = new cv.Mat()
-        cv.approxPolyDP(hull, approx, eps * perimeter, true)
-        if (approx.rows === 4) {
-          quad = []
-          for (let j = 0; j < 4; j++) {
-            quad.push([approx.data32S[j * 2], approx.data32S[j * 2 + 1]])
-          }
-          approx.delete()
-          break
-        }
-        approx.delete()
-      }
-      if (!quad) continue
-
-      const ordered = this.orderCorners(quad)
-      const topW = Math.hypot(
-        ordered[1][0] - ordered[0][0],
-        ordered[1][1] - ordered[0][1],
-      )
-      const botW = Math.hypot(
-        ordered[2][0] - ordered[3][0],
-        ordered[2][1] - ordered[3][1],
-      )
-      const leftH = Math.hypot(
-        ordered[3][0] - ordered[0][0],
-        ordered[3][1] - ordered[0][1],
-      )
-      const rightH = Math.hypot(
-        ordered[2][0] - ordered[1][0],
-        ordered[2][1] - ordered[1][1],
-      )
+      // Aspect ratio: card 63×88 mm → W/H ≈ 0.716. Allow 0.45–1.05 for perspective tilt.
+      const topW = Math.hypot(tr.x - tl.x, tr.y - tl.y)
+      const botW = Math.hypot(br.x - bl.x, br.y - bl.y)
+      const leftH = Math.hypot(bl.x - tl.x, bl.y - tl.y)
+      const rightH = Math.hypot(br.x - tr.x, br.y - tr.y)
       const avgW = (topW + botW) / 2
       const avgH = (leftH + rightH) / 2
-      if (avgH < 1) continue
-      const ratio = avgW / avgH
+      if (avgH < 1 || avgW / avgH < 0.45 || avgW / avgH > 1.05) return null
 
-      // Card 63×88 mm → W/H = 0.716 (portrait).
-      // Art box ≈ 63×38 mm → W/H ≈ 1.66 — naturally excluded by the 1.05 upper bound.
-      // Text box ≈ 63×44 mm → W/H ≈ 1.43 — also excluded.
-      if (ratio < 0.45 || ratio > 1.05) continue
+      // Dark border check: every VTES card has a black border
+      if (!this.hasDarkBorder(pixels, dc.width, dc.height, quad)) return null
 
-      candidates.push({ area, quad: ordered })
+      return quad
+    } catch {
+      return null
     }
-
-    // Largest qualifying quad that also has a dark border wins.
-    // hasDarkBorder is the key false-positive filter: every VTES card has a black
-    // border, so any quad whose edges don't contain dark pixels is rejected.
-    // Without this, background objects (books, hands, walls) with the right
-    // area/ratio pass and cause constant jitter.
-    candidates.sort((a, b) => b.area - a.area)
-    for (const { quad } of candidates) {
-      if (this.hasDarkBorder(pixels, width, height, quad)) return quad
-    }
-    return null
   }
 
   private hasDarkBorder(
@@ -527,18 +441,6 @@ export class CameraScannerComponent implements OnDestroy {
     }
 
     return total > 0 && dark / total >= MIN_RATIO
-  }
-
-  private orderCorners(pts: number[][]): number[][] {
-    const sumSorted = [...pts].sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
-    const tl = sumSorted[0]
-    const br = sumSorted[3]
-    const diffSorted = [sumSorted[1], sumSorted[2]].sort(
-      (a, b) => a[0] - a[1] - (b[0] - b[1]),
-    )
-    const bl = diffSorted[0]
-    const tr = diffSorted[1]
-    return [tl, tr, br, bl]
   }
 
   private drawOverlay(quad: number[][] | null, stable: boolean) {
