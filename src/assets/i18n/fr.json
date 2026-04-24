@@ -995,6 +995,7 @@
     "not_found": "Carte non identifiée. Essayez avec un meilleur éclairage.",
     "set": "Set",
     "alternatives": "Autres Possibilités",
-    "tap_to_select": "Appuyez sur une carte pour l'ajouter à votre collection"
+    "tap_to_select": "Appuyez sur une carte pour l'ajouter à votre collection",
+    "low_confidence_warning": "Cette carte n'est peut-être pas dans notre base de données. Elle peut aussi être mal éclairée ou mal centrée dans le cadre. Comme nous ne conservons pas les images scannées, vos retours sont essentiels, veuillez envoyer l'image de la carte à "
   }
 }

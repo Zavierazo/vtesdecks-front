@@ -7,6 +7,7 @@ export interface ApiCardScanAlternative {
 
 export interface ApiCardScanResponse {
   found: boolean
+  confidenceWarning: boolean
   id?: number
   set?: string
   confidence?: number

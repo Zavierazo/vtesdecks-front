@@ -994,6 +994,7 @@
     "not_found": "No se pudo identificar la carta. Intenta con mejor iluminación.",
     "set": "Set",
     "alternatives": "Otras Posibilidades",
-    "tap_to_select": "Toca una carta para añadirla a tu colección"
+    "tap_to_select": "Toca una carta para añadirla a tu colección",
+    "low_confidence_warning": "Es posible que esta carta no esté en nuestra base de datos. También puede estar mal iluminada o no estar centrada en el marco. Como no almacenamos las imágenes escaneadas, tu opinión es esencial, por favor, envía la imagen de la carta a "
   }
 }

@@ -994,6 +994,7 @@
     "not_found": "Carta não identificada. Tente com melhor iluminação.",
     "set": "Set",
     "alternatives": "Outras Possibilidades",
-    "tap_to_select": "Toque em uma carta para adicioná-la à sua coleção"
+    "tap_to_select": "Toque em uma carta para adicioná-la à sua coleção",
+    "low_confidence_warning": "Esta carta pode não estar na nossa base de dados. Também pode estar mal iluminada ou não estar centralizada no quadro. Como não armazenamos imagens escaneadas, o seu feedback é essencial, por favor, envie a imagem da carta para "
   }
 }

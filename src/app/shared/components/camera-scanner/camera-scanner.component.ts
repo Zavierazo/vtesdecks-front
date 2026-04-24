@@ -151,8 +151,8 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
           // Auto-act only when result is unambiguous: ≥95% confidence and no alternative also ≥95%
           const isAutoSelect =
             result.found &&
-            (result.confidence ?? 0) >= 95 &&
-            !result.alternatives?.some((a) => a.confidence >= 95)
+            (result.confidence ?? 0) >= 90 &&
+            !result.alternatives?.some((a) => a.confidence >= 90)
           if (isAutoSelect) {
             if (this.selectMode()) {
               this.activeModal.close({
@@ -169,6 +169,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
           console.error('Scan error:', error)
           this.scanResult.set({
             found: false,
+            confidenceWarning: false,
             message: 'Server connection error.',
           })
           this.appState.set('result')
@@ -291,6 +292,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
       ...result,
       id: result.id,
       set: this.resolveSetAbbrev(result.set),
+      confidenceWarning: (result.confidence ?? 0) < 60,
       alternatives: result.alternatives?.map((alt) => ({
         ...alt,
         id: alt.id,

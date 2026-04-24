@@ -995,6 +995,7 @@
     "not_found": "Card not identified. Try better lighting.",
     "set": "Set",
     "alternatives": "Other Possibilities",
-    "tap_to_select": "Tap a card to add it to your collection"
+    "tap_to_select": "Tap a card to add it to your collection",
+    "low_confidence_warning": "This card may not be in our database. It may also be poorly lit or not centered in the frame. Since we don't store scanned images, your feedback is essential, please send the card image to "
   }
 }
