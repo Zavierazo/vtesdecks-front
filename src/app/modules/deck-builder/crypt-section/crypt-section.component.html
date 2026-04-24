@@ -7,8 +7,10 @@
             <div class="input-group">
               <input type="text" class="form-control" id="name" [placeholder]="t('card_name')"
                 [formControl]="nameFormControl">
-              <button type="button" class="btn btn-primary px-4" (click)="openCameraScanner()" [title]="t('scan_card')">
-                <i class="bi bi-camera-fill"></i>
+              <button type="button" class="btn btn-primary px-4" (click)="openCameraScanner()" [title]="t('scan_card')"
+                [attr.aria-label]="t('scan_card')">
+                <i class="bi bi-camera-fill" aria-hidden="true"></i>
+                <span class="visually-hidden">{{ t('scan_card') }}</span>
               </button>
             </div>
           </div>
