@@ -1,12 +1,12 @@
 import { NgClass } from '@angular/common'
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
   OnDestroy,
-  OnInit,
   signal,
   ViewChild,
 } from '@angular/core'
@@ -34,7 +34,7 @@ type AppState = 'idle' | 'camera' | 'scanning' | 'result'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, TranslocoDirective, TranslocoPipe, CardImagePipe],
 })
-export class CameraScannerComponent implements OnInit, OnDestroy {
+export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   activeModal = inject(NgbActiveModal)
   private modalService = inject(NgbModal)
   private apiDataService = inject(ApiDataService)
@@ -58,7 +58,7 @@ export class CameraScannerComponent implements OnInit, OnDestroy {
 
   private stream: MediaStream | null = null
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.startCamera()
   }
 
