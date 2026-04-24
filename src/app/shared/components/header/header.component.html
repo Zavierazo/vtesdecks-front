@@ -10,6 +10,13 @@
         {{ t('search') }}
       </span>
     </button>
+    <button class="btn btn-outline-light d-block d-lg-none ms-2" type="button" [attr.aria-label]="t('scan_card')"
+      (click)="openCameraScannerModal()">
+      <i class="bi bi-camera-fill"></i>
+      <span class="ms-1 search-text-mobile">
+        {{ t('scan_card') }}
+      </span>
+    </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar"
       aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation"
       (click)="isCollapsed = !isCollapsed">

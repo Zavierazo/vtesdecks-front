@@ -1,10 +1,19 @@
 [
   {
+    "version": "2.67.0",
+    "date": "24th April, 2026",
+    "changes": [
+      "Added a camera scanner to identify cards by pointing your camera at them — available in the deck builder and collection.",
+      "Camera scanner automatically selects a card when identified with high confidence.",
+      "Camera scanner shows alternative matches with confidence scores when the result is ambiguous.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.66.0",
     "date": "28th February, 2026",
     "changes": [
-      "Add New Blood III - Ravnos, Tzimisce, Salubri set",
-      "Minor bug fixes and performance improvements."
+      "Add New Blood III - Ravnos, Tzimisce, Salubri set"
     ]
   },
   {

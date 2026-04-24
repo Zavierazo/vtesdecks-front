@@ -68,7 +68,8 @@
     "filters": "Filters",
     "results": "{{ count }} results",
     "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "scan_card": "Scan card"
   },
   "date_ago_pipe": {
     "long_time_ago": "a long time ago",
@@ -337,7 +338,8 @@
     "unread_notifications": "unread notifications",
     "proxy_generator": "Proxy Generator",
     "vtes_ai_chat": "VTES AI Chat",
-    "search": "Search"
+    "search": "Search",
+    "scan_card": "Scan"
   },
   "home": {
     "welcome_title": "Welcome to VTES Decks",
@@ -411,7 +413,8 @@
     "filters": "Filters",
     "results": "{{ count }} results",
     "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "scan_card": "Scan card"
   },
   "login_modal": {
     "login": "Login",
@@ -980,5 +983,18 @@
     "card_results": "Card Results",
     "deck_results": "Deck Results",
     "user_results": "User Results"
+  },
+  "camera_scanner": {
+    "title": "Card Scanner",
+    "enable_camera": "Enable Camera",
+    "scan_card": "Scan Card",
+    "scan_again": "Scan Again",
+    "scanning": "Scanning...",
+    "tip": "Place the card well lit and centered in the frame",
+    "result": "Result",
+    "not_found": "Card not identified. Try better lighting.",
+    "set": "Set",
+    "alternatives": "Other Possibilities",
+    "tap_to_select": "Tap a card to add it to your collection"
   }
 }

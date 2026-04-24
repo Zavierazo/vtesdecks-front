@@ -20,6 +20,19 @@ body {
 body[data-bs-theme='dark'] {
   @include meta.load-css('theme-dark.scss');
 }
+/* Camera scanner modal — wider at tablet breakpoints where modal-lg doesn't yet apply */
+.modal-camera-scanner {
+  @media (min-width: 576px) {
+    --bs-modal-width: 540px;
+  }
+  @media (min-width: 768px) {
+    --bs-modal-width: 700px;
+  }
+  @media (min-width: 992px) {
+    --bs-modal-width: 860px;
+  }
+}
+
 /* Override ngx-slider colors. */
 .ngx-slider {
   .ngx-slider-pointer {

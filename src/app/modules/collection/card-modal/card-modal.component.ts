@@ -1,6 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
@@ -31,6 +32,7 @@ import {
   NgbActiveModal,
   NgbCollapse,
   NgbHighlight,
+  NgbModal,
   NgbTooltip,
   NgbTypeahead,
   NgbTypeaheadSelectItemEvent,
@@ -54,6 +56,7 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '../../../../environments/environment'
+import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
 import { CollectionBinderComponent } from '../collection-cards-list/collection-binder/collection-binder.component'
 import CollectionSetComponent from '../collection-cards-list/collection-set/collection-set.component'
 import { ConditionPipe } from '../pipes/condition.pipe'
@@ -103,6 +106,8 @@ export class CardModalComponent implements OnInit {
   private setQuery = inject(SetQuery)
 
   activeModal = inject(NgbActiveModal)
+  private modalService = inject(NgbModal)
+  private changeDetectorRef = inject(ChangeDetectorRef)
   @ViewChild('quantityInput') quantityInput?: ElementRef<HTMLInputElement>
   @ViewChild('searchInput') searchInput?: ElementRef<HTMLInputElement>
   setImageError = false
@@ -229,19 +234,56 @@ export class CardModalComponent implements OnInit {
       binder: this.defaultBinderId,
       notes: null,
     })
-    // Focus quantity input after a short delay to ensure the form is rendered
-    setTimeout(() => {
-      this.quantityInput?.nativeElement.focus()
-      this.quantityInput?.nativeElement.select()
-    }, 0)
+    this.selectCardCommon(item.id)
+  }
 
+  openCameraScanner(): void {
+    const modalRef = this.modalService.open(CameraScannerComponent, {
+      size: 'lg',
+      centered: true,
+      modalDialogClass: 'modal-camera-scanner',
+    })
+    modalRef.componentInstance.idOnly.set(false)
+    modalRef.componentInstance.selectMode.set(true)
+    modalRef.closed
+      .pipe(untilDestroyed(this))
+      .subscribe((result: { id: number; set?: string }) => {
+        this.selectCardFromScan(result.id, result.set)
+      })
+  }
+
+  selectCardFromScan(id: number, set?: string): void {
+    const cardData =
+      this.cryptQuery.getEntity(id) ?? this.libraryQuery.getEntity(id)
+    if (!cardData) return
+    const searchCard = this.getSearchCard(cardData)
+    this.updateSetOptions(searchCard)
+    this.formCard.patchValue({
+      id: null,
+      card: searchCard,
+      set: set ?? null,
+      quantity: 1,
+      condition: null,
+      language: 'EN',
+      binder: this.defaultBinderId,
+      notes: null,
+    })
+    this.selectCardCommon(searchCard.id)
+  }
+
+  private selectCardCommon(cardId: number): void {
     this.existingCards$ = this.collectionService.getCards({
       page: 0,
       pageSize: 100,
       sortBy: 'number',
       sortDirection: 'desc',
-      filters: [[FILTER_CARD_ID, item.id]],
+      filters: [[FILTER_CARD_ID, cardId]],
     })
+    setTimeout(() => {
+      this.quantityInput?.nativeElement.focus()
+      this.quantityInput?.nativeElement.select()
+    }, 0)
+    this.changeDetectorRef.markForCheck()
   }
 
   private getSearchCard(card: ApiCrypt | ApiLibrary): SearchCard {

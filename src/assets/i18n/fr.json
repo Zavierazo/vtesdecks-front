@@ -68,7 +68,8 @@
     "filters": "Filtres",
     "results": "{{ count }} résultats",
     "reset_filters": "Réinitialiser les filtres",
-    "back_to_top": "Retour en haut"
+    "back_to_top": "Retour en haut",
+    "scan_card": "Scanner la carte"
   },
   "date_ago_pipe": {
     "long_time_ago": "il y a longtemps",
@@ -337,7 +338,8 @@
     "unread_notifications": "notifications non lues",
     "proxy_generator": "Générateur de Proxy",
     "vtes_ai_chat": "Chat VTES AI",
-    "search": "Recherche"
+    "search": "Recherche",
+    "scan_card": "Scanner"
   },
   "home": {
     "welcome_title": "Bienvenue sur VTES Decks",
@@ -411,7 +413,8 @@
     "filters": "Filtres",
     "results": "{{ count }} résultats",
     "reset_filters": "Réinitialiser les filtres",
-    "back_to_top": "Retour en haut"
+    "back_to_top": "Retour en haut",
+    "scan_card": "Scanner la carte"
   },
   "login_modal": {
     "login": "Connexion",
@@ -980,5 +983,18 @@
     "card_results": "Résultats des cartes",
     "deck_results": "Résultats des decks",
     "user_results": "Résultats des utilisateurs"
+  },
+  "camera_scanner": {
+    "title": "Scanner de Carte",
+    "enable_camera": "Activer la Caméra",
+    "scan_card": "Scanner la Carte",
+    "scan_again": "Scanner à Nouveau",
+    "scanning": "Scan en cours...",
+    "tip": "Placez la carte bien éclairée et centrée dans le cadre",
+    "result": "Résultat",
+    "not_found": "Carte non identifiée. Essayez avec un meilleur éclairage.",
+    "set": "Set",
+    "alternatives": "Autres Possibilités",
+    "tap_to_select": "Appuyez sur une carte pour l'ajouter à votre collection"
   }
 }

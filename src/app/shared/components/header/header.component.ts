@@ -24,6 +24,7 @@ import { isChristmas, isHalloween } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
 import { IsLoggedDirective } from '../../directives/is-logged.directive'
+import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component'
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
@@ -113,6 +114,17 @@ export class HeaderComponent implements OnInit {
   openSearchModal() {
     this.isCollapsed = true
     this.modalService.open(SearchBarComponent, { size: 'xl' })
+  }
+
+  openCameraScannerModal(idOnly = true, noAlternatives = false) {
+    this.isCollapsed = true
+    const modalRef = this.modalService.open(CameraScannerComponent, {
+      size: 'lg',
+      centered: true,
+      modalDialogClass: 'modal-camera-scanner',
+    })
+    modalRef.componentInstance.idOnly.set(idOnly)
+    modalRef.componentInstance.noAlternatives.set(noAlternatives)
   }
 
   get logoPath(): string {

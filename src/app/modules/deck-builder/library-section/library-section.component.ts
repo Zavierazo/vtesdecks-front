@@ -45,6 +45,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
 import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '../../deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
@@ -423,6 +424,15 @@ export class LibrarySectionComponent implements OnInit {
     })
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)
+  }
+
+  openCameraScanner(): void {
+    const modalRef = this.modalService.open(CameraScannerComponent, {
+      size: 'lg',
+      centered: true,
+      modalDialogClass: 'modal-camera-scanner',
+    })
+    modalRef.componentInstance.idOnly.set(true)
   }
 
   scrollToTop() {

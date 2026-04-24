@@ -68,7 +68,8 @@
     "filters": "Filtros",
     "results": "{{ count }} resultados",
     "reset_filters": "Reiniciar filtros",
-    "back_to_top": "Volver arriba"
+    "back_to_top": "Volver arriba",
+    "scan_card": "Escanear carta"
   },
   "date_ago_pipe": {
     "long_time_ago": "hace mucho tiempo",
@@ -337,7 +338,8 @@
     "unread_notifications": "notificaciones no leídas",
     "proxy_generator": "Generador de Proxies",
     "vtes_ai_chat": "Chat IA de VTES",
-    "search": "Buscar"
+    "search": "Buscar",
+    "scan_card": "Escanear"
   },
   "home": {
     "welcome_title": "Bienvenido a VTES Decks",
@@ -411,7 +413,8 @@
     "filters": "Filtros",
     "results": "{{ count }} resultados",
     "reset_filters": "Reiniciar filtros",
-    "back_to_top": "Volver arriba"
+    "back_to_top": "Volver arriba",
+    "scan_card": "Escanear carta"
   },
   "login_modal": {
     "login": "Iniciar sesión",
@@ -979,5 +982,18 @@
     "card_results": "Resultados de Cartas",
     "deck_results": "Resultados de Mazos",
     "user_results": "Resultados de Usuarios"
+  },
+  "camera_scanner": {
+    "title": "Escáner de Cartas",
+    "enable_camera": "Activar Cámara",
+    "scan_card": "Escanear Carta",
+    "scan_again": "Escanear de Nuevo",
+    "scanning": "Escaneando...",
+    "tip": "Coloca la carta bien iluminada y centrada en el marco",
+    "result": "Resultado",
+    "not_found": "No se pudo identificar la carta. Intenta con mejor iluminación.",
+    "set": "Set",
+    "alternatives": "Otras Posibilidades",
+    "tap_to_select": "Toca una carta para añadirla a tu colección"
   }
 }

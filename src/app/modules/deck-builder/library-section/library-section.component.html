@@ -4,8 +4,14 @@
       <form class="flex-fill mb-2">
         <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
           <div class="col-12 col-sm">
-            <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
-              [formControl]="nameFormControl">
+            <div class="input-group">
+              <input type="text" class="form-control" id="name" [placeholder]="t('card_name')"
+                [formControl]="nameFormControl">
+              <button type="button" class="btn btn-primary px-4" (click)="openCameraScanner()" [title]="t('scan_card')"
+                [attr.aria-label]="t('scan_card')">
+                <i class="bi bi-camera-fill"></i>
+              </button>
+            </div>
           </div>
           <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
             (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
