@@ -68,7 +68,8 @@
     "filters": "Filters",
     "results": "{{ count }} results",
     "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "scan_card": "Scan card"
   },
   "date_ago_pipe": {
     "long_time_ago": "a long time ago",
@@ -412,7 +413,8 @@
     "filters": "Filters",
     "results": "{{ count }} results",
     "reset_filters": "Reset Filters",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "scan_card": "Scan card"
   },
   "login_modal": {
     "login": "Login",
@@ -988,15 +990,11 @@
     "scan_card": "Scan Card",
     "scan_again": "Scan Again",
     "scanning": "Scanning...",
-    "id_only": "Card only (ignore set)",
-    "no_alternatives": "Best result only",
-    "fast_mode": "Fast mode",
     "tip": "Place the card well lit and centered in the frame",
     "result": "Result",
     "not_found": "Card not identified. Try better lighting.",
     "set": "Set",
-    "time": "Time",
-    "score": "Score",
-    "alternatives": "Other Possibilities"
+    "alternatives": "Other Possibilities",
+    "tap_to_select": "Tap a card to add it to your collection"
   }
 }

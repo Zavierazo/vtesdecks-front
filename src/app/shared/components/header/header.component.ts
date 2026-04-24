@@ -116,15 +116,15 @@ export class HeaderComponent implements OnInit {
     this.modalService.open(SearchBarComponent, { size: 'xl' })
   }
 
-  openCameraScannerModal(idOnly = true, noAlternatives = false, fast = false) {
+  openCameraScannerModal(idOnly = true, noAlternatives = false) {
     this.isCollapsed = true
     const modalRef = this.modalService.open(CameraScannerComponent, {
       size: 'lg',
       centered: true,
+      modalDialogClass: 'modal-camera-scanner',
     })
     modalRef.componentInstance.idOnly.set(idOnly)
     modalRef.componentInstance.noAlternatives.set(noAlternatives)
-    modalRef.componentInstance.fast.set(fast)
   }
 
   get logoPath(): string {

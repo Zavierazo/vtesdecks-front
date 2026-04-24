@@ -96,7 +96,9 @@ export class SetStore {
   }
 
   getEntityByAbbrev(abbrev: string): ApiSet | undefined {
-    return this.entities().find((c) => c.abbrev === abbrev)
+    return this.entities().find(
+      (c) => c.abbrev.toLowerCase() === abbrev.toLowerCase(),
+    )
   }
 
   setLoading(value = false) {

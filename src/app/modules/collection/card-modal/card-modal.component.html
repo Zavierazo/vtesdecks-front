@@ -28,9 +28,15 @@
     </ng-template>
     <label for="search" class="col-12 col-form-label text-primary fw-bold">{{ t('search_label') }}</label>
     <div class="col-12">
-      <input #searchInput id="search" type="text" class="form-control" [ngbTypeahead]="searchCard"
-        [resultTemplate]="cardTemplate" [inputFormatter]="formatter" [editable]="false"
-        (selectItem)="selectCardItem($event, searchInput)" [placeholder]="t('search_placeholder')" />
+      <div class="input-group input-group-lg">
+        <input #searchInput id="search" type="text" class="form-control" [ngbTypeahead]="searchCard"
+          [resultTemplate]="cardTemplate" [inputFormatter]="formatter" [editable]="false"
+          (selectItem)="selectCardItem($event, searchInput)" [placeholder]="t('search_placeholder')" />
+        <button class="btn btn-primary px-4" type="button" (click)="openCameraScanner()"
+          [title]="'camera_scanner.title' | transloco">
+          <i class="bi bi-camera-fill"></i>
+        </button>
+      </div>
     </div>
     }
     @if(card){

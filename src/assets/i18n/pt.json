@@ -68,7 +68,8 @@
     "filters": "Filtros",
     "results": "{{ count }} resultados",
     "reset_filters": "Repor filtros",
-    "back_to_top": "Voltar ao topo"
+    "back_to_top": "Voltar ao topo",
+    "scan_card": "Escanear carta"
   },
   "date_ago_pipe": {
     "long_time_ago": "há muito tempo",
@@ -414,7 +415,8 @@
     "filters": "Filtros",
     "results": "{{ count }} resultados",
     "reset_filters": "Repor filtros",
-    "back_to_top": "Voltar ao topo"
+    "back_to_top": "Voltar ao topo",
+    "scan_card": "Escanear carta"
   },
   "login_modal": {
     "login": "Entrar",
@@ -987,15 +989,11 @@
     "scan_card": "Escanear Carta",
     "scan_again": "Escanear Novamente",
     "scanning": "Escaneando...",
-    "id_only": "Apenas carta (ignorar set)",
-    "no_alternatives": "Apenas melhor resultado",
-    "fast_mode": "Modo rápido",
     "tip": "Coloque a carta bem iluminada e centralizada no quadro",
     "result": "Resultado",
     "not_found": "Carta não identificada. Tente com melhor iluminação.",
     "set": "Set",
-    "time": "Tempo",
-    "score": "Pontuação",
-    "alternatives": "Outras Possibilidades"
+    "alternatives": "Outras Possibilidades",
+    "tap_to_select": "Toque em uma carta para adicioná-la à sua coleção"
   }
 }

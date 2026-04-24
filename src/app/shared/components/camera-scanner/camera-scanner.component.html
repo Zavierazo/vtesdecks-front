@@ -9,7 +9,8 @@
   </div>
 
   <div class="modal-body p-0">
-    <!-- Camera Viewport -->
+    <!-- Camera Viewport: hidden when result is shown -->
+    @if(appState() !== 'result'){
     <div class="camera-viewport">
       <video #video autoplay playsinline muted></video>
       <img #freeze alt="Captured frame" />
@@ -36,6 +37,7 @@
       <!-- Scan Line -->
       <div class="scan-line" [class.scanning]="scanning()"></div>
     </div>
+    }
 
     <!-- Controls -->
     <div class="bg-body border-top p-3">
@@ -84,11 +86,19 @@
       </div>
       <div class="p-3">
         @if(scanResult()?.found){
+        @if(selectMode()){
+        <p class="small text-info mb-2">
+          <i class="bi bi-hand-index-thumb me-1"></i>
+          {{ t('tap_to_select') }}
+        </p>
+        }
         @let card = getCardData(scanResult()!.id!);
-        <div class="result-card d-flex gap-3 align-items-start mb-2 p-2" (click)="openCard(scanResult()!.id!)"
+        <div class="result-card d-flex gap-3 align-items-start mb-2 p-2"
+          (click)="selectMode() ? activeModal.close({ id: scanResult()!.id!, set: scanResult()!.set }) : openCardAndDismiss(scanResult()!.id!)"
           style="cursor: pointer;">
-          <img class="result-image rounded border" [src]="getCardImageUrl(scanResult()!.id!, scanResult()!.set)"
-            alt="Card" />
+          <img class="result-image rounded border" [src]="{ id: scanResult()!.id! } | cardImage: scanResult()!.set"
+            alt="Card" style="cursor: zoom-in"
+            (click)="zoomedImageUrl.set(getCardImageUrl(scanResult()!.id!, scanResult()!.set)); $event.stopPropagation()" />
           <div class="flex-grow-1">
             <div class="d-flex align-items-center gap-2 mb-1">
               @if(isCrypt(scanResult()!.id!)){
@@ -97,7 +107,7 @@
               <i class="vtes path" style="flex-grow:0;flex-shrink:0" [ngClass]="$any(card)?.pathIcon"></i>
               }
               }
-              <h6 class="fw-bold text-warning mb-0">{{ card?.i18n?.name || card?.name }}</h6>
+              <h6 class="fw-bold text-warning mb-0">{{ $any(card)?.i18n?.name || $any(card)?.name }}</h6>
               @if(isCrypt(scanResult()!.id!) && $any(card)?.group !== undefined){
               <span class="badge rounded-pill bg-dark text-white flex-shrink-0">
                 {{ $any(card).group === -1 ? 'any' : 'G' + $any(card).group }}
@@ -116,7 +126,7 @@
             </div>
             @if(scanResult()?.set){
             <p class="small fst-italic mb-2 text-muted">
-              {{ t('set') }}: <strong>{{ scanResult()?.set }}</strong>
+              {{ t('set') }}: <strong>{{ getSetDisplay(scanResult()?.set) }}</strong>
             </p>
             }
             <div class="d-flex align-items-center gap-2 mb-2">
@@ -133,10 +143,13 @@
 
         @if(scanResult()?.alternatives && scanResult()!.alternatives!.length > 0){
         <div>
-          @for(alt of scanResult()?.alternatives; track alt.id){
+          @for(alt of scanResult()?.alternatives; track $index){
           @let altCard = getCardData(alt.id);
-          <div class="alt-item" (click)="openCard(alt.id)" style="cursor: pointer;">
-            <img [src]="getCardImageUrl(alt.id, alt.set)" alt="Alternative" class="alt-thumb" />
+          <div class="alt-item"
+            (click)="selectMode() ? activeModal.close({ id: alt.id, set: alt.set }) : openCardAndDismiss(alt.id)"
+            style="cursor: pointer;">
+            <img [src]="{ id: alt.id } | cardImage: alt.set" alt="Alternative" class="alt-thumb" style="cursor: zoom-in"
+              (click)="zoomedImageUrl.set(getCardImageUrl(alt.id, alt.set)); $event.stopPropagation()" />
             <div class="flex-grow-1">
               <div class="d-flex align-items-center gap-2 mb-1">
                 @if(isCrypt(alt.id)){
@@ -149,7 +162,7 @@
                 <div class="fw-bold">{{ altCard?.i18n?.name || altCard?.name }}</div>
                 @if(isCrypt(alt.id) && $any(altCard)?.group !== undefined){
                 <span class="badge rounded-pill bg-dark text-white flex-shrink-0">
-                  {{ $any(altCard).group === -1 ? 'any' : 'G' + $any(altCard).group }}
+                  {{ $any(altCard)?.group === -1 ? 'any' : 'G' + $any(altCard)?.group }}
                 </span>
                 }
               </div>
@@ -163,6 +176,11 @@
                 <i class="vtes vtes-small me-1" [ngClass]="disciplineIcon"></i>
                 }
               </div>
+              @if(alt.set){
+              <p class="small fst-italic mb-1 text-muted">
+                {{ t('set') }}: <strong>{{ getSetDisplay(alt.set) }}</strong>
+              </p>
+              }
               <div class="d-flex align-items-center gap-2">
                 <div class="confidence-bar-sm flex-grow-1">
                   <div class="confidence-bar" [class]="getConfidenceClass(alt.confidence)"
@@ -186,4 +204,12 @@
     </div>
     }
   </div>
+
+  <!-- Image zoom overlay -->
+  @if(zoomedImageUrl()){
+  <div class="img-zoom-overlay" (click)="zoomedImageUrl.set(null)" role="button"
+    [attr.aria-label]="'shared.close' | transloco">
+    <img [src]="zoomedImageUrl()" alt="Card zoom" class="img-zoom-card" />
+  </div>
+  }
 </ng-container>

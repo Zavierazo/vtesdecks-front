@@ -45,6 +45,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
 import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
@@ -411,6 +412,15 @@ export class CryptSectionComponent implements OnInit {
     })
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = cryptList.indexOf(card)
+  }
+
+  openCameraScanner(): void {
+    const modalRef = this.modalService.open(CameraScannerComponent, {
+      size: 'lg',
+      centered: true,
+      modalDialogClass: 'modal-camera-scanner',
+    })
+    modalRef.componentInstance.idOnly.set(true)
   }
 
   trackByFn(_: number, item: ApiCrypt) {

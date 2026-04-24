@@ -68,7 +68,8 @@
     "filters": "Filtres",
     "results": "{{ count }} résultats",
     "reset_filters": "Réinitialiser les filtres",
-    "back_to_top": "Retour en haut"
+    "back_to_top": "Retour en haut",
+    "scan_card": "Scanner la carte"
   },
   "date_ago_pipe": {
     "long_time_ago": "il y a longtemps",
@@ -412,7 +413,8 @@
     "filters": "Filtres",
     "results": "{{ count }} résultats",
     "reset_filters": "Réinitialiser les filtres",
-    "back_to_top": "Retour en haut"
+    "back_to_top": "Retour en haut",
+    "scan_card": "Scanner la carte"
   },
   "login_modal": {
     "login": "Connexion",
@@ -988,15 +990,11 @@
     "scan_card": "Scanner la Carte",
     "scan_again": "Scanner à Nouveau",
     "scanning": "Scan en cours...",
-    "id_only": "Carte uniquement (ignorer le set)",
-    "no_alternatives": "Meilleur résultat uniquement",
-    "fast_mode": "Mode rapide",
     "tip": "Placez la carte bien éclairée et centrée dans le cadre",
     "result": "Résultat",
     "not_found": "Carte non identifiée. Essayez avec un meilleur éclairage.",
     "set": "Set",
-    "time": "Temps",
-    "score": "Score",
-    "alternatives": "Autres Possibilités"
+    "alternatives": "Autres Possibilités",
+    "tap_to_select": "Appuyez sur une carte pour l'ajouter à votre collection"
   }
 }

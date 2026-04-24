@@ -1,5 +1,5 @@
 export interface ApiCardScanAlternative {
-  id: string
+  id: number
   set?: string
   score: number
   confidence: number
@@ -7,7 +7,7 @@ export interface ApiCardScanAlternative {
 
 export interface ApiCardScanResponse {
   found: boolean
-  id?: string
+  id?: number
   set?: string
   confidence?: number
   score?: number
