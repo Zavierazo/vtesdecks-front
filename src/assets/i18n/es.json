@@ -995,6 +995,10 @@
     "set": "Set",
     "alternatives": "Otras Posibilidades",
     "tap_to_select": "Toca una carta para añadirla a tu colección",
-    "low_confidence_warning": "Es posible que esta carta no esté en nuestra base de datos. También puede estar mal iluminada o no estar centrada en el marco. Como no almacenamos las imágenes escaneadas, tu opinión es esencial, por favor, envía la imagen de la carta a "
+    "low_confidence_warning": "Es posible que esta carta no esté en nuestra base de datos. También puede estar mal iluminada o no estar centrada en el marco. Como no almacenamos las imágenes escaneadas, tu opinión es esencial, por favor, envía la imagen de la carta a ",
+    "camera_permission_denied": "Se denegó el acceso a la cámara. Por favor, permite el acceso en la configuración de tu navegador e inténtalo de nuevo.",
+    "camera_not_found": "No se encontró ninguna cámara en tu dispositivo.",
+    "camera_in_use": "La cámara ya está en uso por otra aplicación. Ciérrala e inténtalo de nuevo.",
+    "camera_error": "No se pudo iniciar la cámara. Comprueba tu dispositivo e inténtalo de nuevo."
   }
 }

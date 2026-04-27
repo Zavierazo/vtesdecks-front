@@ -8,6 +8,12 @@
       (click)="activeModal.dismiss()"></button>
   </div>
 
+  @if(cameraError()){
+  <div class="alert alert-warning small mb-0 text-start" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ t(cameraError()!) }}
+  </div>
+  }
   <div class="modal-body p-0">
     <!-- Camera Viewport: hidden when result is shown -->
     @if(appState() !== 'result'){

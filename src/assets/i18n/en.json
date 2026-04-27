@@ -996,6 +996,10 @@
     "set": "Set",
     "alternatives": "Other Possibilities",
     "tap_to_select": "Tap a card to add it to your collection",
-    "low_confidence_warning": "This card may not be in our database. It may also be poorly lit or not centered in the frame. Since we don't store scanned images, your feedback is essential, please send the card image to "
+    "low_confidence_warning": "This card may not be in our database. It may also be poorly lit or not centered in the frame. Since we don't store scanned images, your feedback is essential, please send the card image to ",
+    "camera_permission_denied": "Camera access was denied. Please allow camera access in your browser settings and try again.",
+    "camera_not_found": "No camera was found on your device.",
+    "camera_in_use": "The camera is already in use by another application. Close it and try again.",
+    "camera_error": "Could not start the camera. Please check your device and try again."
   }
 }

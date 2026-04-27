@@ -996,6 +996,10 @@
     "set": "Set",
     "alternatives": "Autres Possibilités",
     "tap_to_select": "Appuyez sur une carte pour l'ajouter à votre collection",
-    "low_confidence_warning": "Cette carte n'est peut-être pas dans notre base de données. Elle peut aussi être mal éclairée ou mal centrée dans le cadre. Comme nous ne conservons pas les images scannées, vos retours sont essentiels, veuillez envoyer l'image de la carte à "
+    "low_confidence_warning": "Cette carte n'est peut-être pas dans notre base de données. Elle peut aussi être mal éclairée ou mal centrée dans le cadre. Comme nous ne conservons pas les images scannées, vos retours sont essentiels, veuillez envoyer l'image de la carte à ",
+    "camera_permission_denied": "L'accès à la caméra a été refusé. Veuillez autoriser l'accès dans les paramètres de votre navigateur et réessayer.",
+    "camera_not_found": "Aucune caméra n'a été détectée sur votre appareil.",
+    "camera_in_use": "La caméra est déjà utilisée par une autre application. Fermez-la et réessayez.",
+    "camera_error": "Impossible de démarrer la caméra. Vérifiez votre appareil et réessayez."
   }
 }

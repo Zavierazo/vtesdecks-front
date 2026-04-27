@@ -55,6 +55,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   capturedImageUrl = signal<string | null>(null)
   selectMode = signal(false)
   zoomedImageUrl = signal<string | null>(null)
+  cameraError = signal<string | null>(null)
 
   private stream: MediaStream | null = null
 
@@ -67,14 +68,30 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   }
 
   async startCamera() {
+    this.cameraError.set(null)
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: 'environment',
-          width: { ideal: 1280 },
-          height: { ideal: 960 },
-        },
-      })
+      try {
+        this.stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment',
+            width: { ideal: 1280 },
+            height: { ideal: 960 },
+          },
+        })
+      } catch (e) {
+        // OverconstrainedError: no rear camera (desktop) — retry without facing mode constraint
+        if (
+          e instanceof DOMException &&
+          (e.name === 'OverconstrainedError' ||
+            e.name === 'ConstraintNotSatisfiedError')
+        ) {
+          this.stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          })
+        } else {
+          throw e
+        }
+      }
       this.video.nativeElement.srcObject = this.stream
       this.freeze.nativeElement.style.display = 'none'
       this.freeze.nativeElement.src = ''
@@ -82,7 +99,27 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
       this.appState.set('camera')
       this.changeDetectorRef.markForCheck()
     } catch (e) {
-      // Stay in idle state so the "Enable Camera" button remains visible for retry
+      let errorKey = 'camera_error'
+      if (e instanceof DOMException) {
+        if (
+          e.name === 'NotAllowedError' ||
+          e.name === 'PermissionDeniedError'
+        ) {
+          errorKey = 'camera_permission_denied'
+        } else if (
+          e.name === 'NotFoundError' ||
+          e.name === 'DevicesNotFoundError'
+        ) {
+          errorKey = 'camera_not_found'
+        } else if (
+          e.name === 'NotReadableError' ||
+          e.name === 'TrackStartError' ||
+          e.name === 'AbortError'
+        ) {
+          errorKey = 'camera_in_use'
+        }
+      }
+      this.cameraError.set(errorKey)
       this.appState.set('idle')
       this.changeDetectorRef.markForCheck()
     }
@@ -184,6 +221,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   scanAgain() {
     this.scanResult.set(null)
     this.capturedImageUrl.set(null)
+    this.cameraError.set(null)
     this.appState.set('idle')
     this.changeDetectorRef.detectChanges()
     this.startCamera()
