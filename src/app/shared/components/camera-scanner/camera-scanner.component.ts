@@ -56,11 +56,26 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   selectMode = signal(false)
   zoomedImageUrl = signal<string | null>(null)
   cameraError = signal<string | null>(null)
+  cameraErrorDetail = signal<string | null>(null)
 
   private stream: MediaStream | null = null
 
-  ngAfterViewInit() {
-    this.startCamera()
+  async ngAfterViewInit() {
+    try {
+      const status = await navigator.permissions.query({
+        name: 'camera' as PermissionName,
+      })
+      if (status.state === 'granted') {
+        this.startCamera()
+      } else if (status.state === 'denied') {
+        this.cameraError.set('camera_permission_denied')
+        this.cameraErrorDetail.set(null)
+        this.changeDetectorRef.markForCheck()
+      }
+      // 'prompt' → wait for user button click
+    } catch {
+      // Permissions API not supported → wait for user button click
+    }
   }
 
   ngOnDestroy() {
@@ -69,6 +84,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
 
   async startCamera() {
     this.cameraError.set(null)
+    this.cameraErrorDetail.set(null)
     try {
       try {
         this.stream = await navigator.mediaDevices.getUserMedia({
@@ -120,6 +136,9 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
         }
       }
       this.cameraError.set(errorKey)
+      this.cameraErrorDetail.set(
+        e instanceof DOMException ? `${e.name}: ${e.message}` : String(e),
+      )
       this.appState.set('idle')
       this.changeDetectorRef.markForCheck()
     }

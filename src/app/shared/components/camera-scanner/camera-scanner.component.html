@@ -12,6 +12,11 @@
   <div class="alert alert-warning small mb-0 text-start" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2"></i>
     {{ t(cameraError()!) }}
+    @if(cameraErrorDetail()){
+    <div class="mt-2 text-muted font-monospace text-break error-detail">
+      {{ cameraErrorDetail() }}
+    </div>
+    }
   </div>
   }
   <div class="modal-body p-0">

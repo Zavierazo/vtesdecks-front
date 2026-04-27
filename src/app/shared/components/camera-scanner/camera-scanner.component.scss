@@ -1,4 +1,10 @@
 // Camera viewport with video/image handling
+
+.error-detail {
+  font-size: 0.65rem;
+  user-select: all;
+}
+
 .camera-viewport {
   position: relative;
   width: 100%;
