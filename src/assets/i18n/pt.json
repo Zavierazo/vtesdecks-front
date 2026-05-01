@@ -926,7 +926,12 @@
     "sets": "Expansões",
     "missing_only": "Apenas faltando",
     "show_all": "Mostrar todas",
-    "no_cards": "Nenhuma carta encontrada"
+    "no_cards": "Nenhuma carta encontrada",
+    "add_deck_to_collection": "Adicionar baralho à coleção",
+    "add_deck_enter_url": "Inserir URL do baralho",
+    "add_deck_url_hint": "Insira uma URL de baralho do vtesdecks.com para adicionar todas as suas cartas à sua coleção.",
+    "add_deck_invalid_url": "URL de baralho inválida. Por favor, insira uma URL válida do vtesdecks.com.",
+    "add_deck_or_select_recent": "Ou selecione entre os baralhos visitados recentemente"
   },
   "advent": {
     "home_title": "Calendário do Advento VTES {{ year }}",

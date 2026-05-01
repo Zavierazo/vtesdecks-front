@@ -927,7 +927,12 @@
     "missing_only": "Missing only",
     "show_all": "Show all",
     "close": "Close",
-    "no_cards": "No cards found"
+    "no_cards": "No cards found",
+    "add_deck_to_collection": "Add Deck to Collection",
+    "add_deck_enter_url": "Enter deck URL",
+    "add_deck_url_hint": "Enter a vtesdecks.com deck URL to add all its cards to your collection.",
+    "add_deck_invalid_url": "Invalid deck URL. Please enter a valid vtesdecks.com deck URL.",
+    "add_deck_or_select_recent": "Or select from recently visited decks"
   },
   "advent": {
     "home_title": "VTES Advent Calendar {{ year }}",

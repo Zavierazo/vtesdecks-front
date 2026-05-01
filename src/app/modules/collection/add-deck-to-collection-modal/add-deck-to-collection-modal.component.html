@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; prefix: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('add_deck_to_collection') }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="mb-4">
+      <label class="form-label fw-semibold">{{ t('number_of_copies') }}</label>
+      <input type="number" class="form-control copies-input" [formControl]="copiesControl" min="1" max="9" />
+    </div>
+
+    <div class="mb-4">
+      <label for="deckUrl" class="form-label fw-semibold">
+        {{ t('add_deck_enter_url') }}
+      </label>
+      <input type="text" class="form-control" id="deckUrl" [formControl]="deckUrlControl"
+        placeholder="https://vtesdecks.com/deck/..." />
+      <div class="form-text">
+        {{ t('add_deck_url_hint') }}
+      </div>
+    </div>
+
+    @if (lastVisitedDecks().length > 0) {
+    <div>
+      <div class="form-label fw-semibold">
+        {{ t('add_deck_or_select_recent') }}
+      </div>
+      <div class="list-group">
+        @for (deck of lastVisitedDecks(); track deck.id) {
+        <button type="button"
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          [class.active]="selectedRecentDeck()?.id === deck.id"
+          [disabled]="isLoading()" (click)="onSelectRecentDeck(deck)">
+          <div>
+            <div class="fw-medium">{{ deck.name }}</div>
+            <small>{{ deck.author }}</small>
+          </div>
+          @if (selectedRecentDeck()?.id === deck.id) {
+          <i class="bi bi-check-circle-fill"></i>
+          } @else {
+          <i class="bi bi-chevron-right"></i>
+          }
+        </button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onAddToCollection()" [disabled]="!canAdd()">
+      @if (isLoading()) {
+      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+      }
+      {{ t('add_to_collection') }}
+    </button>
+  </div>
+</ng-container>

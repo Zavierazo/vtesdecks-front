@@ -927,7 +927,12 @@
     "missing_only": "Cartes manquantes uniquement",
     "show_all": "Tout afficher",
     "close": "Fermer",
-    "no_cards": "Aucune carte trouvée"
+    "no_cards": "Aucune carte trouvée",
+    "add_deck_to_collection": "Ajouter un deck à la collection",
+    "add_deck_enter_url": "Saisir l'URL du deck",
+    "add_deck_url_hint": "Saisissez une URL de deck vtesdecks.com pour ajouter toutes ses cartes à votre collection.",
+    "add_deck_invalid_url": "URL de deck invalide. Veuillez saisir une URL valide de vtesdecks.com.",
+    "add_deck_or_select_recent": "Ou sélectionnez parmi les decks récemment visités"
   },
   "advent": {
     "home_title": "Calendrier de l'Avent VTES {{ year }}",

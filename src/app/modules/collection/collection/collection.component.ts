@@ -17,6 +17,7 @@ import { catchError, distinctUntilChanged, EMPTY, switchMap, tap } from 'rxjs'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
+import { AddDeckToCollectionModalComponent } from '../add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CollectionImportModalComponent } from '../collection-import-modal/collection-import-modal.component'
 import { PreconstructedDeckModalComponent } from '../preconstructed-deck-modal/preconstructed-deck-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
@@ -82,6 +83,23 @@ export class CollectionComponent implements OnInit {
     this.modalService
       .open(PreconstructedDeckModalComponent, {
         size: 'lg',
+        centered: true,
+      })
+      .closed.pipe(
+        untilDestroyed(this),
+        tap((result) => {
+          if (result) {
+            this.collectionService.setPage(0)
+          }
+        }),
+      )
+      .subscribe()
+  }
+
+  onAddDeckToCollection() {
+    this.modalService
+      .open(AddDeckToCollectionModalComponent, {
+        size: 'md',
         centered: true,
       })
       .closed.pipe(

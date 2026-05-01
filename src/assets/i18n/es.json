@@ -926,7 +926,12 @@
     "sets": "Expansiones",
     "missing_only": "Solo faltantes",
     "show_all": "Mostrar todas",
-    "no_cards": "No se encontraron cartas"
+    "no_cards": "No se encontraron cartas",
+    "add_deck_to_collection": "Añadir mazo a la colección",
+    "add_deck_enter_url": "Introduce la URL del mazo",
+    "add_deck_url_hint": "Introduce una URL de mazo de vtesdecks.com para añadir todas sus cartas a tu colección.",
+    "add_deck_invalid_url": "URL de mazo no válida. Por favor, introduce una URL válida de vtesdecks.com.",
+    "add_deck_or_select_recent": "O selecciona un mazo visitado recientemente"
   },
   "advent": {
     "home_title": "Calendario de Adviento VTES {{ year }}",
