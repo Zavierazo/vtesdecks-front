@@ -16,9 +16,9 @@ import { ApiCollectionCard } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
-import { DeckHistoryService } from '../../../services/deck-history.service'
-import { LastVisitedDeck } from '../../../models/last-visited-deck'
 import { catchError, finalize, switchMap, tap } from 'rxjs'
+import { LastVisitedDeck } from '../../../models/last-visited-deck'
+import { DeckHistoryService } from '../../../services/deck-history.service'
 import { CollectionPrivateService } from '../state/collection-private.service'
 
 @UntilDestroy()

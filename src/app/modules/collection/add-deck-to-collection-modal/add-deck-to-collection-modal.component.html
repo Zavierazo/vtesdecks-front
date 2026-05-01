@@ -30,8 +30,8 @@
         @for (deck of lastVisitedDecks(); track deck.id) {
         <button type="button"
           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-          [class.active]="selectedRecentDeck()?.id === deck.id"
-          [disabled]="isLoading()" (click)="onSelectRecentDeck(deck)">
+          [class.active]="selectedRecentDeck()?.id === deck.id" [disabled]="isLoading()"
+          (click)="onSelectRecentDeck(deck)">
           <div>
             <div class="fw-medium">{{ deck.name }}</div>
             <small>{{ deck.author }}</small>
