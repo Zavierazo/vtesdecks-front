@@ -11,7 +11,7 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiChangelog, ApiHome } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, LocalStorageService } from '@services'
+import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
 import { LoginComponent } from '@shared/components/login/login.component'
@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly localStorage = inject(LocalStorageService)
+  private readonly seoService = inject(SeoService)
 
   private static readonly CHANGELOG_ALERT_KEY = 'changelog_alert_version'
   private readonly appVersion = environment.appVersion
@@ -62,6 +63,9 @@ export class HomeComponent implements OnInit {
   })
 
   ngOnInit() {
+    this.seoService.update({
+      canonicalUrl: 'https://vtesdecks.com/',
+    })
     // Fetch changelog for alert
     const lastAppVersionSeen = this.localStorage.getValue<string>(
       HomeComponent.CHANGELOG_ALERT_KEY,

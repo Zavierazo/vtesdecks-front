@@ -35,7 +35,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, ToastService } from '@services'
+import { ApiDataService, SeoService, ToastService } from '@services'
 import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
@@ -96,6 +96,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly decksService = inject(DecksService)
   private readonly toastService = inject(ToastService)
+  private readonly seoService = inject(SeoService)
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly clipboard = inject(Clipboard)
@@ -140,6 +141,12 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   ]
 
   ngOnInit() {
+    this.seoService.update({
+      title: 'Deck Builder',
+      description:
+        'Build and publish your own VTES deck. Add crypt and library cards, manage quantities, and share with the community.',
+      canonicalUrl: 'https://vtesdecks.com/decks/builder',
+    })
     this.initForm()
     this.initDeck()
       .pipe(untilDestroyed(this))
