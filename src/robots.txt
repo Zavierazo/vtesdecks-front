@@ -3,3 +3,5 @@ Disallow: /collection
 Disallow: /user
 Disallow: /reset-password
 Disallow: /verify-account
+
+Sitemap: https://vtesdecks.com/sitemap.xml
