@@ -29,7 +29,8 @@
                     <a class="text-decoration-none d-inline-flex align-items-center"
                       [routerLink]="'/user/' + deck.user.user">
                       @if(deck.user.profileImage) {
-                      <img [src]="deck.user.profileImage" alt="" class="rounded-circle me-2" width="32" height="32">
+                      <img [src]="deck.user.profileImage" [alt]="deck.user.displayName" class="rounded-circle me-2"
+                        width="32" height="32">
                       }
                       <span>
                         <strong>{{ deck.author }}</strong>
