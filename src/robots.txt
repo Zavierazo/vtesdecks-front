@@ -4,4 +4,4 @@ Disallow: /user
 Disallow: /reset-password
 Disallow: /verify-account
 
-Sitemap: https://vtesdecks.com/sitemap.xml
+Sitemap: https://api.vtesdecks.com/sitemap.xml
