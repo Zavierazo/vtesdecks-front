@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vtesdecks.twa",
+      "sha256_cert_fingerprints": [
+        "9C:27:E7:5B:7B:A5:C3:60:84:DB:CA:AA:A4:97:50:9E:BD:BE:82:E0:40:A6:EC:11:E1:C5:4A:1E:E0:16:ED:40"
+      ]
+    }
+  }
+]

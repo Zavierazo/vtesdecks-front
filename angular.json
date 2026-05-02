@@ -2,7 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": "77d7b52f-9e51-4a6f-b57f-2f90163ebb55",
-    "schematicCollections": ["angular-eslint"]
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -27,7 +29,9 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -35,7 +39,8 @@
               "src/assets",
               "src/robots.txt",
               "src/ads.txt",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/.well-known"
             ],
             "styles": [
               "src/styles.scss",
@@ -112,16 +117,22 @@
               "src/assets",
               "src/robots.txt",
               "src/ads.txt",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/.well-known"
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
