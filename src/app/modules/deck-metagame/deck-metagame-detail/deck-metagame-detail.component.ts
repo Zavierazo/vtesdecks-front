@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DecimalPipe, NgClass } from '@angular/common'
+import { AsyncPipe, CurrencyPipe, DecimalPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -38,7 +38,6 @@ import { ArchetypeCardStatsComponent } from './archetype-card-stats/archetype-ca
     RouterLink,
     NgbCollapseModule,
     NgbTooltip,
-    NgClass,
     DecimalPipe,
     CurrencyPipe,
     MarkdownTextComponent,
