@@ -3,6 +3,8 @@
     "version": "2.68.0",
     "date": "XXth May, 2026",
     "changes": [
+      "Added new metagame archetype detail page showing key cards with appearance rate, avg, range stats and a reference deck link.",
+      "VTESDecks is now available as an Android app on <a href=\"https://play.google.com/store/apps/details?id=com.vtesdecks.twa\" target=\"_blank\" rel=\"noopener\">Google Play</a>.",
       "Added option to add cards from any deck to your collection by URL or recently visited decks.",
       "Minor bug fixes and performance improvements."
     ]

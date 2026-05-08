@@ -1,0 +1,170 @@
+<ng-container *transloco="let t; prefix: 'deck_metagame'">
+  @if(archetype$ | async; as archetype) {
+  @let coreCrypt = getCoreCrypt(archetype);
+  @let suggestedCrypt = getSuggestedCrypt(archetype);
+  @let coreLibrary = getCoreLibrary(archetype);
+  @let suggestedLibrary = getSuggestedLibrary(archetype);
+
+  <main class="container-fluid col-12 col-xl-11" role="main">
+
+    <!-- Header -->
+    <div class="bg-body rounded-3 p-4 mb-4">
+      <div class="d-flex align-items-start gap-3">
+        @if(archetype.icon) {
+        <div class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2 flex-shrink-0">
+          <i class="vtes" [class]="archetype.icon"></i>
+        </div>
+        }
+        <div class="flex-grow-1">
+          <h1 class="fw-bold mb-1">{{ archetype.name }}</h1>
+          <span class="badge text-bg-secondary mb-2">{{ archetype.type }}</span>
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3" placement="top"
+            [ngbTooltip]="t('meta', { percentage: (getMetaPercentage(archetype) | number:'1.0-2'), count: archetype.metaCount })">
+            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
+              <i class="bi bi-bar-chart-fill me-1"></i>
+              <span class="fw-semibold">{{ getMetaPercentage(archetype) | number:'1.0-2' }}%</span>
+            </span>
+            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
+              <i class="bi bi-collection-fill me-1"></i>
+              <span>{{ archetype.metaCount }}</span>
+            </span>
+            @if(archetype.price) {
+            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
+              <i class="bi bi-tag-fill me-1"></i>
+              {{ archetype.price | currency: archetype.currency }}
+            </span>
+            }
+          </div>
+          @if(archetype.description) {
+          <app-markdown-text [data]="archetype.description" />
+          }
+          <!-- Action links -->
+          <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+            @if(archetype.deckId) {
+            <a class="btn btn-warning fw-semibold" [routerLink]="['/deck', archetype.deckId]">
+              <i class="bi bi-trophy-fill me-2"></i>{{ t('detail_base_deck') }}
+            </a>
+            }
+            <a class="view-decks-link d-inline-flex align-items-center text-decoration-none" [routerLink]="['/decks']"
+              [queryParams]="{ archetype: archetype.id }">
+              <span class="fw-medium">{{ t('decks_with_metagame') }}</span>
+              @if(archetype.deckCount > 0) {
+              <span class="count-badge ms-2 d-inline-flex align-items-center justify-content-center rounded-2">{{
+                archetype.deckCount }}</span>
+              }
+              <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CRYPT ── -->
+    @if(coreCrypt.length > 0 || suggestedCrypt.length > 0) {
+    <div class="section-card bg-body rounded-3 mb-2 overflow-hidden px-4">
+      <div class="d-flex align-items-center p-3 p-sm-4 pb-0">
+        <h2 class="mb-0">{{ 'shared.crypt' | transloco }}</h2>
+      </div>
+      <ul class="list-group list-group-flush">
+        @for(kc of coreCrypt; track kc.id) {
+        <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
+          (click)="openCryptCard(kc.id, archetype)">
+          <div class="flex-grow-1 min-w-0">
+            <app-crypt [card]="{ id: kc.id, number: kc.number }" [disableClickPopover]="true" />
+          </div>
+          <app-archetype-card-stats [stats]="kc" />
+        </li>
+        }
+      </ul>
+      @if(suggestedCrypt.length > 0) {
+      @if(cryptSuggestionsCollapsed) {
+      <div class="suggestions-toggle" (click)="cryptSuggestionsCollapsed = false">
+        <button
+          class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+          <span class="small">{{ t('detail_suggestions') }}</span>
+          <span class="badge text-bg-secondary rounded-pill">{{ suggestedCrypt.length }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      }
+      <div [ngbCollapse]="cryptSuggestionsCollapsed">
+        <ul class="list-group list-group-flush">
+          @for(kc of suggestedCrypt; track kc.id) {
+          <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
+            (click)="openCryptCard(kc.id, archetype)">
+            <div class="flex-grow-1 min-w-0">
+              <app-crypt [card]="{ id: kc.id, number: kc.number }" [disableClickPopover]="true" />
+            </div>
+            <app-archetype-card-stats [stats]="kc" [isSuggestion]="true" />
+          </li>
+          }
+        </ul>
+        <div class="suggestions-toggle" (click)="cryptSuggestionsCollapsed = true">
+          <button
+            class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+            <span class="small">{{ t('detail_suggestions') }}</span>
+            <span class="badge text-bg-secondary rounded-pill">{{ suggestedCrypt.length }}</span>
+            <i class="bi bi-chevron-up"></i>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- ── LIBRARY ── -->
+    @if(coreLibrary.length > 0 || suggestedLibrary.length > 0) {
+    <div class="section-card bg-body rounded-3 mb-4 overflow-hidden px-4">
+      <div class="d-flex align-items-center p-3 p-sm-4 pb-0">
+        <h2 class="mb-0">{{ 'shared.library' | transloco }}</h2>
+      </div>
+      <ul class="list-group list-group-flush">
+        @for(kl of coreLibrary; track kl.id) {
+        <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
+          (click)="openLibraryCard(kl.id, archetype)">
+          <div class="flex-grow-1 min-w-0">
+            <app-library [card]="{ id: kl.id, number: kl.number }" [disableClickPopover]="true" />
+          </div>
+          <app-archetype-card-stats [stats]="kl" />
+        </li>
+        }
+      </ul>
+      @if(suggestedLibrary.length > 0) {
+      @if(librarySuggestionsCollapsed) {
+      <div class="suggestions-toggle" (click)="librarySuggestionsCollapsed = false">
+        <button
+          class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+          <span class="small">{{ t('detail_suggestions') }}</span>
+          <span class="badge text-bg-secondary rounded-pill">{{ suggestedLibrary.length }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      }
+      <div [ngbCollapse]="librarySuggestionsCollapsed">
+        <ul class="list-group list-group-flush">
+          @for(kl of suggestedLibrary; track kl.id) {
+          <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
+            (click)="openLibraryCard(kl.id, archetype)">
+            <div class="flex-grow-1 min-w-0">
+              <app-library [card]="{ id: kl.id, number: kl.number }" [disableClickPopover]="true" />
+            </div>
+            <app-archetype-card-stats [stats]="kl" [isSuggestion]="true" />
+          </li>
+          }
+        </ul>
+        <div class="suggestions-toggle" (click)="librarySuggestionsCollapsed = true">
+          <button
+            class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+            <span class="small">{{ t('detail_suggestions') }}</span>
+            <span class="badge text-bg-secondary rounded-pill">{{ suggestedLibrary.length }}</span>
+            <i class="bi bi-chevron-up"></i>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+  </main>
+  }
+</ng-container>

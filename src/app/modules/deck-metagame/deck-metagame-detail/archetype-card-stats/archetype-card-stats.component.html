@@ -1,0 +1,27 @@
+<div
+  class="d-flex align-items-center gap-2 gap-sm-3 flex-shrink-0 ps-sm-2 py-2 py-sm-0 justify-content-around justify-content-sm-start">
+  <!-- Appearance rate -->
+  <div class="stat-col text-center" [ngbTooltip]="'deck_metagame.detail_appearance_tip' | transloco" container="body">
+    <span class="badge small lh-1" [class.bg-success]="stats().appearanceRate >= 0.3"
+      [class.bg-warning]="stats().appearanceRate >= 0.2 && stats().appearanceRate < 0.3"
+      [class.text-dark]="stats().appearanceRate >= 0.2 && stats().appearanceRate < 0.3"
+      [class.bg-danger]="stats().appearanceRate < 0.2">
+      {{ stats().appearanceRate * 100 | number:'1.0-0' }}%
+    </span>
+    <div class="stat-label text-muted mt-1">{{ 'deck_metagame.detail_appearance' | transloco }}</div>
+  </div>
+
+  <!-- Avg -->
+  <div class="stat-col text-center d-flex flex-column align-items-center"
+    [ngbTooltip]="'deck_metagame.detail_avg_tip' | transloco" container="body">
+    <div class="fw-semibold lh-1">{{ stats().avg | number:'1.0-1' }}</div>
+    <div class="stat-label text-muted">{{ 'deck_metagame.detail_avg' | transloco }}</div>
+  </div>
+
+  <!-- Range -->
+  <div class="stat-col text-center d-flex flex-column align-items-center"
+    [ngbTooltip]="'deck_metagame.detail_range_tip' | transloco" container="body">
+    <div class="lh-1 small fw-medium">{{ stats().min }}–{{ stats().max }}</div>
+    <div class="stat-label text-muted">{{ 'deck_metagame.detail_range' | transloco }}</div>
+  </div>
+</div>

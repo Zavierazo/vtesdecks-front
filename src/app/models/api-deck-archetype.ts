@@ -1,3 +1,5 @@
+import { ApiArchetypeKeyCard } from './api-archetype-key-card'
+
 export interface ApiDeckArchetype {
   id?: number
   name: string
@@ -13,4 +15,6 @@ export interface ApiDeckArchetype {
   currency?: string
   creationDate: Date
   modificationDate: Date
+  keyCrypt?: ApiArchetypeKeyCard[]
+  keyLibrary?: ApiArchetypeKeyCard[]
 }

@@ -1,0 +1,91 @@
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  font-size: 1.75rem;
+  background-color: var(--bs-secondary-bg);
+}
+
+.stat-badge {
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+}
+
+.view-decks-link {
+  color: var(--bs-primary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  .count-badge {
+    background: var(--bs-primary);
+    color: white;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0 0.375rem;
+    border-radius: 0.25rem;
+  }
+
+  &:hover {
+    color: var(--bs-primary);
+    transform: translateX(2px);
+
+    i {
+      transform: translateX(2px);
+    }
+  }
+
+  i {
+    transition: transform 0.2s ease;
+  }
+}
+
+.card-row {
+  cursor: pointer;
+}
+
+.archetype-card-row {
+  cursor: pointer;
+
+  // Target the host elements of child components (valid in emulated encapsulation,
+  // no ::ng-deep needed - these are in the parent template DOM).
+  // Negative top margin collapses the double border between adjacent rows.
+  app-crypt,
+  app-library {
+    display: block;
+    margin-top: -1px;
+  }
+
+  // On mobile the row stacks vertically. Add a bottom border on the li itself
+  // so the stats strip is clearly grouped with the card above, not below.
+  @media (max-width: 575.98px) {
+    border-bottom: 1px solid var(--bs-border-color);
+
+    app-crypt,
+    app-library {
+      margin-bottom: -1px;
+    }
+  }
+}
+
+.suggestions-toggle {
+  cursor: pointer;
+  text-align: center;
+  border-top: 1px solid var(--bs-border-color);
+  background-color: var(--bs-secondary-bg);
+
+  &:last-child {
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    pointer-events: none;
+
+    i {
+      transition: transform 0.3s ease;
+      font-size: 1rem;
+    }
+  }
+}
