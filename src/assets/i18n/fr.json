@@ -129,7 +129,8 @@
     "sort_by_clan": "Clan",
     "sort_by_group": "Groupe",
     "delete": "Supprimer",
-    "compare": "Comparer"
+    "compare": "Comparer",
+    "archetype": "Archétype"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",

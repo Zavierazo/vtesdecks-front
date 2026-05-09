@@ -99,6 +99,17 @@
                     </span>
                   </p>
                   }
+                  @if (deck.archetype) {
+                  <p class="mb-1">
+                    <b>{{ t('archetype') }}: </b>
+                    @if (deck.archetype.icon) {
+                    <i class="vtes" [ngClass]="deck.archetype.icon"></i>
+                    }
+                    <a class="text-decoration-none ms-1" [routerLink]="['/metagame', deck.archetype.id]">{{
+                      deck.archetype.name }}</a>
+                    <span class="text-muted ms-1">({{ deck.archetype.type }})</span>
+                  </p>
+                  }
                   @if (deck.type==='PRECONSTRUCTED' && deck.url) {
                   <p class="mb-1">
                     <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"

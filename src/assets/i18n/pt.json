@@ -129,7 +129,8 @@
     "sort_by_clan": "Clã",
     "sort_by_group": "Grupo",
     "delete": "Eliminar",
-    "compare": "Comparar"
+    "compare": "Comparar",
+    "archetype": "Arquétipo"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",

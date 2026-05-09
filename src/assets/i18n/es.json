@@ -129,7 +129,8 @@
     "sort_by_clan": "Clan",
     "sort_by_group": "Grupo",
     "delete": "Borrar",
-    "compare": "Comparar"
+    "compare": "Comparar",
+    "archetype": "Arquetipo"
   },
   "deck_comparison": {
     "title": "Comparar Mazo",
