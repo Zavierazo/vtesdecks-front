@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "com.vtesdecks.twa",
       "sha256_cert_fingerprints": [
-        "9C:27:E7:5B:7B:A5:C3:60:84:DB:CA:AA:A4:97:50:9E:BD:BE:82:E0:40:A6:EC:11:E1:C5:4A:1E:E0:16:ED:40"
+        "9C:27:E7:5B:7B:A5:C3:60:84:DB:CA:AA:A4:97:50:9E:BD:BE:82:E0:40:A6:EC:11:E1:C5:4A:1E:E0:16:ED:40",
+        "79:08:B2:F3:0D:D2:30:03:05:F0:FF:F1:8B:A9:94:67:7F:FB:78:4F:50:06:F2:D4:54:72:D9:B0:A6:0F:72:BA"
       ]
     }
   }
