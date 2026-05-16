@@ -1,20 +1,20 @@
-import { Injectable, TemplateRef } from '@angular/core'
+import { Injectable, signal, TemplateRef } from '@angular/core'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
-  toasts: any[] = []
+  toasts = signal<any[]>([])
 
   show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-    this.toasts.push({ textOrTpl, ...options })
+    this.toasts.update((toasts) => [...toasts, { textOrTpl, ...options }])
   }
 
   remove(toast: any) {
-    this.toasts = this.toasts.filter((t) => t !== toast)
+    this.toasts.update((toasts) => toasts.filter((t) => t !== toast))
   }
 
   clear() {
-    this.toasts.splice(0, this.toasts.length)
+    this.toasts.set([])
   }
 }

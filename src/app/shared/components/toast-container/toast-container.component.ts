@@ -6,7 +6,7 @@ import { ToastService } from '@services'
 @Component({
   selector: 'app-toasts',
   template: `
-    @for (toast of toastService.toasts; track toast) {
+    @for (toast of toastService.toasts(); track toast) {
       <ngb-toast
         [class]="toast.classname"
         [autohide]="true"

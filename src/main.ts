@@ -4,7 +4,7 @@ import {
   importProvidersFrom,
   inject,
   provideAppInitializer,
-  provideZoneChangeDetection,
+  provideZonelessChangeDetection,
   SecurityContext,
 } from '@angular/core'
 
@@ -234,7 +234,7 @@ Sentry.init({
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     importProvidersFrom(
       CommonModule,
       NgbModule,
