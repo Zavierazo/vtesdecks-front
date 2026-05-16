@@ -69,6 +69,7 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { filter, Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
+import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
@@ -398,6 +399,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ...(this.deckQuery.getDeck()?.crypt ?? []),
       ...(this.deckQuery.getDeck()?.library ?? []),
     ]
+  }
+
+  onAddToCollection(deck: ApiDeck): void {
+    const modalRef = this.modalService.open(AddDeckToCollectionModalComponent, {
+      centered: true,
+    })
+    modalRef.componentInstance.preselectedDeck = deck
   }
 
   onCollectionTracker(): void {

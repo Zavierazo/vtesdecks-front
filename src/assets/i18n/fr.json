@@ -130,7 +130,8 @@
     "sort_by_group": "Groupe",
     "delete": "Supprimer",
     "compare": "Comparer",
-    "archetype": "Archétype"
+    "archetype": "Archétype",
+    "add_to_collection": "Ajouter à la Collection"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",

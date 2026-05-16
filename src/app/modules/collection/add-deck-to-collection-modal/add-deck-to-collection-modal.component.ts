@@ -12,7 +12,7 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiCollectionCard } from '@models'
+import { ApiCollectionCard, ApiDeck } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
@@ -37,6 +37,8 @@ export class AddDeckToCollectionModalComponent {
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
 
+  preselectedDeck: ApiDeck | null = null
+
   deckUrlControl = new FormControl<string>('', { nonNullable: true })
   copiesControl = new FormControl<number>(1, {
     nonNullable: true,
@@ -56,7 +58,9 @@ export class AddDeckToCollectionModalComponent {
   canAdd = computed(
     () =>
       !this.isLoading() &&
-      (!!this.deckUrlValue() || this.selectedRecentDeck() !== null),
+      (this.preselectedDeck !== null ||
+        !!this.deckUrlValue() ||
+        this.selectedRecentDeck() !== null),
   )
 
   onSelectRecentDeck(deck: LastVisitedDeck): void {
@@ -69,6 +73,11 @@ export class AddDeckToCollectionModalComponent {
   }
 
   onAddToCollection(): void {
+    if (this.preselectedDeck) {
+      this.addDeckById(this.preselectedDeck.id)
+      return
+    }
+
     const selectedDeck = this.selectedRecentDeck()
     if (selectedDeck) {
       this.addDeckById(selectedDeck.id)

@@ -130,7 +130,8 @@
     "sort_by_group": "Grupo",
     "delete": "Borrar",
     "compare": "Comparar",
-    "archetype": "Arquetipo"
+    "archetype": "Arquetipo",
+    "add_to_collection": "Añadir a la Colección"
   },
   "deck_comparison": {
     "title": "Comparar Mazo",

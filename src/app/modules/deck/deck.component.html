@@ -185,6 +185,11 @@
                       'bi-check-square-fill': collectionTracker
                     }"></i>{{ t('collection_tracker') }}
                   </button>
+                  @if (deck.type === 'PRECONSTRUCTED') {
+                  <button class="btn btn-outline-primary" (click)="onAddToCollection(deck)" *isLogged="true">
+                    <i class="bi bi-collection me-2"></i>{{ t('add_to_collection') }}
+                  </button>
+                  }
                   <button class="btn btn-outline-primary" (click)="onShare()">
                     <i class="bi bi-share me-2"></i>{{ t('share') }}
                   </button>
