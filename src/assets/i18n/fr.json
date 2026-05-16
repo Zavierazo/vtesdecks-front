@@ -127,11 +127,7 @@
     "sort_by_name": "Nom",
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Groupe",
-    "delete": "Supprimer",
-    "compare": "Comparer",
-    "archetype": "Archétype",
-    "add_to_collection": "Ajouter à la Collection"
+    "sort_by_group": "Groupe"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",
@@ -186,7 +182,11 @@
     "sort_by_name": "Nom",
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Groupe"
+    "sort_by_group": "Groupe",
+    "suggested_crypt": "Crypte suggérée",
+    "suggested_library": "Bibliothèque suggérée",
+    "show_more_suggestions": "Afficher {{ count }} de plus",
+    "show_less_suggestions": "Afficher moins"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La Crypte doit contenir au moins {{ minCrypt }} cartes",
@@ -977,11 +977,11 @@
     "detail_count": "Qté",
     "detail_count_tip": "Nombre de copies par défaut dans cet archétype",
     "detail_appearance": "Dans decks",
-    "detail_appearance_tip": "Pourcentage des decks de l'archétype qui incluent cette carte",
+    "detail_appearance_tip": "Pourcentage des decks similaires qui incluent cette carte",
     "detail_avg": "Moy",
     "detail_avg_tip": "Nombre moyen de copies dans les decks incluant cette carte",
     "detail_range": "Étendue",
-    "detail_range_tip": "Copies min et max observées dans tous les decks de l'archétype",
+    "detail_range_tip": "Copies min et max observées dans tous les decks similaires",
     "meta_type": {
       "90_days": "90 jours",
       "180_days": "180 jours",

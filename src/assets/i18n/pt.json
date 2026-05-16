@@ -127,11 +127,7 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo",
-    "delete": "Eliminar",
-    "compare": "Comparar",
-    "archetype": "Arquétipo",
-    "add_to_collection": "Adicionar à Coleção"
+    "sort_by_group": "Grupo"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",
@@ -186,7 +182,11 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "suggested_crypt": "Cripta Sugerida",
+    "suggested_library": "Biblioteca Sugerida",
+    "show_more_suggestions": "Mostrar {{ count }} mais",
+    "show_less_suggestions": "Mostrar menos"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
@@ -976,11 +976,11 @@
     "detail_count": "Qtd",
     "detail_count_tip": "Número padrão de cópias neste arquétipo",
     "detail_appearance": "Nos baralhos",
-    "detail_appearance_tip": "Percentagem de baralhos do arquétipo que incluem esta carta",
+    "detail_appearance_tip": "Percentagem de baralhos semelhantes que incluem esta carta",
     "detail_avg": "Méd",
     "detail_avg_tip": "Número médio de cópias nos baralhos que incluem esta carta",
     "detail_range": "Intervalo",
-    "detail_range_tip": "Cópias mínimas e máximas vistas em todos os baralhos do arquétipo",
+    "detail_range_tip": "Cópias mínimas e máximas vistas em todos os baralhos semelhantes",
     "meta_type": {
       "90_days": "últimos 90 dias",
       "180_days": "últimos 180 dias",

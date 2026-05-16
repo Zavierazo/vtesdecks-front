@@ -4,6 +4,7 @@ import {
   ApiAiAskAsyncRequest,
   ApiAiAskAsyncResponse,
   ApiAiAskStatusResponse,
+  ApiCard,
   ApiCardInfo,
   ApiCardScanRequest,
   ApiCardScanResponse,
@@ -29,6 +30,7 @@ import {
   ApiSearchResponse,
   ApiSet,
   ApiShop,
+  ApiSuggestedCardsResponse,
   ApiUser,
   ApiUserCountry,
   ApiUserNotification,
@@ -347,6 +349,13 @@ export class ApiDataService {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}`,
       deck,
+    )
+  }
+
+  getSuggestedCards(cards: ApiCard[]): Observable<ApiSuggestedCardsResponse> {
+    return this.httpClient.post<ApiSuggestedCardsResponse>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/suggested-cards`,
+      { cards },
     )
   }
 

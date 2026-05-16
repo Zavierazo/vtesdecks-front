@@ -186,7 +186,11 @@
     "sort_by_name": "Name",
     "sort_by_capacity": "Capacity",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Group"
+    "sort_by_group": "Group",
+    "suggested_crypt": "Suggested Crypt",
+    "suggested_library": "Suggested Library",
+    "show_more_suggestions": "Show {{ count }} more",
+    "show_less_suggestions": "Show less"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
@@ -977,11 +981,11 @@
     "detail_count": "Count",
     "detail_count_tip": "Default number of copies in this archetype",
     "detail_appearance": "In decks",
-    "detail_appearance_tip": "Percentage of archetype decks that include this card",
+    "detail_appearance_tip": "Percentage of similar decks that include this card",
     "detail_avg": "Avg",
     "detail_avg_tip": "Average number of copies across decks that include this card",
     "detail_range": "Range",
-    "detail_range_tip": "Min and max copies seen across all archetype decks",
+    "detail_range_tip": "Min and max copies seen across all similar decks",
     "meta_type": {
       "90_days": "90 days ago",
       "180_days": "180 days ago",

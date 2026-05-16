@@ -7,13 +7,14 @@ import {
   ApiDeckLimitedFormat,
   ApiDisciplineStat,
   ApiLibrary,
+  ApiSuggestedCardsResponse,
   CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
   LibraryFilter,
 } from '@models'
 import { isCrypt, isLibrary, roundNumber } from '@utils'
-import { combineLatest, map, Observable } from 'rxjs'
+import { combineLatest, distinctUntilChanged, map, Observable } from 'rxjs'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
@@ -28,6 +29,16 @@ export class DeckBuilderQuery {
 
   selectDeckId(): Observable<string | undefined> {
     return this.store.select((state) => state.id)
+  }
+
+  selectCards(): Observable<ApiCard[]> {
+    return this.store.select((state) => state.cards)
+  }
+
+  selectSuggestedCards(): Observable<
+    ApiSuggestedCardsResponse | null | undefined
+  > {
+    return this.store.select((state) => state.suggestedCards)
   }
 
   selectSaved(): Observable<boolean> {
@@ -266,6 +277,27 @@ export class DeckBuilderQuery {
       .getValue()
       .cards.filter(isCrypt)
       .reduce((acc, c) => acc + c.number, 0)
+  }
+
+  isBelowThreshold(): boolean {
+    return this.getCryptSize() < 6 || this.getLibrarySize() < 40
+  }
+
+  selectBelowThreshold(): Observable<boolean> {
+    return combineLatest([
+      this.selectCryptSize(),
+      this.selectLibrarySize(),
+    ]).pipe(
+      map(([cryptSize, librarySize]) => cryptSize < 6 || librarySize < 40),
+    )
+  }
+
+  selectCardFingerprint(): Observable<string> {
+    return this.store
+      .select((state) =>
+        state.cards.map((c) => `${c.id}:${c.number}`).join(','),
+      )
+      .pipe(distinctUntilChanged())
   }
 
   getCrypt(): ApiCrypt[] {

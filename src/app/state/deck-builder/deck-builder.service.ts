@@ -15,6 +15,7 @@ import {
 import { ApiDataService } from '@services'
 import { getSetAbbrev } from '@utils'
 import {
+  catchError,
   combineLatest,
   EMPTY,
   finalize,
@@ -418,6 +419,17 @@ export class DeckBuilderService {
     this.store.setLibraryErrors(libraryErrors)
 
     return isValid
+  }
+
+  fetchSuggestedCards(): void {
+    if (this.query.isBelowThreshold()) {
+      this.store.setSuggestedCards(null)
+      return
+    }
+    this.apiDataService
+      .getSuggestedCards(this.store.getValue().cards)
+      .pipe(catchError(() => of(null)))
+      .subscribe((result) => this.store.setSuggestedCards(result))
   }
 
   private fetchCollection(): Observable<ApiCollectionPage> {

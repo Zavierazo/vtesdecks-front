@@ -46,12 +46,22 @@ import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon } from '@utils'
-import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  skip,
+  switchMap,
+  tap,
+} from 'rxjs'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 import { environment } from './../../../environments/environment'
+import { BuilderSuggestionsComponent } from './builder-suggestions/builder-suggestions.component'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
@@ -79,6 +89,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
     NgClass,
     CryptComponent,
     LibraryListComponent,
+    BuilderSuggestionsComponent,
     AsyncPipe,
     TranslocoPipe,
     MarkdownTextareaComponent,
@@ -126,6 +137,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
 
+  suggestedCards$ = this.deckBuilderQuery.selectSuggestedCards()
+
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
     {
@@ -159,6 +172,18 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           this.changeDetector.markForCheck()
         },
       })
+
+    this.deckBuilderQuery
+      .selectCards()
+      .pipe(
+        untilDestroyed(this),
+        map((cards) => cards.map((c) => `${c.id}:${c.number}`).join(',')),
+        distinctUntilChanged(),
+        debounceTime(5000),
+        skip(1),
+        tap(() => this.deckBuilderService.fetchSuggestedCards()),
+      )
+      .subscribe()
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -503,6 +528,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       this.deckBuilderService.validateDeck()
     }
     this.changeDetector.markForCheck()
+    this.deckBuilderService.fetchSuggestedCards()
   }
 
   openLimitedFormatModal(): void {
