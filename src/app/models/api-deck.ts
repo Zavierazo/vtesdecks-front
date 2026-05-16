@@ -1,4 +1,5 @@
 import { ApiCard } from './api-card'
+import { ApiDeckArchetype } from './api-deck-archetype'
 import { ApiDeckExtra } from './api-deck-extra'
 import { ApiDeckStats } from './api-deck-stats'
 import { ApiDeckWarning } from './api-deck-warning'
@@ -42,4 +43,5 @@ export interface ApiDeck {
   creationDate: Date
   modifyDate: Date
   extra?: ApiDeckExtra
+  archetype?: Pick<ApiDeckArchetype, 'id' | 'name' | 'icon' | 'type'> | null
 }

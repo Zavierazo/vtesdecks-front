@@ -118,4 +118,22 @@
       0 4px 8px rgba(0, 0, 0, 0.08);
     border-color: rgba(var(--bs-primary-rgb), 0.3);
   }
+
+  &.metagame-card--clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-left-color: var(--bs-primary);
+
+      .card-title a {
+        color: var(--bs-primary) !important;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bs-primary);
+      outline-offset: 2px;
+    }
+  }
 }

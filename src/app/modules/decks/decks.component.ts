@@ -14,12 +14,12 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService } from '@services'
+import { MediaService, SeoService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { DecksQuery } from '@state/decks/decks.query'
@@ -58,6 +58,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     LoadingComponent,
     NgbTooltip,
     AsyncPipe,
+    RouterLink,
   ],
 })
 export class DecksComponent implements OnInit {
@@ -81,8 +82,15 @@ export class DecksComponent implements OnInit {
   mainForm!: FormGroup
 
   readonly filters = viewChild<DeckFiltersComponent>('filters')
+  private readonly seoService = inject(SeoService)
 
   ngOnInit() {
+    this.seoService.update({
+      title: 'Decks',
+      description:
+        'Browse and search thousands of VTES tournament-winning and community decks. Filter by clan, discipline, author and more.',
+      canonicalUrl: 'https://vtesdecks.com/decks',
+    })
     this.isLoading$ = this.decksQuery.selectLoading()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.route.queryParams

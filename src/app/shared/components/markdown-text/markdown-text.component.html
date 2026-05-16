@@ -1,3 +1,5 @@
-<ng-container *appLazyRender>
-  <markdown [data]="data() | markdownSanitize" [disableSanitizer]="true" emoji />
-</ng-container>
+@defer (on viewport) {
+<markdown [data]="data() | markdownSanitize" [disableSanitizer]="true" emoji />
+} @placeholder {
+<div style="min-height: 60px"></div>
+}

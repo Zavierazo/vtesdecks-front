@@ -28,7 +28,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService } from '@services'
+import { MediaService, SeoService } from '@services'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
@@ -87,6 +87,7 @@ export class CryptSectionComponent implements OnInit {
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
+  private readonly seoService = inject(SeoService)
   private router = inject(Router)
   private location = inject(Location)
 
@@ -117,6 +118,12 @@ export class CryptSectionComponent implements OnInit {
   ]
 
   ngOnInit() {
+    this.seoService.update({
+      title: 'Crypt',
+      description:
+        'Browse and search the complete VTES Crypt card database. Find vampire cards by clan, discipline, capacity, and more.',
+      canonicalUrl: 'https://vtesdecks.com/cards/crypt',
+    })
     this.listenScroll()
     this.initFilters()
   }

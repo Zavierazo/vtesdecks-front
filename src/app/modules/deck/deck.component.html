@@ -29,7 +29,8 @@
                     <a class="text-decoration-none d-inline-flex align-items-center"
                       [routerLink]="'/user/' + deck.user.user">
                       @if(deck.user.profileImage) {
-                      <img [src]="deck.user.profileImage" alt="" class="rounded-circle me-2" width="32" height="32">
+                      <img [src]="deck.user.profileImage" [alt]="deck.user.displayName" class="rounded-circle me-2"
+                        width="32" height="32">
                       }
                       <span>
                         <strong>{{ deck.author }}</strong>
@@ -96,6 +97,17 @@
                         <i class="bi bi-funnel-fill me-1"></i>{{ deck.limitedFormat }}
                       </span>
                     </span>
+                  </p>
+                  }
+                  @if (deck.archetype) {
+                  <p class="mb-1">
+                    <b>{{ t('archetype') }}: </b>
+                    @if (deck.archetype.icon) {
+                    <i class="vtes" [ngClass]="deck.archetype.icon"></i>
+                    }
+                    <a class="text-decoration-none ms-1" [routerLink]="['/metagame', deck.archetype.id]">{{
+                      deck.archetype.name }}</a>
+                    <span class="text-muted ms-1">({{ deck.archetype.type }})</span>
                   </p>
                   }
                   @if (deck.type==='PRECONSTRUCTED' && deck.url) {
@@ -173,6 +185,11 @@
                       'bi-check-square-fill': collectionTracker
                     }"></i>{{ t('collection_tracker') }}
                   </button>
+                  @if (deck.type === 'PRECONSTRUCTED') {
+                  <button class="btn btn-outline-primary" (click)="onAddToCollection(deck)" *isLogged="true">
+                    <i class="bi bi-collection me-2"></i>{{ t('add_to_collection') }}
+                  </button>
+                  }
                   <button class="btn btn-outline-primary" (click)="onShare()">
                     <i class="bi bi-share me-2"></i>{{ t('share') }}
                   </button>

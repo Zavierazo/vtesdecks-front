@@ -126,7 +126,9 @@
   <div class="col-12 d-flex align-items-center mt-3">
     <div class="flex-grow-1 d-md-none"></div>
     <div class="d-flex align-items-top justify-content-center">
-      <h1 (click)="openCryptBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+      <button type="button" class="btn btn-link p-0 mb-0" (click)="openCryptBuilder()"
+        [attr.aria-label]="'shared.add_to_crypt' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
+          aria-hidden="true"></i></button>
       <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
       <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
         {{ (cryptSize$ | async)! }}
@@ -230,10 +232,17 @@
     }
     }
   </div>
+  @let rawSuggestions = suggestedCards$ | async;
+  <!-- Suggested Crypt -->
+  <app-builder-suggestions [title]="t('suggested_crypt')" [rawCards]="rawSuggestions?.keyCrypt ?? []"
+    [deckCards]="(cryptList$ | async) ?? []" type="crypt" (cardAdded)="addCard($event)"
+    (cardRemoved)="removeCard($event)" />
   <div class="col-12 d-flex align-items-center mt-5">
     <div class="flex-grow-1 d-md-none"></div>
     <div class="d-flex align-items-top  justify-content-center">
-      <h1 (click)="openLibraryBuilder()"><i class="bi bi-plus-square btn-icon" aria-hidden="true"></i></h1>
+      <button type="button" class="btn btn-link p-0 mb-0" (click)="openLibraryBuilder()"
+        [attr.aria-label]="'shared.add_to_library' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
+          aria-hidden="true"></i></button>
       <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
       <span class="circle_number ms-2" [title]="'deck.total_library' | transloco">
         {{ (librarySize$ | async)! }}
@@ -320,4 +329,8 @@
       (cardRemoved)="removeCard($event)" />
     }
   </div>
+  <!-- Suggested Library -->
+  <app-builder-suggestions [title]="t('suggested_library')" [rawCards]="rawSuggestions?.keyLibrary ?? []"
+    [deckCards]="(libraryList$ | async) ?? []" type="library" (cardAdded)="addCard($event)"
+    (cardRemoved)="removeCard($event)" />
 </main>

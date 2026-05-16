@@ -1,0 +1,45 @@
+.suggested-card-row {
+  app-crypt,
+  app-library {
+    display: block;
+    margin-top: -1px;
+  }
+
+  @media (min-width: 576px) {
+    app-archetype-card-stats {
+      align-self: stretch;
+      display: flex !important;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    border-bottom: 1px solid var(--bs-border-color);
+
+    app-crypt,
+    app-library {
+      margin-bottom: -1px;
+    }
+  }
+}
+
+.suggested-card-stats {
+  border: 1px solid var(--bs-border-color);
+}
+
+.suggestions-toggle {
+  cursor: pointer;
+  text-align: center;
+  padding: 0.25rem 0;
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+    pointer-events: none;
+
+    i {
+      transition: transform 0.3s ease;
+      font-size: 1rem;
+    }
+  }
+}

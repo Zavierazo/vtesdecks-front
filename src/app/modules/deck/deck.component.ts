@@ -15,7 +15,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
-import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import {
   TranslocoDirective,
@@ -46,6 +45,7 @@ import {
   DeckHistoryService,
   MediaService,
   PreviousRouteService,
+  SeoService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
@@ -69,6 +69,7 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { provideMarkdown } from 'ngx-markdown'
 import { filter, Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
+import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
@@ -128,7 +129,7 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
 export class DeckComponent implements OnInit, AfterViewInit {
   private static readonly similarDecksLimit = 4
   private readonly route = inject(ActivatedRoute)
-  private readonly titleService = inject(Title)
+  private readonly seoService = inject(SeoService)
   private readonly deckQuery = inject(DeckQuery)
   private readonly deckService = inject(DeckService)
   private readonly decksService = inject(DecksService)
@@ -212,8 +213,15 @@ export class DeckComponent implements OnInit, AfterViewInit {
         const collectionTrackerOwner = deck?.owner ? deck.collection : false
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
-        this.titleService.setTitle(`VTES Decks - Deck ${deck?.name}`)
         if (deck) {
+          const deckDescription = deck.description
+            ? `${deck.description.slice(0, 155)}…`
+            : `${deck.name} by ${deck.author} – a VTES deck on VTESDecks.com.`
+          this.seoService.update({
+            title: `Deck ${deck.name}`,
+            description: `Browse thousands of tournament-winning and community VTES decks, build your own, track your collection and explore the metagame. ${deckDescription}`,
+            canonicalUrl: `https://vtesdecks.com/deck/${deck.id}`,
+          })
           this.deckHistoryService.addVisitedDeck(
             deck.id,
             deck.name,
@@ -391,6 +399,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ...(this.deckQuery.getDeck()?.crypt ?? []),
       ...(this.deckQuery.getDeck()?.library ?? []),
     ]
+  }
+
+  onAddToCollection(deck: ApiDeck): void {
+    const modalRef = this.modalService.open(AddDeckToCollectionModalComponent, {
+      centered: true,
+    })
+    modalRef.componentInstance.preselectedDeck = deck
   }
 
   onCollectionTracker(): void {

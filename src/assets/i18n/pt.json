@@ -127,9 +127,7 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo",
-    "delete": "Eliminar",
-    "compare": "Comparar"
+    "sort_by_group": "Grupo"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",
@@ -184,7 +182,11 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "suggested_crypt": "Cripta Sugerida",
+    "suggested_library": "Biblioteca Sugerida",
+    "show_more_suggestions": "Mostrar {{ count }} mais",
+    "show_less_suggestions": "Mostrar menos"
   },
   "deck_builder_service": {
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
@@ -221,7 +223,8 @@
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
     "supporter": "Membro no Patreon",
-    "show_more": "Mostrar mais"
+    "show_more": "Mostrar mais",
+    "ebay_affiliate_disclosure": "Este site contém links de afiliados pelos quais posso ser compensado"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",
@@ -247,7 +250,8 @@
     "show_more": "Ver mais",
     "price_cheapest": "Preço: Barato",
     "price_expensive": "Preço: Caro",
-    "deck_preview": "Vista previa"
+    "deck_preview": "Vista previa",
+    "new_deck": "Novo Baralho"
   },
   "draw_cards": {
     "title": "Comprar Cartas",
@@ -467,7 +471,9 @@
     "field_required": "{{ field }} é obrigatório.",
     "service_temporarily_unavailable": "Serviço temporariamente indisponível. Por favor, tente novamente mais tarde.",
     "crypt": "Cripta",
+    "add_to_crypt": "Adicionar à Cripta",
     "library": "Biblioteca",
+    "add_to_library": "Adicionar à Biblioteca",
     "collection": "Minha Coleção",
     "unexpected_error": "Erro inesperado. Por favor, tente novamente mais tarde.",
     "unexpected_error_with_message": "{{ message }}. Por favor, tente novamente mais tarde.",
@@ -926,7 +932,12 @@
     "sets": "Expansões",
     "missing_only": "Apenas faltando",
     "show_all": "Mostrar todas",
-    "no_cards": "Nenhuma carta encontrada"
+    "no_cards": "Nenhuma carta encontrada",
+    "add_deck_to_collection": "Adicionar baralho à coleção",
+    "add_deck_enter_url": "Inserir URL do baralho",
+    "add_deck_url_hint": "Insira uma URL de baralho do vtesdecks.com para adicionar todas as suas cartas à sua coleção.",
+    "add_deck_invalid_url": "URL de baralho inválida. Por favor, insira uma URL válida do vtesdecks.com.",
+    "add_deck_or_select_recent": "Ou selecione entre os baralhos visitados recentemente"
   },
   "advent": {
     "home_title": "Calendário do Advento VTES {{ year }}",
@@ -958,6 +969,18 @@
     "delete_title": "Excluir este arquétipo?",
     "delete_message": "O arquétipo será excluído. Esta ação não pode ser desfeita.",
     "show_from_last": "Mostrar o metajogo dos",
+    "detail_back": "Voltar ao Metajogo",
+    "detail_base_deck": "Baralho de referência",
+    "detail_core_cards": "Cartas Principais",
+    "detail_suggestions": "Sugestões",
+    "detail_count": "Qtd",
+    "detail_count_tip": "Número padrão de cópias neste arquétipo",
+    "detail_appearance": "Nos baralhos",
+    "detail_appearance_tip": "Percentagem de baralhos semelhantes que incluem esta carta",
+    "detail_avg": "Méd",
+    "detail_avg_tip": "Número médio de cópias nos baralhos que incluem esta carta",
+    "detail_range": "Intervalo",
+    "detail_range_tip": "Cópias mínimas e máximas vistas em todos os baralhos semelhantes",
     "meta_type": {
       "90_days": "últimos 90 dias",
       "180_days": "últimos 180 dias",

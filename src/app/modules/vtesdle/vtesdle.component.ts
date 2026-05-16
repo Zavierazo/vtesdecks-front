@@ -27,7 +27,7 @@ import {
 } from 'rxjs'
 import { environment } from '../../../environments/environment'
 
-import { ApiDataService, LocalStorageService } from '@services'
+import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { sortTrigramSimilarity } from '@utils'
 
@@ -52,6 +52,7 @@ export class VtesdleComponent implements OnInit {
   private apiDataService = inject(ApiDataService)
   private cryptQuery = inject(CryptQuery)
   private changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly seoService = inject(SeoService)
 
   maxLives = 6
   infiniteMode = false
@@ -60,6 +61,12 @@ export class VtesdleComponent implements OnInit {
   guessed = false
 
   ngOnInit() {
+    this.seoService.update({
+      title: 'VTESDLE',
+      description:
+        'Play VTESDLE – the daily VTES card guessing game. Guess the hidden Vampire: the Eternal Struggle crypt card!',
+      canonicalUrl: 'https://vtesdecks.com/vtesdle',
+    })
     this.route.queryParams
       .pipe(
         untilDestroyed(this),

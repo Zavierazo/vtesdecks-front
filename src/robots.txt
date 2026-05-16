@@ -1,1 +1,7 @@
 User-agent: *
+Disallow: /collection
+Disallow: /user
+Disallow: /reset-password
+Disallow: /verify-account
+
+Sitemap: https://api.vtesdecks.com/sitemap.xml

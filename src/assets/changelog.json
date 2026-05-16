@@ -1,5 +1,18 @@
 [
   {
+    "version": "2.68.0",
+    "date": "16th May, 2026",
+    "changes": [
+      "Added new metagame archetype detail page showing key cards with appearance rate, avg, range stats and a reference deck link.",
+      "Deck Builder now suggests crypt and library cards based on your current deck composition.",
+      "Deck view now shows the associated metagame archetype with a direct link to the archetype detail page.",
+      "Added a 'New Deck' shortcut button in the My Decks section for quicker access to the Deck Builder.",
+      "Added option to add cards from any deck to your collection by URL or recently visited decks.",
+      "Added a shortcut button on preconstructed deck pages to add the deck directly to your collection.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.67.0",
     "date": "24th April, 2026",
     "changes": [

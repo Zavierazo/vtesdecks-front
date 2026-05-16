@@ -1,0 +1,66 @@
+@if (filteredCards().length) {
+<div class="col-12 mt-4">
+  <div class="suggestion-section bg-body rounded-3 overflow-hidden">
+    <div class="d-flex align-items-center pt-3 pb-2">
+      <h5 class="mb-0">{{ title() }}</h5>
+    </div>
+    @let allCards = filteredCards();
+    <div>
+      <ul class="list-group">
+        @for (card of allCards.slice(0, previewCount); track card.id) {
+        <li class="suggested-card-row d-flex flex-column flex-sm-row align-items-sm-center">
+          <div class="flex-grow-1 min-w-0">
+            @if (type() === 'crypt') {
+            <app-crypt [card]="{ id: card.id, number: 0 }" [withControls]="true" [disableClickPopover]="true"
+              (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)" />
+            } @else {
+            <app-library [card]="{ id: card.id, number: 0 }" [withControls]="true" [disableClickPopover]="true"
+              (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)" />
+            }
+          </div>
+          <app-archetype-card-stats class="suggested-card-stats" [stats]="card" />
+        </li>
+        }
+      </ul>
+      @let extraCards = allCards.slice(previewCount);
+      @if (extraCards.length > 0) {
+      @if (suggestionsCollapsed) {
+      <div class="suggestions-toggle" (click)="suggestionsCollapsed = false">
+        <button
+          class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+          <span class="small">{{ 'deck_builder.show_more_suggestions' | transloco: { count: extraCards.length }
+            }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      }
+      <div [ngbCollapse]="suggestionsCollapsed">
+        <ul class="list-group">
+          @for (card of extraCards; track card.id) {
+          <li class="suggested-card-row d-flex flex-column flex-sm-row align-items-sm-center">
+            <div class="flex-grow-1 min-w-0">
+              @if (type() === 'crypt') {
+              <app-crypt [card]="{ id: card.id, number: 0 }" [withControls]="true" [disableClickPopover]="true"
+                (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)" />
+              } @else {
+              <app-library [card]="{ id: card.id, number: 0 }" [withControls]="true" [disableClickPopover]="true"
+                (cardAdded)="cardAdded.emit($event)" (cardRemoved)="cardRemoved.emit($event)" />
+              }
+            </div>
+            <app-archetype-card-stats class="suggested-card-stats" [stats]="card" />
+          </li>
+          }
+        </ul>
+        <div class="suggestions-toggle" (click)="suggestionsCollapsed = true">
+          <button
+            class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
+            <span class="small">{{ 'deck_builder.show_less_suggestions' | transloco }}</span>
+            <i class="bi bi-chevron-up"></i>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

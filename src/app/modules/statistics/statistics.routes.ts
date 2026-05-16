@@ -6,6 +6,6 @@ export const STATISTICS_ROUTES: Routes = [
     loadComponent: () =>
       import('./statistics.component').then((m) => m.StatisticsComponent),
     pathMatch: 'full',
-    title: 'VTES Decks - Stadistics',
+    title: 'VTES Decks - Statistics',
   },
 ]

@@ -35,7 +35,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, ToastService } from '@services'
+import { ApiDataService, SeoService, ToastService } from '@services'
 import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
@@ -46,12 +46,22 @@ import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon } from '@utils'
-import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs'
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  skip,
+  switchMap,
+  tap,
+} from 'rxjs'
 import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
 import { environment } from './../../../environments/environment'
+import { BuilderSuggestionsComponent } from './builder-suggestions/builder-suggestions.component'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
@@ -79,6 +89,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
     NgClass,
     CryptComponent,
     LibraryListComponent,
+    BuilderSuggestionsComponent,
     AsyncPipe,
     TranslocoPipe,
     MarkdownTextareaComponent,
@@ -96,6 +107,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly deckBuilderService = inject(DeckBuilderService)
   private readonly decksService = inject(DecksService)
   private readonly toastService = inject(ToastService)
+  private readonly seoService = inject(SeoService)
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly clipboard = inject(Clipboard)
@@ -125,6 +137,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
 
+  suggestedCards$ = this.deckBuilderQuery.selectSuggestedCards()
+
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
     {
@@ -140,6 +154,12 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   ]
 
   ngOnInit() {
+    this.seoService.update({
+      title: 'Deck Builder',
+      description:
+        'Build and publish your own VTES deck. Add crypt and library cards, manage quantities, and share with the community.',
+      canonicalUrl: 'https://vtesdecks.com/decks/builder',
+    })
     this.initForm()
     this.initDeck()
       .pipe(untilDestroyed(this))
@@ -152,6 +172,18 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           this.changeDetector.markForCheck()
         },
       })
+
+    this.deckBuilderQuery
+      .selectCards()
+      .pipe(
+        untilDestroyed(this),
+        map((cards) => cards.map((c) => `${c.id}:${c.number}`).join(',')),
+        distinctUntilChanged(),
+        debounceTime(5000),
+        skip(1),
+        tap(() => this.deckBuilderService.fetchSuggestedCards()),
+      )
+      .subscribe()
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -496,6 +528,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       this.deckBuilderService.validateDeck()
     }
     this.changeDetector.markForCheck()
+    this.deckBuilderService.fetchSuggestedCards()
   }
 
   openLimitedFormatModal(): void {

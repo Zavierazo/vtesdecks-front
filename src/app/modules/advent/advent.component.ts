@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService } from '@services'
+import { ApiDataService, SeoService } from '@services'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -38,6 +38,7 @@ export class AdventComponent implements OnInit, OnDestroy {
   modalService = inject(NgbModal)
   authQuery = inject(AuthQuery)
   router = inject(Router)
+  private readonly seoService = inject(SeoService)
 
   today = this.authQuery.serverDate()
   currentYear = new Date().getFullYear()
@@ -60,6 +61,12 @@ export class AdventComponent implements OnInit, OnDestroy {
   })
 
   ngOnInit(): void {
+    this.seoService.update({
+      title: 'Advent 2025',
+      description:
+        'Discover the VTES Advent Calendar 2025! Unlock a new deck every day in December.',
+      canonicalUrl: 'https://vtesdecks.com/advent',
+    })
     if (this.adventData) {
       this.authQuery
         .selectAuthenticated()

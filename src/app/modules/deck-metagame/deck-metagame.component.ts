@@ -11,7 +11,7 @@ import { TranslocoDirective } from '@jsverse/transloco'
 import { MetaType } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DeckArchetypeCrudService } from '@services'
+import { DeckArchetypeCrudService, SeoService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 import { DeckMetagameCardComponent } from './deck-metagame-card/deck-metagame-card.component'
 import { DeckMetagameModalComponent } from './deck-metagame-modal/deck-metagame-modal.component'
@@ -35,6 +35,7 @@ export class DeckMetagameComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly crud = inject(DeckArchetypeCrudService)
   private readonly authQuery = inject(AuthQuery)
+  private readonly seoService = inject(SeoService)
 
   /** Optional maximum number of archetypes to display (used by homepage) */
   @Input() limit?: number
@@ -45,6 +46,14 @@ export class DeckMetagameComponent implements OnInit {
   metaTypeControl = new FormControl<MetaType>('TOURNAMENT_365')
 
   ngOnInit() {
+    if (!this.limit) {
+      this.seoService.update({
+        title: 'Metagame',
+        description:
+          'Explore the current VTES metagame. Discover the top tournament archetypes and their performance.',
+        canonicalUrl: 'https://vtesdecks.com/metagame',
+      })
+    }
     this.onMetaTypeChange()
     if (this.authQuery.isRole('maintainer')) {
       this.crud.loadSuggestions().pipe(untilDestroyed(this)).subscribe()

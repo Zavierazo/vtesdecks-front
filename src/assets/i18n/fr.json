@@ -127,9 +127,7 @@
     "sort_by_name": "Nom",
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Groupe",
-    "delete": "Supprimer",
-    "compare": "Comparer"
+    "sort_by_group": "Groupe"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",
@@ -184,7 +182,11 @@
     "sort_by_name": "Nom",
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Groupe"
+    "sort_by_group": "Groupe",
+    "suggested_crypt": "Crypte suggérée",
+    "suggested_library": "Bibliothèque suggérée",
+    "show_more_suggestions": "Afficher {{ count }} de plus",
+    "show_less_suggestions": "Afficher moins"
   },
   "deck_builder_service": {
     "min_crypt_cards": "La Crypte doit contenir au moins {{ minCrypt }} cartes",
@@ -220,7 +222,8 @@
     "tracked_collection": "Suivi dans la collection",
     "cards_in_collection_tooltip": "{{ collected }} sur {{ total }} cartes en collection",
     "share": "Partager",
-    "show_more": "En voir plus"
+    "show_more": "En voir plus",
+    "ebay_affiliate_disclosure": "Ce site contient des liens d'affiliation pour lesquels je peux être rémunéré"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
@@ -246,7 +249,8 @@
     "show_more": "En voir plus",
     "price_cheapest": "Prix : Le moins cher",
     "price_expensive": "Prix : Le plus cher",
-    "deck_preview": "Aperçu du deck"
+    "deck_preview": "Aperçu du deck",
+    "new_deck": "Nouveau Deck"
   },
   "draw_cards": {
     "title": "Tirage de cartes",
@@ -465,7 +469,9 @@
     "field_required": "{{ field }} est requis.",
     "service_temporarily_unavailable": "Service temporairement indisponible. Veuillez patienter...",
     "crypt": "Crypte",
+    "add_to_crypt": "Ajouter à la Crypte",
     "library": "Bibliothèque",
+    "add_to_library": "Ajouter à la Bibliothèque",
     "collection": "Ma Collection",
     "unexpected_error": "Erreur inattendue. Veuillez réessayer plus tard.",
     "unexpected_error_with_message": "{{ message }}. Veuillez réessayer plus tard.",
@@ -927,7 +933,12 @@
     "missing_only": "Cartes manquantes uniquement",
     "show_all": "Tout afficher",
     "close": "Fermer",
-    "no_cards": "Aucune carte trouvée"
+    "no_cards": "Aucune carte trouvée",
+    "add_deck_to_collection": "Ajouter un deck à la collection",
+    "add_deck_enter_url": "Saisir l'URL du deck",
+    "add_deck_url_hint": "Saisissez une URL de deck vtesdecks.com pour ajouter toutes ses cartes à votre collection.",
+    "add_deck_invalid_url": "URL de deck invalide. Veuillez saisir une URL valide de vtesdecks.com.",
+    "add_deck_or_select_recent": "Ou sélectionnez parmi les decks récemment visités"
   },
   "advent": {
     "home_title": "Calendrier de l'Avent VTES {{ year }}",
@@ -959,6 +970,18 @@
     "delete_title": "Supprimer ce metagame ?",
     "delete_message": "Le metagame sera supprimé. Cette action est irréversible.",
     "show_from_last": "Afficher le metagame depuis",
+    "detail_back": "Retour au Metagame",
+    "detail_base_deck": "Deck de référence",
+    "detail_core_cards": "Cartes Principales",
+    "detail_suggestions": "Suggestions",
+    "detail_count": "Qté",
+    "detail_count_tip": "Nombre de copies par défaut dans cet archétype",
+    "detail_appearance": "Dans decks",
+    "detail_appearance_tip": "Pourcentage des decks similaires qui incluent cette carte",
+    "detail_avg": "Moy",
+    "detail_avg_tip": "Nombre moyen de copies dans les decks incluant cette carte",
+    "detail_range": "Étendue",
+    "detail_range_tip": "Copies min et max observées dans tous les decks similaires",
     "meta_type": {
       "90_days": "90 jours",
       "180_days": "180 jours",

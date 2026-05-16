@@ -5,6 +5,7 @@ import {
   ApiCollectionCard,
   ApiDeckExtra,
   ApiDeckLimitedFormat,
+  ApiSuggestedCardsResponse,
   CryptFilter,
   DeckCryptSortBy,
   DeckLibrarySortBy,
@@ -30,6 +31,7 @@ export interface DeckBuilderState {
   libraryErrors: string[]
   librarySortBy: DeckLibrarySortBy
   saved: boolean
+  suggestedCards?: ApiSuggestedCardsResponse | null
   collectionCards?: ApiCollectionCard[]
   validation?: (query: DeckBuilderQuery) => string[]
   customValidation?: (query: DeckBuilderQuery) => {
@@ -97,6 +99,10 @@ export class DeckBuilderStore {
 
   setLibraryErrors(errors: string[]): void {
     this.update((state) => ({ ...state, libraryErrors: errors }))
+  }
+
+  setSuggestedCards(cards: ApiSuggestedCardsResponse | null): void {
+    this.update((state) => ({ ...state, suggestedCards: cards }))
   }
 
   setSaved(saved: boolean): void {

@@ -8,7 +8,7 @@ import { LocalStorageService } from './local-storage.service'
 export class DeckHistoryService {
   private readonly localStorageService = inject(LocalStorageService)
   private readonly storageKey = 'lastVisitedDecks'
-  private readonly maxDecks = 10
+  private readonly maxDecks = 6
 
   addVisitedDeck(id: string, name: string, author: string): void {
     const decks = this.getLastVisitedDecks()

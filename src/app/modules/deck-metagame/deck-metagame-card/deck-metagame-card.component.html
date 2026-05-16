@@ -1,7 +1,11 @@
 @if(archetype(); as archetype){
 @let isMaintainer = isMaintainer$ | async;
 <div class="metagame-card rounded-3 h-100 overflow-hidden bg-body d-flex flex-column"
-  *transloco="let t; prefix: 'deck_metagame'">
+  *transloco="let t; prefix: 'deck_metagame'"
+  [class.metagame-card--clickable]="archetype.id !== undefined && archetype.id > 0"
+  [routerLink]="archetype.id !== undefined && archetype.id > 0 ? ['/metagame', archetype.id] : null"
+  [attr.role]="archetype.id !== undefined && archetype.id > 0 ? 'link' : null"
+  [attr.tabindex]="archetype.id !== undefined && archetype.id > 0 ? 0 : null" (keydown.enter)="navigate(archetype)">
   <!-- Header Section -->
   <div class="metagame-header px-3 pt-3 pb-2">
     <div class="d-flex align-items-start justify-content-between mb-2">
@@ -14,15 +18,17 @@
         <div class="flex-grow-1">
           <h5 class="card-title mb-1 fw-bold text-body">
             @if(archetype.id === undefined && isMaintainer){
-            <button class="btn btn-link text-start fw-bold text-decoration-none p-0" (click)="openModal(archetype)">
+            <button class="btn btn-link text-start fw-bold text-decoration-none p-0"
+              (click)="$event.stopPropagation(); openModal(archetype)">
               {{ archetype.name }}
             </button>
-            } @else if(archetype.deckId) {
-            <a class="text-decoration-none text-body" [routerLink]="['/deck', archetype.deckId]">{{ archetype.name
-              }}</a>
-            }@else if (archetype.id !== undefined) {
-            <a class="text-decoration-none text-body" [routerLink]="['/decks']"
-              [queryParams]="{ archetype: archetype.id }">
+            } @else if (archetype.id !== undefined && archetype.id > 0) {
+            <a class="text-decoration-none" [routerLink]="['/metagame', archetype.id]"
+              (click)="$event.stopPropagation()">
+              {{ archetype.name }}
+            </a>
+            } @else if (archetype.id === 0) {
+            <a class="text-decoration-none" [routerLink]="['/decks']" [queryParams]="{ archetype: 0 }">
               {{ archetype.name }}
             </a>
             }@else {
@@ -42,10 +48,10 @@
           <i class="bi bi-x-circle-fill"></i>
           }
         </span>
-        <button class="btn btn-sm btn-outline-secondary" (click)="openModal(archetype)">
+        <button class="btn btn-sm btn-outline-secondary" (click)="$event.stopPropagation(); openModal(archetype)">
           <i class="bi bi-pencil-fill"></i>
         </button>
-        <button class="btn btn-sm btn-outline-danger" (click)="delete(archetype)">
+        <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); delete(archetype)">
           <i class="bi bi-trash-fill"></i>
         </button>
       </div>
@@ -55,7 +61,7 @@
 
   <!-- Description Section -->
   <div class="metagame-body flex-grow-1 px-3 py-2">
-    <div class="description-content text-secondary small">
+    <div class="description-content text-secondary small" (click)="onDescriptionClick($event)">
       <app-markdown-text [data]="archetype.description"></app-markdown-text>
     </div>
   </div>
@@ -83,15 +89,18 @@
         }
       </div>
       @if(archetype.id !== undefined) {
-      <a class="view-decks-link d-inline-flex align-items-center text-decoration-none" [routerLink]="['/decks']"
-        [queryParams]="{ archetype: archetype.id }" [attr.aria-label]="t('decks_with_metagame')">
-        <span class="small fw-medium">{{ t('decks_with_metagame') }}</span>
-        @if(archetype.deckCount > 0) {
-        <span class="count-badge ms-2 d-inline-flex align-items-center justify-content-center rounded-2">{{
-          archetype.deckCount }}</span>
-        }
-        <i class="bi bi-arrow-right ms-1"></i>
-      </a>
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a class="view-decks-link d-inline-flex align-items-center text-decoration-none" [routerLink]="['/decks']"
+          [queryParams]="{ archetype: archetype.id }" [attr.aria-label]="t('decks_with_metagame')"
+          (click)="$event.stopPropagation()">
+          <span class="small fw-medium">{{ t('decks_with_metagame') }}</span>
+          @if(archetype.deckCount > 0) {
+          <span class="count-badge ms-2 d-inline-flex align-items-center justify-content-center rounded-2">{{
+            archetype.deckCount }}</span>
+          }
+          <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
       }
     </div>
   </div>

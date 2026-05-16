@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core'
-import { LazyRenderDirective } from '@shared/directives/lazy-render.directive'
 import { MarkdownSanitizePipe } from '@shared/pipes/markdown-sanitize.pipe'
 import { MarkdownComponent } from 'ngx-markdown'
 
@@ -8,7 +7,7 @@ import { MarkdownComponent } from 'ngx-markdown'
   templateUrl: './markdown-text.component.html',
   styleUrls: ['./markdown-text.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MarkdownComponent, MarkdownSanitizePipe, LazyRenderDirective],
+  imports: [MarkdownComponent, MarkdownSanitizePipe],
 })
 export class MarkdownTextComponent {
   data = input<string>()
