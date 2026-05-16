@@ -221,7 +221,8 @@
     "tracked_collection": "Suivi dans la collection",
     "cards_in_collection_tooltip": "{{ collected }} sur {{ total }} cartes en collection",
     "share": "Partager",
-    "show_more": "En voir plus"
+    "show_more": "En voir plus",
+    "ebay_affiliate_disclosure": "Ce site contient des liens d'affiliation pour lesquels je peux être rémunéré"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",

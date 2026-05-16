@@ -222,7 +222,8 @@
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
     "supporter": "Membro no Patreon",
-    "show_more": "Mostrar mais"
+    "show_more": "Mostrar mais",
+    "ebay_affiliate_disclosure": "Este site contém links de afiliados pelos quais posso ser compensado"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",

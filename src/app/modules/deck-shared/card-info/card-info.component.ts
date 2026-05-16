@@ -106,6 +106,13 @@ export class CardInfoComponent {
     }
   })
 
+  hasEbayShops = computed(
+    () =>
+      this.displayCardInfo()?.shopList?.some(
+        (shop) => shop.shopInfo.name === 'EBAY',
+      ) ?? false,
+  )
+
   setActiveSet(set: string): void {
     this.changeActiveSet.emit(set)
   }
