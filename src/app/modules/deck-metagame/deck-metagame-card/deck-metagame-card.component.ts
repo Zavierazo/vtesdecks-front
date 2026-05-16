@@ -5,7 +5,7 @@ import {
   inject,
   input,
 } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
@@ -39,10 +39,23 @@ export class DeckMetagameCardComponent {
   private readonly authQuery = inject(AuthQuery)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
+  private readonly router = inject(Router)
 
   archetype = input<ApiDeckArchetype>()
 
   isMaintainer$ = this.authQuery.selectRole('maintainer')
+
+  navigate(archetype: ApiDeckArchetype) {
+    if (archetype.id !== undefined && archetype.id > 0) {
+      this.router.navigate(['/metagame', archetype.id])
+    }
+  }
+
+  onDescriptionClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).closest('a')) {
+      event.stopPropagation()
+    }
+  }
 
   openModal(archetype: ApiDeckArchetype) {
     const modalRef = this.modalService.open(DeckMetagameModalComponent, {
