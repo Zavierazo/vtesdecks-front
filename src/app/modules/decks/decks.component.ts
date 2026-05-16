@@ -14,7 +14,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
@@ -58,6 +58,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     LoadingComponent,
     NgbTooltip,
     AsyncPipe,
+    RouterLink,
   ],
 })
 export class DecksComponent implements OnInit {

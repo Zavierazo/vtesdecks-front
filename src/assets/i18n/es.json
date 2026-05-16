@@ -248,7 +248,8 @@
     "show_more": "Ver más",
     "price_cheapest": "Precio: Menor",
     "price_expensive": "Precio: Mayor",
-    "deck_preview": "Vista previa"
+    "deck_preview": "Vista previa",
+    "new_deck": "Nuevo Mazo"
   },
   "draw_cards": {
     "title": "Robar Cartas",

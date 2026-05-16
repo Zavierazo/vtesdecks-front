@@ -249,7 +249,8 @@
     "show_more": "Ver mais",
     "price_cheapest": "Preço: Barato",
     "price_expensive": "Preço: Caro",
-    "deck_preview": "Vista previa"
+    "deck_preview": "Vista previa",
+    "new_deck": "Novo Baralho"
   },
   "draw_cards": {
     "title": "Comprar Cartas",

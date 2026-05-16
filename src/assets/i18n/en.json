@@ -248,7 +248,8 @@
     "show_more": "Show more",
     "price_cheapest": "Price: Lowest",
     "price_expensive": "Price: Highest",
-    "deck_preview": "Deck Preview"
+    "deck_preview": "Deck Preview",
+    "new_deck": "New Deck"
   },
   "draw_cards": {
     "title": "Draw Cards",

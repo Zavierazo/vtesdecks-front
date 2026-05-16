@@ -1,66 +1,82 @@
 <ng-container *transloco="let t; prefix: 'decks'">
   <div id="container" class="h-100">
     <header class="border-bottom mb-3 p-2 sticky-top bg-light">
-      <form [formGroup]="mainForm" class="d-flex flex-column flex-md-row align-items-center g-2">
-        <div class="col-auto flex-fill">
-          <span class="me-md-auto" [innerHTML]="t('total_decks', { total: total$ | async })">
+      <form [formGroup]="mainForm" class="d-flex flex-column flex-lg-row align-items-lg-center g-2">
+        <div class="col-auto flex-fill text-center text-lg-start">
+          <span class="me-lg-auto" [innerHTML]="t('total_decks', { total: total$ | async })">
           </span>
         </div>
-        <div class="row ms-1">
-          <div class="col-12 col-md-6">
-            <div class="input-group">
-              <label class="input-group-text" for="deckType">
-                <i class="bi bi-stack" aria-hidden="true"></i>
-              </label>
-              <select *isLogged="true" class="form-select" id="deckType" formControlName="type">
-                <option value="ALL">{{ t('all') }}</option>
-                <option value="USER">{{ t('my_decks') }}</option>
-                <option value="TOURNAMENT">{{ t('tournament') }}</option>
-                <option value="COMMUNITY">{{ t('community') }}</option>
-                <option value="PRECONSTRUCTED">{{ t('preconstructed') }}</option>
-              </select>
-              <select *isLogged="false" class="form-select" id="deckType" formControlName="type">
-                <option value="ALL">{{ t('all') }}</option>
-                <option value="TOURNAMENT">{{ t('tournament') }}</option>
-                <option value="COMMUNITY">{{ t('community') }}</option>
-                <option value="PRECONSTRUCTED">{{ t('preconstructed') }}</option>
-              </select>
+        <div class="d-flex flex-column ms-lg-1">
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="input-group">
+                <label class="input-group-text" for="deckType">
+                  <i class="bi bi-stack" aria-hidden="true"></i>
+                </label>
+                <select *isLogged="true" class="form-select" id="deckType" formControlName="type">
+                  <option value="ALL">{{ t('all') }}</option>
+                  <option value="USER">{{ t('my_decks') }}</option>
+                  <option value="TOURNAMENT">{{ t('tournament') }}</option>
+                  <option value="COMMUNITY">{{ t('community') }}</option>
+                  <option value="PRECONSTRUCTED">{{ t('preconstructed') }}</option>
+                </select>
+                <select *isLogged="false" class="form-select" id="deckType" formControlName="type">
+                  <option value="ALL">{{ t('all') }}</option>
+                  <option value="TOURNAMENT">{{ t('tournament') }}</option>
+                  <option value="COMMUNITY">{{ t('community') }}</option>
+                  <option value="PRECONSTRUCTED">{{ t('preconstructed') }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 mt-1 mt-lg-0">
+              <div class="input-group">
+                <label class="input-group-text" for="deckOrder">
+                  <i class="bi bi-sort-alpha-down" aria-hidden="true"></i>
+                </label>
+                <select class="form-select" id="deckOrder" formControlName="order">
+                  <option value="NEWEST">{{ t('newest') }}</option>
+                  <option value="OLDEST">{{ t('oldest') }}</option>
+                  <option value="MODIFIED">{{ t('modified') }}</option>
+                  <option value="NAME">{{ t('name') }}</option>
+                  <option value="POPULAR">{{ t('popular') }}</option>
+                  <option value="RATE">{{ t('rate') }}</option>
+                  <option value="VOTES">{{ t('votes') }}</option>
+                  <option value="VIEWS">{{ t('views') }}</option>
+                  <option value="COMMENTS">{{ t('comments') }}</option>
+                  <option value="PLAYERS">{{ t('players_twd') }}</option>
+                  <option value="CHEAPEST">{{ t('price_cheapest') }}</option>
+                  <option value="EXPENSIVE">{{ t('price_expensive') }}</option>
+                </select>
+              </div>
             </div>
           </div>
-          <div class="col-12 col-md-6">
-            <div class="input-group">
-              <label class="input-group-text" for="deckOrder">
-                <i class="bi bi-sort-alpha-down" aria-hidden="true"></i>
-              </label>
-              <select class="form-select" id="deckOrder" formControlName="order">
-                <option value="NEWEST">{{ t('newest') }}</option>
-                <option value="OLDEST">{{ t('oldest') }}</option>
-                <option value="MODIFIED">{{ t('modified') }}</option>
-                <option value="NAME">{{ t('name') }}</option>
-                <option value="POPULAR">{{ t('popular') }}</option>
-                <option value="RATE">{{ t('rate') }}</option>
-                <option value="VOTES">{{ t('votes') }}</option>
-                <option value="VIEWS">{{ t('views') }}</option>
-                <option value="COMMENTS">{{ t('comments') }}</option>
-                <option value="PLAYERS">{{ t('players_twd') }}</option>
-                <option value="CHEAPEST">{{ t('price_cheapest') }}</option>
-                <option value="EXPENSIVE">{{ t('price_expensive') }}</option>
-              </select>
+          @if ((isMobileOrTablet$ | async)!) {
+          <div class="row mt-2 g-1 justify-content-center">
+            @if (type === 'USER') {
+            <div class="col-auto">
+              <a routerLink="/decks/builder" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> {{ t('new_deck') }}
+              </a>
+            </div>
+            }
+            <div class="col-auto">
+              <button type="button" class="btn btn-secondary" (click)="openFilters(filtersMobile)">
+                <i class="bi bi-funnel-fill"></i><span> {{ t('filters') }}</span>
+              </button>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-danger" (click)="resetFilters()">
+                <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+              </button>
             </div>
           </div>
+          }
         </div>
-        @if ((isMobileOrTablet$ | async)!) {
-        <div class="row mt-2">
-          <div class="col-auto">
-            <button type="button" class="btn btn-secondary" (click)="openFilters(filtersMobile)">
-              <i class="bi bi-funnel-fill"></i><span> {{ t('filters') }}</span>
-            </button>
-          </div>
-          <div class="col-auto">
-            <button type="button" class="btn btn-danger" (click)="resetFilters()">
-              <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
-            </button>
-          </div>
+        @if (type === 'USER' && !(isMobileOrTablet$ | async)!) {
+        <div class="ms-3">
+          <a routerLink="/decks/builder" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> {{ t('new_deck') }}
+          </a>
         </div>
         }
       </form>
