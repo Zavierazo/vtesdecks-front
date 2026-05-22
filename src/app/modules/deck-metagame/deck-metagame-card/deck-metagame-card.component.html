@@ -48,11 +48,13 @@
           <i class="bi bi-x-circle-fill"></i>
           }
         </span>
-        <button class="btn btn-sm btn-outline-secondary" (click)="$event.stopPropagation(); openModal(archetype)">
-          <i class="bi bi-pencil-fill"></i>
+        <button class="btn btn-sm btn-outline-secondary" (click)="$event.stopPropagation(); openModal(archetype)"
+          [attr.aria-label]="t('edit')">
+          <i class="bi bi-pencil-fill" aria-hidden="true"></i>
         </button>
-        <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); delete(archetype)">
-          <i class="bi bi-trash-fill"></i>
+        <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); delete(archetype)"
+          [attr.aria-label]="t('delete')">
+          <i class="bi bi-trash-fill" aria-hidden="true"></i>
         </button>
       </div>
       }

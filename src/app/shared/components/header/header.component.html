@@ -6,12 +6,13 @@
     </a>
     <div
       class="d-flex d-lg-none align-items-center bg-white bg-opacity-10 rounded-pill shadow-sm px-2 py-1 quick-actions-mobile">
-        <button class="btn btn-link text-white d-flex w-50 justify-content-center align-items-center px-2 py-0" type="button"
-        (click)="openSearchModal()" [attr.aria-label]="t('search')" [attr.title]="t('search')">
+      <button class="btn btn-link text-white d-flex w-50 justify-content-center align-items-center px-2 py-0"
+        type="button" (click)="openSearchModal()" [attr.aria-label]="t('search')" [attr.title]="t('search')">
         <i class="bi bi-search"></i>
       </button>
-        <button class="btn btn-link text-white d-flex w-50 justify-content-center align-items-center px-2 py-0" type="button"
-        (click)="openCameraScannerModal()" [attr.aria-label]="t('scan_card')" [attr.title]="t('scan_card')">
+      <button class="btn btn-link text-white d-flex w-50 justify-content-center align-items-center px-2 py-0"
+        type="button" (click)="openCameraScannerModal()" [attr.aria-label]="t('scan_card')"
+        [attr.title]="t('scan_card')">
         <i class="bi bi-camera-fill"></i>
       </button>
     </div>
@@ -122,8 +123,9 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <button class="search-button-desktop d-none d-lg-flex align-items-center border-0 bg-white bg-opacity-10 rounded-pill shadow-sm px-3 py-1 me-2" type="button"
-          (click)="openSearchModal()" aria-label="{{ t('search') }}">
+        <button
+          class="search-button-desktop d-none d-lg-flex align-items-center border-0 bg-white bg-opacity-10 rounded-pill shadow-sm px-3 py-1 me-2"
+          type="button" (click)="openSearchModal()" aria-label="{{ t('search') }}">
           <i class="bi bi-search me-2"></i>
           <span class="search-button-text">
             {{ t('search') }}
@@ -161,8 +163,8 @@
           {{ t('sign_up') }}
         </button>
         <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
-          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button"
-            aria-expanded="false">
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button" aria-expanded="false"
+            [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>

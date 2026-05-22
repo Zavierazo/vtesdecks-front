@@ -3,7 +3,8 @@
     <h5>
       {{ 'home.metagame' | transloco }}
       <i class="bi bi-question-circle fs-5 ms-1 text-light" [ngbTooltip]="'deck_metagame.tooltip' | transloco"
-        placement="right" container="body" triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
+        placement="right" container="body" triggers="mouseenter:mouseleave" tabindex="0" role="button"
+        [attr.aria-label]="'deck_metagame.tooltip' | transloco"></i>
     </h5>
   </div>
   <div class="card-body p-0 py-2">

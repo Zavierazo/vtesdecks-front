@@ -345,7 +345,8 @@
     "proxy_generator": "Gerador de Proxies",
     "vtes_ai_chat": "Chat IA de VTES",
     "search": "Pesquisar",
-    "scan_card": "Escanear"
+    "scan_card": "Escanear",
+    "user_menu": "Menu do usuário"
   },
   "home": {
     "welcome_title": "Bem-vindo ao VTES Decks",

@@ -9,6 +9,13 @@
   flex: 0 0 auto;
 }
 
+nav.navbar {
+  // Bootstrap navbar-dark defaults to rgba(255,255,255,.55) for inactive links,
+  // which fails WCAG AA contrast on any primary-blue background.
+  // Override to near-full opacity so white text passes 4.5:1.
+  --bs-navbar-color: rgba(255, 255, 255, 0.8);
+}
+
 .quick-actions-mobile i {
   font-size: 1.35rem;
 }

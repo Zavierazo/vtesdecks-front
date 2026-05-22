@@ -6,7 +6,7 @@
       <h3 class="mb-0 text-start">
         {{ t('title') }}
         <i class="bi bi-question-circle fs-4 ms-2 text-secondary" [ngbTooltip]="t('tooltip')" placement="right"
-          triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
+          triggers="mouseenter:mouseleave" tabindex="0" role="button" [attr.aria-label]="t('tooltip')"></i>
       </h3>
 
       <div class="d-flex gap-2 align-items-center flex-nowrap">
