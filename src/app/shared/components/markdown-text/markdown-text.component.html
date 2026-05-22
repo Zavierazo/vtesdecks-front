@@ -1,5 +1,5 @@
 @defer (on viewport) {
-<markdown [data]="data() | markdownSanitize" [disableSanitizer]="true" emoji />
+<div [innerHTML]="parsedHtml()"></div>
 } @placeholder {
 <div style="min-height: 60px"></div>
 }

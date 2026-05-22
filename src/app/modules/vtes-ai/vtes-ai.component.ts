@@ -25,10 +25,10 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
+import { MarkdownRenderPipe } from '@shared/pipes/markdown-render.pipe'
 import { VtesAiQuery } from '@state/vtes-ai/vtes-ai.query'
 import { VtesAiService } from '@state/vtes-ai/vtes-ai.service'
 import { VtesAiStore } from '@state/vtes-ai/vtes-ai.store'
-import { MarkdownPipe } from 'ngx-markdown'
 import { map, of, switchMap, timer } from 'rxjs'
 
 @UntilDestroy()
@@ -41,7 +41,7 @@ import { map, of, switchMap, timer } from 'rxjs'
     ReactiveFormsModule,
     AsyncPipe,
     LoadingComponent,
-    MarkdownPipe,
+    MarkdownRenderPipe,
     NgbDropdown,
     NgbDropdownToggle,
     NgbDropdownMenu,

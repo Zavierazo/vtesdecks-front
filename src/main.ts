@@ -5,7 +5,6 @@ import {
   inject,
   provideAppInitializer,
   provideZonelessChangeDetection,
-  SecurityContext,
 } from '@angular/core'
 
 import * as Sentry from '@sentry/angular'
@@ -41,10 +40,6 @@ import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 
 import { AuthQuery } from '@state/auth/auth.query'
-import { CryptQuery } from '@state/crypt/crypt.query'
-import { LibraryQuery } from '@state/library/library.query'
-import { MARKED_EXTENSIONS, provideMarkdown, SANITIZE } from 'ngx-markdown'
-import { bracketsExtension } from './app/marked-extension'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -292,19 +287,5 @@ bootstrapApplication(AppComponent, {
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'disabled' }),
     ),
-    provideMarkdown({
-      sanitize: {
-        provide: SANITIZE,
-        useValue: SecurityContext.NONE,
-      },
-      markedExtensions: [
-        {
-          provide: MARKED_EXTENSIONS,
-          useFactory: bracketsExtension,
-          deps: [CryptQuery, LibraryQuery],
-          multi: true,
-        },
-      ],
-    }),
   ],
 }).catch((err) => console.error(err))

@@ -66,7 +66,6 @@ import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { provideMarkdown } from 'ngx-markdown'
 import { filter, Observable, switchMap, tap, timer } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
@@ -89,7 +88,6 @@ import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideMarkdown()],
   imports: [
     LoadingComponent,
     TranslocoDirective,

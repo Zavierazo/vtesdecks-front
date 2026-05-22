@@ -169,7 +169,7 @@
           </div>
         </div>
         }@else {
-        <div class="chat-message row p-3 text-black text-start" [innerHTML]="message.content | markdown | async" #item>
+        <div class="chat-message row p-3 text-black text-start" [innerHTML]="message.content | markdownRender" #item>
         </div>
         }
         }
