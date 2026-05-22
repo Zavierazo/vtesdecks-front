@@ -44,6 +44,33 @@
         <app-deck-metagame-card [archetype]="archetype"></app-deck-metagame-card>
       </div>
       }
+      } @else {
+      @for (item of [].constructor(limit ?? 9); track $index) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="metagame-skeleton rounded-3 h-100 overflow-hidden bg-body d-flex flex-column" aria-hidden="true">
+          <div class="metagame-skeleton__header px-3 pt-3 pb-2">
+            <div class="d-flex align-items-center mb-2">
+              <div class="metagame-skeleton__icon rounded-2 me-2"></div>
+              <div class="flex-grow-1">
+                <div class="metagame-skeleton__line metagame-skeleton__line--title mb-1"></div>
+                <div class="metagame-skeleton__line metagame-skeleton__line--subtitle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="metagame-skeleton__body flex-grow-1 px-3 py-2">
+            <div class="metagame-skeleton__line mb-2"></div>
+            <div class="metagame-skeleton__line metagame-skeleton__line--short mb-2"></div>
+            <div class="metagame-skeleton__line mb-2"></div>
+          </div>
+          <div class="metagame-skeleton__footer px-3 py-2 border-top border-opacity-10">
+            <div class="d-flex gap-2">
+              <div class="metagame-skeleton__badge rounded-2"></div>
+              <div class="metagame-skeleton__badge rounded-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
       }
     </div>
   </section>

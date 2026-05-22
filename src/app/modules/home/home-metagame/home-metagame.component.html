@@ -1,7 +1,7 @@
-<div class="card text-center shadow-2-strong h-100" *transloco="let t; prefix: 'home'">
+<div class="card text-center shadow-2-strong h-100">
   <div class="view shadow-5-strong">
     <h5>
-      {{ t('metagame') }}
+      {{ 'home.metagame' | transloco }}
       <i class="bi bi-question-circle fs-5 ms-1 text-light" [ngbTooltip]="'deck_metagame.tooltip' | transloco"
         placement="right" container="body" triggers="mouseenter:mouseleave" tabindex="0" role="button"></i>
     </h5>
@@ -11,7 +11,7 @@
   </div>
   <div class="card-footer white">
     <a class="btn btn-success btn-rounded btn-lg" routerLink="/metagame" role="button">
-      {{ t('see_more') }}
+      {{ 'home.see_more' | transloco }}
     </a>
   </div>
 </div>

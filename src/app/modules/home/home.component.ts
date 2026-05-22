@@ -7,7 +7,7 @@ import {
   inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiChangelog, ApiHome } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -31,7 +31,6 @@ import { HomeSectionComponent } from './home-section/home-section.component'
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    TranslocoDirective,
     RouterLink,
     AnimatedDigitComponent,
     IsLoggedDirective,

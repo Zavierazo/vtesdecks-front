@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { ApiDeckArchetype, MetaType } from '@models'
 import { BehaviorSubject, Observable, tap } from 'rxjs'
 import { ApiDataService } from './api.data.service'
@@ -10,9 +10,11 @@ export class DeckArchetypeCrudService {
   private readonly api = inject(ApiDataService)
 
   private readonly _suggestions$ = new BehaviorSubject<ApiDeckArchetype[]>([])
-  private readonly _items$ = new BehaviorSubject<ApiDeckArchetype[]>([])
+  private readonly _items$ = new BehaviorSubject<ApiDeckArchetype[] | null>(
+    null,
+  )
 
-  selectAll(): Observable<ApiDeckArchetype[]> {
+  selectAll(): Observable<ApiDeckArchetype[] | null> {
     return this._items$.asObservable()
   }
 
@@ -27,6 +29,7 @@ export class DeckArchetypeCrudService {
   }
 
   loadAll(metaType: MetaType): Observable<ApiDeckArchetype[]> {
+    this._items$.next(null)
     return this.api
       .getAllDeckArchetypes(metaType)
       .pipe(tap((items) => this._items$.next(items)))
@@ -34,7 +37,9 @@ export class DeckArchetypeCrudService {
 
   create(archetype: ApiDeckArchetype): Observable<ApiDeckArchetype> {
     return this.api.createDeckArchetype(archetype).pipe(
-      tap((created) => this._items$.next([...this._items$.value, created])),
+      tap((created) =>
+        this._items$.next([...(this._items$.value ?? []), created]),
+      ),
       tap((created) =>
         this._suggestions$.next([
           ...this._suggestions$.value.filter(
@@ -51,7 +56,9 @@ export class DeckArchetypeCrudService {
       .pipe(
         tap((updated) =>
           this._items$.next(
-            this._items$.value.map((i) => (i.id === updated.id ? updated : i)),
+            (this._items$.value ?? []).map((i) =>
+              i.id === updated.id ? updated : i,
+            ),
           ),
         ),
       )
@@ -60,7 +67,7 @@ export class DeckArchetypeCrudService {
   delete(id: number): Observable<void> {
     return this.api.deleteDeckArchetype(id).pipe(
       tap(() => {
-        this._items$.next(this._items$.value.filter((i) => i.id !== id))
+        this._items$.next((this._items$.value ?? []).filter((i) => i.id !== id))
       }),
     )
   }

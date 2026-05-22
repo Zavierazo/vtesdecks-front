@@ -22,3 +22,87 @@
     opacity: 0.8;
   }
 }
+
+// Skeleton loading card
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.metagame-skeleton {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+
+  &__header {
+    background: rgba(var(--bs-secondary-rgb), 0.02);
+  }
+
+  &__body {
+    min-height: 8rem;
+    background: rgba(var(--bs-secondary-rgb), 0.02);
+  }
+
+  &__footer {
+    background: rgba(var(--bs-secondary-rgb), 0.02);
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    background: linear-gradient(
+      90deg,
+      var(--bs-secondary-bg) 25%,
+      var(--bs-tertiary-bg) 50%,
+      var(--bs-secondary-bg) 75%
+    );
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+  }
+
+  &__line {
+    height: 0.85rem;
+    border-radius: 0.25rem;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--bs-secondary-bg) 25%,
+      var(--bs-tertiary-bg) 50%,
+      var(--bs-secondary-bg) 75%
+    );
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+
+    &--title {
+      height: 1.1rem;
+      width: 70%;
+    }
+
+    &--subtitle {
+      height: 0.75rem;
+      width: 40%;
+    }
+
+    &--short {
+      width: 55%;
+    }
+  }
+
+  &__badge {
+    height: 1.75rem;
+    width: 4rem;
+    background: linear-gradient(
+      90deg,
+      var(--bs-secondary-bg) 25%,
+      var(--bs-tertiary-bg) 50%,
+      var(--bs-secondary-bg) 75%
+    );
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+  }
+}
