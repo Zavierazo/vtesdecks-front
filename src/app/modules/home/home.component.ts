@@ -70,6 +70,12 @@ export class HomeComponent implements OnInit {
     const lastAppVersionSeen = this.localStorage.getValue<string>(
       HomeComponent.CHANGELOG_ALERT_KEY,
     )
+    if (!lastAppVersionSeen) {
+      this.localStorage.setValue(
+        HomeComponent.CHANGELOG_ALERT_KEY,
+        this.appVersion,
+      )
+    }
     const currentVersionSplit = this.appVersion.split('.')
     const lastVersionSplit = lastAppVersionSeen?.split('.') || []
     const majorMinorChanged =
