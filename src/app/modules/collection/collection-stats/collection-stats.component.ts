@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common'
+import { CurrencyPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,7 +34,7 @@ interface DisplaySection {
   templateUrl: './collection-stats.component.html',
   styleUrls: ['./collection-stats.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslocoDirective, RouterLink],
+  imports: [TranslocoDirective, RouterLink, CurrencyPipe, NgClass],
 })
 export class CollectionStatsComponent implements OnInit {
   private readonly collectionApiDataService = inject(CollectionApiDataService)

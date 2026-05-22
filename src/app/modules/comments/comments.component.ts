@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common'
+import { AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,7 +31,6 @@ import { CommentComponent } from './comment/comment.component'
   styleUrls: ['./comments.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     TranslocoDirective,
     IsLoggedDirective,
     ReactiveFormsModule,

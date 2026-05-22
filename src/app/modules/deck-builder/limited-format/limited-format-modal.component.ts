@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { CommonModule } from '@angular/common'
+import { AsyncPipe, KeyValuePipe, NgClass } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import {
   FormBuilder,
@@ -51,7 +51,6 @@ import { toUrl } from './limited-format-utils'
   styleUrls: ['./limited-format-modal.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     TranslocoDirective,
@@ -59,6 +58,9 @@ import { toUrl } from './limited-format-utils'
     NgbTypeahead,
     NgbHighlight,
     CardImagePipe,
+    AsyncPipe,
+    KeyValuePipe,
+    NgClass,
   ],
 })
 export class LimitedFormatModalComponent implements OnInit {

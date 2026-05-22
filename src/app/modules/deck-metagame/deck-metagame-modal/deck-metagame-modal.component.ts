@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import {
   FormBuilder,
@@ -24,11 +24,11 @@ import { finalize } from 'rxjs'
   selector: 'app-deck-metagame-modal',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     TranslocoDirective,
     MarkdownTextareaComponent,
     TranslocoPipe,
+    NgClass,
   ],
   templateUrl: './deck-metagame-modal.component.html',
   styleUrls: ['./deck-metagame-modal.component.scss'],

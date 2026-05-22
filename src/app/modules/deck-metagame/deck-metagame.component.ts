@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common'
+import { AsyncPipe, SlicePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,12 +23,12 @@ import { DeckMetagameModalComponent } from './deck-metagame-modal/deck-metagame-
   styleUrls: ['./deck-metagame.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     TranslocoDirective,
     ReactiveFormsModule,
     AsyncPipe,
     DeckMetagameCardComponent,
     NgbTooltip,
+    SlicePipe,
   ],
 })
 export class DeckMetagameComponent implements OnInit {
