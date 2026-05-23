@@ -4,7 +4,6 @@ export const environment = {
   domain: 'localhost',
   apiDomain: 'localhost:8080',
   cdnDomain: 'https://cdn.vtesdecks.com',
-  i18nCdnDomain: 'https://i18n-cdn.vtesdecks.com',
   production: false,
   api: {
     baseUrl: 'http://localhost:8080/api/1.0',
