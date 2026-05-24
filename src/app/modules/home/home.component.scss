@@ -20,7 +20,10 @@
       padding: 1.5rem;
       border-radius: 1rem;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        filter 0.3s ease;
       height: 100%;
       min-height: 140px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -79,7 +82,9 @@
 
 // Card Hover Effects
 .hover-card {
-  transition: all 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -223,7 +228,9 @@
   animation: festiveGradient 8s ease infinite;
   border-radius: 1rem;
   border: 2px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   box-shadow:
     0 4px 20px rgba(196, 30, 58, 0.4),
     0 0 30px rgba(22, 91, 51, 0.3);
