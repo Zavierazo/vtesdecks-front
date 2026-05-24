@@ -2,6 +2,7 @@ import { ADVENT_DATA, AdventData } from '@advent/advent.data'
 import { inject, Injectable } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
+  ApiCard,
   ApiCollectionPage,
   ApiDeck,
   ApiDeckBuilder,
@@ -136,6 +137,21 @@ export class DeckBuilderService {
     this.validateDeck()
   }
 
+  cloneFrom(deck: ApiDeckBuilder): void {
+    this.store.reset()
+    this.store.update((state) => ({
+      ...state,
+      name: '[COPY] ' + (deck.name ?? ''),
+      description: deck.description,
+      extra: deck.extra,
+      cards: [...(deck.cards ?? [])],
+      published: false,
+      collection: false,
+      saved: false,
+    }))
+    this.validateDeck()
+  }
+
   importDeck(type: string, url: string): Observable<ApiDeckBuilder> {
     return this.apiDataService.getDeckBuilderImport(type, url).pipe(
       tap((deck) => {
@@ -152,7 +168,39 @@ export class DeckBuilderService {
     )
   }
 
-  saveDeck(): Observable<ApiDeckBuilder> {
+  importDeckFromText(text: string): Observable<ApiDeckBuilder> {
+    return this.apiDataService.importDeckFromText(text).pipe(
+      tap((deck) => {
+        this.store.update((state) => ({
+          ...state,
+          name: state.name ? state.name : deck.name,
+          description: state.description ? state.description : deck.description,
+          cards: deck.cards ?? [],
+          collection: false,
+          saved: false,
+        }))
+        this.validateDeck()
+      }),
+    )
+  }
+
+  applyImportedDeck(deck: ApiDeckBuilder): Observable<ApiDeckBuilder> {
+    return of(deck).pipe(
+      tap((d) => {
+        this.store.update((state) => ({
+          ...state,
+          name: state.name ? state.name : d.name,
+          description: state.description ? state.description : d.description,
+          cards: d.cards ?? [],
+          collection: false,
+          saved: false,
+        }))
+        this.validateDeck()
+      }),
+    )
+  }
+
+  saveDeck(tagLabel?: string): Observable<ApiDeckBuilder> {
     if (this.store.getLoading()) {
       return throwError(() => new Error('Another action in progress'))
     }
@@ -167,20 +215,22 @@ export class DeckBuilderService {
         published: deck.published,
         collection: deck.collection,
         extra: deck.extra,
+        tagLabel: tagLabel || undefined,
       } as ApiDeckBuilder)
       .pipe(
-        tap((deck) => {
+        tap((saved) => {
           this.store.update((state) => ({
             ...state,
-            id: deck.id,
-            name: deck.name,
-            description: deck.description,
-            cards: deck.cards ?? [],
-            extra: deck.extra,
-            published: deck.published ?? false,
-            collection: deck.collection ?? false,
+            id: saved.id,
+            name: saved.name,
+            description: saved.description,
+            cards: saved.cards ?? [],
+            extra: saved.extra,
+            published: saved.published ?? false,
+            collection: saved.collection ?? false,
             saved: true,
           }))
+          this.clearDraft(deck.id)
           this.validateDeck()
         }),
         finalize(() => this.store.setLoading(false)),
@@ -200,11 +250,13 @@ export class DeckBuilderService {
   updateName(name: string) {
     this.store.updateName(name)
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   updateDescription(description: string) {
     this.store.updateDescription(description)
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   updatePublished(published: boolean) {
@@ -228,12 +280,14 @@ export class DeckBuilderService {
     this.store.addCard(id, type)
     this.validateDeck()
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   removeCard(id: number) {
     this.store.removeCard(id)
     this.validateDeck()
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   setLimitedFormat(format?: ApiDeckLimitedFormat) {
@@ -419,6 +473,98 @@ export class DeckBuilderService {
     this.store.setLibraryErrors(libraryErrors)
 
     return isValid
+  }
+
+  private static readonly DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
+
+  cleanupExpiredDrafts(): void {
+    try {
+      const keysToRemove: string[] = []
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (!key?.startsWith('deckBuilderDraft_')) continue
+        const data = localStorage.getItem(key)
+        if (!data) continue
+        const parsed = JSON.parse(data) as { savedAt?: number }
+        if (
+          !parsed.savedAt ||
+          Date.now() - parsed.savedAt > DeckBuilderService.DRAFT_MAX_AGE_MS
+        ) {
+          keysToRemove.push(key)
+        }
+      }
+      keysToRemove.forEach((key) => localStorage.removeItem(key))
+    } catch {
+      // ignore
+    }
+  }
+
+  saveDraft(): void {
+    const { id, name, description, published, collection, cards, extra } =
+      this.store.getValue()
+    const key = `deckBuilderDraft_${id ?? 'new'}`
+    try {
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          id,
+          name,
+          description,
+          published,
+          collection,
+          cards,
+          extra,
+          savedAt: Date.now(),
+        }),
+      )
+    } catch {
+      // localStorage unavailable or full — silently skip
+    }
+  }
+
+  loadDraft(id?: string): ApiDeckBuilder | null {
+    const key = `deckBuilderDraft_${id ?? 'new'}`
+    try {
+      const data = localStorage.getItem(key)
+      if (!data) return null
+      const parsed = JSON.parse(data) as ApiDeckBuilder & { savedAt?: number }
+      if (
+        parsed.savedAt &&
+        Date.now() - parsed.savedAt > DeckBuilderService.DRAFT_MAX_AGE_MS
+      ) {
+        localStorage.removeItem(key)
+        return null
+      }
+      return parsed
+    } catch {
+      return null
+    }
+  }
+
+  clearDraft(id?: string): void {
+    const key = `deckBuilderDraft_${id ?? 'new'}`
+    try {
+      localStorage.removeItem(key)
+    } catch {
+      // ignore
+    }
+  }
+
+  restoreFromDraft(draft: ApiDeckBuilder): void {
+    this.store.update((state) => ({
+      ...state,
+      name: draft.name ?? state.name,
+      description: draft.description ?? state.description,
+      cards: draft.cards ?? state.cards,
+      extra: draft.extra ?? state.extra,
+      saved: false,
+    }))
+    this.validateDeck()
+  }
+
+  restoreFromHistory(cards: ApiCard[]): void {
+    this.store.update((state) => ({ ...state, cards, saved: false }))
+    this.validateDeck()
   }
 
   fetchSuggestedCards(): void {

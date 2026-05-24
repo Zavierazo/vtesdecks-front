@@ -67,6 +67,8 @@
               <div ngbDropdownMenu aria-labelledby="dropdownImport">
                 <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
                 <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
+                <button ngbDropdownItem (click)="openImportText()">{{ t('import_text') }}</button>
+                <button ngbDropdownItem (click)="openImportRecentDecks()">{{ t('import_recent') }}</button>
               </div>
             </div>
             <div ngbDropdown class="d-inline-block m-2">
@@ -77,15 +79,15 @@
               </button>
               <div ngbDropdownMenu aria-labelledby="dropdownExport">
                 <div class="dropdown-header">{{ t('file') }}</div>
-                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank">
+                <button ngbDropdownItem class="text-black" (click)="onExportFile('LACKEY')">
                   <i class="bi bi-file-earmark me-2"></i>LACKEY
-                </a>
-                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank">
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onExportFile('JOL')">
                   <i class="bi bi-file-earmark me-2"></i>JOL
-                </a>
-                <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank">
+                </button>
+                <button ngbDropdownItem class="text-black" (click)="onExportFile('TWD')">
                   <i class="bi bi-file-earmark me-2"></i>TWD
-                </a>
+                </button>
                 <hr class="dropdown-divider">
                 <div class="dropdown-header">{{ t('clipboard') }}</div>
                 <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')">
@@ -100,11 +102,29 @@
 
               </div>
             </div>
+            @if ((deckId$ | async)!!) {
+            <button type="button" class="btn btn-outline-secondary m-2" (click)="openHistory()">
+              <i class="bi bi-clock-history me-1"></i>
+              {{ t('history') }}
+            </button>
+            }
+            @if ((deckId$ | async)!!) {
+            <div class="input-group d-inline-flex m-2" style="max-width: 320px;">
+              <input type="text" class="form-control" [formControl]="tagLabelControl"
+                [placeholder]="t('tag_version_placeholder')">
+              <button type="button" class="btn btn-primary" [disabled]="(loading$ | async)! || (saved$ | async)!"
+                (click)="saveDeck()">
+                <i class="bi bi-save-fill"></i>
+                {{ t('save') }}
+              </button>
+            </div>
+            } @else {
             <button type="button" class="btn btn-primary m-2" [disabled]="(loading$ | async)! || (saved$ | async)!"
               (click)="saveDeck()">
               <i class="bi bi-save-fill"></i>
               {{ t('save') }}
             </button>
+            }
             @if ((deckId$ | async)!!) {
             <button type="button" class="btn btn-danger m-2" (click)="deleteDeck()">
               <i class="bi bi-trash-fill"></i>
@@ -134,12 +154,18 @@
         {{ (cryptSize$ | async)! }}
       </span>
     </div>
-    <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+    <div class="d-none d-md-flex flex-grow-1 align-items-center justify-content-end">
+      <input type="search" class="form-control me-2 w-25" [placeholder]="t('search_in_crypt')" [value]="cryptSearch()"
+        (input)="cryptSearch.set($any($event.target).value)" />
       <ng-container *ngTemplateOutlet="cryptButtons" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
-  <div class="d-md-none mt-3 d-flex justify-content-center">
+  <div class="d-md-none col-12 mt-2 d-flex justify-content-center">
+    <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_crypt')"
+      [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
+  </div>
+  <div class="d-md-none mt-2 d-flex justify-content-center">
     <ng-container *ngTemplateOutlet="cryptButtons" />
   </div>
   <ng-template #cryptButtons>
@@ -256,12 +282,18 @@
         </div>
       </div>
     </div>
-    <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+    <div class="d-none d-md-flex flex-grow-1 align-items-center justify-content-end">
+      <input type="search" class="form-control me-2 w-25" [placeholder]="t('search_in_library')"
+        [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
       <ng-container *ngTemplateOutlet="libraryButtons" />
     </div>
     <div class="d-md-none flex-grow-1"></div>
   </div>
-  <div class="d-md-none mt-3 d-flex justify-content-center">
+  <div class="d-md-none col-12 mt-2 d-flex justify-content-center">
+    <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_library')"
+      [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
+  </div>
+  <div class="d-md-none mt-2 d-flex justify-content-center">
     <ng-container *ngTemplateOutlet="libraryButtons" />
   </div>
   <ng-template #libraryButtons>

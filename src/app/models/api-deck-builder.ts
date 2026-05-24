@@ -9,4 +9,5 @@ export interface ApiDeckBuilder {
   collection?: boolean
   cards?: ApiCard[]
   extra?: ApiDeckExtra
+  tagLabel?: string
 }

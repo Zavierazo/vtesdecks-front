@@ -17,6 +17,7 @@ import {
   ApiDeck,
   ApiDeckArchetype,
   ApiDeckBuilder,
+  ApiDeckBuilderHistory,
   ApiDeckLimitedFormat,
   ApiDecks,
   ApiHistoricStatistic,
@@ -331,10 +332,24 @@ export class ApiDataService {
     )
   }
 
+  getDeckBuilderHistory(id: string): Observable<ApiDeckBuilderHistory[]> {
+    return this.httpClient.get<ApiDeckBuilderHistory[]>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/history`,
+    )
+  }
+
   getDeckBuilderImport(type: string, url: string): Observable<ApiDeckBuilder> {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/${type}/import`,
       url,
+    )
+  }
+
+  importDeckFromText(text: string): Observable<ApiDeckBuilder> {
+    return this.httpClient.post<ApiDeckBuilder>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/text/import`,
+      text,
+      { headers: { 'Content-Type': 'text/plain' } },
     )
   }
 

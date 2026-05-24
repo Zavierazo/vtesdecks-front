@@ -9,15 +9,15 @@ export class CardImagePipe implements PipeTransform {
     card: { id: number; i18n?: ApiI18n; image?: string },
     set?: string,
   ): string {
+    const cdnDomain = environment.cdnDomain
     if (set) {
       const setAbbrev = getSetAbbrev(set).toLocaleLowerCase()
-      return `${environment.cdnDomain}/img/cards/sets/${setAbbrev}/${card.id}.jpg`
+      return `${cdnDomain}/img/cards/sets/${setAbbrev}/${card.id}.jpg`
     } else if (card.i18n && card.i18n.image) {
-      return environment.cdnDomain + card.i18n.image
+      return `${cdnDomain}${card.i18n.image}`
     } else if (card.image) {
-      return environment.cdnDomain + card.image
+      return `${cdnDomain}${card.image}`
     } else {
-      const cdnDomain = environment.cdnDomain
       return `${cdnDomain}/img/cards/${card.id}.jpg`
     }
   }

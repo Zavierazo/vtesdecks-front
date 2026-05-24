@@ -1,0 +1,32 @@
+<ng-container *transloco="let t; read: 'deck_builder'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('import_text_title') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p class="text-muted small">{{ t('import_text_hint') }}</p>
+    <textarea class="form-control" rows="12" [formControl]="textControl"
+      [placeholder]="t('import_text_placeholder')"></textarea>
+
+    @if (loading()) {
+    <div class="d-flex justify-content-center mt-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    }
+
+    @if (errorKey(); as key) {
+    <div class="alert alert-danger mt-3">{{ key | transloco }}</div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="import()">
+      {{ t('import_text_confirm') }}
+    </button>
+  </div>
+</ng-container>

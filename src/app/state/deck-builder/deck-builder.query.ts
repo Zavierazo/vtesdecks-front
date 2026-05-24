@@ -13,7 +13,13 @@ import {
   DeckLibrarySortBy,
   LibraryFilter,
 } from '@models'
-import { isCrypt, isLibrary, roundNumber } from '@utils'
+import {
+  isCrypt,
+  isLibrary,
+  roundNumber,
+  searchIncludes,
+  sortTrigramSimilarity,
+} from '@utils'
 import { combineLatest, distinctUntilChanged, map, Observable } from 'rxjs'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
@@ -298,6 +304,96 @@ export class DeckBuilderQuery {
         state.cards.map((c) => `${c.id}:${c.number}`).join(','),
       )
       .pipe(distinctUntilChanged())
+  }
+
+  selectCryptFiltered(search$: Observable<string>): Observable<ApiCard[]> {
+    return combineLatest([this.selectCrypt(), search$]).pipe(
+      map(([cards, search]) => {
+        if (!search) return cards
+        const filtered = cards.filter((card) =>
+          searchIncludes(this.cryptQuery.getEntity(card.id)?.name, search),
+        )
+        if (search.length >= 3) {
+          filtered.sort((a, b) =>
+            sortTrigramSimilarity(
+              this.cryptQuery.getEntity(a.id)?.name ?? '',
+              this.cryptQuery.getEntity(b.id)?.name ?? '',
+              search,
+            ),
+          )
+        }
+        return filtered
+      }),
+    )
+  }
+
+  selectLibraryFiltered(search$: Observable<string>): Observable<ApiCard[]> {
+    return combineLatest([this.selectLibrary(), search$]).pipe(
+      map(([cards, search]) => {
+        if (!search) return cards
+        const filtered = cards.filter((card) =>
+          searchIncludes(this.libraryQuery.getEntity(card.id)?.name, search),
+        )
+        if (search.length >= 3) {
+          filtered.sort((a, b) =>
+            sortTrigramSimilarity(
+              this.libraryQuery.getEntity(a.id)?.name ?? '',
+              this.libraryQuery.getEntity(b.id)?.name ?? '',
+              search,
+            ),
+          )
+        }
+        return filtered
+      }),
+    )
+  }
+
+  selectLibraryTypeBreakdown(): Observable<{ label: string; count: number }[]> {
+    return this.selectLibrary().pipe(
+      map((cards) => {
+        const typeMap = new Map<string, number>()
+        for (const card of cards) {
+          if (card.number <= 0) continue
+          const type = this.libraryQuery.getEntity(card.id)?.type ?? 'Unknown'
+          typeMap.set(type, (typeMap.get(type) ?? 0) + card.number)
+        }
+        return Array.from(typeMap.entries())
+          .map(([label, count]) => ({ label, count }))
+          .sort((a, b) => b.count - a.count)
+      }),
+    )
+  }
+
+  selectCryptCollectionCoverage(): Observable<{
+    owned: number
+    total: number
+  }> {
+    return this.selectCrypt().pipe(
+      map((cards) => {
+        const active = cards.filter((c) => c.number > 0)
+        const total = active.reduce((acc, c) => acc + c.number, 0)
+        const owned = active
+          .filter((c) => c.collection === 'FULL')
+          .reduce((acc, c) => acc + c.number, 0)
+        return { owned, total }
+      }),
+    )
+  }
+
+  selectLibraryCollectionCoverage(): Observable<{
+    owned: number
+    total: number
+  }> {
+    return this.selectLibrary().pipe(
+      map((cards) => {
+        const active = cards.filter((c) => c.number > 0)
+        const total = active.reduce((acc, c) => acc + c.number, 0)
+        const owned = active
+          .filter((c) => c.collection === 'FULL')
+          .reduce((acc, c) => acc + c.number, 0)
+        return { owned, total }
+      }),
+    )
   }
 
   getCrypt(): ApiCrypt[] {
