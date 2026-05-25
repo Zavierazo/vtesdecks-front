@@ -1,5 +1,17 @@
 [
   {
+    "version": "2.69.0",
+    "date": "25th May, 2026",
+    "changes": [
+      "Deck Builder now automatically saves a local draft after every change and can recover it if the page was closed unexpectedly.",
+      "Added a Deck History panel to tag, browse, and restore previous versions of your deck.",
+      "Card search filters are now integrated directly into the Crypt and Library builder for faster access.",
+      "Deck Builder now supports importing cards from plain text list or recently viewed decks.",
+      "Removed the AI chat feature to focus development on core functionality and overall platform quality.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.68.0",
     "date": "16th May, 2026",
     "changes": [
@@ -8,8 +20,7 @@
       "Deck view now shows the associated metagame archetype with a direct link to the archetype detail page.",
       "Added a 'New Deck' shortcut button in the My Decks section for quicker access to the Deck Builder.",
       "Added option to add cards from any deck to your collection by URL or recently visited decks.",
-      "Added a shortcut button on preconstructed deck pages to add the deck directly to your collection.",
-      "Minor bug fixes and performance improvements."
+      "Added a shortcut button on preconstructed deck pages to add the deck directly to your collection."
     ]
   },
   {

@@ -1,0 +1,78 @@
+<div *transloco="let t; read: 'deck_builder'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('history_title') }}</h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-secondary" role="status"></div>
+    </div>
+    } @else if (taggedCheckpoints().length === 0 && events().length === 0) {
+    <p class="text-muted text-center">{{ t('history_empty') }}</p>
+    } @else {
+    @if (taggedCheckpoints().length > 0) {
+    <h6 class="fw-semibold mb-2">{{ t('history_checkpoints') }}</h6>
+    <ul class="list-group mb-4">
+      @for (checkpoint of taggedCheckpoints(); track checkpoint.tag) {
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-primary me-2">#{{ checkpoint.tag }}</span>
+          <span class="fw-semibold">{{ checkpoint.tagLabel }}</span>
+          <small class="text-muted ms-2">{{ checkpoint.date | date: 'medium' }}</small>
+        </div>
+        <button type="button" class="btn btn-sm btn-warning" (click)="restoreCheckpoint(checkpoint)">
+          {{ t('history_restore') }}
+        </button>
+      </li>
+      }
+    </ul>
+    }
+
+    @if (events().length > 0) {
+    <h6 class="fw-semibold mb-2">{{ t('history_all_events') }}</h6>
+    <ul class="list-group list-group-flush history-events">
+      @for (event of reversedEventsWithDiff(); track event.originalIndex; let first = $first) {
+      <li class="list-group-item p-2" [ngClass]="{
+                'list-group-item-success': event.diff > 0,
+                'list-group-item-danger': event.diff < 0,
+                'list-group-item-warning': event.tag !== undefined
+              }">
+        <div class="d-flex align-items-center mb-1">
+          <span class="badge me-2" [ngClass]="{
+                    'bg-success': event.diff > 0,
+                    'bg-danger': event.diff < 0,
+                    'bg-secondary': event.diff === 0
+                  }">
+            {{ event.diff > 0 ? t('history_added') : t('history_removed') }}
+            {{ event.diff > 0 ? '+' + event.diff : event.diff }}
+          </span>
+          @if (event.tag !== undefined) {
+          <span class="badge bg-primary ms-1">{{ t('history_tag') }} #{{ event.tag }}: {{ event.tagLabel }}</span>
+          }
+          <small class="text-muted ms-auto me-2">{{ event.date | date: 'short' }}</small>
+          <button type="button" class="btn btn-sm btn-warning py-0" [disabled]="first"
+            (click)="restoreAtIndex(event.originalIndex)">
+            {{ t('history_restore') }}
+          </button>
+        </div>
+        @if (isCardCrypt(event.cardId)) {
+        <app-crypt [card]="{id: event.cardId, number: 0}" [disablePopover]="true" [withControls]="false" />
+        } @else {
+        <app-library [card]="{id: event.cardId, number: 0}" [disablePopover]="true" [withControls]="false" />
+        }
+      </li>
+      }
+    </ul>
+    }
+    }
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      {{ 'shared.close' | transloco }}
+    </button>
+  </div>
+</div>

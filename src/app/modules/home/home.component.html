@@ -39,8 +39,8 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <h1 class="display-4 fw-bold mb-3 text-center">{{ 'home.welcome_title' | transloco }}</h1>
-        <p class="lead mb-4 text-center">{{ 'home.welcome_subtitle' | transloco }}</p>
+        <h1 class="display-4 fw-bold mb-3 text-center text-white">{{ 'home.welcome_title' | transloco }}</h1>
+        <p class="lead mb-4 text-center text-white">{{ 'home.welcome_subtitle' | transloco }}</p>
         <div class="hero-actions">
           <div class="row g-3 justify-content-center">
             <div class="col-6 col-md-3">
@@ -128,7 +128,8 @@
                 <span>{{ 'shared.proxy_generator' | transloco }}</span>
               </a>
             </div>
-            <div class="col-6 col-md-3">
+            <!-- Disabled AI chat -->
+            <!-- <div class="col-6 col-md-3">
               <a routerLink="/vtes-ai" class="hero-card bg-secondary text-white position-relative">
                 <span
                   class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark shadow-sm fw-semibold"
@@ -138,7 +139,7 @@
                 <i class="bi bi-chat-dots"></i>
                 <span>{{ 'shared.vtes_ai_chat' | transloco }}</span>
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -148,7 +149,7 @@
   <!-- Buy me a coffee button -->
   <div class="container text-center mt-5" *appIsSupporter="false">
     <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
-      class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow">
+      class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow text-white">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px" y="0px" viewBox="0 0 1080 1080" width="20" height="20" style="enable-background:new 0 0 1080 1080;"
         xml:space="preserve">
