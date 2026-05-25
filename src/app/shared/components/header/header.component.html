@@ -108,9 +108,10 @@
               (click)="isCollapsed = true">
               {{ t('proxy_generator') }}
             </a>
-            <a ngbDropdownItem routerLink="/vtes-ai" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+            <!-- Disabled AI chat -->
+            <!-- <a ngbDropdownItem routerLink="/vtes-ai" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('vtes_ai_chat') }}
-            </a>
+            </a> -->
             <button ngbDropdownItem (click)="openTableSeatingModal()" gaEvent="referral" gaCategory="vtesdle">
               {{ t('table_seating') }}
             </button>

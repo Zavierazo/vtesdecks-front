@@ -1,13 +1,13 @@
 [
   {
     "version": "2.69.0",
-    "date": "23rd May, 2026",
+    "date": "25th May, 2026",
     "changes": [
-      "Deck Builder now saves a local draft on every change, with automatic recovery prompt if the page was closed unexpectedly.",
-      "Deck Builder history panel lets you tag and restore previous versions of your deck.",
-      "Card search filter is now integrated directly in the Crypt and Library control bars.",
-      "Deck Builder supports importing cards from plain text (e.g. pasted TWDA-style lists).",
-      "Deck Builder supports importing cards from any of your recently visited decks.",
+      "Deck Builder now automatically saves a local draft after every change and can recover it if the page was closed unexpectedly.",
+      "Added a Deck History panel to tag, browse, and restore previous versions of your deck.",
+      "Card search filters are now integrated directly into the Crypt and Library builder for faster access.",
+      "Deck Builder now supports importing cards from plain text list or recently viewed decks.",
+      "Removed the AI chat feature to focus development on core functionality and overall platform quality.",
       "Minor bug fixes and performance improvements."
     ]
   },
