@@ -84,7 +84,9 @@
     </button>
   </div>
   @if(previewDescription()){
-  <app-markdown-text class="mt-3" [data]="description" />
+  <div class="markdown-preview">
+    <app-markdown-text class="mt-3" [data]="description" />
+  </div>
   } @else{
   <div class="form-floating">
     <textarea #ref class="form-control w-vw-100 markdown-textarea" id="description" type="text"
