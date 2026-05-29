@@ -412,19 +412,31 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   openCryptBuilder() {
-    this.modalService.open(CryptBuilderComponent, {
+    const modalRef = this.modalService.open(CryptBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
+    const suggested = this.deckBuilderQuery.getValue().suggestedCards
+    if (suggested?.keyCrypt) {
+      modalRef.componentInstance.suggestedCardIds = [...suggested.keyCrypt].map(
+        (c) => c.id,
+      )
+    }
   }
 
   openLibraryBuilder() {
-    this.modalService.open(LibraryBuilderComponent, {
+    const modalRef = this.modalService.open(LibraryBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
+    const suggested = this.deckBuilderQuery.getValue().suggestedCards
+    if (suggested?.keyLibrary) {
+      modalRef.componentInstance.suggestedCardIds = [
+        ...suggested.keyLibrary,
+      ].map((c) => c.id)
+    }
   }
 
   openImportRecentDecks(): void {

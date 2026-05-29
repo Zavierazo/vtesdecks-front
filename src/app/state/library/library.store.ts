@@ -89,6 +89,7 @@ export class LibraryStore {
     sortBy?: LibrarySortBy,
     sortByOrder?: 'asc' | 'desc',
     stats?: LibraryStats,
+    priorityIds?: number[],
   ): Observable<ApiLibrary[]> {
     if (stats) {
       stats.disciplineFactor = this.getDisciplineFactor(stats)
@@ -124,6 +125,19 @@ export class LibraryStore {
               this.sort(a[sortBy], b[sortBy], sortByOrder),
             )
           }
+        }
+        if (priorityIds?.length) {
+          const priorityMap = new Map(priorityIds.map((id, idx) => [id, idx]))
+          entities = entities.sort((a, b) => {
+            const aIdx = priorityMap.has(a.id)
+              ? priorityMap.get(a.id)!
+              : Number.MAX_SAFE_INTEGER
+            const bIdx = priorityMap.has(b.id)
+              ? priorityMap.get(b.id)!
+              : Number.MAX_SAFE_INTEGER
+            if (aIdx !== bIdx) return aIdx - bIdx
+            return 0
+          })
         }
         if (limitTo) {
           entities = entities.slice(0, limitTo)

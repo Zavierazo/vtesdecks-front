@@ -49,12 +49,14 @@ export class LibraryQuery {
     sortBy,
     sortByOrder,
     stats,
+    priorityIds,
   }: {
     limitTo?: number
     filter?: LibraryFilter
     sortBy?: LibrarySortBy
     sortByOrder?: 'asc' | 'desc'
     stats?: LibraryStats
+    priorityIds?: number[]
   }): Observable<ApiLibrary[]> {
     return this.store.selectEntities(
       limitTo,
@@ -62,6 +64,7 @@ export class LibraryQuery {
       sortBy,
       sortByOrder,
       stats,
+      priorityIds,
     )
   }
 
