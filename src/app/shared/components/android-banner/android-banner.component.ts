@@ -10,6 +10,7 @@ import { LocalStorageService } from '@services'
 @Component({
   selector: 'app-android-banner',
   templateUrl: './android-banner.component.html',
+  styleUrls: ['./android-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoPipe],
 })
