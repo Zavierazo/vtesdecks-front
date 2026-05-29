@@ -100,6 +100,7 @@ export class LibrarySectionComponent implements OnInit {
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
+  hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   sortBy: LibrarySortBy = 'name'
@@ -398,7 +399,11 @@ export class LibrarySectionComponent implements OnInit {
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
-        switchMap((results) => of(results.slice(0, this.limitTo))),
+        switchMap((results) => {
+          const sliced = results.slice(0, this.limitTo)
+          this.hasMore$.next(sliced.length < results.length)
+          return of(sliced)
+        }),
       )
     this.changeDetector.markForCheck()
   }
