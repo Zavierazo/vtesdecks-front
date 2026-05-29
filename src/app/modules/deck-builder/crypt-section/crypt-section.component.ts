@@ -29,6 +29,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
@@ -75,6 +76,7 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     TranslocoPipe,
     ToggleIconComponent,
     CryptGridCardComponent,
+    AdSenseComponent,
   ],
 })
 export class CryptSectionComponent implements OnInit {

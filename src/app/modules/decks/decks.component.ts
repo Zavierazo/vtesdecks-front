@@ -20,6 +20,7 @@ import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { DecksQuery } from '@state/decks/decks.query'
@@ -59,6 +60,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     NgbTooltip,
     AsyncPipe,
     RouterLink,
+    AdSenseComponent,
   ],
 })
 export class DecksComponent implements OnInit {
