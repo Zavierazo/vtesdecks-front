@@ -1019,6 +1019,12 @@
       "365_days": "último año",
       "730_days": "últimos 2 años",
       "all_time": "Todo el tiempo"
+    },
+    "trend": {
+      "TRENDING": "En auge",
+      "DECLINING": "En declive",
+      "TRENDING_tooltip": "Este arquetipo está ganando popularidad en el meta",
+      "DECLINING_tooltip": "Este arquetipo está perdiendo presencia en el meta"
     }
   },
   "follow": {

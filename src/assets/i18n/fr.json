@@ -1016,6 +1016,12 @@
       "365_days": "1 an",
       "730_days": "2 ans",
       "all_time": "Tout le temps"
+    },
+    "trend": {
+      "TRENDING": "En hausse",
+      "DECLINING": "En baisse",
+      "TRENDING_tooltip": "Cet archétype gagne en popularité dans le méta",
+      "DECLINING_tooltip": "Cet archétype perd de sa présence dans le méta"
     }
   },
   "follow": {

@@ -17,4 +17,5 @@ export interface ApiDeckArchetype {
   modificationDate: Date
   keyCrypt?: ApiArchetypeKeyCard[]
   keyLibrary?: ApiArchetypeKeyCard[]
+  trend?: 'TRENDING' | 'DECLINING' | 'STABLE'
 }

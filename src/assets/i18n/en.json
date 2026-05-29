@@ -1020,6 +1020,12 @@
       "365_days": "1 year ago",
       "730_days": "2 years ago",
       "all_time": "All-time"
+    },
+    "trend": {
+      "TRENDING": "Trending",
+      "DECLINING": "Declining",
+      "TRENDING_tooltip": "This archetype is gaining popularity in the meta",
+      "DECLINING_tooltip": "This archetype is losing presence in the meta"
     }
   },
   "follow": {
