@@ -399,7 +399,8 @@
     "whats_new": "Nouveautés du {{ date }}",
     "metagame": "Metagame actuel",
     "android_banner_message": "VTESDecks est maintenant disponible sur Android ! Téléchargez l'app pour une meilleure expérience mobile.",
-    "android_banner_install": "Disponible sur Google Play"
+    "android_banner_install": "Disponible sur Google Play",
+    "user_of_month_title": "Utilisateur du Mois"
   },
   "import_amaranth": {
     "title": "Importer Amaranth",

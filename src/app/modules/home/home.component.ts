@@ -24,6 +24,7 @@ import { switchMap, tap } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { HomeMetagameComponent } from './home-metagame/home-metagame.component'
 import { HomeSectionComponent } from './home-section/home-section.component'
+import { HomeUserOfMonthComponent } from './home-user-of-month/home-user-of-month.component'
 
 @UntilDestroy()
 @Component({
@@ -41,6 +42,7 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     IsSupporterDirective,
     HomeMetagameComponent,
     AndroidBannerComponent,
+    HomeUserOfMonthComponent,
   ],
 })
 export class HomeComponent implements OnInit {

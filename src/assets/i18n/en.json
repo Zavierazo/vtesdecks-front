@@ -403,7 +403,8 @@
     "whats_new": "What's new {{ date }}",
     "metagame": "Current Metagame",
     "android_banner_message": "VTESDecks is now available on Android! Get the app for a better mobile experience.",
-    "android_banner_install": "Get it on Google Play"
+    "android_banner_install": "Get it on Google Play",
+    "user_of_month_title": "User of the Month"
   },
   "import_amaranth": {
     "title": "Import Amaranth",

@@ -3,9 +3,10 @@
     "version": "2.70.0",
     "date": "30th May, 2026",
     "changes": [
-      "New Android app now available on Google Play: https://play.google.com/store/apps/details?id=com.vtesdecks.twa",
-      "Metagame: Added trend indicator with color-coded badges and tooltips. Trend badges now visually highlight trending and declining archetypes.",
-      "Deck Builder: When suggested cards are available, the Crypt and Library modals now pin recommended cards to the top.",
+      "Our new Android app is now available! Download it on <a href=\"https://play.google.com/store/apps/details?id=com.vtesdecks.twa\">Google Play</a>.",
+      "Added color-coded trend indicators and detailed tooltips to make rising and declining archetypes easier to identify at a glance.",
+      "Recommended cards are now pinned to the top of the Crypt and Library selection windows for quicker deck building.",
+      "Introduced a <strong>User of the Month</strong> podium showcasing the top three deck builders whose decks received the most likes during the previous month.",
       "Minor bug fixes and performance improvements."
     ]
   },

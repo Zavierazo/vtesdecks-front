@@ -1,0 +1,54 @@
+@if (topUsers === null || topUsers.length > 0) {
+<div class="user-of-month-section py-0 pb-md-3">
+  <div class="container">
+    <div class="section-header text-center mb-2 mb-md-3">
+      <h2 class="section-title mb-0">
+        <span class="trophy-icon">🏆</span>
+        {{ 'home.user_of_month_title' | transloco }}
+        <span class="section-separator">·</span>
+        <span class="section-subtitle">{{ previousMonthDate | date: 'MMMM yyyy' }}</span>
+      </h2>
+    </div>
+
+    @if (topUsers === null) {
+    <div class="row g-4 justify-content-center podium-row">
+      @for (item of [1, 2, 3]; track item) {
+      <div class="col-12 col-md-4" [class.podium-col-1]="item === 1" [class.podium-col-2]="item === 2"
+        [class.podium-col-3]="item === 3">
+        <div class="user-month-card skeleton-card" [class.rank-1]="item === 1" [class.rank-2]="item === 2"
+          [class.rank-3]="item === 3">
+          <div class="card-content flex-grow-1 w-100 d-flex flex-column align-items-center">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+          </div>
+          <div class="skeleton-base"></div>
+        </div>
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="row g-4 justify-content-center podium-row">
+      @for (user of topUsers; track user.rank) {
+      <div class="col-12 col-md-4" [class.podium-col-1]="user.rank === 1" [class.podium-col-2]="user.rank === 2"
+        [class.podium-col-3]="user.rank === 3">
+        <a [routerLink]="['/user', user.user]" class="user-month-card text-decoration-none"
+          [class.rank-1]="user.rank === 1" [class.rank-2]="user.rank === 2" [class.rank-3]="user.rank === 3">
+          <div class="card-content flex-grow-1 d-flex flex-column align-items-center w-100">
+            <div class="avatar-wrapper">
+              <img [src]="user.profileImage || '/assets/img/default_user.png'" [alt]="user.displayName"
+                class="avatar-img" />
+              <span class="rank-medal">{{ getRankEmoji(user.rank) }}</span>
+            </div>
+            <div class="user-info text-center">
+              <div class="display-name fw-bold">{{ user.displayName }}</div>
+            </div>
+          </div>
+          <div class="podium-base"></div>
+        </a>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+}

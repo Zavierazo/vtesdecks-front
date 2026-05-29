@@ -36,6 +36,7 @@ import {
   ApiUserCountry,
   ApiUserNotification,
   ApiUserSettings,
+  ApiUserTopMonth,
   ApiYearStatistic,
   MetaType,
 } from '@models'
@@ -56,6 +57,7 @@ export class ApiDataService {
   private readonly countryPath = '/auth/country'
   private readonly forgotPasswordPath = '/auth/forgot-password'
   private readonly publicUserPath = '/public/user'
+  private readonly publicUserTopMonthPath = '/public/user/top-month'
   private readonly userValidatePath = '/user/validate'
   private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
@@ -619,6 +621,12 @@ export class ApiDataService {
   getPublicUser(username: string): Observable<ApiPublicUser> {
     return this.httpClient.get<ApiPublicUser>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
+    )
+  }
+
+  getUserTopMonth(): Observable<ApiUserTopMonth[]> {
+    return this.httpClient.get<ApiUserTopMonth[]>(
+      `${environment.api.baseUrl}${this.publicUserTopMonthPath}`,
     )
   }
 
