@@ -1,0 +1,18 @@
+@if (show) {
+<div class="alert alert-info alert-dismissible fade show mb-0 rounded-0 border-0" role="alert">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-android2 fs-5"></i>
+        <span>{{ 'home.android_banner_message' | transloco }}</span>
+      </div>
+      <div class="d-flex align-items-center gap-2 flex-shrink-0">
+        <a [href]="playStoreUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-dark">
+          {{ 'home.android_banner_install' | transloco }}
+        </a>
+        <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+      </div>
+    </div>
+  </div>
+</div>
+}

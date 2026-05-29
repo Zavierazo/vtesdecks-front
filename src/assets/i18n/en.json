@@ -401,7 +401,9 @@
     "patreon_supporter_message": "Thank you for supporting VTES Decks!<br>Your support keeps VTES Decks alive ❤️",
     "contact_support": "Contact Support",
     "whats_new": "What's new {{ date }}",
-    "metagame": "Current Metagame"
+    "metagame": "Current Metagame",
+    "android_banner_message": "VTESDecks is now available on Android! Get the app for a better mobile experience.",
+    "android_banner_install": "Get it on Google Play"
   },
   "import_amaranth": {
     "title": "Import Amaranth",

@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
@@ -39,6 +40,7 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     AdSenseComponent,
     IsSupporterDirective,
     HomeMetagameComponent,
+    AndroidBannerComponent,
   ],
 })
 export class HomeComponent implements OnInit {
