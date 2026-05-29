@@ -207,3 +207,9 @@ blockquote p {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
+/** Cookie consent **/
+@media (max-width: 576px) {
+  .cc-revoke {
+    display: none !important;
+  }
+}
