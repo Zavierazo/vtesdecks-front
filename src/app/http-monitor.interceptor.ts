@@ -21,6 +21,7 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
   private authStore = inject(AuthStore)
+  private errorToastShown = false
 
   intercept(
     request: HttpRequest<unknown>,
@@ -51,12 +52,17 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   shouldRetry(error: HttpErrorResponse) {
     if (error.status === 503 || error.status === 504 || error.status === 0) {
       console.warn('Error ' + error.status + ' retrying...')
-      this.toastService.show(
-        this.translocoService.translate(
-          'shared.service_temporarily_unavailable',
-        ),
-        { classname: 'bg-danger text-light', delay: 5000 },
-      )
+      if (!this.errorToastShown) {
+        this.errorToastShown = true
+        const delay = 5000
+        this.toastService.show(
+          this.translocoService.translate(
+            'shared.service_temporarily_unavailable',
+          ),
+          { classname: 'bg-danger text-light', delay },
+        )
+        setTimeout(() => (this.errorToastShown = false), delay)
+      }
       return timer(retryWaitMilliSeconds)
     }
     throw error
