@@ -82,6 +82,7 @@ export class LibraryBuilderComponent implements OnInit {
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
   sortBy!: LibrarySortBy
   sortByOrder!: 'asc' | 'desc'
+  suggestedCardIds: number[] = []
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -209,6 +210,7 @@ export class LibraryBuilderComponent implements OnInit {
         cryptDisciplines: this.deckBuilderQuery.getCryptDisciplines(),
         cryptTotal: this.deckBuilderQuery.getCryptSize(),
       },
+      priorityIds: this.suggestedCardIds,
     })
     this.changeDetector.markForCheck()
   }

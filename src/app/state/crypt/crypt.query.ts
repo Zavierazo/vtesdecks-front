@@ -49,12 +49,14 @@ export class CryptQuery {
     sortBy,
     sortByOrder,
     crypt,
+    priorityIds,
   }: {
     limitTo?: number
     filter?: CryptFilter
     sortBy?: CryptSortBy
     sortByOrder?: 'asc' | 'desc'
     crypt?: CryptStats
+    priorityIds?: number[]
   }): Observable<ApiCrypt[]> {
     return this.store.selectEntities(
       limitTo,
@@ -62,6 +64,7 @@ export class CryptQuery {
       sortBy,
       sortByOrder,
       crypt,
+      priorityIds,
     )
   }
 

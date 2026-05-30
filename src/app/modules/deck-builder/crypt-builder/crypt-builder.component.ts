@@ -80,6 +80,7 @@ export class CryptBuilderComponent implements OnInit {
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
+  suggestedCardIds: number[] = []
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -228,6 +229,7 @@ export class CryptBuilderComponent implements OnInit {
         clans: this.deckBuilderQuery.getCryptClans(),
         disciplines: this.deckBuilderQuery.getCryptDisciplines(),
       },
+      priorityIds: this.suggestedCardIds,
     })
     this.changeDetector.markForCheck()
   }

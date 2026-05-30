@@ -41,7 +41,11 @@ export class BuilderSuggestionsComponent {
   private previousCardIds = ''
 
   filteredCards = computed<ApiArchetypeKeyCard[]>(() => {
-    const deckIds = new Set(this.deckCards().map((c) => c.id))
+    const deckIds = new Set(
+      this.deckCards()
+        .filter((c) => c.number > 0)
+        .map((c) => c.id),
+    )
     return this.rawCards().filter((card) => !deckIds.has(card.id))
   })
 

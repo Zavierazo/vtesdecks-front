@@ -34,7 +34,7 @@
     @if (events().length > 0) {
     <h6 class="fw-semibold mb-2">{{ t('history_all_events') }}</h6>
     <ul class="list-group list-group-flush history-events">
-      @for (event of reversedEventsWithDiff(); track event.originalIndex; let first = $first) {
+      @for (event of eventsWithDiff(); track event.originalIndex; let first = $first) {
       <li class="list-group-item p-2" [ngClass]="{
                 'list-group-item-success': event.diff > 0,
                 'list-group-item-danger': event.diff < 0,

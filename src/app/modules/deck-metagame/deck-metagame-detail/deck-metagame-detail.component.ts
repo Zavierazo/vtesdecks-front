@@ -15,6 +15,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
@@ -44,6 +45,7 @@ import { ArchetypeCardStatsComponent } from './archetype-card-stats/archetype-ca
     CryptComponent,
     LibraryComponent,
     ArchetypeCardStatsComponent,
+    AdSenseComponent,
   ],
 })
 export class DeckMetagameDetailComponent implements OnInit {

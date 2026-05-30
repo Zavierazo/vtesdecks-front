@@ -16,7 +16,7 @@
         </div>
         }
         <div class="flex-grow-1">
-          <h5 class="card-title mb-1 fw-bold text-body">
+          <h5 class="card-title mb-1 fw-bold text-body d-flex align-items-center gap-1">
             @if(archetype.id === undefined && isMaintainer){
             <button class="btn btn-link text-start fw-bold text-decoration-none p-0"
               (click)="$event.stopPropagation(); openModal(archetype)">
@@ -33,6 +33,15 @@
             </a>
             }@else {
             {{ archetype.name }}
+            }
+            @if (archetype.trend === 'TRENDING') {
+            <span class="trend-badge trend-badge--trending" [ngbTooltip]="t('trend.TRENDING_tooltip')">
+              <i class="bi bi-graph-up-arrow"></i>{{ t('trend.TRENDING') }}
+            </span>
+            } @else if (archetype.trend === 'DECLINING') {
+            <span class="trend-badge trend-badge--declining" [ngbTooltip]="t('trend.DECLINING_tooltip')">
+              <i class="bi bi-graph-down-arrow"></i>{{ t('trend.DECLINING') }}
+            </span>
             }
           </h5>
           <div class="card-subtitle text-muted small">{{ archetype.type }}</div>

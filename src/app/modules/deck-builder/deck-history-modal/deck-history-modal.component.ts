@@ -47,36 +47,38 @@ export class DeckHistoryModalComponent implements OnInit {
 
   loading = signal(true)
   events = signal<ApiDeckBuilderHistory[]>([])
-  taggedCheckpoints = signal<ApiDeckBuilderHistory[]>([])
 
   eventsWithDiff = computed<HistoryEventWithDiff[]>(() => {
     const cardCounts = new Map<number, number>()
-    return this.events().map((event, index) => {
-      const previous = cardCounts.get(event.cardId) ?? 0
-      let diff: number
-      if (event.action === 'DELETE') {
-        diff = -previous
-        cardCounts.delete(event.cardId)
-      } else {
-        diff = event.number - previous
-        cardCounts.set(event.cardId, event.number)
-      }
-      return { ...event, diff, originalIndex: index }
-    })
-  })
-
-  reversedEventsWithDiff = computed<HistoryEventWithDiff[]>(() =>
-    this.eventsWithDiff()
+    return this.events()
+      .map((event, index) => {
+        const previous = cardCounts.get(event.cardId) ?? 0
+        let diff: number
+        if (event.action === 'DELETE') {
+          diff = -previous
+          cardCounts.delete(event.cardId)
+        } else {
+          diff = event.number - previous
+          cardCounts.set(event.cardId, event.number)
+        }
+        return { ...event, diff, originalIndex: index }
+      })
       .filter((e) => e.diff !== 0)
       .slice()
-      .reverse(),
-  )
+      .reverse()
+  })
+
+  taggedCheckpoints = computed<ApiDeckBuilderHistory[]>(() => {
+    return this.events()
+      .filter((e) => e.tag !== undefined)
+      .slice()
+      .reverse()
+  })
 
   ngOnInit(): void {
     this.apiDataService.getDeckBuilderHistory(this.deckId).subscribe({
       next: (history) => {
         this.events.set(history)
-        this.taggedCheckpoints.set(history.filter((e) => e.tag !== undefined))
         this.loading.set(false)
         this.changeDetector.markForCheck()
       },

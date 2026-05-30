@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
 import { LoginComponent } from '@shared/components/login/login.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
@@ -23,6 +24,7 @@ import { switchMap, tap } from 'rxjs'
 import { environment } from '../../../environments/environment'
 import { HomeMetagameComponent } from './home-metagame/home-metagame.component'
 import { HomeSectionComponent } from './home-section/home-section.component'
+import { HomeUserOfMonthComponent } from './home-user-of-month/home-user-of-month.component'
 
 @UntilDestroy()
 @Component({
@@ -39,6 +41,8 @@ import { HomeSectionComponent } from './home-section/home-section.component'
     AdSenseComponent,
     IsSupporterDirective,
     HomeMetagameComponent,
+    AndroidBannerComponent,
+    HomeUserOfMonthComponent,
   ],
 })
 export class HomeComponent implements OnInit {

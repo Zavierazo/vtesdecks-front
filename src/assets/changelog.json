@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.70.0",
+    "date": "30th May, 2026",
+    "changes": [
+      "Our new Android app is now available! Download it on <a href=\"https://play.google.com/store/apps/details?id=com.vtesdecks.twa\">Google Play</a>.",
+      "Added color-coded trend indicators and detailed tooltips to make rising and declining archetypes easier to identify at a glance.",
+      "Recommended cards are now pinned to the top of the Crypt and Library selection windows for quicker deck building.",
+      "Introduced a <strong>User of the Month</strong> podium showcasing the top three deck builders whose decks received the most likes during the previous month.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.69.0",
     "date": "25th May, 2026",
     "changes": [
@@ -7,8 +18,7 @@
       "Added a Deck History panel to tag, browse, and restore previous versions of your deck.",
       "Card search filters are now integrated directly into the Crypt and Library builder for faster access.",
       "Deck Builder now supports importing cards from plain text list or recently viewed decks.",
-      "Removed the AI chat feature to focus development on core functionality and overall platform quality.",
-      "Minor bug fixes and performance improvements."
+      "Removed the AI chat feature to focus development on core functionality and overall platform quality."
     ]
   },
   {

@@ -29,6 +29,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
+import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
@@ -75,6 +76,7 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     TranslocoPipe,
     ToggleIconComponent,
     CryptGridCardComponent,
+    AdSenseComponent,
   ],
 })
 export class CryptSectionComponent implements OnInit {
@@ -98,6 +100,7 @@ export class CryptSectionComponent implements OnInit {
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
+  hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
   sortBy: CryptSortBy = 'name'
@@ -395,7 +398,11 @@ export class CryptSectionComponent implements OnInit {
       })
       .pipe(
         tap((results) => this.resultsCount$.next(results.length)),
-        switchMap((results) => of(results.slice(0, this.limitTo))),
+        switchMap((results) => {
+          const sliced = results.slice(0, this.limitTo)
+          this.hasMore$.next(sliced.length < results.length)
+          return of(sliced)
+        }),
       )
     this.changeDetector.markForCheck()
   }

@@ -397,7 +397,10 @@
     "patreon_supporter_message": "Merci de soutenir VTES Decks !<br>Votre soutien permet de maintenir le site en vie ❤️",
     "contact_support": "Contacter le support",
     "whats_new": "Nouveautés du {{ date }}",
-    "metagame": "Metagame actuel"
+    "metagame": "Metagame actuel",
+    "android_banner_message": "VTESDecks est maintenant disponible sur Android ! Téléchargez l'app pour une meilleure expérience mobile.",
+    "android_banner_install": "Disponible sur Google Play",
+    "user_of_month_title": "Utilisateur du Mois"
   },
   "import_amaranth": {
     "title": "Importer Amaranth",
@@ -1016,6 +1019,12 @@
       "365_days": "1 an",
       "730_days": "2 ans",
       "all_time": "Tout le temps"
+    },
+    "trend": {
+      "TRENDING": "En hausse",
+      "DECLINING": "En baisse",
+      "TRENDING_tooltip": "Cet archétype gagne en popularité dans le méta",
+      "DECLINING_tooltip": "Cet archétype perd de sa présence dans le méta"
     }
   },
   "follow": {
