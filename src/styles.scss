@@ -207,9 +207,19 @@ blockquote p {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
+
 /** Cookie consent **/
 @media (max-width: 576px) {
   .cc-revoke {
     display: none !important;
   }
+}
+
+/** Hide empty AdSense ads **/
+ins.adsbygoogle[data-ad-status='unfill-optimized'],
+ins.adsbygoogle[data-ad-status='unfilled'] {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
