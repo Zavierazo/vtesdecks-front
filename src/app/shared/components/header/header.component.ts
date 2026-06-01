@@ -20,7 +20,7 @@ import {
 import { ColorThemeService, MediaService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
-import { isChristmas, isHalloween } from '@utils'
+import { isChristmas, isHalloween, isPrideMonth } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
 import { IsLoggedDirective } from '../../directives/is-logged.directive'
@@ -132,6 +132,8 @@ export class HeaderComponent implements OnInit {
       return '/assets/img/logo_christmas.png'
     } else if (isHalloween()) {
       return '/assets/img/logo_halloween.png'
+    } else if (isPrideMonth()) {
+      return '/assets/img/logo_pride.png'
     } else {
       return '/assets/img/logo.png'
     }

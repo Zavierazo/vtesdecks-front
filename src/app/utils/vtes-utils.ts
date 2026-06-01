@@ -53,6 +53,11 @@ export function isHalloween() {
   )
 }
 
+export function isPrideMonth() {
+  const now = new Date()
+  return now.getMonth() === 5
+}
+
 const normalizeText = (text: string): string => {
   return text
     .normalize('NFD') // Decompose accented characters
