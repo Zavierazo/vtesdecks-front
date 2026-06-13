@@ -470,7 +470,7 @@
     "must_one_number": "Doit contenir au moins 1 chiffre !",
     "must_8_characters": "Doit faire au moins 8 caractères !",
     "must_match": "Les mots de passe doivent correspondre !",
-    "read_and_agree_terms": "J'ai lu et j'accepte les conditions",
+    "read_and_agree_terms": "J'ai lu et j'accepte les <a href='/terms' target='_blank' rel='noopener'>Conditions</a> et la <a href='/privacy-policy' target='_blank' rel='noopener'>Politique de Confidentialité</a>",
     "terms_mandatory": "Les conditions doivent être acceptées.",
     "already_member": "Déjà membre ?"
   },

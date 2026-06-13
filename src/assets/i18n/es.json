@@ -474,7 +474,7 @@
     "must_one_number": "¡Debe contener al menos 1 número!",
     "must_8_characters": "¡Debe tener al menos 8 caracteres!",
     "must_match": "¡La contraseña debe coincidir!",
-    "read_and_agree_terms": "He leído y acepto los términos.",
+    "read_and_agree_terms": "He leído y acepto los <a href='/terms' target='_blank' rel='noopener'>Términos</a> y la <a href='/privacy-policy' target='_blank' rel='noopener'>Política de Privacidad</a>",
     "terms_mandatory": "Se deben aceptar los términos.",
     "already_member": "¿Ya eres miembro?"
   },

@@ -474,7 +474,7 @@
     "must_one_number": "Must contain at least 1 number!",
     "must_8_characters": "Must be at least 8 characters!",
     "must_match": "Password must match!",
-    "read_and_agree_terms": "I have read and agree to the terms",
+    "read_and_agree_terms": "I have read and agree to the <a href='/terms' target='_blank' rel='noopener'>Terms</a> and <a href='/privacy-policy' target='_blank' rel='noopener'>Privacy Policy</a>",
     "terms_mandatory": "Terms must be accepted.",
     "already_member": "Already a member?"
   },

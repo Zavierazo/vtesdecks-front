@@ -191,8 +191,7 @@
           <div class="form-check d-flex justify-content-center mb-4">
             <input mdbCheckbox class="form-check-input me-2" type="checkbox" value="" id="registerCheck"
               aria-describedby="registerCheckHelpText" formControlName="terms">
-            <label class="form-check-label" for="registerCheck">
-              {{ t('read_and_agree_terms') }}
+            <label class="form-check-label" for="registerCheck" [innerHTML]="t('read_and_agree_terms')">
             </label>
           </div>
           @if (registerTerms?.invalid && (registerTerms?.dirty || registerTerms?.touched)) {

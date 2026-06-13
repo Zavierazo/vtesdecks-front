@@ -472,7 +472,7 @@
     "must_one_number": "Deve conter pelo menos 1 número!",
     "must_8_characters": "Deve ter pelo menos 8 caracteres!",
     "must_match": "A senha deve corresponder!",
-    "read_and_agree_terms": "Eu li e concordo com os termos.",
+    "read_and_agree_terms": "Eu li e concordo com os <a href='/terms' target='_blank' rel='noopener'>Termos</a> e a <a href='/privacy-policy' target='_blank' rel='noopener'>Política de Privacidade</a>",
     "terms_mandatory": "Os termos devem ser aceitos.",
     "already_member": "Já é membro?"
   },
