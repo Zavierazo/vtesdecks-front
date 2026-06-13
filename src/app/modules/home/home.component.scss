@@ -1,14 +1,44 @@
 // Hero Section
 .hero-section {
-  background: linear-gradient(
-    135deg,
-    var(--bs-primary) 0%,
-    var(--bs-secondary) 100%
-  );
+  position: relative;
+  background:
+    radial-gradient(
+      120% 120% at 85% -10%,
+      rgba(14, 165, 233, 0.55) 0%,
+      rgba(14, 165, 233, 0) 55%
+    ),
+    linear-gradient(135deg, #1257b0 0%, #1c6dd0 45%, #2563c9 100%);
   color: white;
   border-radius: 0 0 2rem 2rem;
   margin-top: -1rem;
-  padding: 4rem 0;
+  padding: 4.5rem 0 4rem;
+  overflow: hidden;
+
+  // subtle texture / depth
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      100% 60% at 50% 120%,
+      rgba(0, 0, 0, 0.18) 0%,
+      rgba(0, 0, 0, 0) 70%
+    );
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .display-4 {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.18);
+  }
+
+  .lead {
+    opacity: 0.92;
+  }
 
   .hero-actions {
     .hero-card {
@@ -21,36 +51,39 @@
       border-radius: 1rem;
       text-decoration: none;
       transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        filter 0.3s ease;
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
       height: 100%;
       min-height: 140px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(2px);
 
       i {
         font-size: 2.5rem;
         margin-bottom: 0.75rem;
-        opacity: 0.9;
+        opacity: 0.95;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.18));
       }
 
       span {
-        font-weight: 500;
+        font-weight: 600;
         font-size: 1.1rem;
         margin-bottom: 0.5rem;
       }
 
       small {
         font-size: 1.2rem;
-        font-weight: 600;
-        opacity: 0.9;
+        font-weight: 700;
+        opacity: 0.95;
       }
 
       &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-6px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.26);
         color: white;
-        filter: brightness(1.1);
+        filter: brightness(1.08);
       }
 
       &.bg-primary {

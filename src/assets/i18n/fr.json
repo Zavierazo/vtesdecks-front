@@ -339,7 +339,9 @@
     "changelog": "Journal des modifications",
     "terms": "Conditions d'utilisation",
     "privacy_policy": "Politique de confidentialité",
-    "mail": "E-mail"
+    "mail": "E-mail",
+    "about": "À propos",
+    "follow_us": "Suivez-nous"
   },
   "header": {
     "home": "Accueil",
@@ -392,7 +394,7 @@
     "popular_community": "Communauté populaire",
     "newest_tournament": "Derniers Tournois",
     "newest_community": "Derniers Decks Communauté",
-    "see_more": "Voir plus...",
+    "see_more": "Voir plus",
     "patreon": "Soutenir sur Patreon",
     "patreon_message": "Ce site est 100% gratuit et géré par la communauté.<br>Si VTES Decks vous aide, envisagez de me soutenir sur Patreon ❤️",
     "patreon_supporter_message": "Merci de soutenir VTES Decks !<br>Votre soutien permet de maintenir le site en vie ❤️",
