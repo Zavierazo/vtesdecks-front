@@ -22,6 +22,7 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import {
+  ApiArchetypeKeyCard,
   ApiDeckBuilder,
   ApiDeckLimitedFormat,
   DeckCryptSortBy,
@@ -153,6 +154,24 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   loading$ = this.deckBuilderQuery.selectLoading()
 
   suggestedCards$ = this.deckBuilderQuery.selectSuggestedCards()
+
+  cryptRecommendations$ = this.suggestedCards$.pipe(
+    map(
+      (suggested) =>
+        new Map<number, ApiArchetypeKeyCard>(
+          (suggested?.keyCrypt ?? []).map((card) => [card.id, card]),
+        ),
+    ),
+  )
+
+  libraryRecommendations$ = this.suggestedCards$.pipe(
+    map(
+      (suggested) =>
+        new Map<number, ApiArchetypeKeyCard>(
+          (suggested?.keyLibrary ?? []).map((card) => [card.id, card]),
+        ),
+    ),
+  )
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [

@@ -1,13 +1,20 @@
 [
   {
+    "version": "2.71.0",
+    "date": "13th June, 2026",
+    "changes": [
+      "Deck Builder now shows the recommended copy range on cards already in your deck, color-coded to highlight when your quantity is outside the archetype's usual range.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.70.0",
     "date": "30th May, 2026",
     "changes": [
       "Our new Android app is now available! Download it on <a href=\"https://play.google.com/store/apps/details?id=com.vtesdecks.twa\">Google Play</a>.",
       "Added color-coded trend indicators and detailed tooltips to make rising and declining archetypes easier to identify at a glance.",
       "Recommended cards are now pinned to the top of the Crypt and Library selection windows for quicker deck building.",
-      "Introduced a <strong>User of the Month</strong> podium showcasing the top three deck builders whose decks received the most likes during the previous month.",
-      "Minor bug fixes and performance improvements."
+      "Introduced a <strong>User of the Month</strong> podium showcasing the top three deck builders whose decks received the most likes during the previous month."
     ]
   },
   {

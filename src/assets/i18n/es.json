@@ -230,6 +230,7 @@
     "limited_format_not_allowed": "{{ name }} no está permitido en este formato"
   },
   "deck_shared": {
+    "recommended_tip": "Copias recomendadas para mazos similares: {{ min }}–{{ max }}",
     "banned": "Prohibida",
     "unreleased": "No lanzada",
     "rulings": "Reglas",

@@ -88,6 +88,11 @@
           }
         </div>
         }
+        @if (recommended) {
+        <span class="ms-1 float-start">
+          <app-recommended-badge [recommended]="recommended" [current]="card.number" />
+        </span>
+        }
         @if (library.banned) {
         <span class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
         }

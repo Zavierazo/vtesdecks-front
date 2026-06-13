@@ -226,6 +226,7 @@
     "limited_format_not_allowed": "{{ name }} n'est pas autorisé dans ce format"
   },
   "deck_shared": {
+    "recommended_tip": "Copies recommandées pour des decks similaires : {{ min }}–{{ max }}",
     "banned": "Banni",
     "unreleased": "Non publié",
     "rulings": "Rulings",

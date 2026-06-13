@@ -84,6 +84,11 @@
             }
           </div>
           }
+          @if(recommended){
+          <span class="ms-1 float-start">
+            <app-recommended-badge [recommended]="recommended" [current]="card.number" />
+          </span>
+          }
           @if(crypt.banned){
           <span class="ms-1 float-start badge text-bg-danger">
             {{ 'deck_shared.banned' | transloco }}
