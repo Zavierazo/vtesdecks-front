@@ -580,7 +580,8 @@
     "come_back_message": "Revenez demain pour une nouvelle carte !",
     "game_over_infinite_message": "Partie terminée, appuyez sur réessayer !",
     "game_over_today_message": "Partie terminée, revenez demain !",
-    "remaining_lives": "{{ lives }} vies restantes"
+    "remaining_lives": "{{ lives }} vies restantes",
+    "card_to_guess": "Carte à deviner"
   },
   "vtes_ai": {
     "title": "Chat VTES AI",
