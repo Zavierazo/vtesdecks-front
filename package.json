@@ -12,7 +12,10 @@
     "lint": "ng lint",
     "wrangler:deploy": "wrangler deploy",
     "wrangler:dev": "wrangler dev",
-    "wrangler:start": "wrangler dev"
+    "wrangler:start": "wrangler dev",
+    "e2e": "cypress run --project e2e",
+    "e2e:open": "cypress open --project e2e",
+    "e2e:ci": "start-server-and-test start http://localhost:4200 e2e"
   },
   "private": true,
   "dependencies": {
@@ -65,7 +68,9 @@
     "@types/jasmine": "^6.0.0",
     "@types/node": "^25.9.1",
     "angular-eslint": "21.4.0",
+    "cypress": "^15.6.0",
     "eslint": "^10.4.0",
+    "start-server-and-test": "^2.0.16",
     "jasmine-core": "^6.2.0",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",

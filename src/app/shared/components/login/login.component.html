@@ -20,7 +20,7 @@
           <!-- Email input -->
           <div class="form-floating mb-3">
             <input type="email" class="form-control rounded-3" id="floatingInput" [placeholder]="t('username_or_email')"
-              formControlName="username" autocomplete="username">
+              formControlName="username" autocomplete="username" data-cy="login-username">
             <label for="floatingInput">{{ t('username_or_email') }}</label>
             @if (loginUsername?.invalid && (loginUsername?.dirty || loginUsername?.touched)) {
             <div>
@@ -36,7 +36,7 @@
           <!-- Password input -->
           <div class="form-floating mb-3">
             <input type="password" class="form-control rounded-3" id="floatingPassword" [placeholder]="t('password')"
-              formControlName="password" autocomplete="current-password">
+              formControlName="password" autocomplete="current-password" data-cy="login-password">
             <label for="floatingPassword">{{ t('password') }}</label>
             @if (loginPassword?.invalid && (loginPassword?.dirty || loginPassword?.touched)) {
             <div>
@@ -61,7 +61,8 @@
             </div>
             <div class="col">
               <!-- Simple link -->
-              <a class="text-primary" href="javascript:void(0)" (click)="switchTab(Tabs.ForgotPassword)">
+              <a class="text-primary" href="javascript:void(0)" (click)="switchTab(Tabs.ForgotPassword)"
+                data-cy="goto-forgot-password">
                 {{ t('forgot_password') }}?
               </a>
             </div>
@@ -77,14 +78,15 @@
             <div name="google-signin-button">
             </div>
           </div>
-          <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="loginForm.invalid">
+          <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" [disabled]="loginForm.invalid"
+            data-cy="login-submit">
             {{ t('login') }}
           </button>
           }
           <!-- Register buttons -->
           <div class="text-center">
             <p class="mb-1">{{ t('does_not_have_account') }} <a class="text-primary" href="javascript:void(0)"
-                (click)="switchTab(Tabs.SignUp)">{{ t('create_account_here') }}</a></p>
+                (click)="switchTab(Tabs.SignUp)" data-cy="goto-signup">{{ t('create_account_here') }}</a></p>
           </div>
         </form>
       </div>
