@@ -32,13 +32,16 @@ export class DecksPage {
   waitForDecks() {
     cy.wait('@decksApi', { timeout: 30000 }).then((interception) => {
       const body: any = interception.response?.body
-      const decks: unknown[] = Array.isArray(body) ? body : body?.decks ?? []
+      const decks: unknown[] = Array.isArray(body) ? body : (body?.decks ?? [])
       this.lastPageCount = decks.length
       // Prefer the grand total when the API exposes it; fall back to page size.
       const total = Number(body?.total)
       this.lastReportedTotal = Number.isNaN(total) ? decks.length : total
       if (decks.length > 0) {
-        cy.get(SEL.decks.card, { timeout: 20000 }).should('have.length.greaterThan', 0)
+        cy.get(SEL.decks.card, { timeout: 20000 }).should(
+          'have.length.greaterThan',
+          0,
+        )
       }
     })
     cy.waitForIdle()
@@ -74,7 +77,10 @@ export class DecksPage {
   openFiltersIfMobile() {
     cy.get('body').then(($b) => {
       const btn = $b.find(SEL.decks.filtersToggleMobile).filter(':visible')
-      if (btn.length && $b.find(SEL.filters.root).filter(':visible').length === 0) {
+      if (
+        btn.length &&
+        $b.find(SEL.filters.root).filter(':visible').length === 0
+      ) {
         cy.wrap(btn.first()).click()
       }
     })

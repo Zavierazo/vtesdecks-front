@@ -12,14 +12,20 @@ describe('Deck sorting', () => {
 
   /** First deck id from a list response body (or undefined). */
   const firstId = (body: any): string | undefined => {
-    const list = Array.isArray(body) ? body : body?.decks ?? []
+    const list = Array.isArray(body) ? body : (body?.decks ?? [])
     return list[0]?.id
   }
 
   /** Names from a list response body, lower-cased. */
   const names = (body: any): string[] => {
-    const list = Array.isArray(body) ? body : body?.decks ?? []
-    return list.map((d: any) => String(d.name ?? '').trim().toLowerCase()).filter(Boolean)
+    const list = Array.isArray(body) ? body : (body?.decks ?? [])
+    return list
+      .map((d: any) =>
+        String(d.name ?? '')
+          .trim()
+          .toLowerCase(),
+      )
+      .filter(Boolean)
   }
 
   beforeEach(() => {
@@ -36,7 +42,9 @@ describe('Deck sorting', () => {
       expect(alternate, 'an alternate order option exists').to.be.a('string')
       cy.intercept('GET', listApi).as('sorted')
       decksPage.orderSelect().select(alternate!)
-      cy.wait('@sorted').its('request.url').should('match', /order=/i)
+      cy.wait('@sorted')
+        .its('request.url')
+        .should('match', /order=/i)
       cy.waitForIdle()
       decksPage.orderSelect().should('have.value', alternate)
     })
@@ -49,17 +57,24 @@ describe('Deck sorting', () => {
     // The initial load (from beforeEach) is the default NEWEST order — use it as
     // the baseline so we don't re-select the current value (which fires no
     // request). Then switch to OLDEST and compare heads.
-    cy.get('@decksApi').its('response.body').then((newestBody) => {
-      const newestHead = firstId(newestBody)
-      cy.intercept('GET', listApi).as('oldest')
-      decksPage.orderSelect().select('OLDEST')
-      cy.wait('@oldest').its('response.body').then((oldestBody) => {
-        const oldestHead = firstId(oldestBody)
-        expect(newestHead, 'both heads resolved').to.exist
-        expect(oldestHead).to.exist
-        expect(oldestHead, 'sort order changed the first result').to.not.equal(newestHead)
+    cy.get('@decksApi')
+      .its('response.body')
+      .then((newestBody) => {
+        const newestHead = firstId(newestBody)
+        cy.intercept('GET', listApi).as('oldest')
+        decksPage.orderSelect().select('OLDEST')
+        cy.wait('@oldest')
+          .its('response.body')
+          .then((oldestBody) => {
+            const oldestHead = firstId(oldestBody)
+            expect(newestHead, 'both heads resolved').to.exist
+            expect(oldestHead).to.exist
+            expect(
+              oldestHead,
+              'sort order changed the first result',
+            ).to.not.equal(newestHead)
+          })
       })
-    })
   })
 
   it('NAME order changes the result order vs the default', function () {
@@ -68,19 +83,26 @@ describe('Deck sorting', () => {
     }
     // We assert sorting *takes effect* (the page order changes) rather than
     // matching a specific collation — backend ordering rules differ from JS.
-    cy.get('@decksApi').its('response.body').then((defaultBody) => {
-      const defaultNames = names(defaultBody)
-      cy.intercept('GET', listApi).as('byName')
-      decksPage.orderSelect().select('NAME')
-      cy.wait('@byName').its('response.body').then((nameBody) => {
-        const nameNames = names(nameBody)
-        expect(nameNames.length, 'NAME page returned decks').to.be.greaterThan(0)
-        expect(
-          JSON.stringify(nameNames),
-          'NAME order differs from the default order',
-        ).to.not.equal(JSON.stringify(defaultNames))
+    cy.get('@decksApi')
+      .its('response.body')
+      .then((defaultBody) => {
+        const defaultNames = names(defaultBody)
+        cy.intercept('GET', listApi).as('byName')
+        decksPage.orderSelect().select('NAME')
+        cy.wait('@byName')
+          .its('response.body')
+          .then((nameBody) => {
+            const nameNames = names(nameBody)
+            expect(
+              nameNames.length,
+              'NAME page returned decks',
+            ).to.be.greaterThan(0)
+            expect(
+              JSON.stringify(nameNames),
+              'NAME order differs from the default order',
+            ).to.not.equal(JSON.stringify(defaultNames))
+          })
       })
-    })
   })
 
   it('a popularity sort orders results by a non-increasing metric', function () {
@@ -89,16 +111,20 @@ describe('Deck sorting', () => {
     }
     cy.intercept('GET', listApi).as('popular')
     decksPage.orderSelect().select('POPULAR')
-    cy.wait('@popular').its('response.body').then((body) => {
-      const list = Array.isArray(body) ? body : body?.decks ?? []
-      // Popularity correlates with views; assert the page is broadly
-      // non-increasing in views (tolerate ties and minor metric divergence).
-      const views = list.map((d: any) => Number(d.views ?? 0))
-      const increases = views.filter((v: number, i: number) => i > 0 && v > views[i - 1] + 0)
-      expect(views.length, 'popular page returned decks').to.be.greaterThan(0)
-      // Most neighbours should be non-increasing; a few inversions are fine
-      // because popularity is not identical to raw views.
-      expect(increases.length).to.be.lessThan(views.length)
-    })
+    cy.wait('@popular')
+      .its('response.body')
+      .then((body) => {
+        const list = Array.isArray(body) ? body : (body?.decks ?? [])
+        // Popularity correlates with views; assert the page is broadly
+        // non-increasing in views (tolerate ties and minor metric divergence).
+        const views = list.map((d: any) => Number(d.views ?? 0))
+        const increases = views.filter(
+          (v: number, i: number) => i > 0 && v > views[i - 1] + 0,
+        )
+        expect(views.length, 'popular page returned decks').to.be.greaterThan(0)
+        // Most neighbours should be non-increasing; a few inversions are fine
+        // because popularity is not identical to raw views.
+        expect(increases.length).to.be.lessThan(views.length)
+      })
   })
 })

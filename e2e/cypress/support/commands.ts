@@ -60,7 +60,11 @@ Cypress.Commands.add('stubRecaptcha', () => {
   // Neutralise the real api.js so, once it "loads", it cannot overwrite the
   // grecaptcha stub injected via onBeforeLoad. Readiness + execute() are driven
   // entirely by the stub (see installRecaptchaStub).
-  const noop = { statusCode: 200, headers: { 'content-type': 'application/javascript' }, body: '' }
+  const noop = {
+    statusCode: 200,
+    headers: { 'content-type': 'application/javascript' },
+    body: '',
+  }
   cy.intercept('GET', 'https://www.google.com/recaptcha/**', noop)
   cy.intercept('GET', 'https://www.recaptcha.net/recaptcha/**', noop)
   cy.intercept('GET', 'https://www.gstatic.com/recaptcha/**', noop)
@@ -117,10 +121,7 @@ Cypress.Commands.add('waitForIdle', () => {
 
 Cypress.Commands.add(
   'login',
-  (
-    username = Cypress.env('username'),
-    password = Cypress.env('password'),
-  ) => {
+  (username = Cypress.env('username'), password = Cypress.env('password')) => {
     cy.session(
       ['login', username],
       () => {
@@ -175,13 +176,17 @@ Cypress.Commands.add('logout', () => {
       return // already logged out
     }
     cy.get(SEL.userMenuToggle).click()
-    cy.get(SEL.ngbDropdownMenu).contains(/logout|cerrar sesión/i).click()
+    cy.get(SEL.ngbDropdownMenu)
+      .contains(/logout|cerrar sesión/i)
+      .click()
     cy.get(SEL.loginButton, { timeout: 15000 }).should('exist')
   })
 })
 
 Cypress.Commands.add('isLoggedIn', () => {
-  return cy.get('body').then(($body) => $body.find(SEL.userMenuToggle).length > 0)
+  return cy
+    .get('body')
+    .then(($body) => $body.find(SEL.userMenuToggle).length > 0)
 })
 
 Cypress.Commands.add('openSearch', () => {

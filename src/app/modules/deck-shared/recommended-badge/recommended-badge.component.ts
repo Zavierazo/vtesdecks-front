@@ -1,5 +1,10 @@
 import { NgClass } from '@angular/common'
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiArchetypeKeyCard } from '@models'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'

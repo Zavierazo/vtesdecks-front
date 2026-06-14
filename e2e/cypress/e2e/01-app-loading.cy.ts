@@ -28,8 +28,12 @@ describe('Application loading', () => {
 
     cy.visitApp('/')
 
-    cy.wait('@crypt', { timeout: 30000 }).its('response.statusCode').should('be.oneOf', [200, 304])
-    cy.wait('@library', { timeout: 30000 }).its('response.statusCode').should('be.oneOf', [200, 304])
+    cy.wait('@crypt', { timeout: 30000 })
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 304])
+    cy.wait('@library', { timeout: 30000 })
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 304])
   })
 
   it('sets a document title and meta description', () => {

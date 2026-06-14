@@ -17,7 +17,8 @@ describe('Protected routes & permission-based UI', () => {
         cy.get('body').then(($b) => {
           const onGuarded = window.location.pathname.startsWith(path)
           const loginShown =
-            $b.find(SEL.modal).length > 0 || $b.find(SEL.login.username).length > 0
+            $b.find(SEL.modal).length > 0 ||
+            $b.find(SEL.login.username).length > 0
           expect(
             !onGuarded || loginShown,
             'guarded route is not freely accessible',
@@ -60,7 +61,9 @@ describe('Protected routes & permission-based UI', () => {
       cy.visitApp('/')
       cy.get(SEL.userMenuToggle).click()
       cy.get(SEL.ngbDropdownMenu).should('be.visible')
-      cy.get(SEL.ngbDropdownMenu).find('a[routerLink="/user/settings"]').should('exist')
+      cy.get(SEL.ngbDropdownMenu)
+        .find('a[routerLink="/user/settings"]')
+        .should('exist')
     })
   })
 })

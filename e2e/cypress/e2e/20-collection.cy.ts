@@ -29,7 +29,9 @@ describe('Collection', () => {
     cy.get('#bindersMenuButton').click()
     cy.get(SEL.ngbDropdownMenu).should('be.visible')
     // "View all" binders entry is always present.
-    cy.get(SEL.ngbDropdownMenu).find('a[routerLink="/collection/binders"]').should('exist')
+    cy.get(SEL.ngbDropdownMenu)
+      .find('a[routerLink="/collection/binders"]')
+      .should('exist')
   })
 
   it('toggles multi-select mode (UI state change)', () => {
@@ -47,7 +49,9 @@ describe('Collection', () => {
   })
 
   it('navigates to the collection statistics view', () => {
-    cy.get('button[routerLink="/collection/stats"], a[routerLink="/collection/stats"]')
+    cy.get(
+      'button[routerLink="/collection/stats"], a[routerLink="/collection/stats"]',
+    )
       .first()
       .click({ force: true })
     cy.location('pathname').should('include', '/collection/stats')
@@ -56,7 +60,11 @@ describe('Collection', () => {
   it('opens the "more" menu with import/export/delete actions', () => {
     cy.get('#moreMenuButton').click()
     cy.get(SEL.ngbDropdownMenu).should('be.visible')
-    cy.get(SEL.ngbDropdownMenu).contains(/import/i).should('exist')
-    cy.get(SEL.ngbDropdownMenu).contains(/export/i).should('exist')
+    cy.get(SEL.ngbDropdownMenu)
+      .contains(/import/i)
+      .should('exist')
+    cy.get(SEL.ngbDropdownMenu)
+      .contains(/export/i)
+      .should('exist')
   })
 })

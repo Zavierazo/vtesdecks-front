@@ -15,13 +15,17 @@ describe('Deep links & refresh persistence', () => {
     cy.location('search').should('include', 'type=COMMUNITY')
     cy.location('search').should('include', 'order=POPULAR')
     // The request issued after reload still carries the params.
-    cy.get('@decksApi').its('request.url').should('match', /type=COMMUNITY/i)
+    cy.get('@decksApi')
+      .its('request.url')
+      .should('match', /type=COMMUNITY/i)
   })
 
   it('deep-links directly into a filtered decks view', () => {
     cy.intercept('GET', '**/decks**').as('decks')
     cy.visitApp('/decks?type=TOURNAMENT')
-    cy.wait('@decks').its('request.url').should('match', /type=TOURNAMENT/i)
+    cy.wait('@decks')
+      .its('request.url')
+      .should('match', /type=TOURNAMENT/i)
     cy.location('pathname').should('include', '/decks')
   })
 
@@ -40,7 +44,8 @@ describe('Deep links & refresh persistence', () => {
         this.skip()
       }
     })
-    decksPage.cards()
+    decksPage
+      .cards()
       .first()
       .find('a[href^="/deck/"]')
       .first()

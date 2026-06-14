@@ -55,8 +55,12 @@ describe('Navigation & routing', () => {
     cy.visitApp('/')
     cy.get(SEL.toolsDropdownToggle).click()
     cy.get(SEL.ngbDropdownMenu).should('be.visible')
-    cy.get(SEL.ngbDropdownMenu).find('a[routerLink="/proxy-generator"]').should('exist')
-    cy.get(SEL.ngbDropdownMenu).find('a[routerLink="/statistics"]').should('exist')
+    cy.get(SEL.ngbDropdownMenu)
+      .find('a[routerLink="/proxy-generator"]')
+      .should('exist')
+    cy.get(SEL.ngbDropdownMenu)
+      .find('a[routerLink="/statistics"]')
+      .should('exist')
   })
 
   it('marks the active nav item via routerLinkActive', () => {

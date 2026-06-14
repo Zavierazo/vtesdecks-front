@@ -21,8 +21,10 @@ describe('Global search', () => {
       url: `${Cypress.env('apiUrl')}/cards/crypt`,
       failOnStatusCode: false,
     }).then((res) => {
-      const list = Array.isArray(res.body) ? res.body : res.body?.cards ?? []
-      const named = list.find((c: any) => typeof c?.name === 'string' && c.name.length >= 3)
+      const list = Array.isArray(res.body) ? res.body : (res.body?.cards ?? [])
+      const named = list.find(
+        (c: any) => typeof c?.name === 'string' && c.name.length >= 3,
+      )
       if (named) {
         const cleaned = String(named.name).replace(/[^a-zA-Z]/g, '')
         term = cleaned.length >= 3 ? cleaned.slice(0, 3) : null
@@ -65,7 +67,10 @@ describe('Global search', () => {
       )
     })
     // A term taken from a real card name must surface at least one result.
-    cy.get(SEL.search.result, { timeout: 10000 }).should('have.length.greaterThan', 0)
+    cy.get(SEL.search.result, { timeout: 10000 }).should(
+      'have.length.greaterThan',
+      0,
+    )
   })
 
   it('selecting a result closes the search modal (navigation or card modal)', function () {
@@ -74,7 +79,10 @@ describe('Global search', () => {
     cy.openSearch()
     cy.get(SEL.search.input).type(term!)
     cy.wait('@search', { timeout: 20000 })
-    cy.get(SEL.search.result, { timeout: 10000 }).should('have.length.greaterThan', 0)
+    cy.get(SEL.search.result, { timeout: 10000 }).should(
+      'have.length.greaterThan',
+      0,
+    )
     // selectResult() always closes the search modal; card results then open a
     // card modal, deck/user results navigate. The search input disappearing is
     // the universal, data-independent outcome.

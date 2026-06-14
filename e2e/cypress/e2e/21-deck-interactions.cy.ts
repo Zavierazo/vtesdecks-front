@@ -16,7 +16,8 @@ describe('Deck interactions', () => {
     cy.then(() => {
       if (decksPage.lastReportedTotal === 0) ctx.skip()
     })
-    decksPage.cards()
+    decksPage
+      .cards()
       .first()
       .find('a[href^="/deck/"]')
       .first()
@@ -37,17 +38,21 @@ describe('Deck interactions', () => {
   it('toggling the bookmark flips its icon and calls the bookmark API', function () {
     openFirstDeck(this, () => {
       cy.intercept('**/user/decks/bookmark*').as('bookmark')
-      cy.get(bookmarkIcon).invoke('attr', 'class').then((before) => {
-        cy.get(bookmarkIcon).parent().click()
-        cy.wait('@bookmark', { timeout: 15000 })
-        // The icon reflects the new bookmark state (filled vs outline).
-        cy.get(bookmarkIcon).invoke('attr', 'class').should('not.equal', before)
+      cy.get(bookmarkIcon)
+        .invoke('attr', 'class')
+        .then((before) => {
+          cy.get(bookmarkIcon).parent().click()
+          cy.wait('@bookmark', { timeout: 15000 })
+          // The icon reflects the new bookmark state (filled vs outline).
+          cy.get(bookmarkIcon)
+            .invoke('attr', 'class')
+            .should('not.equal', before)
 
-        // Restore the original state to leave the account untouched.
-        cy.get(bookmarkIcon).parent().click()
-        cy.wait('@bookmark', { timeout: 15000 })
-        cy.get(bookmarkIcon).invoke('attr', 'class').should('equal', before)
-      })
+          // Restore the original state to leave the account untouched.
+          cy.get(bookmarkIcon).parent().click()
+          cy.wait('@bookmark', { timeout: 15000 })
+          cy.get(bookmarkIcon).invoke('attr', 'class').should('equal', before)
+        })
     })
   })
 
@@ -55,9 +60,14 @@ describe('Deck interactions', () => {
     openFirstDeck(this, () => {
       // The detail view surfaces the deck's stat figures; assert they render as
       // numbers, not specific values.
-      cy.get(SEL.deckDetail.root).invoke('text').should((txt) => {
-        expect(txt.length, 'detail has substantial content').to.be.greaterThan(100)
-      })
+      cy.get(SEL.deckDetail.root)
+        .invoke('text')
+        .should((txt) => {
+          expect(
+            txt.length,
+            'detail has substantial content',
+          ).to.be.greaterThan(100)
+        })
       cy.get('main h3').invoke('text').should('not.be.empty')
     })
   })

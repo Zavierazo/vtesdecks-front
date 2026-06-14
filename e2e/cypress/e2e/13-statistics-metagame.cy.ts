@@ -15,7 +15,10 @@ describe('Statistics page', () => {
 
   it('renders the statistics view with charts/canvas', () => {
     cy.get('h1').should('exist')
-    cy.get(SEL.statistics.chart, { timeout: 20000 }).should('have.length.greaterThan', 0)
+    cy.get(SEL.statistics.chart, { timeout: 20000 }).should(
+      'have.length.greaterThan',
+      0,
+    )
   })
 
   it('exposes the deck-type selector', () => {
@@ -26,7 +29,9 @@ describe('Statistics page', () => {
     cy.intercept('GET', '**/statistics**').as('statsRequery')
     cy.get(SEL.statistics.typeSelect).select('TOURNAMENT')
     // The change triggers fresh statistics requests…
-    cy.wait('@statsRequery', { timeout: 30000 }).its('request.url').should('match', /type=TOURNAMENT/i)
+    cy.wait('@statsRequery', { timeout: 30000 })
+      .its('request.url')
+      .should('match', /type=TOURNAMENT/i)
     cy.get(SEL.statistics.typeSelect).should('have.value', 'TOURNAMENT')
     cy.get(SEL.header).should('be.visible')
   })
@@ -48,7 +53,9 @@ describe('Metagame page', () => {
     cy.wait('@archetypes', { timeout: 30000 }).then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([200, 304])
       const body = interception.response?.body
-      const list = Array.isArray(body) ? body : body?.archetypes ?? body?.content ?? []
+      const list = Array.isArray(body)
+        ? body
+        : (body?.archetypes ?? body?.content ?? [])
       expect(list, 'archetypes is an array').to.be.an('array')
     })
   })

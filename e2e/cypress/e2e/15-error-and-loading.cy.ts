@@ -35,7 +35,11 @@ describe('Error handling', () => {
     // in a paginated object), so the component parses it as a true empty state.
     cy.intercept('GET', apiDecks(), (req) => {
       req.continue((res) => {
-        if (res.body && typeof res.body === 'object' && Array.isArray(res.body.decks)) {
+        if (
+          res.body &&
+          typeof res.body === 'object' &&
+          Array.isArray(res.body.decks)
+        ) {
           res.body.decks = []
           if ('total' in res.body) res.body.total = 0
         } else if (Array.isArray(res.body)) {
@@ -53,7 +57,10 @@ describe('Error handling', () => {
   })
 
   it('survives a server error on the decks endpoint', () => {
-    cy.intercept('GET', apiDecks(), { statusCode: 500, body: 'Server error' }).as('boom')
+    cy.intercept('GET', apiDecks(), {
+      statusCode: 500,
+      body: 'Server error',
+    }).as('boom')
     cy.visitApp('/decks')
     cy.waitForIdle()
     // The app shell remains usable even when the API fails.

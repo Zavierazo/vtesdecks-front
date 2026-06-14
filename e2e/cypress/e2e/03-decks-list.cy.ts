@@ -13,15 +13,21 @@ describe('Decks list', () => {
   })
 
   it('returns a structurally valid decks payload', () => {
-    cy.get('@decksApi').its('response.statusCode').should('be.oneOf', [200, 304])
-    cy.get('@decksApi').its('response.body').then((body) => {
-      // Accept either a bare array or a paginated wrapper — assert structure only.
-      const list = Array.isArray(body) ? body : body?.decks ?? body?.content ?? []
-      expect(list, 'decks list is an array').to.be.an('array')
-      if (list.length > 0) {
-        expect(list[0], 'deck item shape').to.have.property('id')
-      }
-    })
+    cy.get('@decksApi')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 304])
+    cy.get('@decksApi')
+      .its('response.body')
+      .then((body) => {
+        // Accept either a bare array or a paginated wrapper — assert structure only.
+        const list = Array.isArray(body)
+          ? body
+          : (body?.decks ?? body?.content ?? [])
+        expect(list, 'decks list is an array').to.be.an('array')
+        if (list.length > 0) {
+          expect(list[0], 'deck item shape').to.have.property('id')
+        }
+      })
   })
 
   it('renders deck cards, each linking to its own detail route', function () {
@@ -38,12 +44,14 @@ describe('Decks list', () => {
     }
     // The header total is data-driven; assert it is a positive number and that
     // the first page rendered no more cards than the reported total.
-    cy.get('@decksApi').its('response.body.total').then((total) => {
-      const t = Number(total)
-      if (Number.isNaN(t)) return // some deployments omit total — skip the check
-      expect(t).to.be.greaterThan(0)
-      decksPage.cardCount().should('be.lte', t)
-    })
+    cy.get('@decksApi')
+      .its('response.body.total')
+      .then((total) => {
+        const t = Number(total)
+        if (Number.isNaN(t)) return // some deployments omit total — skip the check
+        expect(t).to.be.greaterThan(0)
+        decksPage.cardCount().should('be.lte', t)
+      })
   })
 
   it('loads additional decks via "Show more" / infinite scroll', function () {

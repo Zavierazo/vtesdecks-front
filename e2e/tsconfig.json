@@ -12,8 +12,5 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "cypress/**/*.ts",
-    "cypress.config.ts"
-  ]
+  "include": ["cypress/**/*.ts", "cypress.config.ts"]
 }

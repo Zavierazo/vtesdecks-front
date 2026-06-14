@@ -12,7 +12,10 @@ describe('Static pages', () => {
       cy.waitForIdle()
       cy.location('pathname').should('include', path)
       // The page has substantive text content, not just the empty shell.
-      cy.get('app-root').invoke('text').its('length').should('be.greaterThan', 100)
+      cy.get('app-root')
+        .invoke('text')
+        .its('length')
+        .should('be.greaterThan', 100)
     })
   })
 })
@@ -33,7 +36,9 @@ describe('Contact form', () => {
 
   it('validates email format and required fields', () => {
     cy.get(SEL.contact.email).type('not-an-email').blur()
-    cy.get('body').contains(/email|correo/i).should('exist')
+    cy.get('body')
+      .contains(/email|correo/i)
+      .should('exist')
     cy.get(SEL.contact.submit).should('be.disabled')
   })
 
@@ -41,7 +46,9 @@ describe('Contact form', () => {
     cy.get(SEL.contact.name).type('Cypress Tester')
     cy.get(SEL.contact.email).type('cypress@example.com')
     cy.get(SEL.contact.subject).type('Automated check')
-    cy.get(SEL.contact.message).type('This is an automated E2E validation message.')
+    cy.get(SEL.contact.message).type(
+      'This is an automated E2E validation message.',
+    )
     cy.get(SEL.contact.submit).should('not.be.disabled')
   })
 
@@ -57,14 +64,18 @@ describe('Contact form', () => {
     cy.get(SEL.contact.name).type('Cypress Tester')
     cy.get(SEL.contact.email).type('cypress@example.com')
     cy.get(SEL.contact.subject).type('Automated check')
-    cy.get(SEL.contact.message).type('This is an automated E2E validation message.')
+    cy.get(SEL.contact.message).type(
+      'This is an automated E2E validation message.',
+    )
     cy.get(SEL.contact.submit).click()
 
     // The request is dispatched with the entered payload...
-    cy.wait('@contact').its('request.body').should((body) => {
-      // FormData/JSON either way — assert our subject made it into the request.
-      expect(JSON.stringify(body)).to.contain('Automated check')
-    })
+    cy.wait('@contact')
+      .its('request.body')
+      .should((body) => {
+        // FormData/JSON either way — assert our subject made it into the request.
+        expect(JSON.stringify(body)).to.contain('Automated check')
+      })
     // ...and the success banner is shown.
     cy.get('body').find('.text-success').should('exist')
   })

@@ -29,7 +29,9 @@ describe('Authentication', () => {
     it('surfaces required-field validation when fields are blurred empty', () => {
       cy.get(SEL.login.username).focus().blur()
       cy.get(SEL.login.password).focus().blur()
-      cy.get(SEL.modal).contains(/required|obligatorio|requerido/i).should('exist')
+      cy.get(SEL.modal)
+        .contains(/required|obligatorio|requerido/i)
+        .should('exist')
     })
 
     it('switches to the sign-up tab and shows registration fields', () => {
@@ -50,27 +52,35 @@ describe('Authentication', () => {
       })
 
       it('keeps submit disabled until the form is valid', () => {
-        cy.get('.modal-content form button[type="submit"]').should('be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'be.disabled',
+        )
       })
 
       it('rejects an invalid email format', () => {
         cy.get('#floatingUserInput').type('e2euser')
         cy.get('#floatingEmailInput').type('not-an-email').blur()
         cy.get('.modal-content').contains(/email/i).should('exist')
-        cy.get('.modal-content form button[type="submit"]').should('be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'be.disabled',
+        )
       })
 
       it('enforces password rules (min length + a number)', () => {
         cy.get('#floatingPassword').type('short').blur()
         // A too-short / number-less password keeps the form invalid.
-        cy.get('.modal-content form button[type="submit"]').should('be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'be.disabled',
+        )
       })
 
       it('flags mismatched password confirmation', () => {
         cy.get('#floatingPassword').type('ValidPass1')
         cy.get('#floatingConfirmPassword').type('Different1').blur()
         cy.get('.modal-content').contains(/match/i).should('exist')
-        cy.get('.modal-content form button[type="submit"]').should('be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'be.disabled',
+        )
       })
 
       it('requires accepting the terms', () => {
@@ -79,9 +89,13 @@ describe('Authentication', () => {
         cy.get('#floatingPassword').type('ValidPass1')
         cy.get('#floatingConfirmPassword').type('ValidPass1')
         // Terms checkbox left unchecked → submit stays disabled.
-        cy.get('.modal-content form button[type="submit"]').should('be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'be.disabled',
+        )
         cy.get('#registerCheck').check({ force: true })
-        cy.get('.modal-content form button[type="submit"]').should('not.be.disabled')
+        cy.get('.modal-content form button[type="submit"]').should(
+          'not.be.disabled',
+        )
       })
     })
 

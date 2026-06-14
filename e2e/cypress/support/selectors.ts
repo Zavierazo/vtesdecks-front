@@ -77,7 +77,8 @@ export const SEL = {
   deckDetail: {
     root: 'main[role="main"]',
     title: 'main h3',
-    bookmarkToggle: 'main a[placement="top"] i.bi-bookmark-star, main a i[class*="bookmark"]',
+    bookmarkToggle:
+      'main a[placement="top"] i.bi-bookmark-star, main a i[class*="bookmark"]',
     cardImage: 'app-card-image, img.lazyloaded',
   },
 
@@ -85,7 +86,8 @@ export const SEL = {
   search: {
     input: '.modal-content input[type="search"]', // # add data-cy="search-input"
     result: '.search-result-item', // # add data-cy="search-result"
-    noResults: '.modal-content h5:contains("result"), .modal-content .text-primary',
+    noResults:
+      '.modal-content h5:contains("result"), .modal-content .text-primary',
   },
 
   // ---- Card browser (/cards/crypt, /cards/library) --------------------

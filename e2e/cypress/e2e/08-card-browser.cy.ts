@@ -30,8 +30,12 @@ describe('Card browser', () => {
 
       before(() => {
         cy.request(`${Cypress.env('apiUrl')}${api}`).then((res) => {
-          const list = Array.isArray(res.body) ? res.body : res.body?.cards ?? []
-          const card = list.find((c: any) => typeof c?.name === 'string' && c.name.length >= 3)
+          const list = Array.isArray(res.body)
+            ? res.body
+            : (res.body?.cards ?? [])
+          const card = list.find(
+            (c: any) => typeof c?.name === 'string' && c.name.length >= 3,
+          )
           sampleName = card ? String(card.name) : null
         })
       })
@@ -48,7 +52,9 @@ describe('Card browser', () => {
       })
 
       it('a nonsense name filter empties the list and offers a reset', () => {
-        cy.get('#name').clear({ force: true }).type('zzqqxxnope123', { force: true })
+        cy.get('#name')
+          .clear({ force: true })
+          .type('zzqqxxnope123', { force: true })
         cy.get(item, { timeout: 10000 }).should('have.length', 0)
         cy.contains('button', /reset/i).should('exist')
       })
@@ -63,12 +69,16 @@ describe('Card browser', () => {
           cy.get('#name').clear({ force: true }).type(term, { force: true })
           // The filtered set renders and is no larger than the unfiltered page.
           cy.get(item, { timeout: 10000 }).should('have.length.greaterThan', 0)
-          cy.get(item).its('length').should('be.lte', before + 1)
+          cy.get(item)
+            .its('length')
+            .should('be.lte', before + 1)
         })
       })
 
       it('resetting the name filter restores cards', () => {
-        cy.get('#name').clear({ force: true }).type('zzqqxxnope123', { force: true })
+        cy.get('#name')
+          .clear({ force: true })
+          .type('zzqqxxnope123', { force: true })
         cy.get(item).should('have.length', 0)
         cy.get('#name').clear({ force: true })
         cy.get(item, { timeout: 10000 }).should('have.length.greaterThan', 0)

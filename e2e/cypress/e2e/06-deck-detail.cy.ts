@@ -18,13 +18,16 @@ describe('Deck detail', () => {
         ctx.skip()
       }
     })
-    decksPage.cards()
+    decksPage
+      .cards()
       .first()
       .find('a[href^="/deck/"]')
       .first()
       .invoke('attr', 'href')
       .then((href) => {
-        const id = String(href).replace(/.*\/deck\//, '').split(/[?#]/)[0]
+        const id = String(href)
+          .replace(/.*\/deck\//, '')
+          .split(/[?#]/)[0]
         expect(id, 'derived deck id').to.not.be.empty
         fn(id)
       })
@@ -34,7 +37,9 @@ describe('Deck detail', () => {
     withFirstDeckId(this, (id) => {
       cy.intercept('GET', `**/decks/${id}*`).as('deckDetail')
       cy.visitApp(`/deck/${id}`)
-      cy.wait('@deckDetail').its('response.statusCode').should('be.oneOf', [200, 304])
+      cy.wait('@deckDetail')
+        .its('response.statusCode')
+        .should('be.oneOf', [200, 304])
       cy.waitForIdle()
       cy.get(SEL.deckDetail.root).should('be.visible')
       // The title is whatever the backend returned — assert it is non-empty.
@@ -46,12 +51,14 @@ describe('Deck detail', () => {
     withFirstDeckId(this, (id) => {
       cy.visitApp(`/deck/${id}`)
       cy.waitForIdle()
-      cy.get(SEL.deckDetail.title).invoke('text').then((before) => {
-        cy.reload()
-        cy.waitForIdle()
-        cy.location('pathname').should('include', `/deck/${id}`)
-        cy.get(SEL.deckDetail.title).invoke('text').should('eq', before)
-      })
+      cy.get(SEL.deckDetail.title)
+        .invoke('text')
+        .then((before) => {
+          cy.reload()
+          cy.waitForIdle()
+          cy.location('pathname').should('include', `/deck/${id}`)
+          cy.get(SEL.deckDetail.title).invoke('text').should('eq', before)
+        })
     })
   })
 
@@ -81,15 +88,22 @@ describe('Deck detail', () => {
       // Read the current views straight from the API, open the deck, then read
       // again. Views should not decrease (typically +1 per fresh view).
       cy.request(`${Cypress.env('apiUrl')}/decks/${id}`).then((before) => {
-        const beforeViews = Number(before.body?.views ?? before.body?.stats?.views ?? NaN)
+        const beforeViews = Number(
+          before.body?.views ?? before.body?.stats?.views ?? NaN,
+        )
         if (Number.isNaN(beforeViews)) {
           this.skip() // this deployment doesn't expose a view counter
         }
         cy.visitApp(`/deck/${id}`)
         cy.waitForIdle()
         cy.request(`${Cypress.env('apiUrl')}/decks/${id}`).then((after) => {
-          const afterViews = Number(after.body?.views ?? after.body?.stats?.views ?? beforeViews)
-          expect(afterViews, 'view count does not decrease after viewing').to.be.gte(beforeViews)
+          const afterViews = Number(
+            after.body?.views ?? after.body?.stats?.views ?? beforeViews,
+          )
+          expect(
+            afterViews,
+            'view count does not decrease after viewing',
+          ).to.be.gte(beforeViews)
         })
       })
     })

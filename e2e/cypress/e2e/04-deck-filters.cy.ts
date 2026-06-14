@@ -21,7 +21,9 @@ describe('Deck filters', () => {
       const options = [...$sel[0].querySelectorAll('option')]
         .map((o) => (o as HTMLOptionElement).value)
         .filter((v) => v && v !== 'ALL')
-      expect(options.length, 'alternate type options exist').to.be.greaterThan(0)
+      expect(options.length, 'alternate type options exist').to.be.greaterThan(
+        0,
+      )
       const target = options[0]
       decksPage.typeSelect().select(target)
       cy.wait('@filtered').its('request.url').should('match', /type=/i)
@@ -37,26 +39,44 @@ describe('Deck filters', () => {
     }
     // Derive a search term from real, currently-displayed data so the filter is
     // meaningful without hard-coding anything.
-    decksPage.cards().first().find('h2').invoke('text').then((rawName) => {
-      const term = rawName.trim().split(/\s+/)[0]?.replace(/[^a-zA-Z]/g, '').slice(0, 4)
-      if (!term || term.length < 2) {
-        this.skip() // could not derive a usable term from the data
-      }
-      cy.intercept('GET', listApi).as('named')
-      decksPage.openFiltersIfMobile()
-      cy.get(SEL.filters.name).first().scrollIntoView()
-      cy.get(SEL.filters.name).first().clear({ force: true }).type(term, { force: true })
-      // The request carries the typed name...
-      cy.wait('@named').its('request.url').should('match', new RegExp(`name=${term}`, 'i'))
-      cy.waitForIdle()
-      // ...and the result set is bounded by the unfiltered total (a filter
-      // cannot grow the list).
-      cy.get('@named').its('response.body').then((body) => {
-        const filtered = Array.isArray(body) ? body : body?.decks ?? []
-        const filteredTotal = body?.total ?? filtered.length
-        expect(Number(filteredTotal)).to.be.lte(decksPage.lastReportedTotal + 0)
+    decksPage
+      .cards()
+      .first()
+      .find('h2')
+      .invoke('text')
+      .then((rawName) => {
+        const term = rawName
+          .trim()
+          .split(/\s+/)[0]
+          ?.replace(/[^a-zA-Z]/g, '')
+          .slice(0, 4)
+        if (!term || term.length < 2) {
+          this.skip() // could not derive a usable term from the data
+        }
+        cy.intercept('GET', listApi).as('named')
+        decksPage.openFiltersIfMobile()
+        cy.get(SEL.filters.name).first().scrollIntoView()
+        cy.get(SEL.filters.name)
+          .first()
+          .clear({ force: true })
+          .type(term, { force: true })
+        // The request carries the typed name...
+        cy.wait('@named')
+          .its('request.url')
+          .should('match', new RegExp(`name=${term}`, 'i'))
+        cy.waitForIdle()
+        // ...and the result set is bounded by the unfiltered total (a filter
+        // cannot grow the list).
+        cy.get('@named')
+          .its('response.body')
+          .then((body) => {
+            const filtered = Array.isArray(body) ? body : (body?.decks ?? [])
+            const filteredTotal = body?.total ?? filtered.length
+            expect(Number(filteredTotal)).to.be.lte(
+              decksPage.lastReportedTotal + 0,
+            )
+          })
       })
-    })
   })
 
   it('resetting filters clears applied filter inputs', () => {
@@ -64,14 +84,19 @@ describe('Deck filters', () => {
     // directly; on smaller layouts open the offcanvas via the funnel button.
     cy.get('body').then(($b) => {
       if ($b.find(SEL.filters.author).length === 0) {
-        const funnel = $b.find('button:has(i.bi-funnel-fill)').filter(':visible')
+        const funnel = $b
+          .find('button:has(i.bi-funnel-fill)')
+          .filter(':visible')
         if (funnel.length) cy.wrap(funnel.first()).click()
       }
     })
 
     cy.get(SEL.filters.author).should('exist')
     cy.get(SEL.filters.author).first().scrollIntoView()
-    cy.get(SEL.filters.author).first().clear({ force: true }).type('zzqqxx', { force: true })
+    cy.get(SEL.filters.author)
+      .first()
+      .clear({ force: true })
+      .type('zzqqxx', { force: true })
     cy.get(SEL.filters.author).first().should('have.value', 'zzqqxx')
 
     cy.get(SEL.filters.reset).first().click({ force: true })
@@ -87,7 +112,10 @@ describe('Deck filters', () => {
     decksPage.openFiltersIfMobile()
     cy.get(SEL.filters.author).first().scrollIntoView()
     // A nonsense author is overwhelmingly unlikely to exist.
-    cy.get(SEL.filters.author).first().clear({ force: true }).type('zzqqxxnope123', { force: true })
+    cy.get(SEL.filters.author)
+      .first()
+      .clear({ force: true })
+      .type('zzqqxxnope123', { force: true })
     cy.wait('@authored')
     cy.waitForIdle()
     // No cards, and the app offers a reset affordance rather than crashing.
@@ -97,7 +125,9 @@ describe('Deck filters', () => {
 
   it('deep-links a pre-applied type filter from the URL', () => {
     decksPage.visit('?type=TOURNAMENT').waitForDecks()
-    cy.get('@decksApi').its('request.url').should('match', /type=TOURNAMENT/i)
+    cy.get('@decksApi')
+      .its('request.url')
+      .should('match', /type=TOURNAMENT/i)
     decksPage.typeSelect().should('have.value', 'TOURNAMENT')
   })
 })
