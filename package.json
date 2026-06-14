@@ -10,6 +10,7 @@
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront && sentry-cli sourcemaps upload --org francisco-javier-ortiz-quetgla --project vtesdecks ./dist/vtesDecksFront",
     "lint": "ng lint",
+    "check:i18n": "node scripts/check-i18n.js",
     "wrangler:deploy": "wrangler deploy",
     "wrangler:dev": "wrangler dev",
     "wrangler:start": "wrangler dev",

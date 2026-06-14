@@ -36,7 +36,7 @@
           <span class="badge bg-dark ms-2">{{ cardInfo.rulingList?.length ?? 0 }}</span>
         </span>
         <span>
-          <a target="_blank" rel="noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
+          <a target="_blank" rel="noopener noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
             title="Edit Rulings" class="text-dark me-2" (click)="$event.stopPropagation()">
             <i class="bi bi-pencil-square"></i>
           </a>
@@ -135,7 +135,7 @@
       @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
       <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last "
         [class.opacity-50]="!shop.inStock">
-        <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" gaEvent="purchase"
+        <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" rel="noopener noreferrer" gaEvent="purchase"
           [gaCategory]="shop.shopInfo.name" [gaLabel]="card().name"
           [class.text-decoration-line-through]="!shop.inStock">
           <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">

@@ -152,7 +152,6 @@ export class DeckFiltersComponent implements OnInit {
     this.disciplines = []
     this.paths = []
     this.cardFilter().reset()
-    // TODO: The 'emit' function requires a mandatory void argument
     this.resetFilters.emit()
   }
 

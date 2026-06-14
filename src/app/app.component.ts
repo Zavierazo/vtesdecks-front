@@ -116,7 +116,6 @@ export class AppComponent implements OnInit {
           distinct(),
 
           tap((evt) => {
-            console.log(evt)
             if (evt.type === 'VERSION_DETECTED') {
               this.toastService.show(
                 this.translocoService.translate(
@@ -257,7 +256,6 @@ export class AppComponent implements OnInit {
     if (this.authQuery.isSupporter()) {
       return
     }
-    console.log('Init AdSense script')
     const adSenseScript: HTMLScriptElement = document.createElement('script')
     adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${environment.googleAdSense.clientId}&ngsw-bypass=true`
     adSenseScript.async = true
