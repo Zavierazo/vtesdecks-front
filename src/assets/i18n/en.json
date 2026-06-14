@@ -727,7 +727,8 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer",
-      "hecata": "Hecata"
+      "hecata": "Hecata",
+      "fos": "Followers of Set"
     },
     "path": {
       "caine": "Caine",
@@ -970,7 +971,6 @@
     "sets": "Sets",
     "missing_only": "Missing only",
     "show_all": "Show all",
-    "close": "Close",
     "no_cards": "No cards found",
     "add_deck_to_collection": "Add Deck to Collection",
     "add_deck_enter_url": "Enter deck URL",

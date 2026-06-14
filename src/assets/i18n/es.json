@@ -523,7 +523,8 @@
     "proxy_generator": "Generador de Proxies",
     "supporter": "Miembro en Patreon",
     "vtes_ai_chat": "Chat IA de VTES",
-    "new": "Nuevo"
+    "new": "Nuevo",
+    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo."
   },
   "table_seating": {
     "title": "Asignación de asientos",

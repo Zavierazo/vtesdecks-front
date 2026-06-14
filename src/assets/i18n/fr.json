@@ -127,7 +127,11 @@
     "sort_by_name": "Nom",
     "sort_by_capacity": "Capacité",
     "sort_by_clan": "Clan",
-    "sort_by_group": "Groupe"
+    "sort_by_group": "Groupe",
+    "delete": "Supprimer",
+    "compare": "Comparer",
+    "archetype": "Archétype",
+    "add_to_collection": "Ajouter à la collection"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",
@@ -723,7 +727,8 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer",
-      "hecata": "Hecata"
+      "hecata": "Hecata",
+      "fos": "Followers of Set"
     },
     "path": {
       "caine": "Caine",
@@ -966,7 +971,6 @@
     "sets": "Extensions",
     "missing_only": "Cartes manquantes uniquement",
     "show_all": "Tout afficher",
-    "close": "Fermer",
     "no_cards": "Aucune carte trouvée",
     "add_deck_to_collection": "Ajouter un deck à la collection",
     "add_deck_enter_url": "Saisir l'URL du deck",
