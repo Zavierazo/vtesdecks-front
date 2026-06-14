@@ -230,6 +230,7 @@
     "limited_format_not_allowed": "{{ name }} no está permitido en este formato"
   },
   "deck_shared": {
+    "recommended_tip": "Copias recomendadas para mazos similares: {{ min }}–{{ max }}",
     "banned": "Prohibida",
     "unreleased": "No lanzada",
     "rulings": "Reglas",
@@ -342,7 +343,9 @@
     "changelog": "Registro de cambios",
     "terms": "Términos",
     "privacy_policy": "Política de Privacidad",
-    "mail": "Correo"
+    "mail": "Correo",
+    "about": "Acerca de",
+    "follow_us": "Síguenos"
   },
   "header": {
     "home": "Inicio",
@@ -395,7 +398,7 @@
     "popular_community": "Comunidad Populares",
     "newest_tournament": "Torneo Nuevos",
     "newest_community": "Comunidad Nuevos",
-    "see_more": "Ver más...",
+    "see_more": "Ver más",
     "patreon": "Apoya en Patreon",
     "patreon_message": "Este sitio es 100% gratuito y está impulsado por la comunidad.<br>Si VTES Decks te resulta útil, considera apoyarnos en Patreon ❤️",
     "patreon_supporter_message": "¡Gracias por apoyar VTES Decks!<br>Tu apoyo mantiene VTES Decks vivo ❤️",
@@ -471,7 +474,7 @@
     "must_one_number": "¡Debe contener al menos 1 número!",
     "must_8_characters": "¡Debe tener al menos 8 caracteres!",
     "must_match": "¡La contraseña debe coincidir!",
-    "read_and_agree_terms": "He leído y acepto los términos.",
+    "read_and_agree_terms": "He leído y acepto los <a href='/terms' target='_blank' rel='noopener'>Términos</a> y la <a href='/privacy-policy' target='_blank' rel='noopener'>Política de Privacidad</a>",
     "terms_mandatory": "Se deben aceptar los términos.",
     "already_member": "¿Ya eres miembro?"
   },
@@ -520,7 +523,8 @@
     "proxy_generator": "Generador de Proxies",
     "supporter": "Miembro en Patreon",
     "vtes_ai_chat": "Chat IA de VTES",
-    "new": "Nuevo"
+    "new": "Nuevo",
+    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo."
   },
   "table_seating": {
     "title": "Asignación de asientos",
@@ -576,7 +580,8 @@
     "come_back_message": "¡Vuelve mañana para más!",
     "game_over_infinite_message": "¡Se acabó el juego, presiona Reintentar para más!",
     "game_over_today_message": "¡Se acabó el juego, vuelve mañana para más!",
-    "remaining_lives": "{{ lives }} vidas restantes"
+    "remaining_lives": "{{ lives }} vidas restantes",
+    "card_to_guess": "Carta a adivinar"
   },
   "vtes_ai": {
     "title": "VTES AI Chat",

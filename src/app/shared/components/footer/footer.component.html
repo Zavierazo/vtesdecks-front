@@ -1,51 +1,45 @@
-<footer class="bg-primary text-center text-white" *transloco="let t; prefix: 'footer'">
-  <div class="container p-4">
-    <section>
-      <div class="row">
-        <div class="col-12 col-lg-5">
-          <img width="50" height="50" src="/assets/img/darkpack.png" alt="Dark Pack logo" />
-          <p class="text-left">
+<footer class="site-footer text-white" *transloco="let t; prefix: 'footer'">
+  <div class="container py-5">
+    <div class="row gy-4">
+      <!-- Brand / Dark Pack -->
+      <div class="col-12 col-lg-6">
+        <div class="d-flex align-items-start gap-3">
+          <img width="56" height="56" src="/assets/img/darkpack.png" alt="Dark Pack logo" class="footer-darkpack" />
+          <p class="footer-trademark mb-0">
             {{ t('trademark') }}
-            <a href="https://worldofdarkness.com" target="_blank" class="text-white">worldofdarkness.com</a>
+            <a href="https://worldofdarkness.com" target="_blank" rel="noopener" class="footer-link">worldofdarkness.com</a>
           </p>
         </div>
-        <div class="col-12 col-lg-7 text-center d-flex justify-content-center pt-5">
-          <div class="mx-3">
-            <h6 class="text-uppercase fw-bold">
-              <a [routerLink]="'/changelog'" class="text-white text-decoration-none fs-5">{{ t('changelog') }}</a>
-            </h6>
-          </div>
-          <div class="mx-3">
-            <h6 class="text-uppercase fw-bold">
-              <a [routerLink]="'/terms'" class="text-white text-decoration-none fs-5">{{ t('terms') }}</a>
-            </h6>
-          </div>
-          <div class="mx-3">
-            <h6 class="text-uppercase fw-bold">
-              <a [routerLink]="'/privacy-policy'" class="text-white text-decoration-none fs-5">
-                {{ t('privacy_policy') }}
-              </a>
-            </h6>
-          </div>
+      </div>
+
+      <!-- Links -->
+      <div class="col-6 col-lg-3">
+        <h6 class="footer-heading">{{ t('about') }}</h6>
+        <ul class="footer-links list-unstyled mb-0">
+          <li><a [routerLink]="'/changelog'" class="footer-link">{{ t('changelog') }}</a></li>
+          <li><a [routerLink]="'/terms'" class="footer-link">{{ t('terms') }}</a></li>
+          <li><a [routerLink]="'/privacy-policy'" class="footer-link">{{ t('privacy_policy') }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div class="col-6 col-lg-3">
+        <h6 class="footer-heading">{{ t('follow_us') }}</h6>
+        <div class="footer-social d-flex flex-wrap gap-2">
+          <a class="social-btn" href="mailto:support@vtesdecks.com" target="_blank" rel="noopener" role="button"
+            [title]="t('mail')" [attr.aria-label]="t('mail')"><i class="bi bi-envelope-fill"></i></a>
+          <a class="social-btn" href="https://www.instagram.com/vtesdecks" target="_blank" rel="noopener" role="button"
+            title="Instagram" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a class="social-btn" href="https://github.com/zavierazo/vtesdecks-front" target="_blank" rel="noopener"
+            role="button" title="GitHub" aria-label="GitHub"><i class="bi bi-github"></i></a>
         </div>
       </div>
-    </section>
-    <section>
-      <!-- Email -->
-      <a class="btn btn-outline-light btn-floating m-1" href="mailto:support@vtesdecks.com" target="_blank"
-        role="button" [title]="t('mail')"><i class="bi bi-envelope"></i></a>
-      <!-- Twitter -->
-      <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/DecksVtes" target="_blank"
-        role="button" title="Twitter"><i class="bi bi-twitter"></i></a>
-      <!-- Instagram -->
-      <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/vtesdecks" target="_blank"
-        role="button" title="Instagram"><i class="bi bi-instagram"></i></a>
-      <!-- Github -->
-      <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/zavierazo/vtesdecks-front"
-        target="_blank" role="button" title="GitHub"><i class="bi bi-github"></i></a>
-    </section>
+    </div>
   </div>
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-    v{{ appVersion }} © 2020-{{ now | date:'yy' }} {{ t('copyright') }}
+
+  <div class="footer-bottom">
+    <div class="container py-3 text-center small">
+      v{{ appVersion }} · © 2020-{{ now | date:'yy' }} {{ t('copyright') }}
+    </div>
   </div>
 </footer>

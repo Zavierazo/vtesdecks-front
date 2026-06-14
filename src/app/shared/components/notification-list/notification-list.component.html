@@ -16,7 +16,7 @@
     @if(notification.type === 'LINK'){
     <a class="text-decoration-none text-black notification-list" [ngClass]="{
       'notification-list--unread': !notification.read
-    }" [href]="notification.link" target="_blank"
+    }" [href]="notification.link" target="_blank" rel="noopener noreferrer"
       (click)="!notification.read ? read(notification.id): offcanvas.close()">
       <div class="notification-list_content">
         <div class="notification-list_detail">

@@ -9,7 +9,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary } from '@models'
+import { ApiArchetypeKeyCard, ApiCard, ApiLibrary } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
@@ -21,6 +21,7 @@ import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
+import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badge.component'
 
 @UntilDestroy()
 @Component({
@@ -39,6 +40,7 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
     CardImagePipe,
     CollectionCardTrackerComponent,
     CollectionCardMiniStatsComponent,
+    RecommendedBadgeComponent,
   ],
 })
 export class LibraryComponent implements OnInit {
@@ -66,6 +68,8 @@ export class LibraryComponent implements OnInit {
   @Input() overrideImage?: string
 
   @Input() setAbbrev?: string
+
+  @Input() recommended?: ApiArchetypeKeyCard
 
   readonly cardAdded = output<number>()
 

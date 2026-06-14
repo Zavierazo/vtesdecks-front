@@ -18,7 +18,7 @@
 }
 @else if (item.type==='reference') {
 @if (item.link) {
-<a class="text-decoration-none" [href]="item.link" target="_blank">
+<a class="text-decoration-none" [href]="item.link" target="_blank" rel="noopener noreferrer">
   {{ item.text }}
 </a>
 }

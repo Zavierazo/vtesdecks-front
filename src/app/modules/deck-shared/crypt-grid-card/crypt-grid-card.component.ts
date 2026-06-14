@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt } from '@models'
+import { ApiArchetypeKeyCard, ApiCard, ApiCrypt } from '@models'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
@@ -19,6 +19,7 @@ import { Observable } from 'rxjs'
 import { environment } from '../../../../environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
+import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badge.component'
 
 @UntilDestroy()
 @Component({
@@ -33,6 +34,7 @@ import { CollectionCardTrackerComponent } from '../collection-card-tracker/colle
     CollectionCardMiniStatsComponent,
     NgbTooltip,
     TranslocoPipe,
+    RecommendedBadgeComponent,
   ],
 })
 export class CryptGridCardComponent implements OnInit {
@@ -42,6 +44,7 @@ export class CryptGridCardComponent implements OnInit {
   cryptSize = input<number>(12)
   withControls = input<boolean>(false)
   withDelete = input<boolean>(false)
+  recommended = input<ApiArchetypeKeyCard | undefined>(undefined)
   readonly cardAdded = output<number>()
   readonly cardRemoved = output<number>()
 

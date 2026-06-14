@@ -1,0 +1,8 @@
+@if (recommended(); as rec) {
+<span class="recommended-badge badge rounded-pill" [ngClass]="{
+    'bg-success-subtle text-success-emphasis': state() === 'ok',
+    'bg-warning-subtle text-warning-emphasis': state() !== 'ok'
+  }" [ngbTooltip]="'deck_shared.recommended_tip' | transloco: { min: rec.min, max: rec.max }" container="body">
+  <i class="bi" [ngClass]="icon()"></i>&nbsp;{{ rangeLabel() }}
+</span>
+}

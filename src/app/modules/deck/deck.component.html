@@ -78,7 +78,7 @@
                   <p class="mb-1">
                     <b>{{ t('tournament') }}: </b>
                     @if (deck.url) {
-                    <a class="text-decoration-none" [href]="deck.url" target="_blank">
+                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer">
                       {{ deck.tournament }}
                     </a>
                     } @else {
@@ -112,7 +112,7 @@
                   }
                   @if (deck.type==='PRECONSTRUCTED' && deck.url) {
                   <p class="mb-1">
-                    <a class="text-decoration-none" [href]="deck.url" target="_blank" [ngbTooltip]="t('buy_dtc')"
+                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer" [ngbTooltip]="t('buy_dtc')"
                       gaEvent="purchase" gaCategory="DTC-BANNER" [gaLabel]="deck.name">
                       <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
                     </a>
@@ -121,7 +121,7 @@
                   @if (deck.source) {
                   <p class="mb-1">
                     <b>{{ t('source') }}: </b>
-                    <a class="text-decoration-none" [href]="deck.source" target="_blank">{{ t('twda') }}</a>
+                    <a class="text-decoration-none" [href]="deck.source" target="_blank" rel="noopener noreferrer">{{ t('twda') }}</a>
                   </p>
                   }
                 </div>
@@ -208,15 +208,15 @@
                     </button>
                     <div ngbDropdownMenu class="dropdown-menu">
                       <div class="dropdown-header">{{ t('file') }}</div>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank"
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank" rel="noopener"
                         gaEvent="export" gaCategory="file_lackey">
                         <i class="bi bi-file-earmark me-2"></i>Lackey
                       </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank"
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank" rel="noopener"
                         gaEvent="export" gaCategory="file_jol">
                         <i class="bi bi-file-earmark me-2"></i>JOL
                       </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank"
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank" rel="noopener"
                         gaEvent="export" gaCategory="file_twd">
                         <i class="bi bi-file-earmark me-2"></i>TWD
                       </a>
