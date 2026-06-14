@@ -127,7 +127,11 @@
     "sort_by_name": "Nome",
     "sort_by_capacity": "Capacidade",
     "sort_by_clan": "Clã",
-    "sort_by_group": "Grupo"
+    "sort_by_group": "Grupo",
+    "delete": "Deletar",
+    "compare": "Comparar",
+    "archetype": "Arquétipo",
+    "add_to_collection": "Adicionar à Coleção"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",
@@ -226,6 +230,7 @@
     "limited_format_not_allowed": "{{ name }} não é permitido neste formato"
   },
   "deck_shared": {
+    "recommended_tip": "Cópias recomendadas para decks semelhantes: {{ min }}–{{ max }}",
     "banned": "Banida",
     "unreleased": "Não lançada",
     "rulings": "Regras",
@@ -249,7 +254,6 @@
     "tracked_collection": "Rastreado na Coleção",
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
-    "supporter": "Membro no Patreon",
     "show_more": "Mostrar mais",
     "ebay_affiliate_disclosure": "Este site contém links de afiliados pelos quais posso ser compensado"
   },
@@ -339,7 +343,9 @@
     "changelog": "Registro de alterações",
     "terms": "Termos",
     "privacy_policy": "Política de privacidade",
-    "mail": "E-mail"
+    "mail": "E-mail",
+    "about": "Sobre",
+    "follow_us": "Siga-nos"
   },
   "header": {
     "home": "Início",
@@ -368,7 +374,6 @@
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
-    "whats_new": "Novidades {{ date }}",
     "proxy_generator": "Gerador de Proxies",
     "vtes_ai_chat": "Chat IA de VTES",
     "search": "Pesquisar",
@@ -393,7 +398,7 @@
     "popular_community": "Comunidades populares",
     "newest_tournament": "Torneios mais novos",
     "newest_community": "Comunidades mais novas",
-    "see_more": "Ver mais...",
+    "see_more": "Ver mais",
     "patreon": "Apoie no Patreon",
     "patreon_message": "Este site é 100% gratuito e movido pela comunidade.<br>Se o VTES Decks te ajuda, considere nos apoiar no Patreon ❤️",
     "patreon_supporter_message": "Obrigado por apoiar o VTES Decks!<br>Seu apoio mantém o VTES Decks vivo ❤️",
@@ -469,7 +474,7 @@
     "must_one_number": "Deve conter pelo menos 1 número!",
     "must_8_characters": "Deve ter pelo menos 8 caracteres!",
     "must_match": "A senha deve corresponder!",
-    "read_and_agree_terms": "Eu li e concordo com os termos.",
+    "read_and_agree_terms": "Eu li e concordo com os <a href='/terms' target='_blank' rel='noopener'>Termos</a> e a <a href='/privacy-policy' target='_blank' rel='noopener'>Política de Privacidade</a>",
     "terms_mandatory": "Os termos devem ser aceitos.",
     "already_member": "Já é membro?"
   },
@@ -517,7 +522,9 @@
     "apply": "Aplicar",
     "proxy_generator": "Gerador de Proxies",
     "vtes_ai_chat": "Chat IA de VTES",
-    "new": "Novo"
+    "new": "Novo",
+    "supporter": "Membro no Patreon",
+    "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente."
   },
   "table_seating": {
     "title": "Assentamento de mesa",
@@ -573,7 +580,8 @@
     "come_back_message": "Volte amanhã para mais!",
     "game_over_infinite_message": "Fim do jogo, pressione Repetir para mais!",
     "game_over_today_message": "Fim do jogo, volte amanhã para mais!",
-    "remaining_lives": "{{ lives }} vidas restantes"
+    "remaining_lives": "{{ lives }} vidas restantes",
+    "card_to_guess": "Carta para adivinhar"
   },
   "vtes_ai": {
     "title": "VTES AI Chat",
@@ -720,7 +728,8 @@
       "judge": "Judge",
       "martyr": "Martyr",
       "redeemer": "Redeemer",
-      "hecata": "Hecata"
+      "hecata": "Hecata",
+      "fos": "Followers of Set"
     },
     "path": {
       "caine": "Caine",

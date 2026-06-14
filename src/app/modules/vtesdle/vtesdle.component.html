@@ -28,7 +28,7 @@
     <div class="d-flex justify-content-center align-self-center">
       <div class="image-container">
         @if (cardId) {
-        <img [src]="getImageUrl()" class="card-image" />
+        <img [src]="getImageUrl()" class="card-image" [alt]="t('card_to_guess')" />
         } @else {
         <app-loading [size]="10" />
         }

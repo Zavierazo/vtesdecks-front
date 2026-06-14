@@ -6,6 +6,11 @@
       x{{ count }}
     </div>
     }
+    @if(recommended()){
+    <div class="position-absolute bottom-0 start-0 m-2">
+      <app-recommended-badge [recommended]="recommended()" [current]="card().number" />
+    </div>
+    }
     @if(card().collection){
     <div class="collection-tracker">
       <div class="position-absolute top-0 end-0 badge border border-secondary bg-dark m-2 mt-5 fs-7">

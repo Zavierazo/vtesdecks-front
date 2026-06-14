@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, DeckLibrarySortBy } from '@models'
+import { ApiArchetypeKeyCard, ApiCard, DeckLibrarySortBy } from '@models'
 import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
@@ -72,6 +72,8 @@ export class LibraryListComponent implements OnInit {
   @Input() withControls = false
 
   @Input() displayMode: 'list' | 'grid' = 'list'
+
+  @Input() recommendations?: Map<number, ApiArchetypeKeyCard>
 
   readonly cardAdded = output<number>()
 

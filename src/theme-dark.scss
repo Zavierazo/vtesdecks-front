@@ -1,20 +1,19 @@
 @use 'sass:color';
 
-.deck-card {
-  background-color: #000000;
-  background: linear-gradient(#000000, color.adjust(#000000, $lightness: 20%));
-}
+/* Dark theme refinements layered on top of Bootstrap's built-in
+   [data-bs-theme="dark"] tokens. Surfaces use the shared --app-surface
+   custom property so cards lift cleanly off the dark page background. */
 
 .text-black {
   color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
 }
 
 .bg-light {
-  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  background-color: var(--app-surface) !important;
 }
 
 .border-dark {
-  border-color: var(--bs-dark-border-subtle) !important;
+  border-color: var(--bs-border-color) !important;
 }
 
 .text-black-50 {
@@ -24,6 +23,6 @@
 .search-result-item {
   &:hover,
   &.selected {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--bs-primary-rgb), 0.18);
   }
 }

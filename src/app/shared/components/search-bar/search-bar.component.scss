@@ -1,5 +1,57 @@
+/* The search field shares the modal's surface colour, so without an explicit
+   fill it blended into the modal (looked like a featureless dark/black box in
+   dark mode). Give it a distinct, slightly-raised fill + border so it always
+   reads as a proper search box in both themes. */
+.modal-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding-bottom: 1rem;
+
+  .input-group {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--app-surface-2);
+    border: 1px solid var(--bs-border-color);
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:focus-within {
+      border-color: rgba(var(--bs-primary-rgb), 0.7);
+      box-shadow: 0 0 0 0.2rem var(--app-ring);
+    }
+  }
+
+  .input-group-text {
+    background: transparent;
+    border: 0;
+    color: var(--bs-secondary-color);
+    padding-left: 1rem;
+  }
+
+  .form-control {
+    background: transparent;
+    border: 0;
+    box-shadow: none !important;
+    padding-left: 0.25rem;
+    font-size: 1.05rem;
+
+    &:focus {
+      background: transparent;
+    }
+  }
+}
+
 .results {
   max-height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
+
+  h5 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+  }
 }

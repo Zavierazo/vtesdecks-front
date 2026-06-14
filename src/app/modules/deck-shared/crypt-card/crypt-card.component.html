@@ -91,7 +91,7 @@
             @for (shop of cardInfo?.shopList; track shop.link) {
             @if(shop.inStock && shop.shopInfo.showButton){
             <a type="button" class="btn btn-sm btn-success col-auto me-1"
-              [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" gaEvent="purchase"
+              [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" rel="noopener noreferrer" gaEvent="purchase"
               [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name">
               <i class="bi bi-cart4"></i>
               <span>&nbsp;{{ shop.shopInfo.fullName }}</span><br />{{ shop.price | currency:shop.currency }}

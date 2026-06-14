@@ -93,7 +93,7 @@
             {{ t('tools') }}
           </span>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
+            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank" rel="noopener noreferrer"
               (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
               Codex of the Damned
             </a>
@@ -157,14 +157,16 @@
           }
         </li>
         <button type="button" class="btn btn-outline-light mx-2 mb-2 mb-lg-0" (click)="openLoginModal()"
-          *isLogged="false">
+          *isLogged="false" data-cy="login-button">
           {{ t('login') }}
         </button>
-        <button type="button" class="btn btn-warning mx-2 mb-2 mb-lg-0" (click)="openSignUpModal()" *isLogged="false">
+        <button type="button" class="btn btn-warning mx-2 mb-2 mb-lg-0" (click)="openSignUpModal()" *isLogged="false"
+          data-cy="signup-button">
           {{ t('sign_up') }}
         </button>
         <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button" aria-expanded="false"
+            data-cy="user-menu"
             [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
@@ -193,7 +195,7 @@
             <a ngbDropdownItem routerLink="/user/settings" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('settings') }}
             </a>
-            <a ngbDropdownItem href="javascript:void(0)" (click)="logout()">
+            <a ngbDropdownItem href="javascript:void(0)" (click)="logout()" data-cy="logout">
               {{ t('logout') }}
             </a>
           </div>
