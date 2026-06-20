@@ -114,17 +114,16 @@ export class AppComponent implements OnInit {
       this.swUpdate.versionUpdates
         .pipe(
           distinct(),
-
-          tap((evt) => {
-            if (evt.type === 'VERSION_DETECTED') {
-              this.toastService.show(
-                this.translocoService.translate(
-                  'shared.new_version_installing',
-                ),
-                { classname: 'bg-success text-light', delay: 5000 },
-              )
-            }
-          }),
+          // tap((evt) => {
+          // if (evt.type === 'VERSION_DETECTED') {
+          //   this.toastService.show(
+          //     this.translocoService.translate(
+          //       'shared.new_version_installing',
+          //     ),
+          //     { classname: 'bg-success text-light', delay: 5000 },
+          //   )
+          // }
+          // }),
           filter(
             (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY',
           ),

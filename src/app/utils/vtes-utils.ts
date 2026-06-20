@@ -58,7 +58,7 @@ export function isPrideMonth() {
   return now.getMonth() === 5
 }
 
-const normalizeText = (text: string): string => {
+export const normalizeText = (text: string): string => {
   return text
     .normalize('NFD') // Decompose accented characters
     .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks

@@ -3,6 +3,8 @@ import { CryptQuery } from './state/crypt/crypt.query'
 import { LibraryQuery } from './state/library/library.query'
 import { Clan, getClanMarkdown } from './utils/clans'
 import { Discipline, getDisciplineMarkdown } from './utils/disciplines'
+import { normalizeText } from './utils/vtes-utils'
+import { trigramSimilarity } from './utils/trigram-similarity'
 
 export function bracketsExtension(
   cryptQuery: CryptQuery,
@@ -45,10 +47,27 @@ export function bracketsExtension(
         sortByOrder: 'desc',
       })
 
-      if (cryptCard.length > 0) {
-        return `<app-markdown-card name="${cryptCard[0].name}" image="${cryptCard[0].image}"></app-markdown-card>`
-      } else if (libraryCard.length > 0) {
-        return `<app-markdown-card name="${libraryCard[0].name}" image="${libraryCard[0].image}"></app-markdown-card>`
+      // The name filter falls back to fuzzy trigram matching, so e.g. the
+      // crypt card "Petra" also matches a search for "Petra Resonance". Prefer
+      // an exact (normalized) name match before falling back to the best fuzzy
+      // result, so the precise card always wins. Both crypt and library
+      // candidates render the same way, so we pick across the merged list:
+      // an exact match first, otherwise the highest trigram similarity overall
+      // (rather than always preferring crypt over library).
+      const candidates = [...cryptCard, ...libraryCard]
+      const normalizedName = normalizeText(cardName)
+      const card =
+        candidates.find(
+          (candidate) => normalizeText(candidate.name) === normalizedName,
+        ) ??
+        candidates.sort(
+          (a, b) =>
+            trigramSimilarity(b.name, cardName) -
+            trigramSimilarity(a.name, cardName),
+        )[0]
+
+      if (card) {
+        return `<app-markdown-card name="${card.name}" image="${card.image}"></app-markdown-card>`
       } else {
         return `<span class="fw-semibold">${cardName}</span>`
       }
