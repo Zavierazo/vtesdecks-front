@@ -1,11 +1,17 @@
 [
   {
+    "version": "2.72.0",
+    "date": "20th June, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.71.0",
     "date": "14th June, 2026",
     "changes": [
       "Refreshed the entire site with a modern design system: new typography, a refined color palette, softer cards and shadows, smoother transitions and an improved light & dark theme across every page.",
-      "Deck Builder now shows the recommended copy range on cards already in your deck, color-coded to highlight when your quantity is outside the archetype's usual range.",
-      "Minor bug fixes and performance improvements."
+      "Deck Builder now shows the recommended copy range on cards already in your deck, color-coded to highlight when your quantity is outside the archetype's usual range."
     ]
   },
   {
