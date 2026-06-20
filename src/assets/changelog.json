@@ -3,6 +3,7 @@
     "version": "2.72.0",
     "date": "20th June, 2026",
     "changes": [
+      "Draw Cards is now interactive: click a card to play it, drawing the next library card or moving crypt vampires to the Controlled region.",
       "Minor bug fixes and performance improvements."
     ]
   },

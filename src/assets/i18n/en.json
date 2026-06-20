@@ -288,9 +288,20 @@
     "title": "Draw Cards",
     "crypt": "Crypt",
     "library": "Library",
-    "shuffle": "Shuffle",
+    "shuffle": "Re-draw",
     "remaining": "remaining",
-    "unique_crypt": "Unique Vampires"
+    "unique_crypt": "Unique Vampires",
+    "controlled": "Controlled",
+    "ash_heap": "Ash Heap",
+    "draw_all": "Draw all",
+    "hand_size_less": "Hand size -1",
+    "hand_size_more": "Hand size +1",
+    "total_capacity": "Total capacity",
+    "total_blood": "Total blood cost",
+    "total_pool": "Total pool cost",
+    "play_hint": "Click a card to play it. Library cards auto-draw the next one; crypt cards move to the controlled region.",
+    "play_crypt": "Bring into play",
+    "play_library": "Play card"
   },
   "print_proxy": {
     "title": "Create Card Proxy PDF",

@@ -7,41 +7,124 @@
       (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
+    <p class="text-muted small mb-2">
+      <i class="bi bi-hand-index-thumb me-1"></i>{{ t('play_hint') }}
+    </p>
     <div class="row">
-      <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-        <li class="list-group-item list-group-item-primary">
-          {{ t('crypt') }}&nbsp;-&nbsp;{{ cryptDrawn() }}/{{ cryptList().length }} ( {{ cryptList().length -
-          cryptDrawn() }} {{ t('remaining') }} )
-          <span class="float-end">
-            <i class="bi bi-fs-1_2x" [ngClass]="cryptUnique() <= 9 ? 'bi-' + cryptUnique() + '-circle': ''"
-              [title]="t('unique_crypt')"></i>
-            <i class="btn-icon bi bi-dash-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="decreaseCryptDrawn()"></i>
-            <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" (click)="shuffleCrypt()"></i>
-            <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="increaseCryptDrawn()"></i>
-          </span>
-        </li>
-        @for (crypt of cryptList()| slice:0:cryptDrawn(); track crypt) {
-        <div>
-          <app-crypt [card]="crypt" [cryptSize]="cryptList().length" [withDrawProbability]="true" />
-        </div>
-        }
-      </ul>
-      <ul class="col-12 col-sm-12 col-md-12 col-lg-6 p-1 list-group">
-        <li class="list-group-item list-group-item-primary">
-          {{ t('library') }}&nbsp;-&nbsp;{{ libraryDrawn() }}/{{ libraryList().length }} ( {{ libraryList().length -
-          libraryDrawn() }} {{ t('remaining') }} )
-          <span class="float-end">
-            <i class="btn-icon bi bi-dash-lg bi-fs-1_2x" aria-hidden="true" (click)="decreaseLibraryDrawn()"></i>
-            <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" (click)="shuffleLibrary()"></i>
-            <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true" (click)="increaseLibraryDrawn()"></i>
-          </span>
-        </li>
-        @for (library of libraryList()| slice:0:libraryDrawn(); track library) {
-        <div>
-          <app-library [card]="library" [librarySize]="libraryList().length" [withDrawProbability]="true" />
-        </div>
-        }
-      </ul>
+      <!-- ===================== CRYPT ===================== -->
+      <div class="col-12 col-lg-6 p-1">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-primary d-flex align-items-center flex-wrap">
+            <span class="fw-bold">{{ t('crypt') }}</span>
+            <span class="ms-2">
+              {{ cryptHand().length }}/{{ cryptSize() }} ( {{ cryptRest().length }} {{ t('remaining') }} )
+            </span>
+            <span class="ms-auto d-flex align-items-center">
+              <i class="bi bi-fs-1_2x me-2" [ngClass]="cryptUnique() <= 9 ? 'bi-' + cryptUnique() + '-circle': ''"
+                [title]="t('unique_crypt')"></i>
+              <i class="btn-icon bi bi-stack bi-fs-1_2x ms-2" aria-hidden="true" [class.disabled]="!cryptRest().length"
+                [title]="t('draw_all')" (click)="drawAllCrypt()"></i>
+              <i class="btn-icon bi bi-dash-lg bi-fs-1_2x ms-2" aria-hidden="true" [class.disabled]="!cryptHand().length"
+                [title]="t('hand_size_less')" (click)="decreaseCryptDrawn()"></i>
+              <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('shuffle')"
+                (click)="shuffleCrypt()"></i>
+              <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true" [class.disabled]="!cryptRest().length"
+                [title]="t('hand_size_more')" (click)="increaseCryptDrawn()"></i>
+            </span>
+          </li>
+          @for (item of cryptHand(); track item.uid) {
+          <div class="draw-item" [title]="t('play_crypt')" (click)="playCrypt(item)">
+            <span class="draw-action draw-action-play">
+              <i class="bi bi-box-arrow-in-down"></i>
+            </span>
+            <app-crypt [card]="item.card" [cryptSize]="cryptSize()" [withDrawProbability]="true"
+              [disableClickPopover]="true" />
+          </div>
+          }
+        </ul>
+      </div>
+
+      <!-- ===================== LIBRARY ===================== -->
+      <div class="col-12 col-lg-6 p-1">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-primary d-flex align-items-center flex-wrap">
+            <span class="fw-bold">{{ t('library') }}</span>
+            <span class="ms-2">
+              {{ libraryHand().length }}/{{ librarySize() }} ( {{ libraryRest().length }} {{ t('remaining') }} )
+            </span>
+            <span class="ms-auto d-flex align-items-center">
+              <i class="btn-icon bi bi-stack bi-fs-1_2x ms-2" aria-hidden="true" [class.disabled]="!libraryRest().length"
+                [title]="t('draw_all')" (click)="drawAllLibrary()"></i>
+              <i class="btn-icon bi bi-dash-lg bi-fs-1_2x ms-2" aria-hidden="true"
+                [class.disabled]="!libraryHand().length" [title]="t('hand_size_less')"
+                (click)="decreaseLibraryDrawn()"></i>
+              <i class="btn-icon bi bi-arrow-repeat bi-fs-1_2x ms-2" aria-hidden="true" [title]="t('shuffle')"
+                (click)="shuffleLibrary()"></i>
+              <i class="btn-icon bi bi-plus-lg bi-fs-1_2x ms-2" aria-hidden="true"
+                [class.disabled]="!libraryRest().length" [title]="t('hand_size_more')"
+                (click)="increaseLibraryDrawn()"></i>
+            </span>
+          </li>
+          @for (item of libraryHand(); track item.uid) {
+          <div class="draw-item" [title]="t('play_library')" (click)="playLibrary(item)">
+            <span class="draw-action draw-action-play">
+              <i class="bi bi-play-fill"></i>
+            </span>
+            <app-library [card]="item.card" [librarySize]="librarySize()" [withDrawProbability]="true"
+              [disableClickPopover]="true" />
+          </div>
+          }
+        </ul>
+      </div>
     </div>
+
+    @if (cryptControlled().length || libraryAshHeap().length) {
+    <div class="row">
+      <!-- ===================== CONTROLLED ===================== -->
+      <div class="col-12 col-lg-6 p-1">
+        @if (cryptControlled().length) {
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-secondary d-flex align-items-center draw-section-header">
+            <span class="fw-bold">{{ t('controlled') }}</span>
+            <span class="ms-2">{{ cryptControlled().length }}</span>
+            <span class="ms-auto badge rounded-pill bg-danger" [title]="t('total_capacity')">
+              {{ controlledCapacity() }}
+            </span>
+          </li>
+          @for (item of cryptControlled(); track item.uid) {
+          <div class="draw-item-played">
+            <app-crypt [card]="item.card" [cryptSize]="cryptSize()" [disableClickPopover]="true" />
+          </div>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- ===================== ASH HEAP ===================== -->
+      <div class="col-12 col-lg-6 p-1">
+        @if (libraryAshHeap().length) {
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-secondary d-flex align-items-center draw-section-header">
+            <span class="fw-bold">{{ t('ash_heap') }}</span>
+            <span class="ms-2">{{ libraryAshHeap().length }}</span>
+            <span class="ms-auto d-flex align-items-center gap-2">
+              @if (ashHeapBlood()) {
+              <span [title]="t('total_blood')"><i class="vtes bloodcost"></i> {{ ashHeapBlood() }}</span>
+              }
+              @if (ashHeapPool()) {
+              <span [title]="t('total_pool')"><i class="vtes poolcost"></i> {{ ashHeapPool() }}</span>
+              }
+            </span>
+          </li>
+          @for (item of libraryAshHeap(); track item.uid) {
+          <div class="draw-item-played">
+            <app-library [card]="item.card" [librarySize]="librarySize()" [disableClickPopover]="true" />
+          </div>
+          }
+        </ul>
+        }
+      </div>
+    </div>
+    }
   </div>
 </ng-container>

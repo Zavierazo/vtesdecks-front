@@ -288,9 +288,20 @@
     "title": "Robar Cartas",
     "crypt": "Cripta",
     "library": "Biblioteca",
-    "shuffle": "Mezclar",
+    "shuffle": "Volver a robar",
     "remaining": "restantes",
-    "unique_crypt": "Vampiros Únicos"
+    "unique_crypt": "Vampiros Únicos",
+    "controlled": "Controlados",
+    "ash_heap": "Montón de Cenizas",
+    "draw_all": "Robar todo",
+    "hand_size_less": "Tamaño de mano -1",
+    "hand_size_more": "Tamaño de mano +1",
+    "total_capacity": "Capacidad total",
+    "total_blood": "Coste total de sangre",
+    "total_pool": "Coste total de reserva",
+    "play_hint": "Haz clic en una carta para jugarla. Las cartas de biblioteca roban la siguiente automáticamente; los vampiros pasan a la región controlada.",
+    "play_crypt": "Poner en juego",
+    "play_library": "Jugar carta"
   },
   "print_proxy": {
     "title": "Crear PDF de Proxy",
