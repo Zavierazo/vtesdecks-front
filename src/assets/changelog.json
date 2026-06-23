@@ -3,6 +3,7 @@
     "version": "2.72.0",
     "date": "23th June, 2026",
     "changes": [
+      "Integrated the Eternal Vigilance project by Lyon Martin, allowing to ingest tournament results much earlier than the traditional TWD publication process. This means new Tournament Winning Decks can appear on the site significantly faster.",
       "Draw Cards is now interactive: click a card to play it, drawing the next library card or moving crypt vampires to the Controlled region.",
       "Proxy printing can now print cards in your language: when a localized image is available, your language is preselected by default, and you can still choose a specific set instead.",
       "Library cards now include a 'Who can play it?' button that opens the Crypt pre-filtered to the vampires able to play the card, based on its discipline, clan, sect and path requirements.",
