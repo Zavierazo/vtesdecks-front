@@ -9,19 +9,19 @@
   <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main">
     <div class="row">
       <section class="dark-grey-text col-12">
-        <div class="mb-2 bg-light rounded-3">
+        <div class="deck-hero mb-3">
           <div class="container-fluid py-4">
             <div class="row align-items-center">
               <div class="col-12 col-md-8 text-center text-md-start">
                 <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
                   <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
-                    (click)="toggleBookmark()" class="me-3">
-                    <i class="bi bi-fs-1_5x text-black" [ngClass]="{
+                    (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked">
+                    <i class="bi bi-fs-1_5x" [ngClass]="{
                       'bi-bookmark-star': !isBookmarked,
                       'bi-bookmark-star-fill': isBookmarked
                     }"></i>
                   </a>
-                  <h3 class="fw-bold mb-0">{{ deck.name | titlecase }}</h3>
+                  <h3 class="deck-title fw-bold mb-0">{{ deck.name | titlecase }}</h3>
                 </div>
                 <div class="deck-meta">
                   <p class="mb-1 d-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
@@ -112,8 +112,8 @@
                   }
                   @if (deck.type==='PRECONSTRUCTED' && deck.url) {
                   <p class="mb-1">
-                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer" [ngbTooltip]="t('buy_dtc')"
-                      gaEvent="purchase" gaCategory="DTC-BANNER" [gaLabel]="deck.name">
+                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer"
+                      [ngbTooltip]="t('buy_dtc')" gaEvent="purchase" gaCategory="DTC-BANNER" [gaLabel]="deck.name">
                       <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
                     </a>
                   </p>
@@ -121,24 +121,31 @@
                   @if (deck.source) {
                   <p class="mb-1">
                     <b>{{ t('source') }}: </b>
-                    <a class="text-decoration-none" [href]="deck.source" target="_blank" rel="noopener noreferrer">{{ t('twda') }}</a>
+                    <a class="text-decoration-none" [href]="deck.source" target="_blank" rel="noopener noreferrer">{{
+                      t('twda') }}</a>
                   </p>
                   }
                 </div>
               </div>
               <div class="col-12 col-md-4 mt-3 mt-md-0">
-                <div class="row g-3">
-                  <div class="col-6 col-md-12">
-                    <div class="deck-stat-card text-center p-3 rounded-3 bg-light shadow-sm">
-                      <h4 class="display-4 text-primary mb-0">
+                <div class="deck-stats-panel">
+                  <div class="deck-stat">
+                    <span class="deck-stat__icon">
+                      <i class="bi bi-eye-fill"></i>
+                    </span>
+                    <div class="deck-stat__body">
+                      <span class="deck-stat__value">
                         <animated-digit [digit]="deck.views" [duration]="2000" />
-                      </h4>
-                      <p class="text-uppercase text-muted mb-0">{{ t('views') }}</p>
-                      <i class="bi bi-eye-fill text-primary"></i>
+                      </span>
+                      <span class="deck-stat__label">{{ t('views') }}</span>
                     </div>
                   </div>
-                  <div class="col-6 col-md-12">
-                    <div class="deck-stat-card text-center p-3 rounded-3 bg-light shadow-sm">
+                  <div class="deck-stats-panel__divider"></div>
+                  <div class="deck-stat">
+                    <span class="deck-stat__icon deck-stat__icon--rating">
+                      <i class="bi bi-heart-fill"></i>
+                    </span>
+                    <div class="deck-stat__body">
                       <div class="rating">
                         <ng-template #starTemplate let-fill="fill">
                           <span class="star" [class.full]="fill === 100">
@@ -150,10 +157,9 @@
                           [readonly]="!(isAuthenticated$ | async)! || (userDisplayName$ | async) === deck.author"
                           [max]="5" (rateChange)="rateDeck($event)" />
                       </div>
-                      <p class="text-muted mb-0">
-                        <i class="bi bi-people-fill"></i>
-                        {{ t('votes', { count: deck.votes }) }}
-                      </p>
+                      <span class="deck-stat__label">
+                        <i class="bi bi-people-fill me-1"></i>{{ t('votes', { count: deck.votes }) }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -208,16 +214,16 @@
                     </button>
                     <div ngbDropdownMenu class="dropdown-menu">
                       <div class="dropdown-header">{{ t('file') }}</div>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank" rel="noopener"
-                        gaEvent="export" gaCategory="file_lackey">
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank"
+                        rel="noopener" gaEvent="export" gaCategory="file_lackey">
                         <i class="bi bi-file-earmark me-2"></i>Lackey
                       </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank" rel="noopener"
-                        gaEvent="export" gaCategory="file_jol">
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank"
+                        rel="noopener" gaEvent="export" gaCategory="file_jol">
                         <i class="bi bi-file-earmark me-2"></i>JOL
                       </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank" rel="noopener"
-                        gaEvent="export" gaCategory="file_twd">
+                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank"
+                        rel="noopener" gaEvent="export" gaCategory="file_twd">
                         <i class="bi bi-file-earmark me-2"></i>TWD
                       </a>
                       <div class="dropdown-divider"></div>
@@ -262,7 +268,6 @@
         </div>
         @if (deck.description) {
         <app-markdown-text class="mt-3" [data]="deck.description" />
-        <hr class="mb-4 mt-3" />
         }
         @if (deck.erratas && deck.erratas.length > 0) {
         <div class="alert alert-warning my-3" role="alert">
@@ -306,21 +311,21 @@
         }
       </section>
     </div>
-    <div class="col-12 d-flex align-items-center mt-3">
-      <div class="flex-grow-1 d-md-none"></div>
-      <div class="d-flex align-items-top  justify-content-center">
-        <h1>{{ 'shared.crypt' | transloco }}</h1>
-        <span class="circle_number ms-2" [title]="t('total_crypt')">
-          {{ deck.stats.crypt }}
-        </span>
+    <div class="col-12 mt-4">
+      <div class="deck-section-header">
+        <div class="deck-section-header__title">
+          <h1 class="mb-0">{{ 'shared.crypt' | transloco }}</h1>
+          <span class="circle_number" [title]="t('total_crypt')">
+            {{ deck.stats.crypt }}
+          </span>
+        </div>
+        <div class="deck-section-header__actions d-none d-md-flex">
+          <ng-container *ngTemplateOutlet="cryptButtons" />
+        </div>
       </div>
-      <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+      <div class="d-md-none mt-3 d-flex justify-content-center">
         <ng-container *ngTemplateOutlet="cryptButtons" />
       </div>
-      <div class="d-md-none flex-grow-1"></div>
-    </div>
-    <div class="d-md-none mt-3 d-flex justify-content-center">
-      <ng-container *ngTemplateOutlet="cryptButtons" />
     </div>
 
     <ng-template #cryptButtons>
@@ -351,29 +356,35 @@
         </div>
       </div>
     </ng-template>
-    <div class="col-12 text-center mt-3">
-      <div class="row">
-        <div class="col-4">
-          <p class="fw-bold mb-1">{{ deck.stats.minCrypt }}</p>
-          <p class="text-uppercase mb-md-0">MIN</p>
+    <div class="col-12 mt-3">
+      <div class="row g-2 justify-content-center">
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ deck.stats.minCrypt }}</span>
+            <span class="minmax-tile__label">MIN</span>
+          </div>
         </div>
-        <div class="col-4">
-          <p class="fw-bold mb-1">{{ deck.stats.maxCrypt }}</p>
-          <p class="text-uppercase mb-md-0">MAX</p>
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ deck.stats.maxCrypt }}</span>
+            <span class="minmax-tile__label">MAX</span>
+          </div>
         </div>
-        <div class="col-4">
-          <p class="fw-bold mb-1">{{ deck.stats.avgCrypt }}</p>
-          <p class="text-uppercase mb-0">AVG</p>
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ deck.stats.avgCrypt }}</span>
+            <span class="minmax-tile__label">AVG</span>
+          </div>
         </div>
       </div>
     </div>
     <div class="col-12 text-center mt-3">
-      <div class="row justify-content-center">
+      <div class="d-flex flex-wrap justify-content-center gap-2">
         @for (disciplineStat of deck.stats.cryptDisciplines; track disciplineStat) {
-        <h5 class="col-auto d-flex justify-content-center"
+        <h5 class="disc-chip mb-0"
           [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
           <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-          &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
+          <span>{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}</span>
         </h5>
         }
       </div>
@@ -399,29 +410,29 @@
       </div>
       }
     </div>
-    <div class="col-12 d-flex align-items-center mt-5">
-      <div class="flex-grow-1 d-md-none"></div>
-      <div class="d-flex align-items-top justify-content-center">
-        <h1>{{ 'shared.library' | transloco }}</h1>
-        <span class="circle_number ms-2" [title]="t('total_library')">
-          {{ deck.stats.library }}
-        </span>
-        <div>
-          <div class="costx ms-2" [title]="t('total_pool_cost')">
-            {{ deck.stats.poolCost }} <i class="vtes poolcost"></i>
-          </div>
-          <div class="costx ms-2" [title]="t('total_blood_cost')">
-            {{ deck.stats.bloodCost }} <i class="vtes bloodcost"></i>
+    <div class="col-12 mt-5">
+      <div class="deck-section-header">
+        <div class="deck-section-header__title">
+          <h1 class="mb-0">{{ 'shared.library' | transloco }}</h1>
+          <span class="circle_number" [title]="t('total_library')">
+            {{ deck.stats.library }}
+          </span>
+          <div class="d-flex align-items-center gap-2">
+            <div class="costx" [title]="t('total_pool_cost')">
+              {{ deck.stats.poolCost }} <i class="vtes poolcost"></i>
+            </div>
+            <div class="costx" [title]="t('total_blood_cost')">
+              {{ deck.stats.bloodCost }} <i class="vtes bloodcost"></i>
+            </div>
           </div>
         </div>
+        <div class="deck-section-header__actions d-none d-md-flex">
+          <ng-container *ngTemplateOutlet="libraryButtons" />
+        </div>
       </div>
-      <div class="d-none d-md-flex flex-grow-1 d-flex justify-content-end">
+      <div class="d-md-none mt-3 d-flex justify-content-center">
         <ng-container *ngTemplateOutlet="libraryButtons" />
       </div>
-      <div class="d-md-none flex-grow-1"></div>
-    </div>
-    <div class="d-md-none mt-3 d-flex justify-content-center">
-      <ng-container *ngTemplateOutlet="libraryButtons" />
     </div>
     <ng-template #libraryButtons>
       <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
@@ -443,10 +454,10 @@
       </div>
     </ng-template>
 
-    <div class="col-12 text-center mt-2">
-      <div class="row justify-content-center">
+    <div class="col-12 text-center mt-3">
+      <div class="d-flex flex-wrap justify-content-center gap-2">
         @for (disciplineStat of deck.stats.libraryDisciplines; track disciplineStat) {
-        <h5 class="col-auto d-flex justify-content-center">
+        <h5 class="disc-chip mb-0">
           @if (disciplineStat.disciplines.length === 0) {
           <span [title]="t('no_discipline')">
             <i class="bi bi-square" style="font-size: 32px;"></i>
@@ -459,18 +470,18 @@
           <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!"
             [title]="discipline  |disciplineTransloco"></i>
           }
-          <span class="pt-1">&nbsp;{{ disciplineStat.inferior }}</span>
+          <span>{{ disciplineStat.inferior }}</span>
         </h5>
         }
         @for (clanStat of deck.stats.libraryClans; track clanStat) {
-        <h5 class="col-auto d-flex justify-content-center">
+        <h5 class="disc-chip mb-0">
           @for (clan of clanStat.clans; track clan; let isFirst = $first) {
           @if (!isFirst) {
           <span>/</span>
           }
           <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
           }
-          <span class="pt-1">&nbsp;{{ clanStat.number }}</span>
+          <span>{{ clanStat.number }}</span>
         </h5>
         }
       </div>
@@ -482,8 +493,8 @@
     </div>
     <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
     @if(similarDecks$ | async; as similarDecks) {
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <h2>{{ t('similar_decks') }}</h2>
+    <div class="col-12 d-flex justify-content-center mt-5">
+      <h2 class="deck-subsection-title">{{ t('similar_decks') }}</h2>
     </div>
     <div class="row">
       @for(deck of similarDecks.decks; track deck) {
@@ -491,14 +502,14 @@
       }
     </div>
     <div class="col-12 d-flex justify-content-center mt-3">
-      <a class="btn btn-success btn-rounded btn-lg" routerLink="/decks" [queryParams]="{ bySimilarity: id }"
+      <a class="btn btn-success btn-rounded btn-lg text-white" routerLink="/decks" [queryParams]="{ bySimilarity: id }"
         role="button">
         {{ 'home.see_more' | transloco }}
       </a>
     </div>
     }
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <h2>{{ t('comments') }}</h2>
+    <div class="col-12 d-flex justify-content-center mt-5">
+      <h2 class="deck-subsection-title">{{ t('comments') }}</h2>
     </div>
     <div class="col-12">
       <app-comments [deckId]="id" />

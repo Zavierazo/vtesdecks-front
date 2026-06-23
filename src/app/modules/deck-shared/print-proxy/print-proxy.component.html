@@ -37,6 +37,9 @@
         @if(card.setControl){
         <select class="form-select form-select-sm" [attr.aria-label]="t('select_arial')"
           [formControl]="card.setControl">
+          @if(card.languageLabel){
+          <option value="">{{ card.languageLabel }}</option>
+          }
           @for(setOption of card.setOptions; track setOption.setAbbrev){
           <option [value]="setOption.setAbbrev">{{ setOption.setName }}</option>
           }
@@ -85,6 +88,9 @@
       </div>
       @if(card.setControl){
       <select class="form-select form-select-sm" aria-label="Select proxy image" [formControl]="card.setControl">
+        @if(card.languageLabel){
+        <option value="">{{ card.languageLabel }}</option>
+        }
         @for(setOption of card.setOptions; track setOption.setAbbrev){
         <option [value]="setOption.setAbbrev">{{ setOption.setName }}</option>
         }

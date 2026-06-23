@@ -44,6 +44,10 @@ import {
   tap,
   throwError,
 } from 'rxjs'
+import {
+  DEFAULT_LANGUAGE,
+  SUPPORTED_LANGUAGES,
+} from '../../../transloco-root.module'
 import { CryptComponent } from '../crypt/crypt.component'
 import { LibraryComponent } from '../library/library.component'
 
@@ -56,6 +60,7 @@ export interface ApiProxyItem {
   set?: ApiProxyCardOption
   setOptions: ApiProxyCardOption[]
   setControl?: FormControl<string | null>
+  languageLabel?: string
 }
 
 @UntilDestroy()
@@ -135,12 +140,23 @@ export class PrintProxyComponent implements OnInit {
     if (setOptions.length === 0) {
       return
     }
-    const setControl = new FormControl(setOptions[0].setAbbrev)
-    if (setOptions.length === 1) {
+    const languageLabel = this.buildLanguageLabel(cardId)
+    // An empty value represents the language option: no set is selected and the
+    // backend prints the card in the user's locale.
+    const setControl = new FormControl(
+      languageLabel ? '' : setOptions[0].setAbbrev,
+    )
+    if (setOptions.length === 1 && !languageLabel) {
       setControl.disable()
     }
     this.cardList.update((current: ApiProxyItem[]) =>
-      this.updateCardOptions(current, cardId, setControl, setOptions),
+      this.updateCardOptions(
+        current,
+        cardId,
+        setControl,
+        setOptions,
+        languageLabel,
+      ),
     )
     setControl.valueChanges
       .pipe(
@@ -160,19 +176,43 @@ export class PrintProxyComponent implements OnInit {
     id: number,
     setControl: FormControl<string | null>,
     setOptions: ApiProxyCardOption[],
+    languageLabel?: string,
   ): ApiProxyItem[] {
     return list.map((current: ApiProxyItem) =>
       current.cardId === id
         ? {
             ...current,
+            // No set is selected while the language option is active, so the
+            // card preview falls back to the localized image (i18n.image).
             set: setOptions.find(
               (option) => option.setAbbrev === setControl.value,
             ),
             setControl,
             setOptions,
+            languageLabel,
           }
         : current,
     )
+  }
+
+  // Returns the user's language label for a card when the active language
+  // differs from the default and a localized image is available, otherwise
+  // undefined. Selecting it (empty set) prints the card in this language.
+  private buildLanguageLabel(cardId: number): string | undefined {
+    const activeLang = this.translocoService.getActiveLang()
+    if (activeLang === DEFAULT_LANGUAGE.code) {
+      return undefined
+    }
+    const card = isCryptId(cardId)
+      ? this.cryptQuery.getEntity(cardId)
+      : this.libraryQuery.getEntity(cardId)
+    if (!card?.i18n?.image) {
+      return undefined
+    }
+    const language = SUPPORTED_LANGUAGES.find(
+      (lang) => lang.code === activeLang,
+    )
+    return language?.title ?? activeLang
   }
 
   private updateCardSelectedOption(

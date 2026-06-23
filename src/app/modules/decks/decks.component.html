@@ -54,7 +54,7 @@
           <div class="row mt-2 g-1 justify-content-center">
             @if (type === 'USER') {
             <div class="col-auto">
-              <a routerLink="/decks/builder" class="btn btn-success">
+              <a routerLink="/decks/builder" class="btn btn-success text-white">
                 <i class="bi bi-plus-lg"></i> {{ t('new_deck') }}
               </a>
             </div>
@@ -74,7 +74,7 @@
         </div>
         @if (type === 'USER' && !(isMobileOrTablet$ | async)!) {
         <div class="ms-3">
-          <a routerLink="/decks/builder" class="btn btn-success">
+          <a routerLink="/decks/builder" class="btn btn-success text-white">
             <i class="bi bi-plus-lg"></i> {{ t('new_deck') }}
           </a>
         </div>
