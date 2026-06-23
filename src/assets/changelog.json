@@ -5,6 +5,7 @@
     "changes": [
       "Draw Cards is now interactive: click a card to play it, drawing the next library card or moving crypt vampires to the Controlled region.",
       "Proxy printing can now print cards in your language: when a localized image is available, your language is preselected by default, and you can still choose a specific set instead.",
+      "Library cards now include a 'Who can play it?' button that opens the Crypt pre-filtered to the vampires able to play the card, based on its discipline, clan, sect and path requirements.",
       "Minor bug fixes and performance improvements."
     ]
   },

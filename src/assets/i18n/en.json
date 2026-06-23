@@ -241,6 +241,8 @@
     "where_find": "Where can I get it?",
     "search": "Search",
     "search_title": "Search deck with this card",
+    "playable_by": "Who can play it?",
+    "playable_by_title": "Find crypt cards that can play this card",
     "buy": "Buy this card on {{ name }}",
     "previous_card": "Previous Card",
     "next_card": "Next Card",

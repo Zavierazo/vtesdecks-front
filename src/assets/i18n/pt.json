@@ -241,6 +241,8 @@
     "where_find": "Onde posso consegui-la?",
     "search": "Buscar",
     "search_title": "Buscar baralho com este cartão",
+    "playable_by": "Quem pode jogá-la?",
+    "playable_by_title": "Encontrar criptas que podem jogar este cartão",
     "buy": "Compre este cartão em {{ name }}",
     "previous_card": "Cartão anterior",
     "next_card": "Cartão seguinte",

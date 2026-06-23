@@ -13,7 +13,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -60,6 +60,7 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly toastService = inject(ToastService)
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
+  private readonly router = inject(Router)
 
   @Input() cardList!: ApiLibrary[]
   @Input() index!: number
@@ -194,6 +195,34 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (event.reason === 'loading-failed') {
       this.setImageError = true
     }
+  }
+
+  hasPlayableBy(card: ApiLibrary): boolean {
+    return (
+      (card.disciplines?.length ?? 0) > 0 ||
+      (card.clans?.length ?? 0) > 0 ||
+      (card.sects?.length ?? 0) > 0 ||
+      !!card.path
+    )
+  }
+
+  onPlayableBy(card: ApiLibrary) {
+    const queryParams: Record<string, string> = {}
+    if (card.disciplines?.length) {
+      queryParams['disciplines'] = card.disciplines.join(',')
+    }
+    if (card.clans?.length) {
+      queryParams['clans'] = card.clans.join(',')
+    }
+    // The crypt filter takes a single sect, so only map an unambiguous requirement
+    if (card.sects?.length === 1) {
+      queryParams['sect'] = card.sects[0]
+    }
+    if (card.path) {
+      queryParams['path'] = card.path
+    }
+    this.modal.dismiss('Link click')
+    this.router.navigate(['/cards/crypt'], { queryParams })
   }
 
   onShare() {

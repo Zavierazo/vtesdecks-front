@@ -110,12 +110,18 @@
               [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-search"></i> {{ t('search') }}
             </button>
+            @if (hasPlayableBy(card)) {
+            <button type="button" class="btn btn-primary col-auto me-2" [title]="t('playable_by_title')"
+              (click)="onPlayableBy(card)">
+              <i class="bi bi-bullseye"></i> {{ t('playable_by') }}
+            </button>
+            }
 
             @for (shop of cardInfo?.shopList; track shop.link) {
             @if(shop.inStock && shop.shopInfo.showButton){
-            <a type="button" class="btn btn-sm btn-success col-auto me-1"
-              [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank" rel="noopener noreferrer" gaEvent="purchase"
-              [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name">
+            <a type="button" class="btn btn-sm btn-success col-auto me-1 text-white"
+              [title]="t('buy', { name: shop.shopInfo.fullName })" [href]="shop.link" target="_blank"
+              rel="noopener noreferrer" gaEvent="purchase" [gaCategory]="shop.shopInfo.name" [gaLabel]="card.name">
               <i class="bi bi-cart4"></i>
               <span>&nbsp;{{ shop.shopInfo.fullName }}</span><br />{{ shop.price | currency:shop.currency }}
             </a>

@@ -241,6 +241,8 @@
     "where_find": "Où l'obtenir ?",
     "search": "Rechercher",
     "search_title": "Chercher des decks avec cette carte",
+    "playable_by": "Qui peut la jouer ?",
+    "playable_by_title": "Trouver les cryptes pouvant jouer cette carte",
     "buy": "Acheter cette carte sur {{ name }}",
     "previous_card": "Carte précédente",
     "next_card": "Carte suivante",
