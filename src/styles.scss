@@ -324,6 +324,168 @@ body[data-bs-theme='dark'] {
   background-color: var(--app-surface) !important;
 }
 
+/* =====================================================================
+   Deck pages shared layout (deck detail + deck builder)
+   These primitives are reused across the deck detail and the builder so
+   both pages stay on one visual language. Page-specific bits (rating
+   cards, bookmark toggle, builder "considering" state…) stay in the
+   respective component stylesheets.
+   ===================================================================== */
+
+/* ---- Hero header card ---- */
+.deck-hero {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(var(--bs-primary-rgb), 0.05), transparent 160px),
+    var(--app-surface);
+  border: 1px solid var(--bs-border-color);
+  box-shadow: var(--bs-box-shadow-sm);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--bs-primary), #6aa9ff);
+  }
+}
+
+/* ---- Section headers (Crypt / Library) ---- */
+.deck-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 2px solid var(--bs-border-color);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 72px;
+    height: 2px;
+    background: var(--bs-primary);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    h1 {
+      font-size: clamp(1.6rem, 1.2rem + 1vw, 2.25rem);
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &__actions {
+    align-items: center;
+  }
+
+  @media (max-width: 767.98px) {
+    justify-content: center;
+    text-align: center;
+
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &__title {
+      justify-content: center;
+    }
+  }
+}
+
+/* ---- MIN / MAX / AVG tiles ---- */
+.minmax-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.5rem;
+  background: var(--app-surface-2);
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  height: 100%;
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__label {
+    margin-top: 0.15rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bs-secondary-color);
+  }
+}
+
+/* ---- Discipline / clan stat chips ---- */
+.disc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--app-surface-2);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 50rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ---- Crypt / library count badge ---- */
+span.circle_number {
+  font-size: 24px;
+  font-weight: 700;
+  min-width: 48px;
+  height: 48px;
+  padding: 0 0.65rem;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #2b2f36, #0e0f12);
+  color: white;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 6px rgba(15, 23, 42, 0.25);
+
+  @media (max-width: 768px) {
+    font-size: 19px;
+    min-width: 40px;
+    height: 40px;
+  }
+}
+
+/* ---- Pool / blood cost totals ---- */
+div.costx {
+  font-size: 30px;
+  display: inline-block;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  i {
+    vertical-align: middle;
+  }
+}
+
 /* Camera scanner modal — wider at tablet breakpoints where modal-lg doesn't yet apply */
 .modal-camera-scanner {
   @media (min-width: 576px) {

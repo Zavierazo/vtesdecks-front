@@ -2,7 +2,7 @@
   *transloco="let t; read:'deck_builder'">
   <div class="row">
     <section class="dark-grey-text col-12">
-      <div class="mb-2 bg-light rounded-3">
+      <div class="deck-hero mb-3 rounded-3">
         <form class="container-fluid py-3 text-center" [formGroup]="form">
           <div class="justify-content-center align-self-center text-start p-2">
             <div class="form-floating">
@@ -143,30 +143,30 @@
       </div>
     </section>
   </div>
-  <div class="col-12 d-flex align-items-center mt-3">
-    <div class="flex-grow-1 d-md-none"></div>
-    <div class="d-flex align-items-top justify-content-center">
-      <button type="button" class="btn btn-link p-0 mb-0" (click)="openCryptBuilder()"
-        [attr.aria-label]="'shared.add_to_crypt' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
-          aria-hidden="true"></i></button>
-      <h1 class="ms-2">{{ 'shared.crypt' | transloco }}</h1>
-      <span class="circle_number ms-2" [title]="'deck.total_crypt' | transloco">
-        {{ (cryptSize$ | async)! }}
-      </span>
+  <div class="col-12 mt-4">
+    <div class="deck-section-header">
+      <div class="deck-section-header__title">
+        <button type="button" class="btn btn-link p-0 mb-0" (click)="openCryptBuilder()"
+          [attr.aria-label]="'shared.add_to_crypt' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
+            aria-hidden="true"></i></button>
+        <h1 class="mb-0">{{ 'shared.crypt' | transloco }}</h1>
+        <span class="circle_number" [title]="'deck.total_crypt' | transloco">
+          {{ (cryptSize$ | async)! }}
+        </span>
+      </div>
+      <div class="deck-section-header__actions d-none d-md-flex">
+        <input type="search" class="form-control me-2" style="max-width: 200px" [placeholder]="t('search_in_crypt')"
+          [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
+        <ng-container *ngTemplateOutlet="cryptButtons" />
+      </div>
     </div>
-    <div class="d-none d-md-flex flex-grow-1 align-items-center justify-content-end">
-      <input type="search" class="form-control me-2 w-25" [placeholder]="t('search_in_crypt')" [value]="cryptSearch()"
-        (input)="cryptSearch.set($any($event.target).value)" />
+    <div class="d-md-none mt-3 d-flex justify-content-center">
+      <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_crypt')"
+        [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
+    </div>
+    <div class="d-md-none mt-2 d-flex justify-content-center">
       <ng-container *ngTemplateOutlet="cryptButtons" />
     </div>
-    <div class="d-md-none flex-grow-1"></div>
-  </div>
-  <div class="d-md-none col-12 mt-2 d-flex justify-content-center">
-    <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_crypt')"
-      [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
-  </div>
-  <div class="d-md-none mt-2 d-flex justify-content-center">
-    <ng-container *ngTemplateOutlet="cryptButtons" />
   </div>
   <ng-template #cryptButtons>
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
@@ -206,29 +206,35 @@
     }
   </ul>
   }
-  <div class="col-12 text-center mt-3">
-    <div class="row">
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (minCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-md-0">MIN</p>
+  <div class="col-12 mt-3">
+    <div class="row g-2 justify-content-center">
+      <div class="col-4 col-sm-3 col-md-2">
+        <div class="minmax-tile">
+          <span class="minmax-tile__value">{{ (minCrypt$ | async) ?? 0 }}</span>
+          <span class="minmax-tile__label">MIN</span>
+        </div>
       </div>
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (maxCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-md-0">MAX</p>
+      <div class="col-4 col-sm-3 col-md-2">
+        <div class="minmax-tile">
+          <span class="minmax-tile__value">{{ (maxCrypt$ | async) ?? 0 }}</span>
+          <span class="minmax-tile__label">MAX</span>
+        </div>
       </div>
-      <div class="col-4">
-        <p class="fw-bold mb-1">{{ (avgCrypt$ | async) ?? 0 }}</p>
-        <p class="text-uppercase mb-0">AVG</p>
+      <div class="col-4 col-sm-3 col-md-2">
+        <div class="minmax-tile">
+          <span class="minmax-tile__value">{{ (avgCrypt$ | async) ?? 0 }}</span>
+          <span class="minmax-tile__label">AVG</span>
+        </div>
       </div>
     </div>
   </div>
   <div class="col-12 text-center mt-3">
-    <div class="row justify-content-center">
+    <div class="d-flex flex-wrap justify-content-center gap-2">
       @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat.disciplines) {
-      <h5 class="col-auto d-flex justify-content-center"
+      <h5 class="disc-chip mb-0"
         [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
         <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-        &nbsp;{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}
+        <span>{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}</span>
       </h5>
       }
     </div>
@@ -264,38 +270,38 @@
   <app-builder-suggestions [title]="t('suggested_crypt')" [rawCards]="rawSuggestions?.keyCrypt ?? []"
     [deckCards]="(cryptList$ | async) ?? []" type="crypt" (cardAdded)="addCard($event)"
     (cardRemoved)="removeCard($event)" />
-  <div class="col-12 d-flex align-items-center mt-5">
-    <div class="flex-grow-1 d-md-none"></div>
-    <div class="d-flex align-items-top  justify-content-center">
-      <button type="button" class="btn btn-link p-0 mb-0" (click)="openLibraryBuilder()"
-        [attr.aria-label]="'shared.add_to_library' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
-          aria-hidden="true"></i></button>
-      <h1 class="ms-2">{{ 'shared.library' | transloco }}</h1>
-      <span class="circle_number ms-2" [title]="'deck.total_library' | transloco">
-        {{ (librarySize$ | async)! }}
-      </span>
-      <div>
-        <div class="costx ms-2" [title]="'deck.total_pool_cost' | transloco">
-          {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
-        </div>
-        <div class="costx ms-2" [title]="'deck.total_blood_cost' | transloco">
-          {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+  <div class="col-12 mt-5">
+    <div class="deck-section-header">
+      <div class="deck-section-header__title">
+        <button type="button" class="btn btn-link p-0 mb-0" (click)="openLibraryBuilder()"
+          [attr.aria-label]="'shared.add_to_library' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
+            aria-hidden="true"></i></button>
+        <h1 class="mb-0">{{ 'shared.library' | transloco }}</h1>
+        <span class="circle_number" [title]="'deck.total_library' | transloco">
+          {{ (librarySize$ | async)! }}
+        </span>
+        <div class="d-flex align-items-center gap-2">
+          <div class="costx" [title]="'deck.total_pool_cost' | transloco">
+            {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
+          </div>
+          <div class="costx" [title]="'deck.total_blood_cost' | transloco">
+            {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+          </div>
         </div>
       </div>
+      <div class="deck-section-header__actions d-none d-md-flex">
+        <input type="search" class="form-control me-2" style="max-width: 200px" [placeholder]="t('search_in_library')"
+          [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
+        <ng-container *ngTemplateOutlet="libraryButtons" />
+      </div>
     </div>
-    <div class="d-none d-md-flex flex-grow-1 align-items-center justify-content-end">
-      <input type="search" class="form-control me-2 w-25" [placeholder]="t('search_in_library')"
+    <div class="d-md-none mt-3 d-flex justify-content-center">
+      <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_library')"
         [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
+    </div>
+    <div class="d-md-none mt-2 d-flex justify-content-center">
       <ng-container *ngTemplateOutlet="libraryButtons" />
     </div>
-    <div class="d-md-none flex-grow-1"></div>
-  </div>
-  <div class="d-md-none col-12 mt-2 d-flex justify-content-center">
-    <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_library')"
-      [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
-  </div>
-  <div class="d-md-none mt-2 d-flex justify-content-center">
-    <ng-container *ngTemplateOutlet="libraryButtons" />
   </div>
   <ng-template #libraryButtons>
     <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
@@ -324,10 +330,10 @@
     }
   </ul>
   }
-  <div class="col-12 text-center mt-2">
-    <div class="row justify-content-center">
+  <div class="col-12 text-center mt-3">
+    <div class="d-flex flex-wrap justify-content-center gap-2">
       @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline.disciplines) {
-      <h5 class="col-auto d-flex justify-content-center">
+      <h5 class="disc-chip mb-0">
         @if (libraryDiscipline.disciplines.length === 0) {
         <span [title]="'deck.no_discipline' | transloco">
           <i class="bi bi-square" style="font-size: 26px;"></i>
@@ -339,18 +345,18 @@
         }
         <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
         }
-        <span class="pt-1">&nbsp;{{ libraryDiscipline.inferior }}</span>
+        <span>{{ libraryDiscipline.inferior }}</span>
       </h5>
       }
       @for (libraryClan of (libraryClans$ | async)!; track libraryClan.clans) {
-      <h5 class="col-auto d-flex justify-content-center">
+      <h5 class="disc-chip mb-0">
         @for (clan of libraryClan.clans; track clan; let isFirst = $first) {
         @if (!isFirst) {
         <span>/</span>
         }
         <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
         }
-        <span class="pt-1">&nbsp;{{ libraryClan.number }}</span>
+        <span>{{ libraryClan.number }}</span>
       </h5>
       }
     </div>
