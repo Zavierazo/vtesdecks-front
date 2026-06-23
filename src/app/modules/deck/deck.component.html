@@ -9,7 +9,7 @@
   <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main">
     <div class="row">
       <section class="dark-grey-text col-12">
-        <div class="deck-hero mb-3 rounded-3">
+        <div class="deck-hero mb-3">
           <div class="container-fluid py-4">
             <div class="row align-items-center">
               <div class="col-12 col-md-8 text-center text-md-start">
@@ -128,18 +128,24 @@
                 </div>
               </div>
               <div class="col-12 col-md-4 mt-3 mt-md-0">
-                <div class="row g-3">
-                  <div class="col-6 col-md-12">
-                    <div class="deck-stat-card text-center p-3 rounded-3 shadow-sm">
-                      <i class="bi bi-eye-fill text-primary deck-stat-card__icon"></i>
-                      <h4 class="display-4 text-primary mb-0">
+                <div class="deck-stats-panel">
+                  <div class="deck-stat">
+                    <span class="deck-stat__icon">
+                      <i class="bi bi-eye-fill"></i>
+                    </span>
+                    <div class="deck-stat__body">
+                      <span class="deck-stat__value">
                         <animated-digit [digit]="deck.views" [duration]="2000" />
-                      </h4>
-                      <p class="text-uppercase text-muted mb-0">{{ t('views') }}</p>
+                      </span>
+                      <span class="deck-stat__label">{{ t('views') }}</span>
                     </div>
                   </div>
-                  <div class="col-6 col-md-12">
-                    <div class="deck-stat-card text-center p-3 rounded-3 shadow-sm">
+                  <div class="deck-stats-panel__divider"></div>
+                  <div class="deck-stat">
+                    <span class="deck-stat__icon deck-stat__icon--rating">
+                      <i class="bi bi-heart-fill"></i>
+                    </span>
+                    <div class="deck-stat__body">
                       <div class="rating">
                         <ng-template #starTemplate let-fill="fill">
                           <span class="star" [class.full]="fill === 100">
@@ -151,10 +157,9 @@
                           [readonly]="!(isAuthenticated$ | async)! || (userDisplayName$ | async) === deck.author"
                           [max]="5" (rateChange)="rateDeck($event)" />
                       </div>
-                      <p class="text-muted mb-0">
-                        <i class="bi bi-people-fill"></i>
-                        {{ t('votes', { count: deck.votes }) }}
-                      </p>
+                      <span class="deck-stat__label">
+                        <i class="bi bi-people-fill me-1"></i>{{ t('votes', { count: deck.votes }) }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -263,7 +268,6 @@
         </div>
         @if (deck.description) {
         <app-markdown-text class="mt-3" [data]="deck.description" />
-        <hr class="mb-4 mt-3" />
         }
         @if (deck.erratas && deck.erratas.length > 0) {
         <div class="alert alert-warning my-3" role="alert">

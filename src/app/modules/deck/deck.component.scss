@@ -61,27 +61,85 @@
   }
 }
 
-.deck-stat-card {
+.deck-stats-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--bs-border-radius-lg);
   background: var(--app-surface);
   border: 1px solid var(--bs-border-color);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  height: 100%;
+  box-shadow: var(--bs-box-shadow-sm);
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  &__divider {
+    height: 1px;
+    background: var(--bs-border-color);
   }
+}
 
-  h4 {
-    font-size: 2.5rem;
-    font-weight: 600;
-  }
+.deck-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 0;
+  text-align: left;
 
   &__icon {
-    font-size: 1.5rem;
-    opacity: 0.85;
+    flex-shrink: 0;
+    width: 2.9rem;
+    height: 2.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.35rem;
+    color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.12);
+
+    &--rating {
+      color: var(--bs-danger);
+      background: rgba(var(--bs-danger-rgb), 0.12);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    min-width: 0;
+  }
+
+  &__value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--bs-primary);
+  }
+
+  &__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--bs-secondary-color);
+  }
+
+  .rating {
+    line-height: 1;
+    outline: none;
+  }
+
+  .star {
+    font-size: 1.9rem;
+    transition: transform 0.12s ease;
+  }
+
+  // Interactive affordance: ngb-rating sets aria-readonly="true" when it can't
+  // be edited, so this hover cue shows up exclusively when the deck is rateable.
+  ngb-rating:not([aria-readonly='true']) {
+    cursor: pointer;
+
+    .star:hover {
+      transform: scale(1.15);
+    }
   }
 }
 
@@ -173,16 +231,6 @@
 
 // Responsive adjustments
 @media (max-width: 768px) {
-  .deck-stat-card {
-    h4 {
-      font-size: 2rem;
-    }
-
-    i {
-      font-size: 1.2rem;
-    }
-  }
-
   .deck-actions {
     .btn {
       width: 100%;

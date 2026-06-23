@@ -332,23 +332,17 @@ body[data-bs-theme='dark'] {
    respective component stylesheets.
    ===================================================================== */
 
-/* ---- Hero header card ---- */
+/* ---- Hero header card ----
+   Sits flush against the header: no top accent, square top corners and no
+   top border so it reads as a natural extension of the navbar. */
 .deck-hero {
   position: relative;
-  background:
-    linear-gradient(180deg, rgba(var(--bs-primary-rgb), 0.05), transparent 160px),
-    var(--app-surface);
+  background: var(--app-surface);
   border: 1px solid var(--bs-border-color);
-  box-shadow: var(--bs-box-shadow-sm);
+  border-top: 0;
+  border-radius: 0 0 var(--bs-border-radius-lg) var(--bs-border-radius-lg);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--bs-primary), #6aa9ff);
-  }
 }
 
 /* ---- Section headers (Crypt / Library) ---- */
