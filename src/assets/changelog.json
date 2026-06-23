@@ -4,6 +4,7 @@
     "date": "20th June, 2026",
     "changes": [
       "Draw Cards is now interactive: click a card to play it, drawing the next library card or moving crypt vampires to the Controlled region.",
+      "Proxy printing can now print cards in your language: when a localized image is available, your language is preselected by default, and you can still choose a specific set instead.",
       "Minor bug fixes and performance improvements."
     ]
   },
