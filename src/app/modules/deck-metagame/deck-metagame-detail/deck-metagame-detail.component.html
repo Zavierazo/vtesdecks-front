@@ -2,8 +2,11 @@
   @if(archetype$ | async; as archetype) {
   @let coreCrypt = getCoreCrypt(archetype);
   @let suggestedCrypt = getSuggestedCrypt(archetype);
-  @let coreLibrary = getCoreLibrary(archetype);
-  @let suggestedLibrary = getSuggestedLibrary(archetype);
+  @let libraryGroups = getLibraryGroups(archetype);
+  @let cryptClans = getCryptClans(archetype);
+  @let cryptDisciplines = getCryptDisciplines(archetype);
+  @let cryptCapacity = getCryptCapacity(archetype);
+  @let metaPercentage = getMetaPercentage(archetype);
 
   <main class="container-fluid col-12 col-xl-11" role="main">
 
@@ -16,24 +19,37 @@
         </div>
         }
         <div class="flex-grow-1">
-          <h1 class="fw-bold mb-1">{{ archetype.name }}</h1>
-          <span class="badge text-bg-secondary mb-2">{{ archetype.type }}</span>
-          <div class="d-flex flex-wrap align-items-center gap-2 mb-3" placement="top"
-            [ngbTooltip]="t('meta', { percentage: (getMetaPercentage(archetype) | number:'1.0-2'), count: archetype.metaCount })">
-            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
-              <i class="bi bi-bar-chart-fill me-1"></i>
-              <span class="fw-semibold">{{ getMetaPercentage(archetype) | number:'1.0-2' }}%</span>
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+            <h1 class="fw-bold mb-0">{{ archetype.name }}</h1>
+            @if(archetype.trend === 'TRENDING') {
+            <span class="trend-badge trend-badge--trending" [ngbTooltip]="t('trend.TRENDING_tooltip')">
+              <i class="bi bi-graph-up-arrow"></i>{{ t('trend.TRENDING') }}
             </span>
-            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
-              <i class="bi bi-collection-fill me-1"></i>
-              <span>{{ archetype.metaCount }}</span>
-            </span>
-            @if(archetype.price) {
-            <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
-              <i class="bi bi-tag-fill me-1"></i>
-              {{ archetype.price | currency: archetype.currency }}
+            } @else if(archetype.trend === 'DECLINING') {
+            <span class="trend-badge trend-badge--declining" [ngbTooltip]="t('trend.DECLINING_tooltip')">
+              <i class="bi bi-graph-down-arrow"></i>{{ t('trend.DECLINING') }}
             </span>
             }
+          </div>
+          <span class="badge text-bg-secondary mb-2">{{ archetype.type }}</span>
+          <div class="mb-2">
+            <div class="d-inline-flex flex-wrap align-items-center gap-2" placement="top" container="body"
+              [ngbTooltip]="t('meta', { percentage: (metaPercentage | number:'1.0-2'), count: archetype.metaCount })">
+              <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
+                <i class="bi bi-bar-chart-fill me-1"></i>
+                <span class="fw-semibold">{{ metaPercentage | number:'1.0-2' }}%</span>
+              </span>
+              <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
+                <i class="bi bi-collection-fill me-1"></i>
+                <span>{{ archetype.metaCount }}</span>
+              </span>
+              @if(archetype.price) {
+              <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
+                <i class="bi bi-tag-fill me-1"></i>
+                {{ archetype.price | currency: archetype.currency }}
+              </span>
+              }
+            </div>
           </div>
           @if(archetype.description) {
           <app-markdown-text [data]="archetype.description" />
@@ -61,11 +77,59 @@
 
     <!-- ── CRYPT ── -->
     @if(coreCrypt.length > 0 || suggestedCrypt.length > 0) {
-    <div class="section-card bg-body rounded-3 mb-2 overflow-hidden px-4">
-      <div class="d-flex align-items-center p-3 p-sm-4 pb-0">
-        <h2 class="mb-0">{{ 'shared.crypt' | transloco }}</h2>
+    <div class="section-card bg-body rounded-3 mb-2 overflow-hidden p-3 p-sm-4">
+      <div class="deck-section-header">
+        <div class="deck-section-header__title">
+          <h1 class="mb-0">{{ 'shared.crypt' | transloco }}</h1>
+          <span class="circle_number" [title]="t('overview_crypt_count')">{{ getCryptTotalCount(archetype) }}</span>
+        </div>
       </div>
-      <ul class="list-group list-group-flush">
+
+      <!-- Capacity min / max / avg -->
+      @if(cryptCapacity) {
+      <div class="row g-2 justify-content-center mt-3">
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ cryptCapacity.min }}</span>
+            <span class="minmax-tile__label">MIN</span>
+          </div>
+        </div>
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ cryptCapacity.max }}</span>
+            <span class="minmax-tile__label">MAX</span>
+          </div>
+        </div>
+        <div class="col-4 col-sm-3 col-md-2">
+          <div class="minmax-tile">
+            <span class="minmax-tile__value">{{ cryptCapacity.avg | number:'1.0-1' }}</span>
+            <span class="minmax-tile__label">AVG</span>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Disciplines + clans -->
+      @if(cryptDisciplines.length > 0 || cryptClans.length > 0) {
+      <div class="text-center mt-3">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          @for(disciplineStat of cryptDisciplines; track disciplineStat.disciplines[0]) {
+          <h5 class="disc-chip mb-0" [title]="disciplineStat.disciplines[0] | disciplineTransloco">
+            <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0], true)!"></i>
+            <span>{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}</span>
+          </h5>
+          }
+          @for(clanStat of cryptClans; track clanStat.clans[0]) {
+          <h5 class="disc-chip mb-0" [title]="clanStat.clans[0] | clanTransloco">
+            <i class="vtes vtes-big" [ngClass]="getClanIcon(clanStat.clans[0])!"></i>
+            <span>{{ clanStat.number }}</span>
+          </h5>
+          }
+        </div>
+      </div>
+      }
+
+      <ul class="list-group list-group-flush mt-3">
         @for(kc of coreCrypt; track kc.id) {
         <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
           (click)="openCryptCard(kc.id, archetype)">
@@ -113,13 +177,62 @@
     }
 
     <!-- ── LIBRARY ── -->
-    @if(coreLibrary.length > 0 || suggestedLibrary.length > 0) {
-    <div class="section-card bg-body rounded-3 mb-4 overflow-hidden px-4">
-      <div class="d-flex align-items-center p-3 p-sm-4 pb-0">
-        <h2 class="mb-0">{{ 'shared.library' | transloco }}</h2>
+    @if(libraryGroups.length > 0) {
+    @let libraryDisciplines = getLibraryDisciplines(archetype);
+    @let libraryClans = getLibraryClans(archetype);
+    <div class="section-card bg-body rounded-3 mb-4 overflow-hidden p-3 p-sm-4">
+      <div class="deck-section-header">
+        <div class="deck-section-header__title">
+          <h1 class="mb-0">{{ 'shared.library' | transloco }}</h1>
+          <span class="circle_number" [title]="t('overview_library_count')">{{ getLibraryTotalCount(archetype) }}</span>
+        </div>
+      </div>
+
+      <!-- Disciplines + clans -->
+      @if(libraryDisciplines.length > 0 || libraryClans.length > 0) {
+      <div class="text-center mt-3">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          @for(disciplineStat of libraryDisciplines; track $index) {
+          <h5 class="disc-chip mb-0">
+            @if(disciplineStat.disciplines.length === 0) {
+            <span [title]="t('overview_no_discipline')"><i class="bi bi-square" style="font-size: 24px;"></i></span>
+            }
+            @for(discipline of disciplineStat.disciplines; track discipline; let isFirst = $first) {
+            @if(!isFirst) { <span>+</span> }
+            <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(discipline, false)!"
+              [title]="discipline | disciplineTransloco"></i>
+            }
+            <span>{{ disciplineStat.inferior }}</span>
+          </h5>
+          }
+          @for(clanStat of libraryClans; track $index) {
+          <h5 class="disc-chip mb-0">
+            @for(clan of clanStat.clans; track clan; let isFirst = $first) {
+            @if(!isFirst) { <span>/</span> }
+            <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
+            }
+            <span>{{ clanStat.number }}</span>
+          </h5>
+          }
+        </div>
+      </div>
+      }
+
+      @for(group of libraryGroups; track group.type) {
+      @let suggestionsCollapsed = isLibrarySuggestionsCollapsed(group.type);
+      <div class="library-type-header d-flex align-items-center gap-2">
+        <span class="type-icons d-inline-flex align-items-center gap-1">
+          @for(icon of group.icons; track icon) {
+          <i class="vtes" [ngClass]="icon"></i>
+          }
+        </span>
+        <span class="fw-semibold">{{ group.type | libraryTypeTransloco }}</span>
+        <span class="type-count badge rounded-pill ms-auto" [ngbTooltip]="t('detail_type_average')" container="body">
+          {{ group.average | number:'1.0-1' }}
+        </span>
       </div>
       <ul class="list-group list-group-flush">
-        @for(kl of coreLibrary; track kl.id) {
+        @for(kl of group.coreCards; track kl.id) {
         <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
           (click)="openLibraryCard(kl.id, archetype)">
           <div class="flex-grow-1 min-w-0">
@@ -129,20 +242,34 @@
         </li>
         }
       </ul>
-      @if(suggestedLibrary.length > 0) {
-      @if(librarySuggestionsCollapsed) {
-      <div class="suggestions-toggle" (click)="librarySuggestionsCollapsed = false">
+      @if(group.suggestedCards.length > 0) {
+      @if(group.coreCards.length === 0) {
+      <!-- No higher-% cards for this type: show the rest directly, no collapse -->
+      <ul class="list-group list-group-flush">
+        @for(kl of group.suggestedCards; track kl.id) {
+        <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
+          (click)="openLibraryCard(kl.id, archetype)">
+          <div class="flex-grow-1 min-w-0">
+            <app-library [card]="{ id: kl.id, number: kl.number }" [disableClickPopover]="true" />
+          </div>
+          <app-archetype-card-stats [stats]="kl" [isSuggestion]="true" />
+        </li>
+        }
+      </ul>
+      } @else {
+      @if(suggestionsCollapsed) {
+      <div class="suggestions-toggle" (click)="toggleLibrarySuggestions(group.type)">
         <button
           class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
           <span class="small">{{ t('detail_suggestions') }}</span>
-          <span class="badge text-bg-secondary rounded-pill">{{ suggestedLibrary.length }}</span>
+          <span class="badge text-bg-secondary rounded-pill">{{ group.suggestedCards.length }}</span>
           <i class="bi bi-chevron-down"></i>
         </button>
       </div>
       }
-      <div [ngbCollapse]="librarySuggestionsCollapsed">
+      <div [ngbCollapse]="suggestionsCollapsed">
         <ul class="list-group list-group-flush">
-          @for(kl of suggestedLibrary; track kl.id) {
+          @for(kl of group.suggestedCards; track kl.id) {
           <li class="archetype-card-row d-flex flex-column flex-sm-row align-items-sm-center"
             (click)="openLibraryCard(kl.id, archetype)">
             <div class="flex-grow-1 min-w-0">
@@ -152,15 +279,17 @@
           </li>
           }
         </ul>
-        <div class="suggestions-toggle" (click)="librarySuggestionsCollapsed = true">
+        <div class="suggestions-toggle" (click)="toggleLibrarySuggestions(group.type)">
           <button
             class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
             <span class="small">{{ t('detail_suggestions') }}</span>
-            <span class="badge text-bg-secondary rounded-pill">{{ suggestedLibrary.length }}</span>
+            <span class="badge text-bg-secondary rounded-pill">{{ group.suggestedCards.length }}</span>
             <i class="bi bi-chevron-up"></i>
           </button>
         </div>
       </div>
+      }
+      }
       }
     </div>
     }

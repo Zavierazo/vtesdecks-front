@@ -1034,6 +1034,10 @@
     "detail_avg_tip": "Nombre moyen de copies dans les decks incluant cette carte",
     "detail_range": "Étendue",
     "detail_range_tip": "Copies min et max observées dans tous les decks similaires",
+    "overview_crypt_count": "Total des cartes de crypte",
+    "overview_library_count": "Total des cartes de bibliothèque",
+    "overview_no_discipline": "Aucune discipline",
+    "detail_type_average": "Copies moyennes de ce type de carte par deck",
     "meta_type": {
       "90_days": "90 jours",
       "180_days": "180 jours",

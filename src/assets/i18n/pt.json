@@ -1034,6 +1034,10 @@
     "detail_avg_tip": "Número médio de cópias nos baralhos que incluem esta carta",
     "detail_range": "Intervalo",
     "detail_range_tip": "Cópias mínimas e máximas vistas em todos os baralhos semelhantes",
+    "overview_crypt_count": "Total de cartas de cripta",
+    "overview_library_count": "Total de cartas de biblioteca",
+    "overview_no_discipline": "Sem disciplina",
+    "detail_type_average": "Cópias médias deste tipo de carta por baralho",
     "meta_type": {
       "90_days": "últimos 90 dias",
       "180_days": "últimos 180 dias",

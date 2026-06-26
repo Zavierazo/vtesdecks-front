@@ -44,6 +44,49 @@
   cursor: pointer;
 }
 
+// ── Trend badge ──────────────────────────────────────────────
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  white-space: nowrap;
+  color: #fff;
+
+  &--trending {
+    background: var(--bs-success);
+  }
+
+  &--declining {
+    background: var(--bs-danger);
+  }
+}
+
+// ── Library type group header ────────────────────────────────
+.library-type-header {
+  padding: 0.6rem 0;
+  margin-top: 0.5rem;
+  border-bottom: 2px solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+  font-size: 0.9rem;
+
+  .type-icons .vtes {
+    flex-grow: 0;
+    font-size: 1.2rem;
+  }
+
+  .type-count {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-body-color);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
 .archetype-card-row {
   cursor: pointer;
 

@@ -1034,6 +1034,10 @@
     "detail_avg_tip": "Average number of copies across decks that include this card",
     "detail_range": "Range",
     "detail_range_tip": "Min and max copies seen across all similar decks",
+    "overview_crypt_count": "Total crypt cards",
+    "overview_library_count": "Total library cards",
+    "overview_no_discipline": "No discipline",
+    "detail_type_average": "Average copies of this card type per deck",
     "meta_type": {
       "90_days": "90 days ago",
       "180_days": "180 days ago",
