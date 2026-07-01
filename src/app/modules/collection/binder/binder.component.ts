@@ -33,6 +33,7 @@ import { environment } from '../../../../environments/environment'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
+import { CollectionHistoryComponent } from '../collection-history/collection-history.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
 import { CollectionPublicService } from '../state/collection-public.service'
 import { CollectionQuery } from '../state/collection.query'
@@ -209,5 +210,13 @@ export class BinderComponent implements OnInit {
       .exportCollectionAsCsv(binder.id)
       .pipe(untilDestroyed(this))
       .subscribe()
+  }
+
+  onViewHistory(binder: ApiCollectionBinder) {
+    const modalRef = this.modalService.open(CollectionHistoryComponent, {
+      size: 'xl',
+      centered: true,
+    })
+    modalRef.componentInstance.binderId = binder.id
   }
 }

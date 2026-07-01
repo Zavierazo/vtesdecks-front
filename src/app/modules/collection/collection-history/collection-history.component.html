@@ -1,0 +1,118 @@
+<ng-container *transloco="let t; prefix: 'collection'">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="bi bi-clock-history"></i> {{ t('history') }}
+    </h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (loading) {
+    <ngb-progressbar type="primary" [value]="100" [striped]="true" [animated]="true" height=".3rem" />
+    }
+
+    @if (!loading && error) {
+    <div class="text-center text-danger my-4">
+      {{ 'shared.unexpected_error' | transloco }}
+    </div>
+    }
+
+    @if (!loading && !error && groups.length === 0) {
+    <div class="text-center text-muted my-4">
+      {{ t('history_empty') }}
+    </div>
+    }
+
+    @if (groups.length > 0) {
+    <div class="table-responsive">
+      <table class="table table-hover cards-list-table align-middle">
+        <thead>
+          <tr>
+            <th scope="col">{{ t('column_action') }}</th>
+            <th scope="col">{{ t('column_number') }}</th>
+            <th scope="col">{{ t('column_name') }}</th>
+            <th scope="col" class="text-center">{{ t('column_binder') }}</th>
+            <th scope="col">{{ t('column_set') }}</th>
+            <th scope="col">{{ t('column_condition') }}</th>
+            <th scope="col">{{ t('column_language') }}</th>
+            <th scope="col"><i class="bi bi-calendar"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (group of groups; track group.day) {
+          <tr class="table-group-divider">
+            <td colspan="100%" class="history-day-header">
+              {{ group.entries[0].date | date: 'longDate' }}
+            </td>
+          </tr>
+          @for (entry of group.entries; track $index) {
+          <tr>
+            <td>
+              @if (entry.action | historyAction; as action) {
+              <span class="badge {{ action.badgeClass }}">
+                <i class="bi {{ action.icon }}"></i>
+                <span class="d-none d-lg-inline ms-1">{{ action.label }}</span>
+              </span>
+              }
+            </td>
+            <td>{{ entry.number }}</td>
+            <td>
+              <app-collection-card [cardId]="entry.cardId" [cardName]="entry.cardName" [setAbbrev]="entry.set" />
+            </td>
+            <td class="text-center">
+              @if (entry.binderId) {
+              <app-collection-binder [binderId]="entry.binderId" />
+              }
+            </td>
+            <td>
+              <app-collection-set [set]="entry.set" />
+            </td>
+            <td>
+              @if (entry.condition && (entry.condition | condition); as condition) {
+              <span class="badge" [class]="condition.badgeClass">
+                <span class="d-lg-none">{{ entry.condition }}</span>
+                <span class="d-none d-lg-inline">{{ condition.label }}</span>
+              </span>
+              }
+            </td>
+            <td>{{ entry.language }}</td>
+            <td class="text-nowrap">
+              <span [ngbTooltip]="dateContent" triggers="mouseenter:mouseleave" container="body">
+                {{ entry.date | date: 'HH:mm' }}
+              </span>
+              <ng-template #dateContent>
+                {{ entry.date | date: 'MMM d, y, HH:mm:ss' }}
+              </ng-template>
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+
+    @if (totalElements > size) {
+    <div class="row g-2 align-items-center my-3">
+      <div class="col-12 col-md d-flex justify-content-center justify-content-md-start">
+        <ngb-pagination [collectionSize]="totalElements" [page]="page + 1" [pageSize]="size" [maxSize]="3"
+          [rotate]="true" [boundaryLinks]="true" [disabled]="loading" (pageChange)="onPageChange($event)" />
+      </div>
+      <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
+        <select class="form-select" style="width: auto" name="pageSize" [ngModel]="size"
+          (ngModelChange)="onPageSizeChange($event)">
+          <option [ngValue]="20">{{ t('items_per_page', { count: 20 }) }}</option>
+          <option [ngValue]="50">{{ t('items_per_page', { count: 50 }) }}</option>
+          <option [ngValue]="100">{{ t('items_per_page', { count: 100 }) }}</option>
+          <option [ngValue]="200">{{ t('items_per_page', { count: 200 }) }}</option>
+        </select>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">
+      {{ 'shared.close' | transloco }}
+    </button>
+  </div>
+</ng-container>

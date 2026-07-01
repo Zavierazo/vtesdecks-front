@@ -52,6 +52,10 @@
           <button ngbDropdownItem (click)="onExport(binder)">
             {{ t('export')}}
           </button>
+          <button ngbDropdownItem (click)="onViewHistory(binder)">
+            <i class="bi bi-clock-history"></i>
+            {{ t('history') }}
+          </button>
           <button ngbDropdownItem class="text-danger" (click)="onDelete(binder, false)">
             <i class="bi bi-trash"></i>
             {{ t('delete_binder') }}
