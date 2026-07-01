@@ -73,6 +73,7 @@ import {
   CollectionFilters,
   CollectionFiltersModalComponent,
 } from '../collection-filters-modal/collection-filters-modal.component'
+import { CollectionHistoryComponent } from '../collection-history/collection-history.component'
 import {
   CollectionSortableHeader,
   SortEvent,
@@ -372,6 +373,14 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
       centered: true,
     })
     modalRef.componentInstance.initAdd(card)
+  }
+
+  onViewHistory(card: ApiCollectionCard) {
+    const modalRef = this.modalService.open(CollectionHistoryComponent, {
+      size: 'xl',
+      centered: true,
+    })
+    modalRef.componentInstance.cardId = card.cardId
   }
 
   onTabClick(tab: string) {

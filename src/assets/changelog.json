@@ -3,6 +3,7 @@
     "version": "2.73.0",
     "date": "xxth July, 2026",
     "changes": [
+      "Added a Collection History view that shows a chronological, day-by-day audit trail of every change to your collection. Open it for the whole collection, a single binder, or an individual card.",
       "Minor bug fixes and performance improvements."
     ]
   },

@@ -53,6 +53,10 @@ export class CollectionQuery {
     return this.store.getValue().query
   }
 
+  getBinders(): ApiCollectionBinder[] {
+    return this.store.getValue().binders ?? []
+  }
+
   getAll(): ApiCollectionCard[] {
     return this.store.getEntities()
   }

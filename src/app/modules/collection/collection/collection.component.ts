@@ -18,6 +18,7 @@ import { AddDeckToCollectionModalComponent } from '../add-deck-to-collection-mod
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'
+import { CollectionHistoryComponent } from '../collection-history/collection-history.component'
 import { CollectionImportModalComponent } from '../collection-import-modal/collection-import-modal.component'
 import { PreconstructedDeckModalComponent } from '../preconstructed-deck-modal/preconstructed-deck-modal.component'
 import { CollectionPrivateService } from '../state/collection-private.service'
@@ -74,6 +75,13 @@ export class CollectionComponent implements OnInit {
 
   onAddCard() {
     this.modalService.open(CardModalComponent, {
+      size: 'xl',
+      centered: true,
+    })
+  }
+
+  onViewHistory() {
+    this.modalService.open(CollectionHistoryComponent, {
       size: 'xl',
       centered: true,
     })
