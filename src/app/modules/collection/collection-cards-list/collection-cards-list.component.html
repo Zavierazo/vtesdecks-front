@@ -315,7 +315,13 @@
               {{ card.notes }}
             </ng-template>
             }@else {
-            {{ card.notes }}
+            <span class="d-inline-block text-truncate align-middle notes-cell" [ngbTooltip]="noteContentFull"
+              triggers="mouseenter:mouseleave" container="body">
+              {{ card.notes }}
+            </span>
+            <ng-template #noteContentFull>
+              {{ card.notes }}
+            </ng-template>
             }
             }
           </td>
