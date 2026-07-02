@@ -26,6 +26,7 @@ import { finalize, tap } from 'rxjs'
 import { CollectionCardStatsComponent } from '../collection-card-stats/collection-card-stats.component'
 import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.component'
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
+import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card-stats.component'
 
 @UntilDestroy()
 @Component({
@@ -44,6 +45,7 @@ import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
     CurrencyPipe,
     DatePipe,
     CollectionCardStatsComponent,
+    WishlistCardStatsComponent,
     LazyLoadImageModule,
     LocalePipe,
     TitleCasePipe,

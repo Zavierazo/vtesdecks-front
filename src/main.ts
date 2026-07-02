@@ -174,6 +174,21 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'wishlist',
+    loadChildren: () =>
+      import('./app/modules/wishlist/wishlist.routes').then(
+        (m) => m.WISHLIST_ROUTES,
+      ),
+  },
+  {
+    path: 'collections/users/:username/wishlist',
+    loadComponent: () =>
+      import(
+        './app/modules/wishlist/wishlist-public/wishlist-public.component'
+      ).then((m) => m.WishlistPublicComponent),
+    title: 'VTES Decks - Wishlist',
+  },
+  {
     path: 'proxy-generator',
     loadChildren: () =>
       import('./app/modules/proxy-generator/proxy-generator.routes').then(

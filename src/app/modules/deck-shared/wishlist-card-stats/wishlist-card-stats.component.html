@@ -1,0 +1,118 @@
+<ng-container *transloco="let t; prefix: 'wishlist'">
+  @if (visible()) {
+    <div class="card border-0 shadow-sm mt-3">
+      <div
+        class="card-header bg-secondary text-white py-2"
+        role="button"
+        (click)="onToggle()"
+        (keyup.enter)="onToggle()"
+        (keyup.space)="onToggle()"
+        tabindex="0"
+      >
+        <h6
+          class="mb-0 fw-bold d-flex align-items-center justify-content-between"
+        >
+          <span>
+            <i class="bi bi-heart-fill me-2"></i>{{ t('my_wishlist') }}
+            @if (total() > 0) {
+              <span class="badge bg-dark ms-2">{{ total() }}</span>
+            }
+          </span>
+          <span>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm add-wishlist-btn me-2"
+              [title]="t('add_to_wishlist')"
+              [ngbTooltip]="t('add_to_wishlist')"
+              container="body"
+              (click)="onAddToWishlist($event)"
+            >
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            <i
+              class="bi"
+              [class.bi-chevron-down]="!wishlistCollapsed()"
+              [class.bi-chevron-right]="wishlistCollapsed()"
+            ></i>
+          </span>
+        </h6>
+      </div>
+      <div
+        class="card-body p-2"
+        [ngbCollapse]="wishlistCollapsed()"
+        #wishlistCollapse="ngbCollapse"
+      >
+        @if (loading()) {
+          <div class="text-center py-2">
+            <div
+              class="spinner-border spinner-border-sm text-primary"
+              role="status"
+            >
+              <span class="visually-hidden">{{ t('loading') }}</span>
+            </div>
+          </div>
+        } @else {
+          @for (card of cards() ?? []; track card.id; let last = $last) {
+            <div
+              class="d-flex align-items-center justify-content-between py-1 border-dark"
+              [class.border-bottom]="!last"
+            >
+              <div class="flex-grow-1">
+                <span class="badge bg-primary me-2">{{ card.number }}x</span>
+                <span class="fw-medium">{{ card.cardName }}</span>
+              </div>
+              <div class="d-flex gap-1">
+                @if (card.priority) {
+                  @if (card.priority | wishlistPriority; as cardPriority) {
+                    <span class="badge" [class]="cardPriority.badgeClass">
+                      {{ cardPriority.label }}
+                    </span>
+                  }
+                }
+                @if (card.set) {
+                  <span
+                    class="badge bg-secondary"
+                    #tooltip="ngbTooltip"
+                    [ngbTooltip]="setContent"
+                    tabindex="0"
+                    triggers="mouseenter:mouseleave"
+                    container="body"
+                    (click)="tooltip.open()"
+                    (keyup)="tooltip.open()"
+                  >
+                    {{ card.set }}
+                    <ng-template #setContent>
+                      <app-set-tooltip
+                        [cardId]="card.cardId"
+                        [set]="card.set!"
+                      />
+                    </ng-template>
+                  </span>
+                }
+                @if (card.language) {
+                  <span class="badge bg-info">{{ card.language }}</span>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center text-muted py-1">
+              {{ t('no_cards_found') }}
+            </div>
+          }
+          @if ((cards() ?? []).length > 0) {
+            <div class="text-center mt-1">
+              <a
+                class="btn btn-outline-success btn-sm"
+                [routerLink]="'/wishlist'"
+                [queryParams]="{ cardName: cards()![0].cardName }"
+                (click)="routerClick.emit(true)"
+              >
+                <i class="bi bi-eye me-1"></i>{{ t('view_wishlist') }}
+              </a>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</ng-container>

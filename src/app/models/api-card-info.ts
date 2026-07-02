@@ -11,6 +11,9 @@ export interface ApiCardInfo {
   rulingList?: ApiRuling[]
   errataList?: ApiCardErrata[]
   collectionStats?: ApiCollectionCardStats
+  // Cards on the logged-in user's wishlist for this card. Absent for anonymous
+  // users; 0 = logged in but not wishlisted.
+  wishlistNumber?: number
   minPrice?: number
   maxPrice?: number
   currency?: string

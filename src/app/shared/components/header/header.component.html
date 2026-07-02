@@ -87,6 +87,11 @@
             {{ t('collection') }}
           </a>
         </li>
+        <li class="nav-item" *isLogged="true">
+          <a class="nav-link" routerLink="/wishlist" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+            {{ t('wishlist') }}
+          </a>
+        </li>
         <li ngbDropdown class="nav-item" display="dynamic">
           <span class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownTools" role="button"
             aria-expanded="false">
@@ -178,6 +183,9 @@
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownUser">
             <a ngbDropdownItem routerLink="/collection" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               <i class="bi bi-collection-fill"></i> {{ t('my_collection') }}
+            </a>
+            <a ngbDropdownItem routerLink="/wishlist" [routerLinkActive]="['active']" (click)="isCollapsed = true">
+              <i class="bi bi-heart-fill"></i> {{ t('my_wishlist') }}
             </a>
             <a ngbDropdownItem routerLink="/decks" [queryParams]="{ type: 'USER'}" [routerLinkActive]="['active']"
               (click)="isCollapsed = true">
