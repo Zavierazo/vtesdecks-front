@@ -3,7 +3,11 @@
     "version": "2.73.0",
     "date": "xxth July, 2026",
     "changes": [
+      "Introduced the <strong>Wishlist</strong>: track the cards you want with quantity, priority (High/Medium/Low), set, condition, language and notes. Filter, sort and paginate it just like your collection.",
+      "Your wishlist is public by default and shareable with a link; toggle it private anytime from the wishlist page. Public wishlists also appear on user profiles next to their collections.",
+      "Card details now include a My Wishlist panel showing how many copies you have wishlisted, with a quick add button right next to your collection info.",
       "Added a Collection History view that shows a chronological, day-by-day audit trail of every change to your collection. Open it for the whole collection, a single binder, or an individual card.",
+      "Fixed long card notes no longer stretch the Collection and Wishlist tables: they are truncated and the full note is shown on hover.",
       "Minor bug fixes and performance improvements."
     ]
   },
