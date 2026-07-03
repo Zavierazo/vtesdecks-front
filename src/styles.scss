@@ -152,12 +152,17 @@ body {
    the main navbar to scroll away so their own sticky header takes over.
    CSS-only route targeting: the routed component is a direct child of the
    shell's .container-xxl, which excludes embedded usages elsewhere.
+
+   `position: relative` (not `static`) so the navbar still scrolls away in
+   normal flow, but keeps its `z-index: 1030` stacking context. Otherwise a
+   static navbar drops out of the z-order and its open dropdown menus render
+   behind the page's own `sticky-top` filter header (z-index: 100).
    ===================================================================== */
 body:has(.container-xxl > app-decks) app-header nav.navbar,
 body:has(.container-xxl > app-crypt-section) app-header nav.navbar,
 body:has(.container-xxl > app-library-section) app-header nav.navbar,
 body:has(.container-xxl > app-builder) app-header nav.navbar {
-  position: static;
+  position: relative;
 }
 
 /* Tighter, more confident headings */
