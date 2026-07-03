@@ -81,6 +81,14 @@ export class CollectionApiDataService {
     )
   }
 
+  // Unlike deleteCard/bulkEditCards, the path segment here is CARD ids
+  // (crypt/library ids), not collection row ids.
+  getCardsByCardIds(cardIds: number[]): Observable<ApiCollectionCard[]> {
+    return this.httpClient.get<ApiCollectionCard[]>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${cardIds.join(',')}`,
+    )
+  }
+
   getCardHistory(
     cardId?: number,
     binderId?: number,

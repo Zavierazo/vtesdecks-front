@@ -1,0 +1,134 @@
+<ng-container *transloco="let t; prefix: 'shopping_optimizer'">
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center">
+      {{ t('title') }}
+      @if (title) {
+      <small class="text-muted ms-2">{{ title }}</small>
+      }
+    </h4>
+    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    @if (showExcludeOwned) {
+    <div class="form-check form-switch mb-3">
+      <input class="form-check-input" type="checkbox" role="switch" id="excludeOwned" [ngModel]="excludeOwned()"
+        (ngModelChange)="onToggleExcludeOwned($event)" [disabled]="loading()">
+      <label class="form-check-label" for="excludeOwned">{{ t('exclude_owned') }}</label>
+    </div>
+    }
+    @if (loading()) {
+    <div class="d-flex justify-content-center py-5">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">{{ 'shared.loading' | transloco }}</span>
+      </div>
+    </div>
+    } @else if (error()) {
+    <div class="alert alert-danger d-flex justify-content-between align-items-center mb-0">
+      <span>{{ t('error') }}</span>
+      <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRetry()">
+        {{ t('retry') }}
+      </button>
+    </div>
+    } @else if (allOwned()) {
+    <div class="alert alert-success mb-0">
+      <i class="bi bi-check-circle me-2"></i>{{ t('all_owned') }}
+    </div>
+    } @else if (result(); as res) {
+    @if (res.preconDecks.length > 0) {
+    <h5>{{ t('precon_section') }}</h5>
+    @for (precon of res.preconDecks; track precon.deckId) {
+    <div class="card mb-2">
+      <div class="card-header py-2" role="button" (click)="togglePrecon(precon.deckId)"
+        (keyup.enter)="togglePrecon(precon.deckId)" (keyup.space)="togglePrecon(precon.deckId)" tabindex="0">
+        <div class="d-flex align-items-center justify-content-between">
+          <span>
+            <a [routerLink]="'/deck/' + precon.deckId" (click)="$event.stopPropagation(); modal.dismiss()">
+              {{ precon.name }}
+            </a>
+            @if (precon.set) {
+            <small class="text-muted ms-2">{{ precon.set }}</small>
+            }
+            @if (precon.number > 1) {
+            <span class="badge bg-primary ms-2">{{ precon.number }}x</span>
+            }
+          </span>
+          <span class="text-nowrap">
+            <strong>{{ precon.totalPrice | currency: res.currency }}</strong>
+            @if (precon.number > 1) {
+            <small class="text-muted ms-1">({{ precon.unitPrice | currency: res.currency }})</small>
+            }
+            <i class="bi ms-2" [class.bi-chevron-down]="isExpanded(precon.deckId)"
+              [class.bi-chevron-right]="!isExpanded(precon.deckId)"></i>
+          </span>
+        </div>
+      </div>
+      <div class="card-body p-2" [ngbCollapse]="!isExpanded(precon.deckId)">
+        <div class="text-muted small mb-1">{{ t('covered_cards') }}</div>
+        @for (covered of precon.coveredCards; track covered.id; let last = $last) {
+        <div class="d-flex align-items-center py-1" [class.border-bottom]="!last">
+          <span class="badge bg-primary me-2">{{ covered.number }}x</span>
+          <span class="fw-medium">{{ cardName(covered.id) }}</span>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    } @else {
+    <div class="alert alert-info">
+      <i class="bi bi-info-circle me-2"></i>{{ t('singles_cheapest') }}
+    </div>
+    }
+    @if (res.singleCards.length > 0) {
+    <h5 class="mt-3">{{ t('singles_section') }}</h5>
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>{{ t('card') }}</th>
+          <th class="text-end">{{ t('quantity') }}</th>
+          <th class="text-end">{{ t('unit_price') }}</th>
+          <th class="text-end">{{ t('total') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (card of res.singleCards; track card.id) {
+        <tr>
+          <td>{{ cardName(card.id) }}</td>
+          <td class="text-end">{{ card.number }}</td>
+          @if (card.unitPrice !== undefined) {
+          <td class="text-end">{{ card.unitPrice | currency: res.currency }}</td>
+          <td class="text-end">{{ card.totalPrice | currency: res.currency }}</td>
+          } @else {
+          <td colspan="2" class="text-end">
+            <span class="badge text-bg-warning">{{ t('price_unavailable') }}</span>
+          </td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+    <div class="border-top pt-3 mt-3">
+      <div class="d-flex justify-content-between">
+        <span>{{ t('optimized_total') }}</span>
+        <strong>{{ res.totalPrice | currency: res.currency }}</strong>
+      </div>
+      <div class="d-flex justify-content-between text-muted">
+        <span>{{ t('singles_only_total') }}</span>
+        <span>{{ res.singlesOnlyPrice | currency: res.currency }}</span>
+      </div>
+      @if (res.totalPrice < res.singlesOnlyPrice) {
+      <div class="d-flex justify-content-between text-success fw-bold">
+        <span>{{ t('you_save') }}</span>
+        <span>{{ (res.singlesOnlyPrice - res.totalPrice) | currency: res.currency }}</span>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      {{ 'shared.close' | transloco }}
+    </button>
+  </div>
+</ng-container>

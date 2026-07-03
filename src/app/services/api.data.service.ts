@@ -31,6 +31,8 @@ import {
   ApiSearchResponse,
   ApiSet,
   ApiShop,
+  ApiShoppingOptimizeRequest,
+  ApiShoppingOptimizeResponse,
   ApiSuggestedCardsResponse,
   ApiUser,
   ApiUserCountry,
@@ -91,6 +93,7 @@ export class ApiDataService {
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
   private readonly deckArchetypePath = '/deck-archetype'
+  private readonly shoppingOptimizePath = '/shopping/optimize'
 
   login(
     username: string,
@@ -436,6 +439,15 @@ export class ApiDataService {
     return this.httpClient.get<ApiShop[]>(
       `${environment.api.baseUrl}/cards/${cardId}/shops`,
       { params },
+    )
+  }
+
+  shoppingOptimize(
+    request: ApiShoppingOptimizeRequest,
+  ): Observable<ApiShoppingOptimizeResponse> {
+    return this.httpClient.post<ApiShoppingOptimizeResponse>(
+      `${environment.api.baseUrl}${this.shoppingOptimizePath}`,
+      request,
     )
   }
 

@@ -81,6 +81,7 @@ import { DeckComparisonComponent } from '../deck-shared/deck-comparison/deck-com
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '../deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -397,6 +398,22 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ...(this.deckQuery.getDeck()?.crypt ?? []),
       ...(this.deckQuery.getDeck()?.library ?? []),
     ]
+  }
+
+  onHowToBuy(): void {
+    const deck = this.deckQuery.getDeck()
+    const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
+    if (cards.length === 0) {
+      return
+    }
+    const modalRef = this.modalService.open(ShoppingOptimizerModalComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.title = deck?.name
+    modalRef.componentInstance.cards = cards
+    modalRef.componentInstance.allowExcludeOwned = true
   }
 
   onAddToCollection(deck: ApiDeck): void {

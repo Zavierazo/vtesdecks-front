@@ -1156,5 +1156,25 @@
     "camera_not_found": "Nenhuma câmera foi encontrada no seu dispositivo.",
     "camera_in_use": "A câmera já está sendo usada por outro aplicativo. Feche-o e tente novamente.",
     "camera_error": "Não foi possível iniciar a câmera. Verifique o seu dispositivo e tente novamente."
+  },
+  "shopping_optimizer": {
+    "button": "Como comprar",
+    "title": "A melhor forma de comprar estas cartas",
+    "error": "Não foi possível calcular os preços. Tente novamente.",
+    "retry": "Tentar novamente",
+    "exclude_owned": "Excluir cartas que já tenho",
+    "all_owned": "Você já tem todas estas cartas",
+    "precon_section": "Decks pré-construídos",
+    "singles_section": "Cartas avulsas",
+    "covered_cards": "Cartas cobertas por este deck",
+    "card": "Carta",
+    "quantity": "Qtd.",
+    "unit_price": "Preço unitário",
+    "total": "Total",
+    "price_unavailable": "Preço indisponível",
+    "optimized_total": "Total otimizado",
+    "singles_only_total": "Comprando tudo como cartas avulsas",
+    "you_save": "Você economiza",
+    "singles_cheapest": "Comprar cartas avulsas já é a opção mais barata"
   }
 }

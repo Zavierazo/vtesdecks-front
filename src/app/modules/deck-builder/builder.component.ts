@@ -65,6 +65,7 @@ import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-gri
 import { CryptComponent } from '../deck-shared/crypt/crypt.component'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '../deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 import { environment } from './../../../environments/environment'
 import { BuilderSuggestionsComponent } from './builder-suggestions/builder-suggestions.component'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
@@ -152,6 +153,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
+  isDeckEmpty$ = this.deckBuilderQuery
+    .selectCards()
+    .pipe(map((cards) => cards.every((card) => card.number <= 0)))
 
   suggestedCards$ = this.deckBuilderQuery.selectSuggestedCards()
 
@@ -549,6 +553,23 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     })
     modalRef.componentInstance.title = this.deckBuilderQuery.getValue().name
     modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
+  }
+
+  onHowToBuy(): void {
+    const cards = this.deckBuilderQuery
+      .getValue()
+      .cards.filter((card) => card.number > 0)
+    if (cards.length === 0) {
+      return
+    }
+    const modalRef = this.modalService.open(ShoppingOptimizerModalComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.title = this.deckBuilderQuery.getValue().name
+    modalRef.componentInstance.cards = cards
+    modalRef.componentInstance.allowExcludeOwned = true
   }
 
   onCopyToClipboard(type: string): void {

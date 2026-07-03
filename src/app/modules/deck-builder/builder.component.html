@@ -52,6 +52,11 @@
               <i class="bi bi-printer me-2"></i>
               {{ 'deck_shared.print' | transloco }}
             </button>
+            <button type="button" class="btn btn-outline-primary m-2" [disabled]="(isDeckEmpty$ | async)!"
+              (click)="onHowToBuy()">
+              <i class="bi bi-cart me-2"></i>
+              {{ 'shopping_optimizer.button' | transloco }}
+            </button>
             <button type="button" class="btn btn-outline-primary m-2" [ngClass]="{
               'btn-primary': limitedFormat$ | async,
               'btn-outline-primary': !(limitedFormat$ | async)

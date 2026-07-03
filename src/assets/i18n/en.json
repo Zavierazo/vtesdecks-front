@@ -1156,5 +1156,25 @@
     "camera_not_found": "No camera was found on your device.",
     "camera_in_use": "The camera is already in use by another application. Close it and try again.",
     "camera_error": "Could not start the camera. Please check your device and try again."
+  },
+  "shopping_optimizer": {
+    "button": "How to buy",
+    "title": "Best way to buy these cards",
+    "error": "Could not calculate prices. Please try again.",
+    "retry": "Retry",
+    "exclude_owned": "Exclude cards I already own",
+    "all_owned": "You already own all these cards",
+    "precon_section": "Preconstructed decks",
+    "singles_section": "Single cards",
+    "covered_cards": "Cards covered by this deck",
+    "card": "Card",
+    "quantity": "Qty",
+    "unit_price": "Unit price",
+    "total": "Total",
+    "price_unavailable": "Price unavailable",
+    "optimized_total": "Optimized total",
+    "singles_only_total": "Buying everything as singles",
+    "you_save": "You save",
+    "singles_cheapest": "Buying singles is already the cheapest option"
   }
 }

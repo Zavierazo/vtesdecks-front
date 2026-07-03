@@ -18,6 +18,14 @@
         ></i>
         {{ t('toggle_multiselect') }}
       </button>
+      <button
+        class="btn text-primary"
+        [disabled]="(totalElements$ | async) === 0 || fetchingAll"
+        (click)="onHowToBuy()"
+      >
+        <i class="bi bi-cart"></i>
+        {{ 'shopping_optimizer.button' | transloco }}
+      </button>
     </div>
     <div class="d-flex flex-wrap align-items-center gap-2">
       <button

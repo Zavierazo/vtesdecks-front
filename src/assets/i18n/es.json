@@ -1156,5 +1156,25 @@
     "camera_not_found": "No se encontró ninguna cámara en tu dispositivo.",
     "camera_in_use": "La cámara ya está en uso por otra aplicación. Ciérrala e inténtalo de nuevo.",
     "camera_error": "No se pudo iniciar la cámara. Comprueba tu dispositivo e inténtalo de nuevo."
+  },
+  "shopping_optimizer": {
+    "button": "Cómo comprar",
+    "title": "La mejor manera de comprar estas cartas",
+    "error": "No se pudieron calcular los precios. Inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "exclude_owned": "Excluir cartas que ya tengo",
+    "all_owned": "Ya tienes todas estas cartas",
+    "precon_section": "Mazos preconstruidos",
+    "singles_section": "Cartas sueltas",
+    "covered_cards": "Cartas incluidas en este mazo",
+    "card": "Carta",
+    "quantity": "Cant.",
+    "unit_price": "Precio unitario",
+    "total": "Total",
+    "price_unavailable": "Precio no disponible",
+    "optimized_total": "Total optimizado",
+    "singles_only_total": "Comprando todo como cartas sueltas",
+    "you_save": "Ahorras",
+    "singles_cheapest": "Comprar cartas sueltas ya es la opción más barata"
   }
 }

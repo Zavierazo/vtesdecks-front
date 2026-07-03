@@ -1156,5 +1156,25 @@
     "camera_not_found": "Aucune caméra n'a été détectée sur votre appareil.",
     "camera_in_use": "La caméra est déjà utilisée par une autre application. Fermez-la et réessayez.",
     "camera_error": "Impossible de démarrer la caméra. Vérifiez votre appareil et réessayez."
+  },
+  "shopping_optimizer": {
+    "button": "Comment acheter",
+    "title": "La meilleure façon d'acheter ces cartes",
+    "error": "Impossible de calculer les prix. Veuillez réessayer.",
+    "retry": "Réessayer",
+    "exclude_owned": "Exclure les cartes que je possède déjà",
+    "all_owned": "Vous possédez déjà toutes ces cartes",
+    "precon_section": "Decks préconstruits",
+    "singles_section": "Cartes à l'unité",
+    "covered_cards": "Cartes couvertes par ce deck",
+    "card": "Carte",
+    "quantity": "Qté",
+    "unit_price": "Prix unitaire",
+    "total": "Total",
+    "price_unavailable": "Prix non disponible",
+    "optimized_total": "Total optimisé",
+    "singles_only_total": "Tout acheter à l'unité",
+    "you_save": "Vous économisez",
+    "singles_cheapest": "Acheter à l'unité est déjà l'option la moins chère"
   }
 }
