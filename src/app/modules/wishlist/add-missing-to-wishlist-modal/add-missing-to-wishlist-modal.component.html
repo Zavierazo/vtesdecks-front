@@ -1,0 +1,95 @@
+<ng-container *transloco="let t; prefix: 'wishlist'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('missing_modal_title') }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    @if (loading()) {
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ t('loading') }}</span>
+        </div>
+      </div>
+    } @else if (missingCards().length === 0) {
+      <div class="text-center py-4 text-muted">
+        <i class="bi bi-check-circle text-success fs-1 d-block mb-2"></i>
+        {{ t('all_owned') }}
+      </div>
+    } @else {
+      <p class="text-muted">
+        {{ t('missing_modal_description', { count: totalMissing }) }}
+      </p>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col">{{ t('column_name') }}</th>
+              <th scope="col" class="text-end">{{ t('missing_quantity') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (card of missingCards(); track card.cardId) {
+              <tr>
+                <td>{{ card.cardName }}</td>
+                <td class="text-end">
+                  <span class="badge bg-primary">{{ card.missing }}x</span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group row mt-2">
+        <label
+          for="missingPriority"
+          class="col-12 col-form-label text-primary fw-bold"
+          >{{ t('priority') }}</label
+        >
+        <div class="col-12">
+          <select
+            id="missingPriority"
+            class="form-select"
+            [formControl]="priorityControl"
+          >
+            <option [ngValue]="null">-</option>
+            <option [ngValue]="'HIGH'">{{ t('priority_high') }}</option>
+            <option [ngValue]="'MEDIUM'">{{ t('priority_medium') }}</option>
+            <option [ngValue]="'LOW'">{{ t('priority_low') }}</option>
+          </select>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.dismiss()"
+    >
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    @if (!loading() && missingCards().length > 0) {
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onAdd()"
+        [disabled]="saving()"
+      >
+        @if (saving()) {
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+          ></span>
+        } @else {
+          <i class="bi bi-heart me-2"></i>
+        }
+        {{ t('add_to_wishlist') }}
+      </button>
+    }
+  </div>
+</ng-container>

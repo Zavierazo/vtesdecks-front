@@ -1,13 +1,26 @@
 [
   {
+    "version": "2.73.0",
+    "date": "3rd July, 2026",
+    "changes": [
+      "Say hello to the <strong>Wishlist</strong>! Keep track of the cards you are hunting for, with quantity, priority, set, condition, language and notes. It filters, sorts and paginates just like your collection, and you can reach it from the header or the home page.",
+      "Wishlists are public by default, so you can share yours with a simple link (and make it private anytime). Other players' public wishlists appear on their profile, right next to their collections.",
+      "Opening any card now shows a <strong>My Wishlist</strong> panel beside your collection info: see how many copies you have wishlisted and add more without leaving the card.",
+      "Using the Collection Tracker on a deck? The new 'Add missing to Wishlist' button puts every card you still need for that deck onto your wishlist in a single click.",
+      "The new <strong>How to buy</strong> button on deck pages, in the Deck Builder and on your wishlist works out the cheapest way to get the cards, mixing preconstructed decks and singles, and shows how much you save compared to buying everything separately. Logged-in users can also leave out cards they already own.",
+      "New Collection History view: a chronological, day-by-day trail of every change to your collection. Check it for the whole collection, a single binder or one specific card.",
+      "Long card notes no longer stretch the Collection and Wishlist tables out of shape: they are now truncated and the full note appears on hover.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.72.0",
     "date": "23th June, 2026",
     "changes": [
       "Integrated the Eternal Vigilance project by Lyon Martin, allowing to ingest tournament results much earlier than the traditional TWD publication process. This means new Tournament Winning Decks can appear on the site significantly faster.",
       "Draw Cards is now interactive: click a card to play it, drawing the next library card or moving crypt vampires to the Controlled region.",
       "Proxy printing can now print cards in your language: when a localized image is available, your language is preselected by default, and you can still choose a specific set instead.",
-      "Library cards now include a 'Who can play it?' button that opens the Crypt pre-filtered to the vampires able to play the card, based on its discipline, clan, sect and path requirements.",
-      "Minor bug fixes and performance improvements."
+      "Library cards now include a 'Who can play it?' button that opens the Crypt pre-filtered to the vampires able to play the card, based on its discipline, clan, sect and path requirements."
     ]
   },
   {

@@ -315,7 +315,13 @@
               {{ card.notes }}
             </ng-template>
             }@else {
-            {{ card.notes }}
+            <span class="d-inline-block text-truncate align-middle notes-cell" [ngbTooltip]="noteContentFull"
+              triggers="mouseenter:mouseleave" container="body">
+              {{ card.notes }}
+            </span>
+            <ng-template #noteContentFull>
+              {{ card.notes }}
+            </ng-template>
             }
             }
           </td>
@@ -342,6 +348,10 @@
                 </button>
                 <button ngbDropdownItem (click)="onMoveToBinder(card)">
                   {{ t('move_to_binder')}}
+                </button>
+                <button ngbDropdownItem (click)="onViewHistory(card)">
+                  <i class="bi bi-clock-history"></i>
+                  {{ t('view_history')}}
                 </button>
                 <div class="dropdown-divider"></div>
                 <button ngbDropdownItem class="text-danger" (click)="onDelete(card)">

@@ -145,6 +145,21 @@ body {
   letter-spacing: 0.0015em;
 }
 
+/* =====================================================================
+   Static navbar on pages with their own sticky filter header
+   (decks list, crypt/library card browsers, deck builder).
+   These pages auto-scroll to their results on filter changes and expect
+   the main navbar to scroll away so their own sticky header takes over.
+   CSS-only route targeting: the routed component is a direct child of the
+   shell's .container-xxl, which excludes embedded usages elsewhere.
+   ===================================================================== */
+body:has(.container-xxl > app-decks) app-header nav.navbar,
+body:has(.container-xxl > app-crypt-section) app-header nav.navbar,
+body:has(.container-xxl > app-library-section) app-header nav.navbar,
+body:has(.container-xxl > app-builder) app-header nav.navbar {
+  position: static;
+}
+
 /* Tighter, more confident headings */
 h1,
 h2,

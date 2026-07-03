@@ -81,6 +81,7 @@ import { DeckComparisonComponent } from '../deck-shared/deck-comparison/deck-com
 import { DisciplineTranslocoPipe } from '../deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '../deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -399,11 +400,50 @@ export class DeckComponent implements OnInit, AfterViewInit {
     ]
   }
 
+  onHowToBuy(): void {
+    const deck = this.deckQuery.getDeck()
+    const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
+    if (cards.length === 0) {
+      return
+    }
+    const modalRef = this.modalService.open(ShoppingOptimizerModalComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.title = deck?.name
+    modalRef.componentInstance.cards = cards
+    modalRef.componentInstance.allowExcludeOwned = true
+  }
+
   onAddToCollection(deck: ApiDeck): void {
     const modalRef = this.modalService.open(AddDeckToCollectionModalComponent, {
       centered: true,
     })
     modalRef.componentInstance.preselectedDeck = deck
+  }
+
+  async onAddMissingToWishlist(): Promise<void> {
+    const deck = this.deckQuery.getDeck()
+    const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
+    if (cards.length === 0) {
+      return
+    }
+    // Lazy import to keep the wishlist modal out of the deck chunk
+    const { AddMissingToWishlistModalComponent } = await import(
+      '../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component'
+    )
+    const modalRef = this.modalService.open(
+      AddMissingToWishlistModalComponent,
+      {
+        size: 'lg',
+        centered: true,
+        scrollable: true,
+      },
+    )
+    modalRef.componentInstance.init(
+      cards.map((card) => ({ cardId: card.id, number: card.number })),
+    )
   }
 
   onCollectionTracker(): void {

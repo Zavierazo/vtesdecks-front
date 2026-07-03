@@ -86,10 +86,17 @@
               </a>
             </div>
             <div class="col-6 col-md-3" *isLogged="true">
-              <a routerLink="/collection" class="position-relative hero-card bg-success text-white">
-                <i class="bi bi-collection-fill"></i>
-                <span>{{ 'shared.collection' | transloco }}</span>
-              </a>
+              <div class="hero-card hero-card-split bg-success text-white">
+                <a routerLink="/collection" class="hero-split-half text-white">
+                  <i class="bi bi-collection-fill"></i>
+                  <span>{{ 'header.collection' | transloco }}</span>
+                </a>
+                <div class="hero-split-divider"></div>
+                <a routerLink="/wishlist" class="hero-split-half text-white">
+                  <i class="bi bi-heart-fill"></i>
+                  <span>{{ 'header.wishlist' | transloco }}</span>
+                </a>
+              </div>
             </div>
             <div class="col-6 col-md-3" *isLogged="true">
               <a routerLink="/decks" [queryParams]="{ type: 'USER' }" class="hero-card bg-success text-white">

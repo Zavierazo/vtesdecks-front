@@ -1,0 +1,17 @@
+<ng-container *transloco="let t; prefix: 'wishlist'">
+  <h1 class="my-3">{{ t('public_title', { username: username() }) }}</h1>
+  @if (loading()) {
+    <div class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">{{ t('loading') }}</span>
+      </div>
+    </div>
+  } @else if (available()) {
+    <app-wishlist-cards-list [editable]="false" />
+  } @else {
+    <div class="text-center my-5 text-muted">
+      <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+      {{ t('not_available') }}
+    </div>
+  }
+</ng-container>

@@ -21,8 +21,9 @@ import { UserFollowButtonComponent } from '@shared/components/user-follow-button
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { isSupporter } from '@utils'
-import { catchError, Observable, tap } from 'rxjs'
+import { catchError, Observable, of, tap } from 'rxjs'
 import { CollectionApiDataService } from '../../collection/services/collection-api.data.service'
+import { WishlistApiDataService } from '../../wishlist/services/wishlist-api.data.service'
 import { DeckCardComponent } from '../../deck-card/deck-card.component'
 
 @UntilDestroy()
@@ -47,6 +48,7 @@ export class UserPublicProfileComponent implements OnInit {
   private decksService = inject(DecksService)
   private decksQuery = inject(DecksQuery)
   private collectionApiService = inject(CollectionApiDataService)
+  private wishlistApiService = inject(WishlistApiDataService)
   private apiDataService = inject(ApiDataService)
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
@@ -61,6 +63,7 @@ export class UserPublicProfileComponent implements OnInit {
   loading$!: Observable<boolean>
   collection = signal<ApiCollection | undefined>(undefined)
   collectionLoading = signal<boolean>(false)
+  wishlistAvailable = signal<boolean>(false)
 
   ngOnInit() {
     this.loading$ = this.decksQuery.selectLoading()
@@ -74,6 +77,7 @@ export class UserPublicProfileComponent implements OnInit {
         this.loadUserData(username)
         this.loadUserDecks(username)
         this.loadUserBinders(username)
+        this.loadUserWishlist(username)
       }
     })
   }
@@ -115,6 +119,29 @@ export class UserPublicProfileComponent implements OnInit {
         tap((collection) => {
           this.collection.set(collection)
           this.collectionLoading.set(false)
+        }),
+      )
+      .subscribe()
+  }
+
+  private loadUserWishlist(username: string) {
+    // Minimal probe (1 item) just to know whether a public wishlist exists.
+    this.wishlistApiService
+      .getUserPublicWishlist(username, {
+        page: 0,
+        pageSize: 1,
+        sortBy: 'cardName',
+        sortDirection: 'asc',
+        filters: [],
+      })
+      .pipe(
+        untilDestroyed(this),
+        tap((page) =>
+          this.wishlistAvailable.set((page?.totalElements ?? 0) > 0),
+        ),
+        catchError(() => {
+          this.wishlistAvailable.set(false)
+          return of(undefined)
         }),
       )
       .subscribe()

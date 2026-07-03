@@ -1,0 +1,61 @@
+<ng-container *transloco="let t; prefix: 'wishlist'">
+  <h1 class="my-3">{{ t('title') }}</h1>
+  <div
+    class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"
+  >
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn text-primary" (click)="onAddCard()">
+        <i class="bi bi-plus-circle"></i>
+        {{ t('add_card') }}
+      </button>
+      <button class="btn text-primary" (click)="onToggleMultiSelect()">
+        <i
+          class="bi"
+          [ngClass]="{
+            'bi-check-square': !multiSelect,
+            'bi-check-square-fill': multiSelect,
+          }"
+        ></i>
+        {{ t('toggle_multiselect') }}
+      </button>
+      <button
+        class="btn text-primary"
+        [disabled]="(totalElements$ | async) === 0 || fetchingAll"
+        (click)="onHowToBuy()"
+      >
+        <i class="bi bi-cart"></i>
+        {{ 'shopping_optimizer.button' | transloco }}
+      </button>
+    </div>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <button
+        class="btn"
+        [ngClass]="{
+          'btn-outline-success': (publicVisibility$ | async),
+          'btn-outline-secondary': !(publicVisibility$ | async),
+        }"
+        (click)="onToggleVisibility()"
+      >
+        <i
+          class="bi"
+          [ngClass]="{
+            'bi-unlock-fill': (publicVisibility$ | async),
+            'bi-lock-fill': !(publicVisibility$ | async),
+          }"
+        ></i>
+        @if (publicVisibility$ | async) {
+          {{ t('public') }}
+        } @else {
+          {{ t('private') }}
+        }
+      </button>
+      @if (publicVisibility$ | async) {
+        <button class="btn text-primary" (click)="onShare()">
+          <i class="bi bi-share"></i>
+          {{ t('share') }}
+        </button>
+      }
+    </div>
+  </div>
+  <app-wishlist-cards-list [editable]="true" [multiSelect]="multiSelect" />
+</ng-container>

@@ -65,6 +65,10 @@
             <i class="bi bi-bar-chart"></i>
             {{ t('stats') }}
           </a>
+          <button ngbDropdownItem (click)="onViewHistory()">
+            <i class="bi bi-clock-history"></i>
+            {{ t('history') }}
+          </button>
           <button ngbDropdownItem class="text-danger" (click)="onDelete()">
             <i class="bi bi-trash"></i>
             {{ t('collection_delete') }}

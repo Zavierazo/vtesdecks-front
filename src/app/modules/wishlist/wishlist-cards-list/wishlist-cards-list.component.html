@@ -1,0 +1,446 @@
+<ng-container *transloco="let t; prefix: 'wishlist'">
+  @if (multiSelect()) {
+    <hr class="my-3 text-secondary" />
+    <div class="px-2">
+      {{ t('multi_select_info', { count: selectedCardsCount }) }}
+      (
+      <button
+        type="button"
+        class="btn btn-link p-0"
+        (click)="onSelectCards(true)"
+      >
+        {{ t('select_all') }}
+      </button>
+      /
+      <button
+        type="button"
+        class="btn btn-link p-0"
+        (click)="onSelectCards(false)"
+      >
+        {{ t('select_none') }}
+      </button>
+      )
+      <button
+        class="btn btn-link text-danger text-decoration-none"
+        (click)="onDeleteSelectedCards()"
+        [disabled]="selectedCardsCount === 0"
+      >
+        <i class="bi bi-trash"></i>
+        {{ t('delete') }}
+      </button>
+    </div>
+  }
+  <hr class="my-3 text-secondary" />
+  <form
+    class="d-flex flex-column flex-md-row align-items-center justify-content-start gap-2"
+    [formGroup]="form"
+  >
+    <div
+      class="flex-grow-1 d-flex flex-column flex-md-row align-items-center justify-content-start gap-2"
+    >
+      <select id="set" class="form-select w-auto" formControlName="set">
+        <option [value]="null" [ngValue]="null">{{ t('any_set') }}</option>
+        <option [value]="'none'" [ngValue]="'none'">{{ t('none') }}</option>
+        @for (set of sets$ | async; track set) {
+          @if (set.abbrev !== 'Spoiler') {
+            <option [value]="set.abbrev" [ngValue]="set.abbrev">
+              {{ set.fullName }}
+              @if (set.releaseDate) {
+                <span class="text-muted"
+                  >'{{ set.releaseDate | date: 'yy' }}</span
+                >
+              }
+            </option>
+          }
+        }
+      </select>
+      <select
+        id="priority"
+        class="form-select w-auto"
+        formControlName="priority"
+      >
+        <option [value]="null" [ngValue]="null">{{ t('any_priority') }}</option>
+        <option [value]="'HIGH'" [ngValue]="'HIGH'">
+          {{ t('priority_high') }}
+        </option>
+        <option [value]="'MEDIUM'" [ngValue]="'MEDIUM'">
+          {{ t('priority_medium') }}
+        </option>
+        <option [value]="'LOW'" [ngValue]="'LOW'">
+          {{ t('priority_low') }}
+        </option>
+      </select>
+      <button
+        type="button"
+        class="btn"
+        [class.btn-outline-secondary]="!hasActiveFilters"
+        [class.btn-primary]="hasActiveFilters"
+        (click)="onOpenFilters()"
+      >
+        <i class="bi bi-funnel"></i>
+        {{ t('filters') }}
+      </button>
+      @if (hasActiveFilters) {
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="onClearFilters()"
+        >
+          <i class="bi bi-x-circle"></i>
+          {{ t('reset') }}
+        </button>
+      }
+    </div>
+    <div class="d-flex justify-content-center justify-content-md-end gap-2">
+      <div class="col-xs-3 col-sm-auto">
+        <div class="input-group">
+          <input
+            #searchInput
+            id="search"
+            type="text"
+            class="form-control"
+            [placeholder]="t('search_placeholder')"
+            formControlName="cardName"
+          />
+          <button type="button" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  @if (hasActiveFilters) {
+    <div class="mt-2">
+      <small class="text-muted">
+        <strong>{{ t('active_filters') }}: </strong>
+        @if (currentFilters.types && currentFilters.types.length) {
+          <span class="badge bg-secondary me-1">
+            {{ t('card_type') }}: {{ currentFilters.types.join(', ') }}
+          </span>
+        }
+        @if (currentFilters.clans && currentFilters.clans.length) {
+          <span class="badge bg-secondary me-1">
+            {{ t('clans') }}: {{ currentFilters.clans.join(', ') }}
+          </span>
+        }
+        @if (currentFilters.disciplines && currentFilters.disciplines.length) {
+          <span class="badge bg-secondary me-1">
+            {{ t('disciplines') }}: {{ currentFilters.disciplines.join(', ') }}
+          </span>
+        }
+      </small>
+    </div>
+  }
+  <hr class="my-3 text-secondary" />
+  <ul class="nav nav-tabs">
+    <li class="nav-item cursor-pointer">
+      <button
+        class="nav-link"
+        [ngClass]="{
+          active: (cardTypeFilter$ | async) === undefined,
+        }"
+        (click)="onTabClick('all')"
+      >
+        {{ t('all') }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        [ngClass]="{
+          active: (cardTypeFilter$ | async) === 'crypt',
+        }"
+        (click)="onTabClick('crypt')"
+      >
+        {{ t('crypt') }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        [ngClass]="{
+          active: (cardTypeFilter$ | async) === 'library',
+        }"
+        (click)="onTabClick('library')"
+      >
+        {{ t('library') }}
+      </button>
+    </li>
+  </ul>
+  <div class="table-responsive">
+    <table class="table table-hover cards-list-table">
+      <thead>
+        <tr>
+          @if (multiSelect()) {
+            <th scope="col"></th>
+          }
+          <th scope="col" appWishlistSortable="number" (sort)="onSort($event)">
+            {{ t('column_number') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="cardName"
+            (sort)="onSort($event)"
+            direction="asc"
+          >
+            {{ t('column_name') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="priority"
+            (sort)="onSort($event)"
+          >
+            {{ t('column_priority') }}
+          </th>
+          <th scope="col" appWishlistSortable="set" (sort)="onSort($event)">
+            {{ t('column_set') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="condition"
+            (sort)="onSort($event)"
+          >
+            {{ t('column_condition') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="language"
+            (sort)="onSort($event)"
+          >
+            {{ t('column_language') }}
+          </th>
+          <th scope="col" class="text-center">{{ t('column_notes') }}</th>
+          <th scope="col" appWishlistSortable="price" (sort)="onSort($event)">
+            {{ t('column_price') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="totalPrice"
+            (sort)="onSort($event)"
+          >
+            {{ t('column_total_price') }}
+          </th>
+          <th
+            scope="col"
+            appWishlistSortable="modificationDate"
+            (sort)="onSort($event)"
+          >
+            <i class="bi bi-calendar"></i>
+          </th>
+          @if (editable()) {
+            <th scope="col"></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading$ | async) {
+          <tr class="table-progress">
+            <td colspan="100%" style="text-align: center" class="p-0">
+              <ngb-progressbar
+                type="primary"
+                [value]="100"
+                [striped]="true"
+                [animated]="true"
+                height=".3rem"
+              />
+            </td>
+          </tr>
+        }
+        @for (card of cards$ | async; track card.id; let i = $index) {
+          <tr class="align-middle">
+            @if (multiSelect()) {
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [formControl]="selectedCards.at(i)"
+                />
+              </td>
+            }
+            @if (editable()) {
+              <td
+                (click)="editNumberId = card.id"
+                class="text-center cursor-pointer"
+              >
+                @if (editNumberId === card.id) {
+                  <input
+                    #numberInput
+                    type="number"
+                    class="form-control form-control-sm d-inline-block"
+                    style="width: 70px"
+                    [value]="card.number"
+                    (blur)="onNumberEdit(card, numberInput.value)"
+                    (keydown.enter)="onNumberEdit(card, numberInput.value)"
+                    (click)="$event.stopPropagation()"
+                    appAutoFocus
+                  />
+                } @else {
+                  {{ card.number }}
+                }
+              </td>
+            } @else {
+              <td>{{ card.number }}</td>
+            }
+            <td>
+              <app-collection-card
+                [cardId]="card.cardId"
+                [cardName]="card.cardName"
+                [setAbbrev]="card.set ?? undefined"
+                (click)="editable() && onEdit(card)"
+                [ngClass]="{ 'cursor-pointer': editable() }"
+              />
+            </td>
+            <td>
+              @if (card.priority) {
+                @if (card.priority | wishlistPriority; as cardPriority) {
+                  <span class="badge" [class]="cardPriority.badgeClass">
+                    {{ cardPriority.label }}
+                  </span>
+                }
+              }
+            </td>
+            <td>
+              <app-collection-set [set]="card.set ?? undefined" />
+            </td>
+            <td>
+              @if (card.condition) {
+                @if (card.condition | condition; as cardCondition) {
+                  <span class="badge" [class]="cardCondition.badgeClass">
+                    @if (isMobile$ | async) {
+                      {{ card.condition }}
+                    } @else {
+                      {{ cardCondition.label }}
+                    }
+                  </span>
+                }
+              }
+            </td>
+            <td>{{ card.language }}</td>
+            <td class="text-center">
+              @if (card.notes) {
+                @if (isMobileOrTablet$ | async) {
+                  <span
+                    [ngbTooltip]="noteContent"
+                    triggers="mouseenter:mouseleave"
+                    container="body"
+                  >
+                    <i class="bi bi-sticky-fill"></i>
+                  </span>
+                  <ng-template #noteContent>
+                    {{ card.notes }}
+                  </ng-template>
+                } @else {
+                  <span
+                    class="d-inline-block text-truncate align-middle notes-cell"
+                    [ngbTooltip]="noteContentFull"
+                    triggers="mouseenter:mouseleave"
+                    container="body"
+                  >
+                    {{ card.notes }}
+                  </span>
+                  <ng-template #noteContentFull>
+                    {{ card.notes }}
+                  </ng-template>
+                }
+              }
+            </td>
+            <td>{{ card.price | currency: card.currency ?? undefined }}</td>
+            <td>
+              {{ card.totalPrice | currency: card.currency ?? undefined }}
+            </td>
+            <td>
+              <span
+                [ngbTooltip]="dateContent"
+                triggers="mouseenter:mouseleave"
+                container="body"
+              >
+                <i class="bi bi-calendar-fill"></i>
+              </span>
+              <ng-template #dateContent>
+                {{ card.modificationDate | date: 'MMM d, y, HH:mm:ss' }}
+              </ng-template>
+            </td>
+            @if (editable()) {
+              <td class="text-center">
+                <div ngbDropdown container="body">
+                  <button
+                    class="btn btn-link p-0"
+                    id="dropdownMenuButton"
+                    ngbDropdownToggle
+                    [class.dropdown-toggle]="false"
+                  >
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                    <button ngbDropdownItem (click)="onEdit(card)">
+                      {{ t('edit') }}
+                    </button>
+                    <div class="dropdown-divider"></div>
+                    <button
+                      ngbDropdownItem
+                      class="text-danger"
+                      (click)="onDelete(card)"
+                    >
+                      {{ t('delete') }}
+                    </button>
+                  </div>
+                </div>
+              </td>
+            }
+          </tr>
+        } @empty {
+          @if (!(isLoading$ | async)!) {
+            <tr>
+              <td colspan="100%" class="text-center">
+                {{ t('no_cards_found') }}
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="row g-2 align-items-center my-3">
+    @if (query$ | async; as query) {
+      <div
+        class="col-12 col-md d-flex justify-content-center justify-content-md-start"
+      >
+        <ngb-pagination
+          [collectionSize]="(total$ | async)!"
+          [page]="query.page + 1"
+          [pageSize]="query.pageSize"
+          [maxSize]="3"
+          [rotate]="true"
+          [ellipses]="!(isMobile$ | async)!"
+          [boundaryLinks]="true"
+          [disabled]="(isLoading$ | async)!"
+          (pageChange)="onPageChange($event)"
+        />
+      </div>
+      <div
+        class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end"
+      >
+        <select
+          class="form-select"
+          style="width: auto"
+          name="pageSize"
+          [ngModel]="query.pageSize"
+          (ngModelChange)="onPageSizeChange($event)"
+        >
+          <option [ngValue]="20">
+            {{ t('items_per_page', { count: 20 }) }}
+          </option>
+          <option [ngValue]="50">
+            {{ t('items_per_page', { count: 50 }) }}
+          </option>
+          <option [ngValue]="100">
+            {{ t('items_per_page', { count: 100 }) }}
+          </option>
+          <option [ngValue]="200">
+            {{ t('items_per_page', { count: 200 }) }}
+          </option>
+        </select>
+      </div>
+    }
+  </div>
+</ng-container>

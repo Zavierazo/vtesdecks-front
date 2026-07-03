@@ -4,6 +4,7 @@ import {
   ApiCollection,
   ApiCollectionBinder,
   ApiCollectionCard,
+  ApiCollectionHistoryPage,
   ApiCollectionImport,
   ApiCollectionPage,
   ApiCollectionStats,
@@ -77,6 +78,34 @@ export class CollectionApiDataService {
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
     return this.httpClient.get<ApiCollectionPage>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards?${this.getQueryFilterParams(query)}`,
+    )
+  }
+
+  // Unlike deleteCard/bulkEditCards, the path segment here is CARD ids
+  // (crypt/library ids), not collection row ids.
+  getCardsByCardIds(cardIds: number[]): Observable<ApiCollectionCard[]> {
+    return this.httpClient.get<ApiCollectionCard[]>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${cardIds.join(',')}`,
+    )
+  }
+
+  getCardHistory(
+    cardId?: number,
+    binderId?: number,
+    page = 0,
+    size = 50,
+  ): Observable<ApiCollectionHistoryPage> {
+    const params = new URLSearchParams()
+    if (cardId !== undefined) {
+      params.set('cardId', cardId.toString())
+    }
+    if (binderId !== undefined) {
+      params.set('binderId', binderId.toString())
+    }
+    params.set('page', page.toString())
+    params.set('size', size.toString())
+    return this.httpClient.get<ApiCollectionHistoryPage>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/history?${params.toString()}`,
     )
   }
 

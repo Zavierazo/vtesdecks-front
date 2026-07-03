@@ -4,6 +4,7 @@ import {
   ApiCollection,
   ApiCollectionBinder,
   ApiCollectionCard,
+  ApiCollectionHistoryPage,
   ApiCollectionImport,
   ApiCollectionPage,
   FILTER_BINDER,
@@ -56,6 +57,20 @@ export class CollectionPrivateService extends CollectionService {
 
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
     return this.collectionApiDataService.getCards(query)
+  }
+
+  getCardHistory(
+    cardId?: number,
+    binderId?: number,
+    page = 0,
+    size = 50,
+  ): Observable<ApiCollectionHistoryPage> {
+    return this.collectionApiDataService.getCardHistory(
+      cardId,
+      binderId,
+      page,
+      size,
+    )
   }
 
   addBinder(binder: ApiCollectionBinder): Observable<ApiCollectionBinder> {

@@ -191,6 +191,11 @@
                       'bi-check-square-fill': collectionTracker
                     }"></i>{{ t('collection_tracker') }}
                   </button>
+                  @if (collectionTracker) {
+                  <button class="btn btn-outline-primary" (click)="onAddMissingToWishlist()" *isLogged="true">
+                    <i class="bi bi-heart me-2"></i>{{ 'wishlist.add_missing_to_wishlist' | transloco }}
+                  </button>
+                  }
                   @if (deck.type === 'PRECONSTRUCTED') {
                   <button class="btn btn-outline-primary" (click)="onAddToCollection(deck)" *isLogged="true">
                     <i class="bi bi-collection me-2"></i>{{ t('add_to_collection') }}
@@ -204,6 +209,9 @@
                   </button>
                   <button class="btn btn-outline-primary" (click)="onPrint()">
                     <i class="bi bi-printer me-2"></i>{{ 'deck_shared.print' | transloco }}
+                  </button>
+                  <button class="btn btn-outline-primary" (click)="onHowToBuy()">
+                    <i class="bi bi-cart me-2"></i>{{ 'shopping_optimizer.button' | transloco }}
                   </button>
                   <button class="btn btn-outline-primary" (click)="onCompare()">
                     <i class="bi bi-arrows-collapse me-2"></i>{{ t('compare') }}
