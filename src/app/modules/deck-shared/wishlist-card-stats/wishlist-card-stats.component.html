@@ -2,7 +2,7 @@
   @if (visible()) {
     <div class="card border-0 shadow-sm mt-3">
       <div
-        class="card-header bg-secondary text-white py-2"
+        class="card-header bg-danger text-white py-2"
         role="button"
         (click)="onToggle()"
         (keyup.enter)="onToggle()"
@@ -21,7 +21,7 @@
           <span>
             <button
               type="button"
-              class="btn btn-danger btn-sm add-wishlist-btn me-2"
+              class="btn btn-light text-danger btn-sm add-wishlist-btn me-2"
               [title]="t('add_to_wishlist')"
               [ngbTooltip]="t('add_to_wishlist')"
               container="body"
