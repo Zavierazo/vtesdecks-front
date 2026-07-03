@@ -7,7 +7,9 @@ import { SEL } from '../support/selectors'
  */
 describe('Statistics page', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/statistics**').as('stats')
+    // Match only the backend API — a bare '**/statistics**' also matches the
+    // app's lazy-loaded statistics.routes-*.js chunk from the dev server.
+    cy.intercept('GET', `${Cypress.env('apiUrl')}/statistics**`).as('stats')
     cy.visitApp('/statistics')
     // Wait for the historic-statistics data to arrive (drives the charts).
     cy.wait('@stats', { timeout: 30000 })
@@ -26,7 +28,9 @@ describe('Statistics page', () => {
   })
 
   it('changing the deck type re-queries statistics', () => {
-    cy.intercept('GET', '**/statistics**').as('statsRequery')
+    cy.intercept('GET', `${Cypress.env('apiUrl')}/statistics**`).as(
+      'statsRequery',
+    )
     cy.get(SEL.statistics.typeSelect).select('TOURNAMENT')
     // The change triggers fresh statistics requests…
     cy.wait('@statsRequery', { timeout: 30000 })

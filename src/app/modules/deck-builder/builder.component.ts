@@ -666,10 +666,9 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .get('description')
       ?.valueChanges.pipe(
         untilDestroyed(this),
-        filter((value) => value.length > 0),
         debounceTime(100),
         tap((value) => {
-          this.deckBuilderService.updateDescription(value)
+          this.deckBuilderService.updateDescription(value ?? '')
         }),
       )
       .subscribe()
