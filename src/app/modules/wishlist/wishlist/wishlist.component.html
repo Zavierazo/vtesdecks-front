@@ -20,7 +20,7 @@
       </button>
       <button
         class="btn text-primary"
-        [disabled]="(totalElements$ | async) === 0 || fetchingAll"
+        [disabled]="(totalElements$ | async) === 0 || fetchingAll()"
         (click)="onHowToBuy()"
       >
         <i class="bi bi-cart"></i>

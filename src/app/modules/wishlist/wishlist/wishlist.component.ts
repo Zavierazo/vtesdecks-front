@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, NgClass } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
+import { Component, inject, OnInit, signal } from '@angular/core'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -46,7 +46,7 @@ export class WishlistComponent implements OnInit {
   publicVisibility$ = this.wishlistQuery.selectPublicVisibility()
   totalElements$ = this.wishlistQuery.selectTotalElements()
   multiSelect = false
-  fetchingAll = false
+  fetchingAll = signal(false)
 
   ngOnInit() {
     this.wishlistService.initialize()
@@ -72,10 +72,10 @@ export class WishlistComponent implements OnInit {
   }
 
   onHowToBuy() {
-    if (this.fetchingAll) {
+    if (this.fetchingAll()) {
       return
     }
-    this.fetchingAll = true
+    this.fetchingAll.set(true)
     // The store only holds the current page, so fetch the full wishlist
     const query: WishlistQueryState = {
       page: 0,
@@ -88,7 +88,7 @@ export class WishlistComponent implements OnInit {
       .getCards(query)
       .pipe(
         untilDestroyed(this),
-        finalize(() => (this.fetchingAll = false)),
+        finalize(() => this.fetchingAll.set(false)),
       )
       .subscribe({
         next: (page) => {
