@@ -423,6 +423,29 @@ export class DeckComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.preselectedDeck = deck
   }
 
+  async onAddMissingToWishlist(): Promise<void> {
+    const deck = this.deckQuery.getDeck()
+    const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
+    if (cards.length === 0) {
+      return
+    }
+    // Lazy import to keep the wishlist modal out of the deck chunk
+    const { AddMissingToWishlistModalComponent } = await import(
+      '../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component'
+    )
+    const modalRef = this.modalService.open(
+      AddMissingToWishlistModalComponent,
+      {
+        size: 'lg',
+        centered: true,
+        scrollable: true,
+      },
+    )
+    modalRef.componentInstance.init(
+      cards.map((card) => ({ cardId: card.id, number: card.number })),
+    )
+  }
+
   onCollectionTracker(): void {
     this.collectionTracker = !this.collectionTracker
     const deck = this.deckQuery.getDeck()

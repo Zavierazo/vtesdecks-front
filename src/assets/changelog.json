@@ -6,6 +6,7 @@
       "Introduced the <strong>Wishlist</strong>: track the cards you want with quantity, priority (High/Medium/Low), set, condition, language and notes. Filter, sort and paginate it just like your collection.",
       "Your wishlist is public by default and shareable with a link; toggle it private anytime from the wishlist page. Public wishlists also appear on user profiles next to their collections.",
       "Card details now include a My Wishlist panel showing how many copies you have wishlisted, with a quick add button right next to your collection info.",
+      "With the Collection Tracker enabled, deck pages and the Deck Builder now offer an 'Add missing to Wishlist' button that adds every card you are missing for the deck to your wishlist in one click.",
       "Added a Collection History view that shows a chronological, day-by-day audit trail of every change to your collection. Open it for the whole collection, a single binder, or an individual card.",
       "Fixed long card notes no longer stretch the Collection and Wishlist tables: they are truncated and the full note is shown on hover.",
       "New <strong>How to buy</strong> button on deck pages, the Deck Builder and your wishlist: it finds the cheapest way to purchase the cards, combining preconstructed decks and single cards, and shows how much you save versus buying everything as singles. Logged-in users can also exclude cards they already own in their collection.",

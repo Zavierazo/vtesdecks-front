@@ -27,6 +27,13 @@ export class WishlistApiDataService {
     )
   }
 
+  addCardsBulk(cards: ApiWishlistCard[]): Observable<ApiWishlistCard[]> {
+    return this.httpClient.post<ApiWishlistCard[]>(
+      `${environment.api.baseUrl}${WishlistApiDataService.wishlistPath}/cards/bulk`,
+      cards,
+    )
+  }
+
   updateCard(card: ApiWishlistCard): Observable<ApiWishlistCard> {
     return this.httpClient.put<ApiWishlistCard>(
       `${environment.api.baseUrl}${WishlistApiDataService.wishlistPath}/cards/${card.id}`,

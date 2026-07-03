@@ -37,6 +37,12 @@
                       'bi-check-square-fill': collectionTracker
                     }"></i>{{ t('collection_tracker') }}
             </button>
+            @if (collectionTracker) {
+            <button type="button" class="btn btn-outline-primary m-2" [disabled]="(isDeckEmpty$ | async)!"
+              (click)="onAddMissingToWishlist()">
+              <i class="bi bi-heart me-2"></i>{{ 'wishlist.add_missing_to_wishlist' | transloco }}
+            </button>
+            }
             <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
               (click)="shareDeck()">
               <i class="bi bi-share"></i>

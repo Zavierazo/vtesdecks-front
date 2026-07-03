@@ -555,6 +555,30 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     modalRef.componentInstance.cards = this.deckBuilderQuery.getValue().cards
   }
 
+  async onAddMissingToWishlist(): Promise<void> {
+    const cards = this.deckBuilderQuery
+      .getValue()
+      .cards.filter((card) => card.number > 0)
+    if (cards.length === 0) {
+      return
+    }
+    // Lazy import to keep the wishlist modal out of the builder chunk
+    const { AddMissingToWishlistModalComponent } = await import(
+      '../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component'
+    )
+    const modalRef = this.modalService.open(
+      AddMissingToWishlistModalComponent,
+      {
+        size: 'lg',
+        centered: true,
+        scrollable: true,
+      },
+    )
+    modalRef.componentInstance.init(
+      cards.map((card) => ({ cardId: card.id, number: card.number })),
+    )
+  }
+
   onHowToBuy(): void {
     const cards = this.deckBuilderQuery
       .getValue()
