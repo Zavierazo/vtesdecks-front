@@ -1,9 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
 import { ApiResponse, ApiUser, ApiUserSettings } from '@models'
 import { ApiDataService } from '@services'
-import { Observable, catchError, of, switchMap, tap } from 'rxjs'
+import { Observable, catchError, of, switchMap, tap, timer } from 'rxjs'
 import { AuthStore } from './auth.store'
+
+// Delay before retrying the token refresh when the API is unreachable.
+export const refreshRetryWaitMilliSeconds = 30000
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +16,8 @@ export class AuthService {
   private readonly authStore = inject(AuthStore)
   private readonly apiDataService = inject(ApiDataService)
   private readonly jwtHelper = inject(JwtHelperService)
+
+  private refreshRetryScheduled = false
 
   readNotification(all?: boolean): void {
     const notificationCount = this.authStore.getValue().notificationCount
@@ -100,8 +106,15 @@ export class AuthService {
       return this.apiDataService.userRefresh().pipe(
         tap((response: ApiUser) => this.authStore.refreshToken(response)),
         switchMap(() => of(true)),
-        catchError(() => {
-          this.logout()
+        catchError((error: unknown) => {
+          if (this.isAuthError(error)) {
+            // The token is no longer valid: log the user out.
+            this.logout()
+            return of(false)
+          }
+          // The API is unreachable/unavailable even after all the retries:
+          // keep the user logged in and retry the refresh later, indefinitely.
+          this.scheduleTokenRefreshRetry()
           return of(false)
         }),
       )
@@ -109,6 +122,28 @@ export class AuthService {
       this.logout()
       return of(false)
     }
+  }
+
+  private isAuthError(error: unknown): boolean {
+    return (
+      error instanceof HttpErrorResponse &&
+      (error.status === 401 || error.status === 403)
+    )
+  }
+
+  private scheduleTokenRefreshRetry(): void {
+    if (this.refreshRetryScheduled) {
+      return
+    }
+    this.refreshRetryScheduled = true
+    timer(refreshRetryWaitMilliSeconds)
+      .pipe(
+        switchMap(() => {
+          this.refreshRetryScheduled = false
+          return this.refreshToken()
+        }),
+      )
+      .subscribe()
   }
 
   updateSettings(settings: ApiUserSettings): Observable<ApiResponse> {
