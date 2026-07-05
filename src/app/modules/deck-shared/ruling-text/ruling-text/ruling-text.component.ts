@@ -67,7 +67,7 @@ export class RulingTextComponent implements OnInit {
   }
 
   private addCardText(currentPart: string) {
-    const card = this.ruling.cards.find((card) => card.name === currentPart)
+    const card = this.ruling.cards?.find((card) => card?.name === currentPart)
     if (card) {
       this.rulingsText.push({
         type: 'card',
@@ -80,8 +80,8 @@ export class RulingTextComponent implements OnInit {
   }
 
   private addReferenceText(currentPart: string) {
-    const reference = this.ruling.references.find(
-      (ref) => ref.label === currentPart,
+    const reference = this.ruling.references?.find(
+      (ref) => ref?.label === currentPart,
     )
     if (reference) {
       this.rulingsText.push({
@@ -96,7 +96,7 @@ export class RulingTextComponent implements OnInit {
   }
 
   private addSymbolText(currentPart: string) {
-    const symbol = this.ruling.symbols.find((ref) => ref.text === currentPart)
+    const symbol = this.ruling.symbols?.find((ref) => ref?.text === currentPart)
     if (symbol) {
       this.rulingsText.push({ type: 'discipline', text: symbol.symbol })
     } else {
