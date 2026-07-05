@@ -90,7 +90,17 @@ export class RulingTextComponent implements OnInit {
         link: reference.url,
       })
     } else {
+      this.addSymbolText(currentPart)
       this.rulingsText.push({ type: 'reference', text: currentPart })
+    }
+  }
+
+  private addSymbolText(currentPart: string) {
+    const symbol = this.ruling.symbols.find((ref) => ref.text === currentPart)
+    if (symbol) {
+      this.rulingsText.push({ type: 'discipline', text: symbol.symbol })
+    } else {
+      this.rulingsText.push({ type: 'string', text: currentPart })
     }
   }
 }
