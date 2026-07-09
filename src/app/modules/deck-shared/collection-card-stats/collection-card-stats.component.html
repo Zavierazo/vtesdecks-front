@@ -79,42 +79,61 @@
         </div>
       </div>
     }
-    @if (collectionStats.collectionNumber > 0) {
-      <div class="card border-0 shadow-sm mt-3">
-        <div
-          class="card-header bg-secondary text-white py-2"
-          role="button"
-          (click)="collectionCollapsed = !collectionCollapsed"
-          (keyup.enter)="collectionCollapsed = !collectionCollapsed"
-          (keyup.space)="collectionCollapsed = !collectionCollapsed"
-          tabindex="0"
+  }
+  @if (collectionVisible()) {
+    <div class="card border-0 shadow-sm mt-3">
+      <div
+        class="card-header bg-secondary text-white py-2"
+        role="button"
+        (click)="onToggleCollection()"
+        (keyup.enter)="onToggleCollection()"
+        (keyup.space)="onToggleCollection()"
+        tabindex="0"
+      >
+        <h6
+          class="mb-0 fw-bold d-flex align-items-center justify-content-between"
         >
-          <h6
-            class="mb-0 fw-bold d-flex align-items-center justify-content-between"
-          >
-            <span>
-              <i class="bi bi-archive me-2"></i>{{ t('my_collection') }}
-              <span class="badge bg-dark ms-2">{{
-                collectionStats.collectionNumber
-              }}</span>
-            </span>
+          <span>
+            <i class="bi bi-archive me-2"></i>{{ t('my_collection') }}
+            @if (total() > 0) {
+              <span class="badge bg-dark ms-2">{{ total() }}</span>
+            }
+          </span>
+          <span>
+            <button
+              type="button"
+              class="btn btn-light text-secondary btn-sm add-collection-btn me-2"
+              [title]="t('add_to_collection')"
+              [ngbTooltip]="t('add_to_collection')"
+              container="body"
+              (click)="onAddToCollection($event)"
+            >
+              <i class="bi bi-plus-lg"></i>
+            </button>
             <i
               class="bi"
-              [class.bi-chevron-down]="!collectionCollapsed"
-              [class.bi-chevron-right]="collectionCollapsed"
+              [class.bi-chevron-down]="!collectionCollapsed()"
+              [class.bi-chevron-right]="collectionCollapsed()"
             ></i>
-          </h6>
-        </div>
-        <div
-          class="card-body p-2"
-          [ngbCollapse]="collectionCollapsed"
-          #collectionCollapse="ngbCollapse"
-        >
-          @for (
-            card of collectionStats.collectionCards;
-            track card;
-            let last = $last
-          ) {
+          </span>
+        </h6>
+      </div>
+      <div
+        class="card-body p-2"
+        [ngbCollapse]="collectionCollapsed()"
+        #collectionCollapse="ngbCollapse"
+      >
+        @if (loading()) {
+          <div class="text-center py-2">
+            <div
+              class="spinner-border spinner-border-sm text-primary"
+              role="status"
+            >
+              <span class="visually-hidden">{{ t('loading') }}</span>
+            </div>
+          </div>
+        } @else {
+          @for (card of cards(); track card.id; let last = $last) {
             <div
               class="d-flex align-items-center justify-content-between py-1 border-dark"
               [class.border-bottom]="!last"
@@ -123,7 +142,7 @@
                 <span class="badge bg-primary me-2">{{ card.number }}x</span>
                 <span class="fw-medium">{{ card.cardName }}</span>
               </div>
-              <div class="d-flex gap-1">
+              <div class="d-flex align-items-center gap-1">
                 @if (card.set) {
                   <span
                     class="badge bg-secondary"
@@ -147,25 +166,35 @@
                 @if (card.language) {
                   <span class="badge bg-info">{{ card.language }}</span>
                 }
+                <button
+                  type="button"
+                  class="btn btn-link btn-sm p-0 ms-1"
+                  [title]="t('edit')"
+                  (click)="onEditRow(card, $event)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
               </div>
             </div>
+          } @empty {
+            <div class="text-center text-muted py-1">
+              {{ t('no_cards_found') }}
+            </div>
           }
-          <div class="text-center">
-            <a
-              class="btn btn-outline-success btn-sm"
-              [routerLink]="'/collection'"
-              [queryParams]="{
-                cardName: $safeNavigationMigration(
-                  collectionStats.collectionCards?.[0]?.cardName
-                ),
-              }"
-              (click)="routerClick.emit(true)"
-            >
-              <i class="bi bi-eye me-1"></i>{{ t('view_collection') }}
-            </a>
-          </div>
-        </div>
+          @if (cards().length > 0) {
+            <div class="text-center mt-1">
+              <a
+                class="btn btn-outline-success btn-sm"
+                [routerLink]="'/collection'"
+                [queryParams]="{ cardName: card().name }"
+                (click)="routerClick.emit(true)"
+              >
+                <i class="bi bi-eye me-1"></i>{{ t('view_collection') }}
+              </a>
+            </div>
+          }
+        }
       </div>
-    }
+    </div>
   }
 </ng-container>

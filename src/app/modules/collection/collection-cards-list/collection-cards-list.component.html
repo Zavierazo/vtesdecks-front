@@ -163,7 +163,8 @@
         <tr class="align-middle">
           <td>{{ card.number }}</td>
           <td>
-            <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set" />
+            <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set"
+              (click)="onOpenCard(card)" class="cursor-pointer" />
           </td>
           @if(groupBy === 'binderId' && owned() && showBinders()){
           <td class="text-center">
@@ -281,7 +282,7 @@
           }
           <td>
             <app-collection-card [cardId]="card.cardId" [cardName]="card.cardName" [setAbbrev]="card.set"
-              (click)="editable && onEdit(card)" [ngClass]="{'cursor-pointer': editable}" />
+              (click)="onOpenCard(card)" class="cursor-pointer" />
           </td>
           @if(owned() && showBinders()){
           <td class="text-center">
@@ -336,8 +337,11 @@
             </ng-template>
           </td>
           @if(editable){
-          <td class="text-center">
-            <div ngbDropdown container="body">
+          <td class="text-center text-nowrap">
+            <button class="btn btn-link p-0 me-2" [title]="t('edit')" (click)="onEdit(card)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <div ngbDropdown container="body" class="d-inline-block">
               <button class="btn btn-link p-0" id="dropdownMenuButton" ngbDropdownToggle
                 [class.dropdown-toggle]="false">
                 <i class="bi bi-three-dots-vertical"></i>

@@ -306,12 +306,13 @@
         </div>
       </div>
     }
-    @if (cardInfo?.collectionStats; as collectionStats) {
-      <app-collection-card-stats
-        [collectionStats]="collectionStats"
-        (routerClick)="routerClick.emit(true)"
-      />
-    }
+    <app-collection-card-stats
+      [card]="card()"
+      [activeSet]="activeSet()"
+      [collectionStats]="$safeNavigationMigration(cardInfo?.collectionStats)"
+      [loggedIn]="cardInfo?.wishlistNumber !== undefined"
+      (routerClick)="routerClick.emit(true)"
+    />
     <app-wishlist-card-stats
       [card]="card()"
       [activeSet]="activeSet()"

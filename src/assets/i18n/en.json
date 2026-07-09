@@ -257,7 +257,11 @@
     "cards_in_collection_tooltip": "{{ collected }} out of {{ total }} cards in collection",
     "share": "Share",
     "show_more": "Show more",
-    "ebay_affiliate_disclosure": "This site contains affiliate links for which I may be compensated"
+    "ebay_affiliate_disclosure": "This site contains affiliate links for which I may be compensated",
+    "add_to_collection": "Add to Collection",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "no_cards_found": "No cards found in your collection"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> decks",
