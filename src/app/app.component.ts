@@ -1,4 +1,10 @@
-import { Component, Injector, OnInit, inject } from '@angular/core'
+import {
+  Component,
+  Injector,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { createCustomElement } from '@angular/elements'
 import {
   NavigationEnd,
@@ -12,7 +18,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { GoogleAnalyticsService } from 'ngx-google-analytics'
 import { distinct, filter, switchMap, tap } from 'rxjs'
-import { environment } from '../environments/environment'
+import { environment } from '@environments/environment'
 import { ApiChangelog } from './models/api-changelog'
 import { ApiDataService } from './services/api.data.service'
 import { ColorThemeService } from './services/color-theme.service'
@@ -34,6 +40,7 @@ import { isChristmasSnow, isHalloween } from './utils/vtes-utils'
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, RouterOutlet, FooterComponent, ToastsContainer],
 })
 export class AppComponent implements OnInit {

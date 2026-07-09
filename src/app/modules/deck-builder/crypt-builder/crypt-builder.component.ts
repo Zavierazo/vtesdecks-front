@@ -30,8 +30,8 @@ import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
-import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 
 @UntilDestroy()

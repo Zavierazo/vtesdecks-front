@@ -30,8 +30,8 @@ import { LibraryQuery } from '@state/library/library.query'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, Observable, tap } from 'rxjs'
-import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library-grid-card.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 
 @UntilDestroy()

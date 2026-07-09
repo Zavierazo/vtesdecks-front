@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -31,6 +31,7 @@ import { finalize } from 'rxjs'
     NgClass,
   ],
   templateUrl: './deck-metagame-modal.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./deck-metagame-modal.component.scss'],
 })
 export class DeckMetagameModalComponent {

@@ -31,13 +31,13 @@ import {
   LIBRARY_TYPE_LIST,
 } from '@utils'
 import { Observable } from 'rxjs'
-import { ClanTranslocoPipe } from '../../deck-shared/clan-transloco/clan-transloco.pipe'
-import { CryptCardComponent } from '../../deck-shared/crypt-card/crypt-card.component'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
-import { DisciplineTranslocoPipe } from '../../deck-shared/discipline-transloco/discipline-transloco.pipe'
-import { LibraryTypeTranslocoPipe } from '../../deck-shared/library-type-transloco/library-type-transloco.pipe'
-import { LibraryCardComponent } from '../../deck-shared/library-card/library-card.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
+import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
+import { LibraryTypeTranslocoPipe } from '@deck-shared/library-type-transloco/library-type-transloco.pipe'
+import { LibraryCardComponent } from '@deck-shared/library-card/library-card.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 import { ArchetypeCardStatsComponent } from './archetype-card-stats/archetype-card-stats.component'
 
 export interface LibraryTypeGroup {

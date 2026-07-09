@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common'
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnDestroy,
@@ -41,7 +42,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { ReCaptchaV3Service } from 'ng-recaptcha-2'
 import { Observable, switchMap } from 'rxjs'
-import { environment } from 'src/environments/environment'
+import { environment } from '@environments/environment'
 
 export enum Tabs {
   Login,
@@ -53,6 +54,7 @@ export enum Tabs {
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslocoDirective, ReactiveFormsModule, AsyncPipe, TranslocoPipe],
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -7,7 +7,7 @@ import {
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { SeoService } from '@services'
-import { PrintProxyComponent } from '../deck-shared/print-proxy/print-proxy.component'
+import { PrintProxyComponent } from '@deck-shared/print-proxy/print-proxy.component'
 
 @Component({
   selector: 'app-proxy-generator',

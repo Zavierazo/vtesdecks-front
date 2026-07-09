@@ -61,11 +61,11 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { CryptGridCardComponent } from '../deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '../deck-shared/crypt/crypt.component'
-import { LibraryListComponent } from '../deck-shared/library-list/library-list.component'
-import { PrintProxyModalComponent } from '../deck-shared/print-proxy-modal/print-proxy-modal.component'
-import { ShoppingOptimizerModalComponent } from '../deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
+import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 import { environment } from './../../../environments/environment'
 import { BuilderSuggestionsComponent } from './builder-suggestions/builder-suggestions.component'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'

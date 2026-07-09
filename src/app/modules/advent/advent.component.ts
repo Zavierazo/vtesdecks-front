@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
@@ -31,6 +32,7 @@ interface AdventDay {
   templateUrl: './advent.component.html',
   styleUrls: ['./advent.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, IsLoggedDirective, TranslocoDirective],
 })
 export class AdventComponent implements OnInit, OnDestroy {

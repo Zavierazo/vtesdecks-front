@@ -47,8 +47,8 @@ import {
   tap,
 } from 'rxjs'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
-import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
 

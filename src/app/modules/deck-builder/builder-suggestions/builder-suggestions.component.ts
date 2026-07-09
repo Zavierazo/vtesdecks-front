@@ -11,8 +11,8 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiArchetypeKeyCard, ApiCard } from '@models'
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap'
 import { ArchetypeCardStatsComponent } from '../../deck-metagame/deck-metagame-detail/archetype-card-stats/archetype-card-stats.component'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 
 @Component({
   selector: 'app-builder-suggestions',

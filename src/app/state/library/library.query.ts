@@ -5,12 +5,12 @@ import {
   ApiDisciplineStat,
   ApiLibrary,
   ApiSet,
+  LibraryFilter,
   LibrarySortBy,
 } from '@models'
 import { SetQuery } from '@state/set/set.query'
 import { getSetAbbrev } from '@utils'
 import { map, Observable, switchMap } from 'rxjs'
-import { LibraryFilter } from 'src/app/models/library-filter'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',

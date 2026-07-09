@@ -14,6 +14,7 @@ import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms'
 import { bootstrapApplication } from '@angular/platform-browser'
@@ -183,9 +184,9 @@ const routes: Routes = [
   {
     path: 'collections/users/:username/wishlist',
     loadComponent: () =>
-      import(
-        './app/modules/wishlist/wishlist-public/wishlist-public.component'
-      ).then((m) => m.WishlistPublicComponent),
+      import('./app/modules/wishlist/wishlist-public/wishlist-public.component').then(
+        (m) => m.WishlistPublicComponent,
+      ),
     title: 'VTES Decks - Wishlist',
   },
   {
@@ -297,7 +298,7 @@ bootstrapApplication(AppComponent, {
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'disabled' }),

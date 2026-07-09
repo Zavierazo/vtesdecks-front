@@ -9,6 +9,7 @@ import {
   inject,
   input,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 import {
   FormControl,
@@ -36,6 +37,7 @@ import { map, of, switchMap, timer } from 'rxjs'
   selector: 'app-vtes-ai',
   templateUrl: './vtes-ai.component.html',
   styleUrls: ['./vtes-ai.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslocoDirective,
     ReactiveFormsModule,

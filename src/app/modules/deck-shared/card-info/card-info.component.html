@@ -2,211 +2,333 @@
   <p>
     <strong>{{ t('sets') }}:&nbsp;</strong>
     @for (set of card().sets; track $index) {
-    <span class="badge text-bg-secondary me-1" #tooltip="ngbTooltip" [ngbTooltip]="setContent" placement="top"
-      [ngClass]="{
+      <span
+        class="badge text-bg-secondary me-1"
+        #tooltip="ngbTooltip"
+        [ngbTooltip]="setContent"
+        placement="top"
+        [ngClass]="{
           'text-bg-secondary': activeSet() !== set,
           'text-bg-primary border border-primary border-1': activeSet() === set,
-        }" triggers="mouseenter:mouseleave" container="body" (click)="setActiveSet(set)" role="button" tabindex="0">
-      {{ set }}
-      <ng-template #setContent>
-        <app-set-tooltip [cardId]="card().id" [set]="set" [showImage]="(isMobile$ | async) === false" />
-      </ng-template>
-    </span>
+        }"
+        triggers="mouseenter:mouseleave"
+        container="body"
+        (click)="setActiveSet(set)"
+        role="button"
+        tabindex="0"
+      >
+        {{ set }}
+        <ng-template #setContent>
+          <app-set-tooltip
+            [cardId]="card().id"
+            [set]="set"
+            [showImage]="(isMobile$ | async) === false"
+          />
+        </ng-template>
+      </span>
     }
   </p>
   @if (artists(); as artists) {
-  <p>
-    <strong>{{ t('artist') }}: </strong>
-    @for (artist of artists; track $index; let last = $last) {
-    <a class="text-decoration-none" routerLink="/cards/library" [queryParams]="{ artist: artist }"
-      (click)="routerClick.emit(true)">
-      {{ artist }}
-    </a>
-    @if (!last) {
-    <span class="text-black mx-1">•</span>
-    }
-    }
-  </p>
+    <p>
+      <strong>{{ t('artist') }}: </strong>
+      @for (artist of artists; track $index; let last = $last) {
+        <a
+          class="text-decoration-none"
+          routerLink="/cards/library"
+          [queryParams]="{ artist: artist }"
+          (click)="routerClick.emit(true)"
+        >
+          {{ artist }}
+        </a>
+        @if (!last) {
+          <span class="text-black mx-1">•</span>
+        }
+      }
+    </p>
   }
   @if (displayCardInfo(); as cardInfo) {
-  <div class="card border-0 shadow-sm mt-3">
-    <div class="card-header bg-warning text-dark py-2" role="button" (click)="rulingsCollapsed = !rulingsCollapsed"
-      (keyup.enter)="rulingsCollapsed = !rulingsCollapsed" (keyup.space)="rulingsCollapsed = !rulingsCollapsed"
-      tabindex="0">
-      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
-        <span>
-          <i class="bi bi-book me-2"></i>{{ t('rulings') }}
-          <span class="badge bg-dark ms-2">{{
-            cardInfo.rulingList?.length ?? 0
+    <div class="card border-0 shadow-sm mt-3">
+      <div
+        class="card-header bg-warning text-dark py-2"
+        role="button"
+        (click)="rulingsCollapsed = !rulingsCollapsed"
+        (keyup.enter)="rulingsCollapsed = !rulingsCollapsed"
+        (keyup.space)="rulingsCollapsed = !rulingsCollapsed"
+        tabindex="0"
+      >
+        <h6
+          class="mb-0 fw-bold d-flex align-items-center justify-content-between"
+        >
+          <span>
+            <i class="bi bi-book me-2"></i>{{ t('rulings') }}
+            <span class="badge bg-dark ms-2">{{
+              cardInfo.rulingList?.length ?? 0
             }}</span>
-        </span>
-        <span>
-          <a target="_blank" rel="noopener noreferrer" [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
-            title="Edit Rulings" class="text-dark me-2" (click)="$event.stopPropagation()">
-            <i class="bi bi-pencil-square"></i>
-          </a>
-          <i class="bi" [class.bi-chevron-down]="!rulingsCollapsed" [class.bi-chevron-right]="rulingsCollapsed"></i>
-        </span>
-      </h6>
-    </div>
-    @if (cardInfo.rulingList?.length) {
-    <div class="card-body px-2" [ngbCollapse]="rulingsCollapsed" #rulingsCollapse="ngbCollapse">
-      @for (ruling of cardInfo.rulingList; track $index; let last = $last) {
-      <div class="py-2 border-dark" [class.border-bottom]="!last">
-        <app-ruling-text [ruling]="ruling" />
+          </span>
+          <span>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="'https://rulings.krcg.org/index.html?uid=' + card().id"
+              title="Edit Rulings"
+              class="text-dark me-2"
+              (click)="$event.stopPropagation()"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <i
+              class="bi"
+              [class.bi-chevron-down]="!rulingsCollapsed"
+              [class.bi-chevron-right]="rulingsCollapsed"
+            ></i>
+          </span>
+        </h6>
       </div>
+      @if (cardInfo.rulingList?.length) {
+        <div
+          class="card-body px-2"
+          [ngbCollapse]="rulingsCollapsed"
+          #rulingsCollapse="ngbCollapse"
+        >
+          @for (ruling of cardInfo.rulingList; track $index; let last = $last) {
+            <div class="py-2 border-dark" [class.border-bottom]="!last">
+              <app-ruling-text [ruling]="ruling" />
+            </div>
+          }
+        </div>
+      } @else {
+        <div
+          class="card-body px-2 text-muted text-center py-3"
+          [ngbCollapse]="rulingsCollapsed"
+        >
+          <i class="bi bi-info-circle me-2"></i>{{ t('no_rulings') }}
+        </div>
       }
     </div>
-    } @else {
-    <div class="card-body px-2 text-muted text-center py-3" [ngbCollapse]="rulingsCollapsed">
-      <i class="bi bi-info-circle me-2"></i>{{ t('no_rulings') }}
-    </div>
-    }
-  </div>
-  @if (cardInfo && cardInfo.errataList && cardInfo.errataList.length > 0) {
-  <div class="card border-0 shadow-sm mt-3">
-    <div class="card-header bg-info text-dark py-2" role="button" (click)="changesCollapsed = !changesCollapsed"
-      (keyup.enter)="changesCollapsed = !changesCollapsed" (keyup.space)="changesCollapsed = !changesCollapsed"
-      tabindex="0">
-      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
-        <span>
-          <i class="bi bi-clock-history me-2"></i>{{ t('changes') }}
-          <span class="badge bg-dark ms-2">{{
-            cardInfo.errataList.length
-            }}</span>
-        </span>
-        <i class="bi" [class.bi-chevron-down]="!changesCollapsed" [class.bi-chevron-right]="changesCollapsed"></i>
-      </h6>
-    </div>
-    <div class="card-body px-2 py-3" [ngbCollapse]="changesCollapsed" #changesCollapse="ngbCollapse">
-      <div class="position-relative">
-        @for (
-        errata of cardInfo.errataList;
-        track errata.effectiveDate;
-        let last = $last;
-        let first = $first
-        ) {
-        <div class="d-flex gap-3 pb-3" [class.pb-0]="last">
-          <!-- Timeline line and dot -->
-          <div class="d-flex flex-column align-items-center flex-shrink-0">
-            <div class="timeline-dot rounded-circle bg-info border border-2 border-white position-relative z-1"></div>
-            @if (!last) {
-            <div class="timeline-line flex-grow-1 bg-info opacity-25"></div>
-            }
-          </div>
+    @if (cardInfo && cardInfo.errataList && cardInfo.errataList.length > 0) {
+      <div class="card border-0 shadow-sm mt-3">
+        <div
+          class="card-header bg-info text-dark py-2"
+          role="button"
+          (click)="changesCollapsed = !changesCollapsed"
+          (keyup.enter)="changesCollapsed = !changesCollapsed"
+          (keyup.space)="changesCollapsed = !changesCollapsed"
+          tabindex="0"
+        >
+          <h6
+            class="mb-0 fw-bold d-flex align-items-center justify-content-between"
+          >
+            <span>
+              <i class="bi bi-clock-history me-2"></i>{{ t('changes') }}
+              <span class="badge bg-dark ms-2">{{
+                cardInfo.errataList.length
+              }}</span>
+            </span>
+            <i
+              class="bi"
+              [class.bi-chevron-down]="!changesCollapsed"
+              [class.bi-chevron-right]="changesCollapsed"
+            ></i>
+          </h6>
+        </div>
+        <div
+          class="card-body px-2 py-3"
+          [ngbCollapse]="changesCollapsed"
+          #changesCollapse="ngbCollapse"
+        >
+          <div class="position-relative">
+            @for (
+              errata of cardInfo.errataList;
+              track errata.effectiveDate;
+              let last = $last;
+              let first = $first
+            ) {
+              <div class="d-flex gap-3 pb-3" [class.pb-0]="last">
+                <!-- Timeline line and dot -->
+                <div
+                  class="d-flex flex-column align-items-center flex-shrink-0"
+                >
+                  <div
+                    class="timeline-dot rounded-circle bg-info border border-2 border-white position-relative z-1"
+                  ></div>
+                  @if (!last) {
+                    <div
+                      class="timeline-line flex-grow-1 bg-info opacity-25"
+                    ></div>
+                  }
+                </div>
 
-          <!-- Content -->
-          <div class="flex-grow-1">
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <span class="badge bg-info text-dark fw-semibold">
-                <i class="bi bi-calendar-event me-1"></i>{{ errata.effectiveDate | date: 'mediumDate' }}
-              </span>
-            </div>
-            <div class="text-break lh-base">{{ errata.description }}</div>
+                <!-- Content -->
+                <div class="flex-grow-1">
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-info text-dark fw-semibold">
+                      <i class="bi bi-calendar-event me-1"></i
+                      >{{ errata.effectiveDate | date: 'mediumDate' }}
+                    </span>
+                  </div>
+                  <div class="text-break lh-base">{{ errata.description }}</div>
+                </div>
+              </div>
+            }
           </div>
         </div>
-        }
       </div>
-    </div>
-  </div>
-  }
-  @if (
-  cardInfo &&
-  (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0)
-  ) {
-  <div class="card border-0 shadow-sm mt-3">
-    <div class="card-header bg-success text-white py-2" role="button" (click)="shopsCollapsed = !shopsCollapsed"
-      (keyup.enter)="shopsCollapsed = !shopsCollapsed" (keyup.space)="shopsCollapsed = !shopsCollapsed" tabindex="0">
-      <h6 class="mb-0 fw-bold d-flex align-items-center justify-content-between">
-        <span>
-          <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
-          <span class="badge bg-dark ms-2">{{
-            cardInfo.preconstructedDecks.length + cardInfo.shopList.length
-            }}</span>
-          @if (cardInfo.minPrice && cardInfo.maxPrice) {
-          <span class="badge bg-light text-black border ms-2">
-            @if (cardInfo.minPrice === cardInfo.maxPrice) {
-            {{ cardInfo.minPrice | currency: cardInfo.currency }}
-            } @else {
-            {{ cardInfo.minPrice | currency: cardInfo.currency }} -
-            {{ cardInfo.maxPrice | currency: cardInfo.currency }}
-            }
-          </span>
+    }
+    @if (
+      cardInfo &&
+      (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0)
+    ) {
+      <div class="card border-0 shadow-sm mt-3">
+        <div
+          class="card-header bg-success text-white py-2"
+          role="button"
+          (click)="shopsCollapsed = !shopsCollapsed"
+          (keyup.enter)="shopsCollapsed = !shopsCollapsed"
+          (keyup.space)="shopsCollapsed = !shopsCollapsed"
+          tabindex="0"
+        >
+          <h6
+            class="mb-0 fw-bold d-flex align-items-center justify-content-between"
+          >
+            <span>
+              <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
+              <span class="badge bg-dark ms-2">{{
+                cardInfo.preconstructedDecks.length + cardInfo.shopList.length
+              }}</span>
+              @if (cardInfo.minPrice && cardInfo.maxPrice) {
+                <span class="badge bg-light text-black border ms-2">
+                  @if (cardInfo.minPrice === cardInfo.maxPrice) {
+                    {{ cardInfo.minPrice | currency: cardInfo.currency }}
+                  } @else {
+                    {{ cardInfo.minPrice | currency: cardInfo.currency }} -
+                    {{ cardInfo.maxPrice | currency: cardInfo.currency }}
+                  }
+                </span>
+              }
+            </span>
+            <i
+              class="bi"
+              [class.bi-chevron-down]="!shopsCollapsed"
+              [class.bi-chevron-right]="shopsCollapsed"
+            ></i>
+          </h6>
+        </div>
+        <div
+          class="card-body p-2"
+          [ngbCollapse]="shopsCollapsed"
+          #shopsCollapse="ngbCollapse"
+        >
+          @for (
+            deck of cardInfo.preconstructedDecks;
+            track deck.id;
+            let last = $last
+          ) {
+            <div
+              class="d-flex align-items-center py-1 border-dark"
+              [class.border-bottom]="!last || cardInfo.shopList.length > 0"
+            >
+              <a
+                class="text-decoration-none flex-grow-1"
+                [routerLink]="'/deck/' + deck.id"
+                (click)="routerClick.emit(true)"
+              >
+                @if (deck.filterCards?.[0]?.number; as number) {
+                  <span class="badge bg-primary me-2"
+                    >{{ number }}x {{ deck.name }} ({{ deck.year }})</span
+                  >
+                }
+                <span class="fw-medium">{{
+                  deck.stats.msrp | currency: deck.stats.currency
+                }}</span>
+              </a>
+            </div>
           }
-        </span>
-        <i class="bi" [class.bi-chevron-down]="!shopsCollapsed" [class.bi-chevron-right]="shopsCollapsed"></i>
-      </h6>
-    </div>
-    <div class="card-body p-2" [ngbCollapse]="shopsCollapsed" #shopsCollapse="ngbCollapse">
-      @for (
-      deck of cardInfo.preconstructedDecks;
-      track deck.id;
-      let last = $last
-      ) {
-      <div class="d-flex align-items-center py-1 border-dark"
-        [class.border-bottom]="!last || cardInfo.shopList.length > 0">
-        <a class="text-decoration-none flex-grow-1" [routerLink]="'/deck/' + deck.id" (click)="routerClick.emit(true)">
-          @if (deck.filterCards?.[0]?.number; as number) {
-          <span class="badge bg-primary me-2">{{ number }}x {{ deck.name }} ({{ deck.year }})</span>
+          @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
+            <div
+              class="d-flex align-items-center justify-content-between py-1 border-dark"
+              [class.border-bottom]="!last"
+              [class.opacity-50]="!shop.inStock"
+            >
+              <a
+                class="text-decoration-none flex-grow-1"
+                [href]="shop.link"
+                target="_blank"
+                rel="noopener noreferrer"
+                gaEvent="purchase"
+                [gaCategory]="shop.shopInfo.name"
+                [gaLabel]="card().name"
+                [class.text-decoration-line-through]="!shop.inStock"
+              >
+                <span
+                  class="badge me-2"
+                  [class.bg-success]="shop.inStock"
+                  [class.bg-secondary]="!shop.inStock"
+                >
+                  {{ shop.shopInfo.fullName }}
+                  @if (shop.set) {
+                    - {{ shop.set }}
+                  }
+                  @if (shop.locale) {
+                    - {{ shop.locale | displayLocale | titlecase }}
+                  }
+                </span>
+                <span class="fw-medium">{{
+                  shop.price | currency: shop.currency
+                }}</span>
+              </a>
+            </div>
           }
-          <span class="fw-medium">{{
-            deck.stats.msrp | currency: deck.stats.currency
-            }}</span>
-        </a>
-      </div>
-      }
-      @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
-      <div class="d-flex align-items-center justify-content-between py-1 border-dark" [class.border-bottom]="!last"
-        [class.opacity-50]="!shop.inStock">
-        <a class="text-decoration-none flex-grow-1" [href]="shop.link" target="_blank" rel="noopener noreferrer"
-          gaEvent="purchase" [gaCategory]="shop.shopInfo.name" [gaLabel]="card().name"
-          [class.text-decoration-line-through]="!shop.inStock">
-          <span class="badge me-2" [class.bg-success]="shop.inStock" [class.bg-secondary]="!shop.inStock">
-            {{ shop.shopInfo.fullName }}
-            @if (shop.set) {
-            - {{ shop.set }}
-            }
-            @if (shop.locale) {
-            - {{ shop.locale | displayLocale | titlecase }}
-            }
-          </span>
-          <span class="fw-medium">{{
-            shop.price | currency: shop.currency
-            }}</span>
-        </a>
-      </div>
-      }
-      @if (cardInfo.hasMoreShops) {
-      <div class="text-center mt-2">
-        <button class="btn btn-sm btn-outline-primary" (click)="onLoadMoreShops()" [disabled]="loading()">
-          @if (loading()) {
-          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-          } @else {
-          <i class="bi bi-cart-plus me-2"></i>
+          @if (cardInfo.hasMoreShops) {
+            <div class="text-center mt-2">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="onLoadMoreShops()"
+                [disabled]="loading()"
+              >
+                @if (loading()) {
+                  <span
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                } @else {
+                  <i class="bi bi-cart-plus me-2"></i>
+                }
+                {{ t('show_more') }}
+              </button>
+            </div>
           }
-          {{ t('show_more') }}
-        </button>
+          @if (hasEbayShops()) {
+            <p class="text-muted small mt-2 mb-0" style="font-size: 0.8rem">
+              <i class="bi bi-info-circle me-1"></i
+              >{{ t('ebay_affiliate_disclosure') }}
+            </p>
+          }
+        </div>
       </div>
-      }
-      @if (hasEbayShops()) {
-      <p class="text-muted small mt-2 mb-0" style="font-size: 0.8rem">
-        <i class="bi bi-info-circle me-1"></i>{{ t('ebay_affiliate_disclosure') }}
-      </p>
-      }
-    </div>
-  </div>
-  }
-  @if (cardInfo?.collectionStats; as collectionStats) {
-  <app-collection-card-stats [collectionStats]="collectionStats" (routerClick)="routerClick.emit(true)" />
-  }
-  <app-wishlist-card-stats [card]="card()" [activeSet]="activeSet()" [wishlistNumber]="cardInfo?.wishlistNumber"
-    (routerClick)="routerClick.emit(true)" />
+    }
+    @if (cardInfo?.collectionStats; as collectionStats) {
+      <app-collection-card-stats
+        [collectionStats]="collectionStats"
+        (routerClick)="routerClick.emit(true)"
+      />
+    }
+    <app-wishlist-card-stats
+      [card]="card()"
+      [activeSet]="activeSet()"
+      [wishlistNumber]="$safeNavigationMigration(cardInfo?.wishlistNumber)"
+      (routerClick)="routerClick.emit(true)"
+    />
   } @else {
-  <div class="text-center py-4">
-    <div class="spinner-border text-primary spinner-border-sm me-2" role="status">
-      <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+    <div class="text-center py-4">
+      <div
+        class="spinner-border text-primary spinner-border-sm me-2"
+        role="status"
+      >
+        <span class="visually-hidden"
+          >{{ 'shared.loading' | transloco }}...</span
+        >
+      </div>
+      <span class="text-muted">{{ 'shared.loading' | transloco }}...</span>
     </div>
-    <span class="text-muted">{{ 'shared.loading' | transloco }}...</span>
-  </div>
   }
 </ng-container>

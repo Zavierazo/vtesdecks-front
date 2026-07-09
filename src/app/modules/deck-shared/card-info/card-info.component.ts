@@ -12,6 +12,7 @@ import {
   input,
   output,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
@@ -33,6 +34,7 @@ import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card
   selector: 'app-card-info',
   templateUrl: './card-info.component.html',
   styleUrls: ['./card-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslocoDirective,
     TranslocoPipe,

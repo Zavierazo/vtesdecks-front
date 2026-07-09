@@ -20,10 +20,10 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId, isLibraryId } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { CryptCardComponent } from '../../../deck-shared/crypt-card/crypt-card.component'
-import { CryptComponent } from '../../../deck-shared/crypt/crypt.component'
-import { LibraryCardComponent } from '../../../deck-shared/library-card/library-card.component'
-import { LibraryComponent } from '../../../deck-shared/library/library.component'
+import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { LibraryCardComponent } from '@deck-shared/library-card/library-card.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 
 @Component({
   selector: 'app-collection-stats-modal',

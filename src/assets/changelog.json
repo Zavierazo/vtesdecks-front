@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.74.0",
+    "date": "xxth July, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.73.0",
     "date": "3rd July, 2026",
     "changes": [
@@ -9,8 +16,7 @@
       "Using the Collection Tracker on a deck? The new 'Add missing to Wishlist' button puts every card you still need for that deck onto your wishlist in a single click.",
       "The new <strong>How to buy</strong> button on deck pages, in the Deck Builder and on your wishlist works out the cheapest way to get the cards, mixing preconstructed decks and singles, and shows how much you save compared to buying everything separately. Logged-in users can also leave out cards they already own.",
       "New Collection History view: a chronological, day-by-day trail of every change to your collection. Check it for the whole collection, a single binder or one specific card.",
-      "Long card notes no longer stretch the Collection and Wishlist tables out of shape: they are now truncated and the full note appears on hover.",
-      "Minor bug fixes and performance improvements."
+      "Long card notes no longer stretch the Collection and Wishlist tables out of shape: they are now truncated and the full note appears on hover."
     ]
   },
   {

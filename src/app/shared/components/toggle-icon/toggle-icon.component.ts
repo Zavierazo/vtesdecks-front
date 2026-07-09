@@ -1,5 +1,11 @@
 import { NgClass } from '@angular/common'
-import { Component, EventEmitter, input, Output } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  input,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 
 export interface ToggleOption {
@@ -12,6 +18,7 @@ export interface ToggleOption {
   selector: 'app-toggle-icon',
   templateUrl: './toggle-icon.component.html',
   styleUrls: ['./toggle-icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, TranslocoPipe],
 })
 export class ToggleIconComponent {

@@ -9,7 +9,7 @@ import {
 import { ApiRuling, RulingText } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { MediaService } from '@services'
-import { environment } from '../../../../../environments/environment'
+import { environment } from '@environments/environment'
 
 @Component({
   selector: 'app-ruling-text',

@@ -45,7 +45,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
 import { WishlistPrivateService } from '../state/wishlist-private.service'
 import { WishlistQuery } from '../state/wishlist.query'

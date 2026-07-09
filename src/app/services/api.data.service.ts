@@ -43,7 +43,7 @@ import {
   MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
-import { environment } from '../../environments/environment'
+import { environment } from '@environments/environment'
 import { SessionStorageService } from './session-storage.service'
 
 @Injectable({

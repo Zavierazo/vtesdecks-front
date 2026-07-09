@@ -1,5 +1,10 @@
 import { TitleCasePipe } from '@angular/common'
-import { Component, Input, inject } from '@angular/core'
+import {
+  Component,
+  Input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
@@ -17,6 +22,7 @@ import { filter, switchMap, tap } from 'rxjs'
   selector: 'app-deck-restorable-card',
   templateUrl: './deck-restorable-card.component.html',
   styleUrls: ['./deck-restorable-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TitleCasePipe, TruncatePipe, TranslocoPipe, TranslocoDatePipe],
 })
 export class DeckRestorableCardComponent {

@@ -47,8 +47,8 @@ import {
   tap,
 } from 'rxjs'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
-import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library-grid-card.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
 

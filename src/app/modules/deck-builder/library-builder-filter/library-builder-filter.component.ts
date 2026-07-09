@@ -18,8 +18,8 @@ import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
 import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
-import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
-import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
+import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
 @UntilDestroy()

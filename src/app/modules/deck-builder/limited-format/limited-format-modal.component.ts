@@ -1,6 +1,11 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, KeyValuePipe, NgClass } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import {
   FormBuilder,
   FormControl,
@@ -42,7 +47,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { toUrl } from './limited-format-utils'
 @UntilDestroy()
 @Component({
@@ -50,6 +55,7 @@ import { toUrl } from './limited-format-utils'
   templateUrl: './limited-format-modal.component.html',
   styleUrls: ['./limited-format-modal.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     FormsModule,

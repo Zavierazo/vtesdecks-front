@@ -4,230 +4,354 @@
       <i class="bi bi-camera-fill me-2"></i>
       {{ t('title') }}
     </h4>
-    <button type="button" class="btn-close" [attr.aria-label]="'shared.close' | transloco"
-      (click)="activeModal.dismiss()"></button>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss()"
+    ></button>
   </div>
 
-  @if(cameraError()){
-  <div class="alert alert-warning small mb-0 text-start" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-    {{ t(cameraError()!) }}
-    @if(cameraErrorDetail()){
-    <div class="mt-2 text-muted font-monospace text-break error-detail">
-      {{ cameraErrorDetail() }}
+  @if (cameraError()) {
+    <div class="alert alert-warning small mb-0 text-start" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ t(cameraError()!) }}
+      @if (cameraErrorDetail()) {
+        <div class="mt-2 text-muted font-monospace text-break error-detail">
+          {{ cameraErrorDetail() }}
+        </div>
+      }
     </div>
-    }
-  </div>
   }
   <div class="modal-body p-0">
     <!-- Camera Viewport: hidden when result is shown -->
-    @if(appState() !== 'result'){
-    <div class="camera-viewport">
-      <video #video autoplay playsinline muted></video>
-      <img #freeze alt="Captured frame" />
-      <canvas #canvas style="display: none;"></canvas>
+    @if (appState() !== 'result') {
+      <div class="camera-viewport">
+        <video #video autoplay playsinline muted></video>
+        <img #freeze alt="Captured frame" />
+        <canvas #canvas style="display: none"></canvas>
 
-      <!-- Idle State -->
-      @if(appState() === 'idle'){
-      <div class="d-flex flex-column align-items-center gap-3 text-secondary fst-italic opacity-75">
-        <i class="bi bi-camera fs-1"></i>
-        <p class="mb-0">{{ t('enable_camera') }}</p>
+        <!-- Idle State -->
+        @if (appState() === 'idle') {
+          <div
+            class="d-flex flex-column align-items-center gap-3 text-secondary fst-italic opacity-75"
+          >
+            <i class="bi bi-camera fs-1"></i>
+            <p class="mb-0">{{ t('enable_camera') }}</p>
+          </div>
+        }
+
+        <!-- Frame Overlay -->
+        @if (appState() === 'camera') {
+          <div class="frame-overlay">
+            <div class="card-guide"></div>
+          </div>
+        }
+
+        <!-- Flash Effect -->
+        <div class="flash" [class.active]="scanning()"></div>
+
+        <!-- Scan Line -->
+        <div class="scan-line" [class.scanning]="scanning()"></div>
       </div>
-      }
-
-      <!-- Frame Overlay -->
-      @if(appState() === 'camera'){
-      <div class="frame-overlay">
-        <div class="card-guide"></div>
-      </div>
-      }
-
-      <!-- Flash Effect -->
-      <div class="flash" [class.active]="scanning()"></div>
-
-      <!-- Scan Line -->
-      <div class="scan-line" [class.scanning]="scanning()"></div>
-    </div>
     }
 
     <!-- Controls -->
     <div class="bg-body border-top p-3">
-      @if(appState() === 'idle'){
-      <button class="btn btn-primary w-100 mb-2" (click)="startCamera()">
-        <i class="bi bi-camera me-2"></i>
-        {{ t('enable_camera') }}
-      </button>
+      @if (appState() === 'idle') {
+        <button class="btn btn-primary w-100 mb-2" (click)="startCamera()">
+          <i class="bi bi-camera me-2"></i>
+          {{ t('enable_camera') }}
+        </button>
       }
-      @if(appState() === 'camera'){
-      <button class="btn btn-danger w-100 mb-2" (click)="doScan()">
-        <i class="bi bi-scan me-2"></i>
-        {{ t('scan_card') }}
-      </button>
+      @if (appState() === 'camera') {
+        <button class="btn btn-danger w-100 mb-2" (click)="doScan()">
+          <i class="bi bi-scan me-2"></i>
+          {{ t('scan_card') }}
+        </button>
       }
-      @if(appState() === 'result'){
-      <button class="btn btn-primary w-100 mb-2" (click)="scanAgain()">
-        <i class="bi bi-arrow-repeat me-2"></i>
-        {{ t('scan_again') }}
-      </button>
+      @if (appState() === 'result') {
+        <button class="btn btn-primary w-100 mb-2" (click)="scanAgain()">
+          <i class="bi bi-arrow-repeat me-2"></i>
+          {{ t('scan_again') }}
+        </button>
       }
-      @if(appState() === 'scanning'){
-      <button class="btn btn-danger w-100 mb-2" disabled>
-        <span class="spinner-border spinner-border-sm me-2"></span>
-        {{ t('scanning') }}
-      </button>
+      @if (appState() === 'scanning') {
+        <button class="btn btn-danger w-100 mb-2" disabled>
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          {{ t('scanning') }}
+        </button>
       }
     </div>
 
     <!-- Tip -->
-    @if(appState() === 'camera'){
-    <p class="small fst-italic text-center text-muted mb-3">
-      <i class="bi bi-info-circle me-1"></i>
-      {{ t('tip') }}
-    </p>
+    @if (appState() === 'camera') {
+      <p class="small fst-italic text-center text-muted mb-3">
+        <i class="bi bi-info-circle me-1"></i>
+        {{ t('tip') }}
+      </p>
     }
 
     <!-- Result Panel -->
-    @if(appState() === 'result' && scanResult()){
-    <div class="border-top">
-      <div
-        class="p-2 px-3 bg-body border-bottom fw-semibold small text-uppercase text-success d-flex align-items-center"
-        style="letter-spacing: 0.05em;">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        {{ t('result') }}
-      </div>
-      @if(scanResult()?.confidenceWarning){
-      <div class="alert alert-warning small mb-2" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        {{ t('low_confidence_warning') }}
-        <a href="mailto:support@vtesdecks.com" class="alert-link">support@vtesdecks.com</a>
-      </div>
-      }
-      <div class="p-3">
-        @if(scanResult()?.found){
-        @if(selectMode()){
-        <p class="small text-info mb-2">
-          <i class="bi bi-hand-index-thumb me-1"></i>
-          {{ t('tap_to_select') }}
-        </p>
-        }
-        @let card = getCardData(scanResult()!.id!);
-        <div class="result-card d-flex gap-3 align-items-start mb-2 p-2"
-          (click)="selectMode() ? activeModal.close({ id: scanResult()!.id!, set: scanResult()!.set }) : openCardAndDismiss(scanResult()!.id!)"
-          style="cursor: pointer;">
-          <img class="result-image rounded border" [src]="{ id: scanResult()!.id! } | cardImage: scanResult()!.set"
-            alt="Card" style="cursor: zoom-in"
-            (click)="zoomedImageUrl.set(getCardImageUrl(scanResult()!.id!, scanResult()!.set)); $event.stopPropagation()" />
-          <div class="flex-grow-1">
-            <div class="d-flex align-items-center gap-2 mb-1">
-              @if(isCrypt(scanResult()!.id!)){
-              <i class="vtes" style="flex-grow:0;flex-shrink:0" [ngClass]="$any(card)?.clanIcon"></i>
-              @if($any(card)?.pathIcon){
-              <i class="vtes path" style="flex-grow:0;flex-shrink:0" [ngClass]="$any(card)?.pathIcon"></i>
-              }
-              }
-              <h6 class="fw-bold text-warning mb-0">{{ $any(card)?.i18n?.name || $any(card)?.name }}</h6>
-              @if(isCrypt(scanResult()!.id!) && $any(card)?.group){
-              <span class="badge rounded-pill bg-dark text-white flex-shrink-0">
-                {{ $any(card)?.group === -1 ? 'any' : 'G' + $any(card)?.group }}
-              </span>
-              }
-            </div>
-            <div class="mb-2 lh-1">
-              @if(!isCrypt(scanResult()!.id!)){
-              @for(clanIcon of $any(card)?.clanIcons; track clanIcon){
-              <i class="vtes me-1" [ngClass]="clanIcon"></i>
-              }
-              }
-              @for(disciplineIcon of card?.disciplineIcons; track disciplineIcon){
-              <i class="vtes me-1" [ngClass]="disciplineIcon"></i>
-              }
-            </div>
-            @if(scanResult()?.set){
-            <p class="small fst-italic mb-2 text-muted">
-              {{ t('set') }}: <strong>{{ getSetDisplay(scanResult()?.set) }}</strong>
-            </p>
-            }
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <div class="confidence-bar-bg">
-                <div class="confidence-bar" [class]="getConfidenceClass(scanResult()?.confidence ?? 0)"
-                  [style.width.%]="scanResult()?.confidence"></div>
-              </div>
-              <span class="confidence-label" [class]="getConfidenceClass(scanResult()?.confidence ?? 0)">
-                {{ scanResult()?.confidence }}%
-              </span>
-            </div>
-          </div>
+    @if (appState() === 'result' && scanResult()) {
+      <div class="border-top">
+        <div
+          class="p-2 px-3 bg-body border-bottom fw-semibold small text-uppercase text-success d-flex align-items-center"
+          style="letter-spacing: 0.05em"
+        >
+          <i class="bi bi-check-circle-fill me-2"></i>
+          {{ t('result') }}
         </div>
-
-        @if(scanResult()?.alternatives && scanResult()!.alternatives!.length > 0){
-        <div>
-          @for(alt of scanResult()?.alternatives; track $index){
-          @let altCard = getCardData(alt.id);
-          <div class="alt-item"
-            (click)="selectMode() ? activeModal.close({ id: alt.id, set: alt.set }) : openCardAndDismiss(alt.id)"
-            style="cursor: pointer;">
-            <img [src]="{ id: alt.id } | cardImage: alt.set" alt="Alternative" class="alt-thumb" style="cursor: zoom-in"
-              (click)="zoomedImageUrl.set(getCardImageUrl(alt.id, alt.set)); $event.stopPropagation()" />
-            <div class="flex-grow-1">
-              <div class="d-flex align-items-center gap-2 mb-1">
-                @if(isCrypt(alt.id)){
-                <i class="vtes vtes-small" style="flex-grow:0;flex-shrink:0" [ngClass]="$any(altCard)?.clanIcon"></i>
-                @if($any(altCard)?.pathIcon){
-                <i class="vtes vtes-small path" style="flex-grow:0;flex-shrink:0"
-                  [ngClass]="$any(altCard)?.pathIcon"></i>
-                }
-                }
-                <div class="fw-bold">{{ altCard?.i18n?.name || altCard?.name }}</div>
-                @if(isCrypt(alt.id) && $any(altCard)?.group !== undefined){
-                <span class="badge rounded-pill bg-dark text-white flex-shrink-0">
-                  {{ $any(altCard)?.group === -1 ? 'any' : 'G' + $any(altCard)?.group }}
-                </span>
-                }
-              </div>
-              <div class="lh-1 mb-1">
-                @if(!isCrypt(alt.id)){
-                @for(clanIcon of $any(altCard)?.clanIcons; track clanIcon){
-                <i class="vtes vtes-small me-1" [ngClass]="clanIcon"></i>
-                }
-                }
-                @for(disciplineIcon of altCard?.disciplineIcons; track disciplineIcon){
-                <i class="vtes vtes-small me-1" [ngClass]="disciplineIcon"></i>
-                }
-              </div>
-              @if(alt.set){
-              <p class="small fst-italic mb-1 text-muted">
-                {{ t('set') }}: <strong>{{ getSetDisplay(alt.set) }}</strong>
+        @if (scanResult()?.confidenceWarning) {
+          <div class="alert alert-warning small mb-2" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ t('low_confidence_warning') }}
+            <a href="mailto:support@vtesdecks.com" class="alert-link"
+              >support@vtesdecks.com</a
+            >
+          </div>
+        }
+        <div class="p-3">
+          @if (scanResult()?.found) {
+            @if (selectMode()) {
+              <p class="small text-info mb-2">
+                <i class="bi bi-hand-index-thumb me-1"></i>
+                {{ t('tap_to_select') }}
               </p>
-              }
-              <div class="d-flex align-items-center gap-2">
-                <div class="confidence-bar-sm flex-grow-1">
-                  <div class="confidence-bar" [class]="getConfidenceClass(alt.confidence)"
-                    [style.width.%]="alt.confidence"></div>
+            }
+            @let card = getCardData(scanResult()!.id!);
+            <div
+              class="result-card d-flex gap-3 align-items-start mb-2 p-2"
+              (click)="
+                selectMode()
+                  ? activeModal.close({
+                      id: scanResult()!.id!,
+                      set: scanResult()!.set,
+                    })
+                  : openCardAndDismiss(scanResult()!.id!)
+              "
+              style="cursor: pointer"
+            >
+              <img
+                class="result-image rounded border"
+                [src]="{ id: scanResult()!.id! } | cardImage: scanResult()!.set"
+                alt="Card"
+                style="cursor: zoom-in"
+                (click)="
+                  zoomedImageUrl.set(
+                    getCardImageUrl(scanResult()!.id!, scanResult()!.set)
+                  );
+                  $event.stopPropagation()
+                "
+              />
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  @if (isCrypt(scanResult()!.id!)) {
+                    <i
+                      class="vtes"
+                      style="flex-grow: 0; flex-shrink: 0"
+                      [ngClass]="$safeNavigationMigration($any(card)?.clanIcon)"
+                    ></i>
+                    @if ($any(card)?.pathIcon) {
+                      <i
+                        class="vtes path"
+                        style="flex-grow: 0; flex-shrink: 0"
+                        [ngClass]="
+                          $safeNavigationMigration($any(card)?.pathIcon)
+                        "
+                      ></i>
+                    }
+                  }
+                  <h6 class="fw-bold text-warning mb-0">
+                    {{ $any(card)?.i18n?.name || $any(card)?.name }}
+                  </h6>
+                  @if (isCrypt(scanResult()!.id!) && $any(card)?.group) {
+                    <span
+                      class="badge rounded-pill bg-dark text-white flex-shrink-0"
+                    >
+                      {{
+                        $any(card)?.group === -1
+                          ? 'any'
+                          : 'G' + $any(card)?.group
+                      }}
+                    </span>
+                  }
                 </div>
-                <span class="confidence-label flex-shrink-0" [class]="getConfidenceClass(alt.confidence)">{{
-                  alt.confidence }}%</span>
+                <div class="mb-2 lh-1">
+                  @if (!isCrypt(scanResult()!.id!)) {
+                    @for (clanIcon of $any(card)?.clanIcons; track clanIcon) {
+                      <i class="vtes me-1" [ngClass]="clanIcon"></i>
+                    }
+                  }
+                  @for (
+                    disciplineIcon of card?.disciplineIcons;
+                    track disciplineIcon
+                  ) {
+                    <i class="vtes me-1" [ngClass]="disciplineIcon"></i>
+                  }
+                </div>
+                @if (scanResult()?.set) {
+                  <p class="small fst-italic mb-2 text-muted">
+                    {{ t('set') }}:
+                    <strong>{{
+                      getSetDisplay($safeNavigationMigration(scanResult()?.set))
+                    }}</strong>
+                  </p>
+                }
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="confidence-bar-bg">
+                    <div
+                      class="confidence-bar"
+                      [class]="
+                        getConfidenceClass(scanResult()?.confidence ?? 0)
+                      "
+                      [style.width.%]="scanResult()?.confidence"
+                    ></div>
+                  </div>
+                  <span
+                    class="confidence-label"
+                    [class]="getConfidenceClass(scanResult()?.confidence ?? 0)"
+                  >
+                    {{ scanResult()?.confidence }}%
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+
+            @if (
+              scanResult()?.alternatives &&
+              scanResult()!.alternatives!.length > 0
+            ) {
+              <div>
+                @for (alt of scanResult()?.alternatives; track $index) {
+                  @let altCard = getCardData(alt.id);
+                  <div
+                    class="alt-item"
+                    (click)="
+                      selectMode()
+                        ? activeModal.close({ id: alt.id, set: alt.set })
+                        : openCardAndDismiss(alt.id)
+                    "
+                    style="cursor: pointer"
+                  >
+                    <img
+                      [src]="{ id: alt.id } | cardImage: alt.set"
+                      alt="Alternative"
+                      class="alt-thumb"
+                      style="cursor: zoom-in"
+                      (click)="
+                        zoomedImageUrl.set(getCardImageUrl(alt.id, alt.set));
+                        $event.stopPropagation()
+                      "
+                    />
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        @if (isCrypt(alt.id)) {
+                          <i
+                            class="vtes vtes-small"
+                            style="flex-grow: 0; flex-shrink: 0"
+                            [ngClass]="
+                              $safeNavigationMigration($any(altCard)?.clanIcon)
+                            "
+                          ></i>
+                          @if ($any(altCard)?.pathIcon) {
+                            <i
+                              class="vtes vtes-small path"
+                              style="flex-grow: 0; flex-shrink: 0"
+                              [ngClass]="
+                                $safeNavigationMigration(
+                                  $any(altCard)?.pathIcon
+                                )
+                              "
+                            ></i>
+                          }
+                        }
+                        <div class="fw-bold">
+                          {{ altCard?.i18n?.name || altCard?.name }}
+                        </div>
+                        @if (
+                          isCrypt(alt.id) &&
+                          $safeNavigationMigration($any(altCard)?.group) !==
+                            undefined
+                        ) {
+                          <span
+                            class="badge rounded-pill bg-dark text-white flex-shrink-0"
+                          >
+                            {{
+                              $any(altCard)?.group === -1
+                                ? 'any'
+                                : 'G' + $any(altCard)?.group
+                            }}
+                          </span>
+                        }
+                      </div>
+                      <div class="lh-1 mb-1">
+                        @if (!isCrypt(alt.id)) {
+                          @for (
+                            clanIcon of $any(altCard)?.clanIcons;
+                            track clanIcon
+                          ) {
+                            <i
+                              class="vtes vtes-small me-1"
+                              [ngClass]="clanIcon"
+                            ></i>
+                          }
+                        }
+                        @for (
+                          disciplineIcon of altCard?.disciplineIcons;
+                          track disciplineIcon
+                        ) {
+                          <i
+                            class="vtes vtes-small me-1"
+                            [ngClass]="disciplineIcon"
+                          ></i>
+                        }
+                      </div>
+                      @if (alt.set) {
+                        <p class="small fst-italic mb-1 text-muted">
+                          {{ t('set') }}:
+                          <strong>{{ getSetDisplay(alt.set) }}</strong>
+                        </p>
+                      }
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="confidence-bar-sm flex-grow-1">
+                          <div
+                            class="confidence-bar"
+                            [class]="getConfidenceClass(alt.confidence)"
+                            [style.width.%]="alt.confidence"
+                          ></div>
+                        </div>
+                        <span
+                          class="confidence-label flex-shrink-0"
+                          [class]="getConfidenceClass(alt.confidence)"
+                          >{{ alt.confidence }}%</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          } @else {
+            <div class="text-center text-muted p-4">
+              <i class="bi bi-exclamation-triangle fs-1"></i>
+              <p class="mt-2">{{ scanResult()?.message || t('not_found') }}</p>
+            </div>
           }
         </div>
-        }
-        } @else {
-        <div class="text-center text-muted p-4">
-          <i class="bi bi-exclamation-triangle fs-1"></i>
-          <p class="mt-2">{{ scanResult()?.message || t('not_found') }}</p>
-        </div>
-        }
       </div>
-    </div>
     }
   </div>
 
   <!-- Image zoom overlay -->
-  @if(zoomedImageUrl()){
-  <div class="img-zoom-overlay" (click)="zoomedImageUrl.set(null)" role="button"
-    [attr.aria-label]="'shared.close' | transloco">
-    <img [src]="zoomedImageUrl()" alt="Card zoom" class="img-zoom-card" />
-  </div>
+  @if (zoomedImageUrl()) {
+    <div
+      class="img-zoom-overlay"
+      (click)="zoomedImageUrl.set(null)"
+      role="button"
+      [attr.aria-label]="'shared.close' | transloco"
+    >
+      <img [src]="zoomedImageUrl()" alt="Card zoom" class="img-zoom-card" />
+    </div>
   }
 </ng-container>

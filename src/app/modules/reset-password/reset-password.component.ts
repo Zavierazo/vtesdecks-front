@@ -1,4 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import {
   AbstractControl,
   FormControl,
@@ -24,6 +29,7 @@ import { switchMap, take } from 'rxjs'
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslocoDirective, ReactiveFormsModule, TranslocoPipe],
 })
 export class ResetPasswordComponent implements OnInit {

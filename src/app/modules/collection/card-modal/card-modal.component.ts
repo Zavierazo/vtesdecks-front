@@ -55,7 +55,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
 import { CollectionBinderComponent } from '../collection-cards-list/collection-binder/collection-binder.component'
 import CollectionSetComponent from '../collection-cards-list/collection-set/collection-set.component'

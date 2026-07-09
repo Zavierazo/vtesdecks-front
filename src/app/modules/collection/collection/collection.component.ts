@@ -1,5 +1,10 @@
 import { AsyncPipe, NgClass } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import {
@@ -29,6 +34,7 @@ import { CollectionQuery } from '../state/collection.query'
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslocoDirective,
     CollectionCardsListComponent,

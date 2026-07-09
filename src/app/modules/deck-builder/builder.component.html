@@ -1,150 +1,279 @@
-<main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100" role="main"
-  *transloco="let t; read:'deck_builder'">
+<main
+  class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100"
+  role="main"
+  *transloco="let t; read: 'deck_builder'"
+>
   <div class="row">
     <section class="dark-grey-text col-12">
       <div class="deck-hero mb-3">
         <form class="container-fluid py-3 text-center" [formGroup]="form">
           <div class="justify-content-center align-self-center text-start p-2">
             <div class="form-floating">
-              <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('name')"
-                formControlName="name">
+              <input
+                type="text"
+                class="form-control rounded-3"
+                id="name"
+                [placeholder]="t('name')"
+                formControlName="name"
+              />
               <label for="name">{{ t('name') }}</label>
             </div>
           </div>
           <div class="justify-content-center align-self-center text-start p-2">
-            <app-markdown-textarea [control]="descriptionControl" [placeholder]="t('description_placeholder')"
-              [label]="t('description')" />
+            <app-markdown-textarea
+              [control]="descriptionControl"
+              [placeholder]="t('description_placeholder')"
+              [label]="t('description')"
+            />
           </div>
-          <div class="deck-actions justify-content-center align-self-center px-2 pt-2">
+          <div
+            class="deck-actions justify-content-center align-self-center px-2 pt-2"
+          >
             @if ((deckId$ | async)!!) {
-            <a type="button" class="btn btn-primary m-2" [routerLink]="'/deck/' + (deckId$ | async)!!">
-              <i class="bi bi-eye"></i>
-              {{ t('view') }}
-            </a>
+              <a
+                type="button"
+                class="btn btn-primary m-2"
+                [routerLink]="'/deck/' + (deckId$ | async)!!"
+              >
+                <i class="bi bi-eye"></i>
+                {{ t('view') }}
+              </a>
             }
-            <button type="button" class="btn btn-primary m-2" [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
-              (click)="onOpenInBuilder()" gaEvent="click" gaCategory="clone_in_builder">
+            <button
+              type="button"
+              class="btn btn-primary m-2"
+              [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              (click)="onOpenInBuilder()"
+              gaEvent="click"
+              gaCategory="clone_in_builder"
+            >
               <i class="bi bi-copy me-2"></i>
               {{ t('clone') }}
             </button>
             @let collectionTracker = collectionTracker$ | async;
-            <button class="btn" [ngClass]="{
-                      'btn-outline-primary': !collectionTracker,
-                      'btn-primary': collectionTracker
-                    }" (click)="onCollectionTracker()">
-              <i class="bi me-2" [ngClass]="{
-                      'bi-square': !collectionTracker,
-                      'bi-check-square-fill': collectionTracker
-                    }"></i>{{ t('collection_tracker') }}
+            <button
+              class="btn"
+              [ngClass]="{
+                'btn-outline-primary': !collectionTracker,
+                'btn-primary': collectionTracker,
+              }"
+              (click)="onCollectionTracker()"
+            >
+              <i
+                class="bi me-2"
+                [ngClass]="{
+                  'bi-square': !collectionTracker,
+                  'bi-check-square-fill': collectionTracker,
+                }"
+              ></i
+              >{{ t('collection_tracker') }}
             </button>
             @if (collectionTracker) {
-            <button type="button" class="btn btn-outline-primary m-2" [disabled]="(isDeckEmpty$ | async)!"
-              (click)="onAddMissingToWishlist()">
-              <i class="bi bi-heart me-2"></i>{{ 'wishlist.add_missing_to_wishlist' | transloco }}
-            </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary m-2"
+                [disabled]="(isDeckEmpty$ | async)!"
+                (click)="onAddMissingToWishlist()"
+              >
+                <i class="bi bi-heart me-2"></i
+                >{{ 'wishlist.add_missing_to_wishlist' | transloco }}
+              </button>
             }
-            <button type="button" class="btn btn-outline-primary m-2" [disabled]="!(deckId$ | async)!"
-              (click)="shareDeck()">
+            <button
+              type="button"
+              class="btn btn-outline-primary m-2"
+              [disabled]="!(deckId$ | async)!"
+              (click)="shareDeck()"
+            >
               <i class="bi bi-share"></i>
               {{ t('share') }}
             </button>
-            <button type="button" class="btn btn-outline-primary m-2" (click)="onDraw()" gaEvent="click"
-              gaCategory="clone_in_builder">
+            <button
+              type="button"
+              class="btn btn-outline-primary m-2"
+              (click)="onDraw()"
+              gaEvent="click"
+              gaCategory="clone_in_builder"
+            >
               <i class="bi bi-shuffle me-2"></i>
               {{ t('draw') }}
             </button>
-            <button type="button" class="btn btn-outline-primary m-2" (click)="onPrint()" gaEvent="click"
-              gaCategory="clone_in_builder">
+            <button
+              type="button"
+              class="btn btn-outline-primary m-2"
+              (click)="onPrint()"
+              gaEvent="click"
+              gaCategory="clone_in_builder"
+            >
               <i class="bi bi-printer me-2"></i>
               {{ 'deck_shared.print' | transloco }}
             </button>
-            <button type="button" class="btn btn-outline-primary m-2" [disabled]="(isDeckEmpty$ | async)!"
-              (click)="onHowToBuy()">
+            <button
+              type="button"
+              class="btn btn-outline-primary m-2"
+              [disabled]="(isDeckEmpty$ | async)!"
+              (click)="onHowToBuy()"
+            >
               <i class="bi bi-cart me-2"></i>
               {{ 'shopping_optimizer.button' | transloco }}
             </button>
-            <button type="button" class="btn btn-outline-primary m-2" [ngClass]="{
-              'btn-primary': limitedFormat$ | async,
-              'btn-outline-primary': !(limitedFormat$ | async)
-            }" (click)="openLimitedFormatModal()">
+            <button
+              type="button"
+              class="btn btn-outline-primary m-2"
+              [ngClass]="{
+                'btn-primary': limitedFormat$ | async,
+                'btn-outline-primary': !(limitedFormat$ | async),
+              }"
+              (click)="openLimitedFormatModal()"
+            >
               <i class="bi bi-funnel"></i>
               {{ t('limited_format') }}
             </button>
             <div ngbDropdown container="body" class="d-inline-block m-2">
-              <button id="dropdownImport" type="button" class="btn btn-outline-primary" ngbDropdownToggle>
+              <button
+                id="dropdownImport"
+                type="button"
+                class="btn btn-outline-primary"
+                ngbDropdownToggle
+              >
                 <i class="bi bi-cloud-plus-fill"></i>
                 {{ t('import') }}
               </button>
               <div ngbDropdownMenu aria-labelledby="dropdownImport">
-                <button ngbDropdownItem (click)="openImportAmaranth()">Amaranth</button>
+                <button ngbDropdownItem (click)="openImportAmaranth()">
+                  Amaranth
+                </button>
                 <button ngbDropdownItem (click)="openImportVdb()">VDB</button>
-                <button ngbDropdownItem (click)="openImportText()">{{ t('import_text') }}</button>
-                <button ngbDropdownItem (click)="openImportRecentDecks()">{{ t('import_recent') }}</button>
+                <button ngbDropdownItem (click)="openImportText()">
+                  {{ t('import_text') }}
+                </button>
+                <button ngbDropdownItem (click)="openImportRecentDecks()">
+                  {{ t('import_recent') }}
+                </button>
               </div>
             </div>
             <div ngbDropdown container="body" class="d-inline-block m-2">
-              <button id="dropdownExport" type="button" class="btn btn-outline-primary" ngbDropdownToggle
-                [disabled]="!(saved$ | async)! || !(deckId$ | async)!">
+              <button
+                id="dropdownExport"
+                type="button"
+                class="btn btn-outline-primary"
+                ngbDropdownToggle
+                [disabled]="!(saved$ | async)! || !(deckId$ | async)!"
+              >
                 <i class="bi bi-download"></i>
                 {{ t('export') }}
               </button>
               <div ngbDropdownMenu aria-labelledby="dropdownExport">
                 <div class="dropdown-header">{{ t('file') }}</div>
-                <button ngbDropdownItem class="text-black" (click)="onExportFile('LACKEY')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onExportFile('LACKEY')"
+                >
                   <i class="bi bi-file-earmark me-2"></i>LACKEY
                 </button>
-                <button ngbDropdownItem class="text-black" (click)="onExportFile('JOL')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onExportFile('JOL')"
+                >
                   <i class="bi bi-file-earmark me-2"></i>JOL
                 </button>
-                <button ngbDropdownItem class="text-black" (click)="onExportFile('TWD')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onExportFile('TWD')"
+                >
                   <i class="bi bi-file-earmark me-2"></i>TWD
                 </button>
-                <hr class="dropdown-divider">
+                <hr class="dropdown-divider" />
                 <div class="dropdown-header">{{ t('clipboard') }}</div>
-                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onCopyToClipboard('LACKEY')"
+                >
                   <i class="bi bi-clipboard me-2"></i>LACKEY
                 </button>
-                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onCopyToClipboard('JOL')"
+                >
                   <i class="bi bi-clipboard me-2"></i>JOL
                 </button>
-                <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')">
+                <button
+                  ngbDropdownItem
+                  class="text-black"
+                  (click)="onCopyToClipboard('TWD')"
+                >
                   <i class="bi bi-clipboard me-2"></i>TWD
                 </button>
-
               </div>
             </div>
             @if ((deckId$ | async)!!) {
-            <button type="button" class="btn btn-outline-secondary m-2" (click)="openHistory()">
-              <i class="bi bi-clock-history me-1"></i>
-              {{ t('history') }}
-            </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary m-2"
+                (click)="openHistory()"
+              >
+                <i class="bi bi-clock-history me-1"></i>
+                {{ t('history') }}
+              </button>
             }
             @if ((deckId$ | async)!!) {
-            <div class="input-group d-inline-flex m-2" style="max-width: 320px;">
-              <input type="text" class="form-control" [formControl]="tagLabelControl"
-                [placeholder]="t('tag_version_placeholder')">
-              <button type="button" class="btn btn-primary" [disabled]="(loading$ | async)! || (saved$ | async)!"
-                (click)="saveDeck()">
+              <div
+                class="input-group d-inline-flex m-2"
+                style="max-width: 320px"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControl]="tagLabelControl"
+                  [placeholder]="t('tag_version_placeholder')"
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  [disabled]="(loading$ | async)! || (saved$ | async)!"
+                  (click)="saveDeck()"
+                >
+                  <i class="bi bi-save-fill"></i>
+                  {{ t('save') }}
+                </button>
+              </div>
+            } @else {
+              <button
+                type="button"
+                class="btn btn-primary m-2"
+                [disabled]="(loading$ | async)! || (saved$ | async)!"
+                (click)="saveDeck()"
+              >
                 <i class="bi bi-save-fill"></i>
                 {{ t('save') }}
               </button>
-            </div>
-            } @else {
-            <button type="button" class="btn btn-primary m-2" [disabled]="(loading$ | async)! || (saved$ | async)!"
-              (click)="saveDeck()">
-              <i class="bi bi-save-fill"></i>
-              {{ t('save') }}
-            </button>
             }
             @if ((deckId$ | async)!!) {
-            <button type="button" class="btn btn-danger m-2" (click)="deleteDeck()">
-              <i class="bi bi-trash-fill"></i>
-              {{ t('delete') }}
-            </button>
+              <button
+                type="button"
+                class="btn btn-danger m-2"
+                (click)="deleteDeck()"
+              >
+                <i class="bi bi-trash-fill"></i>
+                {{ t('delete') }}
+              </button>
             }
             <div class="d-flex justify-content-end form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="published" formControlName="published">
-              <label class="ms-1 form-check-label" for="published">{{ t('published') }}</label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="published"
+                formControlName="published"
+              />
+              <label class="ms-1 form-check-label" for="published">{{
+                t('published')
+              }}</label>
               <span [ngbTooltip]="t('published_tooltip')">
                 <i class="ms-1 bi bi-question-circle"></i>
               </span>
@@ -157,65 +286,112 @@
   <div class="col-12 mt-4">
     <div class="deck-section-header">
       <div class="deck-section-header__title">
-        <button type="button" class="btn btn-link p-0 mb-0" (click)="openCryptBuilder()"
-          [attr.aria-label]="'shared.add_to_crypt' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
-            aria-hidden="true"></i></button>
+        <button
+          type="button"
+          class="btn btn-link p-0 mb-0"
+          (click)="openCryptBuilder()"
+          [attr.aria-label]="'shared.add_to_crypt' | transloco"
+        >
+          <i
+            class="bi bi-plus-square btn-icon section-add-btn"
+            aria-hidden="true"
+          ></i>
+        </button>
         <h1 class="mb-0">{{ 'shared.crypt' | transloco }}</h1>
         <span class="circle_number" [title]="'deck.total_crypt' | transloco">
           {{ (cryptSize$ | async)! }}
         </span>
       </div>
       <div class="deck-section-header__actions d-none d-md-flex">
-        <input type="search" class="form-control me-2" style="max-width: 200px" [placeholder]="t('search_in_crypt')"
-          [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
+        <input
+          type="search"
+          class="form-control me-2"
+          style="max-width: 200px"
+          [placeholder]="t('search_in_crypt')"
+          [value]="cryptSearch()"
+          (input)="cryptSearch.set($any($event.target).value)"
+        />
         <ng-container *ngTemplateOutlet="cryptButtons" />
       </div>
     </div>
     <div class="d-md-none mt-3 d-flex justify-content-center">
-      <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_crypt')"
-        [value]="cryptSearch()" (input)="cryptSearch.set($any($event.target).value)" />
+      <input
+        type="search"
+        class="form-control w-auto mx-auto"
+        [placeholder]="t('search_in_crypt')"
+        [value]="cryptSearch()"
+        (input)="cryptSearch.set($any($event.target).value)"
+      />
     </div>
     <div class="d-md-none mt-2 d-flex justify-content-center">
       <ng-container *ngTemplateOutlet="cryptButtons" />
     </div>
   </div>
   <ng-template #cryptButtons>
-    <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-      [options]="displayModeOptions" />
+    <app-toggle-icon
+      [active]="(displayMode$ | async)!"
+      (toggleChange)="onChangeDisplayMode($event)"
+      [options]="displayModeOptions"
+    />
     <div ngbDropdown class="d-inline-block ms-3">
-      <button type="button" class="btn btn-primary" id="dropdownSortByCrypt" ngbDropdownToggle>
+      <button
+        type="button"
+        class="btn btn-primary"
+        id="dropdownSortByCrypt"
+        ngbDropdownToggle
+      >
         <i class="bi bi-sort-alpha-down"></i>
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
         @let cryptSortBy = cryptSortBy$ | async;
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
-          [ngClass]="{'active': cryptSortBy ==='capacity'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByCrypt('capacity')"
+          [ngClass]="{ active: cryptSortBy === 'capacity' }"
+        >
           {{ t('sort_by_capacity') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
-          [ngClass]="{'active': cryptSortBy ==='quantity'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByCrypt('quantity')"
+          [ngClass]="{ active: cryptSortBy === 'quantity' }"
+        >
           {{ t('sort_by_quantity') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': cryptSortBy ==='name'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByCrypt('name')"
+          [ngClass]="{ active: cryptSortBy === 'name' }"
+        >
           {{ t('sort_by_name') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': cryptSortBy ==='clan'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByCrypt('clan')"
+          [ngClass]="{ active: cryptSortBy === 'clan' }"
+        >
           {{ t('sort_by_clan') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByCrypt('group')" [ngClass]="{'active': cryptSortBy ==='group'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByCrypt('group')"
+          [ngClass]="{ active: cryptSortBy === 'group' }"
+        >
           {{ t('sort_by_group') }}
         </button>
       </div>
     </div>
   </ng-template>
   @if ((cryptErrors$ | async)!.length > 0) {
-  <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
-    @for (error of (cryptErrors$ | async)!; track error) {
-    <li class="fw-bold">
-      <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-    </li>
-    }
-  </ul>
+    <ul
+      class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2"
+    >
+      @for (error of (cryptErrors$ | async)!; track error) {
+        <li class="fw-bold">
+          <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+        </li>
+      }
+    </ul>
   }
   <div class="col-12 mt-3">
     <div class="row g-2 justify-content-center">
@@ -241,147 +417,251 @@
   </div>
   <div class="col-12 text-center mt-3">
     <div class="d-flex flex-wrap justify-content-center gap-2">
-      @for (disciplineStat of (cryptDisciplines$ | async)!; track disciplineStat.disciplines) {
-      <h5 class="disc-chip mb-0"
-        [title]="'deck.disciplines_sup_inf' | transloco: { count: disciplineStat.disciplines[0]}">
-        <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-        <span>{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}</span>
-      </h5>
+      @for (
+        disciplineStat of (cryptDisciplines$ | async)!;
+        track disciplineStat.disciplines
+      ) {
+        <h5
+          class="disc-chip mb-0"
+          [title]="
+            'deck.disciplines_sup_inf'
+              | transloco: { count: disciplineStat.disciplines[0] }
+          "
+        >
+          <i
+            class="vtes vtes-big"
+            [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0], true)!"
+          ></i>
+          <span
+            >{{ disciplineStat.superior }}&nbsp;|&nbsp;{{
+              disciplineStat.inferior
+            }}</span
+          >
+        </h5>
       }
     </div>
   </div>
   <div class="col-12 mt-3">
     @if ((cryptList$ | async)!; as cryptList) {
-    @let cryptRec = cryptRecommendations$ | async;
-    @if((displayMode$ |async) === 'grid') {
-    <div class="row m-2 g-2 justify-content-center">
-      @for (crypt of cryptList; track crypt.id) {
-      <div class="col-6 col-md-auto">
-        <app-crypt-grid-card [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
-          [withDelete]="true" [recommended]="cryptRec?.get(crypt.id)" (cardAdded)="addCard($event)"
-          (cardRemoved)="removeCard($event)" [class.considering-card]="crypt.number === 0" />
-      </div>
+      @let cryptRec = cryptRecommendations$ | async;
+      @if ((displayMode$ | async) === 'grid') {
+        <div class="row m-2 g-2 justify-content-center">
+          @for (crypt of cryptList; track crypt.id) {
+            <div class="col-6 col-md-auto">
+              <app-crypt-grid-card
+                [card]="crypt"
+                [cryptSize]="(cryptSize$ | async)!"
+                [withControls]="true"
+                [withDelete]="true"
+                [recommended]="
+                  $safeNavigationMigration(cryptRec?.get(crypt.id))
+                "
+                (cardAdded)="addCard($event)"
+                (cardRemoved)="removeCard($event)"
+                [class.considering-card]="crypt.number === 0"
+              />
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+          @for (crypt of cryptList; track crypt.id) {
+            <ul class="col list-group">
+              <app-crypt
+                [card]="crypt"
+                [cryptSize]="(cryptSize$ | async)!"
+                [withControls]="true"
+                [withDelete]="true"
+                [recommended]="
+                  $safeNavigationMigration(cryptRec?.get(crypt.id))
+                "
+                (cardAdded)="addCard($event)"
+                (cardRemoved)="removeCard($event)"
+                [class.considering-card]="crypt.number === 0"
+              />
+            </ul>
+          }
+        </div>
       }
-    </div>
-    }@else{
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-      @for (crypt of cryptList; track crypt.id) {
-      <ul class="col list-group">
-        <app-crypt [card]="crypt" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [withDelete]="true"
-          [recommended]="cryptRec?.get(crypt.id)" (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)"
-          [class.considering-card]="crypt.number === 0" />
-      </ul>
-      }
-    </div>
-    }
     }
   </div>
   @let rawSuggestions = suggestedCards$ | async;
   <!-- Suggested Crypt -->
-  <app-builder-suggestions [title]="t('suggested_crypt')" [rawCards]="rawSuggestions?.keyCrypt ?? []"
-    [deckCards]="(cryptList$ | async) ?? []" type="crypt" (cardAdded)="addCard($event)"
-    (cardRemoved)="removeCard($event)" />
+  <app-builder-suggestions
+    [title]="t('suggested_crypt')"
+    [rawCards]="rawSuggestions?.keyCrypt ?? []"
+    [deckCards]="(cryptList$ | async) ?? []"
+    type="crypt"
+    (cardAdded)="addCard($event)"
+    (cardRemoved)="removeCard($event)"
+  />
   <div class="col-12 mt-5">
     <div class="deck-section-header">
       <div class="deck-section-header__title">
-        <button type="button" class="btn btn-link p-0 mb-0" (click)="openLibraryBuilder()"
-          [attr.aria-label]="'shared.add_to_library' | transloco"><i class="bi bi-plus-square btn-icon section-add-btn"
-            aria-hidden="true"></i></button>
+        <button
+          type="button"
+          class="btn btn-link p-0 mb-0"
+          (click)="openLibraryBuilder()"
+          [attr.aria-label]="'shared.add_to_library' | transloco"
+        >
+          <i
+            class="bi bi-plus-square btn-icon section-add-btn"
+            aria-hidden="true"
+          ></i>
+        </button>
         <h1 class="mb-0">{{ 'shared.library' | transloco }}</h1>
         <span class="circle_number" [title]="'deck.total_library' | transloco">
           {{ (librarySize$ | async)! }}
         </span>
         <div class="d-flex align-items-center gap-2">
           <div class="costx" [title]="'deck.total_pool_cost' | transloco">
-            {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i class="vtes poolcost"></i>
+            {{ (libraryPoolCost$ | async) ?? 0 }}&nbsp;<i
+              class="vtes poolcost"
+            ></i>
           </div>
           <div class="costx" [title]="'deck.total_blood_cost' | transloco">
-            {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i class="vtes bloodcost"></i>
+            {{ (libraryBloodCost$ | async) ?? 0 }}&nbsp;<i
+              class="vtes bloodcost"
+            ></i>
           </div>
         </div>
       </div>
       <div class="deck-section-header__actions d-none d-md-flex">
-        <input type="search" class="form-control me-2" style="max-width: 200px" [placeholder]="t('search_in_library')"
-          [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
+        <input
+          type="search"
+          class="form-control me-2"
+          style="max-width: 200px"
+          [placeholder]="t('search_in_library')"
+          [value]="librarySearch()"
+          (input)="librarySearch.set($any($event.target).value)"
+        />
         <ng-container *ngTemplateOutlet="libraryButtons" />
       </div>
     </div>
     <div class="d-md-none mt-3 d-flex justify-content-center">
-      <input type="search" class="form-control w-auto mx-auto" [placeholder]="t('search_in_library')"
-        [value]="librarySearch()" (input)="librarySearch.set($any($event.target).value)" />
+      <input
+        type="search"
+        class="form-control w-auto mx-auto"
+        [placeholder]="t('search_in_library')"
+        [value]="librarySearch()"
+        (input)="librarySearch.set($any($event.target).value)"
+      />
     </div>
     <div class="d-md-none mt-2 d-flex justify-content-center">
       <ng-container *ngTemplateOutlet="libraryButtons" />
     </div>
   </div>
   <ng-template #libraryButtons>
-    <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-      [options]="displayModeOptions" />
+    <app-toggle-icon
+      [active]="(displayMode$ | async)!"
+      (toggleChange)="onChangeDisplayMode($event)"
+      [options]="displayModeOptions"
+    />
     <div ngbDropdown class="d-inline-block ms-3">
-      <button type="button" class="btn btn-primary" id="dropdownSortByLibrary" ngbDropdownToggle>
+      <button
+        type="button"
+        class="btn btn-primary"
+        id="dropdownSortByLibrary"
+        ngbDropdownToggle
+      >
         <i class="bi bi-sort-alpha-down"></i>
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
         @let librarySortBy = librarySortBy$ | async;
-        <button ngbDropdownItem (click)="onChangeSortByLibrary('name')" [ngClass]="{'active': librarySortBy ==='name'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByLibrary('name')"
+          [ngClass]="{ active: librarySortBy === 'name' }"
+        >
           {{ t('sort_by_name') }}
         </button>
-        <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
-          [ngClass]="{'active': librarySortBy ==='quantity'}">
+        <button
+          ngbDropdownItem
+          (click)="onChangeSortByLibrary('quantity')"
+          [ngClass]="{ active: librarySortBy === 'quantity' }"
+        >
           {{ t('sort_by_quantity') }}
         </button>
       </div>
     </div>
   </ng-template>
   @if ((libraryErrors$ | async)!.length > 0) {
-  <ul class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2">
-    @for (error of (libraryErrors$ | async)!; track error) {
-    <li class="fw-bold"><i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
-    </li>
-    }
-  </ul>
+    <ul
+      class="list-unstyled text-danger d-flex flex-column align-items-center justify-content-center mt-2"
+    >
+      @for (error of (libraryErrors$ | async)!; track error) {
+        <li class="fw-bold">
+          <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+        </li>
+      }
+    </ul>
   }
   <div class="col-12 text-center mt-3">
     <div class="d-flex flex-wrap justify-content-center gap-2">
-      @for (libraryDiscipline of (libraryDisciplines$ | async)!; track libraryDiscipline.disciplines) {
-      <h5 class="disc-chip mb-0">
-        @if (libraryDiscipline.disciplines.length === 0) {
-        <span [title]="'deck.no_discipline' | transloco">
-          <i class="bi bi-square" style="font-size: 26px;"></i>
-        </span>
-        }
-        @for (disc of libraryDiscipline.disciplines; track disc; let isFirst = $first) {
-        @if (!isFirst) {
-        <span>+</span>
-        }
-        <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disc,false)!" [title]="disc"></i>
-        }
-        <span>{{ libraryDiscipline.inferior }}</span>
-      </h5>
+      @for (
+        libraryDiscipline of (libraryDisciplines$ | async)!;
+        track libraryDiscipline.disciplines
+      ) {
+        <h5 class="disc-chip mb-0">
+          @if (libraryDiscipline.disciplines.length === 0) {
+            <span [title]="'deck.no_discipline' | transloco">
+              <i class="bi bi-square" style="font-size: 26px"></i>
+            </span>
+          }
+          @for (
+            disc of libraryDiscipline.disciplines;
+            track disc;
+            let isFirst = $first
+          ) {
+            @if (!isFirst) {
+              <span>+</span>
+            }
+            <i
+              class="vtes vtes-big"
+              [ngClass]="getDisciplineIcon(disc, false)!"
+              [title]="disc"
+            ></i>
+          }
+          <span>{{ libraryDiscipline.inferior }}</span>
+        </h5>
       }
       @for (libraryClan of (libraryClans$ | async)!; track libraryClan.clans) {
-      <h5 class="disc-chip mb-0">
-        @for (clan of libraryClan.clans; track clan; let isFirst = $first) {
-        @if (!isFirst) {
-        <span>/</span>
-        }
-        <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan"></i>
-        }
-        <span>{{ libraryClan.number }}</span>
-      </h5>
+        <h5 class="disc-chip mb-0">
+          @for (clan of libraryClan.clans; track clan; let isFirst = $first) {
+            @if (!isFirst) {
+              <span>/</span>
+            }
+            <i
+              class="vtes vtes-big"
+              [ngClass]="getClanIcon(clan)!"
+              [title]="clan"
+            ></i>
+          }
+          <span>{{ libraryClan.number }}</span>
+        </h5>
       }
     </div>
   </div>
   <div class="col-12 mt-3">
     @if ((libraryList$ | async)!; as libraryList) {
-    <app-library-list [libraryList]="libraryList" [sortBy]="(librarySortBy$ | async)!"
-      [displayMode]="(displayMode$ |async)!" [withControls]="true"
-      [recommendations]="(libraryRecommendations$ | async) ?? undefined" (cardAdded)="addCard($event)"
-      (cardRemoved)="removeCard($event)" />
+      <app-library-list
+        [libraryList]="libraryList"
+        [sortBy]="(librarySortBy$ | async)!"
+        [displayMode]="(displayMode$ | async)!"
+        [withControls]="true"
+        [recommendations]="(libraryRecommendations$ | async) ?? undefined"
+        (cardAdded)="addCard($event)"
+        (cardRemoved)="removeCard($event)"
+      />
     }
   </div>
   <!-- Suggested Library -->
-  <app-builder-suggestions [title]="t('suggested_library')" [rawCards]="rawSuggestions?.keyLibrary ?? []"
-    [deckCards]="(libraryList$ | async) ?? []" type="library" (cardAdded)="addCard($event)"
-    (cardRemoved)="removeCard($event)" />
+  <app-builder-suggestions
+    [title]="t('suggested_library')"
+    [rawCards]="rawSuggestions?.keyLibrary ?? []"
+    [deckCards]="(libraryList$ | async) ?? []"
+    type="library"
+    (cardAdded)="addCard($event)"
+    (cardRemoved)="removeCard($event)"
+  />
 </main>

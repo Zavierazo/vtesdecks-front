@@ -25,7 +25,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { environment } from '../../../environments/environment'
+import { environment } from '@environments/environment'
 
 import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'

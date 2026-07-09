@@ -9,7 +9,7 @@ import {
 import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import { Observable, retry, tap, timer } from 'rxjs'
-import { environment } from '../environments/environment'
+import { environment } from '@environments/environment'
 import { ToastService } from './services/toast.service'
 import { AuthStore } from './state/auth/auth.store'
 

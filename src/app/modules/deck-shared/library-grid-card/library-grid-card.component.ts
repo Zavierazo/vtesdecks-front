@@ -6,6 +6,7 @@ import {
   input,
   OnInit,
   output,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiArchetypeKeyCard, ApiCard, ApiLibrary } from '@models'
@@ -16,7 +17,7 @@ import { LibraryQuery } from '@state/library/library.query'
 import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badge.component'
@@ -26,6 +27,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   selector: 'app-library-grid-card',
   templateUrl: './library-grid-card.component.html',
   styleUrls: ['./library-grid-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AsyncPipe,
     CardImagePipe,

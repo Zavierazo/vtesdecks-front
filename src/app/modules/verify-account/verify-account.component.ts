@@ -1,4 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -10,6 +15,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component'
   selector: 'app-verify-account',
   templateUrl: './verify-account.component.html',
   styleUrls: ['./verify-account.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [LoadingComponent],
 })
 export class VerifyAccountComponent implements OnInit {
