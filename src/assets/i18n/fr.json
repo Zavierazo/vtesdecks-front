@@ -379,6 +379,7 @@
     "wishlist": "Souhaits",
     "tools": "Outils",
     "table_seating": "Ordre de jeu",
+    "game_timer": "Minuteur de partie",
     "contact": "Contact",
     "login": "Connexion",
     "sign_up": "Inscription",
@@ -426,7 +427,9 @@
     "metagame": "Metagame actuel",
     "android_banner_message": "VTESDecks est maintenant disponible sur Android ! Téléchargez l'app pour une meilleure expérience mobile.",
     "android_banner_install": "Disponible sur Google Play",
-    "user_of_month_title": "Utilisateur du Mois"
+    "user_of_month_title": "Utilisateur du Mois",
+    "table_seating_short": "Placement",
+    "game_timer_short": "Minuteur"
   },
   "import_amaranth": {
     "title": "Importer Amaranth",
@@ -545,6 +548,21 @@
     "supporter": "Membre Patreon",
     "vtes_ai_chat": "Chat VTES AI",
     "new": "Nouveau"
+  },
+  "game_timer": {
+    "title": "Minuteur de partie",
+    "start": "Démarrer",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "reset": "Réinitialiser",
+    "reset_hold": "Maintenez pour réinitialiser",
+    "reset_holding": "Continuez d'appuyer...",
+    "duration": "Durée",
+    "custom_minutes": "Minutes personnalisées",
+    "minutes_short": "min",
+    "edge": "L'Edge",
+    "edge_held": "Vous avez l'Edge",
+    "time_up": "Temps écoulé !"
   },
   "table_seating": {
     "title": "Ordre de jeu",

@@ -15,7 +15,9 @@ import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { GameTimerComponent } from '@shared/components/game-timer/game-timer.component'
 import { LoginComponent } from '@shared/components/login/login.component'
+import { TableSeatingComponent } from '@shared/components/table-seating/table-seating.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -137,5 +139,13 @@ export class HomeComponent implements OnInit {
 
   openLoginModal() {
     this.modalService.open(LoginComponent)
+  }
+
+  openTableSeatingModal() {
+    this.modalService.open(TableSeatingComponent, { size: 'xl' })
+  }
+
+  openGameTimerModal() {
+    this.modalService.open(GameTimerComponent, { fullscreen: true })
   }
 }

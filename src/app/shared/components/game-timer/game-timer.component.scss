@@ -1,0 +1,165 @@
+.modal-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-timer {
+  width: 100%;
+  max-width: 480px;
+}
+
+.timer-card {
+  background: var(--app-surface-2);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1rem;
+  padding: 2rem 1rem;
+  text-align: center;
+
+  .timer-display {
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(4rem, 18vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &.almost-up .timer-display {
+    color: var(--bs-danger);
+    animation: game-timer-pulse 1s ease-in-out infinite;
+  }
+
+  &.finished {
+    border-color: var(--bs-danger);
+
+    .timer-display {
+      color: var(--bs-danger);
+    }
+  }
+}
+
+@keyframes game-timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.duration-editor {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .duration-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+
+    .btn {
+      flex: 1 1 0;
+      white-space: nowrap;
+      padding-inline: 0.5rem;
+    }
+
+    .custom-duration {
+      flex: 1.4 1 0;
+      width: auto;
+      flex-wrap: nowrap;
+
+      .form-control {
+        min-width: 0;
+        padding-inline: 0.5rem;
+        text-align: center;
+        // Spinners would steal the little width this input has
+        appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          appearance: none;
+          margin: 0;
+        }
+      }
+
+      .input-group-text {
+        padding-inline: 0.5rem;
+      }
+    }
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0;
+
+  .primary-action {
+    flex: 1;
+  }
+}
+
+// Reset needs a deliberate 3s press; the fill mirrors the hold progress
+.reset-hold {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+
+  .reset-hold-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    // Darkens the filled portion; white label stays readable over both halves
+    background: rgba(0, 0, 0, 0.28);
+  }
+
+  .reset-hold-label {
+    position: relative;
+  }
+
+  // The pointer necessarily hovers/actives the button while held, so those
+  // Bootstrap states must not repaint it
+  &.holding,
+  &.holding:hover,
+  &.holding:focus,
+  &.holding:active {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+    color: #fff;
+  }
+
+  &.holding .reset-hold-fill {
+    width: 100%;
+    transition: width var(--reset-hold-ms, 2000ms) linear;
+  }
+}
+
+.edge-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 2px solid var(--bs-border-color);
+  background: var(--app-surface-2);
+  color: var(--bs-secondary-color);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  .edge-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  &.active {
+    border-color: var(--bs-warning);
+    background: rgba(var(--bs-warning-rgb), 0.15);
+    color: var(--bs-warning-text-emphasis);
+  }
+}

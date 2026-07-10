@@ -201,6 +201,27 @@
                 <span>{{ 'shared.proxy_generator' | transloco }}</span>
               </a>
             </div>
+            <div class="col-6 col-md-3">
+              <div class="hero-card hero-card-split bg-secondary text-white">
+                <button
+                  type="button"
+                  class="hero-split-half text-white"
+                  (click)="openTableSeatingModal()"
+                >
+                  <i class="bi bi-people-fill"></i>
+                  <span>{{ 'home.table_seating_short' | transloco }}</span>
+                </button>
+                <div class="hero-split-divider"></div>
+                <button
+                  type="button"
+                  class="hero-split-half text-white"
+                  (click)="openGameTimerModal()"
+                >
+                  <i class="bi bi-stopwatch-fill"></i>
+                  <span>{{ 'home.game_timer_short' | transloco }}</span>
+                </button>
+              </div>
+            </div>
             <!-- Disabled AI chat -->
             <!-- <div class="col-6 col-md-3">
               <a routerLink="/vtes-ai" class="hero-card bg-secondary text-white position-relative">

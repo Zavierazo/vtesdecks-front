@@ -379,6 +379,7 @@
     "wishlist": "Wishlist",
     "tools": "Tools",
     "table_seating": "Table Seating",
+    "game_timer": "Game Timer",
     "contact": "Contact",
     "login": "Login",
     "sign_up": "Sign-up",
@@ -426,7 +427,9 @@
     "metagame": "Current Metagame",
     "android_banner_message": "VTESDecks is now available on Android! Get the app for a better mobile experience.",
     "android_banner_install": "Get it on Google Play",
-    "user_of_month_title": "User of the Month"
+    "user_of_month_title": "User of the Month",
+    "table_seating_short": "Seating",
+    "game_timer_short": "Timer"
   },
   "import_amaranth": {
     "title": "Import Amaranth",
@@ -545,6 +548,21 @@
     "supporter": "Patreon Member",
     "vtes_ai_chat": "VTES AI Chat",
     "new": "New"
+  },
+  "game_timer": {
+    "title": "Game Timer",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "reset": "Reset",
+    "reset_hold": "Hold to reset",
+    "reset_holding": "Keep holding...",
+    "duration": "Duration",
+    "custom_minutes": "Custom minutes",
+    "minutes_short": "min",
+    "edge": "The Edge",
+    "edge_held": "You have the Edge",
+    "time_up": "Time's up!"
   },
   "table_seating": {
     "title": "Table Seating",

@@ -127,6 +127,9 @@
           text-decoration: none;
           padding: 0.5rem 1rem;
           transition: background-color 0.2s ease;
+          background: transparent;
+          border: 0;
+          width: 100%;
 
           i {
             font-size: 1.6rem;

@@ -379,6 +379,7 @@
     "wishlist": "Desejos",
     "tools": "Ferramentas",
     "table_seating": "Assentamento de mesa",
+    "game_timer": "Temporizador de partida",
     "contact": "Contato",
     "login": "Conectar",
     "sign_up": "Cadastrar",
@@ -426,7 +427,9 @@
     "metagame": "Metajogo Atual",
     "android_banner_message": "VTESDecks já está disponível no Android! Baixe o app para uma melhor experiência móvel.",
     "android_banner_install": "Disponível no Google Play",
-    "user_of_month_title": "Utilizador do Mês"
+    "user_of_month_title": "Utilizador do Mês",
+    "table_seating_short": "Assentos",
+    "game_timer_short": "Cronômetro"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -545,6 +548,21 @@
     "new": "Novo",
     "supporter": "Membro no Patreon",
     "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente."
+  },
+  "game_timer": {
+    "title": "Temporizador de partida",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "reset": "Reiniciar",
+    "reset_hold": "Mantenha pressionado para reiniciar",
+    "reset_holding": "Continue pressionando...",
+    "duration": "Duração",
+    "custom_minutes": "Minutos personalizados",
+    "minutes_short": "min",
+    "edge": "O Edge",
+    "edge_held": "Você tem o Edge",
+    "time_up": "O tempo acabou!"
   },
   "table_seating": {
     "title": "Assentamento de mesa",

@@ -379,6 +379,7 @@
     "wishlist": "Deseos",
     "tools": "Herramientas",
     "table_seating": "Asignación de asientos",
+    "game_timer": "Temporizador de partida",
     "contact": "Contacto",
     "login": "Iniciar sesión",
     "sign_up": "Registrarse",
@@ -426,7 +427,9 @@
     "metagame": "Metajuego Actual",
     "android_banner_message": "¡VTESDecks ya está disponible en Android! Descarga la app para una mejor experiencia móvil.",
     "android_banner_install": "Disponible en Google Play",
-    "user_of_month_title": "Usuario del Mes"
+    "user_of_month_title": "Usuario del Mes",
+    "table_seating_short": "Asientos",
+    "game_timer_short": "Cronómetro"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -545,6 +548,21 @@
     "vtes_ai_chat": "Chat IA de VTES",
     "new": "Nuevo",
     "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo."
+  },
+  "game_timer": {
+    "title": "Temporizador de partida",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "resume": "Reanudar",
+    "reset": "Reiniciar",
+    "reset_hold": "Mantén pulsado para reiniciar",
+    "reset_holding": "Sigue pulsando...",
+    "duration": "Duración",
+    "custom_minutes": "Minutos personalizados",
+    "minutes_short": "min",
+    "edge": "El Edge",
+    "edge_held": "Tienes el Edge",
+    "time_up": "¡Se acabó el tiempo!"
   },
   "table_seating": {
     "title": "Asignación de asientos",

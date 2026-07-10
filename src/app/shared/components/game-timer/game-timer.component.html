@@ -1,0 +1,121 @@
+<ng-container *transloco="let t; prefix: 'game_timer'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('title') }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="game-timer">
+      <div
+        class="timer-card"
+        [class.almost-up]="almostUp()"
+        [class.finished]="finished()"
+      >
+        <div class="timer-display">{{ display() }}</div>
+        @if (finished()) {
+          <div class="time-up text-danger fw-bold fs-4">{{ t('time_up') }}</div>
+        }
+      </div>
+
+      @if (status() === 'idle') {
+        <div class="duration-editor">
+          <span class="duration-label text-secondary">{{ t('duration') }}</span>
+          <div class="duration-row">
+            @for (preset of presets; track preset) {
+              <button
+                type="button"
+                class="btn"
+                [class.btn-primary]="durationMinutes() === preset"
+                [class.btn-outline-primary]="durationMinutes() !== preset"
+                (click)="onSelectPreset(preset)"
+              >
+                {{ preset }} {{ t('minutes_short') }}
+              </button>
+            }
+            <div class="custom-duration input-group">
+              <input
+                type="number"
+                class="form-control"
+                inputmode="numeric"
+                min="1"
+                max="600"
+                [value]="durationMinutes()"
+                (change)="onCustomMinutes($event)"
+                [attr.aria-label]="t('custom_minutes')"
+              />
+              <span class="input-group-text">{{ t('minutes_short') }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="controls">
+        <button
+          type="button"
+          class="btn btn-lg primary-action"
+          [class.btn-primary]="status() !== 'running'"
+          [class.btn-warning]="status() === 'running'"
+          (click)="onPrimaryAction()"
+        >
+          @switch (status()) {
+            @case ('idle') {
+              <i aria-hidden="true" class="bi bi-play-fill"></i> {{ t('start') }}
+            }
+            @case ('running') {
+              <i aria-hidden="true" class="bi bi-pause-fill"></i>
+              {{ t('pause') }}
+            }
+            @case ('paused') {
+              <i aria-hidden="true" class="bi bi-play-fill"></i>
+              {{ t('resume') }}
+            }
+            @case ('finished') {
+              <i aria-hidden="true" class="bi bi-arrow-counterclockwise"></i>
+              {{ t('reset') }}
+            }
+          }
+        </button>
+        @if (status() === 'running' || status() === 'paused') {
+          <button
+            type="button"
+            class="btn btn-lg btn-outline-secondary reset-hold"
+            [class.holding]="resetHolding()"
+            [style.--reset-hold-ms.ms]="resetHoldMs"
+            (pointerdown)="onResetHoldStart()"
+            (pointerup)="onResetHoldEnd()"
+            (pointerleave)="onResetHoldEnd()"
+            (pointercancel)="onResetHoldEnd()"
+            (keydown.enter)="onResetHoldStart()"
+            (keydown.space)="onResetHoldStart()"
+            (keyup)="onResetHoldEnd()"
+            (blur)="onResetHoldEnd()"
+          >
+            <span class="reset-hold-fill" aria-hidden="true"></span>
+            <span class="reset-hold-label">
+              <i aria-hidden="true" class="bi bi-arrow-counterclockwise"></i>
+              {{ resetHolding() ? t('reset_holding') : t('reset_hold') }}
+            </span>
+          </button>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="edge-card"
+        role="switch"
+        [attr.aria-checked]="hasEdge()"
+        [class.active]="hasEdge()"
+        (click)="onToggleEdge()"
+      >
+        <i aria-hidden="true" class="bi bi-lightning-fill bi-fs-2x"></i>
+        <span class="edge-label">
+          {{ hasEdge() ? t('edge_held') : t('edge') }}
+        </span>
+      </button>
+    </div>
+  </div>
+</ng-container>

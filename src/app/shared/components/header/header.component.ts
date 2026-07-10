@@ -25,6 +25,7 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
 import { IsLoggedDirective } from '../../directives/is-logged.directive'
 import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component'
+import { GameTimerComponent } from '../game-timer/game-timer.component'
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
 import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
@@ -109,6 +110,11 @@ export class HeaderComponent implements OnInit {
   openTableSeatingModal() {
     this.isCollapsed = true
     this.modalService.open(TableSeatingComponent, { size: 'xl' })
+  }
+
+  openGameTimerModal() {
+    this.isCollapsed = true
+    this.modalService.open(GameTimerComponent, { fullscreen: true })
   }
 
   openSearchModal() {
