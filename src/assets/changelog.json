@@ -3,6 +3,7 @@
     "version": "2.74.0",
     "date": "xxth July, 2026",
     "changes": [
+      "The <strong>comment and deck description editor</strong> got a major upgrade: type <strong>[[</strong> to autocomplete cards, clans and disciplines as you write, search and insert cards from the new toolbar button, and embed YouTube videos by simply pasting the link. On wide screens the Deck Builder shows a live side-by-side preview of your text, and Ctrl+B, Ctrl+I and Ctrl+K formatting shortcuts now work too.",
       "New <strong>Card image printing</strong> setting in your profile: choose whether card images show the newest printing (default) or the first printing of each card.",
       "New <strong>Game Timer</strong>: a full screen countdown (2 hours by default, or any duration you pick) with pause and resume, plus an Edge indicator you can tap to remember you hold the Edge. It survives an accidental page reload, keeps your screen awake while it runs.",
       "Clicking a card in your Collection or Wishlist now opens the full card detail view instead of the edit dialog. Quick edits are one click away with the new pencil button on every row, and you can still click the quantity cell to change it inline.",

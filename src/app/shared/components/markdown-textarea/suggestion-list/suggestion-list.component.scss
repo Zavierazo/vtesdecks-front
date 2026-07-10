@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.dropdown-item {
+  code {
+    color: inherit;
+  }
+
+  // The global i.vtes rule sets flex-grow: 1, which stretches icons in this flex row
+  i.vtes {
+    flex-grow: 0;
+  }
+}
