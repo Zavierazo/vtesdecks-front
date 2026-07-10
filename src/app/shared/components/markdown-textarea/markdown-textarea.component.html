@@ -124,8 +124,8 @@
     <div class="form-floating editor-pane">
       <textarea #ref class="form-control w-vw-100 markdown-textarea" id="description" type="text"
         [placeholder]="placeholderWithExample" [formControl]="control()" (input)="onTextareaInput()"
-        (click)="onTextareaClick()" (keydown)="onTextareaKeydown($event)" (keyup)="onTextareaKeyup($event)"
-        (blur)="onTextareaBlur()"></textarea>
+        (paste)="onTextareaPaste($event)" (click)="onTextareaClick()" (keydown)="onTextareaKeydown($event)"
+        (keyup)="onTextareaKeyup($event)" (blur)="onTextareaBlur()"></textarea>
       <label for="description">{{ label() }}</label>
       @if(inlineOpen()){
       <div class="dropdown-menu show markdown-suggestions" [style.top.px]="inlinePos().top"

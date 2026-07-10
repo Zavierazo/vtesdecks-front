@@ -28,6 +28,7 @@ import {
   Clan,
   DISCIPLINE_LIST,
   Discipline,
+  extractYoutubeId,
   getCaretCoordinates,
 } from '@utils'
 import { Subject, debounceTime, of, switchMap, tap } from 'rxjs'
@@ -129,6 +130,12 @@ export class MarkdownTextareaComponent
   private inlinePrefixItems: MarkdownSuggestion[] = []
   private inlineAwaitingCards = false
   private readonly inlineCardSearch$ = new Subject<string>()
+
+  // Pasted YouTube URL embed suggestion
+  private pendingPasteSuggestion = false
+  private pasteYoutubeId?: string
+  private pasteStart = 0
+  private pasteEnd = 0
 
   constructor() {
     this.cardSearchControl.valueChanges
@@ -399,7 +406,58 @@ export class MarkdownTextareaComponent
 
   // Inline [[ autocomplete
   onTextareaInput(): void {
+    if (this.pendingPasteSuggestion) {
+      this.pendingPasteSuggestion = false
+      this.openPasteSuggestion()
+      return
+    }
     this.updateInlineSuggestions()
+  }
+
+  onTextareaPaste(event: ClipboardEvent): void {
+    const textArea = this.textArea
+    const text = event.clipboardData?.getData('text')
+    if (!textArea || !text) {
+      return
+    }
+    const trimmed = text.trim()
+    // Only offer the embed when the paste is just a YouTube URL (or video ID)
+    if (/\s/.test(trimmed)) {
+      return
+    }
+    const videoId = extractYoutubeId(trimmed)
+    if (!videoId) {
+      return
+    }
+    // The paste is applied after this handler; the pasted text will occupy
+    // the range starting at the current selection start.
+    const normalized = text.replace(/\r\n/g, '\n')
+    const leading = normalized.length - normalized.trimStart().length
+    const start = textArea.selectionStart
+    this.pasteYoutubeId = videoId
+    this.pasteStart = start + leading
+    this.pasteEnd = start + leading + trimmed.length
+    this.pendingPasteSuggestion = true
+  }
+
+  private openPasteSuggestion(): void {
+    if (!this.pasteYoutubeId) {
+      return
+    }
+    this.inlineTokenStart = this.pasteStart
+    this.inlineTerm.set('')
+    this.openInline(
+      [
+        {
+          kind: 'paste-youtube',
+          label: `youtube:${this.pasteYoutubeId}`,
+          insert: `youtube:${this.pasteYoutubeId}`,
+          icons: [],
+          descriptionKey: 'embed_pasted_youtube',
+        },
+      ],
+      'no_results',
+    )
   }
 
   onTextareaClick(): void {
@@ -475,6 +533,14 @@ export class MarkdownTextareaComponent
   onInlinePick(item: MarkdownSuggestion): void {
     const textArea = this.textArea
     if (!textArea) {
+      return
+    }
+    if (item.kind === 'paste-youtube') {
+      this.insertAtCaret(`[[${item.insert}]]`, {
+        replaceFrom: this.pasteStart,
+        replaceTo: this.pasteEnd,
+      })
+      this.closeInline()
       return
     }
     const caret = textArea.selectionStart

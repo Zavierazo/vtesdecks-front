@@ -905,6 +905,7 @@
     "youtube": "Insérer une vidéo YouTube",
     "youtube_url_label": "URL ou ID de la vidéo YouTube",
     "youtube_invalid": "Saisissez une URL ou un ID YouTube valide",
+    "embed_pasted_youtube": "Intégrer la vidéo YouTube collée",
     "insert": "Insérer",
     "cancel": "Annuler",
     "split_view": "Aperçu côte à côte",

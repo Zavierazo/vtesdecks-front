@@ -11,6 +11,9 @@
     @if(item.kind === 'prefix'){
     <code>{{ item.label }}</code>
     <span class="text-body-secondary small ms-auto">{{ t(item.descriptionKey!) }}</span>
+    } @else if(item.kind === 'paste-youtube'){
+    <i class="bi bi-youtube"></i>
+    <span class="text-truncate">{{ t(item.descriptionKey!) }}</span>
     } @else {
     <ngb-highlight class="text-truncate" [result]="item.label" [term]="term()" />
     }

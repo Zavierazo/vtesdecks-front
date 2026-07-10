@@ -85,6 +85,73 @@ describe('Markdown editor', () => {
     cy.get(TEXTAREA).invoke('val').should('contain', '[[youtube:IxX_QHay02M]]')
   })
 
+  it('offers to embed a pasted YouTube URL', () => {
+    const url = 'https://youtu.be/IxX_QHay02M'
+    cy.get(TEXTAREA).click()
+    cy.get(TEXTAREA).type('Watch this: ')
+    // Synthetic paste: fire the paste event, then apply the text + input event
+    // the way the browser would (Cypress cannot perform a native paste).
+    cy.get(TEXTAREA).then(($ta) => {
+      const textArea = $ta[0] as HTMLTextAreaElement
+      const dataTransfer = new DataTransfer()
+      dataTransfer.setData('text/plain', url)
+      textArea.dispatchEvent(
+        new ClipboardEvent('paste', {
+          clipboardData: dataTransfer,
+          bubbles: true,
+          cancelable: true,
+        }),
+      )
+      const setter = Object.getOwnPropertyDescriptor(
+        HTMLTextAreaElement.prototype,
+        'value',
+      )!.set!
+      setter.call(textArea, textArea.value + url)
+      textArea.setSelectionRange(
+        textArea.value.length,
+        textArea.value.length,
+      )
+      textArea.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+    cy.get(SUGGESTIONS).should('be.visible')
+    cy.get(`${SUGGESTIONS} .dropdown-item`).should(($items) => {
+      expect($items.text()).to.match(/embed/i)
+    })
+    cy.get(TEXTAREA).type('{enter}')
+    cy.get(TEXTAREA)
+      .invoke('val')
+      .should('eq', 'Watch this: [[youtube:IxX_QHay02M]]')
+    cy.get(SUGGESTIONS).should('not.exist')
+  })
+
+  it('keeps a pasted YouTube URL as plain text when dismissed', () => {
+    const url = 'https://youtu.be/IxX_QHay02M'
+    cy.get(TEXTAREA).click()
+    cy.get(TEXTAREA).then(($ta) => {
+      const textArea = $ta[0] as HTMLTextAreaElement
+      const dataTransfer = new DataTransfer()
+      dataTransfer.setData('text/plain', url)
+      textArea.dispatchEvent(
+        new ClipboardEvent('paste', {
+          clipboardData: dataTransfer,
+          bubbles: true,
+          cancelable: true,
+        }),
+      )
+      const setter = Object.getOwnPropertyDescriptor(
+        HTMLTextAreaElement.prototype,
+        'value',
+      )!.set!
+      setter.call(textArea, url)
+      textArea.setSelectionRange(url.length, url.length)
+      textArea.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+    cy.get(SUGGESTIONS).should('be.visible')
+    cy.get(TEXTAREA).type('{esc}')
+    cy.get(SUGGESTIONS).should('not.exist')
+    cy.get(TEXTAREA).invoke('val').should('eq', url)
+  })
+
   it('rejects an invalid YouTube URL', () => {
     cy.get('app-markdown-textarea i.bi-youtube').first().click()
     cy.get(SEL.modal).should('be.visible')

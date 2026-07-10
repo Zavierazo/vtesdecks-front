@@ -9,7 +9,12 @@ import {
 } from '@utils'
 import { Observable, combineLatest, map } from 'rxjs'
 
-export type MarkdownSuggestionKind = 'card' | 'clan' | 'discipline' | 'prefix'
+export type MarkdownSuggestionKind =
+  | 'card'
+  | 'clan'
+  | 'discipline'
+  | 'prefix'
+  | 'paste-youtube'
 
 export interface MarkdownSuggestion {
   kind: MarkdownSuggestionKind
