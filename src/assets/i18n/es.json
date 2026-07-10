@@ -569,7 +569,11 @@
     "password_not_same": "No puede ser la misma que una contraseña anterior",
     "save": "Guardar",
     "error": "Se produjo un error al actualizar su configuración.",
-    "security_settings": "Configuración de seguridad"
+    "security_settings": "Configuración de seguridad",
+    "card_printing": "Impresión de las imágenes de cartas",
+    "card_printing_help": "Qué impresión se muestra en las imágenes de cartas cuando no hay una expansión concreta seleccionada. La primera impresión tiene prioridad sobre los escaneos traducidos.",
+    "card_printing_newest": "Impresión más reciente",
+    "card_printing_first": "Primera impresión"
   },
   "user_public_profile": {
     "deck": "mazo",

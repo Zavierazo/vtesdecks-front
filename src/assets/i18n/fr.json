@@ -569,7 +569,11 @@
     "password_not_same": "Ne peut pas être identique à un précédent mot de passe",
     "save": "Enregistrer",
     "error": "Une erreur est survenue lors de la mise à jour de vos paramètres.",
-    "security_settings": "Paramètres de sécurité"
+    "security_settings": "Paramètres de sécurité",
+    "card_printing": "Impression des images de cartes",
+    "card_printing_help": "Quelle impression est affichée pour les images de cartes lorsqu'aucune extension spécifique n'est sélectionnée. La première impression a priorité sur les scans traduits.",
+    "card_printing_newest": "Impression la plus récente",
+    "card_printing_first": "Première impression"
   },
   "user_public_profile": {
     "deck": "deck",

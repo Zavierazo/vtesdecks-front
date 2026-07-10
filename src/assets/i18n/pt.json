@@ -569,7 +569,11 @@
     "password_not_same": "Não pode ser a mesma que a senha anterior",
     "save": "Salvar",
     "error": "Ocorreu um erro ao atualizar suas configurações.",
-    "security_settings": "Configurações de segurança"
+    "security_settings": "Configurações de segurança",
+    "card_printing": "Impressão das imagens de cartas",
+    "card_printing_help": "Qual impressão é mostrada nas imagens de cartas quando nenhuma expansão específica está selecionada. A primeira impressão tem prioridade sobre os escaneamentos traduzidos.",
+    "card_printing_newest": "Impressão mais recente",
+    "card_printing_first": "Primeira impressão"
   },
   "user_public_profile": {
     "deck": "baralho",

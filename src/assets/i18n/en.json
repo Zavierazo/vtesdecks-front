@@ -569,7 +569,11 @@
     "password_not_same": "Can't be the same as a previous password",
     "save": "Save",
     "error": "An error occurred while updating your settings.",
-    "security_settings": "Security Settings"
+    "security_settings": "Security Settings",
+    "card_printing": "Card image printing",
+    "card_printing_help": "Which printing is shown for card images when no specific set is selected. First printing takes precedence over localized card scans.",
+    "card_printing_newest": "Newest printing",
+    "card_printing_first": "First printing"
   },
   "user_public_profile": {
     "deck": "deck",

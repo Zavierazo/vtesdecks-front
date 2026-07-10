@@ -133,8 +133,13 @@
               style="cursor: pointer"
             >
               <img
+                #resultImage
                 class="result-image rounded border"
                 [src]="{ id: scanResult()!.id! } | cardImage: scanResult()!.set"
+                (error)="
+                  resultImage.src =
+                    cdnDomain + '/img/cards/' + scanResult()!.id! + '.jpg'
+                "
                 alt="Card"
                 style="cursor: zoom-in"
                 (click)="
@@ -235,7 +240,11 @@
                     style="cursor: pointer"
                   >
                     <img
+                      #altImage
                       [src]="{ id: alt.id } | cardImage: alt.set"
+                      (error)="
+                        altImage.src = cdnDomain + '/img/cards/' + alt.id + '.jpg'
+                      "
                       alt="Alternative"
                       class="alt-thumb"
                       style="cursor: zoom-in"

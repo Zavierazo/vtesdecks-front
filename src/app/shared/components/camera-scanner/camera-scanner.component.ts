@@ -20,6 +20,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
 import { isCryptId } from '@utils'
+import { environment } from '@environments/environment'
 import { catchError, of, tap } from 'rxjs'
 import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
 import { LibraryCardComponent } from '@deck-shared/library-card/library-card.component'
@@ -33,8 +34,11 @@ type AppState = 'idle' | 'camera' | 'scanning' | 'result'
   styleUrls: ['./camera-scanner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, TranslocoDirective, TranslocoPipe, CardImagePipe],
+  providers: [CardImagePipe],
 })
 export class CameraScannerComponent implements AfterViewInit, OnDestroy {
+  cdnDomain = environment.cdnDomain
+
   activeModal = inject(NgbActiveModal)
   private modalService = inject(NgbModal)
   private apiDataService = inject(ApiDataService)
@@ -312,7 +316,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private cardImagePipe = new CardImagePipe()
+  private cardImagePipe = inject(CardImagePipe)
 
   isCrypt(cardId: number): boolean {
     return isCryptId(cardId)

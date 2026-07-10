@@ -3,6 +3,7 @@
     "version": "2.74.0",
     "date": "xxth July, 2026",
     "changes": [
+      "New <strong>Card image printing</strong> setting in your profile: choose whether card images show the newest printing (default) or the first printing of each card.",
       "Clicking a card in your Collection or Wishlist now opens the full card detail view instead of the edit dialog. Quick edits are one click away with the new pencil button on every row, and you can still click the quantity cell to change it inline.",
       "The <strong>How many do I own?</strong> panel on every card is now more useful: a new <strong>+</strong> button adds the card to your collection without leaving the card view, each owned copy has an edit shortcut.",
       "Minor bug fixes and performance improvements."

@@ -184,7 +184,8 @@
                 <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
               </span>
               <ng-template #imgPopover>
-                <img class="img-popover" [src]="card | cardImage" [alt]="cardName" />
+                <img #image class="img-popover" [src]="card | cardImage" [alt]="cardName"
+                  (error)="image.src = cdnDomain + '/img/cards/' + card.id + '.jpg'" />
               </ng-template>
               }
               }
@@ -261,7 +262,8 @@
                 <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
               </span>
               <ng-template #imgPopover>
-                <img class="img-popover" [src]="card | cardImage" [alt]="cardName" />
+                <img #image class="img-popover" [src]="card | cardImage" [alt]="cardName"
+                  (error)="image.src = cdnDomain + '/img/cards/' + card.id + '.jpg'" />
               </ng-template>
               }
 

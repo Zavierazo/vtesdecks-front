@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
+import { environment } from '@environments/environment'
 import {
   ApiAiAskAsyncRequest,
   ApiAiAskAsyncResponse,
@@ -43,7 +44,6 @@ import {
   MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
-import { environment } from '@environments/environment'
 import { SessionStorageService } from './session-storage.service'
 
 @Injectable({
@@ -560,6 +560,16 @@ export class ApiDataService {
   ): Observable<ApiCollectionCardStats> {
     return this.httpClient.get<ApiCollectionCardStats>(
       `${environment.api.baseUrl}/user/collections/cards/${id}/stats?summary=${summary}`,
+    )
+  }
+
+  getCardCollectionStatsBulk(
+    cardIds: number[],
+    summary: boolean,
+  ): Observable<ApiCollectionCardStats[]> {
+    return this.httpClient.post<ApiCollectionCardStats[]>(
+      `${environment.api.baseUrl}/user/collections/cards/stats`,
+      { cardIds, summary },
     )
   }
 
