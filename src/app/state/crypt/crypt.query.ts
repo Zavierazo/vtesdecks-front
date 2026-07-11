@@ -234,8 +234,11 @@ export class CryptQuery {
     return {
       name: '',
       clans: [],
+      notClans: [],
       disciplines: [],
       superiorDisciplines: [],
+      notDisciplines: [],
+      disciplineMode: 'and',
       groupSlider: [1, this.getMaxGroup()],
       capacitySlider: [1, this.getMaxCapacity()],
       title: '',

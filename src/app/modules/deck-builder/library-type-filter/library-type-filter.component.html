@@ -1,7 +1,32 @@
+@if (showAndOr || allowExclude) {
+<div class="d-flex flex-wrap align-items-center gap-2 mb-1 w-100 mode-controls">
+  @if (showAndOr) {
+  <div class="btn-group btn-group-sm" role="group">
+    <button type="button" class="btn" [class.btn-primary]="mode === 'and'"
+      [class.btn-outline-secondary]="mode !== 'and'" (click)="setMode('and')"
+      [title]="'shared.filter_match_all_title' | transloco">
+      {{ 'shared.filter_match_all' | transloco }}
+    </button>
+    <button type="button" class="btn" [class.btn-primary]="mode === 'or'"
+      [class.btn-outline-secondary]="mode !== 'or'" (click)="setMode('or')"
+      [title]="'shared.filter_match_any_title' | transloco">
+      {{ 'shared.filter_match_any' | transloco }}
+    </button>
+  </div>
+  }
+  @if (allowExclude) {
+  <small class="text-body-secondary filter-hint">
+    <i class="bi bi-slash-circle"></i>
+    {{ (isMobileOrTablet ? 'shared.filter_exclude_hint_mobile' : 'shared.filter_exclude_hint_desktop') | transloco }}
+  </small>
+  }
+</div>
+}
 @for (type of typeList; track type) {
-<span (click)="toggle(type.name)" [title]="type.label | transloco">
+<span (click)="toggle(type.name)" appExcludeGesture (excludeGesture)="onExcludeGesture(type.name)"
+  [title]="type.label | transloco" [ngClass]="{ 'excluded': isExcluded(type.name) }">
   <i class="btn-icon vtes vtes-big" [class]="type.icon" [ngClass]="{
-        'non-selected': !isSelected(type.name),
+        'non-selected': !isSelected(type.name) && !isExcluded(type.name),
         'bg-dark': isSelected(type.name)
       }"></i>
 </span>

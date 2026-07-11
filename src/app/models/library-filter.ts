@@ -6,8 +6,13 @@ export interface LibraryFilter {
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string
   types?: string[]
+  notTypes?: string[]
+  typeMode?: 'and' | 'or'
   clans?: string[]
+  notClans?: string[]
   disciplines?: string[]
+  notDisciplines?: string[]
+  disciplineMode?: 'and' | 'or'
   sect?: string
   path?: string
   bloodCostSlider?: number[]

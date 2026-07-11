@@ -197,8 +197,13 @@ export class LibraryQuery {
     return {
       name: '',
       types: [],
+      notTypes: [],
+      typeMode: 'or',
       clans: [],
+      notClans: [],
       disciplines: [],
+      notDisciplines: [],
+      disciplineMode: 'and',
       bloodCostSlider: [0, 4],
       poolCostSlider: [0, 6],
       title: '',

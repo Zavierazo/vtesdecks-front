@@ -112,6 +112,31 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.filterChange.emit(this.filter)
   }
 
+  onChangeNotTypeFilter(notTypes: string[]) {
+    this.filter.notTypes = notTypes
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeTypeMode(typeMode: 'and' | 'or') {
+    this.filter.typeMode = typeMode
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeNotClanFilter(notClans: string[]) {
+    this.filter.notClans = notClans
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeNotDisciplineFilter(notDisciplines: string[]) {
+    this.filter.notDisciplines = notDisciplines
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeDisciplineMode(disciplineMode: 'and' | 'or') {
+    this.filter.disciplineMode = disciplineMode
+    this.filterChange.emit(this.filter)
+  }
+
   onChangePrintOnDemand() {
     this.printOnDemandControl = new FormControl(this.filter.printOnDemand)
     this.printOnDemandControl.valueChanges
