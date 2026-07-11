@@ -9,9 +9,9 @@ import {
 } from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiCard, ApiCollectionCardStats } from '@models'
-import { ApiDataService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 import { EMPTY, Observable } from 'rxjs'
+import { CollectionCardStatsService } from '../../../services/collection-card-stats.service'
 
 @Component({
   selector: 'app-collection-card-mini-stats',
@@ -22,7 +22,9 @@ import { EMPTY, Observable } from 'rxjs'
 })
 export class CollectionCardMiniStatsComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
-  private readonly apiDataService = inject(ApiDataService)
+  private readonly collectionCardStatsService = inject(
+    CollectionCardStatsService,
+  )
 
   card = input.required<ApiCard>()
 
@@ -32,9 +34,8 @@ export class CollectionCardMiniStatsComponent implements OnInit {
 
   ngOnInit() {
     if (this.authQuery.isAuthenticated()) {
-      this.collectionStats$ = this.apiDataService.getCardCollectionStats(
+      this.collectionStats$ = this.collectionCardStatsService.getStats(
         this.card().id,
-        true,
       )
     } else {
       this.collectionStats$ = EMPTY

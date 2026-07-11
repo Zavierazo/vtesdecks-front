@@ -20,7 +20,11 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiResponse, ApiUserSettings } from '@models'
+import {
+  ApiResponse,
+  ApiUserSettings,
+  CARD_PRINTING_PREFERENCES,
+} from '@models'
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -56,6 +60,8 @@ export class UserSettingsComponent implements OnInit {
 
   form!: FormGroup
 
+  cardPrintingPreferences = CARD_PRINTING_PREFERENCES
+
   message!: string | undefined
 
   successful!: boolean
@@ -73,6 +79,9 @@ export class UserSettingsComponent implements OnInit {
         ),
         profileImage: new FormControl(
           profileImage?.includes('gravatar.com') ? '' : profileImage,
+        ),
+        cardPrintingPreference: new FormControl(
+          this.authQuery.getCardPrintingPreference(),
         ),
         password: new FormControl(null),
         newPassword: new FormControl(null, [
@@ -117,6 +126,7 @@ export class UserSettingsComponent implements OnInit {
       profileImage: this.form.get('profileImage')?.value,
       password: this.form.get('password')?.value,
       newPassword: this.form.get('newPassword')?.value,
+      cardPrintingPreference: this.form.get('cardPrintingPreference')?.value,
     }
     this.authService
       .updateSettings(settings)

@@ -15,8 +15,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService } from '@services'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId } from '@utils'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 
 export interface HistoryEventWithDiff extends ApiDeckBuilderHistory {
   diff: number

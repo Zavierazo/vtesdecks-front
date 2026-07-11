@@ -43,8 +43,13 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { AutofocusDirective } from '@shared/directives/auto-focus.directive'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
+import { isCryptId } from '@utils'
 import { catchError, debounceTime, EMPTY, switchMap, tap } from 'rxjs'
+import { CryptCardComponent } from '../../deck-shared/crypt-card/crypt-card.component'
+import { LibraryCardComponent } from '../../deck-shared/library-card/library-card.component'
 import {
   CollectionFilters,
   CollectionFiltersModalComponent,
@@ -99,6 +104,8 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
   private translocoService = inject(TranslocoService)
   private toastService = inject(ToastService)
   private setQuery = inject(SetQuery)
+  private cryptQuery = inject(CryptQuery)
+  private libraryQuery = inject(LibraryQuery)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
 
@@ -271,6 +278,26 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
       centered: true,
     })
     modalRef.componentInstance.initEdit(card)
+  }
+
+  onOpenCard(card: ApiWishlistCard) {
+    const crypt = isCryptId(card.cardId)
+    const entity = crypt
+      ? this.cryptQuery.getEntity(card.cardId)
+      : this.libraryQuery.getEntity(card.cardId)
+    if (!entity) {
+      return
+    }
+    const modalRef = this.modalService.open(
+      crypt ? CryptCardComponent : LibraryCardComponent,
+      {
+        size: 'lg',
+        centered: true,
+        scrollable: true,
+      },
+    )
+    modalRef.componentInstance.cardList = [entity]
+    modalRef.componentInstance.index = 0
   }
 
   onDelete(card: ApiWishlistCard) {

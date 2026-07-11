@@ -29,7 +29,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { BinderModalComponent } from '../binder-modal/binder-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
 import { CollectionCardsListComponent } from '../collection-cards-list/collection-cards-list.component'

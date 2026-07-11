@@ -1,5 +1,10 @@
 import { NgClass } from '@angular/common'
-import { Component, Input, inject } from '@angular/core'
+import {
+  Component,
+  Input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 
@@ -7,6 +12,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslocoDirective, NgClass],
 })
 export class ConfirmDialogComponent {

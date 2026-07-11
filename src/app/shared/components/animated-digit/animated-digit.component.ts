@@ -6,11 +6,13 @@ import {
   OnChanges,
   SimpleChanges,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 
 @Component({
   selector: 'animated-digit',
   templateUrl: 'animated-digit.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['animated-digit.component.scss'],
 })
 export class AnimatedDigitComponent implements AfterViewInit, OnChanges {

@@ -16,8 +16,8 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCrypt } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 
 interface DrawCard {
   uid: number

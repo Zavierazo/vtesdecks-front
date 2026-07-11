@@ -47,8 +47,8 @@ import {
   tap,
 } from 'rxjs'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
-import { CryptGridCardComponent } from '../../deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '../../deck-shared/crypt/crypt.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
 
@@ -227,12 +227,22 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['clans']) {
       this.cryptFilter.clans = queryParams['clans'].split(',')
     }
+    if (queryParams['notClans']) {
+      this.cryptFilter.notClans = queryParams['notClans'].split(',')
+    }
     if (queryParams['disciplines']) {
       this.cryptFilter.disciplines = queryParams['disciplines'].split(',')
     }
     if (queryParams['superiorDisciplines']) {
       this.cryptFilter.superiorDisciplines =
         queryParams['superiorDisciplines'].split(',')
+    }
+    if (queryParams['notDisciplines']) {
+      this.cryptFilter.notDisciplines =
+        queryParams['notDisciplines'].split(',')
+    }
+    if (queryParams['disciplineMode'] === 'or') {
+      this.cryptFilter.disciplineMode = 'or'
     }
     if (queryParams['group']) {
       this.cryptFilter.groupSlider = queryParams['group']
@@ -346,6 +356,10 @@ export class CryptSectionComponent implements OnInit {
         this.cryptFilter.clans && this.cryptFilter.clans.length > 0
           ? this.cryptFilter.clans.join(',')
           : undefined,
+      ['notClans']:
+        this.cryptFilter.notClans && this.cryptFilter.notClans.length > 0
+          ? this.cryptFilter.notClans.join(',')
+          : undefined,
       ['disciplines']:
         this.cryptFilter.disciplines && this.cryptFilter.disciplines.length > 0
           ? this.cryptFilter.disciplines.join(',')
@@ -355,6 +369,13 @@ export class CryptSectionComponent implements OnInit {
         this.cryptFilter.superiorDisciplines.length > 0
           ? this.cryptFilter.superiorDisciplines.join(',')
           : undefined,
+      ['notDisciplines']:
+        this.cryptFilter.notDisciplines &&
+        this.cryptFilter.notDisciplines.length > 0
+          ? this.cryptFilter.notDisciplines.join(',')
+          : undefined,
+      ['disciplineMode']:
+        this.cryptFilter.disciplineMode === 'or' ? 'or' : undefined,
       ['group']:
         isDefaultGroup || !Array.isArray(this.cryptFilter.groupSlider)
           ? undefined

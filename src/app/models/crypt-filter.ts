@@ -6,8 +6,11 @@ export interface CryptFilter {
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string
   clans?: string[]
+  notClans?: string[]
   disciplines?: string[]
   superiorDisciplines?: string[]
+  notDisciplines?: string[]
+  disciplineMode?: 'and' | 'or'
   groupSlider?: number[]
   capacitySlider?: number[]
   title?: string

@@ -17,7 +17,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { Observable } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 
 export interface CardDiff {
   id: number

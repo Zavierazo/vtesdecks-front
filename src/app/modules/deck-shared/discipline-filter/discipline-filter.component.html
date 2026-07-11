@@ -1,14 +1,40 @@
+@if (showAndOr || allowExclude) {
+<div class="d-flex flex-wrap align-items-center gap-2 mb-1 w-100 mode-controls">
+  @if (showAndOr) {
+  <div class="btn-group btn-group-sm" role="group">
+    <button type="button" class="btn" [class.btn-primary]="mode === 'and'"
+      [class.btn-outline-secondary]="mode !== 'and'" (click)="setMode('and')"
+      [title]="'shared.filter_match_all_title' | transloco">
+      {{ 'shared.filter_match_all' | transloco }}
+    </button>
+    <button type="button" class="btn" [class.btn-primary]="mode === 'or'"
+      [class.btn-outline-secondary]="mode !== 'or'" (click)="setMode('or')"
+      [title]="'shared.filter_match_any_title' | transloco">
+      {{ 'shared.filter_match_any' | transloco }}
+    </button>
+  </div>
+  }
+  @if (allowExclude) {
+  <small class="text-body-secondary filter-hint">
+    <i class="bi bi-slash-circle"></i>
+    {{ (isMobileOrTablet ? 'shared.filter_exclude_hint_mobile' : 'shared.filter_exclude_hint_desktop') | transloco }}
+  </small>
+  }
+</div>
+}
 @if (showNotRequired) {
-<span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
+<span (click)="toggleNotRequired()" appExcludeGesture (excludeGesture)="onExcludeGesture('none')"
+  [title]="'shared.not_required' | transloco" [ngClass]="{ 'excluded': isExcluded('none') }">
   <i class="btn-icon vtes vtes-big nodiscipline" [ngClass]="{
-    'non-selected': !isSelected('none')
+    'non-selected': !isSelected('none') && !isExcluded('none')
   }"></i>
 </span>
 }
 @for (discipline of disciplineList; track discipline) {
-<span (click)="toggle(discipline)" [title]="discipline.label | transloco">
+<span (click)="toggle(discipline)" appExcludeGesture (excludeGesture)="onExcludeGesture(discipline.name)"
+  [title]="discipline.label | transloco" [ngClass]="{ 'excluded': isExcluded(discipline.name) }">
   <i class="btn-icon vtes vtes-big" [class]="getIcon(discipline)" [ngClass]="{
-        'non-selected': !isSelected(discipline.name)
+        'non-selected': !isSelected(discipline.name) && !isExcluded(discipline.name)
       }"></i>
 </span>
 }

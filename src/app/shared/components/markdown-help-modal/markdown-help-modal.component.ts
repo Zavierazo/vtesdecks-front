@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { MarkdownCardComponent } from './../markdown-card/markdown-card.component'
 
@@ -6,6 +6,7 @@ import { MarkdownCardComponent } from './../markdown-card/markdown-card.componen
   selector: 'app-markdown-help-modal',
   templateUrl: './markdown-help-modal.component.html',
   styleUrls: ['./markdown-help-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MarkdownCardComponent],
 })
 export class MarkdownHelpModalComponent {

@@ -1,4 +1,9 @@
-import { Component, inject, Input } from '@angular/core'
+import {
+  Component,
+  inject,
+  Input,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 
@@ -6,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   selector: 'app-delete-dialog',
   templateUrl: './delete-dialog.component.html',
   styleUrls: ['./delete-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslocoDirective],
 })
 export class DeleteDialogComponent {

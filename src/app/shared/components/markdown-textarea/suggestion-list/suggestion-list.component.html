@@ -1,0 +1,22 @@
+<ng-container *transloco="let t; read:'markdown-textarea'">
+  @if(items().length === 0){
+  <div class="dropdown-item disabled text-body-secondary small">{{ t(emptyKey()) }}</div>
+  }
+  @for(item of items(); track item.insert; let i = $index){
+  <button type="button" class="dropdown-item d-flex align-items-center gap-1" [class.active]="i === activeIndex()"
+    (mousedown)="onMouseDown($event)" (click)="picked.emit(item)">
+    @for(icon of item.icons; track icon){
+    <i class="vtes vtes-small" [class]="icon"></i>
+    }
+    @if(item.kind === 'prefix'){
+    <code>{{ item.label }}</code>
+    <span class="text-body-secondary small ms-auto">{{ t(item.descriptionKey!) }}</span>
+    } @else if(item.kind === 'paste-youtube'){
+    <i class="bi bi-youtube"></i>
+    <span class="text-truncate">{{ t(item.descriptionKey!) }}</span>
+    } @else {
+    <ngb-highlight class="text-truncate" [result]="item.label" [term]="term()" />
+    }
+  </button>
+  }
+</ng-container>

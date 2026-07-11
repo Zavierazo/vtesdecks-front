@@ -1,5 +1,11 @@
 import { AsyncPipe, NgClass } from '@angular/common'
-import { Component, Input, OnInit, inject } from '@angular/core'
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiProxyCardOption } from '@models'
 import { UntilDestroy } from '@ngneat/until-destroy'
@@ -13,6 +19,7 @@ import { Observable } from 'rxjs'
   selector: 'app-set-tooltip',
   templateUrl: './set-tooltip.component.html',
   styleUrls: ['./set-tooltip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, AsyncPipe, CardImagePipe, TranslocoPipe],
 })
 export class SetTooltipComponent implements OnInit {

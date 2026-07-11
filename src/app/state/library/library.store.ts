@@ -351,39 +351,48 @@ export class LibraryStore {
       return false
     }
     if (filter.types && filter.types.length > 0) {
-      let typeMatch = false
-      for (const type of filter.types) {
-        const types = entity.type.split('/')
-        if (types.includes(type)) {
-          typeMatch = true
-        }
-      }
+      const cardTypes = entity.type.split('/')
+      const typeMatch =
+        (filter.typeMode ?? 'or') === 'or'
+          ? filter.types.some((type) => cardTypes.includes(type))
+          : filter.types.every((type) => cardTypes.includes(type))
       if (!typeMatch) {
         return false
       }
     }
-    if (filter.clans && filter.clans.length > 0) {
-      let clanMatch = false
-      for (const clan of filter.clans) {
-        if (
-          (clan === 'none' && entity.clans.length === 0) ||
-          entity.clans.includes(clan)
-        ) {
-          clanMatch = true
-        }
-      }
-      if (!clanMatch) {
+    if (filter.notTypes && filter.notTypes.length > 0) {
+      const cardTypes = entity.type.split('/')
+      if (filter.notTypes.some((type) => cardTypes.includes(type))) {
         return false
       }
     }
-    if (filter.disciplines) {
-      for (const discipline of filter.disciplines) {
-        if (discipline === 'none' && entity.disciplines.length === 0) {
-          continue
-        } else if (!entity.disciplines.includes(discipline)) {
-          return false
-        }
+    const clanMatches = (clan: string) =>
+      clan === 'none' ? entity.clans.length === 0 : entity.clans.includes(clan)
+    if (
+      filter.clans &&
+      filter.clans.length > 0 &&
+      !filter.clans.some(clanMatches)
+    ) {
+      return false
+    }
+    if (filter.notClans?.some(clanMatches)) {
+      return false
+    }
+    const disciplineMatches = (discipline: string) =>
+      discipline === 'none'
+        ? entity.disciplines.length === 0
+        : entity.disciplines.includes(discipline)
+    if (filter.disciplines && filter.disciplines.length > 0) {
+      const disciplineMatch =
+        (filter.disciplineMode ?? 'and') === 'and'
+          ? filter.disciplines.every(disciplineMatches)
+          : filter.disciplines.some(disciplineMatches)
+      if (!disciplineMatch) {
+        return false
       }
+    }
+    if (filter.notDisciplines?.some(disciplineMatches)) {
+      return false
     }
     if (filter.sect) {
       if (filter.sect === 'none') {

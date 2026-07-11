@@ -22,6 +22,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { DecksService } from '@state/decks/decks.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { isCryptId, isSupporter } from '@utils'
+import { environment } from '@environments/environment'
 import { catchError, of, tap } from 'rxjs'
 
 @UntilDestroy()
@@ -50,6 +51,8 @@ export class DeckCardComponent implements OnInit {
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly decksService = inject(DecksService)
   private readonly apiDataService = inject(ApiDataService)
+
+  cdnDomain = environment.cdnDomain
 
   deck = input.required<ApiDeck>()
   height = input<string>('160px')

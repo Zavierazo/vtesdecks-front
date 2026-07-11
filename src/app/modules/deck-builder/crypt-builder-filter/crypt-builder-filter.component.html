@@ -20,7 +20,8 @@
   @if(filter.clans){
   <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
   <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" />
+    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" [allowExclude]="true"
+      [notClans]="filter.notClans ?? []" (notClansChange)="onChangeNotClanFilter($event)" />
   </div>
   }
   @if(filter.disciplines && filter.superiorDisciplines){
@@ -28,7 +29,10 @@
   <div id="disciplines" class="row g-1">
     <app-discipline-filter [(disciplines)]="filter.disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
       [(superiorDisciplines)]="filter.superiorDisciplines"
-      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" />
+      (superiorDisciplinesChange)="onChangeSuperiorDisciplineFilter($event)" [allowExclude]="true"
+      [showAndOr]="true" [notDisciplines]="filter.notDisciplines ?? []"
+      (notDisciplinesChange)="onChangeNotDisciplineFilter($event)" [mode]="filter.disciplineMode ?? 'and'"
+      (modeChange)="onChangeDisciplineMode($event)" />
   </div>
   }
   <div class="row g-1 mt-2">

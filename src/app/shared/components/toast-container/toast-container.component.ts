@@ -1,5 +1,10 @@
 import { NgTemplateOutlet } from '@angular/common'
-import { Component, TemplateRef, inject } from '@angular/core'
+import {
+  Component,
+  TemplateRef,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap'
 import { ToastService } from '@services'
 
@@ -25,6 +30,7 @@ import { ToastService } from '@services'
     class: 'toast-container position-fixed top-0 end-0 p-3',
     style: 'z-index: 1090; margin-top: 4rem;',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgbToast, NgTemplateOutlet],
 })
 export class ToastsContainer {

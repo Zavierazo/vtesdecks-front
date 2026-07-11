@@ -47,8 +47,8 @@ import {
   tap,
 } from 'rxjs'
 import { CameraScannerComponent } from '../../../shared/components/camera-scanner/camera-scanner.component'
-import { LibraryGridCardComponent } from '../../deck-shared/library-grid-card/library-grid-card.component'
-import { LibraryComponent } from '../../deck-shared/library/library.component'
+import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library-grid-card.component'
+import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
 
@@ -228,11 +228,27 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['types']) {
       this.libraryFilter.types = queryParams['types'].split(',')
     }
+    if (queryParams['notTypes']) {
+      this.libraryFilter.notTypes = queryParams['notTypes'].split(',')
+    }
+    if (queryParams['typeMode'] === 'and') {
+      this.libraryFilter.typeMode = 'and'
+    }
     if (queryParams['clans']) {
       this.libraryFilter.clans = queryParams['clans'].split(',')
     }
+    if (queryParams['notClans']) {
+      this.libraryFilter.notClans = queryParams['notClans'].split(',')
+    }
     if (queryParams['disciplines']) {
       this.libraryFilter.disciplines = queryParams['disciplines'].split(',')
+    }
+    if (queryParams['notDisciplines']) {
+      this.libraryFilter.notDisciplines =
+        queryParams['notDisciplines'].split(',')
+    }
+    if (queryParams['disciplineMode'] === 'or') {
+      this.libraryFilter.disciplineMode = 'or'
     }
     if (queryParams['taints']) {
       this.libraryFilter.taints = queryParams['taints'].split(',')
@@ -347,15 +363,31 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryFilter.types && this.libraryFilter.types.length > 0
           ? this.libraryFilter.types.join(',')
           : undefined,
+      ['notTypes']:
+        this.libraryFilter.notTypes && this.libraryFilter.notTypes.length > 0
+          ? this.libraryFilter.notTypes.join(',')
+          : undefined,
+      ['typeMode']: this.libraryFilter.typeMode === 'and' ? 'and' : undefined,
       ['clans']:
         this.libraryFilter.clans && this.libraryFilter.clans.length > 0
           ? this.libraryFilter.clans.join(',')
+          : undefined,
+      ['notClans']:
+        this.libraryFilter.notClans && this.libraryFilter.notClans.length > 0
+          ? this.libraryFilter.notClans.join(',')
           : undefined,
       ['disciplines']:
         this.libraryFilter.disciplines &&
         this.libraryFilter.disciplines.length > 0
           ? this.libraryFilter.disciplines.join(',')
           : undefined,
+      ['notDisciplines']:
+        this.libraryFilter.notDisciplines &&
+        this.libraryFilter.notDisciplines.length > 0
+          ? this.libraryFilter.notDisciplines.join(',')
+          : undefined,
+      ['disciplineMode']:
+        this.libraryFilter.disciplineMode === 'or' ? 'or' : undefined,
       ['sect']: this.libraryFilter.sect || undefined,
       ['path']: this.libraryFilter.path || undefined,
       ['title']: this.libraryFilter.title || undefined,

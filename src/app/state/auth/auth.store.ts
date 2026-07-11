@@ -58,6 +58,7 @@ export class AuthStore {
       admin: undefined,
       roles: undefined,
       notificationCount: undefined,
+      cardPrintingPreference: undefined,
     })
     this.updateStorage()
   }

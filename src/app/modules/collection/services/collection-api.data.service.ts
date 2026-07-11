@@ -10,7 +10,7 @@ import {
   ApiCollectionStats,
 } from '@models'
 import { map, Observable } from 'rxjs'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { CollectionQueryState } from '../state/collection.store'
 
 @Injectable({

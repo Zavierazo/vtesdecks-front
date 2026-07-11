@@ -3,8 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { LibraryTypeFilterComponent } from '../../deck-builder/library-type-filter/library-type-filter.component'
-import { ClanFilterComponent } from '../../deck-shared/clan-filter/clan-filter.component'
-import { DisciplineFilterComponent } from '../../deck-shared/discipline-filter/discipline-filter.component'
+import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 
 export interface CollectionFilters {
   types?: string[]

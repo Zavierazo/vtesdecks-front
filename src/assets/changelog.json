@@ -1,5 +1,18 @@
 [
   {
+    "version": "2.74.0",
+    "date": "11th July, 2026",
+    "changes": [
+      "The Crypt & Library card filters just got <strong>much more powerful</strong>: right-click any clan, discipline or card type icon (long-press on mobile) to <strong>exclude</strong> it and hide every card that has it, and use the new <strong>ALL / ANY</strong> toggle to choose whether cards must match every selected discipline or type, or just one of them.",
+      "New <strong>Card image printing</strong> setting in your profile: choose whether card images show the newest printing (default) or the first printing of each card.",
+      "New <strong>Game Timer</strong>: a full screen countdown (2 hours by default, or any duration you pick) with pause and resume, plus an Edge indicator you can tap to remember you hold the Edge. It survives an accidental page reload, keeps your screen awake while it runs.",
+      "The <strong>comment and deck description editor</strong> got a major upgrade: type <strong>[[</strong> to autocomplete cards, clans and disciplines as you write, search and insert cards from the new toolbar button, and embed YouTube videos by simply pasting the link. On wide screens the Deck Builder shows a live side-by-side preview of your text, and Ctrl+B, Ctrl+I and Ctrl+K formatting shortcuts now work too.",
+      "Clicking a card in your Collection or Wishlist now opens the full card detail view instead of the edit dialog. Quick edits are one click away with the new pencil button on every row, and you can still click the quantity cell to change it inline.",
+      "The <strong>How many do I own?</strong> panel on every card is now more useful: a new <strong>+</strong> button adds the card to your collection without leaving the card view, each owned copy has an edit shortcut.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.73.0",
     "date": "3rd July, 2026",
     "changes": [
@@ -9,8 +22,7 @@
       "Using the Collection Tracker on a deck? The new 'Add missing to Wishlist' button puts every card you still need for that deck onto your wishlist in a single click.",
       "The new <strong>How to buy</strong> button on deck pages, in the Deck Builder and on your wishlist works out the cheapest way to get the cards, mixing preconstructed decks and singles, and shows how much you save compared to buying everything separately. Logged-in users can also leave out cards they already own.",
       "New Collection History view: a chronological, day-by-day trail of every change to your collection. Check it for the whole collection, a single binder or one specific card.",
-      "Long card notes no longer stretch the Collection and Wishlist tables out of shape: they are now truncated and the full note appears on hover.",
-      "Minor bug fixes and performance improvements."
+      "Long card notes no longer stretch the Collection and Wishlist tables out of shape: they are now truncated and the full note appears on hover."
     ]
   },
   {

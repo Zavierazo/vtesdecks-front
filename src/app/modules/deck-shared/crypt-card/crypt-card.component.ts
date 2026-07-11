@@ -29,7 +29,7 @@ import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { catchError, Observable } from 'rxjs'
 import VanillaTilt from 'vanilla-tilt'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 import { CardInfoComponent } from '../card-info/card-info.component'
 
 @UntilDestroy()

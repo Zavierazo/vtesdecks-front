@@ -1,6 +1,12 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, NgClass } from '@angular/common'
-import { Component, inject, OnInit, signal } from '@angular/core'
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -11,8 +17,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ToastService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 import { catchError, distinctUntilChanged, finalize, switchMap } from 'rxjs'
-import { environment } from '../../../../environments/environment'
-import { ShoppingOptimizerModalComponent } from '../../deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
+import { environment } from '@environments/environment'
+import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 import { WishlistApiDataService } from '../services/wishlist-api.data.service'
 import { WishlistCardsListComponent } from '../wishlist-cards-list/wishlist-cards-list.component'
 import { WishlistCardModalComponent } from '../wishlist-card-modal/wishlist-card-modal.component'
@@ -25,6 +31,7 @@ import { WishlistQueryState } from '../state/wishlist.store'
   selector: 'app-wishlist',
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslocoDirective,
     TranslocoPipe,

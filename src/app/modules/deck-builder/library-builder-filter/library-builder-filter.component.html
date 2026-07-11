@@ -20,20 +20,27 @@
   @if(filter.types){
   <label for="type" class="form-label text-primary fw-bold">{{ t('type') }}</label>
   <div id="type" class="row g-1">
-    <app-library-type-filter [(types)]="filter.types" (typesChange)="onChangeTypeFilter($event)" />
+    <app-library-type-filter [(types)]="filter.types" (typesChange)="onChangeTypeFilter($event)"
+      [allowExclude]="true" [showAndOr]="true" [notTypes]="filter.notTypes ?? []"
+      (notTypesChange)="onChangeNotTypeFilter($event)" [mode]="filter.typeMode ?? 'or'"
+      (modeChange)="onChangeTypeMode($event)" />
   </div>
   }
   @if(filter.disciplines){
   <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
   <div id="disciplines" class="row g-1">
     <app-discipline-filter [(disciplines)]="filter.disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
-      [showNotRequired]="true" [showSuperior]="false" />
+      [showNotRequired]="true" [showSuperior]="false" [allowExclude]="true" [showAndOr]="true"
+      [notDisciplines]="filter.notDisciplines ?? []" (notDisciplinesChange)="onChangeNotDisciplineFilter($event)"
+      [mode]="filter.disciplineMode ?? 'and'" (modeChange)="onChangeDisciplineMode($event)" />
   </div>
   }
   @if(filter.clans){
   <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
   <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true" />
+    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true"
+      [allowExclude]="true" [notClans]="filter.notClans ?? []"
+      (notClansChange)="onChangeNotClanFilter($event)" />
   </div>
   }
   <div class="row g-1 mt-2">

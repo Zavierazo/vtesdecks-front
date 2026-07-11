@@ -9,6 +9,7 @@ import {
   ApiCollectionPage,
   FILTER_BINDER,
 } from '@models'
+import { CollectionCardStatsService } from '../../../services/collection-card-stats.service'
 import { finalize, map, Observable, switchMap, tap } from 'rxjs'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
@@ -19,6 +20,9 @@ import { CollectionQueryState } from './collection.store'
 })
 export class CollectionPrivateService extends CollectionService {
   private readonly collectionApiDataService = inject(CollectionApiDataService)
+  private readonly collectionCardStatsService = inject(
+    CollectionCardStatsService,
+  )
 
   initialize(binderId?: number): Observable<ApiCollection> {
     this.collectionStore.reset()
@@ -123,6 +127,7 @@ export class CollectionPrivateService extends CollectionService {
       tap(({ card, deletedIds }) => {
         deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
         this.collectionStore.addEntity(card)
+        this.invalidateCardCaches()
       }),
       map(({ card }) => card),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
@@ -135,6 +140,7 @@ export class CollectionPrivateService extends CollectionService {
       tap(({ cards, deletedIds }) => {
         deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
         cards.forEach((card) => this.collectionStore.addEntity(card))
+        this.invalidateCardCaches()
       }),
       map(({ cards }) => cards),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
@@ -147,6 +153,7 @@ export class CollectionPrivateService extends CollectionService {
       tap(({ card, deletedIds }) => {
         deletedIds.forEach((id) => this.collectionStore.removeEntity(id))
         this.collectionStore.updateEntity(card)
+        this.invalidateCardCaches()
       }),
       map(({ card }) => card),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
@@ -156,7 +163,10 @@ export class CollectionPrivateService extends CollectionService {
   deleteCards(ids: number[]): Observable<boolean> {
     this.collectionStore.setLoadingBackground(true)
     return this.collectionApiDataService.deleteCard(ids).pipe(
-      tap(() => ids.forEach((id) => this.collectionStore.removeEntity(id))),
+      tap(() => {
+        ids.forEach((id) => this.collectionStore.removeEntity(id))
+        this.invalidateCardCaches()
+      }),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
   }
@@ -242,6 +252,7 @@ export class CollectionPrivateService extends CollectionService {
       .pipe(
         tap(() => {
           this.collectionStore.setLoadingBackground(false)
+          this.invalidateCardCaches()
         }),
         finalize(() => this.collectionStore.setLoadingBackground(false)),
       )
@@ -252,9 +263,14 @@ export class CollectionPrivateService extends CollectionService {
     return this.collectionApiDataService.deleteCollection().pipe(
       switchMap(() => {
         this.collectionStore.reset()
+        this.invalidateCardCaches()
         return this.initialize()
       }),
       finalize(() => this.collectionStore.setLoadingBackground(false)),
     )
+  }
+
+  private invalidateCardCaches(): void {
+    this.collectionCardStatsService.invalidate()
   }
 }

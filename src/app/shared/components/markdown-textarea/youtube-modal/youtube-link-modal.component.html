@@ -1,0 +1,25 @@
+<ng-container *transloco="let t; read:'markdown-textarea'">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="bi bi-youtube me-2"></i>{{ t('youtube') }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <label class="form-label" for="youtubeUrl">{{ t('youtube_url_label') }}</label>
+    <input ngbAutofocus id="youtubeUrl" type="url" class="form-control" autocomplete="off"
+      placeholder="https://www.youtube.com/watch?v=IxX_QHay02M" [formControl]="urlControl"
+      (keydown.enter)="onInsert()" />
+    @if(urlControl.value && !videoId()){
+    <div class="form-text text-danger">{{ t('youtube_invalid') }}</div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">
+      {{ t('cancel') }}
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="!videoId()" (click)="onInsert()">
+      {{ t('insert') }}
+    </button>
+  </div>
+</ng-container>

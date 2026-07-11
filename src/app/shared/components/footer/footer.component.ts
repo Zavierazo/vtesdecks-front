@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { environment } from '../../../../environments/environment'
+import { environment } from '@environments/environment'
 
 @Component({
   selector: 'app-footer',

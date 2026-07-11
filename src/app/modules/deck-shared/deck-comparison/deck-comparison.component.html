@@ -48,7 +48,8 @@
             }
           </div>
           <ng-template #imgPopover>
-            <img class="img-popover" [src]="{id: diff.id } | cardImage" [alt]="diff.name" />
+            <img #image class="img-popover" [src]="{id: diff.id } | cardImage" [alt]="diff.name"
+              (error)="image.src = cdnDomain + '/img/cards/' + diff.id + '.jpg'" />
           </ng-template>
         </div>
         }
@@ -86,7 +87,8 @@
             }
           </div>
           <ng-template #imgPopover>
-            <img class="img-popover" [src]="{id: diff.id }| cardImage" [alt]="diff.name" />
+            <img #image class="img-popover" [src]="{id: diff.id }| cardImage" [alt]="diff.name"
+              (error)="image.src = cdnDomain + '/img/cards/' + diff.id + '.jpg'" />
           </ng-template>
         </div>
         }

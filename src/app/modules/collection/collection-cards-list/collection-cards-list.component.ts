@@ -54,7 +54,7 @@ import { AutofocusDirective } from '@shared/directives/auto-focus.directive'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { sortTrigramSimilarity } from '@utils'
+import { isCryptId, sortTrigramSimilarity } from '@utils'
 import {
   catchError,
   combineLatest,
@@ -66,6 +66,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
+import { CryptCardComponent } from '../../deck-shared/crypt-card/crypt-card.component'
+import { LibraryCardComponent } from '../../deck-shared/library-card/library-card.component'
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardBulkEditModalComponent } from '../card-bulk-edit-modal/card-bulk-edit-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
@@ -341,6 +343,26 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
       centered: true,
     })
     modalRef.componentInstance.initEdit(card)
+  }
+
+  onOpenCard(card: ApiCollectionCard) {
+    const crypt = isCryptId(card.cardId)
+    const entity = crypt
+      ? this.cryptQuery.getEntity(card.cardId)
+      : this.libraryQuery.getEntity(card.cardId)
+    if (!entity) {
+      return
+    }
+    const modalRef = this.modalService.open(
+      crypt ? CryptCardComponent : LibraryCardComponent,
+      {
+        size: 'lg',
+        centered: true,
+        scrollable: true,
+      },
+    )
+    modalRef.componentInstance.cardList = [entity]
+    modalRef.componentInstance.index = 0
   }
 
   onDelete(card: ApiCollectionCard) {

@@ -348,19 +348,42 @@ export class CryptStore {
     ) {
       return false
     }
-    if (filter.disciplines) {
-      for (const discipline of filter.disciplines) {
-        if (!entity.disciplines.includes(discipline)) {
+    if (filter.notClans?.includes(entity.clan)) {
+      return false
+    }
+    const selectedDisciplines = filter.disciplines ?? []
+    const selectedSuperior = filter.superiorDisciplines ?? []
+    if (selectedDisciplines.length > 0 || selectedSuperior.length > 0) {
+      if ((filter.disciplineMode ?? 'and') === 'and') {
+        for (const discipline of selectedDisciplines) {
+          if (!entity.disciplines.includes(discipline)) {
+            return false
+          }
+        }
+        for (const superiorDiscipline of selectedSuperior) {
+          if (!entity.superiorDisciplines.includes(superiorDiscipline)) {
+            return false
+          }
+        }
+      } else {
+        // OR mode: each selection is one term at its selected level
+        const names = new Set([...selectedDisciplines, ...selectedSuperior])
+        const anyMatch = [...names].some((discipline) =>
+          selectedSuperior.includes(discipline)
+            ? entity.superiorDisciplines.includes(discipline)
+            : entity.disciplines.includes(discipline),
+        )
+        if (!anyMatch) {
           return false
         }
       }
     }
-    if (filter.superiorDisciplines) {
-      for (const superiorDiscipline of filter.superiorDisciplines) {
-        if (!entity.superiorDisciplines.includes(superiorDiscipline)) {
-          return false
-        }
-      }
+    if (
+      filter.notDisciplines?.some((discipline) =>
+        entity.disciplines.includes(discipline),
+      )
+    ) {
+      return false
     }
     if (filter.groupSlider) {
       const groupMin = filter.groupSlider[0]

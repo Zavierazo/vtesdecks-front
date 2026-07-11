@@ -1,3 +1,33 @@
 .non-selected {
   opacity: 0.30;
 }
+
+span {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+// The icons are replaced elements (content: url), so the slash overlay must
+// live on the wrapping span; inline-flex makes the span hug the icon exactly.
+.excluded {
+  position: relative;
+  display: inline-flex;
+
+  i {
+    opacity: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    // The icon SVGs have ~2px of transparent margin inside their box.
+    inset: 8%;
+    background: linear-gradient(to top right,
+        transparent 44%,
+        var(--bs-danger) 44%,
+        var(--bs-danger) 56%,
+        transparent 56%);
+    pointer-events: none;
+  }
+}

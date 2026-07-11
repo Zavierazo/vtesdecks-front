@@ -64,6 +64,20 @@ export class WishlistCardStatsComponent {
 
   async onAddToWishlist(event: Event) {
     event.stopPropagation()
+    const modalRef = await this.openWishlistModal()
+    modalRef.componentInstance.selectCardFromScan(
+      this.card().id,
+      this.activeSet() ?? undefined,
+    )
+  }
+
+  async onEditRow(row: ApiWishlistCard, event: Event) {
+    event.stopPropagation()
+    const modalRef = await this.openWishlistModal()
+    modalRef.componentInstance.initEdit(row)
+  }
+
+  private async openWishlistModal() {
     // Lazy import to keep the wishlist modal out of the initial bundle
     const { WishlistCardModalComponent } = await import(
       '../../wishlist/wishlist-card-modal/wishlist-card-modal.component'
@@ -72,11 +86,8 @@ export class WishlistCardStatsComponent {
       size: 'xl',
       centered: true,
     })
-    modalRef.componentInstance.selectCardFromScan(
-      this.card().id,
-      this.activeSet() ?? undefined,
-    )
     modalRef.hidden.pipe(untilDestroyed(this)).subscribe(() => this.loadCards())
+    return modalRef
   }
 
   private loadCards() {

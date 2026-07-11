@@ -286,8 +286,8 @@
                 [cardId]="card.cardId"
                 [cardName]="card.cardName"
                 [setAbbrev]="card.set ?? undefined"
-                (click)="editable() && onEdit(card)"
-                [ngClass]="{ 'cursor-pointer': editable() }"
+                (click)="onOpenCard(card)"
+                class="cursor-pointer"
               />
             </td>
             <td>
@@ -361,8 +361,15 @@
               </ng-template>
             </td>
             @if (editable()) {
-              <td class="text-center">
-                <div ngbDropdown container="body">
+              <td class="text-center text-nowrap">
+                <button
+                  class="btn btn-link p-0 me-2"
+                  [title]="t('edit')"
+                  (click)="onEdit(card)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <div ngbDropdown container="body" class="d-inline-block">
                   <button
                     class="btn btn-link p-0"
                     id="dropdownMenuButton"

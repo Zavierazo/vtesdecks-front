@@ -1,3 +1,5 @@
+import { CardPrintingPreference } from './card-printing-preference'
+
 export interface ApiUser {
   user?: string
   email?: string
@@ -8,4 +10,5 @@ export interface ApiUser {
   admin?: boolean
   roles?: string[]
   notificationCount?: number
+  cardPrintingPreference?: CardPrintingPreference
 }

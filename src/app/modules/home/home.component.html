@@ -1,79 +1,121 @@
 <app-android-banner />
 @if (showChangelogAlert && changelogAlert) {
-<div class="hero-alert alert alert-info alert-dismissible fade show mb-0 rounded-0 border-0" role="alert">
-  <div class="container">
-    <div class="d-flex align-items-center justify-content-between">
-      <div>
-        <strong>{{ 'home.whats_new' | transloco: { version: changelogAlert.version, date: changelogAlert.date }
+  <div
+    class="hero-alert alert alert-info alert-dismissible fade show mb-0 rounded-0 border-0"
+    role="alert"
+  >
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <strong>{{
+            'home.whats_new'
+              | transloco
+                : { version: changelogAlert.version, date: changelogAlert.date }
           }}</strong>
-        @for (change of changelogAlert.changes; track change) {
-        <ul class="mb-0 ps-4">
-          <li [innerHTML]="change"></li>
-        </ul>
-        }
+          @for (change of changelogAlert.changes; track change) {
+            <ul class="mb-0 ps-4">
+              <li [innerHTML]="change"></li>
+            </ul>
+          }
+        </div>
+        <button
+          type="button"
+          class="btn-close ms-3"
+          aria-label="Close"
+          (click)="closeChangelogAlert()"
+        ></button>
       </div>
-      <button type="button" class="btn-close ms-3" aria-label="Close" (click)="closeChangelogAlert()"></button>
     </div>
   </div>
-</div>
 }
 
 <!-- Hero Section -->
 <section class="hero-section py-5">
   <!-- Advent Calendar Banner -->
   @if (currentAdvent(); as advent) {
-  <div class="container mb-4">
-    <a routerLink="/advent" class="text-decoration-none">
-      <div class="advent-banner-content">
-        <div class="advent-banner-icon d-none d-md-block">🎄</div>
-        <div class="advent-banner-text">
-          <h2 class="advent-banner-title mb-2">🎅 {{ 'advent.home_title' | transloco: { year: advent.year } }}
-          </h2>
-          <p class="advent-banner-subtitle mb-0 d-none d-md-block">✨ {{ 'advent.home_subtitle' | transloco }} ✨</p>
+    <div class="container mb-4">
+      <a routerLink="/advent" class="text-decoration-none">
+        <div class="advent-banner-content">
+          <div class="advent-banner-icon d-none d-md-block">🎄</div>
+          <div class="advent-banner-text">
+            <h2 class="advent-banner-title mb-2">
+              🎅 {{ 'advent.home_title' | transloco: { year: advent.year } }}
+            </h2>
+            <p class="advent-banner-subtitle mb-0 d-none d-md-block">
+              ✨ {{ 'advent.home_subtitle' | transloco }} ✨
+            </p>
+          </div>
+          <div class="advent-banner-icon d-none d-md-block">⭐</div>
         </div>
-        <div class="advent-banner-icon d-none d-md-block">⭐</div>
-      </div>
-    </a>
-  </div>
+      </a>
+    </div>
   }
 
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <h1 class="display-4 fw-bold mb-3 text-center text-white">{{ 'home.welcome_title' | transloco }}</h1>
-        <p class="lead mb-4 text-center text-white">{{ 'home.welcome_subtitle' | transloco }}</p>
+        <h1 class="display-4 fw-bold mb-3 text-center text-white">
+          {{ 'home.welcome_title' | transloco }}
+        </h1>
+        <p class="lead mb-4 text-center text-white">
+          {{ 'home.welcome_subtitle' | transloco }}
+        </p>
         <div class="hero-actions">
           <div class="row g-3 justify-content-center">
             <div class="col-6 col-md-3">
-              <a routerLink="/metagame" class="hero-card bg-primary text-white position-relative">
+              <a
+                routerLink="/metagame"
+                class="hero-card bg-primary text-white position-relative"
+              >
                 <i class="bi bi-rocket-takeoff-fill"></i>
                 <span>{{ 'home.metagame_decks' | transloco }}</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a routerLink="/decks" [queryParams]="{ type: 'TOURNAMENT' }" class="hero-card bg-primary text-white">
+              <a
+                routerLink="/decks"
+                [queryParams]="{ type: 'TOURNAMENT' }"
+                class="hero-card bg-primary text-white"
+              >
                 <i class="bi bi-award"></i>
                 <span>{{ 'home.tournament_decks' | transloco }}</span>
                 <small class="mt-2">
-                  <animated-digit [digit]="deckHome?.tournamentTotal ?? 0" [duration]="1500" />
+                  <animated-digit
+                    [digit]="deckHome?.tournamentTotal ?? 0"
+                    [duration]="1500"
+                  />
                 </small>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a routerLink="/decks" [queryParams]="{ type: 'COMMUNITY' }" class="hero-card bg-primary text-white">
+              <a
+                routerLink="/decks"
+                [queryParams]="{ type: 'COMMUNITY' }"
+                class="hero-card bg-primary text-white"
+              >
                 <i class="bi bi-people"></i>
                 <span>{{ 'home.community_decks' | transloco }}</span>
                 <small class="mt-2">
-                  <animated-digit [digit]="deckHome?.communityTotal ?? 0" [duration]="1500" />
+                  <animated-digit
+                    [digit]="deckHome?.communityTotal ?? 0"
+                    [duration]="1500"
+                  />
                 </small>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a routerLink="/decks" [queryParams]="{ type: 'PRECONSTRUCTED' }" class="hero-card bg-primary text-white">
+              <a
+                routerLink="/decks"
+                [queryParams]="{ type: 'PRECONSTRUCTED' }"
+                class="hero-card bg-primary text-white"
+              >
                 <i class="bi bi-bag"></i>
                 <span>{{ 'home.preconstructed_decks' | transloco }}</span>
                 <small class="mt-2">
-                  <animated-digit [digit]="deckHome?.preConstructedTotal ?? 0" [duration]="1500" />
+                  <animated-digit
+                    [digit]="deckHome?.preConstructedTotal ?? 0"
+                    [duration]="1500"
+                  />
                 </small>
               </a>
             </div>
@@ -99,42 +141,86 @@
               </div>
             </div>
             <div class="col-6 col-md-3" *isLogged="true">
-              <a routerLink="/decks" [queryParams]="{ type: 'USER' }" class="hero-card bg-success text-white">
+              <a
+                routerLink="/decks"
+                [queryParams]="{ type: 'USER' }"
+                class="hero-card bg-success text-white"
+              >
                 <i class="bi bi-stack"></i>
                 <span>{{ 'home.user_decks' | transloco }}</span>
                 <small class="mt-2">
-                  <animated-digit [digit]="deckHome?.userTotal ?? 0" [duration]="1500" />
+                  <animated-digit
+                    [digit]="deckHome?.userTotal ?? 0"
+                    [duration]="1500"
+                  />
                 </small>
               </a>
             </div>
             <div class="col-6 col-md-3" *isLogged="true">
-              <a routerLink="/decks" [queryParams]="{ favorite: true }" class="hero-card bg-success text-white">
+              <a
+                routerLink="/decks"
+                [queryParams]="{ favorite: true }"
+                class="hero-card bg-success text-white"
+              >
                 <i class="bi bi-bookmark-star"></i>
                 <span>{{ 'home.bookmarked_decks' | transloco }}</span>
                 <small class="mt-2">
-                  <animated-digit [digit]="deckHome?.favoriteTotal ?? 0" [duration]="1500" />
+                  <animated-digit
+                    [digit]="deckHome?.favoriteTotal ?? 0"
+                    [duration]="1500"
+                  />
                 </small>
               </a>
             </div>
           </div>
           <div class="mt-1 row g-3 justify-content-center">
             <div class="col-6 col-md-3">
-              <a routerLink="/cards/crypt" class="hero-card bg-secondary text-white">
+              <a
+                routerLink="/cards/crypt"
+                class="hero-card bg-secondary text-white"
+              >
                 <i class="bi bi-file-person"></i>
                 <span>{{ 'shared.crypt' | transloco }}</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a routerLink="/cards/library" class="hero-card bg-secondary text-white">
+              <a
+                routerLink="/cards/library"
+                class="hero-card bg-secondary text-white"
+              >
                 <i class="bi bi-file-richtext"></i>
                 <span>{{ 'shared.library' | transloco }}</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a routerLink="/proxy-generator" class="hero-card bg-secondary text-white">
+              <a
+                routerLink="/proxy-generator"
+                class="hero-card bg-secondary text-white"
+              >
                 <i class="bi bi-printer"></i>
                 <span>{{ 'shared.proxy_generator' | transloco }}</span>
               </a>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="hero-card hero-card-split bg-secondary text-white">
+                <button
+                  type="button"
+                  class="hero-split-half text-white"
+                  (click)="openTableSeatingModal()"
+                >
+                  <i class="bi bi-people-fill"></i>
+                  <span>{{ 'home.table_seating_short' | transloco }}</span>
+                </button>
+                <div class="hero-split-divider"></div>
+                <button
+                  type="button"
+                  class="hero-split-half text-white"
+                  (click)="openGameTimerModal()"
+                >
+                  <i class="bi bi-stopwatch-fill"></i>
+                  <span>{{ 'home.game_timer_short' | transloco }}</span>
+                </button>
+              </div>
             </div>
             <!-- Disabled AI chat -->
             <!-- <div class="col-6 col-md-3">
@@ -156,29 +242,53 @@
 
   <!-- Buy me a coffee button -->
   <div class="container text-center mt-5" *appIsSupporter="false">
-    <a href="https://www.patreon.com/bePatron?u=41542528" target="_blank" rel="noopener noreferrer"
-      class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow text-white">
-      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px" y="0px" viewBox="0 0 1080 1080" width="20" height="20" style="enable-background:new 0 0 1080 1080;"
-        xml:space="preserve">
-        <path d="M1033.05,324.45c-0.19-137.9-107.59-250.92-233.6-291.7c-156.48-50.64-362.86-43.3-512.28,27.2
+    <a
+      href="https://www.patreon.com/bePatron?u=41542528"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-patreon d-inline-flex align-items-center gap-2 shadow text-white"
+    >
+      <svg
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 1080 1080"
+        width="20"
+        height="20"
+        style="enable-background: new 0 0 1080 1080"
+        xml:space="preserve"
+      >
+        <path
+          d="M1033.05,324.45c-0.19-137.9-107.59-250.92-233.6-291.7c-156.48-50.64-362.86-43.3-512.28,27.2
 	C106.07,145.41,49.18,332.61,47.06,519.31c-1.74,153.5,13.58,557.79,241.62,560.67c169.44,2.15,194.67-216.18,273.07-321.33
-	c55.78-74.81,127.6-95.94,216.01-117.82C929.71,603.22,1033.27,483.3,1033.05,324.45z" />
+	c55.78-74.81,127.6-95.94,216.01-117.82C929.71,603.22,1033.27,483.3,1033.05,324.45z"
+        />
       </svg>
       {{ 'home.patreon' | transloco }}
     </a>
-    <p class="text-center mt-2 h6" [innerHTML]="'home.patreon_message' | transloco">
-    </p>
+    <p
+      class="text-center mt-2 h6"
+      [innerHTML]="'home.patreon_message' | transloco"
+    ></p>
   </div>
   <div class="container text-center mt-5" *appIsSupporter="true">
-
-    <p class="text-center mt-2 h6" [innerHTML]="'home.patreon_supporter_message' | transloco">
-    </p>
+    <p
+      class="text-center mt-2 h6"
+      [innerHTML]="'home.patreon_supporter_message' | transloco"
+    ></p>
   </div>
 </section>
 <!-- VtesDecks Home Hero Responsive -->
 
-<app-ad-sense adClient="ca-pub-7379021241824282" adSlot="6580167823" adFormat="auto" fullWidthResponsive="true" />
+<app-ad-sense
+  adClient="ca-pub-7379021241824282"
+  adSlot="6580167823"
+  adFormat="auto"
+  fullWidthResponsive="true"
+/>
 
 <app-home-user-of-month class="mt-3" />
 
@@ -187,21 +297,42 @@
 
 <!-- Popular and Newest Decks -->
 <div class="row mt-3">
-  <app-home-section class="col-md-12 col-lg-6 my-3" [title]="'home.popular_tournament' | transloco"
-    [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }" [decks]="deckHome?.tournamentPopular" />
-  <app-home-section class="col-md-12 col-lg-6 my-3" [title]="'home.popular_community' | transloco"
-    [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }" [decks]="deckHome?.communityPopular" />
+  <app-home-section
+    class="col-md-12 col-lg-6 my-3"
+    [title]="'home.popular_tournament' | transloco"
+    [deckParams]="{ type: 'TOURNAMENT', order: 'POPULAR' }"
+    [decks]="$safeNavigationMigration(deckHome?.tournamentPopular)"
+  />
+  <app-home-section
+    class="col-md-12 col-lg-6 my-3"
+    [title]="'home.popular_community' | transloco"
+    [deckParams]="{ type: 'COMMUNITY', order: 'POPULAR' }"
+    [decks]="$safeNavigationMigration(deckHome?.communityPopular)"
+  />
 </div>
 
 <!-- Newest Decks -->
 <div class="row mt-3">
-  <app-home-section class="col-md-12 col-lg-6 my-3" [title]="'home.newest_tournament' | transloco"
-    [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }" [decks]="deckHome?.tournamentNewest" />
-  <app-home-section class="col-md-12 col-lg-6 my-3" [title]="'home.newest_community' | transloco"
-    [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }" [decks]="deckHome?.communityNewest" />
+  <app-home-section
+    class="col-md-12 col-lg-6 my-3"
+    [title]="'home.newest_tournament' | transloco"
+    [deckParams]="{ type: 'TOURNAMENT', order: 'NEWEST' }"
+    [decks]="$safeNavigationMigration(deckHome?.tournamentNewest)"
+  />
+  <app-home-section
+    class="col-md-12 col-lg-6 my-3"
+    [title]="'home.newest_community' | transloco"
+    [deckParams]="{ type: 'COMMUNITY', order: 'NEWEST' }"
+    [decks]="$safeNavigationMigration(deckHome?.communityNewest)"
+  />
 </div>
 
-<app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7683446640" adFormat="auto" fullWidthResponsive="true" />
+<app-ad-sense
+  adClient="ca-pub-7379021241824282"
+  adSlot="7683446640"
+  adFormat="auto"
+  fullWidthResponsive="true"
+/>
 
 <!-- Contribution Section -->
 <section class="contribution-section py-4">
@@ -211,11 +342,21 @@
         <h3 class="mb-4">{{ 'home.contribute_title' | transloco }}</h3>
         <p class="lead mb-4">{{ 'home.contribute_message' | transloco }}</p>
         <div class="d-flex justify-content-center gap-3 mb-4">
-          <a href="https://github.com/Zavierazo/vtesdecks-front/issues" target="_blank" class="btn btn-outline-primary">
-            <i class="bi bi-github me-2"></i>{{ 'home.contribute_github_issues' | transloco }}
+          <a
+            href="https://github.com/Zavierazo/vtesdecks-front/issues"
+            target="_blank"
+            class="btn btn-outline-primary"
+          >
+            <i class="bi bi-github me-2"></i
+            >{{ 'home.contribute_github_issues' | transloco }}
           </a>
-          <a href="mailto:support@vtesdecks.com" target="_blank" class="btn btn-outline-primary">
-            <i class="bi bi-envelope me-2"></i>{{ 'home.contact_support' | transloco }}
+          <a
+            href="mailto:support@vtesdecks.com"
+            target="_blank"
+            class="btn btn-outline-primary"
+          >
+            <i class="bi bi-envelope me-2"></i
+            >{{ 'home.contact_support' | transloco }}
           </a>
         </div>
       </div>

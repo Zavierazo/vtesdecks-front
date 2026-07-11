@@ -32,8 +32,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs'
-import { CryptCardComponent } from 'src/app/modules/deck-shared/crypt-card/crypt-card.component'
-import { LibraryCardComponent } from 'src/app/modules/deck-shared/library-card/library-card.component'
+import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
+import { LibraryCardComponent } from '@deck-shared/library-card/library-card.component'
 
 @UntilDestroy()
 @Component({

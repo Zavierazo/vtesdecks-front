@@ -1,14 +1,24 @@
+@if (allowExclude) {
+<div class="d-flex flex-wrap align-items-center gap-2 mb-1 w-100 mode-controls">
+  <small class="text-body-secondary filter-hint">
+    <i class="bi bi-slash-circle"></i>
+    {{ (isMobileOrTablet ? 'shared.filter_exclude_hint_mobile' : 'shared.filter_exclude_hint_desktop') | transloco }}
+  </small>
+</div>
+}
 @if (showNotRequired) {
-<span (click)="toggleNotRequired()" [title]="'shared.not_required' | transloco">
+<span (click)="toggleNotRequired()" appExcludeGesture (excludeGesture)="onExcludeGesture('none')"
+  [title]="'shared.not_required' | transloco" [ngClass]="{ 'excluded': isExcluded('none') }">
   <i class="btn-icon vtes vtes-big noclan" [ngClass]="{
-    'non-selected': !isSelected('none')
+    'non-selected': !isSelected('none') && !isExcluded('none')
   }"></i>
 </span>
 }
 @for (clan of clansList; track clan) {
-<span (click)="toggle(clan.name)" [title]="clan.label | transloco">
+<span (click)="toggle(clan.name)" appExcludeGesture (excludeGesture)="onExcludeGesture(clan.name)"
+  [title]="clan.label | transloco" [ngClass]="{ 'excluded': isExcluded(clan.name) }">
   <i class="btn-icon vtes vtes-big" [class]="clan.icon" [ngClass]="{
-        'non-selected': !isSelected(clan.name),
+        'non-selected': !isSelected(clan.name) && !isExcluded(clan.name),
         'bg-dark': isSelected(clan.name)
       }"></i>
 </span>

@@ -257,7 +257,11 @@
     "cards_in_collection_tooltip": "{{ collected }} de {{ total }} cartas na coleção",
     "share": "Compartilhar",
     "show_more": "Mostrar mais",
-    "ebay_affiliate_disclosure": "Este site contém links de afiliados pelos quais posso ser compensado"
+    "ebay_affiliate_disclosure": "Este site contém links de afiliados pelos quais posso ser compensado",
+    "add_to_collection": "Adicionar à Coleção",
+    "edit": "Editar",
+    "loading": "Carregando...",
+    "no_cards_found": "Nenhuma carta encontrada na sua coleção"
   },
   "decks": {
     "total_decks": "<strong>{{ total }}</strong> baralhos",
@@ -375,6 +379,7 @@
     "wishlist": "Desejos",
     "tools": "Ferramentas",
     "table_seating": "Assentamento de mesa",
+    "game_timer": "Temporizador de partida",
     "contact": "Contato",
     "login": "Conectar",
     "sign_up": "Cadastrar",
@@ -422,7 +427,9 @@
     "metagame": "Metajogo Atual",
     "android_banner_message": "VTESDecks já está disponível no Android! Baixe o app para uma melhor experiência móvel.",
     "android_banner_install": "Disponível no Google Play",
-    "user_of_month_title": "Utilizador do Mês"
+    "user_of_month_title": "Utilizador do Mês",
+    "table_seating_short": "Assentos",
+    "game_timer_short": "Cronômetro"
   },
   "import_amaranth": {
     "title": "Importar Amaranth",
@@ -532,6 +539,12 @@
     "new_version_available": "Uma nova versão do aplicativo está sendo carregada. Por favor, aguarde alguns segundos ou pressione Ctrl + F5 para atualizar.",
     "new_version_installing": "Boas notícias! Uma atualização está sendo instalada em segundo plano.",
     "not_required": "Não requerido",
+    "filter_exclude_hint_desktop": "Clique com o botão direito em um ícone para excluí-lo",
+    "filter_exclude_hint_mobile": "Toque e segure um ícone para excluí-lo",
+    "filter_match_all": "TODAS",
+    "filter_match_any": "QUALQUER",
+    "filter_match_all_title": "A carta deve ter todas as selecionadas",
+    "filter_match_any_title": "A carta deve ter alguma das selecionadas",
     "grid": "Grade",
     "list": "Lista",
     "cards": "cartas",
@@ -541,6 +554,21 @@
     "new": "Novo",
     "supporter": "Membro no Patreon",
     "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente."
+  },
+  "game_timer": {
+    "title": "Temporizador de partida",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "reset": "Reiniciar",
+    "reset_hold": "Mantenha pressionado para reiniciar",
+    "reset_holding": "Continue pressionando...",
+    "duration": "Duração",
+    "custom_minutes": "Minutos personalizados",
+    "minutes_short": "min",
+    "edge": "O Edge",
+    "edge_held": "Você tem o Edge",
+    "time_up": "O tempo acabou!"
   },
   "table_seating": {
     "title": "Assentamento de mesa",
@@ -565,7 +593,11 @@
     "password_not_same": "Não pode ser a mesma que a senha anterior",
     "save": "Salvar",
     "error": "Ocorreu um erro ao atualizar suas configurações.",
-    "security_settings": "Configurações de segurança"
+    "security_settings": "Configurações de segurança",
+    "card_printing": "Impressão das imagens de cartas",
+    "card_printing_help": "Qual impressão é mostrada nas imagens de cartas quando nenhuma expansão específica está selecionada. A primeira impressão tem prioridade sobre os escaneamentos traduzidos.",
+    "card_printing_newest": "Impressão mais recente",
+    "card_printing_first": "Primeira impressão"
   },
   "user_public_profile": {
     "deck": "baralho",
@@ -858,11 +890,11 @@
   },
   "markdown-textarea": {
     "preview": "Pré-visualizar",
-    "bold": "Negrito",
-    "italic": "Itálico",
+    "bold": "Negrito (Ctrl+B)",
+    "italic": "Itálico (Ctrl+I)",
     "strikethrough": "Riscado",
     "title": "Título",
-    "link": "Link",
+    "link": "Link (Ctrl+K)",
     "image": "Imagem",
     "number_list": "Lista Numerada",
     "dot_list": "Lista Pontilhada",
@@ -871,7 +903,22 @@
     "table": "Tabela",
     "discipline": "Disciplina",
     "clan": "Clãs",
-    "help": "Ajuda"
+    "help": "Ajuda",
+    "card": "Inserir carta",
+    "card_search_placeholder": "Pesquisar carta...",
+    "no_results": "Nenhum resultado encontrado",
+    "type_to_search": "Continue escrevendo para pesquisar...",
+    "youtube": "Inserir vídeo do YouTube",
+    "youtube_url_label": "URL ou ID do vídeo do YouTube",
+    "youtube_invalid": "Insira uma URL ou ID do YouTube válido",
+    "embed_pasted_youtube": "Incorporar o vídeo do YouTube colado",
+    "insert": "Inserir",
+    "cancel": "Cancelar",
+    "split_view": "Pré-visualização lado a lado",
+    "suggest_card": "Carta",
+    "suggest_clan": "Clã",
+    "suggest_discipline": "Disciplina",
+    "suggest_youtube": "Vídeo do YouTube"
   },
   "collection": {
     "title": "Coleção",

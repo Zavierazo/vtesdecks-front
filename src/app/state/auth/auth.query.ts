@@ -1,5 +1,5 @@
 import { inject, Injectable, Signal } from '@angular/core'
-import { ApiUser } from '@models'
+import { ApiUser, CardPrintingPreference } from '@models'
 import { isSupporter } from '@utils'
 import { Observable } from 'rxjs'
 import { AuthStore } from './auth.store'
@@ -64,6 +64,12 @@ export class AuthQuery {
     return this.store.select((state) => state.deckDisplayMode || 'list')
   }
 
+  selectCardPrintingPreference(): Observable<CardPrintingPreference> {
+    return this.store.select(
+      (state) => state.cardPrintingPreference || 'NEWEST',
+    )
+  }
+
   serverDate(): Signal<Date | undefined> {
     return this.store.selectServerDate()
   }
@@ -102,6 +108,10 @@ export class AuthQuery {
 
   getDeckDisplayMode(): 'list' | 'grid' {
     return this.store.getValue().deckDisplayMode
+  }
+
+  getCardPrintingPreference(): CardPrintingPreference {
+    return this.store.getValue().cardPrintingPreference || 'NEWEST'
   }
 
   isSupporter(): boolean {

@@ -92,6 +92,14 @@
                 @if (card.language) {
                   <span class="badge bg-info">{{ card.language }}</span>
                 }
+                <button
+                  type="button"
+                  class="btn btn-link btn-sm p-0 ms-1"
+                  [title]="t('edit')"
+                  (click)="onEditRow(card, $event)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
               </div>
             </div>
           } @empty {
