@@ -35,6 +35,7 @@ export interface ApiDeck {
   pathIcon?: string
   stats: ApiDeckStats
   favorite?: boolean
+  hasVideo?: boolean
   rated?: boolean
   owner?: boolean
   erratas?: ApiCardErrata[]

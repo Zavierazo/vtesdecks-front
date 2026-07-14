@@ -31,6 +31,9 @@
             @if (!deck.published) {
             <i class="bi bi-incognito text-muted" [title]="'deck_shared.private_deck' | transloco"></i>
             }
+            @if (deck.hasVideo) {
+            <i class="bi bi-youtube text-danger" [title]="'filters.has_video' | transloco"></i>
+            }
           </span>
           {{ deck.name | titlecase | truncate: 40:true }}
         </h2>
