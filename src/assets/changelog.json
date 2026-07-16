@@ -3,7 +3,7 @@
     "version": "2.75.0",
     "date": "xxth July, 2026",
     "changes": [
-      "Looking for decks with gameplay or deck-tech videos? Use the new <strong>Has video</strong> filter to show only decks that include a YouTube video, and spot them at a glance thanks to the new <i class=\"bi bi-youtube text-danger\"></i> icon on their deck cards.",
+      "Want decks that are properly explained? The new <strong>Deck guide</strong> filter shows only decks that come with a thorough write-up or a gameplay video. Decks with a YouTube video also display a <i class=\"bi bi-youtube text-danger\"></i> icon on their deck card so you can spot them at a glance.",
       "Minor bug fixes and performance improvements."
     ]
   },

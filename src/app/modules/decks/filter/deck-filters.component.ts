@@ -142,7 +142,7 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('event')?.patchValue('any', { emitEvent: false })
     this.filterForm.get('tags')?.patchValue('', { emitEvent: false })
     this.filterForm.get('favorite')?.patchValue(false, { emitEvent: false })
-    this.filterForm.get('hasVideo')?.patchValue(false, { emitEvent: false })
+    this.filterForm.get('detailed')?.patchValue(false, { emitEvent: false })
     this.filterForm
       .get('collectionTracker')
       ?.patchValue(false, { emitEvent: false })
@@ -279,7 +279,7 @@ export class DeckFiltersComponent implements OnInit {
     this.listenAndNavigateString(this.filterForm, 'event', 'any')
     this.listenAndNavigateString(this.filterForm, 'tags', '')
     this.listenAndNavigateBoolean(this.filterForm, 'favorite', false)
-    this.listenAndNavigateBoolean(this.filterForm, 'hasVideo', false)
+    this.listenAndNavigateBoolean(this.filterForm, 'detailed', false)
     this.listenAndNavigateCollectionTracker()
     this.listenAndNavigateSimpleSlider(
       this.filterForm,
