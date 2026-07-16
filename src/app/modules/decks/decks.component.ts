@@ -154,14 +154,15 @@ export class DecksComponent implements OnInit {
   }
 
   reset(): void {
-    // Default value main form
-    this.mainForm.get('type')?.patchValue('ALL', { emitEvent: false })
-    this.mainForm.get('order')?.patchValue('NEWEST', { emitEvent: false })
-
-    // Clear query params
+    // Clear query params, preserving current type and order
+    const type = this.mainForm.get('type')?.value
+    const order = this.mainForm.get('order')?.value
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {},
+      queryParams: {
+        type: type && type !== 'ALL' ? type : undefined,
+        order: order && order !== 'NEWEST' ? order : undefined,
+      },
     })
   }
 
