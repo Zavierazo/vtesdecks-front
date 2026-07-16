@@ -98,8 +98,8 @@
             {{ t('tools') }}
           </span>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank" rel="noopener noreferrer"
-              (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
+            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
+              rel="noopener noreferrer" (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
               Codex of the Damned
             </a>
             <a ngbDropdownItem routerLink="/vtesdle" [routerLinkActive]="['active']" (click)="isCollapsed = true"
@@ -174,8 +174,7 @@
         </button>
         <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button" aria-expanded="false"
-            data-cy="user-menu"
-            [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
+            data-cy="user-menu" [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>
@@ -198,6 +197,13 @@
               (click)="isCollapsed = true">
               <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
             </a>
+            @if (isAdmin$ | async) {
+            <hr class="dropdown-divider" />
+            <a ngbDropdownItem routerLink="/admin" [routerLinkActive]="['active']" (click)="isCollapsed = true"
+              data-cy="admin-menu">
+              <i class="bi bi-shield-lock-fill"></i> {{ t('admin') }}
+            </a>
+            }
             <hr class="dropdown-divider" />
             <a ngbDropdownItem [routerLink]="'/user/' + (user$ | async)" [routerLinkActive]="['active']"
               (click)="isCollapsed = true">
@@ -206,12 +212,6 @@
             <a ngbDropdownItem routerLink="/user/settings" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('settings') }}
             </a>
-            @if (isAdmin$ | async) {
-            <a ngbDropdownItem routerLink="/admin" [routerLinkActive]="['active']" (click)="isCollapsed = true"
-              data-cy="admin-menu">
-              <i class="bi bi-shield-lock-fill"></i> {{ t('admin') }}
-            </a>
-            }
             <a ngbDropdownItem href="javascript:void(0)" (click)="logout()" data-cy="logout">
               {{ t('logout') }}
             </a>
