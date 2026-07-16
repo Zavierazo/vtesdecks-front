@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Os flags são definidos no backend. Aqui só é possível alterar os seus valores.",
+    "key": "Chave",
+    "type": "Tipo",
+    "description": "Descrição",
+    "value": "Valor",
+    "save": "Guardar",
+    "add_item": "Adicionar",
+    "remove_item": "Remover",
+    "saved": "Feature flag guardado",
+    "save_error": "Não foi possível guardar o feature flag",
+    "empty": "Não há feature flags disponíveis"
+  },
   "can_deactivate_guard": {
     "title": "Advertência: Baralho não salvos!",
     "message": "Você tem baralho não salvos. Pressione Cancelar para voltar e salvar essas mudanças, ou OK para perder essas mudanças."
@@ -392,6 +406,7 @@
     "bookmarks": "Meus Favoritos",
     "public_profile": "Perfil Público",
     "settings": "Configurações",
+    "admin": "Administração",
     "logout": "Sair",
     "theme": "Tema",
     "notifications": "Notificações",
@@ -403,6 +418,7 @@
     "user_menu": "Menu do usuário"
   },
   "home": {
+    "sponsor": "Patrocinador",
     "welcome_title": "Bem-vindo ao VTES Decks",
     "welcome_subtitle": "Descubra, Compartilhe e Construa os melhores baralhos de Vampire: The Eternal Struggle",
     "metagame_decks": "Baralhos de Metajogo",

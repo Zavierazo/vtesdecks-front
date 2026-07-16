@@ -8,6 +8,7 @@ export interface AuthState extends ApiUser {
   builderDisplayMode: 'list' | 'grid'
   cardsDisplayMode: 'list' | 'grid'
   deckDisplayMode: 'list' | 'grid'
+  countryCode?: string
 }
 
 const initialState: AuthState = {
@@ -77,6 +78,11 @@ export class AuthStore {
 
   updateNotificationCount(notificationCount: number) {
     this.update({ ...this.getValue(), notificationCount })
+    this.updateStorage()
+  }
+
+  updateCountryCode(countryCode?: string) {
+    this.update({ ...this.getValue(), countryCode })
     this.updateStorage()
   }
 

@@ -1,0 +1,73 @@
+<div class="container my-4" *transloco="let t; prefix: 'admin'">
+  <h1 class="mb-1">{{ t('feature_flags_title') }}</h1>
+  <p class="text-muted">{{ t('feature_flags_hint') }}</p>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col">{{ t('key') }}</th>
+          <th scope="col">{{ t('type') }}</th>
+          <th scope="col" class="d-none d-md-table-cell">{{ t('description') }}</th>
+          <th scope="col" class="w-50">{{ t('value') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (flag of flags$ | async; track flag.key) {
+        <tr>
+          <td><code>{{ flag.key }}</code></td>
+          <td><span class="badge text-bg-secondary">{{ flag.type }}</span></td>
+          <td class="d-none d-md-table-cell">{{ flag.description }}</td>
+          <td>
+            @switch (flag.type) {
+            @case ('BOOLEAN') {
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" [checked]="flag.value === true"
+                (change)="onToggle(flag, $event)" [attr.aria-label]="flag.key" [attr.data-cy]="'flag-' + flag.key" />
+            </div>
+            }
+            @case ('STRING') {
+            <div class="input-group">
+              <input type="text" class="form-control" [value]="stringValue(flag)" (input)="onStringInput(flag, $event)"
+                [attr.aria-label]="flag.key" [attr.data-cy]="'flag-' + flag.key" />
+              <button type="button" class="btn btn-primary" [disabled]="!isStringDirty(flag)"
+                (click)="saveString(flag)">
+                {{ t('save') }}
+              </button>
+            </div>
+            }
+            @case ('LIST') {
+            @if (listValue(flag).length > 0) {
+            <div class="d-flex flex-wrap gap-1 mb-2">
+              @for (item of listValue(flag); track $index) {
+              <span class="badge text-bg-secondary d-inline-flex align-items-center">
+                {{ item }}
+                <button type="button" class="btn-close btn-close-white ms-1" [attr.aria-label]="t('remove_item')"
+                  (click)="removeListItem(flag, $index)"></button>
+              </span>
+              }
+            </div>
+            }
+            <div class="input-group">
+              <input type="text" class="form-control" #newItem [placeholder]="t('add_item')"
+                (keydown.enter)="addListItem(flag, newItem)" [attr.aria-label]="flag.key"
+                [attr.data-cy]="'flag-' + flag.key" />
+              <button type="button" class="btn btn-outline-secondary" (click)="addListItem(flag, newItem)">
+                {{ t('add_item') }}
+              </button>
+              <button type="button" class="btn btn-primary" [disabled]="!isListDirty(flag)" (click)="saveList(flag)">
+                {{ t('save') }}
+              </button>
+            </div>
+            }
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="text-center text-muted py-4">{{ t('empty') }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Les flags sont définis dans le backend. Seules leurs valeurs peuvent être modifiées ici.",
+    "key": "Clé",
+    "type": "Type",
+    "description": "Description",
+    "value": "Valeur",
+    "save": "Enregistrer",
+    "add_item": "Ajouter",
+    "remove_item": "Supprimer",
+    "saved": "Feature flag enregistré",
+    "save_error": "Impossible d'enregistrer le feature flag",
+    "empty": "Aucun feature flag disponible"
+  },
   "can_deactivate_guard": {
     "title": "Attention : Modifications non enregistrées !",
     "message": "Vous avez des modifications non enregistrées. Appuyez sur Annuler pour revenir et sauvegarder, ou sur OK pour perdre ces modifications."
@@ -392,6 +406,7 @@
     "bookmarks": "Mes Favoris",
     "public_profile": "Profil Public",
     "settings": "Paramètres",
+    "admin": "Administration",
     "logout": "Déconnexion",
     "theme": "Thème",
     "notifications": "Notifications",
@@ -403,6 +418,7 @@
     "user_menu": "Menu utilisateur"
   },
   "home": {
+    "sponsor": "Sponsor",
     "welcome_title": "Bienvenue sur VTES Decks",
     "welcome_subtitle": "Découvrez, partagez et construisez les meilleurs decks pour Vampire: The Eternal Struggle",
     "metagame_decks": "Decks Metagame",

@@ -21,6 +21,7 @@ import {
   ApiDeckBuilderHistory,
   ApiDeckLimitedFormat,
   ApiDecks,
+  ApiFeatureFlag,
   ApiHistoricStatistic,
   ApiHome,
   ApiLibrary,
@@ -41,6 +42,7 @@ import {
   ApiUserSettings,
   ApiUserTopMonth,
   ApiYearStatistic,
+  FeatureFlagValue,
   MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
@@ -94,6 +96,7 @@ export class ApiDataService {
   private readonly proxyOptionsPath = '/proxy/options/'
   private readonly deckArchetypePath = '/deck-archetype'
   private readonly shoppingOptimizePath = '/shopping/optimize'
+  private readonly featureFlagPath = '/feature-flag'
 
   login(
     username: string,
@@ -621,6 +624,22 @@ export class ApiDataService {
   deleteDeckArchetype(id: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+    )
+  }
+
+  getFeatureFlags(): Observable<ApiFeatureFlag[]> {
+    return this.httpClient.get<ApiFeatureFlag[]>(
+      `${environment.api.baseUrl}${this.featureFlagPath}`,
+    )
+  }
+
+  updateFeatureFlag(
+    key: string,
+    value: FeatureFlagValue,
+  ): Observable<ApiFeatureFlag> {
+    return this.httpClient.put<ApiFeatureFlag>(
+      `${environment.api.baseUrl}${this.featureFlagPath}/${key}`,
+      { value },
     )
   }
 

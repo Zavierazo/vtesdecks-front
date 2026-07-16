@@ -206,6 +206,12 @@
             <a ngbDropdownItem routerLink="/user/settings" [routerLinkActive]="['active']" (click)="isCollapsed = true">
               {{ t('settings') }}
             </a>
+            @if (isAdmin$ | async) {
+            <a ngbDropdownItem routerLink="/admin" [routerLinkActive]="['active']" (click)="isCollapsed = true"
+              data-cy="admin-menu">
+              <i class="bi bi-shield-lock-fill"></i> {{ t('admin') }}
+            </a>
+            }
             <a ngbDropdownItem href="javascript:void(0)" (click)="logout()" data-cy="logout">
               {{ t('logout') }}
             </a>

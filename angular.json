@@ -85,7 +85,7 @@
               "extractLicenses": false,
               "styles": ["src/styles.scss"],
               "scripts": [],
-              "polyfills": "src/polyfills.ts"
+              "polyfills": ["src/polyfills.ts"]
             }
           },
           "defaultConfiguration": "production"

@@ -80,10 +80,10 @@ export class AppComponent implements OnInit {
     this.cookieConsentService.statusChange$
       .pipe(filter((status) => status.status === 'allow'))
       .subscribe(() => this.googleTagConsentUpdate())
-    this.apiDataService
-      .getUserCountry()
-      .subscribe((response) =>
-        this.googleTagConsentUpdateAdPersonalization(response?.countryCode),
+    this.authService
+      .loadCountry()
+      .subscribe((countryCode) =>
+        this.googleTagConsentUpdateAdPersonalization(countryCode),
       )
     // Check expired session
     this.authService.refreshToken().subscribe()

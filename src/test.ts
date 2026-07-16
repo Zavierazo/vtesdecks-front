@@ -1,10 +1,3 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
-
-import { getTestBed } from '@angular/core/testing'
-import {
-  BrowserTestingModule,
-  platformBrowserTesting,
-} from '@angular/platform-browser/testing'
-
-// First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting())
+// Setup file for unit tests (vitest via @angular/build:unit-test).
+// The builder initializes the Angular testing environment itself,
+// so this file must NOT call getTestBed().initTestEnvironment().

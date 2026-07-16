@@ -41,6 +41,7 @@ import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 
 import { AuthQuery } from '@state/auth/auth.query'
+import { FeatureFlagService } from '@state/feature-flag/feature-flag.service'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -209,6 +210,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./app/modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('@shared/components/page-not-found/page-not-found.component').then(
@@ -287,6 +293,9 @@ bootstrapApplication(AppComponent, {
     },
     provideAppInitializer(() => {
       inject(Sentry.TraceService)
+    }),
+    provideAppInitializer(() => {
+      inject(FeatureFlagService).load()
     }),
     {
       provide: RECAPTCHA_V3_SITE_KEY,

@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Los flags se definen en el backend. Aquí solo se pueden cambiar sus valores.",
+    "key": "Clave",
+    "type": "Tipo",
+    "description": "Descripción",
+    "value": "Valor",
+    "save": "Guardar",
+    "add_item": "Añadir",
+    "remove_item": "Eliminar",
+    "saved": "Feature flag guardado",
+    "save_error": "No se pudo guardar el feature flag",
+    "empty": "No hay feature flags disponibles"
+  },
   "can_deactivate_guard": {
     "title": "Advertencia: Tienes cambios sin guardar!",
     "message": "Tienes cambios sin guardar. Pulsa Cancelar para volver atrás y guardar estos cambios, o Aceptar para perderlos."
@@ -392,6 +406,7 @@
     "bookmarks": "Mis Favoritos",
     "public_profile": "Perfil Público",
     "settings": "Configuración",
+    "admin": "Administración",
     "logout": "Cerrar sesión",
     "theme": "Tema",
     "notifications": "Notificaciones",
@@ -403,6 +418,7 @@
     "user_menu": "Menú de usuario"
   },
   "home": {
+    "sponsor": "Patrocinador",
     "welcome_title": "Bienvenido a VTES Decks",
     "welcome_subtitle": "Descubre, Comparte y Crea los mejores mazos de Vampire: The Eternal Struggle",
     "metagame_decks": "Mazos de Metajuego",
