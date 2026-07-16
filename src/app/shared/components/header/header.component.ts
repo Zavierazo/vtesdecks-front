@@ -147,8 +147,4 @@ export class HeaderComponent implements OnInit {
       return '/assets/img/logo.png'
     }
   }
-
-  get themeEnabled(): boolean {
-    return this.colorThemeService.enabled
-  }
 }
