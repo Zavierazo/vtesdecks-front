@@ -4,6 +4,7 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { FeatureFlagQuery } from '@state/feature-flag/feature-flag.query'
+import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable, combineLatest, map } from 'rxjs'
 
 interface HomeCustomAd {
@@ -19,7 +20,13 @@ const HIDDEN: HomeCustomAd = { show: false }
   selector: 'app-home-custom-ad',
   templateUrl: './home-custom-ad.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, NgTemplateOutlet, AdSenseComponent, TranslocoPipe],
+  imports: [
+    AsyncPipe,
+    NgTemplateOutlet,
+    AdSenseComponent,
+    TranslocoPipe,
+    NgxGoogleAnalyticsModule,
+  ],
 })
 export class HomeCustomAdComponent {
   private readonly featureFlagQuery = inject(FeatureFlagQuery)
