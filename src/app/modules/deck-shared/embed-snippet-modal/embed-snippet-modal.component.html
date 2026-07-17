@@ -1,0 +1,193 @@
+<ng-container *transloco="let t; prefix: 'embed'">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ t('title') }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | transloco"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="row g-3">
+      <div class="col-12 col-lg-5">
+        <div class="mb-3">
+          <div class="form-label fw-semibold">{{ t('theme') }}</div>
+          <div class="btn-group w-100" role="group">
+            @for (themeOption of themes; track themeOption) {
+              <input
+                type="radio"
+                class="btn-check"
+                name="embedTheme"
+                [id]="'embed-theme-' + themeOption"
+                [checked]="theme() === themeOption"
+                (change)="theme.set(themeOption)"
+              />
+              <label
+                class="btn btn-outline-primary"
+                [for]="'embed-theme-' + themeOption"
+              >
+                {{ t('theme_' + themeOption) }}
+              </label>
+            }
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-label fw-semibold">{{ t('sections') }}</div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="embed-section-header"
+              checked
+              disabled
+            />
+            <label class="form-check-label" for="embed-section-header">
+              {{ t('section_header_always') }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="embed-section-stats"
+              [checked]="stats()"
+              (change)="stats.set(!stats())"
+            />
+            <label class="form-check-label" for="embed-section-stats">
+              {{ t('section_stats') }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="embed-section-crypt"
+              [checked]="crypt()"
+              (change)="crypt.set(!crypt())"
+            />
+            <label class="form-check-label" for="embed-section-crypt">
+              {{ t('section_crypt') }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="embed-section-library"
+              [checked]="library()"
+              (change)="library.set(!library())"
+            />
+            <label class="form-check-label" for="embed-section-library">
+              {{ t('section_library') }}
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-label fw-semibold">{{ t('size') }}</div>
+          <div class="row g-2 align-items-center mb-1">
+            <label class="col-3 col-form-label py-0" for="embed-width-auto">
+              {{ t('width') }}
+            </label>
+            <div class="col-4">
+              <div class="form-check form-switch mb-0">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="embed-width-auto"
+                  [checked]="widthAuto()"
+                  (change)="widthAuto.set(!widthAuto())"
+                />
+                <label class="form-check-label" for="embed-width-auto">
+                  {{ t('size_auto') }}
+                </label>
+              </div>
+            </div>
+            @if (!widthAuto()) {
+              <div class="col-5">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="embed-width-size"
+                  placeholder="400px"
+                  [attr.aria-label]="t('width')"
+                  [value]="widthSize()"
+                  (input)="widthSize.set($any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+          <div class="row g-2 align-items-center">
+            <label class="col-3 col-form-label py-0" for="embed-height-auto">
+              {{ t('height') }}
+            </label>
+            <div class="col-4">
+              <div class="form-check form-switch mb-0">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="embed-height-auto"
+                  [checked]="heightAuto()"
+                  (change)="heightAuto.set(!heightAuto())"
+                />
+                <label class="form-check-label" for="embed-height-auto">
+                  {{ t('size_auto') }}
+                </label>
+              </div>
+            </div>
+            @if (!heightAuto()) {
+              <div class="col-5">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="embed-height-size"
+                  placeholder="600px"
+                  [attr.aria-label]="t('height')"
+                  [value]="heightSize()"
+                  (input)="heightSize.set($any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+          @if (!widthAuto() || !heightAuto()) {
+            <div class="form-text">{{ t('size_hint') }}</div>
+          }
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="form-label fw-semibold mb-0" for="embed-js-snippet">{{
+              t('js_snippet')
+            }}</label>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              (click)="onCopy(jsSnippet())"
+            >
+              <i class="bi bi-clipboard me-1"></i>{{ t('copy') }}
+            </button>
+          </div>
+          <textarea
+            id="embed-js-snippet"
+            class="form-control font-monospace mt-1"
+            rows="6"
+            readonly
+            [value]="jsSnippet()"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-12 col-lg-7">
+        <div class="form-label fw-semibold">{{ t('preview') }}</div>
+        <iframe
+          #previewFrame
+          class="embed-preview"
+          [src]="previewUrl()"
+          [style.width]="width() ?? '100%'"
+          [style.height]="height() ?? previewHeight() + 'px'"
+          [title]="t('preview')"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</ng-container>

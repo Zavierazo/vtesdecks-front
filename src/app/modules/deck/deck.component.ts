@@ -361,6 +361,20 @@ export class DeckComponent implements OnInit, AfterViewInit {
     }
   }
 
+  async onEmbed(): Promise<void> {
+    // Lazy import to keep the embed modal out of the deck chunk
+    const { EmbedSnippetModalComponent } = await import(
+      '@deck-shared/embed-snippet-modal/embed-snippet-modal.component'
+    )
+    const modalRef = this.modalService.open(EmbedSnippetModalComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+    })
+    modalRef.componentInstance.deckId = this.id
+    modalRef.componentInstance.deckName = this.deckQuery.getDeck()?.name
+  }
+
   onTag(tag: string): void {
     this.router.navigate(['/decks'], { queryParams: { tags: tag } })
   }

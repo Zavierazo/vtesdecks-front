@@ -71,7 +71,8 @@ function jwtOptionsFactory(authQuery: AuthQuery) {
     skipWhenExpired: true,
   }
 }
-const routes: Routes = [
+// Routes rendered inside the default shell (header + footer + app-level init)
+const shellRoutes: Routes = [
   { path: 'index', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
@@ -221,6 +222,24 @@ const routes: Routes = [
         (m) => m.PageNotFoundComponent,
       ),
   }, // Wildcard route for a 404 page
+]
+
+const routes: Routes = [
+  // Chromeless routes (no header/footer, no app-level side effects)
+  {
+    path: 'deck/:id/embed',
+    loadChildren: () =>
+      import('./app/modules/embed/embed.routes').then((m) => m.EMBED_ROUTES),
+  },
+  // Everything else renders inside the default shell
+  {
+    path: '',
+    loadComponent: () =>
+      import('@shared/components/shell/shell.component').then(
+        (m) => m.ShellComponent,
+      ),
+    children: shellRoutes,
+  },
 ]
 
 if (environment.production) {

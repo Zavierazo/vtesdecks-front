@@ -145,7 +145,8 @@
     "delete": "Deletar",
     "compare": "Comparar",
     "archetype": "Arquétipo",
-    "add_to_collection": "Adicionar à Coleção"
+    "add_to_collection": "Adicionar à Coleção",
+    "embed": "Incorporar"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",
@@ -1247,5 +1248,29 @@
     "singles_only_total": "Comprando tudo como cartas avulsas",
     "you_save": "Você economiza",
     "singles_cheapest": "Comprar cartas avulsas já é a opção mais barata"
+  },
+  "embed": {
+    "title": "Incorporar deck",
+    "theme": "Tema",
+    "theme_auto": "Auto",
+    "theme_dark": "Escuro",
+    "theme_light": "Claro",
+    "sections": "Seções",
+    "section_header_always": "Cabeçalho (sempre visível)",
+    "section_stats": "Estatísticas",
+    "section_crypt": "Lista da cripta",
+    "section_library": "Lista da biblioteca",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "preview": "Pré-visualização",
+    "js_snippet": "Código JavaScript",
+    "copy": "Copiar",
+    "copied": "Copiado para a área de transferência",
+    "powered_by": "Criado com vtesdecks.com",
+    "size": "Tamanho",
+    "width": "Largura",
+    "height": "Altura",
+    "size_auto": "Auto",
+    "size_hint": "Qualquer tamanho CSS funciona: 400px, 30rem, 100%…"
   }
 }

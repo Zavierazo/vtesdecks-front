@@ -145,7 +145,8 @@
     "delete": "Eliminar",
     "compare": "Comparar",
     "archetype": "Arquetipo",
-    "add_to_collection": "Añadir a Colección"
+    "add_to_collection": "Añadir a Colección",
+    "embed": "Embeber"
   },
   "deck_comparison": {
     "title": "Comparar Mazo",
@@ -1247,5 +1248,29 @@
     "singles_only_total": "Comprando todo como cartas sueltas",
     "you_save": "Ahorras",
     "singles_cheapest": "Comprar cartas sueltas ya es la opción más barata"
+  },
+  "embed": {
+    "title": "Embeber mazo",
+    "theme": "Tema",
+    "theme_auto": "Auto",
+    "theme_dark": "Oscuro",
+    "theme_light": "Claro",
+    "sections": "Secciones",
+    "section_header_always": "Cabecera (siempre visible)",
+    "section_stats": "Estadísticas",
+    "section_crypt": "Lista de cripta",
+    "section_library": "Lista de biblioteca",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "preview": "Vista previa",
+    "js_snippet": "Código JavaScript",
+    "copy": "Copiar",
+    "copied": "Copiado al portapapeles",
+    "powered_by": "Creado con vtesdecks.com",
+    "size": "Tamaño",
+    "width": "Ancho",
+    "height": "Alto",
+    "size_auto": "Auto",
+    "size_hint": "Vale cualquier tamaño CSS: 400px, 30rem, 100%…"
   }
 }

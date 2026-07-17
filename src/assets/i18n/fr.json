@@ -145,7 +145,8 @@
     "delete": "Supprimer",
     "compare": "Comparer",
     "archetype": "Archétype",
-    "add_to_collection": "Ajouter à la collection"
+    "add_to_collection": "Ajouter à la collection",
+    "embed": "Intégrer"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",
@@ -1247,5 +1248,29 @@
     "singles_only_total": "Tout acheter à l'unité",
     "you_save": "Vous économisez",
     "singles_cheapest": "Acheter à l'unité est déjà l'option la moins chère"
+  },
+  "embed": {
+    "title": "Intégrer le deck",
+    "theme": "Thème",
+    "theme_auto": "Auto",
+    "theme_dark": "Sombre",
+    "theme_light": "Clair",
+    "sections": "Sections",
+    "section_header_always": "En-tête (toujours affiché)",
+    "section_stats": "Statistiques",
+    "section_crypt": "Liste de la crypte",
+    "section_library": "Liste de la bibliothèque",
+    "crypt": "Crypte",
+    "library": "Bibliothèque",
+    "preview": "Aperçu",
+    "js_snippet": "Code JavaScript",
+    "copy": "Copier",
+    "copied": "Copié dans le presse-papiers",
+    "powered_by": "Propulsé par vtesdecks.com",
+    "size": "Taille",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "size_auto": "Auto",
+    "size_hint": "Toute taille CSS est valable : 400px, 30rem, 100%…"
   }
 }

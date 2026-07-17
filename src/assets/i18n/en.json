@@ -145,7 +145,8 @@
     "delete": "Delete",
     "compare": "Compare",
     "archetype": "Archetype",
-    "add_to_collection": "Add to Collection"
+    "add_to_collection": "Add to Collection",
+    "embed": "Embed"
   },
   "deck_comparison": {
     "title": "Compare Deck",
@@ -1247,5 +1248,29 @@
     "singles_only_total": "Buying everything as singles",
     "you_save": "You save",
     "singles_cheapest": "Buying singles is already the cheapest option"
+  },
+  "embed": {
+    "title": "Embed deck",
+    "theme": "Theme",
+    "theme_auto": "Auto",
+    "theme_dark": "Dark",
+    "theme_light": "Light",
+    "sections": "Sections",
+    "section_header_always": "Header (always shown)",
+    "section_stats": "Statistics",
+    "section_crypt": "Crypt list",
+    "section_library": "Library list",
+    "crypt": "Crypt",
+    "library": "Library",
+    "preview": "Preview",
+    "js_snippet": "JavaScript code",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "powered_by": "Powered by vtesdecks.com",
+    "size": "Size",
+    "width": "Width",
+    "height": "Height",
+    "size_auto": "Auto",
+    "size_hint": "Any CSS size works: 400px, 30rem, 100%…"
   }
 }
