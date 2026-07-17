@@ -66,6 +66,7 @@ export class ApiDataService {
   private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
   private readonly userBookmarkDeckPath = '/user/decks/bookmark'
+  private readonly userDeckReactionPath = '/user/decks/reaction'
   private readonly userCommentsPath = '/user/comments'
   private readonly userSettingsPath = '/user/settings'
   private readonly userRefreshPath = '/user/refresh'
@@ -204,6 +205,35 @@ export class ApiDataService {
       {
         deck,
         favorite: bookmark,
+      },
+    )
+  }
+
+  reactDeck(
+    deck: string,
+    reaction: string,
+    active: boolean,
+  ): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userDeckReactionPath}`,
+      {
+        deck,
+        reaction,
+        active,
+      },
+    )
+  }
+
+  reactComment(
+    id: number,
+    reaction: string,
+    active: boolean,
+  ): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userCommentsPath}/${id}/reaction`,
+      {
+        reaction,
+        active,
       },
     )
   }

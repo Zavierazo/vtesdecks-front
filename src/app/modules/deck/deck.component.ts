@@ -53,6 +53,7 @@ import { AnimatedDigitComponent } from '@shared/components/animated-digit/animat
 import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
+import { QuickReactionsComponent } from '@shared/components/quick-reactions/quick-reactions.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
@@ -107,6 +108,7 @@ import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer
     CryptComponent,
     LibraryListComponent,
     CommentsComponent,
+    QuickReactionsComponent,
     AsyncPipe,
     CurrencyPipe,
     TitleCasePipe,

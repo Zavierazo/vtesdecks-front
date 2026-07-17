@@ -530,6 +530,24 @@
     "does_not_exists": "The page you're looking for doesn't exist.",
     "go_home": "Go Home"
   },
+  "reactions": {
+    "would_play": "Would play",
+    "tournament_worthy": "Tournament-worthy",
+    "original_brew": "Original brew",
+    "mind_blowing": "Mind-blowing",
+    "spicy": "Spicy",
+    "too_greedy": "Too greedy",
+    "thumbs_up": "Like",
+    "thumbs_down": "Dislike",
+    "heart": "Love",
+    "laugh": "Haha",
+    "wow": "Wow",
+    "thanks": "Thanks",
+    "hundred": "Spot on",
+    "add_reaction": "Add reaction",
+    "login_required": "Log in to react",
+    "error": "Could not save your reaction. Please try again."
+  },
   "reset_password": {
     "reset_password": "Reset Password",
     "password": "Password",

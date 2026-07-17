@@ -19,6 +19,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
+import { QuickReactionsComponent } from '@shared/components/quick-reactions/quick-reactions.component'
 import { DateAsAgoPipe } from '@shared/pipes/date-ago.pipe'
 import { AuthQuery } from '@state/auth/auth.query'
 import { CommentsService } from '@state/comments/comments.service'
@@ -37,6 +38,7 @@ import { filter, Observable, switchMap } from 'rxjs'
     DateAsAgoPipe,
     MarkdownTextareaComponent,
     MarkdownTextComponent,
+    QuickReactionsComponent,
     TranslocoPipe,
     RouterLink,
   ],

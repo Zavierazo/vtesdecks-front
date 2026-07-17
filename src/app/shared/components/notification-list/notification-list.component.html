@@ -26,7 +26,8 @@
       </div>
     </a>
     }
-    @if(notification.type === 'GLOBAL'|| notification.type === 'DECK' || notification.type === 'COMMENT'){
+    @if(notification.type === 'GLOBAL'|| notification.type === 'DECK' || notification.type === 'COMMENT' ||
+    notification.type === 'REACTION'){
     <a class="text-decoration-none text-black notification-list" [ngClass]="{
       'notification-list--unread': !notification.read
     }" [routerLink]="notification.link" (click)="!notification.read ? read(notification.id): offcanvas.close()">

@@ -530,6 +530,24 @@
     "does_not_exists": "La página que estás buscando no existe.",
     "go_home": "Ir a inicio"
   },
+  "reactions": {
+    "would_play": "Lo jugaría",
+    "tournament_worthy": "Digno de torneo",
+    "original_brew": "Creación original",
+    "mind_blowing": "Alucinante",
+    "spicy": "Picante",
+    "too_greedy": "Demasiado codicioso",
+    "thumbs_up": "Me gusta",
+    "thumbs_down": "No me gusta",
+    "heart": "Me encanta",
+    "laugh": "Jaja",
+    "wow": "Guau",
+    "thanks": "Gracias",
+    "hundred": "Muy cierto",
+    "add_reaction": "Añadir reacción",
+    "login_required": "Inicia sesión para reaccionar",
+    "error": "No se pudo guardar tu reacción. Inténtalo de nuevo."
+  },
   "reset_password": {
     "reset_password": "Restablecer contraseña",
     "password": "Contraseña",

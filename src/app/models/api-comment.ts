@@ -1,3 +1,5 @@
+import { ApiReactionSummary } from './api-reaction'
+
 export interface ApiComment {
   id: number
   deckId: string
@@ -9,4 +11,5 @@ export interface ApiComment {
   profileImage: string
   createdBySupporter: boolean
   createdByCurrentUser: boolean
+  reactions?: ApiReactionSummary[]
 }

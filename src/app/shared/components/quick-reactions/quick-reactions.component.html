@@ -1,0 +1,55 @@
+<div
+  class="quick-reactions d-flex flex-wrap align-items-center gap-2"
+  *transloco="let t; prefix: 'reactions'"
+>
+  @for (chip of visibleChips(); track chip.reaction) {
+  <button
+    type="button"
+    class="btn btn-sm rounded-pill reaction-chip"
+    [ngClass]="chip.reacted ? 'btn-primary' : 'btn-outline-secondary'"
+    [ngbTooltip]="
+      (isAuthenticated$ | async) ? t(chip.reaction) : t('login_required')
+    "
+    (click)="toggle(chip.reaction)"
+  >
+    <span class="reaction-chip__emoji">{{ chip.emoji }}</span>
+    @if (chip.count > 0) {
+    <span class="reaction-chip__count ms-1">{{ chip.count }}</span>
+    }
+  </button>
+  }
+  @if (display() === 'compact') {
+  <button
+    type="button"
+    class="btn btn-sm rounded-pill reaction-chip reaction-chip--add btn-outline-secondary"
+    [ngbTooltip]="t('add_reaction')"
+    [disableTooltip]="picker.isOpen()"
+    #addTooltip="ngbTooltip"
+    [ngbPopover]="pickerTemplate"
+    autoClose="outside"
+    container="body"
+    #picker="ngbPopover"
+    (click)="addTooltip.close()"
+  >
+    <i class="bi bi-emoji-smile"></i>
+  </button>
+  <ng-template #pickerTemplate>
+    <div class="reaction-picker d-flex flex-column gap-1">
+      @for (chip of allChips(); track chip.reaction) {
+      <button
+        type="button"
+        class="btn btn-sm text-start d-flex align-items-center gap-2 reaction-picker__option"
+        [ngClass]="{ 'btn-primary': chip.reacted }"
+        (click)="toggle(chip.reaction, picker)"
+      >
+        <span class="reaction-chip__emoji">{{ chip.emoji }}</span>
+        <span>{{ t(chip.reaction) }}</span>
+        @if (chip.count > 0) {
+        <span class="reaction-chip__count ms-auto">{{ chip.count }}</span>
+        }
+      </button>
+      }
+    </div>
+  </ng-template>
+  }
+</div>

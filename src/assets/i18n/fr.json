@@ -530,6 +530,24 @@
     "does_not_exists": "La page que vous recherchez n'existe pas.",
     "go_home": "Retour à l'accueil"
   },
+  "reactions": {
+    "would_play": "Je le jouerais",
+    "tournament_worthy": "Digne de tournoi",
+    "original_brew": "Création originale",
+    "mind_blowing": "Époustouflant",
+    "spicy": "Épicé",
+    "too_greedy": "Trop gourmand",
+    "thumbs_up": "J'aime",
+    "thumbs_down": "Je n'aime pas",
+    "heart": "J'adore",
+    "laugh": "Haha",
+    "wow": "Waouh",
+    "thanks": "Merci",
+    "hundred": "Tout à fait",
+    "add_reaction": "Ajouter une réaction",
+    "login_required": "Connectez-vous pour réagir",
+    "error": "Impossible d'enregistrer votre réaction. Veuillez réessayer."
+  },
   "reset_password": {
     "reset_password": "Réinitialiser le mot de passe",
     "password": "Mot de passe",
