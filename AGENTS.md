@@ -112,7 +112,7 @@ src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 - **Change detection**: `OnPush` everywhere.
 - **Subscriptions**: cleaned up with `@ngneat/until-destroy`.
 - **API calls**: go through `ApiDataService` only.
-- **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code. Keys loaded from CDN (`i18n-cdn.vtesdecks.com`).
+- **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code.
 - **Images**: lazy-loaded via `ng-lazyload-image`; URLs built by `card-image.pipe`.
 - **Auth tokens**: stored in LocalStorage (remember me) or SessionStorage (session only).
 - **SEO**: `SeoService` sets canonical URL and meta tags per route.
