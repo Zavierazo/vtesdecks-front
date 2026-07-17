@@ -2,9 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
 import {
-  ApiAiAskAsyncRequest,
-  ApiAiAskAsyncResponse,
-  ApiAiAskStatusResponse,
   ApiCard,
   ApiCardInfo,
   ApiCardScanRequest,
@@ -557,19 +554,6 @@ export class ApiDataService {
     return this.httpClient.get<string>(
       `${environment.api.baseUrl}${this.deckDetailPath}${id}/export?type=${type}`,
       { responseType: 'text' as 'json' },
-    )
-  }
-
-  aiAskAsync(request: ApiAiAskAsyncRequest): Observable<ApiAiAskAsyncResponse> {
-    return this.httpClient.post<ApiAiAskAsyncResponse>(
-      `${environment.api.baseUrl}${this.aiAskAsyncPath}`,
-      request,
-    )
-  }
-
-  aiAskAsyncStatus(sessionId: string): Observable<ApiAiAskStatusResponse> {
-    return this.httpClient.get<ApiAiAskStatusResponse>(
-      `${environment.api.baseUrl}${this.aiAskAsyncPath}/${sessionId}`,
     )
   }
 

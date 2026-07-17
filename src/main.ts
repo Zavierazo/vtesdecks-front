@@ -163,13 +163,6 @@ const shellRoutes: Routes = [
       ),
   },
   {
-    path: 'vtes-ai',
-    loadChildren: () =>
-      import('./app/modules/vtes-ai/vtes-ai.routes').then(
-        (m) => m.VTES_AI_ROUTES,
-      ),
-  },
-  {
     path: 'collection',
     loadChildren: () =>
       import('./app/modules/collection/collection.routes').then(
