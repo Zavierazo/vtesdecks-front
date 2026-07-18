@@ -1,8 +1,9 @@
 [
   {
     "version": "2.75.0",
-    "date": "xxth July, 2026",
+    "date": "18th July, 2026",
     "changes": [
+      "New to VTES? The brand-new <strong>Learn to Play</strong> tutorial teaches you the whole game in about 20 minutes by walking you through a complete demo match, step by step, right in your browser: influence, actions, bleeding, blocking, combat, politics, torpor and allies, all the way to ousting your prey.",
       "Added <strong>Quick Reactions</strong> to decks and comments, making it easier to show appreciation, highlight great ideas, or give feedback with a single click. Decks use VTES-themed reactions, while comments include familiar emoji reactions.",
       "Want decks that are properly explained? The new <strong>Deck guide</strong> filter shows only decks that come with a thorough write-up or a gameplay video. Decks with a YouTube video also display a <i class=\"bi bi-youtube text-danger\"></i> icon on their deck card so you can spot them at a glance.",
       "The <strong>Table Seating</strong> tool now remembers your last shuffle: close the window or even the app and the seating arrangement will still be there when you come back.",

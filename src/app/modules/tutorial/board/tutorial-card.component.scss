@@ -1,0 +1,95 @@
+:host {
+  display: inline-block;
+}
+
+.t-card {
+  --t-card-width: 5.5rem;
+  width: var(--t-card-width);
+
+  &.t-card-small {
+    --t-card-width: 3.75rem;
+  }
+}
+
+.t-card-frame {
+  position: relative;
+  transition: transform 0.3s ease;
+  border-radius: 6%/4.3%;
+}
+
+.t-card-locked .t-card-frame {
+  transform: rotate(90deg);
+}
+
+// Rotated cards widen: reserve the extra horizontal room so neighbours
+// (and their attachments) never overlap.
+.t-card-locked {
+  margin: 0 1.2rem;
+}
+
+.t-card-peek .t-card-frame {
+  animation: tutorial-card-flip 0.6s ease;
+}
+
+@keyframes tutorial-card-flip {
+  0% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0);
+  }
+}
+
+.t-card-img {
+  width: 100%;
+  border-radius: 6%/4.3%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+.t-card-blood {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.25rem;
+  border-radius: 50rem;
+  background: #b02a37;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--app-surface);
+}
+
+.t-card-lock-icon {
+  position: absolute;
+  bottom: -0.35rem;
+  left: -0.35rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--app-surface);
+  color: var(--bs-body-color);
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px var(--bs-border-color);
+}
+
+.t-card-attachments {
+  display: flex;
+  gap: 0.15rem;
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.t-card-attachment {
+  width: 1.6rem;
+  border-radius: 0.15rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}

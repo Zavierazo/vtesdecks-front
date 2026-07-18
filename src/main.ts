@@ -156,6 +156,13 @@ const shellRoutes: Routes = [
       ),
   },
   {
+    path: 'tutorial',
+    loadChildren: () =>
+      import('./app/modules/tutorial/tutorial.routes').then(
+        (m) => m.TUTORIAL_ROUTES,
+      ),
+  },
+  {
     path: 'statistics',
     loadChildren: () =>
       import('./app/modules/statistics/statistics.routes').then(

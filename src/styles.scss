@@ -704,3 +704,48 @@ ins.adsbygoogle[data-ad-status='unfilled'] {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+/** Interactive tutorial (module-crossing target/spotlight classes) **/
+.tutorial-target-highlighted {
+  position: relative;
+  z-index: 1045; // above the spotlight dim (1040)
+}
+
+.tutorial-target-actionable {
+  cursor: pointer;
+  outline: 2px solid var(--bs-warning);
+  outline-offset: 2px;
+  border-radius: 0.4rem;
+  animation: tutorial-target-pulse 1.4s ease-in-out infinite;
+}
+
+.tutorial-target-lifted {
+  transform: translateY(-0.4rem) scale(1.05);
+  transition: transform 0.15s ease;
+}
+
+@keyframes tutorial-target-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 0.45rem rgba(255, 193, 7, 0);
+  }
+}
+
+.tutorial-zoom-popover {
+  --bs-popover-max-width: none;
+  --bs-popover-bg: transparent;
+  --bs-popover-border-color: transparent;
+
+  .popover-body {
+    padding: 0;
+  }
+
+  .tutorial-zoom-img {
+    width: 18rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
+  }
+}

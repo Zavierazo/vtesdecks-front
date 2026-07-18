@@ -1,0 +1,78 @@
+<div
+  class="t-narrator"
+  *transloco="let t; prefix: 'tutorial'"
+  data-cy="tutorial-narrator"
+>
+  <div class="t-narrator-header">
+    <span class="t-narrator-progress" data-cy="tutorial-progress">
+      {{
+        t('narrator.chapter_progress', {
+          current: chapterNumber$(),
+          total: totalChapters
+        })
+      }}
+      · {{ t('chapters.' + store.currentChapter$().id + '.title') }}
+    </span>
+    <a
+      routerLink="/tutorial"
+      class="t-narrator-exit"
+      data-cy="tutorial-exit"
+      [title]="t('narrator.exit')"
+    >
+      <i class="bi bi-x-lg"></i>
+    </a>
+  </div>
+
+  @if (rivalThinking$()) {
+    <span class="badge text-bg-danger t-narrator-rival">
+      <i class="bi bi-person-fill"></i> {{ t('narrator.rival_turn') }}
+    </span>
+  }
+
+  <p
+    class="t-narrator-text"
+    data-cy="tutorial-narrator-text"
+    [innerHTML]="t(textKey$()) | tutorialEmphasis"
+  ></p>
+
+  @switch (advance$().type) {
+    @case ('next') {
+      <button
+        type="button"
+        class="btn btn-primary t-narrator-next"
+        data-cy="tutorial-next"
+        (click)="store.next()"
+      >
+        {{ t('narrator.next') }} <i class="bi bi-arrow-right"></i>
+      </button>
+    }
+    @case ('click') {
+      <span class="t-narrator-hint">
+        <i class="bi bi-hand-index-thumb"></i> {{ t('narrator.hint_click') }}
+      </span>
+    }
+    @case ('drag') {
+      <span class="t-narrator-hint">
+        <i class="bi bi-hand-index-thumb"></i> {{ t('narrator.hint_drag') }}
+      </span>
+    }
+    @case ('choice') {
+      <div class="t-narrator-choices">
+        @if (advance$(); as advance) {
+          @if (advance.type === 'choice') {
+            @for (option of advance.options; track option.id) {
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [attr.data-cy]="'tutorial-choice-' + option.id"
+                (click)="store.choose(option.id)"
+              >
+                {{ t(optionKey(option.id)) }}
+              </button>
+            }
+          }
+        }
+      </div>
+    }
+  }
+</div>

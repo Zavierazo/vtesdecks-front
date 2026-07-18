@@ -1,0 +1,242 @@
+.t-side {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  background: var(--app-surface, var(--bs-body-bg));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.t-side-active {
+  outline: 2px solid var(--app-ring, rgba(var(--bs-primary-rgb), 0.35));
+  outline-offset: 1px;
+}
+
+.t-zone {
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.t-zone-ready {
+  min-height: 9.5rem;
+}
+
+.t-mid-row {
+  // Torpor rarely holds more than one vampire: keep it narrow.
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 8.5rem) 1fr;
+  gap: 0.5rem;
+}
+
+.t-zone-torpor,
+.t-zone-uncontrolled {
+  min-height: 7rem;
+}
+
+.t-zone-label,
+.t-pile-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.t-zone-cards {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+}
+
+.t-zone-empty,
+.t-pile-empty {
+  width: 3.75rem;
+  aspect-ratio: 358 / 500;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.3rem;
+  opacity: 0.4;
+}
+
+.t-bottom-bar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  padding: 0.2rem 0.2rem 0;
+}
+
+.t-pile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+
+  img {
+    width: 3.25rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.t-pile-count {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.25rem;
+  border-radius: 50rem;
+  background: var(--bs-secondary-bg);
+  color: var(--bs-body-color);
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px var(--bs-border-color);
+  z-index: 1;
+}
+
+.t-bar-spacer {
+  flex: 1;
+}
+
+.t-pool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem 0.9rem;
+  border-radius: 0.6rem;
+  background: var(--app-surface-2, var(--bs-secondary-bg));
+  border: 1px solid var(--bs-border-color);
+
+  i {
+    color: #b02a37;
+  }
+}
+
+.t-pool-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.t-pool-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.t-transfers {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.t-masters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.t-masters-cards {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.t-pool {
+  position: relative;
+}
+
+.t-pool-delta {
+  position: absolute;
+  top: -0.6rem;
+  right: -0.6rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--bs-success);
+  animation: tutorial-pool-delta 2.6s ease forwards;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+
+  &.t-pool-delta-loss {
+    color: var(--bs-danger);
+  }
+}
+
+@keyframes tutorial-pool-delta {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.8);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(0) scale(1.25);
+  }
+  30% {
+    transform: translateY(-0.3rem) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.6rem) scale(1);
+  }
+}
+
+.t-edge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  align-self: center;
+
+  i {
+    color: var(--bs-warning);
+    font-size: 1.2rem;
+  }
+}
+
+// Compact (rival) side: same order, tighter zones
+.t-side-compact {
+  .t-zone-ready {
+    min-height: 7rem;
+  }
+
+  .t-zone-torpor,
+  .t-zone-uncontrolled {
+    min-height: 5.5rem;
+  }
+
+  .t-zone-cards {
+    gap: 0.75rem;
+    padding: 0.25rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .t-zone-ready {
+    min-height: 7rem;
+  }
+
+  .t-zone-uncontrolled {
+    min-height: 5.5rem;
+  }
+
+  .t-bottom-bar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}

@@ -1,0 +1,28 @@
+.t-hand {
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.t-hand-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.t-hand-cards {
+  display: flex;
+  gap: 0.4rem;
+  padding-top: 0.25rem;
+  overflow-x: auto;
+
+  app-tutorial-card {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(-0.3rem);
+    }
+  }
+}

@@ -413,6 +413,7 @@
     "notifications": "Notifications",
     "unread_notifications": "notifications non lues",
     "proxy_generator": "Générateur de Proxy",
+    "learn_to_play": "Apprendre à jouer",
     "vtes_ai_chat": "Chat VTES AI",
     "search": "Recherche",
     "scan_card": "Scanner",
@@ -420,6 +421,8 @@
   },
   "home": {
     "sponsor": "Sponsor",
+    "learn_to_play": "Apprendre à jouer",
+    "learn_to_play_cta": "Nouveau dans le jeu ? Apprenez à jouer en 20 minutes",
     "welcome_title": "Bienvenue sur VTES Decks",
     "welcome_subtitle": "Découvrez, partagez et construisez les meilleurs decks pour Vampire: The Eternal Struggle",
     "metagame_decks": "Decks Metagame",

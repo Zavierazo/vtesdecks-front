@@ -1,0 +1,10 @@
+.t-resource-icon {
+  width: 2rem;
+  text-align: center;
+  color: var(--bs-primary);
+}
+
+.t-resources .list-group-item,
+.t-resource-cta {
+  background: var(--app-surface, var(--bs-body-bg));
+}
