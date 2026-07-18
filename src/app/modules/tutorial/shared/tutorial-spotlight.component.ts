@@ -6,7 +6,9 @@ import {
   inject,
   signal,
 } from '@angular/core'
+import { MediaService } from '@services'
 import { TutorialStore } from '../state/tutorial.store'
+import { TutorialTargetId } from '../state/tutorial-script.model'
 import { TutorialTargetRegistryService } from './tutorial-target-registry.service'
 
 interface SpotlightHole {
@@ -31,6 +33,7 @@ export class TutorialSpotlightComponent {
   private readonly store = inject(TutorialStore)
   private readonly registry = inject(TutorialTargetRegistryService)
   private readonly destroyRef = inject(DestroyRef)
+  private readonly media = inject(MediaService)
 
   readonly hole$ = signal<SpotlightHole | undefined>(undefined)
 
@@ -56,6 +59,38 @@ export class TutorialSpotlightComponent {
       requestAnimationFrame(() => this.measure())
       setTimeout(() => this.measure(), 120)
     })
+    effect(() => {
+      // On mobile the highlighted element is often off-screen, so bring it into
+      // the centre of the viewport whenever the highlighted target changes.
+      const highlight = [...this.store.highlight$()]
+      if (highlight.length === 0 || !this.media.isMobile()) {
+        return
+      }
+      this.scrollIntoCenter(highlight[0])
+    })
+  }
+
+  private scrollIntoCenter(target: TutorialTargetId): void {
+    // The target may not be in the DOM yet when the step changes. Try after the
+    // next frame, with a timeout fallback for late card/image layout shifts.
+    let scrolled = false
+    const attempt = () => {
+      if (scrolled) {
+        return
+      }
+      const element = this.registry.getElement(target)
+      if (!element) {
+        return
+      }
+      scrolled = true
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      })
+    }
+    requestAnimationFrame(attempt)
+    setTimeout(attempt, 150)
   }
 
   private measure(): void {
