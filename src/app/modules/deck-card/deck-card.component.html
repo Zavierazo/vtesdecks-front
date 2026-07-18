@@ -31,6 +31,9 @@
             @if (!deck.published) {
             <i class="bi bi-incognito text-muted" [title]="'deck_shared.private_deck' | transloco"></i>
             }
+            @if (deck.hasVideo) {
+            <i class="bi bi-youtube text-danger" [title]="'filters.has_video' | transloco"></i>
+            }
           </span>
           {{ deck.name | titlecase | truncate: 40:true }}
         </h2>
@@ -75,6 +78,14 @@
           }
         </div>
       </div>
+      @if (deck.reaction; as reaction) {
+      <div class="deck-reaction position-absolute start-0 ms-3">
+        <div class="reaction-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
+          [title]="'reactions.' + reaction | transloco">
+          {{ reactionEmojis[reaction] }}
+        </div>
+      </div>
+      }
       @if (deck.rate; as rate) {
       <div class="deck-rating position-absolute end-0 me-3">
         <div class="rating-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small" [ngClass]="{

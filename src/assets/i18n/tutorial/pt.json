@@ -1,0 +1,317 @@
+{
+  "menu": {
+    "title": "Aprenda a jogar VTES",
+    "subtitle": "Jogue sua primeira partida guiada de Vampire: The Eternal Struggle no navegador. Não precisa conhecer as regras.",
+    "duration": "Cerca de 20 minutos",
+    "start": "Começar o tutorial",
+    "continue": "Continuar",
+    "restart": "Recomeçar",
+    "resources": "Recursos para novos jogadores"
+  },
+  "narrator": {
+    "next": "Avançar",
+    "exit": "Sair para o menu",
+    "rival_turn": "Turno do rival",
+    "hint_click": "Clique no elemento destacado",
+    "hint_drag": "Clique na carta e depois no destino",
+    "chapter_progress": "Capítulo {{current}}/{{total}}",
+    "start_chapter": "Começar capítulo"
+  },
+  "board": {
+    "pool": "Reserva",
+    "hand": "Mão",
+    "library": "Biblioteca",
+    "crypt": "Cripta",
+    "ash_heap": "Cinzas",
+    "uncontrolled": "Não controlados",
+    "ready": "Prontos",
+    "torpor": "Torpor",
+    "masters": "Mestres",
+    "edge": "A Vantagem",
+    "transfers": "Transferências",
+    "your_turn": "Seu turno",
+    "rival_turn": "Turno do rival",
+    "combat_round": "Combate: rodada {{round}}",
+    "stage_range": "Distância",
+    "stage_strike": "Golpes",
+    "stage_press": "Press",
+    "phase_unlock": "Destravar",
+    "phase_master": "Mestre",
+    "phase_minion": "Lacaios",
+    "phase_influence": "Influência",
+    "phase_discard": "Descarte"
+  },
+  "types": {
+    "master": "Mestre",
+    "modifier": "Modificador de ação",
+    "reaction": "Reação",
+    "combat": "Combate",
+    "political": "Ação política",
+    "equipment": "Equipamento",
+    "ally": "Aliado",
+    "retainer": "Servo",
+    "event": "Evento"
+  },
+  "chapters": {
+    "ch1": {
+      "title": "Bem-vindo ao jogo"
+    },
+    "ch2": {
+      "title": "Lendo as cartas"
+    },
+    "ch3": {
+      "title": "Seu lado da mesa"
+    },
+    "ch4": {
+      "title": "Fases e influência"
+    },
+    "ch5": {
+      "title": "Ações e sangria"
+    },
+    "ch6": {
+      "title": "Bloqueios e reações"
+    },
+    "ch7": {
+      "title": "Combate básico"
+    },
+    "ch8": {
+      "title": "Mestres e equipamento"
+    },
+    "ch9": {
+      "title": "Política e votações"
+    },
+    "ch10": {
+      "title": "Um combate completo"
+    },
+    "ch11": {
+      "title": "Resgate do torpor"
+    },
+    "ch12": {
+      "title": "Aliados"
+    },
+    "ch13": {
+      "title": "A eliminação"
+    }
+  },
+  "ch1": {
+    "s0": "Uma observação antes de começar: este tutorial funciona melhor em computador ou tablet, onde a mesa inteira cabe na tela. Em um celular pequeno também funciona, mas as regiões de jogo ficam apertadas. Além disso, ele simplifica algumas regras (interceptação, certos detalhes de combate e casos especiais); o livro de regras é a palavra final.",
+    "s1": "Bem-vindo! Em Vampire: The Eternal Struggle (VTES) você é um Matusalém, um vampiro ancestral. Você não luta diretamente: controla vampiros mais jovens e os envia para fazer o trabalho.",
+    "s2": "Esta é a sua RESERVA: 30 marcadores de sangue. A reserva é sua vida e seu dinheiro ao mesmo tempo. Você a gasta para colocar vampiros em jogo, e se ela acabar você perde.",
+    "s3": "Esta é a reserva do seu rival. Em uma partida completa, 4 ou 5 jogadores sentam em círculo. O jogador à sua esquerda é sua PRESA e o à direita, seu PREDADOR. Nesta demo de dois jogadores, seu rival é os dois.",
+    "s4": "Você marca 1 Ponto de Vitória ELIMINANDO sua presa, ou seja, levando a reserva dela a 0. Vence quem tiver mais pontos de vitória.",
+    "s5": "Hoje à noite você enfrenta Sir Walter Nash, Príncipe de Chicago. Vamos aprender jogando."
+  },
+  "ch2": {
+    "s1": "Existem dois tipos de carta. Primeiro, as cartas de CRIPTA: seus vampiros. Esta é Aline Gädeke. Clique em cada parte destacada para saber o que significa.",
+    "s2": "O NOME dela, no topo da carta.",
+    "s3": "A CAPACIDADE dela: 7. O sangue com que entra em jogo e o máximo que pode ter. Vampiros grandes são mais fortes, mas custam mais.",
+    "s4": "As DISCIPLINAS dela: seus poderes. Definem quais cartas ela pode jogar. Um ícone quadrado é o nível básico. Um ícone em losango é o nível superior, que também libera o efeito em negrito das cartas.",
+    "s5": "O CLÃ dela: Brujah. Todo vampiro pertence a um clã.",
+    "s5b": "O TEXTO da carta: as habilidades especiais dela e o TÍTULO, Baronesa de Mannheim. Títulos importam nas votações, como você verá depois.",
+    "s6": "O segundo tipo: as cartas de BIBLIOTECA, as que você joga da mão. Esta é Legal Manipulations. Vamos lê-la do mesmo jeito.",
+    "s7": "O TIPO da carta: é uma carta de AÇÃO. Um vampiro a joga ao realizar uma ação. Clique no ícone.",
+    "s7b": "Um exemplo real de cada um dos outros tipos de biblioteca:",
+    "s8": "O CUSTO: 1 de sangue, pago pelo vampiro que a joga. Outras cartas custam reserva, que sai da sua própria vida.",
+    "s9": "O REQUISITO: Presença. Só um vampiro com essa disciplina pode jogar a carta. Aline tem.",
+    "s10": "Com isso você já lê quase qualquer carta de VTES. Vamos continuar."
+  },
+  "ch3": {
+    "s1": "Todos os jogadores têm a mesma disposição. Vamos conhecer o seu lado da mesa. Clique em cada zona destacada.",
+    "s2": "Sua CRIPTA: suas cartas de vampiro, viradas para baixo. Na preparação você comprou 4 delas para a região não controlada.",
+    "s3": "Sua BIBLIOTECA: o seu baralho. Durante o jogo você compra dele para repor a mão.",
+    "s4": "Sua MÃO: 7 cartas que só você vê. Sempre que joga ou descarta uma carta, você compra imediatamente uma reposição, então tem sempre 7. As únicas exceções são cartas que mandam não repor ainda, ou a biblioteca acabar.",
+    "s5": "Sua região de NÃO CONTROLADOS: os 4 vampiros virados para baixo comprados na preparação, esperando serem pagos. Aline e Leumeah estão entre eles.",
+    "s6": "Sua região de PRONTOS: vampiros em jogo ficam aqui e realizam ações. Vazia por enquanto.",
+    "s7": "Suas CINZAS: a pilha de descarte.",
+    "s8": "E a sua RESERVA. Não a perca de vista. Fim do tour, hora de jogar."
+  },
+  "ch4": {
+    "s1": "Seu turno tem 5 fases, sempre nesta ordem: Destravar, Mestre, Lacaios, Influência e Descarte. O marcador ao lado do tabuleiro mostra onde você está.",
+    "s2": "FASE DE DESTRAVAR: endireite suas cartas travadas para que possam agir de novo. No primeiro turno nada está travado.",
+    "s3": "FASE DE MESTRE: você pode jogar uma carta de Mestre por turno. Blood Doll precisa de um vampiro em jogo e você ainda não tem nenhum. Pulamos.",
+    "s4": "FASE DE LACAIOS: seus vampiros agem aqui. Você ainda não tem nenhum em jogo, então nada acontece.",
+    "s4b": "Antes de gastar influência: você pode olhar suas cartas não controladas quando quiser. Aqui estão: Aline, Leumeah e uma cópia extra de cada (criptas reais têm várias cópias de cada vampiro). Você escolhe quem pagar. Começamos com Aline.",
+    "s5": "FASE DE INFLUÊNCIA: cada transferência move 1 de reserva para um dos seus vampiros não controlados. Para compensar quem joga primeiro, as transferências aumentam aos poucos: o primeiro turno da partida dá 1, o segundo 2, o terceiro 3 e todos os seguintes 4. Este é o turno 1, então você tem exatamente 1 transferência. Clique em Aline.",
+    "s6": "1 de sangue em Aline. Fase de descarte: nada a fazer. Fim do turno.",
+    "s7": "O turno 2 da partida é do seu rival: ele recebe 2 transferências e coloca 2 de sangue em Sir Walter Nash.",
+    "s8": "O turno 3 é seu, então desta vez você recebe 3 transferências. Clique em Aline para gastá-las.",
+    "s9": "Restam 2 transferências.",
+    "s10": "Resta 1 transferência.",
+    "s11": "Aline tem 4 de sangue, ainda longe da capacidade de 7.",
+    "s12": "Turno 4: seu rival já recebe as 4 transferências padrão. Nash chega a 6 de sangue.",
+    "s13": "Seu turno. Daqui em diante todos recebem 4 transferências. Aline precisa de mais 3 de sangue. Clique nela.",
+    "s14": "Mais 2.",
+    "s15": "Mais 1.",
+    "s16": "7 de sangue: a capacidade completa, ela está paga. Ainda resta 1 transferência: usá-la é opcional, mas as não usadas se perdem. Aline já saiu e você não quer outro vampiro por enquanto, então deixe passar.",
+    "s17": "Aline entra em jogo! Atenção: ela ainda não pode agir. A fase de lacaios deste turno já passou, então ela espera, destravada, até o seu próximo turno.",
+    "s17b": "FASE DE DESCARTE: você pode descartar uma carta e comprar outra. Você tem duas cópias de Undead Strength, uma basta. Clique em uma duplicada para descartá-la.",
+    "s17c": "Você a descarta e imediatamente compra uma reposição, então sua mão fica em 7. Este é o mecanismo de reposição: jogue ou descarte uma carta e reponha até 7.",
+    "s18": "Seu rival só precisa de mais 1 transferência: Nash chega a 7 de sangue e também entra em jogo.",
+    "s19": "Os dois jogadores agora têm um vampiro em jogo. Hora das ações."
+  },
+  "ch5": {
+    "s1": "Seu turno. Fase de destravar: nada está travado, Aline ainda não agiu.",
+    "s2": "FASE DE MESTRE: jogue Blood Doll em Aline. Clique em Blood Doll na sua mão e depois em Aline.",
+    "s3": "Blood Doll anexada, e ela poderia até ser usada agora, nesta mesma fase de Mestre. Mas Aline está com o sangue cheio, então guarde. Repare que você comprou uma carta nova: sempre que joga uma, repõe até 7.",
+    "s4": "FASE DE LACAIOS: Aline pode realizar uma ação. Ações básicas como SANGRAR ou CAÇAR não precisam de carta alguma: qualquer vampiro pronto pode fazê-las. Clique em Aline.",
+    "s5": "O que Aline deve fazer?",
+    "s5_opt_bleed": "Sangrar sua presa",
+    "s5_opt_hunt": "Caçar para se alimentar",
+    "s5_hunt": "Ela já está com o sangue cheio, então caçar desperdiçaria a ação. Sangrar é como você fere sua presa. Vamos sangrar.",
+    "s6": "Aline se TRAVA e anuncia uma sangria. Travar é o preço de agir: um vampiro travado não pode bloquear nem se defender até destravar.",
+    "s7": "Nash poderia tentar BLOQUEAR a sangria, mas decide deixar passar.",
+    "s8": "A sangria acerta por 1: sua presa perde 1 de reserva. Você também toma A VANTAGEM, o marcador de quem acertou a última sangria. Vai importar mais adiante.",
+    "s9": "FASE DE INFLUÊNCIA: você tem 4 transferências. Vamos começar a pagar sua segunda vampira, Leumeah. Clique nela.",
+    "s10": "Mais uma transferência por enquanto. Clique de novo.",
+    "s11": "Chega. Guarde o resto da reserva: você vai precisar de 2 para uma arma no próximo turno. Fase de descarte: nada a fazer.",
+    "s12": "Seu turno termina. Agora é a vez do seu rival."
+  },
+  "ch6": {
+    "s1": "Nash age: ele se TRAVA e anuncia uma sangria contra VOCÊ.",
+    "s2": "Como você responde?",
+    "s2_opt_block": "Tentar bloquear",
+    "s2_opt_take": "Deixar passar",
+    "s2_take": "A sangria se resolve e você perde 1 de reserva. É permitido, mas se você nunca bloquear, as sangrias se acumulam.",
+    "s2_rewind": "Vamos voltar e impedi-lo desta vez.",
+    "s3": "Bloquear exige um vampiro PRONTO e DESTRAVADO, mas Aline ainda está travada pela sangria dela. On the Qui Vive ACORDA um vampiro travado. Clique na carta na sua mão.",
+    "s3b": "Aline ACORDA. Acordar não é destravar: ela continua travada, mas pode reagir e tentar bloquear apenas durante esta ação.",
+    "s3c": "Nash responde com BONDING: com Dominação superior, adiciona 1 de FURTIVIDADE (e 1 de sangria extra). Com mais furtividade que a sua interceptação, ele escaparia do bloqueio.",
+    "s3d": "Iguale com INTERCEPTAÇÃO: jogue ROOFTOP SHADOW, uma reação de Celeridade que vale 1 de interceptação. Custa 1 de sangue a Aline. Clique nela.",
+    "s4": "Aline paga 1 de sangue. 1 de interceptação anula 1 de furtividade: o bloqueio é BEM-SUCEDIDO e a sangria é impedida. Você compra reposições para as duas cartas.",
+    "s5": "Bloquear tem uma consequência: bloqueadora e atacante agora lutam. Combate!"
+  },
+  "ch7": {
+    "s1": "Um combate tem várias etapas: definir a DISTÂNCIA, escolher GOLPES, resolvê-los e, na etapa de PRESS, decidir se há outra rodada. Nesta primeira luta só importam os golpes, à curta distância.",
+    "s2": "Escolha o golpe de Aline. O golpe de mão básico causa 1 de dano, mas ela tem Potência SUPERIOR, o ícone em losango. Jogue UNDEAD STRENGTH usando o texto superior em negrito: 2 de dano extra em vez de 1. Clique na carta.",
+    "s3": "Os golpes acontecem ao mesmo tempo: Aline acerta por 3 e Nash revida por 1. Você compra uma carta nova.",
+    "s4": "O dano remove SANGUE, não reserva: Nash cai para 4 e Aline para 5. Um vampiro entra em TORPOR se recebe dano agravado ou mais dano do que consegue pagar com seu sangue. Ficar exatamente com 0 não é problema: ele continua pronto, só faminto.",
+    "s5": "Nenhum dos dois quer outra rodada, então o combate termina. Os dois vampiros continuam travados.",
+    "s6": "Resultado: você cancelou a sangria e feriu o vampiro dele. Bloquear compensa quando você pode pagar o preço."
+  },
+  "ch8": {
+    "s1": "Seu turno. FASE DE DESTRAVAR: todas as suas cartas destravam e Aline pode agir de novo. Nash continua travado até a fase de destravar dele.",
+    "s2": "Fase de Mestre: use a Blood Doll. Clique em Aline para mover 1 de sangue dela para a sua reserva.",
+    "s3": "Você ganha 1 de reserva. Ganhos pequenos e constantes como este vencem partidas longas.",
+    "s3b": "Você também pode jogar sua carta de Mestre do turno. ANARCH TROUBLEMAKER é um Mestre que permanece em jogo em vez de se anexar a um vampiro. Clique nela na sua mão.",
+    "s3c": "Ela fica na sua região de prontos, em jogo mas sem se anexar a ninguém. Mestres assim esperam na mesa até o momento certo. Guarde-a na memória.",
+    "s4": "FASE DE LACAIOS: dê uma arma a Aline. Equipar é uma ação. Clique na .44 Magnum e depois em Aline. A arma custa 2 de reserva.",
+    "s5": "Nash está travado e ferido, então não há bloqueio. Aline se trava, paga 2 de reserva e pega a arma. Você compra uma carta nova.",
+    "s6": "Equipamento fica em jogo. No próximo combate dela, a Magnum golpeia por 2 de dano, mesmo à distância.",
+    "s7": "FASE DE INFLUÊNCIA: 4 transferências para terminar de pagar Leumeah. Clique nela.",
+    "s8": "Faltam 3.",
+    "s9": "Faltam 2.",
+    "s10": "Falta 1.",
+    "s11": "6 de sangue, a capacidade completa. Leumeah entra em jogo! Ela chegou durante a fase de influência, então só pode agir no próximo turno.",
+    "s12": "Turno do rival: Nash destrava e sangra você por 1. Aline está travada e Leumeah é nova, então esta você deixa passar, e ele toma A VANTAGEM de você."
+  },
+  "ch9": {
+    "s1": "Seu turno: DUAS vampiras prontas e um Mestre em jogo. Fase de destravar: tudo o que é seu destrava.",
+    "s2": "Fase de Mestre: Blood Doll de novo. Clique em Aline para mover 1 de sangue para a sua reserva.",
+    "s3": "Você ganha 1 de reserva.",
+    "s4": "FASE DE LACAIOS. Aline abre com uma sangria simples. Clique nela.",
+    "s5": "A sangria acerta: seu rival perde 1 de reserva e você retoma A VANTAGEM dele.",
+    "s6": "Agora Leumeah, sua outra Baronesa, convoca a votação. Jogue EAT THE RICH, uma ação política. Clique na carta.",
+    "s7": "Leumeah se trava e anuncia a ação política.",
+    "s8": "Antes de tudo, o bloqueio tem a sua chance: uma ação política pode ser bloqueada como qualquer outra, mas ações políticas carregam +1 de FURTIVIDADE por padrão, o que as torna mais difíceis de pegar. Nash ainda está travado, então nada impede o referendo.",
+    "s9": "A ação é bem-sucedida, então agora os termos são escolhidos. Escolha o alvo de Eat the Rich:",
+    "s9_opt_rival": "Seu rival, que controla um Príncipe endinheirado",
+    "s9_opt_self": "Você mesmo",
+    "s9_self": "Mirar em você mesmo só te prejudicaria. A carta pune jogadores que controlam vampiros com TÍTULO, como Nash, Príncipe de Chicago. Mire no seu rival.",
+    "s10": "Os votos são contados um a um. A própria carta de ação política dá 1 voto ao controlador de quem a convocou: você. Placar: 1 a favor, 0 contra.",
+    "s11": "Nash vota contra. Um Príncipe vale 2 votos, mas Eat the Rich tira 1 voto de cada vampiro com título que não seja um priscus (um priscus perde uma cédula no lugar). Placar: 1 a 1. Empate fracassa.",
+    "s12": "Seu rival descarta ANARCHIST UPRISING, uma ação política do próprio deck dele, para comprar 1 voto extra contra. Placar: 1 a 2.",
+    "s13": "Suas Baronesas respondem. Cada uma vale 2 votos, menos 1 pela carta. Aline pode votar mesmo travada: vampiros travados também votam. Clique nela.",
+    "s14": "Aline e Leumeah somam 1 voto cada. Placar: 3 a 2. Já passaria, mas você pode apertar mais.",
+    "s15": "Você tem A VANTAGEM. Queimá-la normalmente dá 1 voto, mas o texto de Eat the Rich faz valer 2 aqui. Clique na Vantagem para queimá-la.",
+    "s16": "Placar: 5 a 2. O referendo PASSA por 3. Note que você não pode também descartar uma carta política por um voto: cada jogador ganha no máximo 1 voto de cartas políticas, e o seu veio da carta que Leumeah convocou.",
+    "s17": "Seu rival perde 4 de reserva: 1 do efeito base, mais 3 por controlar um vampiro com título.",
+    "s18": "A recompensa: Leumeah convocou a votação e venceu, então pode jogar VOTER CAPTIVATION. Clique na carta.",
+    "s19": "Passou por 3 votos, então Voter Captivation ganha 3 de sangue. Com Presença superior, até 2 vão para a sua RESERVA. O terceiro reabasteceria Leumeah, mas ela já está cheia. Vença por mais, recupere mais.",
+    "s20": "Mais um truque. O texto da carta de Aline permite queimar 1 de sangue para DESTRAVAR quando outro Anarquista seu completa uma ação bem-sucedida. Leumeah acabou de fazer isso. Clique em Aline.",
+    "s21": "Aline queima 1 de sangue e destrava. Ela poderia agir de novo neste turno ou bloquear no turno do seu rival. As habilidades impressas nos seus vampiros estão sempre disponíveis.",
+    "s22": "A política rendeu: dano à reserva, sangue de volta e um rival ferido. Mas Nash continua de pé. A seguir: um combate em detalhe para eliminá-lo."
+  },
+  "ch10": {
+    "s1": "A mesma partida, alguns turnos depois. Todos se recompuseram: a Blood Doll e a caça reabasteceram o seu lado, e Nash voltou a 6 de sangue. Hora de eliminá-lo de vez, e de jogar um combate em detalhe. Observe o marcador acima do tabuleiro: cada RODADA tem etapas de DISTÂNCIA, GOLPES e PRESS.",
+    "s1b": "Primeiro a FASE DE MESTRE. Aline só tem Celeridade básica, então não pode usar a versão forte de algumas cartas. Jogue a carta de Mestre CELERITY nela: adiciona um nível de Celeridade (e 1 de capacidade). Arraste-a sobre Aline.",
+    "s1c": "Aline agora tem Celeridade SUPERIOR. Isso libera o texto em negrito das cartas de Celeridade, o que importará em um instante. Você também compra uma carta de reposição.",
+    "s2": "FASE DE LACAIOS. Aline sangra Nash. Clique nela.",
+    "s3": "Desta vez Nash BLOQUEIA. Os dois se travam e o combate começa.",
+    "s4": "Rodada 1, etapa de DISTÂNCIA: o combate começa à curta distância, mas cada combatente pode jogar MANOBRAS para mudá-la.",
+    "s5": "A .44 Magnum dá a Aline uma manobra opcional por combate. Onde você quer lutar?",
+    "s5_opt_long": "Ir para longa distância",
+    "s5_opt_close": "Ficar à curta distância",
+    "s5_close": "À curta distância Nash revida com o golpe de mão. Com uma arma, a distância é sua amiga. Vá para longe.",
+    "s6": "LONGA DISTÂNCIA. Armas de fogo atiram a qualquer distância; golpes de mão e presas só funcionam de perto.",
+    "s7": "Etapa de GOLPES: clique em Aline para atirar.",
+    "s8": "2 de dano: Nash queima 2 de sangue. O golpe de mão dele não alcança você à longa distância.",
+    "s9": "Nash já teve o bastante: ele golpeia com MAJESTY. O combate termina, sem dano, e nenhum press comum pode continuá-lo.",
+    "s10": "Uma carta pode: PSYCHE! com Celeridade superior enfileira um NOVO combate contra o mesmo oponente quando o combate está prestes a terminar. Clique nela.",
+    "s11": "Um combate totalmente novo começa contra Nash. Tudo reinicia, até a manobra de uma-por-combate da Magnum.",
+    "s12": "Etapa de DISTÂNCIA: use a manobra da Magnum para ir à longa distância de novo.",
+    "s13": "Etapa de GOLPES: atire. Clique em Aline.",
+    "s14": "Mais 2 de dano: Nash cai para 2 de sangue e continua sem alcançar você.",
+    "s15": "Etapa de PRESS: desta vez um press normal. Jogue sua segunda PSYCHE!, o nível básico dela é um simples press. Clique nela.",
+    "s16": "Rodada 2 do novo combate, e a distância volta a ser curta. Hora do golpe final.",
+    "s17": "Jogue BURNING WRATH: um golpe de mão com 2 de dano AGRAVADO extra, 3 no total. Custa 3 de sangue. Clique nela.",
+    "s18": "Nash revida com o golpe de mão por 1 de dano e joga RESILIENCE para prevenir dano: o nível superior previne 3 de dano NÃO agravado, inútil contra Burning Wrath, então ele usa o nível básico e previne só 1.",
+    "s19": "Entram 2 de dano agravado: o primeiro FERE Nash (agravado não se cura) e ele queima 1 de sangue para sobreviver ao segundo. Se o dano agravado tivesse excedido o sangue dele, ele seria QUEIMADO, direto para as cinzas.",
+    "s20": "Um vampiro ferido entra em TORPOR ao fim da rodada. Nash desaba com 1 de sangue.",
+    "s21": "Um combate completo: distância, golpes, press, Majesty, Psyche! superior, dano agravado e prevenção. Nash está fora de combate, mas a noite não acabou."
+  },
+  "ch11": {
+    "s1": "Seu rival contra-atacou. Enquanto Nash jazia em torpor, TIMOTHY CROWLEY, outro Príncipe, entrou em jogo e o RESGATOU (qualquer vampiro pronto pode resgatar, até os do rival). Depois Crowley pegou Leumeah sozinha: uma luta brutal a mandou ao TORPOR com 0 de sangue.",
+    "s2": "Seu turno. Em torpor, Leumeah não pode agir nem se defender, e inimigos poderiam até DIABLERIZÁ-LA ali, drenando-a por completo. Vamos tirá-la de lá.",
+    "s3": "Qualquer vampiro pronto pode RESGATAR um vampiro em torpor como ação. Clique em Aline.",
+    "s4": "Aline se trava para a tentativa de resgate. Crowley poderia bloquear, mas não se move.",
+    "s5": "O resgate custa 2 de sangue, pagos pela resgatadora, pela resgatada ou divididos entre as duas. Quem paga?",
+    "s5_opt_aline": "Aline paga os 2 de sangue",
+    "s5_opt_split": "Dividir, 1 cada",
+    "s5_split": "Você poderia dividir, mas Leumeah tem 0 de sangue e não pode pagar nada. Aline paga.",
+    "s6": "Aline paga 2 de sangue e Leumeah volta à região de prontos: faminta, mas livre. Ser resgatada não a trava nem destrava, e ela não está mais ferida.",
+    "s7": "Agora vale uma regra obrigatória: um vampiro pronto e destravado SEM sangue DEVE caçar. Você não pode fazer nenhuma outra ação opcional, com nenhum vampiro, até Leumeah ter caçado. Clique nela para CAÇAR.",
+    "s8": "Leumeah se trava e caça: recupera 1 de sangue. Cumprida a caça obrigatória, o resto dos seus lacaios pode agir de novo.",
+    "s9": "Torpor resolvido: resgatar, pagar, recuperar. Agora vamos conseguir ajuda."
+  },
+  "ch12": {
+    "s1": "O rival seguiu pressionando: Crowley sangrou você e Nash caçou. Seu turno, tudo destrava. Na sua mão espera um PROCURER, um ALIADO: um lacaio que não é vampiro.",
+    "s2": "Aline recruta o PROCURER (Leumeah está com pouco sangue para pagar). Recrutar é uma ação, e o custo deste aliado é pago em SANGUE pelo vampiro recrutador: 2 de sangue. Clique na carta na sua mão.",
+    "s3": "Aline se trava e paga 2 de SANGUE, e o Procurer entra em jogo com 1 de VIDA, 1 de força e 0 de sangria. Aliados perdem VIDA em vez de sangue, e com 0 de vida são queimados.",
+    "s4": "Daqui em diante o aliado age como qualquer lacaio: pode sangrar, bloquear e usar suas habilidades impressas. Este pode levar sangue fresco aos seus vampiros. Mas ainda não: lacaios não podem agir no turno em que entram em jogo.",
+    "s5": "Um turno rápido do rival: Crowley se TRAVA para sangrar você por 1. O seu Procurer, recém-recrutado, fica parado: lacaios não podem agir no turno em que entram em jogo.",
+    "s6": "Seu turno de novo. FASE DE DESTRAVAR: todas as suas cartas destravam, então Aline, travada por recrutar, fica pronta de novo.",
+    "s6b": "E agora o Procurer pode agir: leva 1 de sangue a Aline. Pequenos ajudantes fazem diferença.",
+    "s7": "Você já conhece os aliados. Falta uma noite: a do golpe final."
+  },
+  "ch13": {
+    "s1": "Várias noites se passam. Você segue sangrando, votando e se alimentando; seu rival se agarra ao que pode, mas afunda. Restam 3 de reserva. Hoje à noite acaba.",
+    "s2": "FASE DE DESTRAVAR, e um último truque espera na mesa: a ANARCH TROUBLEMAKER.",
+    "s3": "Ela é usada durante a sua fase de destravar. Clique nela.",
+    "s4": "Como manda a carta, você a entrega ao seu rival (ela passa para o lado dele destravada, não é uma carta que trava) e trava até dois vampiros DELE. Crowley E Nash se travam: toda a defesa dele desapareceu.",
+    "s5": "FASE DE LACAIOS. Ninguém pode bloquear. Termine.",
+    "s6": "Jogue LEGAL MANIPULATIONS, uma ação de sangria com 2 de sangria extra. Clique na carta.",
+    "s7": "Aline paga 1 de sangue, se trava e sangra por 3.",
+    "s8": "Sua presa chega a 0 de reserva: ELIMINADO! Você ganha 1 Ponto de Vitória e uma recompensa de 6 de reserva.",
+    "s9": "Isso é Vampire: The Eternal Struggle, da primeira transferência à eliminação: reserva, ações, bloqueios, combate, política, torpor e aliados. Em uma partida real de cinco jogadores, a caçada continua ao redor da mesa. Você está pronto. Vá jogar!"
+  },
+  "resources": {
+    "title": "Seus próximos passos",
+    "subtitle": "Você já sabe o básico. Aqui está tudo para ir além.",
+    "decks_cta_title": "Encontre seu primeiro deck",
+    "decks_cta_text": "Explore os decks pré-construídos: pontos de partida prontos para comprar ou imprimir como proxies.",
+    "decks_cta": "Ver decks iniciais",
+    "rulebook": "Livro de regras oficial (PDF)",
+    "rulebook_text": "As regras completas da Quinta Edição, grátis da Black Chantry.",
+    "what_to_buy": "O que devo comprar?",
+    "what_to_buy_text": "O guia da comunidade para suas primeiras compras.",
+    "codex": "Codex of the Damned",
+    "codex_text": "A escola de estratégia: arquétipos, artigos e guias de deck.",
+    "vekn": "VEKN, a organização oficial de jogadores",
+    "vekn_text": "Encontre eventos, grupos locais e o fórum oficial.",
+    "discord": "Discord de VTES",
+    "discord_text": "O lugar mais ativo para tirar dúvidas e encontrar partidas online.",
+    "succubus": "Succubus Club",
+    "succubus_text": "Jogue VTES online contra outros jogadores.",
+    "back": "Voltar ao tutorial"
+  }
+}

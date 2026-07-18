@@ -76,6 +76,8 @@ export class HeaderComponent implements OnInit {
 
   isSupporter$!: Observable<boolean>
 
+  isAdmin$!: Observable<boolean>
+
   isMobile$ = this.mediaService.observeMobileOrTablet()
 
   ngOnInit(): void {
@@ -84,6 +86,7 @@ export class HeaderComponent implements OnInit {
     this.profileImage$ = this.authQuery.selectProfileImage()
     this.notificationUnreadCount$ = this.authQuery.selectNotificationCount()
     this.isSupporter$ = this.authQuery.selectSupporter()
+    this.isAdmin$ = this.authQuery.selectAdmin()
   }
 
   openLoginModal() {
@@ -143,9 +146,5 @@ export class HeaderComponent implements OnInit {
     } else {
       return '/assets/img/logo.png'
     }
-  }
-
-  get themeEnabled(): boolean {
-    return this.colorThemeService.enabled
   }
 }

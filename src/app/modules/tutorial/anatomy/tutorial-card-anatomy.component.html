@@ -1,0 +1,36 @@
+@if (kind() === 'types') {
+  <div
+    class="t-type-gallery"
+    *transloco="let t; prefix: 'tutorial.types'"
+    data-cy="tutorial-type-gallery"
+  >
+    @for (example of typeExamples; track example.labelKey) {
+      <figure class="t-type-example">
+        <img
+          [src]="exampleUrl(example.cardKey)"
+          [alt]="exampleName(example.cardKey)"
+          loading="lazy"
+        />
+        <figcaption>{{ t(example.labelKey) }}</figcaption>
+      </figure>
+    }
+  </div>
+} @else {
+  <div class="t-anatomy" data-cy="tutorial-anatomy">
+    <div class="t-anatomy-frame">
+      <img [src]="imageUrl$()" [alt]="card$().name" class="t-anatomy-img" />
+      @for (hotspot of hotspots$(); track hotspot.target) {
+        <button
+          type="button"
+          class="t-anatomy-hotspot"
+          [appTutorialTarget]="hotspot.target"
+          [attr.data-cy]="hotspot.target"
+          [style.top.%]="hotspot.top"
+          [style.left.%]="hotspot.left"
+          [style.width.%]="hotspot.width"
+          [style.height.%]="hotspot.height"
+        ></button>
+      }
+    </div>
+  </div>
+}

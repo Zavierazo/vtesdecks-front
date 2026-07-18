@@ -1,0 +1,53 @@
+<div class="t-play container-fluid" *transloco="let t; prefix: 'tutorial'">
+  <div class="t-play-stage">
+    @switch (view$()) {
+      @case ('anatomy-crypt') {
+        <app-tutorial-card-anatomy kind="crypt" />
+      }
+      @case ('anatomy-library') {
+        <app-tutorial-card-anatomy kind="library" />
+      }
+      @case ('anatomy-types') {
+        <app-tutorial-card-anatomy kind="types" />
+      }
+      @default {
+        <app-tutorial-board />
+      }
+    }
+  </div>
+
+  @if (!store.chapterIntro$()) {
+    <div class="t-play-narrator">
+      <app-tutorial-narrator />
+    </div>
+  }
+
+  <app-tutorial-spotlight />
+
+  @if (store.chapterIntro$()) {
+    <div class="t-chapter-intro" data-cy="tutorial-chapter-intro">
+      <div class="t-chapter-intro-card">
+        <i class="bi {{ store.currentChapter$().icon }} t-chapter-intro-icon"></i>
+        <span class="t-chapter-intro-count">
+          {{
+            t('narrator.chapter_progress', {
+              current: store.progress$().chapterIndex + 1,
+              total: store.script.length
+            })
+          }}
+        </span>
+        <h2 class="t-chapter-intro-title">
+          {{ t('chapters.' + store.currentChapter$().id + '.title') }}
+        </h2>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-cy="tutorial-chapter-start"
+          (click)="store.dismissChapterIntro()"
+        >
+          {{ t('narrator.start_chapter') }} <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  }
+</div>

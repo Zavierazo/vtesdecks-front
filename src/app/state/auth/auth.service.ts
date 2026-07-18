@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
 import { ApiResponse, ApiUser, ApiUserSettings } from '@models'
 import { ApiDataService } from '@services'
-import { Observable, catchError, of, switchMap, tap } from 'rxjs'
+import { Observable, catchError, map, of, switchMap, tap } from 'rxjs'
 import { AuthStore } from './auth.store'
 
 @Injectable({
@@ -12,6 +12,14 @@ export class AuthService {
   private readonly authStore = inject(AuthStore)
   private readonly apiDataService = inject(ApiDataService)
   private readonly jwtHelper = inject(JwtHelperService)
+
+  loadCountry(): Observable<string | undefined> {
+    return this.apiDataService.getUserCountry().pipe(
+      map((response) => response?.countryCode?.toUpperCase()),
+      catchError(() => of(undefined)),
+      tap((countryCode) => this.authStore.updateCountryCode(countryCode)),
+    )
+  }
 
   readNotification(all?: boolean): void {
     const notificationCount = this.authStore.getValue().notificationCount

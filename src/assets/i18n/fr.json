@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Les flags sont définis dans le backend. Seules leurs valeurs peuvent être modifiées ici.",
+    "key": "Clé",
+    "type": "Type",
+    "description": "Description",
+    "value": "Valeur",
+    "save": "Enregistrer",
+    "add_item": "Ajouter",
+    "remove_item": "Supprimer",
+    "saved": "Feature flag enregistré",
+    "save_error": "Impossible d'enregistrer le feature flag",
+    "empty": "Aucun feature flag disponible"
+  },
   "can_deactivate_guard": {
     "title": "Attention : Modifications non enregistrées !",
     "message": "Vous avez des modifications non enregistrées. Appuyez sur Annuler pour revenir et sauvegarder, ou sur OK pour perdre ces modifications."
@@ -131,7 +145,8 @@
     "delete": "Supprimer",
     "compare": "Comparer",
     "archetype": "Archétype",
-    "add_to_collection": "Ajouter à la collection"
+    "add_to_collection": "Ajouter à la collection",
+    "embed": "Intégrer"
   },
   "deck_comparison": {
     "title": "Comparer le Deck",
@@ -329,6 +344,8 @@
     "none": "Aucun",
     "reset": "Réinitialiser",
     "bookmarked": "Favoris",
+    "has_video": "Avec vidéo",
+    "detailed": "Guide du deck",
     "tags": "Tags",
     "tags_placeholder": "Ajouter des tags...",
     "clans": "Clans",
@@ -390,17 +407,22 @@
     "bookmarks": "Mes Favoris",
     "public_profile": "Profil Public",
     "settings": "Paramètres",
+    "admin": "Administration",
     "logout": "Déconnexion",
     "theme": "Thème",
     "notifications": "Notifications",
     "unread_notifications": "notifications non lues",
     "proxy_generator": "Générateur de Proxy",
+    "learn_to_play": "Apprendre à jouer",
     "vtes_ai_chat": "Chat VTES AI",
     "search": "Recherche",
     "scan_card": "Scanner",
     "user_menu": "Menu utilisateur"
   },
   "home": {
+    "sponsor": "Sponsor",
+    "learn_to_play": "Apprendre à jouer",
+    "learn_to_play_cta": "Nouveau dans le jeu ? Apprenez à jouer en 20 minutes",
     "welcome_title": "Bienvenue sur VTES Decks",
     "welcome_subtitle": "Découvrez, partagez et construisez les meilleurs decks pour Vampire: The Eternal Struggle",
     "metagame_decks": "Decks Metagame",
@@ -510,6 +532,24 @@
     "page_not_found": "Page non trouvée.",
     "does_not_exists": "La page que vous recherchez n'existe pas.",
     "go_home": "Retour à l'accueil"
+  },
+  "reactions": {
+    "would_play": "Je le jouerais",
+    "tournament_worthy": "Digne de tournoi",
+    "original_brew": "Création originale",
+    "mind_blowing": "Époustouflant",
+    "spicy": "Épicé",
+    "too_greedy": "Trop gourmand",
+    "thumbs_up": "J'aime",
+    "thumbs_down": "Je n'aime pas",
+    "heart": "J'adore",
+    "laugh": "Haha",
+    "wow": "Waouh",
+    "thanks": "Merci",
+    "hundred": "Tout à fait",
+    "add_reaction": "Ajouter une réaction",
+    "login_required": "Connectez-vous pour réagir",
+    "error": "Impossible d'enregistrer votre réaction. Veuillez réessayer."
   },
   "reset_password": {
     "reset_password": "Réinitialiser le mot de passe",
@@ -1229,5 +1269,29 @@
     "singles_only_total": "Tout acheter à l'unité",
     "you_save": "Vous économisez",
     "singles_cheapest": "Acheter à l'unité est déjà l'option la moins chère"
+  },
+  "embed": {
+    "title": "Intégrer le deck",
+    "theme": "Thème",
+    "theme_auto": "Auto",
+    "theme_dark": "Sombre",
+    "theme_light": "Clair",
+    "sections": "Sections",
+    "section_header_always": "En-tête (toujours affiché)",
+    "section_stats": "Statistiques",
+    "section_crypt": "Liste de la crypte",
+    "section_library": "Liste de la bibliothèque",
+    "crypt": "Crypte",
+    "library": "Bibliothèque",
+    "preview": "Aperçu",
+    "js_snippet": "Code JavaScript",
+    "copy": "Copier",
+    "copied": "Copié dans le presse-papiers",
+    "powered_by": "Propulsé par vtesdecks.com",
+    "size": "Taille",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "size_auto": "Auto",
+    "size_hint": "Toute taille CSS est valable : 400px, 30rem, 100%…"
   }
 }

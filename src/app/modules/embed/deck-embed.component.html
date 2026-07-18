@@ -1,0 +1,149 @@
+@if (vm$ | async; as vm) {
+  <div class="embed-card">
+    <div class="embed-header">
+      <div class="embed-title">
+        <a [href]="deckUrl" target="_blank" rel="noopener" class="embed-name">
+          {{ vm.deck.name }}
+        </a>
+        <div class="embed-author">{{ vm.deck.author }}</div>
+      </div>
+      <div class="embed-icons">
+        @for (icon of vm.deck.clanIcons; track icon) {
+          <i class="vtes" [ngClass]="icon"></i>
+        }
+        @if (vm.deck.pathIcon) {
+          <i class="vtes path" [ngClass]="vm.deck.pathIcon"></i>
+        }
+        @for (icon of vm.deck.disciplineIcons; track icon) {
+          <i class="vtes" [ngClass]="icon"></i>
+        }
+      </div>
+    </div>
+
+    @if (sections.stats) {
+      <div class="embed-stats">
+        <div class="embed-stat-line">
+          <span>
+            {{ 'embed.crypt' | transloco }}:
+            <strong>{{ vm.deck.stats.crypt }}</strong>
+          </span>
+          <span class="embed-muted">
+            min {{ vm.deck.stats.minCrypt }} · max
+            {{ vm.deck.stats.maxCrypt }} · avg {{ vm.deck.stats.avgCrypt }}
+          </span>
+        </div>
+        <div class="embed-stat-line">
+          <span>
+            {{ 'embed.library' | transloco }}:
+            <strong>{{ vm.deck.stats.library }}</strong>
+          </span>
+          @if (vm.deck.stats.master) {
+            <span><i class="vtes master"></i>{{ vm.deck.stats.master }}</span>
+          }
+          @if (vm.deck.stats.action) {
+            <span><i class="vtes action"></i>{{ vm.deck.stats.action }}</span>
+          }
+          @if (vm.deck.stats.politicalAction) {
+            <span>
+              <i class="vtes political"></i>{{ vm.deck.stats.politicalAction }}
+            </span>
+          }
+          @if (vm.deck.stats.equipment) {
+            <span
+              ><i class="vtes equipment"></i>{{ vm.deck.stats.equipment }}</span
+            >
+          }
+          @if (vm.deck.stats.retainer) {
+            <span
+              ><i class="vtes retainer"></i>{{ vm.deck.stats.retainer }}</span
+            >
+          }
+          @if (vm.deck.stats.ally) {
+            <span><i class="vtes ally"></i>{{ vm.deck.stats.ally }}</span>
+          }
+          @if (vm.deck.stats.actionModifier) {
+            <span>
+              <i class="vtes modifier"></i>{{ vm.deck.stats.actionModifier }}
+            </span>
+          }
+          @if (vm.deck.stats.combat) {
+            <span><i class="vtes combat"></i>{{ vm.deck.stats.combat }}</span>
+          }
+          @if (vm.deck.stats.reaction) {
+            <span
+              ><i class="vtes reaction"></i>{{ vm.deck.stats.reaction }}</span
+            >
+          }
+          @if (vm.deck.stats.event) {
+            <span><i class="vtes event"></i>{{ vm.deck.stats.event }}</span>
+          }
+        </div>
+      </div>
+    }
+
+    @if (sections.crypt && vm.cryptRows.length > 0) {
+      <div class="embed-section">
+        <div class="embed-section-title">
+          {{ 'embed.crypt' | transloco }}
+          <span class="embed-muted">({{ vm.deck.stats.crypt }})</span>
+        </div>
+        <ul class="embed-list">
+          @for (row of vm.cryptRows; track $index) {
+            <li
+              (mouseenter)="onRowEnter($event, row.image)"
+              (mouseleave)="onRowLeave()"
+            >
+              <span class="embed-quantity">{{ row.number }}x</span>
+              <span class="embed-card-name">{{ row.name ?? '…' }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (sections.library && vm.libraryGroups.length > 0) {
+      <div class="embed-section">
+        <div class="embed-section-title">
+          {{ 'embed.library' | transloco }}
+          <span class="embed-muted">({{ vm.deck.stats.library }})</span>
+        </div>
+        @for (group of vm.libraryGroups; track group.type) {
+          <div class="embed-group">
+            <div class="embed-group-title">
+              {{ group.label }}
+              <span class="embed-muted">({{ group.count }})</span>
+            </div>
+            <ul class="embed-list">
+              @for (row of group.rows; track $index) {
+                <li
+                  (mouseenter)="onRowEnter($event, row.image)"
+                  (mouseleave)="onRowLeave()"
+                >
+                  <span class="embed-quantity">{{ row.number }}x</span>
+                  <span class="embed-card-name">{{ row.name ?? '…' }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="embed-footer">
+      <a [href]="deckUrl" target="_blank" rel="noopener">
+        {{ 'embed.powered_by' | transloco }}
+      </a>
+    </div>
+
+    @if (hoverPreview(); as preview) {
+      <img
+        class="embed-hover-image"
+        [src]="preview.url"
+        [style.top.px]="preview.top"
+        [style.left.px]="preview.left"
+        [style.maxHeight.px]="preview.maxHeight"
+        alt=""
+      />
+    }
+  </div>
+}

@@ -74,6 +74,7 @@ export class TableSeatingComponent implements OnInit {
       .filter((player: any) => player.active)
       .map((player: any) => player.name)
     this.tables = this.generateTable(players)
+    this.takeSnapshot()
     this.cd.detectChanges()
   }
 
@@ -107,13 +108,18 @@ export class TableSeatingComponent implements OnInit {
   }
 
   private restoreSnapshot(snapshot: any): void {
-    JSON.parse(snapshot).players.forEach((player: any) =>
+    const data = JSON.parse(snapshot)
+    data.players.forEach((player: any) =>
       this.players.push(this.getPlayerControls(player.active, player.name)),
     )
+    this.tables = data.tables ?? []
   }
 
   private takeSnapshot(): void {
-    const snapshot = JSON.stringify(this.form.value)
+    const snapshot = JSON.stringify({
+      ...this.form.value,
+      tables: this.tables,
+    })
     if (this.cookieConsentService.hasConsented()) {
       this.localStorage.setValue(TableSeatingComponent.storeName, snapshot)
     } else {

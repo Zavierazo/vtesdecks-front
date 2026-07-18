@@ -2,9 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
 import {
-  ApiAiAskAsyncRequest,
-  ApiAiAskAsyncResponse,
-  ApiAiAskStatusResponse,
   ApiCard,
   ApiCardInfo,
   ApiCardScanRequest,
@@ -21,6 +18,7 @@ import {
   ApiDeckBuilderHistory,
   ApiDeckLimitedFormat,
   ApiDecks,
+  ApiFeatureFlag,
   ApiHistoricStatistic,
   ApiHome,
   ApiLibrary,
@@ -41,6 +39,7 @@ import {
   ApiUserSettings,
   ApiUserTopMonth,
   ApiYearStatistic,
+  FeatureFlagValue,
   MetaType,
 } from '@models'
 import { Observable, of } from 'rxjs'
@@ -64,6 +63,7 @@ export class ApiDataService {
   private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
   private readonly userBookmarkDeckPath = '/user/decks/bookmark'
+  private readonly userDeckReactionPath = '/user/decks/reaction'
   private readonly userCommentsPath = '/user/comments'
   private readonly userSettingsPath = '/user/settings'
   private readonly userRefreshPath = '/user/refresh'
@@ -94,6 +94,7 @@ export class ApiDataService {
   private readonly proxyOptionsPath = '/proxy/options/'
   private readonly deckArchetypePath = '/deck-archetype'
   private readonly shoppingOptimizePath = '/shopping/optimize'
+  private readonly featureFlagPath = '/feature-flag'
 
   login(
     username: string,
@@ -201,6 +202,35 @@ export class ApiDataService {
       {
         deck,
         favorite: bookmark,
+      },
+    )
+  }
+
+  reactDeck(
+    deck: string,
+    reaction: string,
+    active: boolean,
+  ): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userDeckReactionPath}`,
+      {
+        deck,
+        reaction,
+        active,
+      },
+    )
+  }
+
+  reactComment(
+    id: number,
+    reaction: string,
+    active: boolean,
+  ): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${environment.api.baseUrl}${this.userCommentsPath}/${id}/reaction`,
+      {
+        reaction,
+        active,
       },
     )
   }
@@ -527,19 +557,6 @@ export class ApiDataService {
     )
   }
 
-  aiAskAsync(request: ApiAiAskAsyncRequest): Observable<ApiAiAskAsyncResponse> {
-    return this.httpClient.post<ApiAiAskAsyncResponse>(
-      `${environment.api.baseUrl}${this.aiAskAsyncPath}`,
-      request,
-    )
-  }
-
-  aiAskAsyncStatus(sessionId: string): Observable<ApiAiAskStatusResponse> {
-    return this.httpClient.get<ApiAiAskStatusResponse>(
-      `${environment.api.baseUrl}${this.aiAskAsyncPath}/${sessionId}`,
-    )
-  }
-
   generateProxy(request: ApiProxy): Observable<Blob> {
     return this.httpClient.post(
       `${environment.api.baseUrl}${this.proxyPath}`,
@@ -621,6 +638,22 @@ export class ApiDataService {
   deleteDeckArchetype(id: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+    )
+  }
+
+  getFeatureFlags(): Observable<ApiFeatureFlag[]> {
+    return this.httpClient.get<ApiFeatureFlag[]>(
+      `${environment.api.baseUrl}${this.featureFlagPath}`,
+    )
+  }
+
+  updateFeatureFlag(
+    key: string,
+    value: FeatureFlagValue,
+  ): Observable<ApiFeatureFlag> {
+    return this.httpClient.put<ApiFeatureFlag>(
+      `${environment.api.baseUrl}${this.featureFlagPath}/${key}`,
+      { value },
     )
   }
 

@@ -1,0 +1,72 @@
+.t-anatomy {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.t-type-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  padding: 1rem 0;
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.t-type-example {
+  margin: 0;
+  text-align: center;
+
+  img {
+    width: 100%;
+    max-width: 12rem;
+    border-radius: 5%/3.6%;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.35);
+  }
+
+  figcaption {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+}
+
+.t-anatomy-frame {
+  position: relative;
+  width: min(22rem, 82vw);
+}
+
+.t-anatomy-img {
+  width: 100%;
+  border-radius: 4.5%/3.2%;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+.t-anatomy-hotspot {
+  position: absolute;
+  background: transparent;
+  border: 2px dashed transparent;
+  border-radius: 0.4rem;
+  padding: 0;
+  cursor: default;
+
+  &.tutorial-target-highlighted {
+    border-color: var(--bs-warning);
+    cursor: pointer;
+    animation: tutorial-hotspot-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes tutorial-hotspot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 0.5rem rgba(255, 193, 7, 0);
+  }
+}

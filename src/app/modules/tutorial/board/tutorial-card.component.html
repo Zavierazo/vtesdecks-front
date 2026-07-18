@@ -1,0 +1,52 @@
+<div
+  class="t-card"
+  [class.t-card-locked]="instance().locked"
+  [class.t-card-small]="size() === 'small'"
+  [class.t-card-peek]="forceFaceUp() && instance().faceDown"
+>
+  <div class="t-card-frame">
+    <img
+      class="t-card-img"
+      [src]="imageUrl$()"
+      [alt]="instance().faceDown && !forceFaceUp() ? '' : card$().name"
+      loading="lazy"
+      draggable="false"
+      [ngbPopover]="zoomTemplate"
+      triggers="mouseenter:mouseleave"
+      container="body"
+      popoverClass="tutorial-zoom-popover"
+      [disablePopover]="instance().faceDown === true && !forceFaceUp()"
+    />
+    @if (showBlood() && instance().blood !== undefined) {
+      <span class="t-card-blood" [attr.data-cy]="'blood-' + instance().ref">
+        {{ instance().blood }}
+      </span>
+    }
+    @if (instance().locked) {
+      <span class="t-card-lock-icon"><i class="bi bi-lock-fill"></i></span>
+    }
+  </div>
+  @if (instance().attachments?.length) {
+    <div class="t-card-attachments">
+      @for (attachment of instance().attachments; track attachment.ref) {
+        <img
+          class="t-card-attachment"
+          [src]="attachmentUrl(attachment)"
+          [alt]="attachment.cardKey"
+          draggable="false"
+          [ngbPopover]="attachmentZoom"
+          triggers="mouseenter:mouseleave"
+          container="body"
+          popoverClass="tutorial-zoom-popover"
+        />
+        <ng-template #attachmentZoom>
+          <img class="tutorial-zoom-img" [src]="attachmentUrl(attachment)" alt="" />
+        </ng-template>
+      }
+    </div>
+  }
+</div>
+
+<ng-template #zoomTemplate>
+  <img class="tutorial-zoom-img" [src]="zoomUrl$()" [alt]="card$().name" />
+</ng-template>

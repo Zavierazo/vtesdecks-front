@@ -11,6 +11,14 @@
         <label class="form-check-label" for="favoriteCheck">{{ t('bookmarked') }}</label>
       </div>
     </div>
+    <div class="row g-1 mb-2 items-center">
+      <div class="form-check form-switch form-check-inline">
+        <input class="form-check-input" type="checkbox" role="switch" id="detailedCheck" formControlName="detailed" />
+        <label class="form-check-label" for="detailedCheck">
+          <i class="bi bi-journal-text me-1"></i>{{ t('detailed') }}
+        </label>
+      </div>
+    </div>
     @if(type() === 'PRECONSTRUCTED') {
     <div class="form-floating mb-2">
       <input type="text" class="form-control" id="deckName" [placeholder]="t('name')" formControlName="name" />

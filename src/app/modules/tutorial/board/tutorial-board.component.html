@@ -1,0 +1,51 @@
+<div class="t-board" *transloco="let t; prefix: 'tutorial.board'" data-cy="tutorial-board">
+  <aside
+    class="t-phase-tracker"
+    [appTutorialTarget]="'phase-tracker'"
+    data-cy="phase-tracker"
+  >
+    @if (activePlayer$(); as activePlayer) {
+      <span class="t-phase-turn" [class.t-phase-turn-rival]="activePlayer === 'rival'">
+        {{ activePlayer === 'you' ? t('your_turn') : t('rival_turn') }}
+      </span>
+    }
+    <ul>
+      @for (phase of phases; track phase) {
+        <li [class.active]="activePhase$() === phase">
+          {{ t('phase_' + phase) }}
+        </li>
+      }
+    </ul>
+  </aside>
+
+  <div class="t-table">
+    @if (combat$(); as combat) {
+      <div class="t-combat-tracker" data-cy="combat-tracker">
+        <span class="t-combat-round">
+          <i class="bi bi-fire"></i>
+          {{ t('combat_round', { round: combat.round }) }}
+        </span>
+        <ul>
+          @for (stage of combatStages; track stage) {
+            <li [class.active]="combat.stage === stage">
+              {{ t('stage_' + stage) }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    <app-tutorial-player-side
+      player="rival"
+      [board]="board$().rival"
+      [compact]="true"
+      [isActive]="activePlayer$() === 'rival'"
+    />
+    <app-tutorial-player-side
+      player="you"
+      [board]="board$().you"
+      [isActive]="activePlayer$() === 'you'"
+      [revealUncontrolled]="revealUncontrolled$()"
+    />
+    <app-tutorial-hand [cards]="board$().you.hand" />
+  </div>
+</div>

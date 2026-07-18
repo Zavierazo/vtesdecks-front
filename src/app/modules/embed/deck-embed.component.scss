@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.embed-card {
+  background: var(--app-surface);
+  color: var(--bs-body-color);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.embed-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.embed-name {
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.embed-author {
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+}
+
+.embed-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  font-size: 1.125rem;
+}
+
+.embed-stats {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.embed-stat-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.625rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.embed-section {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.embed-section-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.embed-group {
+  margin-bottom: 0.375rem;
+}
+
+.embed-group-title {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+}
+
+.embed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2 14rem;
+
+  li {
+    display: flex;
+    gap: 0.375rem;
+    break-inside: avoid;
+  }
+}
+
+.embed-quantity {
+  color: var(--bs-secondary-color);
+  min-width: 1.75rem;
+  text-align: right;
+}
+
+.embed-card-name {
+  flex: 1;
+}
+
+.embed-muted {
+  color: var(--bs-secondary-color);
+  font-weight: 400;
+}
+
+.embed-list li:hover {
+  background: var(--app-surface-2);
+  border-radius: 0.25rem;
+  cursor: default;
+}
+
+.embed-hover-image {
+  position: fixed;
+  max-width: 230px;
+  // max-height comes inline from the available space above/below the row
+  width: auto;
+  height: auto;
+  border-radius: 4.5%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.embed-footer {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--bs-border-color);
+  text-align: end;
+  font-size: 0.75rem;
+
+  a {
+    color: var(--bs-secondary-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

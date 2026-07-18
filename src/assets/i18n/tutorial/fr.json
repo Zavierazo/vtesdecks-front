@@ -1,0 +1,317 @@
+{
+  "menu": {
+    "title": "Apprendre à jouer à VTES",
+    "subtitle": "Jouez votre première partie guidée de Vampire: The Eternal Struggle dans votre navigateur. Aucune connaissance des règles requise.",
+    "duration": "Environ 20 minutes",
+    "start": "Commencer le tutoriel",
+    "continue": "Continuer",
+    "restart": "Recommencer",
+    "resources": "Ressources pour nouveaux joueurs"
+  },
+  "narrator": {
+    "next": "Suivant",
+    "exit": "Retour au menu",
+    "rival_turn": "Tour du rival",
+    "hint_click": "Cliquez sur l'élément en surbrillance",
+    "hint_drag": "Cliquez sur la carte, puis sur sa destination",
+    "chapter_progress": "Chapitre {{current}}/{{total}}",
+    "start_chapter": "Commencer le chapitre"
+  },
+  "board": {
+    "pool": "Réserve",
+    "hand": "Main",
+    "library": "Bibliothèque",
+    "crypt": "Crypte",
+    "ash_heap": "Cendres",
+    "uncontrolled": "Non contrôlés",
+    "ready": "Disponible",
+    "torpor": "Torpeur",
+    "masters": "Maîtres",
+    "edge": "L'Avantage",
+    "transfers": "Transferts",
+    "your_turn": "Votre tour",
+    "rival_turn": "Tour du rival",
+    "combat_round": "Combat : round {{round}}",
+    "stage_range": "Portée",
+    "stage_strike": "Frappes",
+    "stage_press": "Press",
+    "phase_unlock": "Redressement",
+    "phase_master": "Maître",
+    "phase_minion": "Serviteur",
+    "phase_influence": "Influence",
+    "phase_discard": "Défausse"
+  },
+  "types": {
+    "master": "Maître",
+    "modifier": "Modificateur d'action",
+    "reaction": "Réaction",
+    "combat": "Combat",
+    "political": "Action politique",
+    "equipment": "Équipement",
+    "ally": "Allié",
+    "retainer": "Compagnon",
+    "event": "Événement"
+  },
+  "chapters": {
+    "ch1": {
+      "title": "Bienvenue dans le jeu"
+    },
+    "ch2": {
+      "title": "Lire les cartes"
+    },
+    "ch3": {
+      "title": "Votre côté de la table"
+    },
+    "ch4": {
+      "title": "Phases et influence"
+    },
+    "ch5": {
+      "title": "Actions et morsure"
+    },
+    "ch6": {
+      "title": "Blocages et réactions"
+    },
+    "ch7": {
+      "title": "Combat de base"
+    },
+    "ch8": {
+      "title": "Maîtres et équipement"
+    },
+    "ch9": {
+      "title": "Politique et votes"
+    },
+    "ch10": {
+      "title": "Un combat complet"
+    },
+    "ch11": {
+      "title": "Sortir de torpeur"
+    },
+    "ch12": {
+      "title": "Les alliés"
+    },
+    "ch13": {
+      "title": "L'élimination"
+    }
+  },
+  "ch1": {
+    "s0": "Une précision avant de commencer : ce tutoriel se joue mieux sur ordinateur ou tablette, où toute la table tient à l'écran. Sur un petit téléphone il fonctionne aussi, mais les régions de jeu deviennent à l'étroit. De plus, il simplifie quelques règles (interception, certains détails du combat et cas particuliers) ; le livre de règles a le dernier mot.",
+    "s1": "Bienvenue ! Dans Vampire: The Eternal Struggle (VTES), vous êtes un Mathusalem, un vampire ancestral. Vous ne combattez pas directement : vous contrôlez des vampires plus jeunes et les envoyez agir pour vous.",
+    "s2": "Voici votre RÉSERVE : 30 compteurs de sang. La réserve est à la fois votre vie et votre argent. Vous la dépensez pour mettre des vampires en jeu, et si elle tombe à zéro, vous perdez.",
+    "s3": "Voici la réserve de votre rival. Dans une vraie partie, 4 ou 5 joueurs sont assis en cercle. Le joueur à votre gauche est votre PROIE et celui à votre droite votre PRÉDATEUR. Dans cette démo à deux, votre rival est les deux.",
+    "s4": "Vous marquez 1 Point de Victoire en ÉLIMINANT votre proie, c'est-à-dire en réduisant sa réserve à 0. Le joueur avec le plus de points de victoire gagne.",
+    "s5": "Ce soir, vous affrontez Sir Walter Nash, Prince de Chicago. Apprenons en jouant."
+  },
+  "ch2": {
+    "s1": "Il existe deux types de cartes. D'abord les cartes de CRYPTE : vos vampires. Voici Aline Gädeke. Cliquez sur chaque partie en surbrillance pour découvrir sa signification.",
+    "s2": "Son NOM, en haut de la carte.",
+    "s3": "Sa CAPACITÉ : 7. Le sang avec lequel elle entre en jeu, et le maximum qu'elle peut porter. Les gros vampires sont plus forts mais coûtent plus cher.",
+    "s4": "Ses DISCIPLINES : ses pouvoirs. Elles déterminent quelles cartes elle peut jouer. Une icône carrée indique le niveau de base. Une icône en losange indique le niveau supérieur, qui débloque aussi l'effet en gras des cartes.",
+    "s5": "Son CLAN : Brujah. Chaque vampire appartient à un clan.",
+    "s5b": "Le TEXTE de la carte : ses capacités spéciales et son TITRE, Baronne de Mannheim. Les titres comptent pour les votes, vous le verrez plus tard.",
+    "s6": "Le second type : les cartes de BIBLIOTHÈQUE, celles que vous jouez depuis votre main. Voici Legal Manipulations. Lisons-la de la même façon.",
+    "s7": "Le TYPE de carte : c'est une carte d'ACTION. Un vampire la joue lorsqu'il effectue une action. Cliquez sur l'icône.",
+    "s7b": "Un exemple réel de chacun des autres types de bibliothèque :",
+    "s8": "Le COÛT : 1 sang, payé par le vampire qui la joue. D'autres cartes coûtent de la réserve, prélevée sur votre propre vie.",
+    "s9": "Le PRÉREQUIS : Présence. Seul un vampire doté de cette discipline peut jouer la carte. Aline l'a.",
+    "s10": "Vous savez maintenant lire l'essentiel des cartes VTES. Continuons."
+  },
+  "ch3": {
+    "s1": "Tous les joueurs ont la même disposition. Faisons le tour de votre côté de la table. Cliquez sur chaque zone en surbrillance.",
+    "s2": "Votre CRYPTE : vos cartes de vampire, face cachée. À la mise en place, vous en avez pioché 4 dans votre région non contrôlée.",
+    "s3": "Votre BIBLIOTHÈQUE : votre paquet. Pendant la partie, vous y piochez pour compléter votre main.",
+    "s4": "Votre MAIN : 7 cartes que vous seul voyez. Chaque fois que vous jouez ou défaussez une carte, vous piochez immédiatement une remplaçante : vous en avez donc toujours 7. Seules exceptions : les cartes qui demandent de ne pas les remplacer tout de suite, ou une bibliothèque vide.",
+    "s5": "Votre région NON CONTRÔLÉE : les 4 vampires face cachée piochés à la mise en place, en attente d'être payés. Aline et Leumeah en font partie.",
+    "s6": "Votre région DISPONIBLE : les vampires en jeu s'y tiennent et y agissent. Vide pour l'instant.",
+    "s7": "Vos CENDRES : la défausse.",
+    "s8": "Et votre RÉSERVE. Gardez-la toujours à l'œil. Visite terminée, place au jeu."
+  },
+  "ch4": {
+    "s1": "Votre tour compte 5 phases, toujours dans cet ordre : Redressement, Maître, Serviteur, Influence, Défausse. Le suivi à côté du plateau indique où vous en êtes.",
+    "s2": "PHASE DE REDRESSEMENT : redressez vos cartes inclinées pour qu'elles puissent agir à nouveau. Rien n'est incliné au premier tour.",
+    "s3": "PHASE DE MAÎTRE : vous pouvez jouer une carte de Maître par tour. Blood Doll exige un vampire en jeu et vous n'en avez pas encore. On passe.",
+    "s4": "PHASE DE SERVITEUR : vos vampires agissent ici. Vous n'en avez pas encore en jeu, donc rien ne se passe.",
+    "s4b": "Une chose avant de dépenser l'influence : vous pouvez regarder vos cartes non contrôlées à tout moment. Les voici : Aline, Leumeah et une copie de rechange de chacune (les vraies cryptes contiennent plusieurs copies par vampire). Vous choisissez qui payer. Commençons par Aline.",
+    "s5": "PHASE D'INFLUENCE : chaque transfert déplace 1 de réserve sur l'un de vos vampires non contrôlés. Pour compenser le fait de jouer en premier, les transferts montent progressivement : le premier tour de la partie en donne 1, le deuxième 2, le troisième 3, puis tous les suivants 4. C'est le tour 1, vous avez donc exactement 1 transfert. Cliquez sur Aline.",
+    "s6": "1 sang sur Aline. Phase de défausse : rien à faire. Fin du tour.",
+    "s7": "Le tour 2 de la partie revient à votre rival : il reçoit 2 transferts et place 2 sangs sur Sir Walter Nash.",
+    "s8": "Le tour 3 est à vous : cette fois vous recevez 3 transferts. Cliquez sur Aline pour les dépenser.",
+    "s9": "2 transferts restants.",
+    "s10": "1 transfert restant.",
+    "s11": "Aline a 4 de sang, encore loin de sa capacité de 7.",
+    "s12": "Tour 4 : votre rival reçoit désormais les 4 transferts standards. Nash atteint 6 de sang.",
+    "s13": "Votre tour. À partir de maintenant, tout le monde reçoit 4 transferts. Aline a besoin de 3 sangs de plus. Cliquez sur elle.",
+    "s14": "Encore 2.",
+    "s15": "Encore 1.",
+    "s16": "7 de sang : sa capacité complète, elle est entièrement payée. Il vous reste 1 transfert : l'utiliser est optionnel, mais les transferts non utilisés sont perdus. Aline est sortie et vous ne voulez pas d'autre vampire pour l'instant, laissez-le filer.",
+    "s17": "Aline entre en jeu ! Attention : elle ne peut pas encore agir. La phase des serviteurs de ce tour est déjà passée, elle attend donc, redressée, jusqu'à votre prochain tour.",
+    "s17b": "PHASE DE DÉFAUSSE : vous pouvez défausser une carte et en piocher une autre. Vous avez deux exemplaires d’Undead Strength, un seul suffit. Cliquez sur un doublon pour le défausser.",
+    "s17c": "Vous le défaussez et piochez aussitôt une remplaçante : votre main reste à 7. C’est le mécanisme de remplacement : jouez ou défaussez une carte, puis repiochez jusqu’à 7.",
+    "s18": "Votre rival n'a besoin que d'1 transfert de plus : Nash atteint 7 de sang et entre en jeu à son tour.",
+    "s19": "Les deux joueurs ont maintenant un vampire en jeu. Place aux actions."
+  },
+  "ch5": {
+    "s1": "À vous. Phase de redressement : rien n'est incliné, Aline n'a pas encore agi.",
+    "s2": "PHASE DE MAÎTRE : jouez Blood Doll sur Aline. Cliquez sur Blood Doll dans votre main, puis sur Aline.",
+    "s3": "Blood Doll est attachée, et elle pourrait même servir dès maintenant, dans cette même phase de Maître. Mais Aline est à pleine réserve de sang, gardez-la pour plus tard. Remarquez la nouvelle carte : chaque fois que vous en jouez une, vous re-piochez jusqu'à 7.",
+    "s4": "PHASE DE SERVITEUR : Aline peut effectuer une action. Les actions de base comme MORDRE ou CHASSER n'exigent aucune carte : tout vampire disponible peut les faire. Cliquez sur Aline.",
+    "s5": "Que doit faire Aline ?",
+    "s5_opt_bleed": "Mordre votre proie",
+    "s5_opt_hunt": "Chasser pour se nourrir",
+    "s5_hunt": "Elle est déjà à pleine réserve de sang, chasser gâcherait donc son action. La morsure est votre arme contre votre proie. Mordons.",
+    "s6": "Aline se S’INCLINE et annonce une morsure. S’incliner est le prix de l'action : un vampire incliné ne peut ni bloquer ni se défendre tant qu'il n'est pas redressé.",
+    "s7": "Nash pourrait tenter de BLOQUER la morsure, mais il choisit de laisser passer.",
+    "s8": "La morsure touche pour 1 : votre proie perd 1 de réserve. Vous prenez aussi L'AVANTAGE, le marqueur détenu par celui qui a réussi la dernière morsure. Il comptera plus tard.",
+    "s9": "PHASE D'INFLUENCE : vous avez 4 transferts. Commençons à payer votre seconde vampire, Leumeah. Cliquez sur elle.",
+    "s10": "Encore un transfert pour l'instant. Cliquez à nouveau.",
+    "s11": "Cela suffit. Gardez le reste de votre réserve : il vous faudra 2 pour un pistolet au prochain tour. Phase de défausse : rien à faire.",
+    "s12": "Votre tour s'achève. À votre rival de jouer."
+  },
+  "ch6": {
+    "s1": "Nash agit : il se S’INCLINE et annonce une morsure contre VOUS.",
+    "s2": "Comment réagissez-vous ?",
+    "s2_opt_block": "Tenter de bloquer",
+    "s2_opt_take": "Laisser passer",
+    "s2_take": "La morsure se résout et vous perdez 1 de réserve. C'est permis, mais si vous ne bloquez jamais, les morsures s'accumulent.",
+    "s2_rewind": "Rembobinons et arrêtons-le cette fois.",
+    "s3": "Bloquer exige un vampire DISPONIBLE et REDRESSÉ, or Aline est encore inclinée par sa morsure. On the Qui Vive RÉVEILLE un vampire incliné. Cliquez dessus dans votre main.",
+    "s3b": "Aline se RÉVEILLE. Se réveiller n'est pas se redresser : elle reste inclinée, mais peut réagir et tenter de bloquer pendant cette action uniquement.",
+    "s3c": "Nash répond avec BONDING : à Domination supérieure, elle ajoute 1 DISCRÉTION (et 1 morsure de plus). Avec plus de discrétion que votre interception, il passerait au travers du blocage.",
+    "s3d": "Égalisez avec de l'INTERCEPTION : jouez ROOFTOP SHADOW, une réaction de Célérité qui vaut 1 interception. Elle coûte 1 sang à Aline. Cliquez dessus.",
+    "s4": "Aline paie 1 sang. 1 interception annule 1 discrétion : le blocage RÉUSSIT et la morsure est stoppée. Vous piochez des remplaçantes pour les deux cartes.",
+    "s5": "Bloquer a une conséquence : bloqueuse et attaquant se battent maintenant. Combat !"
+  },
+  "ch7": {
+    "s1": "Un combat comporte plusieurs étapes : fixer la PORTÉE, choisir les FRAPPES, les résoudre, puis l'étape de PRESS décide si un autre round est joué. Dans ce premier affrontement, seules les frappes comptent, à courte portée.",
+    "s2": "Choisissez la frappe d'Aline. Sa frappe à mains nues inflige 1 dégât, mais elle a Puissance SUPÉRIEURE, l'icône en losange. Jouez UNDEAD STRENGTH avec son texte supérieur en gras : 2 dégâts de plus au lieu de 1. Cliquez sur la carte.",
+    "s3": "Les frappes sont simultanées : Aline frappe pour 3, Nash riposte pour 1. Vous piochez une nouvelle carte.",
+    "s4": "Les dégâts retirent du SANG, pas de la réserve : Nash tombe à 4, Aline à 5. Un vampire sombre en TORPEUR s'il subit des dégâts aggravés ou plus de dégâts que son sang ne peut payer. Finir à exactement 0 n'est pas grave : le vampire reste disponible, juste affamé.",
+    "s5": "Aucun des deux ne veut d'un second round : le combat prend fin. Les deux vampires restent inclinés.",
+    "s6": "Bilan : vous avez annulé la morsure et blessé son vampire. Bloquer est rentable quand vous pouvez vous le permettre."
+  },
+  "ch8": {
+    "s1": "Votre tour. PHASE DE REDRESSEMENT : toutes vos cartes se redressent et Aline peut agir à nouveau. Nash reste incliné jusqu'à sa propre phase de redressement.",
+    "s2": "Phase de Maître : utilisez Blood Doll. Cliquez sur Aline pour déplacer 1 sang d'elle vers votre réserve.",
+    "s3": "Vous gagnez 1 de réserve. Ces petits gains réguliers font gagner les longues parties.",
+    "s3b": "Vous pouvez aussi jouer votre carte de Maître du tour. ANARCH TROUBLEMAKER est un Maître qui reste en jeu au lieu de s'attacher à un vampire. Cliquez dessus dans votre main.",
+    "s3c": "Elle se place dans votre région disponible, en jeu mais attachée à personne. Les Maîtres de ce genre attendent sur la table le bon moment. Gardez-la en tête.",
+    "s4": "PHASE DE SERVITEUR : donnez une arme à Aline. S'équiper est une action. Cliquez sur le .44 Magnum, puis sur Aline. Le pistolet coûte 2 de réserve.",
+    "s5": "Nash est incliné et blessé : pas de blocage. Aline s’incline, paie 2 de réserve et prend le pistolet. Vous piochez une nouvelle carte.",
+    "s6": "L'équipement reste en jeu. Lors de son prochain combat, le Magnum frappera pour 2 dégâts, même à longue portée.",
+    "s7": "PHASE D'INFLUENCE : 4 transferts pour finir de payer Leumeah. Cliquez sur elle.",
+    "s8": "Plus que 3.",
+    "s9": "Plus que 2.",
+    "s10": "Plus qu'un.",
+    "s11": "6 de sang, sa capacité complète. Leumeah entre en jeu ! Arrivée pendant la phase d'influence, elle ne pourra agir qu'au prochain tour.",
+    "s12": "Tour du rival : Nash se redresse et vous mord pour 1. Aline est inclinée et Leumeah toute nouvelle, vous laissez donc passer, et il vous prend L'AVANTAGE."
+  },
+  "ch9": {
+    "s1": "Votre tour : DEUX vampires disponibles et un Maître en jeu. Phase de redressement : tout ce qui est à vous se redresse.",
+    "s2": "Phase de Maître : Blood Doll encore. Cliquez sur Aline pour déplacer 1 sang vers votre réserve.",
+    "s3": "Vous gagnez 1 de réserve.",
+    "s4": "PHASE DE SERVITEUR. Aline ouvre avec une morsure simple. Cliquez sur elle.",
+    "s5": "La morsure touche : votre rival perd 1 de réserve et vous lui reprenez L'AVANTAGE.",
+    "s6": "Maintenant Leumeah, votre autre Baronne, convoque le vote. Jouez EAT THE RICH, une action politique. Cliquez sur la carte.",
+    "s7": "Leumeah s’incline et annonce l'action politique.",
+    "s8": "Avant toute chose, le blocage a sa chance : une action politique peut être bloquée comme n'importe quelle action, mais les actions politiques portent +1 DISCRÉTION par défaut, ce qui les rend plus dures à attraper. Nash est encore incliné, rien n'arrête donc le référendum.",
+    "s9": "L'action réussit, on choisit donc maintenant les termes. Désignez la cible d'Eat the Rich :",
+    "s9_opt_rival": "Votre rival, qui contrôle un riche Prince",
+    "s9_opt_self": "Vous-même",
+    "s9_self": "Vous cibler ne ferait que vous nuire. La carte punit les joueurs qui contrôlent des vampires TITRÉS, comme Nash, Prince de Chicago. Visez votre rival.",
+    "s10": "Les voix sont comptées une par une. La carte d'action politique elle-même donne 1 voix au contrôleur de celle qui l'a convoquée : vous. Score : 1 pour, 0 contre.",
+    "s11": "Nash vote contre. Un Prince vaut 2 voix, mais Eat the Rich retire 1 voix à chaque vampire titré non priscus (un priscus perd un bulletin à la place). Score : 1 à 1. Une égalité échoue.",
+    "s12": "Votre rival défausse ANARCHIST UPRISING, une action politique de son propre deck, pour acheter 1 voix supplémentaire contre. Score : 1 à 2.",
+    "s13": "Vos Baronnes répondent. Chacune vaut 2 voix, moins 1 à cause de la carte. Aline peut voter même inclinée : les vampires inclinés votent aussi. Cliquez sur elle.",
+    "s14": "Aline et Leumeah ajoutent 1 voix chacune. Score : 3 à 2. Cela passerait déjà, mais vous pouvez pousser plus loin.",
+    "s15": "Vous détenez L'AVANTAGE. Le brûler donne normalement 1 voix, mais le texte d'Eat the Rich le fait valoir 2 ici. Cliquez sur l'Avantage pour le brûler.",
+    "s16": "Score : 5 à 2. Le référendum PASSE avec 3 voix d'écart. Notez que vous ne pouvez pas aussi défausser une carte politique pour une voix : chaque joueur obtient au plus 1 voix des cartes politiques, et la vôtre vient de la carte convoquée par Leumeah.",
+    "s17": "Votre rival perd 4 de réserve : 1 pour l'effet de base, plus 3 pour contrôler un vampire titré.",
+    "s18": "La récompense : Leumeah a convoqué le vote et l'a gagné, elle peut donc jouer VOTER CAPTIVATION. Cliquez sur la carte.",
+    "s19": "Il est passé avec 3 voix d'écart : Voter Captivation gagne donc 3 sangs. À Présence supérieure, jusqu'à 2 vont dans votre RÉSERVE. Le troisième remplirait Leumeah, mais elle est déjà pleine. Gagnez plus large, récupérez plus.",
+    "s20": "Une astuce de plus. Le texte de la carte d'Aline lui permet de brûler 1 sang pour se DÉS’INCLINER quand un autre Anarch à vous réussit une action. Leumeah vient de le faire. Cliquez sur Aline.",
+    "s21": "Aline brûle 1 sang et se redresse. Elle pourrait agir à nouveau ce tour-ci ou bloquer pendant le tour de votre rival. Les capacités imprimées sur vos vampires sont toujours disponibles.",
+    "s22": "La politique a payé : des dégâts de réserve, du sang récupéré et un rival blessé. Mais Nash tient encore debout. Ensuite : un combat en détail pour l'éliminer."
+  },
+  "ch10": {
+    "s1": "La même partie, quelques tours plus tard. Tout le monde s'est refait : la Blood Doll et la chasse ont rempli votre côté, et Nash est revenu à 6 de sang. L'heure de l'éliminer pour de bon, et de jouer un combat en détail. Regardez le suivi au-dessus du plateau : chaque ROUND a des étapes de PORTÉE, FRAPPES et PRESS.",
+    "s1b": "D’abord la PHASE DE MAÎTRE. Aline n’a que la Célérité de base, elle ne peut donc pas utiliser la version forte de certaines cartes. Jouez la carte de maître CELERITY sur elle : elle ajoute un niveau de Célérité (et 1 de capacité). Faites-la glisser sur Aline.",
+    "s1c": "Aline a maintenant la Célérité SUPÉRIEURE. Cela débloque le texte en gras des cartes de Célérité, ce qui comptera dans un instant. Vous piochez aussi une carte de remplacement.",
+    "s2": "PHASE DE SERVITEUR. Aline mord Nash. Cliquez sur elle.",
+    "s3": "Cette fois Nash BLOQUE. Les deux vampires s’inclinent, le combat commence.",
+    "s4": "Round 1, étape de PORTÉE : le combat commence à courte portée, mais chaque combattant peut jouer des MANŒUVRES pour la changer.",
+    "s5": "Le .44 Magnum donne à Aline une manœuvre optionnelle par combat. Où voulez-vous vous battre ?",
+    "s5_opt_long": "Passer à longue portée",
+    "s5_opt_close": "Rester à courte portée",
+    "s5_close": "À courte portée, Nash riposte avec sa frappe à mains nues. Avec un pistolet, la distance est votre alliée. Prenez du recul.",
+    "s6": "LONGUE PORTÉE. Les armes à feu tirent à toute distance ; frappes à mains nues et crocs ne fonctionnent que de près.",
+    "s7": "Étape des FRAPPES : cliquez sur Aline pour tirer.",
+    "s8": "2 dégâts : Nash brûle 2 sangs. Sa frappe à mains nues ne peut pas vous atteindre à longue portée.",
+    "s9": "Nash en a assez : il frappe avec MAJESTY. Le combat prend fin, aucun dégât, et aucun press ordinaire ne peut le prolonger.",
+    "s10": "Une carte le peut : PSYCHE! à Célérité supérieure met en file un NOUVEAU combat contre le même adversaire quand le combat va se terminer. Cliquez dessus.",
+    "s11": "Un tout nouveau combat commence contre Nash. Tout se réinitialise, même la manœuvre une-par-combat du Magnum.",
+    "s12": "Étape de PORTÉE : utilisez la manœuvre du Magnum pour repasser à longue portée.",
+    "s13": "Étape des FRAPPES : tirez. Cliquez sur Aline.",
+    "s14": "2 dégâts de plus : Nash tombe à 2 sangs et ne peut toujours pas vous atteindre.",
+    "s15": "Étape de PRESS : cette fois un press normal. Jouez votre second PSYCHE!, son niveau de base est un simple press. Cliquez dessus.",
+    "s16": "Round 2 du nouveau combat, et la portée revient à courte. L'heure du coup final.",
+    "s17": "Jouez BURNING WRATH : une frappe à mains nues avec 2 dégâts AGGRAVÉS de plus, 3 au total. Elle coûte 3 sangs. Cliquez dessus.",
+    "s18": "Nash riposte avec sa frappe à mains nues pour 1 dégât et joue RESILIENCE pour prévenir des dégâts : son niveau supérieur prévient 3 dégâts NON aggravés, inutile contre Burning Wrath, il utilise donc le niveau de base et n'en prévient qu'1.",
+    "s19": "2 dégâts aggravés passent : le premier BLESSE Nash (l'aggravé ne se soigne pas) et il brûle 1 sang pour survivre au second. Si les dégâts aggravés avaient dépassé son sang, il aurait été BRÛLÉ, direction les cendres.",
+    "s20": "Un vampire blessé sombre en TORPEUR à la fin du round. Nash s'effondre avec 1 sang.",
+    "s21": "Un combat complet : portée, frappes, press, Majesty, Psyche! supérieur, dégâts aggravés et prévention. Nash est hors jeu, mais la nuit n'est pas finie."
+  },
+  "ch11": {
+    "s1": "Votre rival a contre-attaqué. Pendant que Nash gisait en torpeur, TIMOTHY CROWLEY, un autre Prince, est entré en jeu et l'a SECOURU (tout vampire disponible peut secourir, même ceux du rival). Puis Crowley a surpris Leumeah seule : un combat brutal l'a envoyée en TORPEUR avec 0 sang.",
+    "s2": "Votre tour. En torpeur, Leumeah ne peut ni agir ni se défendre, et les ennemis pourraient même la DIABLERISER, la vider entièrement. Sortons-la de là.",
+    "s3": "Tout vampire disponible peut SECOURIR un vampire en torpeur par une action. Cliquez sur Aline.",
+    "s4": "Aline s’incline pour la tentative de sauvetage. Crowley pourrait la bloquer, il ne bouge pas.",
+    "s5": "Le sauvetage coûte 2 sangs, payés par la sauveteuse, la sauvée, ou partagés entre les deux. Qui paie ?",
+    "s5_opt_aline": "Aline paie les 2 sangs",
+    "s5_opt_split": "Partager, 1 chacune",
+    "s5_split": "Vous pourriez partager, mais Leumeah a 0 sang, elle ne peut rien payer. Aline paie.",
+    "s6": "Aline paie 2 sangs et Leumeah revient dans la région disponible : affamée, mais libre. Être secourue ne l’incline ni ne la redresse, et elle n’est plus blessée.",
+    "s7": "Une règle obligatoire s’applique maintenant : un vampire disponible et redressé SANS sang DOIT chasser. Vous ne pouvez effectuer aucune autre action optionnelle, avec aucun vampire, tant que Leumeah n’a pas chassé. Cliquez sur elle pour CHASSER.",
+    "s8": "Leumeah s’incline et chasse : 1 sang récupéré. La chasse obligatoire faite, vos autres serviteurs peuvent de nouveau agir.",
+    "s9": "Torpeur réglée : secourir, payer, récupérer. Maintenant, trouvons-vous de l'aide."
+  },
+  "ch12": {
+    "s1": "Le rival a maintenu la pression : Crowley vous a mordu et Nash a chassé. Votre tour, tout se redresse. Dans votre main attend un PROCURER, un ALLIÉ : un serviteur qui n'est pas un vampire.",
+    "s2": "Aline recrute le PROCURER (Leumeah manque trop de sang pour payer). Recruter est une action, et le coût de cet allié est payé en SANG par le vampire recruteur : 2 sangs. Cliquez sur la carte dans votre main.",
+    "s3": "Aline s’incline et paie 2 SANGS, et le Procurer entre en jeu avec 1 point de VIE, 1 de force et 0 de morsure. Les alliés perdent de la VIE au lieu du sang, et à 0 vie ils sont brûlés.",
+    "s4": "Désormais l'allié agit comme n'importe quel serviteur : il peut mordre, bloquer et utiliser ses capacités imprimées. Celui-ci peut apporter du sang frais à vos vampires. Mais pas encore : les serviteurs ne peuvent pas agir le tour de leur arrivée.",
+    "s5": "Un tour rapide du rival : Crowley S'INCLINE pour vous mordre de 1. Votre Procurer, tout juste recruté, reste immobile : les serviteurs ne peuvent pas agir le tour de leur arrivée.",
+    "s6": "À vous de nouveau. PHASE DE REDRESSEMENT : toutes vos cartes se redressent, Aline, inclinée par le recrutement, est donc de nouveau prête.",
+    "s6b": "Et maintenant le Procurer peut agir : il apporte 1 sang à Aline. Les petits assistants finissent par compter.",
+    "s7": "Vous connaissez les alliés. Il reste une nuit : celle de la mise à mort."
+  },
+  "ch13": {
+    "s1": "Plusieurs nuits passent. Vous continuez à mordre, voter et vous nourrir ; votre rival s'accroche mais continue de couler. Il ne lui reste que 3 de réserve. Ce soir, tout s'achève.",
+    "s2": "PHASE DE REDRESSEMENT, et une dernière astuce attend sur la table : l'ANARCH TROUBLEMAKER.",
+    "s3": "Elle s'utilise pendant votre phase de redressement. Cliquez dessus.",
+    "s4": "Comme la carte l’ordonne, vous la remettez à votre rival (elle passe de son côté redressée, ce n’est pas une carte qui incline) et vous inclinez jusqu’à deux de SES vampires. Crowley ET Nash s’inclinent : toute sa défense a disparu.",
+    "s5": "PHASE DE SERVITEUR. Personne ne peut bloquer. Finissez-en.",
+    "s6": "Jouez LEGAL MANIPULATIONS, une action de morsure avec 2 de morsure en plus. Cliquez sur la carte.",
+    "s7": "Aline paie 1 sang, s’incline et mord pour 3.",
+    "s8": "Votre proie atteint 0 de réserve : ÉLIMINÉ ! Vous gagnez 1 Point de Victoire et une récompense de 6 de réserve.",
+    "s9": "Voilà Vampire: The Eternal Struggle, du premier transfert à l'élimination : réserve, actions, blocages, combat, politique, torpeur et alliés. Dans une vraie partie à cinq joueurs, la chasse continue autour de la table. Vous êtes prêt. À vous de jouer !"
+  },
+  "resources": {
+    "title": "Vos prochaines étapes",
+    "subtitle": "Vous connaissez les bases. Voici tout ce qu'il faut pour aller plus loin.",
+    "decks_cta_title": "Trouvez votre premier deck",
+    "decks_cta_text": "Parcourez les decks préconstruits : des points de départ prêts à acheter ou à imprimer en proxies.",
+    "decks_cta": "Voir les decks de départ",
+    "rulebook": "Livre de règles officiel (PDF)",
+    "rulebook_text": "Les règles complètes de la Cinquième Édition, gratuites chez Black Chantry.",
+    "what_to_buy": "Que devrais-je acheter ?",
+    "what_to_buy_text": "Le guide de la communauté pour vos premiers achats.",
+    "codex": "Codex of the Damned",
+    "codex_text": "L'école de stratégie : archétypes, articles et guides de decks.",
+    "vekn": "VEKN, l'organisation officielle des joueurs",
+    "vekn_text": "Trouvez des événements, des groupes locaux et le forum officiel.",
+    "discord": "Discord VTES",
+    "discord_text": "L'endroit le plus actif pour poser vos questions et trouver des parties en ligne.",
+    "succubus": "Succubus Club",
+    "succubus_text": "Jouez à VTES en ligne contre d'autres joueurs.",
+    "back": "Retour au tutoriel"
+  }
+}

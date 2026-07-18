@@ -1,0 +1,151 @@
+<div
+  class="t-side"
+  [class.t-side-compact]="compact()"
+  [class.t-side-active]="isActive()"
+  *transloco="let t; prefix: 'tutorial.board'"
+>
+  <!-- Ready region (top, main play area) -->
+  <div
+    class="t-zone t-zone-ready"
+    [appTutorialTarget]="zoneTarget('ready')"
+    [attr.data-cy]="player() + '-ready'"
+  >
+    <span class="t-zone-label">{{ t('ready') }}</span>
+    <div class="t-zone-cards">
+      @for (card of board().ready; track card.ref) {
+        <app-tutorial-card
+          [instance]="card"
+          [appTutorialTarget]="cardTarget(card.ref)"
+        />
+      }
+      @for (card of board().masters; track card.ref) {
+        <app-tutorial-card
+          [instance]="card"
+          [showBlood]="false"
+          [appTutorialTarget]="cardTarget(card.ref)"
+          [attr.data-cy]="'master-' + card.ref"
+        />
+      }
+      @if (board().ready.length === 0 && board().masters.length === 0) {
+        <div class="t-zone-empty"></div>
+      }
+    </div>
+  </div>
+
+  <!-- Torpor + uncontrolled row -->
+  <div class="t-mid-row">
+    <div
+      class="t-zone t-zone-torpor"
+      [appTutorialTarget]="zoneTarget('torpor')"
+      [attr.data-cy]="player() + '-torpor'"
+    >
+      <span class="t-zone-label">{{ t('torpor') }}</span>
+      <div class="t-zone-cards">
+        @for (card of board().torpor; track card.ref) {
+          <app-tutorial-card
+            [instance]="card"
+            [appTutorialTarget]="cardTarget(card.ref)"
+          />
+        }
+        @if (board().torpor.length === 0) {
+          <div class="t-zone-empty"></div>
+        }
+      </div>
+    </div>
+
+    <div
+      class="t-zone t-zone-uncontrolled"
+      [appTutorialTarget]="zoneTarget('uncontrolled')"
+      [attr.data-cy]="player() + '-uncontrolled'"
+    >
+      <span class="t-zone-label">{{ t('uncontrolled') }}</span>
+      <div class="t-zone-cards">
+        @for (card of board().uncontrolled; track card.ref) {
+          <app-tutorial-card
+            [instance]="card"
+            [forceFaceUp]="revealUncontrolled()"
+            [appTutorialTarget]="cardTarget(card.ref)"
+          />
+        }
+        @if (board().uncontrolled.length === 0) {
+          <div class="t-zone-empty"></div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar: piles, masters in play, pool -->
+  <div class="t-bottom-bar">
+    <div
+      class="t-pile t-pile-ash"
+      [appTutorialTarget]="zoneTarget('ashHeap')"
+      [attr.data-cy]="player() + '-ash-heap'"
+    >
+      @if (board().ashHeap.length > 0) {
+        <app-tutorial-card
+          [instance]="board().ashHeap[board().ashHeap.length - 1]"
+          size="small"
+          [showBlood]="false"
+        />
+      } @else {
+        <div class="t-pile-empty"></div>
+      }
+      <span class="t-pile-label">{{ t('ash_heap') }}</span>
+    </div>
+    <div
+      class="t-pile"
+      [appTutorialTarget]="zoneTarget('library')"
+      [attr.data-cy]="player() + '-library'"
+    >
+      <img src="/assets/img/cardbacklibrary.jpg" [alt]="t('library')" />
+      <span class="t-pile-count">{{ board().libraryCount }}</span>
+      <span class="t-pile-label">{{ t('library') }}</span>
+    </div>
+    <div
+      class="t-pile"
+      [appTutorialTarget]="zoneTarget('crypt')"
+      [attr.data-cy]="player() + '-crypt'"
+    >
+      <img src="/assets/img/cardbackcrypt.jpg" [alt]="t('crypt')" />
+      <span class="t-pile-count">{{ board().cryptCount }}</span>
+      <span class="t-pile-label">{{ t('crypt') }}</span>
+    </div>
+
+    <div class="t-bar-spacer"></div>
+
+    @if (board().hasEdge) {
+      <div
+        class="t-edge"
+        [appTutorialTarget]="edgeTarget$()"
+        [attr.data-cy]="player() + '-edge'"
+      >
+        <i class="bi bi-lightning-fill"></i>
+        <span class="t-pile-label">{{ t('edge') }}</span>
+      </div>
+    }
+
+    @if (!compact() && board().transfers > 0) {
+      <div class="t-transfers" data-cy="you-transfers">
+        {{ t('transfers') }}: <strong>{{ board().transfers }}</strong>
+      </div>
+    }
+    <div
+      class="t-pool"
+      [appTutorialTarget]="poolTarget$()"
+      [attr.data-cy]="player() + '-pool'"
+    >
+      @if (poolDelta$(); as delta) {
+        <span
+          class="t-pool-delta"
+          [class.t-pool-delta-loss]="delta < 0"
+          [attr.data-cy]="player() + '-pool-delta'"
+        >
+          {{ delta > 0 ? '+' + delta : delta }}
+        </span>
+      }
+      <i class="bi bi-droplet-half"></i>
+      <span class="t-pool-value">{{ board().pool }}</span>
+      <span class="t-pool-label">{{ t('pool') }}</span>
+    </div>
+  </div>
+</div>

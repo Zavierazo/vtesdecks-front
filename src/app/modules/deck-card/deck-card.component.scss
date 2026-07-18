@@ -44,6 +44,13 @@
     transition: all 0.2s ease;
   }
 
+  .reaction-badge {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: rgba(var(--bs-body-color-rgb), 0.04);
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
   .rating-badge {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 

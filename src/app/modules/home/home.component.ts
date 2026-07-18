@@ -24,6 +24,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { getCurrentAdventData } from '@utils'
 import { switchMap, tap } from 'rxjs'
 import { environment } from '@environments/environment'
+import { HomeCustomAdComponent } from './home-custom-ad/home-custom-ad.component'
 import { HomeMetagameComponent } from './home-metagame/home-metagame.component'
 import { HomeSectionComponent } from './home-section/home-section.component'
 import { HomeUserOfMonthComponent } from './home-user-of-month/home-user-of-month.component'
@@ -41,6 +42,7 @@ import { HomeUserOfMonthComponent } from './home-user-of-month/home-user-of-mont
     HomeSectionComponent,
     TranslocoPipe,
     AdSenseComponent,
+    HomeCustomAdComponent,
     IsSupporterDirective,
     HomeMetagameComponent,
     AndroidBannerComponent,

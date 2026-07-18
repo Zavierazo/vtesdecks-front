@@ -48,6 +48,10 @@ export class AuthQuery {
     return this.store.select((user: ApiUser) => user.notificationCount)
   }
 
+  selectCountryCode(): Observable<string | undefined> {
+    return this.store.select((state) => state.countryCode)
+  }
+
   selectEmail(): Observable<string | undefined> {
     return this.store.select((user: ApiUser) => user.email)
   }
@@ -116,6 +120,14 @@ export class AuthQuery {
 
   isSupporter(): boolean {
     return isSupporter(this.store.getValue().roles)
+  }
+
+  isAdmin(): boolean {
+    return Boolean(this.store.getValue().admin)
+  }
+
+  getCountryCode(): string | undefined {
+    return this.store.getValue().countryCode
   }
 
   isRole(role: string): boolean {

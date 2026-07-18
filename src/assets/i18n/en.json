@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Flags are defined in the backend. Only their values can be changed here.",
+    "key": "Key",
+    "type": "Type",
+    "description": "Description",
+    "value": "Value",
+    "save": "Save",
+    "add_item": "Add",
+    "remove_item": "Remove",
+    "saved": "Feature flag saved",
+    "save_error": "Could not save the feature flag",
+    "empty": "No feature flags available"
+  },
   "can_deactivate_guard": {
     "title": "Warning: Unsaved Changes!",
     "message": "You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes."
@@ -131,7 +145,8 @@
     "delete": "Delete",
     "compare": "Compare",
     "archetype": "Archetype",
-    "add_to_collection": "Add to Collection"
+    "add_to_collection": "Add to Collection",
+    "embed": "Embed"
   },
   "deck_comparison": {
     "title": "Compare Deck",
@@ -329,6 +344,8 @@
     "none": "None",
     "reset": "Reset",
     "bookmarked": "Bookmarked",
+    "has_video": "Has video",
+    "detailed": "Deck guide",
     "tags": "Tags",
     "tags_placeholder": "Add Tags...",
     "clans": "Clans",
@@ -390,17 +407,22 @@
     "bookmarks": "My Bookmarks",
     "public_profile": "Public Profile",
     "settings": "Settings",
+    "admin": "Admin",
     "logout": "Logout",
     "theme": "Theme",
     "notifications": "Notifications",
     "unread_notifications": "unread notifications",
     "proxy_generator": "Proxy Generator",
+    "learn_to_play": "Learn to Play",
     "vtes_ai_chat": "VTES AI Chat",
     "search": "Search",
     "scan_card": "Scan",
     "user_menu": "User menu"
   },
   "home": {
+    "sponsor": "Sponsor",
+    "learn_to_play": "Learn to Play",
+    "learn_to_play_cta": "New to the game? Learn to play in 20 minutes",
     "welcome_title": "Welcome to VTES Decks",
     "welcome_subtitle": "Discover, Share, and Build the best Vampire: The Eternal Struggle decks",
     "metagame_decks": "Metagame Decks",
@@ -510,6 +532,24 @@
     "page_not_found": "Page not found.",
     "does_not_exists": "The page you're looking for doesn't exist.",
     "go_home": "Go Home"
+  },
+  "reactions": {
+    "would_play": "Would play",
+    "tournament_worthy": "Tournament-worthy",
+    "original_brew": "Original brew",
+    "mind_blowing": "Mind-blowing",
+    "spicy": "Spicy",
+    "too_greedy": "Too greedy",
+    "thumbs_up": "Like",
+    "thumbs_down": "Dislike",
+    "heart": "Love",
+    "laugh": "Haha",
+    "wow": "Wow",
+    "thanks": "Thanks",
+    "hundred": "Spot on",
+    "add_reaction": "Add reaction",
+    "login_required": "Log in to react",
+    "error": "Could not save your reaction. Please try again."
   },
   "reset_password": {
     "reset_password": "Reset Password",
@@ -1229,5 +1269,29 @@
     "singles_only_total": "Buying everything as singles",
     "you_save": "You save",
     "singles_cheapest": "Buying singles is already the cheapest option"
+  },
+  "embed": {
+    "title": "Embed deck",
+    "theme": "Theme",
+    "theme_auto": "Auto",
+    "theme_dark": "Dark",
+    "theme_light": "Light",
+    "sections": "Sections",
+    "section_header_always": "Header (always shown)",
+    "section_stats": "Statistics",
+    "section_crypt": "Crypt list",
+    "section_library": "Library list",
+    "crypt": "Crypt",
+    "library": "Library",
+    "preview": "Preview",
+    "js_snippet": "JavaScript code",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "powered_by": "Powered by vtesdecks.com",
+    "size": "Size",
+    "width": "Width",
+    "height": "Height",
+    "size_auto": "Auto",
+    "size_hint": "Any CSS size works: 400px, 30rem, 100%…"
   }
 }

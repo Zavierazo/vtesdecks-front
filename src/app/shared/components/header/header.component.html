@@ -98,8 +98,12 @@
             {{ t('tools') }}
           </span>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownTools">
-            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank" rel="noopener noreferrer"
-              (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
+            <a ngbDropdownItem routerLink="/tutorial" [routerLinkActive]="['active']" (click)="isCollapsed = true"
+              gaEvent="referral" gaCategory="tutorial" data-cy="tutorial-link">
+              {{ t('learn_to_play') }}
+            </a>
+            <a ngbDropdownItem href="https://codex-of-the-damned.org/en/index.html" target="_blank"
+              rel="noopener noreferrer" (click)="isCollapsed = true" gaEvent="referral" gaCategory="codexOfTheDamned">
               Codex of the Damned
             </a>
             <a ngbDropdownItem routerLink="/vtesdle" [routerLinkActive]="['active']" (click)="isCollapsed = true"
@@ -140,10 +144,11 @@
             {{ t('search') }}
           </span>
         </button>
-        <app-lang-selector />
-        @if (themeEnabled) {
-        <app-theme-selector />
-        }
+        <li class="nav-item nav-link py-0 px-lg-0">
+          <app-lang-selector />
+        <li class="nav-item nav-link py-0 px-lg-0">
+          <app-theme-selector />
+        </li>
         <li
           class="nav-item nav-link position-relative notification me-0 me-lg-2 d-flex justify-content-start align-items-center"
           *isLogged="true" (click)="openNotifications()">
@@ -174,8 +179,7 @@
         </button>
         <li ngbDropdown class="nav-item dropdown" display="dynamic" *isLogged="true">
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownUser" role="button" aria-expanded="false"
-            data-cy="user-menu"
-            [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
+            data-cy="user-menu" [attr.aria-label]="(displayName$ | async) ?? t('user_menu')">
             <img [src]="profileImage$ | async" [alt]="displayName$ | async" width="30" height="30"
               class="rounded-circle me-2" onerror="this.src='/assets/img/default_user.png'">
             <strong>{{ displayName$ | async }}</strong>
@@ -198,6 +202,13 @@
               (click)="isCollapsed = true">
               <i class="bi bi-bookmark-star-fill"></i> {{ t('bookmarks') }}
             </a>
+            @if (isAdmin$ | async) {
+            <hr class="dropdown-divider" />
+            <a ngbDropdownItem routerLink="/admin" [routerLinkActive]="['active']" (click)="isCollapsed = true"
+              data-cy="admin-menu">
+              <i class="bi bi-shield-lock-fill"></i> {{ t('admin') }}
+            </a>
+            }
             <hr class="dropdown-divider" />
             <a ngbDropdownItem [routerLink]="'/user/' + (user$ | async)" [routerLinkActive]="['active']"
               (click)="isCollapsed = true">

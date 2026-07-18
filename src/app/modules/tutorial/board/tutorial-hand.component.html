@@ -1,0 +1,19 @@
+<div
+  class="t-hand"
+  *transloco="let t; prefix: 'tutorial.board'"
+  [appTutorialTarget]="'zone:you:hand'"
+  data-cy="you-hand"
+>
+  <span class="t-hand-label">{{ t('hand') }}</span>
+  <div class="t-hand-cards">
+    @for (card of cards(); track card.ref) {
+      <app-tutorial-card
+        [instance]="card"
+        size="small"
+        [showBlood]="false"
+        [appTutorialTarget]="cardTarget(card.ref)"
+        [attr.data-cy]="'hand-' + card.ref"
+      />
+    }
+  </div>
+</div>

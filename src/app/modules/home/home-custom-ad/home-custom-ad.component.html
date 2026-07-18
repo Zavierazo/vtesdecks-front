@@ -1,0 +1,43 @@
+@if (ad$ | async; as ad) {
+  @if (ad.show) {
+    <div class="container my-3 text-center" data-cy="home-custom-ad">
+      <a
+        [href]="ad.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="position-relative d-block"
+        gaEvent="purchase"
+        gaCategory="home_sponsor"
+        [gaLabel]="ad.url!"
+      >
+        <span
+          class="badge text-bg-dark bg-opacity-75 position-absolute top-0 start-0 m-2"
+          data-cy="home-custom-ad-badge"
+        >
+          {{ 'home.sponsor' | transloco }}
+        </span>
+        <picture>
+          <source media="(max-width: 767.98px)" [srcset]="ad.imageMobile" />
+          <img
+            [src]="ad.image"
+            class="img-fluid w-100 rounded"
+            alt="Sponsor"
+            loading="lazy"
+          />
+        </picture>
+      </a>
+    </div>
+  } @else {
+    <ng-container [ngTemplateOutlet]="adSense" />
+  }
+} @else {
+  <ng-container [ngTemplateOutlet]="adSense" />
+}
+<ng-template #adSense>
+  <app-ad-sense
+    [adClient]="adClient"
+    [adSlot]="adSlot"
+    [adFormat]="adFormat"
+    [fullWidthResponsive]="fullWidthResponsive"
+  />
+</ng-template>

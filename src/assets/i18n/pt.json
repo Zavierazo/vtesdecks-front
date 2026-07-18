@@ -1,4 +1,18 @@
 {
+  "admin": {
+    "feature_flags_title": "Feature Flags",
+    "feature_flags_hint": "Os flags são definidos no backend. Aqui só é possível alterar os seus valores.",
+    "key": "Chave",
+    "type": "Tipo",
+    "description": "Descrição",
+    "value": "Valor",
+    "save": "Guardar",
+    "add_item": "Adicionar",
+    "remove_item": "Remover",
+    "saved": "Feature flag guardado",
+    "save_error": "Não foi possível guardar o feature flag",
+    "empty": "Não há feature flags disponíveis"
+  },
   "can_deactivate_guard": {
     "title": "Advertência: Baralho não salvos!",
     "message": "Você tem baralho não salvos. Pressione Cancelar para voltar e salvar essas mudanças, ou OK para perder essas mudanças."
@@ -131,7 +145,8 @@
     "delete": "Deletar",
     "compare": "Comparar",
     "archetype": "Arquétipo",
-    "add_to_collection": "Adicionar à Coleção"
+    "add_to_collection": "Adicionar à Coleção",
+    "embed": "Incorporar"
   },
   "deck_comparison": {
     "title": "Comparar Baralho",
@@ -329,6 +344,8 @@
     "none": "Nenhum",
     "reset": "Repor",
     "bookmarked": "Favoritos",
+    "has_video": "Com vídeo",
+    "detailed": "Guia do deck",
     "tags": "Etiquetas",
     "tags_placeholder": "Adicionar etiquetas...",
     "clans": "Clãs",
@@ -390,17 +407,22 @@
     "bookmarks": "Meus Favoritos",
     "public_profile": "Perfil Público",
     "settings": "Configurações",
+    "admin": "Administração",
     "logout": "Sair",
     "theme": "Tema",
     "notifications": "Notificações",
     "unread_notifications": "notificações não lidas",
     "proxy_generator": "Gerador de Proxies",
+    "learn_to_play": "Aprenda a jogar",
     "vtes_ai_chat": "Chat IA de VTES",
     "search": "Pesquisar",
     "scan_card": "Escanear",
     "user_menu": "Menu do usuário"
   },
   "home": {
+    "sponsor": "Patrocinador",
+    "learn_to_play": "Aprenda a jogar",
+    "learn_to_play_cta": "Novo no jogo? Aprenda a jogar em 20 minutos",
     "welcome_title": "Bem-vindo ao VTES Decks",
     "welcome_subtitle": "Descubra, Compartilhe e Construa os melhores baralhos de Vampire: The Eternal Struggle",
     "metagame_decks": "Baralhos de Metajogo",
@@ -510,6 +532,24 @@
     "page_not_found": "Página não encontrada.",
     "does_not_exists": "A página que você está procurando não existe.",
     "go_home": "Ir para o início"
+  },
+  "reactions": {
+    "would_play": "Eu jogaria",
+    "tournament_worthy": "Digno de torneio",
+    "original_brew": "Criação original",
+    "mind_blowing": "Alucinante",
+    "spicy": "Apimentado",
+    "too_greedy": "Ganancioso demais",
+    "thumbs_up": "Curtir",
+    "thumbs_down": "Não curti",
+    "heart": "Amei",
+    "laugh": "Haha",
+    "wow": "Uau",
+    "thanks": "Obrigado",
+    "hundred": "Na mosca",
+    "add_reaction": "Adicionar reação",
+    "login_required": "Faça login para reagir",
+    "error": "Não foi possível salvar sua reação. Tente novamente."
   },
   "reset_password": {
     "reset_password": "Redefinir senha",
@@ -1229,5 +1269,29 @@
     "singles_only_total": "Comprando tudo como cartas avulsas",
     "you_save": "Você economiza",
     "singles_cheapest": "Comprar cartas avulsas já é a opção mais barata"
+  },
+  "embed": {
+    "title": "Incorporar deck",
+    "theme": "Tema",
+    "theme_auto": "Auto",
+    "theme_dark": "Escuro",
+    "theme_light": "Claro",
+    "sections": "Seções",
+    "section_header_always": "Cabeçalho (sempre visível)",
+    "section_stats": "Estatísticas",
+    "section_crypt": "Lista da cripta",
+    "section_library": "Lista da biblioteca",
+    "crypt": "Cripta",
+    "library": "Biblioteca",
+    "preview": "Pré-visualização",
+    "js_snippet": "Código JavaScript",
+    "copy": "Copiar",
+    "copied": "Copiado para a área de transferência",
+    "powered_by": "Criado com vtesdecks.com",
+    "size": "Tamanho",
+    "width": "Largura",
+    "height": "Altura",
+    "size_auto": "Auto",
+    "size_hint": "Qualquer tamanho CSS funciona: 400px, 30rem, 100%…"
   }
 }

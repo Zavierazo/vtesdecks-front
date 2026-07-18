@@ -15,6 +15,7 @@ import { ApiCard, ApiDeck } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService } from '@services'
+import { DECK_REACTION_EMOJIS } from '@shared/components/quick-reactions/quick-reactions.component'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { TruncatePipe } from '@shared/pipes/truncate.pipe'
@@ -53,6 +54,7 @@ export class DeckCardComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
 
   cdnDomain = environment.cdnDomain
+  reactionEmojis = DECK_REACTION_EMOJIS
 
   deck = input.required<ApiDeck>()
   height = input<string>('160px')

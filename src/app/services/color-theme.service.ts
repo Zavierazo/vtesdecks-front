@@ -8,7 +8,6 @@ export class ColorThemeService {
   private static readonly THEME_STORAGE_KEY = 'user-color-theme'
   private renderer: Renderer2
   private colorTheme!: Theme
-  enabled = true
 
   constructor() {
     const rendererFactory = inject(RendererFactory2)
@@ -17,11 +16,7 @@ export class ColorThemeService {
   }
 
   load() {
-    if (this.enabled) {
-      this.getColorTheme()
-    } else {
-      this.setColorTheme(Theme.Light)
-    }
+    this.getColorTheme()
     this.updateTheme()
   }
 

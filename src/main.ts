@@ -41,6 +41,7 @@ import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
 
 import { AuthQuery } from '@state/auth/auth.query'
+import { FeatureFlagService } from '@state/feature-flag/feature-flag.service'
 import { TranslocoRootModule } from './app/transloco-root.module'
 import { environment } from './environments/environment'
 
@@ -70,7 +71,8 @@ function jwtOptionsFactory(authQuery: AuthQuery) {
     skipWhenExpired: true,
   }
 }
-const routes: Routes = [
+// Routes rendered inside the default shell (header + footer + app-level init)
+const shellRoutes: Routes = [
   { path: 'index', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
@@ -154,17 +156,17 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'tutorial',
+    loadChildren: () =>
+      import('./app/modules/tutorial/tutorial.routes').then(
+        (m) => m.TUTORIAL_ROUTES,
+      ),
+  },
+  {
     path: 'statistics',
     loadChildren: () =>
       import('./app/modules/statistics/statistics.routes').then(
         (m) => m.STATISTICS_ROUTES,
-      ),
-  },
-  {
-    path: 'vtes-ai',
-    loadChildren: () =>
-      import('./app/modules/vtes-ai/vtes-ai.routes').then(
-        (m) => m.VTES_AI_ROUTES,
       ),
   },
   {
@@ -209,12 +211,35 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./app/modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('@shared/components/page-not-found/page-not-found.component').then(
         (m) => m.PageNotFoundComponent,
       ),
   }, // Wildcard route for a 404 page
+]
+
+const routes: Routes = [
+  // Chromeless routes (no header/footer, no app-level side effects)
+  {
+    path: 'deck/:id/embed',
+    loadChildren: () =>
+      import('./app/modules/embed/embed.routes').then((m) => m.EMBED_ROUTES),
+  },
+  // Everything else renders inside the default shell
+  {
+    path: '',
+    loadComponent: () =>
+      import('@shared/components/shell/shell.component').then(
+        (m) => m.ShellComponent,
+      ),
+    children: shellRoutes,
+  },
 ]
 
 if (environment.production) {
@@ -287,6 +312,9 @@ bootstrapApplication(AppComponent, {
     },
     provideAppInitializer(() => {
       inject(Sentry.TraceService)
+    }),
+    provideAppInitializer(() => {
+      inject(FeatureFlagService).load()
     }),
     {
       provide: RECAPTCHA_V3_SITE_KEY,

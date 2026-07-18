@@ -5,6 +5,7 @@ import { ApiDeckStats } from './api-deck-stats'
 import { ApiDeckWarning } from './api-deck-warning'
 import { ApiCardErrata } from './api-errata'
 import { ApiPublicUser } from './api-public-user'
+import { ApiReactionSummary, DeckReactionKey } from './api-reaction'
 
 export interface ApiDeck {
   id: string
@@ -35,11 +36,14 @@ export interface ApiDeck {
   pathIcon?: string
   stats: ApiDeckStats
   favorite?: boolean
+  hasVideo?: boolean
   rated?: boolean
   owner?: boolean
   erratas?: ApiCardErrata[]
   warnings?: ApiDeckWarning[]
   tags?: string[]
+  reactions?: ApiReactionSummary[]
+  reaction?: DeckReactionKey
   creationDate: Date
   modifyDate: Date
   extra?: ApiDeckExtra
