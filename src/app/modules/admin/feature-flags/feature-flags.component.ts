@@ -17,6 +17,7 @@ import { Observable } from 'rxjs'
 @Component({
   selector: 'app-feature-flags',
   templateUrl: './feature-flags.component.html',
+  styleUrl: './feature-flags.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, AsyncPipe],
 })

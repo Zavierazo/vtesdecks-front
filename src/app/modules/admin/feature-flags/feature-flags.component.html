@@ -2,13 +2,13 @@
   <h1 class="mb-1">{{ t('feature_flags_title') }}</h1>
   <p class="text-muted">{{ t('feature_flags_hint') }}</p>
   <div class="table-responsive">
-    <table class="table align-middle">
+    <table class="table align-middle feature-flags-table">
       <thead>
         <tr>
           <th scope="col">{{ t('key') }}</th>
           <th scope="col">{{ t('type') }}</th>
           <th scope="col" class="d-none d-md-table-cell">{{ t('description') }}</th>
-          <th scope="col" class="w-50">{{ t('value') }}</th>
+          <th scope="col" class="value-col">{{ t('value') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -17,7 +17,7 @@
           <td><code>{{ flag.key }}</code></td>
           <td><span class="badge text-bg-secondary">{{ flag.type }}</span></td>
           <td class="d-none d-md-table-cell">{{ flag.description }}</td>
-          <td>
+          <td class="value-col">
             @switch (flag.type) {
             @case ('BOOLEAN') {
             <div class="form-check form-switch">
