@@ -122,6 +122,12 @@ export interface TutorialStep {
   highlight?: TutorialTargetId[]
   /** Shows a "rival's turn" treatment on the narrator. */
   rivalThinking?: boolean
+  /**
+   * Shows an extra warning above the narration only on small (phone)
+   * screens, read from the `<chapter>.<step>Warning` key. Used to nudge
+   * phone users toward a desktop or tablet without cluttering larger screens.
+   */
+  mobileWarning?: boolean
   /** Temporarily shows the player's uncontrolled cards face up. */
   revealUncontrolled?: boolean
   /** Shows the combat tracker (round number + current combat stage). */

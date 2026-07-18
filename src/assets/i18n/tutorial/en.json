@@ -68,7 +68,8 @@
     "ch13": { "title": "The oust" }
   },
   "ch1": {
-    "s0": "Quick note before we start: this tutorial works best on a desktop or tablet, where the whole table fits on screen. On a small phone it still runs, but the play regions get cramped. Also, it simplifies a few rules (intercept, some combat details and edge cases); the rulebook is the final word.",
+    "s0": "Before we start: this tutorial simplifies a few rules (intercept, some combat details and edge cases); the rulebook is the final word.",
+    "s0Warning": "Quick note: this tutorial works best on a desktop or tablet, where the whole table fits on screen. On a small phone it still runs, but the play regions get cramped.",
     "s1": "Welcome! In Vampire: The Eternal Struggle (VTES) you are a Methuselah, an ancient vampire. You do not fight directly: you control younger vampires and send them to do your work.",
     "s2": "This is your POOL: 30 blood counters. Pool is both your life and your money. You spend it to bring vampires into play, and if you run out you lose.",
     "s3": "This is your rival's pool. In a full game 4 or 5 players sit in a circle. The player on your left is your PREY and the one on your right is your PREDATOR. In this two player demo your rival is both.",
