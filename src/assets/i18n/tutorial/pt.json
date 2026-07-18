@@ -222,7 +222,7 @@
     "s12": "Seu rival descarta ANARCHIST UPRISING, uma ação política do próprio deck dele, para comprar 1 voto extra contra. Placar: 1 a 2.",
     "s13": "Suas Baronesas respondem. Cada uma vale 2 votos, menos 1 pela carta. Aline pode votar mesmo travada: vampiros travados também votam. Clique nela.",
     "s14": "Aline e Leumeah somam 1 voto cada. Placar: 3 a 2. Já passaria, mas você pode apertar mais.",
-    "s15": "Você tem A VANTAGEM, e Eat the Rich faz com que queimá-la valha 2 votos. Clique na Vantagem para queimá-la.",
+    "s15": "Você tem A VANTAGEM. Queimá-la normalmente dá 1 voto, mas o texto de Eat the Rich faz valer 2 aqui. Clique na Vantagem para queimá-la.",
     "s16": "Placar: 5 a 2. O referendo PASSA por 3. Note que você não pode também descartar uma carta política por um voto: cada jogador ganha no máximo 1 voto de cartas políticas, e o seu veio da carta que Leumeah convocou.",
     "s17": "Seu rival perde 4 de reserva: 1 do efeito base, mais 3 por controlar um vampiro com título.",
     "s18": "A recompensa: Leumeah convocou a votação e venceu, então pode jogar VOTER CAPTIVATION. Clique na carta.",
@@ -278,8 +278,9 @@
     "s2": "Aline recruta o PROCURER (Leumeah está com pouco sangue para pagar). Recrutar é uma ação, e o custo deste aliado é pago em SANGUE pelo vampiro recrutador: 2 de sangue. Clique na carta na sua mão.",
     "s3": "Aline se trava e paga 2 de SANGUE, e o Procurer entra em jogo com 1 de VIDA, 1 de força e 0 de sangria. Aliados perdem VIDA em vez de sangue, e com 0 de vida são queimados.",
     "s4": "Daqui em diante o aliado age como qualquer lacaio: pode sangrar, bloquear e usar suas habilidades impressas. Este pode levar sangue fresco aos seus vampiros. Mas ainda não: lacaios não podem agir no turno em que entram em jogo.",
-    "s5": "Um turno rápido do rival: Crowley sangra você por 1. Repare que o seu Procurer fica parado: ele chegou neste mesmo turno, então não pôde agir nem ajudar.",
-    "s6": "Seu turno de novo, e agora funciona: o Procurer leva 1 de sangue a Aline. Pequenos ajudantes fazem diferença.",
+    "s5": "Um turno rápido do rival: Crowley se TRAVA para sangrar você por 1. O seu Procurer, recém-recrutado, fica parado: lacaios não podem agir no turno em que entram em jogo.",
+    "s6": "Seu turno de novo. FASE DE DESTRAVAR: todas as suas cartas destravam, então Aline, travada por recrutar, fica pronta de novo.",
+    "s6b": "E agora o Procurer pode agir: leva 1 de sangue a Aline. Pequenos ajudantes fazem diferença.",
     "s7": "Você já conhece os aliados. Falta uma noite: a do golpe final."
   },
   "ch13": {

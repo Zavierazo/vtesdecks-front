@@ -1702,13 +1702,23 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         rivalThinking: true,
         mutations: [
           { type: 'phase', phase: 'minion', activePlayer: 'rival' },
+          { type: 'lock', ref: 'rival.crowley', locked: true },
           { type: 'pool', player: 'you', delta: -1 },
         ],
         advance: { type: 'next' },
-        highlight: ['card:you.procurer'],
+        highlight: ['card:rival.crowley'],
       },
       {
         id: 's6',
+        mutations: [
+          { type: 'phase', phase: 'unlock', activePlayer: 'you' },
+          { type: 'lock', ref: 'you.aline', locked: false },
+        ],
+        advance: { type: 'next' },
+        highlight: ['card:you.aline'],
+      },
+      {
+        id: 's6b',
         mutations: [
           { type: 'phase', phase: 'minion', activePlayer: 'you' },
           { type: 'lock', ref: 'you.procurer', locked: true },

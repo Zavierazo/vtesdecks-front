@@ -196,7 +196,7 @@
     "s12": "Your rival discards ANARCHIST UPRISING, a political action from his own deck, to buy 1 extra vote against. Score: 1 to 2.",
     "s13": "Your Barons answer. Each is worth 2 votes, minus 1 from the card. Aline can vote even while locked: locked vampires still vote. Click her.",
     "s14": "Aline and Leumeah add 1 vote each. Score: 3 to 2. That would already pass, but you can push further.",
-    "s15": "You hold THE EDGE, and Eat the Rich makes burning it worth 2 votes. Click the Edge to burn it.",
+    "s15": "You hold THE EDGE. Burning it normally gives 1 vote, but Eat the Rich's text makes it worth 2 here. Click the Edge to burn it.",
     "s16": "Score: 5 to 2. The referendum PASSES by 3. Note that you cannot also discard a political card for a vote: each player gets at most 1 vote from political cards, and yours came from the card Leumeah called.",
     "s17": "Your rival loses 4 pool: 1 as the base effect, plus 3 for controlling a titled vampire.",
     "s18": "The reward: Leumeah called the vote and won it, so she can play VOTER CAPTIVATION. Click it.",
@@ -252,8 +252,9 @@
     "s2": "Aline recruits the PROCURER (Leumeah is too low on blood to pay). Recruiting is an action, and this ally's cost is paid in BLOOD by the recruiting vampire: 2 blood. Click the card in your hand.",
     "s3": "Aline locks and pays 2 BLOOD, and the Procurer enters play with 1 LIFE, 1 strength and 0 bleed. Allies lose LIFE instead of blood, and at 0 life they are burned.",
     "s4": "From now on the ally acts like any minion: it can bleed, block, and use its printed abilities. This one can carry fresh blood to your vampires. But not yet: minions cannot act on the turn they come into play.",
-    "s5": "A quick rival turn: Crowley bleeds you for 1. Notice how your Procurer just stands there: it arrived this very turn, so it could not act or help.",
-    "s6": "Your turn again, and now it works: the Procurer carries 1 blood to Aline. Small helpers add up.",
+    "s5": "A quick rival turn: Crowley LOCKS to bleed you for 1. Your freshly recruited Procurer just stands there: minions cannot act on the turn they come into play.",
+    "s6": "Your turn again. UNLOCK PHASE: all your cards straighten up, so Aline, locked from recruiting, is ready once more.",
+    "s6b": "And now the Procurer can act: it carries 1 blood to Aline. Small helpers add up.",
     "s7": "You know allies now. One night remains: the kill."
   },
   "ch13": {

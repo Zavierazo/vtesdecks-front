@@ -222,7 +222,7 @@
     "s12": "Tu rival descarta ANARCHIST UPRISING, una acción política de su propio mazo, para comprar 1 voto extra en contra. Marcador: 1 a 2.",
     "s13": "Tus Baronesas responden. Cada una vale 2 votos, menos 1 por la carta. Aline puede votar aunque esté girada: los vampiros girados también votan. Haz clic en ella.",
     "s14": "Aline y Leumeah suman 1 voto cada una. Marcador: 3 a 2. Ya se aprobaría, pero puedes apretar más.",
-    "s15": "Tienes LA VENTAJA, y Eat the Rich hace que quemarla valga 2 votos. Haz clic en La Ventaja para quemarla.",
+    "s15": "Tienes LA VENTAJA. Quemarla da normalmente 1 voto, pero el texto de Eat the Rich hace que aquí valga 2. Haz clic en La Ventaja para quemarla.",
     "s16": "Marcador: 5 a 2. El referéndum SE APRUEBA por 3. Ojo: tú no puedes descartar además una carta política por un voto; cada jugador obtiene como máximo 1 voto de cartas políticas, y el tuyo vino de la carta que convocó Leumeah.",
     "s17": "Tu rival pierde 4 de reserva: 1 por el efecto base, más 3 por controlar un vampiro con título.",
     "s18": "La recompensa: Leumeah convocó la votación y la ganó, así que puede jugar VOTER CAPTIVATION. Haz clic en la carta.",
@@ -278,8 +278,9 @@
     "s2": "Aline recluta al PROCURER (Leumeah anda demasiado corta de sangre para pagar). Reclutar es una acción, y el coste de este aliado lo paga el vampiro reclutador con SANGRE: 2 de sangre. Haz clic en la carta en tu mano.",
     "s3": "Aline se gira y paga 2 de SANGRE, y el Procurer entra en juego con 1 de VIDA, 1 de fuerza y 0 de sangrado. Los aliados pierden VIDA en vez de sangre, y a 0 de vida se queman.",
     "s4": "A partir de ahora el aliado actúa como cualquier siervo: puede sangrar, bloquear y usar sus habilidades impresas. Este puede llevar sangre fresca a tus vampiros. Pero todavía no: los siervos no pueden actuar el turno en que entran en juego.",
-    "s5": "Un turno rápido del rival: Crowley te sangra por 1. Fíjate en que tu Procurer se queda quieto: llegó este mismo turno, así que no pudo actuar ni ayudar.",
-    "s6": "Tu turno otra vez, y ahora sí funciona: el Procurer lleva 1 de sangre a Aline. Los pequeños ayudantes suman.",
+    "s5": "Un turno rápido del rival: Crowley se GIRA para sangrarte por 1. Tu Procurer, recién reclutado, se queda quieto: los siervos no pueden actuar el turno en que entran en juego.",
+    "s6": "Tu turno otra vez. FASE DE ENDEREZAMIENTO: todas tus cartas se enderezan, así que Aline, girada por reclutar, vuelve a estar lista.",
+    "s6b": "Y ahora el Procurer sí puede actuar: lleva 1 de sangre a Aline. Los pequeños ayudantes suman.",
     "s7": "Ya conoces los aliados. Queda una noche: la del golpe final."
   },
   "ch13": {

@@ -222,7 +222,7 @@
     "s12": "Votre rival défausse ANARCHIST UPRISING, une action politique de son propre deck, pour acheter 1 voix supplémentaire contre. Score : 1 à 2.",
     "s13": "Vos Baronnes répondent. Chacune vaut 2 voix, moins 1 à cause de la carte. Aline peut voter même inclinée : les vampires inclinés votent aussi. Cliquez sur elle.",
     "s14": "Aline et Leumeah ajoutent 1 voix chacune. Score : 3 à 2. Cela passerait déjà, mais vous pouvez pousser plus loin.",
-    "s15": "Vous détenez L'AVANTAGE, et Eat the Rich fait que le brûler vaut 2 voix. Cliquez sur l'Avantage pour le brûler.",
+    "s15": "Vous détenez L'AVANTAGE. Le brûler donne normalement 1 voix, mais le texte d'Eat the Rich le fait valoir 2 ici. Cliquez sur l'Avantage pour le brûler.",
     "s16": "Score : 5 à 2. Le référendum PASSE avec 3 voix d'écart. Notez que vous ne pouvez pas aussi défausser une carte politique pour une voix : chaque joueur obtient au plus 1 voix des cartes politiques, et la vôtre vient de la carte convoquée par Leumeah.",
     "s17": "Votre rival perd 4 de réserve : 1 pour l'effet de base, plus 3 pour contrôler un vampire titré.",
     "s18": "La récompense : Leumeah a convoqué le vote et l'a gagné, elle peut donc jouer VOTER CAPTIVATION. Cliquez sur la carte.",
@@ -278,8 +278,9 @@
     "s2": "Aline recrute le PROCURER (Leumeah manque trop de sang pour payer). Recruter est une action, et le coût de cet allié est payé en SANG par le vampire recruteur : 2 sangs. Cliquez sur la carte dans votre main.",
     "s3": "Aline s’incline et paie 2 SANGS, et le Procurer entre en jeu avec 1 point de VIE, 1 de force et 0 de morsure. Les alliés perdent de la VIE au lieu du sang, et à 0 vie ils sont brûlés.",
     "s4": "Désormais l'allié agit comme n'importe quel serviteur : il peut mordre, bloquer et utiliser ses capacités imprimées. Celui-ci peut apporter du sang frais à vos vampires. Mais pas encore : les serviteurs ne peuvent pas agir le tour de leur arrivée.",
-    "s5": "Un tour rapide du rival : Crowley vous mord pour 1. Remarquez que votre Procurer reste immobile : arrivé ce tour même, il ne pouvait ni agir ni aider.",
-    "s6": "À vous de nouveau, et cette fois cela fonctionne : le Procurer apporte 1 sang à Aline. Les petits assistants finissent par compter.",
+    "s5": "Un tour rapide du rival : Crowley S'INCLINE pour vous mordre de 1. Votre Procurer, tout juste recruté, reste immobile : les serviteurs ne peuvent pas agir le tour de leur arrivée.",
+    "s6": "À vous de nouveau. PHASE DE REDRESSEMENT : toutes vos cartes se redressent, Aline, inclinée par le recrutement, est donc de nouveau prête.",
+    "s6b": "Et maintenant le Procurer peut agir : il apporte 1 sang à Aline. Les petits assistants finissent par compter.",
     "s7": "Vous connaissez les alliés. Il reste une nuit : celle de la mise à mort."
   },
   "ch13": {
