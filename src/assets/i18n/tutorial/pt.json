@@ -94,7 +94,8 @@
     }
   },
   "ch1": {
-    "s0": "Uma observação antes de começar: este tutorial funciona melhor em computador ou tablet, onde a mesa inteira cabe na tela. Em um celular pequeno também funciona, mas as regiões de jogo ficam apertadas. Além disso, ele simplifica algumas regras (interceptação, certos detalhes de combate e casos especiais); o livro de regras é a palavra final.",
+    "s0": "Antes de começar: este tutorial simplifica algumas regras (interceptação, certos detalhes de combate e casos especiais); o livro de regras é a palavra final.",
+    "s0Warning": "Uma observação: este tutorial funciona melhor em computador ou tablet, onde a mesa inteira cabe na tela. Em um celular pequeno também funciona, mas as regiões de jogo ficam apertadas.",
     "s1": "Bem-vindo! Em Vampire: The Eternal Struggle (VTES) você é um Matusalém, um vampiro ancestral. Você não luta diretamente: controla vampiros mais jovens e os envia para fazer o trabalho.",
     "s2": "Esta é a sua RESERVA: 30 marcadores de sangue. A reserva é sua vida e seu dinheiro ao mesmo tempo. Você a gasta para colocar vampiros em jogo, e se ela acabar você perde.",
     "s3": "Esta é a reserva do seu rival. Em uma partida completa, 4 ou 5 jogadores sentam em círculo. O jogador à sua esquerda é sua PRESA e o à direita, seu PREDADOR. Nesta demo de dois jogadores, seu rival é os dois.",

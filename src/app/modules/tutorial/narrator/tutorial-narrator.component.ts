@@ -4,8 +4,10 @@ import {
   computed,
   inject,
 } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
+import { MediaService } from '@services'
 import { TutorialStore } from '../state/tutorial.store'
 import { tutorialStepTextKey } from '../state/tutorial-script.model'
 import { TutorialEmphasisPipe } from '../shared/tutorial-emphasis.pipe'
@@ -20,6 +22,10 @@ import { TutorialEmphasisPipe } from '../shared/tutorial-emphasis.pipe'
 })
 export class TutorialNarratorComponent {
   readonly store = inject(TutorialStore)
+  private readonly isMobile$ = toSignal(
+    inject(MediaService).observeMobile(),
+    { initialValue: false },
+  )
 
   readonly chapterNumber$ = computed(
     () => this.store.progress$().chapterIndex + 1,
@@ -31,6 +37,16 @@ export class TutorialNarratorComponent {
       this.store.currentChapter$().id,
       this.store.currentStep$(),
     ),
+  )
+
+  /**
+   * Small-screen-only warning key, shown when the step opts in via
+   * `mobileWarning` and the viewport is a phone (desktop/tablet skip it).
+   */
+  readonly warningKey$ = computed(() =>
+    this.store.currentStep$().mobileWarning === true && this.isMobile$()
+      ? `${this.textKey$()}Warning`
+      : undefined,
   )
 
   readonly advance$ = computed(() => this.store.currentStep$().advance)

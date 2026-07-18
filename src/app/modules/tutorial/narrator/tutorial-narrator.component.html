@@ -29,6 +29,14 @@
     </span>
   }
 
+  @if (warningKey$(); as warningKey) {
+    <p
+      class="t-narrator-warning"
+      data-cy="tutorial-narrator-warning"
+      [innerHTML]="t(warningKey) | tutorialEmphasis"
+    ></p>
+  }
+
   <p
     class="t-narrator-text"
     data-cy="tutorial-narrator-text"

@@ -462,7 +462,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
     icon: 'bi-moon-stars-fill',
     initialBoard: START_BOARD(),
     steps: [
-      { id: 's0', advance: { type: 'next' } },
+      { id: 's0', advance: { type: 'next' }, mobileWarning: true },
       { id: 's1', advance: { type: 'next' } },
       { id: 's2', advance: { type: 'next' }, highlight: ['pool:you'] },
       { id: 's3', advance: { type: 'next' }, highlight: ['pool:rival'] },
