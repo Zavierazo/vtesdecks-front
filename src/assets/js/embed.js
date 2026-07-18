@@ -1,9 +1,25 @@
 ;(function () {
   'use strict'
   var script = document.currentScript
-  var ORIGIN =
-    (script && script.getAttribute('data-origin')) || 'https://vtesdecks.com'
+  var DEFAULT_ORIGIN = 'https://vtesdecks.com'
+  var ORIGIN = sanitizeOrigin(
+    (script && script.getAttribute('data-origin')) || DEFAULT_ORIGIN
+  )
   var frames = []
+
+  // Only accept a well-formed http(s) origin; reject anything else
+  // (e.g. javascript: URLs) to avoid injecting an unsafe iframe src.
+  function sanitizeOrigin(value) {
+    try {
+      var url = new URL(value)
+      if (url.protocol === 'http:' || url.protocol === 'https:') {
+        return url.origin
+      }
+    } catch (e) {
+      /* fall through to default */
+    }
+    return DEFAULT_ORIGIN
+  }
 
   function build(node) {
     var id = node.getAttribute('data-deck-id')
