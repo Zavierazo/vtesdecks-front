@@ -10,7 +10,7 @@ By default it points to the local backend, you can find how to start the backend
 
 Change `src/environments/environment.ts` to switch apiDomain to `api.vtesdecks.com` and api.baseUrl to `https://api.vtesdecks.com/1.0` to use production api locally.
 
-## Code scaffolding
+## Code scaffolding 
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
