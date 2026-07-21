@@ -17,6 +17,14 @@
   margin: 0;
   text-align: center;
 
+  &.tutorial-target-highlighted img {
+    box-shadow: 0 0 0 3px var(--bs-warning);
+  }
+
+  &.tutorial-target-actionable {
+    cursor: pointer;
+  }
+
   img {
     width: 100%;
     max-width: 12rem;

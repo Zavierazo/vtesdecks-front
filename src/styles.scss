@@ -713,10 +713,10 @@ ins.adsbygoogle[data-ad-status='unfilled'] {
 
 .tutorial-target-actionable {
   cursor: pointer;
-  outline: 2px solid var(--bs-warning);
+  outline: 3px solid var(--bs-warning);
   outline-offset: 2px;
   border-radius: 0.4rem;
-  animation: tutorial-target-pulse 1.4s ease-in-out infinite;
+  animation: tutorial-target-pulse 1.1s ease-in-out infinite;
 }
 
 .tutorial-target-lifted {
@@ -724,13 +724,38 @@ ins.adsbygoogle[data-ad-status='unfilled'] {
   transition: transform 0.15s ease;
 }
 
+// Drag source of the current step: draggable with a pointer, no scroll-steal.
+.tutorial-target-draggable {
+  touch-action: none;
+  cursor: grab;
+}
+
+// Original card while its ghost is being dragged.
+.tutorial-target-dragging {
+  opacity: 0.35;
+  animation: none !important;
+}
+
+// Fixed-position clone that follows the pointer, above everything.
+.tutorial-drag-ghost {
+  pointer-events: none;
+  z-index: 2000;
+  transition: none !important;
+  animation: none !important;
+  cursor: grabbing;
+}
+
 @keyframes tutorial-target-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.45);
+    box-shadow:
+      0 0 0.8rem 0.1rem rgba(255, 193, 7, 0.65),
+      0 0 0 0 rgba(255, 193, 7, 0.55);
   }
   50% {
-    box-shadow: 0 0 0 0.45rem rgba(255, 193, 7, 0);
+    box-shadow:
+      0 0 1.1rem 0.25rem rgba(255, 193, 7, 0.85),
+      0 0 0 0.55rem rgba(255, 193, 7, 0);
   }
 }
 

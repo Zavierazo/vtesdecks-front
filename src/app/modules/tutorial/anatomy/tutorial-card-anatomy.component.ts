@@ -4,14 +4,11 @@ import {
   computed,
   input,
 } from '@angular/core'
-import { TranslocoDirective } from '@jsverse/transloco'
 import { environment } from '@environments/environment'
-import {
-  TUTORIAL_CARDS,
-  TutorialCardKey,
-} from '../state/tutorial-cards.data'
-import { TutorialTargetId } from '../state/tutorial-script.model'
+import { TranslocoDirective } from '@jsverse/transloco'
 import { TutorialTargetDirective } from '../shared/tutorial-target.directive'
+import { TUTORIAL_CARDS, TutorialCardKey } from '../state/tutorial-cards.data'
+import { TutorialTargetId } from '../state/tutorial-script.model'
 
 interface AnatomyHotspot {
   target: TutorialTargetId
@@ -27,21 +24,31 @@ interface AnatomyHotspot {
  */
 const CRYPT_HOTSPOTS: AnatomyHotspot[] = [
   { target: 'anatomy:name', top: 3, left: 3, width: 58, height: 8 },
-  { target: 'anatomy:clan', top: 12.5, left: 3.5, width: 13, height: 10 },
-  { target: 'anatomy:disciplines', top: 64, left: 4, width: 13, height: 28 },
+  { target: 'anatomy:clan', top: 12.5, left: 3.5, width: 14, height: 10 },
+  { target: 'anatomy:disciplines', top: 64, left: 4, width: 14, height: 28 },
   { target: 'anatomy:text', top: 76, left: 18, width: 78, height: 19 },
-  { target: 'anatomy:capacity', top: 86.5, left: 80, width: 16, height: 11 },
+  { target: 'anatomy:capacity', top: 86, left: 82.5, width: 14, height: 11 },
+  // Last so it renders above the text hotspot it slightly overlaps.
+  { target: 'anatomy:group', top: 74.5, left: 16.5, width: 8, height: 5.5 },
 ]
 
 const LIBRARY_HOTSPOTS: AnatomyHotspot[] = [
-  { target: 'anatomy:type', top: 15, left: 4.5, width: 13, height: 11 },
-  { target: 'anatomy:requirement', top: 42.5, left: 4.5, width: 13, height: 11 },
-  { target: 'anatomy:cost', top: 79, left: 4, width: 14, height: 12 },
+  { target: 'anatomy:type', top: 14, left: 4.5, width: 14, height: 11 },
+  {
+    target: 'anatomy:requirement',
+    top: 42,
+    left: 4.5,
+    width: 14,
+    height: 11,
+  },
+  { target: 'anatomy:cost', top: 78, left: 4, width: 14, height: 13 },
+  { target: 'anatomy:libtext', top: 60, left: 18, width: 78, height: 35 },
 ]
 
 /** One real example per library card type (chapter 2 gallery). */
 const TYPE_EXAMPLES: { labelKey: string; cardKey: TutorialCardKey }[] = [
   { labelKey: 'master', cardKey: 'bloodDoll' },
+  { labelKey: 'action', cardKey: 'legalManipulations' },
   { labelKey: 'modifier', cardKey: 'bonding' },
   { labelKey: 'reaction', cardKey: 'onTheQuiVive' },
   { labelKey: 'combat', cardKey: 'majesty' },
@@ -83,6 +90,10 @@ export class TutorialCardAnatomyComponent {
 
   exampleUrl(cardKey: TutorialCardKey): string {
     return `${this.cdnDomain}/img/cards/${TUTORIAL_CARDS[cardKey].id}.jpg`
+  }
+
+  typeTarget(labelKey: string): TutorialTargetId {
+    return `anatomy:type-${labelKey}`
   }
 
   exampleName(cardKey: TutorialCardKey): string {

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
@@ -11,6 +12,7 @@ import {
   TutorialCard,
 } from '../state/tutorial-cards.data'
 import { TutorialCardInstance } from '../state/tutorial-script.model'
+import { TutorialStore } from '../state/tutorial.store'
 
 /** A single card on the tutorial table: scan, blood chip, lock rotation, attachments. */
 @Component({
@@ -28,7 +30,29 @@ export class TutorialCardComponent {
   /** Temporarily reveals a face-down card (peeking at uncontrolled vampires). */
   readonly forceFaceUp = input(false)
 
+  private readonly store = inject(TutorialStore)
   private readonly cdnDomain = environment.cdnDomain
+  /** On touch devices a tap fires mouseenter, opening the zoom popover. */
+  private readonly isTouch =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(hover: none)').matches
+
+  /**
+   * Suppress the zoom popover on touch while the step expects a tap on the
+   * board (interactive step or highlighted elements), so tapping to continue
+   * never pops the card preview open.
+   */
+  readonly zoomDisabled$ = computed(() => {
+    if (!this.isTouch) {
+      return false
+    }
+    const step = this.store.currentStep$()
+    return (
+      step.advance.type === 'click' ||
+      step.advance.type === 'drag' ||
+      (step.highlight?.length ?? 0) > 0
+    )
+  })
 
   readonly card$ = computed<TutorialCard>(
     () => TUTORIAL_CARDS[this.instance().cardKey],

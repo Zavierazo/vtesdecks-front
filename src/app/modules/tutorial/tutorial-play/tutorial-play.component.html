@@ -16,6 +16,13 @@
     }
   </div>
 
+  @if (presentCard$(); as present) {
+    <div class="t-card-present" data-cy="tutorial-card-present">
+      <img [src]="present.url" [alt]="present.name" />
+      <span class="t-card-present-name">{{ present.name }}</span>
+    </div>
+  }
+
   @if (!store.chapterIntro$()) {
     <div class="t-play-narrator">
       <app-tutorial-narrator />

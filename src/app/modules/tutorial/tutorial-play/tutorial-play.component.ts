@@ -9,6 +9,8 @@ import {
 import { Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { SeoService } from '@services'
+import { environment } from '@environments/environment'
+import { TUTORIAL_CARDS } from '../state/tutorial-cards.data'
 import { TutorialStore } from '../state/tutorial.store'
 import { TutorialBoardComponent } from '../board/tutorial-board.component'
 import { TutorialCardAnatomyComponent } from '../anatomy/tutorial-card-anatomy.component'
@@ -36,6 +38,19 @@ export class TutorialPlayComponent implements OnInit {
 
   readonly view$ = computed(() => this.store.currentStep$().view ?? 'board')
   readonly finished$ = computed(() => this.store.progress$().finished)
+
+  /** Big-card presentation shown the first time a new card enters the story. */
+  readonly presentCard$ = computed(() => {
+    const key = this.store.currentStep$().presentCard
+    if (!key) {
+      return undefined
+    }
+    const card = TUTORIAL_CARDS[key]
+    return {
+      name: card.name,
+      url: `${environment.cdnDomain}/img/cards/${card.id}.jpg`,
+    }
+  })
 
   constructor() {
     effect(() => {

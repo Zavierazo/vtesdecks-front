@@ -5,7 +5,11 @@
     data-cy="tutorial-type-gallery"
   >
     @for (example of typeExamples; track example.labelKey) {
-      <figure class="t-type-example">
+      <figure
+        class="t-type-example"
+        [appTutorialTarget]="typeTarget(example.labelKey)"
+        [attr.data-cy]="'anatomy-type-' + example.labelKey"
+      >
         <img
           [src]="exampleUrl(example.cardKey)"
           [alt]="exampleName(example.cardKey)"
@@ -23,6 +27,7 @@
         <button
           type="button"
           class="t-anatomy-hotspot"
+          [attr.aria-label]="hotspot.target"
           [appTutorialTarget]="hotspot.target"
           [attr.data-cy]="hotspot.target"
           [style.top.%]="hotspot.top"

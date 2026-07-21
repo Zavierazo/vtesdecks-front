@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
-import { GoogleAnalyticsService } from 'ngx-google-analytics'
-import { NgcCookieConsentService } from 'ngx-cookieconsent'
 import { LocalStorageService, SessionStorageService } from '@services'
+import { NgcCookieConsentService } from 'ngx-cookieconsent'
+import { GoogleAnalyticsService } from 'ngx-google-analytics'
 import {
   applyMutations,
   boardAtStep,
@@ -37,6 +37,10 @@ export class TutorialStore {
   private readonly googleAnalyticsService = inject(GoogleAnalyticsService)
 
   static readonly progressStoreName = 'tutorial_v1_progress'
+  /** Guard so a double-click on a highlighted element cannot skip narration. */
+  static readonly advanceCooldownMs = 300
+
+  private lastAdvanceAt = 0
 
   readonly script: TutorialChapter[] = TUTORIAL_SCRIPT
 
@@ -129,7 +133,8 @@ export class TutorialStore {
   }
 
   clickTarget(target: TutorialTargetId): void {
-    const advance = this.currentStep$().advance
+    const step = this.currentStep$()
+    const advance = step.advance
     if (advance.type === 'click' && advance.target === target) {
       this.advance()
       return
@@ -138,9 +143,24 @@ export class TutorialStore {
       // Tap-tap fallback: tap the card, then tap the destination.
       if (target === `card:${advance.ref}`) {
         this.pendingDragRef.set(advance.ref)
-      } else if (this.pendingDragRef() === advance.ref && target === advance.to) {
+      } else if (
+        this.pendingDragRef() === advance.ref &&
+        target === advance.to
+      ) {
         this.dropCard(advance.ref, advance.to)
       }
+      return
+    }
+    // Narration steps can also be advanced by clicking their highlighted
+    // element, so the player keeps "clicking the glowing thing" instead of
+    // alternating between the board and the Next button. A short cooldown
+    // avoids double-clicks skipping the narration.
+    if (
+      advance.type === 'next' &&
+      (step.highlight ?? []).includes(target) &&
+      Date.now() - this.lastAdvanceAt > TutorialStore.advanceCooldownMs
+    ) {
+      this.advance()
     }
   }
 
@@ -156,7 +176,9 @@ export class TutorialStore {
     if (advance.type !== 'choice') {
       return
     }
-    const option = advance.options.find((candidate) => candidate.id === optionId)
+    const option = advance.options.find(
+      (candidate) => candidate.id === optionId,
+    )
     if (!option) {
       return
     }
@@ -186,18 +208,22 @@ export class TutorialStore {
 
   /** Whether the given target advances (or partially advances) the current step. */
   canInteract(target: TutorialTargetId): boolean {
-    const advance = this.currentStep$().advance
+    const step = this.currentStep$()
+    const advance = step.advance
     switch (advance.type) {
       case 'click':
         return advance.target === target
       case 'drag':
         return target === `card:${advance.ref}` || target === advance.to
+      case 'next':
+        return (step.highlight ?? []).includes(target)
       default:
         return false
     }
   }
 
   private advance(): void {
+    this.lastAdvanceAt = Date.now()
     this.pendingDragRef.set(undefined)
     const branch = this.branchQueue()
     if (branch.length > 1) {
@@ -224,7 +250,10 @@ export class TutorialStore {
     this.updateStorage()
   }
 
-  private completeChapter(chapter: TutorialChapter, chapterIndex: number): void {
+  private completeChapter(
+    chapter: TutorialChapter,
+    chapterIndex: number,
+  ): void {
     this.googleAnalyticsService.event(
       'tutorial_chapter_complete',
       'tutorial',

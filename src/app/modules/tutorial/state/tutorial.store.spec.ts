@@ -65,9 +65,28 @@ describe('TutorialStore', () => {
     const store = setup()
     store.next()
     expect(store.progress$().stepIndex).toBe(1)
-    // ch1 s2 is also a next step; clickTarget should not advance it
+    // ch1 s1 highlights nothing; clicking never advances it
     store.clickTarget('pool:you')
     expect(store.progress$().stepIndex).toBe(1)
+  })
+
+  it('narration steps advance by clicking their highlight after a cooldown', () => {
+    const store = setup()
+    const now = vi.spyOn(Date, 'now').mockReturnValue(10_000)
+    store.next() // -> s1
+    store.next() // -> s2 (highlights pool:you)
+    expect(store.progress$().stepIndex).toBe(2)
+    // Right after advancing the click is swallowed by the cooldown
+    store.clickTarget('pool:you')
+    expect(store.progress$().stepIndex).toBe(2)
+    now.mockReturnValue(10_000 + TutorialStore.advanceCooldownMs + 1)
+    // A non-highlighted target never advances a narration step
+    store.clickTarget('zone:you:crypt')
+    expect(store.progress$().stepIndex).toBe(2)
+    // The highlighted one does
+    store.clickTarget('pool:you')
+    expect(store.progress$().stepIndex).toBe(3)
+    now.mockRestore()
   })
 
   it('click steps ignore wrong targets and advance on the right one', () => {
@@ -179,7 +198,7 @@ describe('TutorialStore', () => {
   it('goToChapter resets the board to the chapter initial state', () => {
     const store = setup()
     store.goToChapter(4)
-    store.next()
+    store.next() // -> s2 (drag)
     store.dropCard('you.bloodDoll', 'card:you.aline')
     expect(store.board$().you.ready[0].attachments).toHaveLength(1)
     store.goToChapter(4)
@@ -224,7 +243,7 @@ describe('TutorialStore', () => {
     ]
     walk.forEach((action) => action())
     expect(store.board$().rival.pool).toBe(17)
-    expect(store.board$().you.pool).toBe(18)
+    expect(store.board$().you.pool).toBe(19)
     expect(store.board$().you.hand).toHaveLength(7)
     // The Edge was burned during the referendum
     expect(store.board$().you.hasEdge).toBe(false)

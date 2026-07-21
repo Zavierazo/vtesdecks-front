@@ -130,6 +130,8 @@ export interface TutorialStep {
   mobileWarning?: boolean
   /** Temporarily shows the player's uncontrolled cards face up. */
   revealUncontrolled?: boolean
+  /** Replaces the stage with a big presentation of this card. */
+  presentCard?: TutorialCardKey
   /** Shows the combat tracker (round number + current combat stage). */
   combat?: { round: number; stage: 'range' | 'strike' | 'press' }
   /** What the play area displays; defaults to the game board. */

@@ -36,7 +36,7 @@ function flatten(obj: object, prefix = '', acc: Record<string, unknown> = {}) {
 const enKeys = flatten(en)
 
 const TARGET_PATTERN =
-  /^(zone:(you|rival):(hand|uncontrolled|ready|ashHeap|library|crypt|masters|torpor)|(pool|edge):(you|rival)|card:[a-z]+\.[a-zA-Z0-9]+|anatomy:[a-z]+|narrator|phase-tracker)$/
+  /^(zone:(you|rival):(hand|uncontrolled|ready|ashHeap|library|crypt|masters|torpor)|(pool|edge):(you|rival)|card:[a-z]+\.[a-zA-Z0-9]+|anatomy:[a-z-]+|narrator|phase-tracker)$/
 
 function branchSteps(step: TutorialStep): TutorialStep[] {
   if (step.advance.type !== 'choice') {

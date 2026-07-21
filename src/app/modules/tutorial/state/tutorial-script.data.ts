@@ -15,10 +15,11 @@ import {
  *   start 30/30 · ch4 ramp (1/2/3 then 4 transfers by game turn) → 23/23
  *   ch5 transfers -2 → 21, bleed rival -1 → 22 (you seize the Edge)
  *   ch6 Rooftop Shadow costs Aline 1 blood · ch7 combat: Nash -3, Aline -1
- *   ch8 doll +1, gun -2, transfers -4 → 15 after the rival bleed (Edge to him)
- *   ch9 doll +1 → 16, Aline bleeds → rival 21 + Edge back, Eat the Rich
+ *   ch8 Edge bonus +1, doll +1, gun -2, transfers -4 → 16 after the rival
+ *   bleed (Edge to him)
+ *   ch9 doll +1 → 17, Aline bleeds → rival 21 + Edge back, Eat the Rich
  *   passes 5-2 (card 1 + titles 2 + Edge 2 vs Nash 1 + discard 1) → rival 17,
- *   Voter Captivation +2 pool → 18, Aline unlock ability -1 blood
+ *   Voter Captivation +2 pool → 19, Aline unlock ability -1 blood
  *   ch10 (rebuild montage → 20/17) full combat sends Nash to torpor
  *   ch11 Crowley enters (rival 10), rescues Nash, sends Leumeah to torpor;
  *   Aline rescues her (-2 blood), Leumeah hunts
@@ -124,8 +125,10 @@ const CH5_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 23,
+    libraryCount: 52,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 7 })],
+    ashHeap: [card('rival.d1', 'majesty')],
   }),
 })
 
@@ -157,8 +160,10 @@ const CH6_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 22,
+    libraryCount: 52,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 7 })],
+    ashHeap: [card('rival.d1', 'majesty')],
   }),
 })
 
@@ -194,9 +199,13 @@ const CH7_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 22,
+    libraryCount: 51,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 7, locked: true })],
-    ashHeap: [card('rival.bonding', 'bonding')],
+    ashHeap: [
+      card('rival.d1', 'majesty'),
+      card('rival.bonding', 'bonding'),
+    ],
   }),
 })
 
@@ -233,15 +242,19 @@ const CH8_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 22,
+    libraryCount: 51,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 4, locked: true })],
-    ashHeap: [card('rival.bonding', 'bonding')],
+    ashHeap: [
+      card('rival.d1', 'majesty'),
+      card('rival.bonding', 'bonding'),
+    ],
   }),
 })
 
 const CH9_BOARD = (): TutorialBoardState => ({
   you: you({
-    pool: 15,
+    pool: 16,
     libraryCount: 47,
     hand: [
       card('you.legal1', 'legalManipulations'),
@@ -274,9 +287,13 @@ const CH9_BOARD = (): TutorialBoardState => ({
   rival: rival({
     pool: 22,
     hasEdge: true,
+    libraryCount: 51,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 4, locked: true })],
-    ashHeap: [card('rival.bonding', 'bonding')],
+    ashHeap: [
+      card('rival.d1', 'majesty'),
+      card('rival.bonding', 'bonding'),
+    ],
   }),
 })
 
@@ -316,9 +333,11 @@ const CH10_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 17,
+    libraryCount: 50,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [card('rival.nash', 'nash', { blood: 6 })],
     ashHeap: [
+      card('rival.d1', 'majesty'),
       card('rival.bonding', 'bonding'),
       card('rival.pol1', 'anarchistUprising'),
     ],
@@ -365,12 +384,14 @@ const CH11_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 10,
+    libraryCount: 48,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 5 }),
       card('rival.nash', 'nash', { blood: 1 }),
     ],
     ashHeap: [
+      card('rival.d1', 'majesty'),
       card('rival.bonding', 'bonding'),
       card('rival.pol1', 'anarchistUprising'),
       card('rival.majesty', 'majesty'),
@@ -441,12 +462,14 @@ const CH13_BOARD = (): TutorialBoardState => ({
   }),
   rival: rival({
     pool: 3,
+    libraryCount: 48,
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 4 }),
       card('rival.nash', 'nash', { blood: 2 }),
     ],
     ashHeap: [
+      card('rival.d1', 'majesty'),
       card('rival.bonding', 'bonding'),
       card('rival.pol1', 'anarchistUprising'),
       card('rival.majesty', 'majesty'),
@@ -502,19 +525,85 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         view: 'anatomy-crypt',
       },
       {
+        id: 'group',
+        advance: { type: 'click', target: 'anatomy:group' },
+        highlight: ['anatomy:group'],
+        view: 'anatomy-crypt',
+      },
+      {
         id: 's5b',
         advance: { type: 'click', target: 'anatomy:text' },
         highlight: ['anatomy:text'],
         view: 'anatomy-crypt',
       },
-      { id: 's6', advance: { type: 'next' }, view: 'anatomy-library' },
+      { id: 's6', advance: { type: 'next' }, view: 'anatomy-types' },
+      {
+        id: 'type_master',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-master'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_action',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-action'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_modifier',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-modifier'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_reaction',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-reaction'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_combat',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-combat'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_political',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-political'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_equipment',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-equipment'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_ally',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-ally'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_retainer',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-retainer'],
+        view: 'anatomy-types',
+      },
+      {
+        id: 'type_event',
+        advance: { type: 'next' },
+        highlight: ['anatomy:type-event'],
+        view: 'anatomy-types',
+      },
+      { id: 'lib_intro', advance: { type: 'next' }, view: 'anatomy-library' },
       {
         id: 's7',
         advance: { type: 'click', target: 'anatomy:type' },
         highlight: ['anatomy:type'],
         view: 'anatomy-library',
       },
-      { id: 's7b', advance: { type: 'next' }, view: 'anatomy-types' },
       {
         id: 's8',
         advance: { type: 'click', target: 'anatomy:cost' },
@@ -525,6 +614,12 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's9',
         advance: { type: 'click', target: 'anatomy:requirement' },
         highlight: ['anatomy:requirement'],
+        view: 'anatomy-library',
+      },
+      {
+        id: 'text_levels',
+        advance: { type: 'click', target: 'anatomy:libtext' },
+        highlight: ['anatomy:libtext'],
         view: 'anatomy-library',
       },
       { id: 's10', advance: { type: 'next' }, view: 'anatomy-library' },
@@ -577,6 +672,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
     initialBoard: START_BOARD(),
     steps: [
       { id: 's1', advance: { type: 'next' }, highlight: ['phase-tracker'] },
+      { id: 's1b', advance: { type: 'next' }, highlight: ['phase-tracker'] },
       {
         id: 's2',
         mutations: [{ type: 'phase', phase: 'unlock', activePlayer: 'you' }],
@@ -587,11 +683,22 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's3',
         mutations: [{ type: 'phase', phase: 'master', activePlayer: 'you' }],
         advance: { type: 'next' },
+        highlight: ['phase-tracker'],
       },
       {
         id: 's4',
         mutations: [{ type: 'phase', phase: 'minion', activePlayer: 'you' }],
         advance: { type: 'next' },
+        highlight: ['phase-tracker'],
+      },
+      {
+        id: 's5',
+        mutations: [
+          { type: 'phase', phase: 'influence', activePlayer: 'you' },
+          { type: 'transfers', player: 'you', value: 1 },
+        ],
+        advance: { type: 'next' },
+        highlight: ['phase-tracker'],
       },
       {
         id: 's4b',
@@ -600,11 +707,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         highlight: ['zone:you:uncontrolled'],
       },
       {
-        id: 's5',
-        mutations: [
-          { type: 'phase', phase: 'influence', activePlayer: 'you' },
-          { type: 'transfers', player: 'you', value: 1 },
-        ],
+        id: 's5b',
         advance: { type: 'click', target: 'card:you.aline' },
         highlight: ['card:you.aline'],
       },
@@ -614,13 +717,39 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
           { type: 'blood', ref: 'you.aline', delta: 1 },
           { type: 'pool', player: 'you', delta: -1 },
           { type: 'transfers', player: 'you', value: 0 },
-          { type: 'phase', phase: 'discard', activePlayer: 'you' },
         ],
         advance: { type: 'next' },
         highlight: ['card:you.aline'],
       },
       {
+        id: 's6b',
+        mutations: [{ type: 'phase', phase: 'discard', activePlayer: 'you' }],
+        advance: { type: 'next' },
+        highlight: ['phase-tracker'],
+      },
+      {
         id: 's7',
+        rivalThinking: true,
+        mutations: [{ type: 'phase', phase: 'unlock', activePlayer: 'rival' }],
+        advance: { type: 'next' },
+        highlight: ['phase-tracker'],
+      },
+      {
+        id: 's7b',
+        rivalThinking: true,
+        mutations: [{ type: 'phase', phase: 'master', activePlayer: 'rival' }],
+        advance: { type: 'next' },
+        highlight: ['phase-tracker'],
+      },
+      {
+        id: 's7c',
+        rivalThinking: true,
+        mutations: [{ type: 'phase', phase: 'minion', activePlayer: 'rival' }],
+        advance: { type: 'next' },
+        highlight: ['phase-tracker'],
+      },
+      {
+        id: 's7d',
         rivalThinking: true,
         mutations: [
           { type: 'phase', phase: 'influence', activePlayer: 'rival' },
@@ -629,6 +758,27 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         ],
         advance: { type: 'next' },
         highlight: ['card:rival.nash'],
+      },
+      {
+        id: 's7e',
+        rivalThinking: true,
+        mutations: [
+          { type: 'phase', phase: 'discard', activePlayer: 'rival' },
+          {
+            type: 'draw',
+            player: 'rival',
+            card: card('rival.d1', 'majesty'),
+          },
+          {
+            type: 'moveCard',
+            ref: 'rival.d1',
+            player: 'rival',
+            from: 'hand',
+            to: 'ashHeap',
+          },
+        ],
+        advance: { type: 'next' },
+        highlight: ['zone:rival:ashHeap'],
       },
       {
         id: 's8',
@@ -795,6 +945,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's2',
         mutations: [{ type: 'phase', phase: 'master', activePlayer: 'you' }],
         advance: { type: 'drag', ref: 'you.bloodDoll', to: 'card:you.aline' },
+        presentCard: 'bloodDoll',
         highlight: ['card:you.bloodDoll', 'card:you.aline'],
       },
       {
@@ -921,6 +1072,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's3',
         advance: { type: 'click', target: 'card:you.otqv' },
+        presentCard: 'onTheQuiVive',
         highlight: ['card:you.otqv'],
       },
       {
@@ -945,6 +1097,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's3c',
         rivalThinking: true,
+        presentCard: 'bonding',
         mutations: [
           { type: 'draw', player: 'rival', card: card('rival.bonding', 'bonding') },
           {
@@ -961,6 +1114,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's3d',
         advance: { type: 'click', target: 'card:you.rooftop' },
+        presentCard: 'rooftopShadow',
         highlight: ['card:you.rooftop'],
       },
       {
@@ -1000,6 +1154,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's2',
         advance: { type: 'click', target: 'card:you.strength1' },
+        presentCard: 'undeadStrength',
         highlight: ['card:you.strength1'],
       },
       {
@@ -1045,6 +1200,12 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         highlight: ['card:you.aline'],
       },
       {
+        id: 's1b',
+        mutations: [{ type: 'pool', player: 'you', delta: 1 }],
+        advance: { type: 'next' },
+        highlight: ['edge:you'],
+      },
+      {
         id: 's2',
         mutations: [{ type: 'phase', phase: 'master', activePlayer: 'you' }],
         advance: { type: 'click', target: 'card:you.aline' },
@@ -1062,6 +1223,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's3b',
         advance: { type: 'click', target: 'card:you.troublemaker' },
+        presentCard: 'anarchTroublemaker',
         highlight: ['card:you.troublemaker'],
       },
       {
@@ -1083,6 +1245,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's4',
         mutations: [{ type: 'phase', phase: 'minion', activePlayer: 'you' }],
         advance: { type: 'drag', ref: 'you.magnum', to: 'card:you.aline' },
+        presentCard: 'magnum',
         highlight: ['card:you.magnum', 'card:you.aline'],
       },
       {
@@ -1217,6 +1380,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's6',
         advance: { type: 'click', target: 'card:you.eatTheRich' },
+        presentCard: 'eatTheRich',
         highlight: ['card:you.eatTheRich'],
       },
       {
@@ -1272,6 +1436,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's12',
         rivalThinking: true,
+        presentCard: 'anarchistUprising',
         mutations: [
           {
             type: 'draw',
@@ -1314,6 +1479,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's18',
         advance: { type: 'click', target: 'card:you.voterCap' },
+        presentCard: 'voterCaptivation',
         highlight: ['card:you.voterCap'],
       },
       {
@@ -1364,6 +1530,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's1b',
         mutations: [{ type: 'phase', phase: 'master', activePlayer: 'you' }],
         advance: { type: 'drag', ref: 'you.celerity', to: 'card:you.aline' },
+        presentCard: 'celerity',
         highlight: ['card:you.celerity', 'card:you.aline'],
       },
       {
@@ -1438,6 +1605,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's9',
         rivalThinking: true,
+        presentCard: 'majesty',
         mutations: [
           {
             type: 'draw',
@@ -1459,6 +1627,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's10',
         advance: { type: 'click', target: 'card:you.psyche' },
+        presentCard: 'psyche',
         highlight: ['card:you.psyche'],
         combat: { round: 1, stage: 'press' },
       },
@@ -1527,12 +1696,14 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's17',
         advance: { type: 'click', target: 'card:you.bw' },
+        presentCard: 'burningWrath',
         highlight: ['card:you.bw'],
         combat: { round: 3, stage: 'strike' },
       },
       {
         id: 's18',
         rivalThinking: true,
+        presentCard: 'resilience',
         mutations: [
           {
             type: 'moveCard',
@@ -1677,6 +1848,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         id: 's2',
         mutations: [{ type: 'phase', phase: 'minion', activePlayer: 'you' }],
         advance: { type: 'click', target: 'card:you.procurer' },
+        presentCard: 'procurer',
         highlight: ['card:you.procurer'],
       },
       {
@@ -1772,6 +1944,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       {
         id: 's6',
         advance: { type: 'click', target: 'card:you.legal1' },
+        presentCard: 'legalManipulations',
         highlight: ['card:you.legal1'],
       },
       {

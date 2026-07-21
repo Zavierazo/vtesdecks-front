@@ -15,7 +15,7 @@
       triggers="mouseenter:mouseleave"
       container="body"
       popoverClass="tutorial-zoom-popover"
-      [disablePopover]="instance().faceDown === true && !forceFaceUp()"
+      [disablePopover]="(instance().faceDown === true && !forceFaceUp()) || zoomDisabled$()"
     />
     @if (showBlood() && instance().blood !== undefined) {
       <span class="t-card-blood" [attr.data-cy]="'blood-' + instance().ref">
@@ -38,6 +38,7 @@
           triggers="mouseenter:mouseleave"
           container="body"
           popoverClass="tutorial-zoom-popover"
+          [disablePopover]="zoomDisabled$()"
         />
         <ng-template #attachmentZoom>
           <img class="tutorial-zoom-img" [src]="attachmentUrl(attachment)" alt="" />

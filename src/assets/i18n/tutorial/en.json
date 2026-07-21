@@ -43,6 +43,7 @@
   },
   "types": {
     "master": "Master",
+    "action": "Action",
     "modifier": "Action Modifier",
     "reaction": "Reaction",
     "combat": "Combat",
@@ -53,19 +54,45 @@
     "event": "Event"
   },
   "chapters": {
-    "ch1": { "title": "Welcome to the game" },
-    "ch2": { "title": "Reading the cards" },
-    "ch3": { "title": "Your side of the table" },
-    "ch4": { "title": "Phases and influence" },
-    "ch5": { "title": "Actions and bleeding" },
-    "ch6": { "title": "Blocking and reactions" },
-    "ch7": { "title": "Combat basics" },
-    "ch8": { "title": "Masters and equipment" },
-    "ch9": { "title": "Politics and votes" },
-    "ch10": { "title": "A full combat" },
-    "ch11": { "title": "Rescue from torpor" },
-    "ch12": { "title": "Allies" },
-    "ch13": { "title": "The oust" }
+    "ch1": {
+      "title": "Welcome to the game"
+    },
+    "ch2": {
+      "title": "Reading the cards"
+    },
+    "ch3": {
+      "title": "Your side of the table"
+    },
+    "ch4": {
+      "title": "Phases and influence"
+    },
+    "ch5": {
+      "title": "Actions and bleeding"
+    },
+    "ch6": {
+      "title": "Blocking and reactions"
+    },
+    "ch7": {
+      "title": "Combat basics"
+    },
+    "ch8": {
+      "title": "Masters and equipment"
+    },
+    "ch9": {
+      "title": "Politics and votes"
+    },
+    "ch10": {
+      "title": "A full combat"
+    },
+    "ch11": {
+      "title": "Rescue from torpor"
+    },
+    "ch12": {
+      "title": "Allies"
+    },
+    "ch13": {
+      "title": "The oust"
+    }
   },
   "ch1": {
     "s0": "Before we start: this tutorial simplifies a few rules (intercept, some combat details and edge cases); the rulebook is the final word.",
@@ -82,12 +109,24 @@
     "s3": "Her CAPACITY: 7. The blood she enters play with, and the most she can hold. Bigger vampires are stronger but cost more.",
     "s4": "Her DISCIPLINES: her powers. They decide which cards she can play. A square icon is the basic level. A diamond icon is the superior level, which also unlocks the stronger bold effect on cards.",
     "s5": "Her CLAN: Brujah. Every vampire belongs to a clan.",
+    "group": "The small number beside the text box is her GROUP: 6. Deck-building rule: every vampire in your crypt must belong to the same group or to two consecutive groups (5 and 6, for example).",
     "s5b": "The card TEXT: her special abilities and her TITLE, Baron of Mannheim. Titles matter for votes, as you will see later.",
-    "s6": "The second kind: LIBRARY cards, the cards you play from your hand. This is Legal Manipulations. Let's read it the same way.",
+    "s6": "The second kind: LIBRARY cards, the ones you play from your hand. They come in several types, each used at a different moment. Let's meet them one by one.",
+    "type_master": "MASTER cards are your Methuselah's own resources. You play one per turn during your MASTER PHASE — no vampire needed.",
+    "type_action": "ACTION cards send one of your READY vampires to do something: bleed your prey, take equipment, recruit help. The vampire locks to act during your MINION PHASE. Legal Manipulations here is a bleed action.",
+    "type_modifier": "ACTION MODIFIER cards boost your own vampire while it takes an action: extra bleed, extra stealth. Played in the middle of your action.",
+    "type_reaction": "REACTION cards are the mirror: your READY vampires play them on other players' turns to wake, intercept and defend.",
+    "type_combat": "COMBAT cards are played inside a fight, by both sides: strikes, extra damage, dodges or ways out.",
+    "type_political": "POLITICAL ACTION cards call a vote at the table. Playing one is an action taken by a vampire during your MINION PHASE.",
+    "type_equipment": "EQUIPMENT cards are objects. A vampire takes an action to pick one up, and it stays attached until it is lost or burned.",
+    "type_ally": "ALLY cards recruit mortals and ghouls. Recruiting is an action; the ally then acts as a minion of its own.",
+    "type_retainer": "RETAINER cards are servants: employing one is an action, and it stays with that vampire to help it.",
+    "type_event": "EVENT cards are world news. You play at most one per turn, during your DISCARD PHASE.",
+    "lib_intro": "Now let's read a library card in detail. This is LEGAL MANIPULATIONS, an action card you will actually play later. Same drill: click each highlighted part.",
     "s7": "The card TYPE: this is an ACTION card. A vampire plays it when taking an action. Click the icon.",
-    "s7b": "One real example of each of the other library types:",
     "s8": "The COST: 1 blood, paid by the vampire that plays it. Some cards cost pool instead, which comes from your own life.",
     "s9": "The REQUIREMENT: Presence. Only a vampire with this discipline can play the card. Aline has it.",
+    "text_levels": "One last thing about the TEXT: two effects, one per discipline level. The top line, in plain text with the SQUARE icon, is the basic effect. The block below, always in BOLD with the DIAMOND icon, is the superior effect — stronger, for vampires with the superior discipline.",
     "s10": "That covers most of what you need to read VTES cards. Let's continue."
   },
   "ch3": {
@@ -102,13 +141,20 @@
   },
   "ch4": {
     "s1": "Your turn has 5 phases, always in this order: Unlock, Master, Minion, Influence, Discard. The tracker next to the board shows where you are.",
+    "s1b": "In short: UNLOCK readies your locked cards. MASTER lets you play one master card. MINION is when your vampires act. INFLUENCE grows your crypt. DISCARD improves your hand. Let's walk your first turn — it will be quiet, and that is normal.",
     "s2": "UNLOCK PHASE: straighten your locked cards so they can act again. Nothing is locked on turn one.",
     "s3": "MASTER PHASE: you may play one master card per turn. Blood Doll needs a vampire in play and you have none yet. Skip.",
     "s4": "MINION PHASE: your vampires act here. You have no vampires in play yet, so nothing happens.",
+    "s5": "INFLUENCE PHASE: each transfer moves 1 pool onto one of your uncontrolled vampires. To balance going first, transfers ramp up: the game's first turn gets 1, the second turn 2, the third turn 3, and every turn after that 4.",
     "s4b": "One thing before spending influence: you may look at your own uncontrolled cards at any time. Here they are: Aline, Leumeah, and a spare copy of each (real crypts run several copies per vampire). You choose who to pay for. We start with Aline.",
-    "s5": "INFLUENCE PHASE: each transfer moves 1 pool onto one of your uncontrolled vampires. To balance going first, transfers ramp up: the game's first turn gets 1, the second turn 2, the third turn 3, and every turn after that 4. This is turn 1, so you have exactly 1 transfer. Click Aline.",
-    "s6": "1 blood on Aline. Discard phase: nothing to do. Turn over.",
-    "s7": "Game turn 2 belongs to your rival: he gets 2 transfers and places 2 blood on Sir Walter Nash.",
+    "s5b": "This is turn 1, so you have exactly 1 transfer. Click Aline to place your first blood.",
+    "s6": "1 blood moves from your pool onto Aline. Influence spent.",
+    "s6b": "DISCARD PHASE: once per turn you may discard one card and draw a replacement to improve your hand. Yours is fine tonight, so you keep it. Turn over.",
+    "s7": "Now watch your rival's first turn, phase by phase. UNLOCK PHASE: he has nothing locked either.",
+    "s7b": "MASTER PHASE: he plays nothing.",
+    "s7c": "MINION PHASE: like you, he has no vampires in play. Nobody can act here until influence has paid off.",
+    "s7d": "INFLUENCE PHASE: game turn 2 gives him 2 transfers. He places 2 blood on Sir Walter Nash.",
+    "s7e": "DISCARD PHASE: he discards a card he does not need and draws a replacement. His turn ends.",
     "s8": "Game turn 3 is yours, so this time you get 3 transfers. Click Aline to spend them.",
     "s9": "2 transfers left.",
     "s10": "1 transfer left.",
@@ -126,7 +172,7 @@
   },
   "ch5": {
     "s1": "Your turn. Unlock phase: nothing is locked, Aline has not acted yet.",
-    "s2": "MASTER PHASE: play Blood Doll on Aline. Click Blood Doll in your hand, then click Aline.",
+    "s2": "MASTER PHASE: play BLOOD DOLL, a master that attaches to one of your vampires and can move 1 blood between her and your pool every master phase. Click Blood Doll in your hand, then click Aline.",
     "s3": "Blood Doll is attached, and it could even be used right now, in this same master phase. Aline is at full blood though, so save it. Notice you drew a new card: whenever you play a card, you draw back up to 7.",
     "s4": "MINION PHASE: Aline can take one action. Basic actions like BLEED or HUNT need no card at all: any ready vampire can do them. Click Aline.",
     "s5": "What should Aline do?",
@@ -151,7 +197,7 @@
     "s3": "Blocking needs a READY and UNLOCKED vampire, but Aline is still locked from her bleed. On the Qui Vive WAKES a locked vampire. Click it in your hand.",
     "s3b": "Aline WAKES. Waking is not unlocking: she stays locked, but she may react and try to block during this one action only.",
     "s3c": "Nash responds with BONDING: at superior Dominate it adds 1 STEALTH (and 1 extra bleed). With more stealth than your intercept, he would slip past the block.",
-    "s3d": "Match it with INTERCEPT: play ROOFTOP SHADOW, a Celerity reaction worth 1 intercept. It costs Aline 1 blood. Click it.",
+    "s3d": "ROOFTOP SHADOW is a Celerity reaction worth 1 intercept, for 1 blood. Exactly what you need to cancel his stealth. Click it in your hand.",
     "s4": "Aline pays 1 blood. 1 intercept cancels 1 stealth: the block SUCCEEDS and the bleed is stopped. You draw replacements for both cards.",
     "s5": "Blocking has a consequence: blocker and attacker now fight. Combat!"
   },
@@ -165,11 +211,12 @@
   },
   "ch8": {
     "s1": "Your turn. UNLOCK PHASE: all your cards unlock and Aline can act again. Nash stays locked until his own unlock phase.",
+    "s1b": "Edge bonus: whoever controls THE EDGE gains 1 pool from the blood bank during their own unlock phase. You seized it with your bleed, so you gain 1 pool every turn you keep it.",
     "s2": "Master phase: use Blood Doll. Click Aline to move 1 blood from her to your pool.",
     "s3": "You gain 1 pool. Small, steady income like this wins long games.",
     "s3b": "You may also play your one master card of the turn. ANARCH TROUBLEMAKER is a master that stays in play instead of attaching to a vampire. Click it in your hand.",
     "s3c": "It stands in your ready region, in play but attached to nobody. Masters like this wait on the table until the right moment. Keep it in mind.",
-    "s4": "MINION PHASE: give Aline a weapon. Equipping is an action. Click the .44 Magnum, then click Aline. The gun costs 2 pool.",
+    "s4": "MINION PHASE: give Aline a weapon. Equipping is an action. The .44 MAGNUM costs 2 pool, strikes for 2 damage at any range and grants a maneuver each combat. Click the gun, then click Aline.",
     "s5": "Nash is locked and wounded, so there is no block. Aline locks, pays 2 pool and takes the gun. You draw a new card.",
     "s6": "Equipment stays in play. In her next combat, the Magnum strikes for 2 damage, even at long range.",
     "s7": "INFLUENCE PHASE: 4 transfers to finish paying for Leumeah. Click her.",
@@ -180,12 +227,12 @@
     "s12": "Rival's turn: Nash unlocks and bleeds you for 1. Aline is locked and Leumeah is brand new, so you let this one through, and he takes THE EDGE from you."
   },
   "ch9": {
-    "s1": "Your turn: TWO ready vampires and a master in play. Unlock phase: everything of yours unlocks.",
+    "s1": "Your turn: TWO ready vampires and a master in play. Unlock phase: everything of yours unlocks — but no Edge bonus tonight: your rival took THE EDGE, so that extra pool is his now.",
     "s2": "Master phase: Blood Doll again. Click Aline to move 1 blood to your pool.",
     "s3": "You gain 1 pool.",
     "s4": "MINION PHASE. Aline opens with a simple bleed. Click her.",
     "s5": "The bleed hits: your rival loses 1 pool and you take THE EDGE back from him.",
-    "s6": "Now Leumeah, your other Baron, calls the vote. Play EAT THE RICH, a political action. Click it.",
+    "s6": "Now Leumeah, your other Baron, calls the vote: EAT THE RICH, an Anarch political action. If it passes, the chosen player burns 1 pool — plus 3 more if they control a ready titled vampire. Click it.",
     "s7": "Leumeah locks and announces the political action.",
     "s8": "Before any voting, blocking gets its chance: a political action can be blocked like any other action, and political actions carry +1 STEALTH by default, which makes them harder to catch. Nash is still locked, so nothing stops the referendum.",
     "s9": "The action succeeds, so now the terms are chosen. Pick the target of Eat the Rich:",
@@ -200,7 +247,7 @@
     "s15": "You hold THE EDGE. Burning it normally gives 1 vote, but Eat the Rich's text makes it worth 2 here. Click the Edge to burn it.",
     "s16": "Score: 5 to 2. The referendum PASSES by 3. Note that you cannot also discard a political card for a vote: each player gets at most 1 vote from political cards, and yours came from the card Leumeah called.",
     "s17": "Your rival loses 4 pool: 1 as the base effect, plus 3 for controlling a titled vampire.",
-    "s18": "The reward: Leumeah called the vote and won it, so she can play VOTER CAPTIVATION. Click it.",
+    "s18": "The reward: Leumeah called the vote and won it, so she can play VOTER CAPTIVATION: the acting vampire gains 1 blood per vote of margin, and at superior Presence up to 2 can go to your pool instead. Click it.",
     "s19": "It passed by 3 votes, so Voter Captivation gains 3 blood. At superior Presence, up to 2 of them go to your POOL. The third would refill Leumeah, but she is already full. Win by more, gain more.",
     "s20": "One more trick. Aline's own card text lets her burn 1 blood to UNLOCK after another Anarch you control completes a successful action. Leumeah just did exactly that. Click Aline.",
     "s21": "Aline burns 1 blood and unlocks. She could act again this turn or block during your rival's turn. The abilities printed on your vampires are always there.",
@@ -264,7 +311,7 @@
     "s3": "It is used during your unlock phase. Click it.",
     "s4": "As the card commands, you hand it to your rival (it moves to his side unlocked, it is not a card that locks) and lock up to two of HIS vampires. Crowley AND Nash lock: his whole defense is gone.",
     "s5": "MINION PHASE. Nobody can block. Finish it.",
-    "s6": "Play LEGAL MANIPULATIONS, a bleed action with 2 extra bleed. Click it.",
+    "s6": "Play LEGAL MANIPULATIONS, the Presence action you read in chapter 2: a bleed action with 2 extra bleed. Click it.",
     "s7": "Aline pays 1 blood, locks and bleeds for 3.",
     "s8": "Your prey reaches 0 pool: OUSTED! You gain 1 Victory Point and a reward of 6 pool.",
     "s9": "That is Vampire: The Eternal Struggle, from the first transfer to the oust: pool, actions, blocks, combat, politics, torpor and allies. In a real five player game the hunt continues around the table. You are ready. Go play!"

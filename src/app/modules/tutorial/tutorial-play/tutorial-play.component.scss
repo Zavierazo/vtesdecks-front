@@ -12,6 +12,48 @@
   z-index: 1050; // above the spotlight dim
 }
 
+// Floating card presentation: shown over the board on the step that uses the
+// card, without blocking it — clicks pass through to the highlighted element.
+.t-card-present {
+  position: fixed;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1045; // above the spotlight dim, below the narrator
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: tutorial-card-present-in 0.35s ease;
+
+  img {
+    width: min(15rem, 55vw);
+    border-radius: 4.5%/3.2%;
+    box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.55);
+  }
+}
+
+.t-card-present-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 0.15rem 0.7rem;
+  border-radius: 1rem;
+}
+
+@keyframes tutorial-card-present-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 .t-chapter-intro {
   position: fixed;
   inset: 0;
