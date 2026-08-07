@@ -388,7 +388,7 @@ const CH11_BOARD = (): TutorialBoardState => ({
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 5 }),
-      card('rival.nash', 'nash', { blood: 1 }),
+      card('rival.nash', 'nash', { blood: 3 }),
     ],
     ashHeap: [
       card('rival.d1', 'majesty'),
@@ -417,7 +417,7 @@ const CH12_BOARD = (): TutorialBoardState => {
   board.you.torpor = []
   board.rival.ready = [
     card('rival.crowley', 'timothyCrowley', { blood: 5 }),
-    card('rival.nash', 'nash', { blood: 2 }),
+    card('rival.nash', 'nash', { blood: 4 }),
   ]
   return board
 }
@@ -466,7 +466,7 @@ const CH13_BOARD = (): TutorialBoardState => ({
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 4 }),
-      card('rival.nash', 'nash', { blood: 2 }),
+      card('rival.nash', 'nash', { blood: 4 }),
     ],
     ashHeap: [
       card('rival.d1', 'majesty'),
@@ -1597,7 +1597,6 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
       },
       {
         id: 's8',
-        mutations: [{ type: 'blood', ref: 'rival.nash', delta: -2 }],
         advance: { type: 'next' },
         highlight: ['card:rival.nash'],
         combat: { round: 1, stage: 'strike' },
