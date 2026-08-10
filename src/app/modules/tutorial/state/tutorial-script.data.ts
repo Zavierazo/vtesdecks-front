@@ -388,7 +388,7 @@ const CH11_BOARD = (): TutorialBoardState => ({
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 5 }),
-      card('rival.nash', 'nash', { blood: 3 }),
+      card('rival.nash', 'nash', { blood: 2 }),
     ],
     ashHeap: [
       card('rival.d1', 'majesty'),
@@ -417,7 +417,7 @@ const CH12_BOARD = (): TutorialBoardState => {
   board.you.torpor = []
   board.rival.ready = [
     card('rival.crowley', 'timothyCrowley', { blood: 5 }),
-    card('rival.nash', 'nash', { blood: 4 }),
+    card('rival.nash', 'nash', { blood: 3 }),
   ]
   return board
 }
@@ -466,7 +466,7 @@ const CH13_BOARD = (): TutorialBoardState => ({
     uncontrolled: RIVAL_SPARE_CRYPT(),
     ready: [
       card('rival.crowley', 'timothyCrowley', { blood: 4 }),
-      card('rival.nash', 'nash', { blood: 4 }),
+      card('rival.nash', 'nash', { blood: 3 }),
     ],
     ashHeap: [
       card('rival.d1', 'majesty'),
@@ -1618,6 +1618,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
             from: 'hand',
             to: 'ashHeap',
           },
+          { type: 'blood', ref: 'rival.nash', delta: -1 },
         ],
         advance: { type: 'next' },
         highlight: ['zone:rival:ashHeap'],
@@ -1640,6 +1641,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
             from: 'hand',
             to: 'ashHeap',
           },
+          { type: 'blood', ref: 'you.aline', delta: -1 },
           {
             type: 'draw',
             player: 'you',
@@ -1683,6 +1685,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
             from: 'hand',
             to: 'ashHeap',
           },
+          { type: 'blood', ref: 'you.aline', delta: -1 },
           {
             type: 'draw',
             player: 'you',
