@@ -1,6 +1,7 @@
 {
   "name": "vtes-decks-front",
   "version": "2.76.0",
+  "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
