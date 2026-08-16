@@ -13,7 +13,8 @@
     "exit": "Retour au menu",
     "rival_turn": "Tour du rival",
     "hint_click": "Cliquez sur l'élément en surbrillance",
-    "hint_drag": "Cliquez sur la carte, puis sur sa destination",
+    "hint_drag": "Faites glisser la carte sur sa cible, ou cliquez sur la carte puis sur la cible",
+    "hint_drag_mobile": "Touchez la carte en surbrillance pour la jouer",
     "chapter_progress": "Chapitre {{current}}/{{total}}",
     "start_chapter": "Commencer le chapitre"
   },
@@ -172,7 +173,7 @@
   },
   "ch5": {
     "s1": "À vous. Phase de redressement : rien n'est incliné, Aline n'a pas encore agi.",
-    "s2": "PHASE DE MAÎTRE : jouez BLOOD DOLL, une carte de maître attachée à l'un de vos vampires, capable de déplacer 1 sang entre elle et votre réserve à chaque phase de maître. Cliquez sur Blood Doll dans votre main, puis sur Aline.",
+    "s2": "PHASE DE MAÎTRE : jouez BLOOD DOLL, une carte de maître attachée à l'un de vos vampires, capable de déplacer 1 sang entre elle et votre réserve à chaque phase de maître. ATTACHEZ la Blood Doll à Aline.",
     "s3": "Blood Doll est attachée, et elle pourrait même servir dès maintenant, dans cette même phase de Maître. Mais Aline est à pleine réserve de sang, gardez-la pour plus tard. Remarquez la nouvelle carte : chaque fois que vous en jouez une, vous re-piochez jusqu'à 7.",
     "s4": "PHASE DE SERVITEUR : Aline peut effectuer une action. Les actions de base comme MORDRE ou CHASSER n'exigent aucune carte : tout vampire disponible peut les faire. Cliquez sur Aline.",
     "s5": "Que doit faire Aline ?",
@@ -216,7 +217,7 @@
     "s3": "Vous gagnez 1 de réserve. Ces petits gains réguliers font gagner les longues parties.",
     "s3b": "Vous pouvez aussi jouer votre carte de Maître du tour. ANARCH TROUBLEMAKER est un Maître qui reste en jeu au lieu de s'attacher à un vampire. Cliquez dessus dans votre main.",
     "s3c": "Elle se place dans votre région disponible, en jeu mais attachée à personne. Les Maîtres de ce genre attendent sur la table le bon moment. Gardez-la en tête.",
-    "s4": "PHASE DE SERVITEUR : donnez une arme à Aline. S'équiper est une action. Le .44 MAGNUM coûte 2 de réserve, frappe pour 2 dégâts à toute portée et offre une manœuvre par combat. Cliquez sur le pistolet, puis sur Aline.",
+    "s4": "PHASE DE SERVITEUR : donnez une arme à Aline. S'équiper est une action. Le .44 MAGNUM coûte 2 de réserve, frappe pour 2 dégâts à toute portée et offre une manœuvre par combat. ÉQUIPEZ Aline avec le Magnum.",
     "s5": "Nash est incliné et blessé : pas de blocage. Aline s’incline, paie 2 de réserve et prend le pistolet. Vous piochez une nouvelle carte.",
     "s6": "L'équipement reste en jeu. Lors de son prochain combat, le Magnum frappera pour 2 dégâts, même à longue portée.",
     "s7": "PHASE D'INFLUENCE : 4 transferts pour finir de payer Leumeah. Cliquez sur elle.",
@@ -255,7 +256,7 @@
   },
   "ch10": {
     "s1": "La même partie, quelques tours plus tard. Tout le monde s'est refait : la Blood Doll et la chasse ont rempli votre côté, et Nash est revenu à 6 de sang. L'heure de l'éliminer pour de bon, et de jouer un combat en détail. Regardez le suivi au-dessus du plateau : chaque ROUND a des étapes de PORTÉE, FRAPPES et PRESS.",
-    "s1b": "D’abord la PHASE DE MAÎTRE. Aline n’a que la Célérité de base, elle ne peut donc pas utiliser la version forte de certaines cartes. Jouez la carte de maître CELERITY sur elle : elle ajoute un niveau de Célérité (et 1 de capacité). Faites-la glisser sur Aline.",
+    "s1b": "D’abord la PHASE DE MAÎTRE. Aline n’a que la Célérité de base, elle ne peut donc pas utiliser la version forte de certaines cartes. Jouez la carte de maître CELERITY sur elle : elle ajoute un niveau de Célérité (et 1 de capacité). ATTACHEZ-la à Aline.",
     "s1c": "Aline a maintenant la Célérité SUPÉRIEURE. Cela débloque le texte en gras des cartes de Célérité, ce qui comptera dans un instant. Vous piochez aussi une carte de remplacement.",
     "s2": "PHASE DE SERVITEUR. Aline mord votre rival : une morsure vise toujours le Mathusalem, jamais un vampire. Cliquez sur elle.",
     "s3": "Cette fois Nash BLOQUE. Les deux vampires s’inclinent, le combat commence.",

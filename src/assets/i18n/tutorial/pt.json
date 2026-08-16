@@ -13,7 +13,8 @@
     "exit": "Sair para o menu",
     "rival_turn": "Turno do rival",
     "hint_click": "Clique no elemento destacado",
-    "hint_drag": "Clique na carta e depois no destino",
+    "hint_drag": "Arraste a carta até o destino, ou clique na carta e depois no destino",
+    "hint_drag_mobile": "Toque na carta destacada para jogá-la",
     "chapter_progress": "Capítulo {{current}}/{{total}}",
     "start_chapter": "Começar capítulo"
   },
@@ -172,7 +173,7 @@
   },
   "ch5": {
     "s1": "Seu turno. Fase de destravar: nada está travado, Aline ainda não agiu.",
-    "s2": "FASE DE MESTRE: jogue BLOOD DOLL, uma carta de Mestre que se anexa a um dos seus vampiros e pode mover 1 de sangue entre ela e sua reserva a cada fase de Mestre. Clique em Blood Doll na sua mão e depois em Aline.",
+    "s2": "FASE DE MESTRE: jogue BLOOD DOLL, uma carta de Mestre que se anexa a um dos seus vampiros e pode mover 1 de sangue entre ela e sua reserva a cada fase de Mestre. ANEXE a Blood Doll a Aline.",
     "s3": "Blood Doll anexada, e ela poderia até ser usada agora, nesta mesma fase de Mestre. Mas Aline está com o sangue cheio, então guarde. Repare que você comprou uma carta nova: sempre que joga uma, repõe até 7.",
     "s4": "FASE DE LACAIOS: Aline pode realizar uma ação. Ações básicas como SANGRAR ou CAÇAR não precisam de carta alguma: qualquer vampiro pronto pode fazê-las. Clique em Aline.",
     "s5": "O que Aline deve fazer?",
@@ -216,7 +217,7 @@
     "s3": "Você ganha 1 de reserva. Ganhos pequenos e constantes como este vencem partidas longas.",
     "s3b": "Você também pode jogar sua carta de Mestre do turno. ANARCH TROUBLEMAKER é um Mestre que permanece em jogo em vez de se anexar a um vampiro. Clique nela na sua mão.",
     "s3c": "Ela fica na sua região de prontos, em jogo mas sem se anexar a ninguém. Mestres assim esperam na mesa até o momento certo. Guarde-a na memória.",
-    "s4": "FASE DE LACAIOS: dê uma arma a Aline. Equipar é uma ação. A .44 MAGNUM custa 2 de reserva, golpeia por 2 de dano a qualquer distância e dá uma manobra por combate. Clique na arma e depois em Aline.",
+    "s4": "FASE DE LACAIOS: dê uma arma a Aline. Equipar é uma ação. A .44 MAGNUM custa 2 de reserva, golpeia por 2 de dano a qualquer distância e dá uma manobra por combate. EQUIPE Aline com a Magnum.",
     "s5": "Nash está travado e ferido, então não há bloqueio. Aline se trava, paga 2 de reserva e pega a arma. Você compra uma carta nova.",
     "s6": "Equipamento fica em jogo. No próximo combate dela, a Magnum golpeia por 2 de dano, mesmo à distância.",
     "s7": "FASE DE INFLUÊNCIA: 4 transferências para terminar de pagar Leumeah. Clique nela.",
@@ -255,7 +256,7 @@
   },
   "ch10": {
     "s1": "A mesma partida, alguns turnos depois. Todos se recompuseram: a Blood Doll e a caça reabasteceram o seu lado, e Nash voltou a 6 de sangue. Hora de eliminá-lo de vez, e de jogar um combate em detalhe. Observe o marcador acima do tabuleiro: cada RODADA tem etapas de DISTÂNCIA, GOLPES e PRESS.",
-    "s1b": "Primeiro a FASE DE MESTRE. Aline só tem Celeridade básica, então não pode usar a versão forte de algumas cartas. Jogue a carta de Mestre CELERITY nela: adiciona um nível de Celeridade (e 1 de capacidade). Arraste-a sobre Aline.",
+    "s1b": "Primeiro a FASE DE MESTRE. Aline só tem Celeridade básica, então não pode usar a versão forte de algumas cartas. Jogue a carta de Mestre CELERITY nela: adiciona um nível de Celeridade (e 1 de capacidade). ANEXE-a a Aline.",
     "s1c": "Aline agora tem Celeridade SUPERIOR. Isso libera o texto em negrito das cartas de Celeridade, o que importará em um instante. Você também compra uma carta de reposição.",
     "s2": "FASE DE LACAIOS. Aline sangra seu rival: a sangria sempre mira o Matusalém, nunca um vampiro. Clique nela.",
     "s3": "Desta vez Nash BLOQUEIA. Os dois se travam e o combate começa.",

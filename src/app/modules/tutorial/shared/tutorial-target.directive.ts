@@ -62,6 +62,11 @@ export class TutorialTargetDirective implements OnInit, OnDestroy {
   )
 
   readonly dragSource$ = computed(() => {
+    // Simplified mode advances on a plain tap; a drag ghost would only
+    // swallow the taps that wiggle a few pixels.
+    if (this.store.simplifiedDrag$()) {
+      return false
+    }
     const advance = this.store.currentStep$().advance
     return (
       advance.type === 'drag' &&

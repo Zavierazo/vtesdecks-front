@@ -61,7 +61,12 @@
     }
     @case ('drag') {
       <span class="t-narrator-hint">
-        <i class="bi bi-hand-index-thumb"></i> {{ t('narrator.hint_drag') }}
+        <i class="bi bi-hand-index-thumb"></i>
+        {{
+          store.simplifiedDrag$()
+            ? t('narrator.hint_drag_mobile')
+            : t('narrator.hint_drag')
+        }}
       </span>
     }
     @case ('choice') {

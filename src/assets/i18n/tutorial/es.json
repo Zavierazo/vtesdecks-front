@@ -13,7 +13,8 @@
     "exit": "Salir al menú",
     "rival_turn": "Turno del rival",
     "hint_click": "Haz clic en el elemento resaltado",
-    "hint_drag": "Haz clic en la carta y luego en su destino",
+    "hint_drag": "Arrastra la carta hasta su destino, o haz clic en la carta y luego en el destino",
+    "hint_drag_mobile": "Toca la carta resaltada para jugarla",
     "chapter_progress": "Capítulo {{current}}/{{total}}",
     "start_chapter": "Empezar capítulo"
   },
@@ -172,7 +173,7 @@
   },
   "ch5": {
     "s1": "Tu turno. Fase de enderezar: no hay nada girado, Aline aún no ha actuado.",
-    "s2": "FASE HERIL: juega BLOOD DOLL, una nimiedad que se une a uno de tus vampiros y puede mover 1 de sangre entre ella y tu reserva cada fase heril. Haz clic en Blood Doll en tu mano y luego en Aline.",
+    "s2": "FASE HERIL: juega BLOOD DOLL, una nimiedad que se une a uno de tus vampiros y puede mover 1 de sangre entre ella y tu reserva cada fase heril. UNE la Blood Doll a Aline.",
     "s3": "Blood Doll colocada, y podría usarse ya mismo, en esta misma fase heril. Pero Aline está a plena sangre, así que guárdala. Fíjate en que has robado una carta nueva: cada vez que juegas una, repones hasta 7.",
     "s4": "FASE SERVIL: Aline puede realizar una acción. Las acciones básicas como SANGRAR o CAZAR no necesitan ninguna carta: cualquier vampiro preparado puede hacerlas. Haz clic en Aline.",
     "s5": "¿Qué debería hacer Aline?",
@@ -216,7 +217,7 @@
     "s3": "Ganas 1 de reserva. Ingresos pequeños y constantes como este ganan las partidas largas.",
     "s3b": "También puedes jugar tu nimiedad del turno. ANARCH TROUBLEMAKER es una nimiedad que permanece en juego en vez de unirse a un vampiro. Haz clic en ella en tu mano.",
     "s3c": "Se coloca en tu región de preparados, en juego pero sin unirse a nadie. Las nimiedades así esperan en la mesa hasta el momento oportuno. Tenla presente.",
-    "s4": "FASE SERVIL: dale un arma a Aline. Equiparse es una acción. La .44 MAGNUM cuesta 2 de reserva, golpea por 2 de daño a cualquier distancia y da una maniobra por combate. Haz clic en la pistola y luego en Aline.",
+    "s4": "FASE SERVIL: dale un arma a Aline. Equiparse es una acción. La .44 MAGNUM cuesta 2 de reserva, golpea por 2 de daño a cualquier distancia y da una maniobra por combate. EQUIPA a Aline con la Magnum.",
     "s5": "Nash está girado y herido, así que no hay bloqueo. Aline se gira, paga 2 de reserva y coge la pistola. Robas una carta nueva.",
     "s6": "El equipo permanece en juego. En su próximo combate, la Magnum golpea por 2 de daño, incluso a distancia.",
     "s7": "FASE DE INFLUENCIA: 4 transferencias para terminar de pagar a Leumeah. Haz clic en ella.",
@@ -255,7 +256,7 @@
   },
   "ch10": {
     "s1": "La misma partida, unos turnos después. Todos se han recompuesto: la Blood Doll y la caza rellenaron tu lado, y Nash vuelve a estar a 6 de sangre. Hora de eliminarlo, y de jugar un combate con todo detalle. Mira el marcador sobre el tablero: cada RONDA tiene pasos de DISTANCIA, GOLPES y PRESS.",
-    "s1b": "Primero la FASE HERIL. Aline solo tiene Celeridad básica, así que no puede usar la versión fuerte de algunas cartas. Juega la nimiedad CELERITY sobre ella: le añade un nivel de Celeridad (y 1 de capacidad). Arrástrala sobre Aline.",
+    "s1b": "Primero la FASE HERIL. Aline solo tiene Celeridad básica, así que no puede usar la versión fuerte de algunas cartas. Juega la nimiedad CELERITY sobre ella: le añade un nivel de Celeridad (y 1 de capacidad). ÚNELA a Aline.",
     "s1c": "Aline ahora tiene Celeridad SUPERIOR. Eso desbloquea el texto en negrita de las cartas de Celeridad, que importará en un momento. También robas una carta de reemplazo.",
     "s2": "FASE SERVIL. Aline sangra a tu rival: el sangrado siempre va contra el Matusalén, nunca contra un vampiro. Haz clic en ella.",
     "s3": "Esta vez Nash BLOQUEA. Ambos se giran y empieza el combate.",
