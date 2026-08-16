@@ -152,38 +152,6 @@ export class DeckBuilderService {
     this.validateDeck()
   }
 
-  importDeck(type: string, url: string): Observable<ApiDeckBuilder> {
-    return this.apiDataService.getDeckBuilderImport(type, url).pipe(
-      tap((deck) => {
-        this.store.update((state) => ({
-          ...state,
-          name: state.name ? state.name : deck.name,
-          description: state.description ? state.description : deck.description,
-          cards: deck.cards ?? [],
-          collection: false,
-          saved: false,
-        }))
-        this.validateDeck()
-      }),
-    )
-  }
-
-  importDeckFromText(text: string): Observable<ApiDeckBuilder> {
-    return this.apiDataService.importDeckFromText(text).pipe(
-      tap((deck) => {
-        this.store.update((state) => ({
-          ...state,
-          name: state.name ? state.name : deck.name,
-          description: state.description ? state.description : deck.description,
-          cards: deck.cards ?? [],
-          collection: false,
-          saved: false,
-        }))
-        this.validateDeck()
-      }),
-    )
-  }
-
   applyImportedDeck(deck: ApiDeckBuilder): Observable<ApiDeckBuilder> {
     return of(deck).pipe(
       tap((d) => {

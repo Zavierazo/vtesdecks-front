@@ -5,9 +5,10 @@ import {
   signal,
 } from '@angular/core'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { LastVisitedDeck } from '@models'
+import { ApiDeckBuilder, LastVisitedDeck } from '@models'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { DeckHistoryService } from '@services'
+import { ApiDataService, DeckHistoryService } from '@services'
+import { finalize } from 'rxjs'
 
 @Component({
   selector: 'app-import-recent-decks-modal',
@@ -18,12 +19,24 @@ import { DeckHistoryService } from '@services'
 export class ImportRecentDecksModalComponent {
   modal = inject(NgbActiveModal)
   private readonly deckHistoryService = inject(DeckHistoryService)
+  private readonly apiDataService = inject(ApiDataService)
 
   recentDecks = signal<LastVisitedDeck[]>(
     this.deckHistoryService.getLastVisitedDecks(),
   )
+  loading = signal<boolean>(false)
+  errorKey = signal<string | null>(null)
 
   selectDeck(deckId: string): void {
-    this.modal.close(deckId)
+    if (this.loading()) return
+    this.loading.set(true)
+    this.errorKey.set(null)
+    this.apiDataService
+      .getDeckBuilder(deckId)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (deck: ApiDeckBuilder) => this.modal.close(deck),
+        error: () => this.errorKey.set('shared.unexpected_error'),
+      })
   }
 }

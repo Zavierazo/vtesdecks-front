@@ -11,12 +11,25 @@
         <label for="url">{{ t('placeholder') }}</label>
       </div>
     </form>
+
+    @if (loading()) {
+    <div class="d-flex justify-content-center mt-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    }
+
+    @if (errorKey(); as key) {
+    <div class="alert alert-danger mt-3 mb-0">{{ key | transloco }}</div>
+    }
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+    <button type="button" class="btn btn-danger" [disabled]="loading()" (click)="modal.dismiss()">
       {{ 'shared.cancel' | transloco }}
     </button>
-    <button type="button" ngbAutofocus class="btn btn-success text-white" (click)="modal.close(url)">
+    <button type="button" ngbAutofocus class="btn btn-success text-white" [disabled]="loading() || form.invalid"
+      (click)="import()">
       {{ 'shared.import' | transloco }}
     </button>
   </div>
