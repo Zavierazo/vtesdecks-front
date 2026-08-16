@@ -116,12 +116,22 @@ const START_BOARD = (): TutorialBoardState => ({
 const CH5_BOARD = (): TutorialBoardState => ({
   you: you({
     pool: 23,
-    hand: FULL_HAND(),
+    libraryCount: 52,
+    hand: [
+      card('you.bloodDoll', 'bloodDoll'),
+      card('you.magnum', 'magnum'),
+      card('you.legal1', 'legalManipulations'),
+      card('you.strength1', 'undeadStrength'),
+      card('you.rooftop', 'rooftopShadow'),
+      card('you.eatTheRich', 'eatTheRich'),
+      card('you.otqv', 'onTheQuiVive'),
+    ],
     uncontrolled: [
       card('you.leumeah', 'leumeah', { blood: 0, faceDown: true }),
       ...YOUR_SPARE_CRYPT(),
     ],
     ready: [card('you.aline', 'aline', { blood: 7 })],
+    ashHeap: [card('you.strength0', 'undeadStrength')],
   }),
   rival: rival({
     pool: 23,
@@ -157,6 +167,7 @@ const CH6_BOARD = (): TutorialBoardState => ({
         attachments: [card('you.bloodDoll', 'bloodDoll')],
       }),
     ],
+    ashHeap: [card('you.strength0', 'undeadStrength')],
   }),
   rival: rival({
     pool: 22,
@@ -193,6 +204,7 @@ const CH7_BOARD = (): TutorialBoardState => ({
       }),
     ],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
     ],
@@ -235,6 +247,7 @@ const CH8_BOARD = (): TutorialBoardState => ({
       }),
     ],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
       card('you.strength1', 'undeadStrength'),
@@ -279,6 +292,7 @@ const CH9_BOARD = (): TutorialBoardState => ({
     ],
     masters: [card('you.troublemaker', 'anarchTroublemaker')],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
       card('you.strength1', 'undeadStrength'),
@@ -324,6 +338,7 @@ const CH10_BOARD = (): TutorialBoardState => ({
     ],
     masters: [card('you.troublemaker', 'anarchTroublemaker')],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
       card('you.strength1', 'undeadStrength'),
@@ -348,7 +363,7 @@ const CH10_BOARD = (): TutorialBoardState => ({
 const CH11_BOARD = (): TutorialBoardState => ({
   you: you({
     pool: 19,
-    libraryCount: 42,
+    libraryCount: 41,
     hand: [
       card('you.legal1', 'legalManipulations'),
       card('you.strength2', 'undeadStrength'),
@@ -372,6 +387,7 @@ const CH11_BOARD = (): TutorialBoardState => ({
     torpor: [card('you.leumeah', 'leumeah', { blood: 0 })],
     masters: [card('you.troublemaker', 'anarchTroublemaker')],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
       card('you.strength1', 'undeadStrength'),
@@ -450,6 +466,7 @@ const CH13_BOARD = (): TutorialBoardState => ({
     ],
     masters: [card('you.troublemaker', 'anarchTroublemaker')],
     ashHeap: [
+      card('you.strength0', 'undeadStrength'),
       card('you.otqv', 'onTheQuiVive'),
       card('you.rooftop', 'rooftopShadow'),
       card('you.strength1', 'undeadStrength'),
@@ -1619,6 +1636,7 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
             to: 'ashHeap',
           },
           { type: 'blood', ref: 'rival.nash', delta: -1 },
+          { type: 'lock', ref: 'rival.nash', locked: false },
         ],
         advance: { type: 'next' },
         highlight: ['zone:rival:ashHeap'],
@@ -1649,31 +1667,31 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
           },
         ],
         advance: { type: 'next' },
-        combat: { round: 2, stage: 'range' },
+        combat: { round: 1, stage: 'range' },
       },
       {
         id: 's12',
         advance: { type: 'next' },
-        combat: { round: 2, stage: 'range' },
+        combat: { round: 1, stage: 'range' },
       },
       {
         id: 's13',
         advance: { type: 'click', target: 'card:you.aline' },
         highlight: ['card:you.aline'],
-        combat: { round: 2, stage: 'strike' },
+        combat: { round: 1, stage: 'strike' },
       },
       {
         id: 's14',
         mutations: [{ type: 'blood', ref: 'rival.nash', delta: -2 }],
         advance: { type: 'next' },
         highlight: ['card:rival.nash'],
-        combat: { round: 2, stage: 'strike' },
+        combat: { round: 1, stage: 'strike' },
       },
       {
         id: 's15',
         advance: { type: 'click', target: 'card:you.psyche2' },
         highlight: ['card:you.psyche2'],
-        combat: { round: 2, stage: 'press' },
+        combat: { round: 1, stage: 'press' },
       },
       {
         id: 's16',
@@ -1693,14 +1711,14 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
           },
         ],
         advance: { type: 'next' },
-        combat: { round: 3, stage: 'range' },
+        combat: { round: 2, stage: 'range' },
       },
       {
         id: 's17',
         advance: { type: 'click', target: 'card:you.bw' },
         presentCard: 'burningWrath',
         highlight: ['card:you.bw'],
-        combat: { round: 3, stage: 'strike' },
+        combat: { round: 2, stage: 'strike' },
       },
       {
         id: 's18',
@@ -1735,14 +1753,14 @@ export const TUTORIAL_SCRIPT: TutorialChapter[] = [
         ],
         advance: { type: 'next' },
         highlight: ['zone:rival:ashHeap'],
-        combat: { round: 3, stage: 'strike' },
+        combat: { round: 2, stage: 'strike' },
       },
       {
         id: 's19',
         mutations: [{ type: 'blood', ref: 'rival.nash', delta: -1 }],
         advance: { type: 'next' },
         highlight: ['card:rival.nash'],
-        combat: { round: 3, stage: 'strike' },
+        combat: { round: 2, stage: 'strike' },
       },
       {
         id: 's20',
