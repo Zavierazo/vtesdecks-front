@@ -9,6 +9,7 @@ export interface WishlistQueryState {
   sortBy: keyof ApiWishlistCard
   sortDirection: 'asc' | 'desc' | ''
   filters: [string, string | number | number[] | boolean | undefined][]
+  cardIds?: number[]
 }
 
 export interface WishlistState {

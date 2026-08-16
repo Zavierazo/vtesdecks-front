@@ -69,6 +69,7 @@
     <label for="limitedFormatSelect">{{ t('limited_format') }}</label>
   </div>
   }
+  @if (showSet) {
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="set" [formControl]="setControl">
       <option selected></option>
@@ -83,6 +84,7 @@
     </select>
     <label for="set">{{ t('set') }}</label>
   </div>
+  }
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="title" [formControl]="titleControl">
       <option selected></option>

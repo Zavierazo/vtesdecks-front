@@ -76,6 +76,12 @@ export class CollectionApiDataService {
   }
 
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
+    if (query.cardIds !== undefined) {
+      return this.httpClient.post<ApiCollectionPage>(
+        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/search`,
+        this.buildSearchBody(query),
+      )
+    }
     return this.httpClient.get<ApiCollectionPage>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards?${this.getQueryFilterParams(query)}`,
     )
@@ -287,12 +293,31 @@ export class CollectionApiDataService {
     publicHash: string,
     query: CollectionQueryState,
   ): Observable<ApiCollectionPage> {
+    if (query.cardIds !== undefined) {
+      return this.httpClient.post<ApiCollectionPage>(
+        `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards/search`,
+        this.buildSearchBody(query),
+      )
+    }
     return this.httpClient.get<ApiCollectionPage>(
       `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards?${this.getQueryFilterParams(query)}`,
     )
   }
 
   // COMMON METHODS
+
+  private buildSearchBody(query: CollectionQueryState) {
+    return {
+      page: query.page,
+      size: query.pageSize,
+      sortBy: query.sortBy,
+      sortDirection: query.sortDirection,
+      filters: Object.fromEntries(
+        query.filters.filter(([, value]) => value !== undefined),
+      ),
+      cardIds: query.cardIds,
+    }
+  }
 
   private getQueryFilterParams(query: CollectionQueryState): string {
     const params = new URLSearchParams()

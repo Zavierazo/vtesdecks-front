@@ -10,6 +10,8 @@ import {
   output,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
+import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { LibraryFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -18,8 +20,6 @@ import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
 import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
-import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
-import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
 @UntilDestroy()
@@ -47,6 +47,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private apiDataService = inject(ApiDataService)
 
   @Input() filter!: LibraryFilter
+  @Input() showSet = true
   readonly filterChange = output<LibraryFilter>()
 
   printOnDemandControl!: FormControl

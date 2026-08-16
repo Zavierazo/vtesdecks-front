@@ -13,6 +13,7 @@ export interface CollectionQueryState {
   sortBy: keyof ApiCollectionCard
   sortDirection: 'asc' | 'desc' | ''
   filters: [string, string | number | number[] | boolean | undefined][]
+  cardIds?: number[]
 }
 
 export interface CollectionState {

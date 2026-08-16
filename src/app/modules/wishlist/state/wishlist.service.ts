@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { ApiWishlistCard, ApiWishlistPage } from '@models'
+import { ApiWishlistCard, ApiWishlistPage, FILTER_CARD_TYPE } from '@models'
 import { Observable } from 'rxjs'
 import { WishlistQueryState, WishlistStore } from './wishlist.store'
 
@@ -43,6 +43,29 @@ export abstract class WishlistService {
     this.wishlistStore.updateQuery((query) => ({
       ...query,
       page,
+    }))
+  }
+
+  setCardIds(cardIds?: number[]): void {
+    this.wishlistStore.updateQuery((query) => ({
+      ...query,
+      page: 0, // Reset to first page when changing filters
+      cardIds,
+    }))
+  }
+
+  setCardTypeFilter(cardType?: string): void {
+    this.wishlistStore.updateQuery((query) => ({
+      ...query,
+      page: 0, // Reset to first page when changing filters
+      filters:
+        cardType !== undefined
+          ? [
+              ...query.filters.filter((f) => f[0] !== FILTER_CARD_TYPE),
+              [FILTER_CARD_TYPE, cardType],
+            ]
+          : query.filters.filter((f) => f[0] !== FILTER_CARD_TYPE),
+      cardIds: undefined,
     }))
   }
 
