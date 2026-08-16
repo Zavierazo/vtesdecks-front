@@ -1115,6 +1115,7 @@
     "name": "Nom",
     "type": "Type",
     "deckId": "ID du Deck",
+    "secondaryDeckId": "ID du Deck secondaire",
     "preview": "Aperçu",
     "icon": "Icône",
     "description": "Description",

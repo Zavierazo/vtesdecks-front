@@ -62,6 +62,7 @@ export class DeckMetagameModalComponent {
       name: [archetype?.name ?? ''],
       type: [archetype?.type ?? ''],
       deckId: [archetype?.deckId ?? ''],
+      secondaryDeckId: [archetype?.secondaryDeckId ?? ''],
       icon: [archetype?.icon ?? ''],
       description: [archetype?.description ?? ''],
       enabled: [archetype?.enabled ?? true],
@@ -75,6 +76,9 @@ export class DeckMetagameModalComponent {
 
     this.loading = true
     const payload = this.form.value as ApiDeckArchetype
+    if (!payload.secondaryDeckId) {
+      payload.secondaryDeckId = null
+    }
 
     const request$ = payload.id
       ? this.crud.update(payload)

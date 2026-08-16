@@ -1115,6 +1115,7 @@
     "name": "Name",
     "type": "Type",
     "deckId": "Deck ID",
+    "secondaryDeckId": "Secondary Deck ID",
     "preview": "Preview",
     "icon": "Icon",
     "description": "Description",
