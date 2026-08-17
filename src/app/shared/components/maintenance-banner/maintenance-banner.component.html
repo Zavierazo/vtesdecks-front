@@ -1,0 +1,20 @@
+@if (show) {
+  <div
+    class="alert alert-warning alert-dismissible fade show mb-0 rounded-0 border-0"
+    role="alert"
+  >
+    <div class="container">
+      <div
+        class="d-flex align-items-center justify-content-between gap-2 flex-wrap"
+      >
+        <span>{{ 'shared.maintenance_banner_message' | transloco }}</span>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="dismiss()"
+        ></button>
+      </div>
+    </div>
+  </div>
+}
