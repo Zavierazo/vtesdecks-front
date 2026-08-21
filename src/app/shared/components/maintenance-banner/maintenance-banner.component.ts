@@ -9,12 +9,10 @@ import {
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco'
 import { catchError, of } from 'rxjs'
 import { environment } from '@environments/environment'
-import { LocalStorageService } from '@services'
 
 /** Shape of the maintenance notice hosted on the CDN. */
 interface MaintenanceNotice {
   active?: boolean
-  id?: string
   start?: string
   end?: string
   hideAfter?: string
@@ -27,6 +25,10 @@ interface MaintenanceNotice {
  * file on the CDN, which is hosted separately from the API, so the banner still
  * works while the backend is offline. Unplanned outages are handled by the
  * toast in HttpMonitorInterceptor instead.
+ *
+ * Deliberately not dismissible: the same banner is reused for every window, so
+ * a dismissal would have to be tracked per notice and would still risk hiding a
+ * later announcement from users who dismissed an earlier one.
  */
 @Component({
   selector: 'app-maintenance-banner',
@@ -36,18 +38,14 @@ interface MaintenanceNotice {
 })
 export class MaintenanceBannerComponent implements OnInit {
   private readonly httpClient = inject(HttpClient)
-  private readonly localStorage = inject(LocalStorageService)
   private readonly translocoService = inject(TranslocoService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
-  private static readonly DISMISSED_KEY = 'maintenance_notice_dismissed'
   private static readonly DEFAULT_TIME_ZONE = 'Europe/Madrid'
   private static readonly NOTICE_URL = `${environment.cdnDomain}/maintenance.json`
 
   show = false
   params: Record<string, string> = {}
-
-  private noticeId?: string
 
   ngOnInit() {
     this.httpClient
@@ -58,14 +56,6 @@ export class MaintenanceBannerComponent implements OnInit {
       })
       .pipe(catchError(() => of(null)))
       .subscribe((notice) => this.applyNotice(notice))
-  }
-
-  dismiss() {
-    this.localStorage.setValue(
-      MaintenanceBannerComponent.DISMISSED_KEY,
-      this.noticeId,
-    )
-    this.show = false
   }
 
   private applyNotice(notice: MaintenanceNotice | null) {
@@ -81,13 +71,6 @@ export class MaintenanceBannerComponent implements OnInit {
     }
     // Expires on its own once the window has passed, no new upload needed
     if (isNaN(hideAfter.getTime()) || Date.now() >= hideAfter.getTime()) {
-      return
-    }
-    this.noticeId = notice.id ?? notice.start
-    const dismissed = this.localStorage.getValue<string>(
-      MaintenanceBannerComponent.DISMISSED_KEY,
-    )
-    if (dismissed === this.noticeId) {
       return
     }
     this.params = this.buildParams(notice, start, end)
