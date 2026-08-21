@@ -33,15 +33,22 @@ describe('WishlistApiDataService', () => {
     filters: [[FILTER_CARD_TYPE, 'library']],
   }
 
-  it('uses the legacy GET endpoint when cardIds is undefined', () => {
+  it('POSTs to /cards/search when cardIds is undefined', () => {
     const { service, http } = setup()
     service.getCards(baseQuery).subscribe()
 
     const request = http.expectOne(
-      (req) =>
-        req.method === 'GET' &&
-        req.url.startsWith(`${environment.api.baseUrl}/user/wishlist/cards`),
+      `${environment.api.baseUrl}/user/wishlist/cards/search`,
     )
+    expect(request.request.method).toBe('POST')
+    expect(request.request.body).toEqual({
+      page: 1,
+      size: 50,
+      sortBy: 'cardName',
+      sortDirection: 'desc',
+      filters: { cardType: 'library' },
+      cardIds: undefined,
+    })
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 
@@ -64,17 +71,15 @@ describe('WishlistApiDataService', () => {
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 
-  it('uses the public wishlist search endpoint when cardIds is set', () => {
+  it('always uses the public wishlist search endpoint', () => {
     const { service, http } = setup()
-    service
-      .getUserPublicWishlist('alice', { ...baseQuery, cardIds: [1, 2] })
-      .subscribe()
+    service.getUserPublicWishlist('alice', baseQuery).subscribe()
 
     const request = http.expectOne(
       `${environment.api.baseUrl}/collections/users/alice/wishlist/search`,
     )
     expect(request.request.method).toBe('POST')
-    expect(request.request.body.cardIds).toEqual([1, 2])
+    expect(request.request.body.cardIds).toBeUndefined()
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 })

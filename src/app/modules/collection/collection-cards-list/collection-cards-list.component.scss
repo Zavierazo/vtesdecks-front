@@ -16,6 +16,12 @@
   min-width: max-content;
 }
 
+.collection-results-column {
+  // Keep wide filtered tables inside the results column instead of making the
+  // Bootstrap flex row wrap below the advanced filters.
+  min-width: 0;
+}
+
 .notes-cell {
   max-width: 200px;
 }

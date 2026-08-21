@@ -76,14 +76,9 @@ export class CollectionApiDataService {
   }
 
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
-    if (query.cardIds !== undefined) {
-      return this.httpClient.post<ApiCollectionPage>(
-        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/search`,
-        this.buildSearchBody(query),
-      )
-    }
-    return this.httpClient.get<ApiCollectionPage>(
-      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards?${this.getQueryFilterParams(query)}`,
+    return this.httpClient.post<ApiCollectionPage>(
+      `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/search`,
+      this.buildSearchBody(query),
     )
   }
 
@@ -144,9 +139,11 @@ export class CollectionApiDataService {
     cards: ApiCollectionCard[],
   ): Observable<{ cards: ApiCollectionCard[]; deletedIds: number[] }> {
     return this.httpClient
-      .post<
-        ApiCollectionCard[]
-      >(`${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/bulk`, cards, { observe: 'response' })
+      .post<ApiCollectionCard[]>(
+        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/bulk`,
+        cards,
+        { observe: 'response' },
+      )
       .pipe(
         map((response: HttpResponse<ApiCollectionCard[]>) => {
           const deletedHeader = response.headers.get('X-Card-Deleted')
@@ -227,9 +224,11 @@ export class CollectionApiDataService {
       params.set('language', language)
     }
     return this.httpClient
-      .patch<
-        ApiCollectionCard[]
-      >(`${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${ids.join(',')}/bulk?${params.toString()}`, {}, { observe: 'response' })
+      .patch<ApiCollectionCard[]>(
+        `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/${ids.join(',')}/bulk?${params.toString()}`,
+        {},
+        { observe: 'response' },
+      )
       .pipe(
         map((response: HttpResponse<ApiCollectionCard[]>) => {
           const deletedHeader = response.headers.get('x-card-deleted')
@@ -293,14 +292,9 @@ export class CollectionApiDataService {
     publicHash: string,
     query: CollectionQueryState,
   ): Observable<ApiCollectionPage> {
-    if (query.cardIds !== undefined) {
-      return this.httpClient.post<ApiCollectionPage>(
-        `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards/search`,
-        this.buildSearchBody(query),
-      )
-    }
-    return this.httpClient.get<ApiCollectionPage>(
-      `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards?${this.getQueryFilterParams(query)}`,
+    return this.httpClient.post<ApiCollectionPage>(
+      `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards/search`,
+      this.buildSearchBody(query),
     )
   }
 
@@ -317,20 +311,5 @@ export class CollectionApiDataService {
       ),
       cardIds: query.cardIds,
     }
-  }
-
-  private getQueryFilterParams(query: CollectionQueryState): string {
-    const params = new URLSearchParams()
-    params.set('page', query.page.toString())
-    params.set('size', query.pageSize.toString())
-    params.set('sortBy', query.sortBy)
-    params.set('sortDirection', query.sortDirection)
-    query.filters.forEach((filter) => {
-      const [key, value] = filter
-      if (value !== undefined) {
-        params.append(key, value.toString())
-      }
-    })
-    return params.toString()
   }
 }

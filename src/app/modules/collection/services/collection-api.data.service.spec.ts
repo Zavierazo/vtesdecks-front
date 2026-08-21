@@ -36,17 +36,22 @@ describe('CollectionApiDataService', () => {
     ],
   }
 
-  it('uses the legacy GET endpoint when cardIds is undefined', () => {
+  it('POSTs to /cards/search when cardIds is undefined', () => {
     const { service, http } = setup()
     service.getCards(baseQuery).subscribe()
 
     const request = http.expectOne(
-      (req) =>
-        req.method === 'GET' &&
-        req.url.startsWith(`${environment.api.baseUrl}/user/collections/cards`),
+      `${environment.api.baseUrl}/user/collections/cards/search`,
     )
-    expect(request.request.url).toContain('cardType=crypt')
-    expect(request.request.url).not.toContain('search')
+    expect(request.request.method).toBe('POST')
+    expect(request.request.body).toEqual({
+      page: 0,
+      size: 20,
+      sortBy: 'cardName',
+      sortDirection: 'asc',
+      filters: { cardType: 'crypt' },
+      cardIds: undefined,
+    })
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 
@@ -80,17 +85,15 @@ describe('CollectionApiDataService', () => {
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 
-  it('uses the public binder search endpoint when cardIds is set', () => {
+  it('always uses the public binder search endpoint', () => {
     const { service, http } = setup()
-    service
-      .getPublicBinderCards('abc123', { ...baseQuery, cardIds: [1] })
-      .subscribe()
+    service.getPublicBinderCards('abc123', baseQuery).subscribe()
 
     const request = http.expectOne(
       `${environment.api.baseUrl}/collections/binders/abc123/cards/search`,
     )
     expect(request.request.method).toBe('POST')
-    expect(request.request.body.cardIds).toEqual([1])
+    expect(request.request.body.cardIds).toBeUndefined()
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })
 })

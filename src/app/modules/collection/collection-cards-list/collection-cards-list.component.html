@@ -112,7 +112,7 @@
       <app-card-advanced-filters cardType="library" (cardIdsChange)="onAdvancedCardIds($event)" />
     </div>
     }
-    <div [class]="(isMobileOrTablet$ | async) ? 'col-12' : 'col'">
+    <div class="collection-results-column" [class]="(isMobileOrTablet$ | async) ? 'col-12' : 'col'">
   <div class="table-responsive">
     @if(groupBy === null){
     <ng-container [ngTemplateOutlet]="listView"
