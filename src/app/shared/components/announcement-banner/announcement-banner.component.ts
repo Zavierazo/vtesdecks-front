@@ -6,9 +6,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core'
-import { TranslocoService } from '@jsverse/transloco'
-import { catchError, of } from 'rxjs'
 import { environment } from '@environments/environment'
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco'
+import { LocalStorageService } from '@services'
+import { catchError, of } from 'rxjs'
 import { DEFAULT_LANGUAGE } from '../../../transloco-root.module'
 
 /** Bootstrap contextual classes an announcement is allowed to render with. */
@@ -34,39 +35,49 @@ interface Announcement {
   message?: string | Record<string, string>
 }
 
+/** A dismissal older than this, or of a different notice, is ignored. */
+const DISMISSAL_DURATION_MS = 24 * 60 * 60 * 1000
+
+/** What the user dismissed, and when, so both can be checked on load. */
+interface Dismissal {
+  fingerprint: string
+  dismissedAt: number
+}
+
 /**
  * Renders a site-wide announcement (planned maintenance, downtime, any notice)
  * published as a static file on the CDN. The CDN is hosted separately from the
  * API, so the banner still works while the backend is offline, and publishing
  * a notice is a file upload rather than a release.
  *
- * Deliberately not dismissible: the same banner is reused for every notice, so
- * a stored dismissal would risk hiding a later announcement from users who
- * dismissed an earlier one.
+ * Dismissal is deliberately shallow: it is keyed to the announcement's content
+ * and lasts a single day, so the same banner reused for a later notice — or a
+ * still-relevant one on a later visit — is never permanently silenced.
  */
 @Component({
   selector: 'app-announcement-banner',
   templateUrl: './announcement-banner.component.html',
+  styleUrls: ['./announcement-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoPipe],
 })
 export class AnnouncementBannerComponent implements OnInit {
   private readonly httpClient = inject(HttpClient)
   private readonly translocoService = inject(TranslocoService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly localStorage = inject(LocalStorageService)
 
   private static readonly DEFAULT_TYPE: AnnouncementType = 'warning'
   private static readonly ANNOUNCEMENT_URL = `${environment.cdnDomain}/announcement.json`
+  private static readonly DISMISSED_KEY = 'announcement_dismissed'
 
+  private fingerprint?: string
   message?: string
   type: AnnouncementType = AnnouncementBannerComponent.DEFAULT_TYPE
 
   ngOnInit() {
     this.httpClient
-      .get<Announcement>(AnnouncementBannerComponent.ANNOUNCEMENT_URL, {
-        // Coarse cache buster: at most one origin fetch per 5 minutes, so the
-        // notice goes live quickly without needing cache headers on the CDN
-        params: { t: Math.floor(Date.now() / 300000) },
-      })
+      .get<Announcement>(AnnouncementBannerComponent.ANNOUNCEMENT_URL)
       .pipe(catchError(() => of(null)))
       .subscribe((announcement) => this.apply(announcement))
   }
@@ -80,9 +91,45 @@ export class AnnouncementBannerComponent implements OnInit {
       console.warn('Ignoring announcement without a message', announcement)
       return
     }
+    this.fingerprint = this.buildFingerprint(announcement)
+    if (this.wasDismissed(this.fingerprint)) {
+      return
+    }
     this.message = message
     this.type = this.resolveType(announcement.type)
     this.changeDetectorRef.markForCheck()
+  }
+
+  dismiss() {
+    if (this.fingerprint) {
+      this.localStorage.setValue<Dismissal>(
+        AnnouncementBannerComponent.DISMISSED_KEY,
+        { fingerprint: this.fingerprint, dismissedAt: Date.now() },
+      )
+    }
+    this.message = undefined
+  }
+
+  /**
+   * Identifies the notice itself rather than the rendered text, so switching
+   * language does not resurrect a banner the user already dismissed.
+   */
+  private buildFingerprint(announcement: Announcement): string {
+    return JSON.stringify([
+      announcement.type,
+      announcement.hideAfter,
+      announcement.message,
+    ])
+  }
+
+  private wasDismissed(fingerprint: string): boolean {
+    const dismissal = this.localStorage.getValue<Dismissal>(
+      AnnouncementBannerComponent.DISMISSED_KEY,
+    )
+    return (
+      dismissal?.fingerprint === fingerprint &&
+      Date.now() - dismissal.dismissedAt < DISMISSAL_DURATION_MS
+    )
   }
 
   /** Lets a notice take itself down without a new upload. */
