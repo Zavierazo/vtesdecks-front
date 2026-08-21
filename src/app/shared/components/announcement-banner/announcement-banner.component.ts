@@ -77,7 +77,12 @@ export class AnnouncementBannerComponent implements OnInit {
 
   ngOnInit() {
     this.httpClient
-      .get<Announcement>(AnnouncementBannerComponent.ANNOUNCEMENT_URL)
+      .get<Announcement>(AnnouncementBannerComponent.ANNOUNCEMENT_URL, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+        },
+      })
       .pipe(catchError(() => of(null)))
       .subscribe((announcement) => this.apply(announcement))
   }
