@@ -1,7 +1,7 @@
 [
   {
     "version": "2.76.0",
-    "date": "xxth August, 2026",
+    "date": "21th August, 2026",
     "changes": [
       "Filtering your <strong>Collection</strong> and <strong>Wishlist</strong> is now as powerful as browsing the card catalog: open the Crypt or Library tab and use the full <strong>Card filters</strong>: clan, capacity, group, disciplines, card type, sect, title, taints, card text, artist and more, including icon exclusion and the ALL / ANY toggles",
       "Minor bug fixes and performance improvements."
