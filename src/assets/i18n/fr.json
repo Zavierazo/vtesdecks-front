@@ -594,7 +594,7 @@
     "supporter": "Membre Patreon",
     "vtes_ai_chat": "Chat VTES AI",
     "new": "Nouveau",
-    "maintenance_banner_message": "⚠️ Maintenance programmée : vtesdecks.com sera indisponible le mardi 18 août de 06h00 à 07h00 CEST (~1 heure) en raison d'une maintenance de l'hébergeur. Aucune donnée ne sera perdue."
+    "maintenance_banner_message": "⚠️ Maintenance programmée : vtesdecks.com sera indisponible le {{ date }} de {{ start }} à {{ end }} ({{ timezone }}) en raison d'une maintenance de l'hébergeur. Aucune donnée ne sera perdue."
   },
   "game_timer": {
     "title": "Minuteur de partie",

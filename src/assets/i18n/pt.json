@@ -594,7 +594,7 @@
     "new": "Novo",
     "supporter": "Membro no Patreon",
     "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente.",
-    "maintenance_banner_message": "⚠️ Manutenção programada: vtesdecks.com estará indisponível na terça-feira, 18 de agosto, das 06:00 às 07:00 CEST (~1 hora) devido a manutenção do provedor de hospedagem. Nenhum dado será perdido."
+    "maintenance_banner_message": "⚠️ Manutenção programada: vtesdecks.com estará indisponível em {{ date }} das {{ start }} às {{ end }} ({{ timezone }}) devido a manutenção do provedor de hospedagem. Nenhum dado será perdido."
   },
   "game_timer": {
     "title": "Temporizador de partida",

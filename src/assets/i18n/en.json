@@ -594,7 +594,7 @@
     "supporter": "Patreon Member",
     "vtes_ai_chat": "VTES AI Chat",
     "new": "New",
-    "maintenance_banner_message": "⚠️ Scheduled maintenance: vtesdecks.com will be unavailable on Tuesday, Aug 18 from 06:00 to 07:00 CEST (~1 hour) due to hosting provider maintenance. No data will be lost."
+    "maintenance_banner_message": "⚠️ Scheduled maintenance: vtesdecks.com will be unavailable on {{ date }} from {{ start }} to {{ end }} ({{ timezone }}) due to hosting provider maintenance. No data will be lost."
   },
   "game_timer": {
     "title": "Game Timer",
