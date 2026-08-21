@@ -31,6 +31,7 @@ import { isChristmasSnow, isHalloween } from '../../../utils/vtes-utils'
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from '../footer/footer.component'
 import { HeaderComponent } from '../header/header.component'
+import { AnnouncementBannerComponent } from '../announcement-banner/announcement-banner.component'
 
 /**
  * Default application layout: header, footer and every app-level side effect
@@ -45,7 +46,12 @@ import { HeaderComponent } from '../header/header.component'
   // root and every page would change change-detection semantics app-wide
   // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [HeaderComponent, RouterOutlet, FooterComponent],
+  imports: [
+    HeaderComponent,
+    AnnouncementBannerComponent,
+    RouterOutlet,
+    FooterComponent,
+  ],
 })
 export class ShellComponent implements OnInit {
   private readonly authService = inject(AuthService)
