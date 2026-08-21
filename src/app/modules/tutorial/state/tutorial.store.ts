@@ -59,6 +59,13 @@ export class TutorialStore {
   private readonly pendingDragRef = signal<string | undefined>(undefined)
   readonly pendingDragRef$ = this.pendingDragRef.asReadonly()
 
+  /**
+   * Phone layouts: drag steps complete with a single tap on the source card
+   * instead of drag (or tap card + tap destination). Set from the viewport.
+   */
+  private readonly simplifiedDrag = signal(false)
+  readonly simplifiedDrag$ = this.simplifiedDrag.asReadonly()
+
   /** Shown as an interstitial when a new chapter begins. */
   private readonly chapterIntro = signal(false)
   readonly chapterIntro$ = this.chapterIntro.asReadonly()
@@ -141,8 +148,13 @@ export class TutorialStore {
     }
     if (advance.type === 'drag') {
       // Tap-tap fallback: tap the card, then tap the destination.
+      // On phones a single tap on the card completes the whole step.
       if (target === `card:${advance.ref}`) {
-        this.pendingDragRef.set(advance.ref)
+        if (this.simplifiedDrag()) {
+          this.advance()
+        } else {
+          this.pendingDragRef.set(advance.ref)
+        }
       } else if (
         this.pendingDragRef() === advance.ref &&
         target === advance.to
@@ -192,6 +204,10 @@ export class TutorialStore {
     }
   }
 
+  setSimplifiedDrag(value: boolean): void {
+    this.simplifiedDrag.set(value)
+  }
+
   dismissChapterIntro(): void {
     this.chapterIntro.set(false)
   }
@@ -214,7 +230,9 @@ export class TutorialStore {
       case 'click':
         return advance.target === target
       case 'drag':
-        return target === `card:${advance.ref}` || target === advance.to
+        return this.simplifiedDrag()
+          ? target === `card:${advance.ref}`
+          : target === `card:${advance.ref}` || target === advance.to
       case 'next':
         return (step.highlight ?? []).includes(target)
       default:

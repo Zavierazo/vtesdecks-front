@@ -65,18 +65,6 @@
           }
         </div>
       </div>
-      <button type="button" class="btn" [class.btn-outline-secondary]="!hasActiveFilters"
-        [class.btn-primary]="hasActiveFilters" (click)="onOpenFilters()">
-        <i class="bi bi-funnel"></i>
-        {{ t('filters') }}
-      </button>
-      @if(hasActiveFilters) {
-      <button type="button" class="btn btn-outline-secondary" (click)="onClearFilters()">
-        <i class="bi bi-x-circle"></i>
-        {{ t('reset') }}
-      </button>
-      }
-
     </div>
     <div class="d-flex justify-content-center justify-content-md-end gap-2">
       <div class="col-xs-3 col-sm-auto">
@@ -90,28 +78,6 @@
       </div>
     </div>
   </form>
-  @if(hasActiveFilters) {
-  <div class="mt-2">
-    <small class="text-muted">
-      <strong>{{ t('active_filters') }}: </strong>
-      @if(currentFilters.types && currentFilters.types.length) {
-      <span class="badge bg-secondary me-1">
-        {{ t('card_type') }}: {{ currentFilters.types.join(', ') }}
-      </span>
-      }
-      @if(currentFilters.clans && currentFilters.clans.length) {
-      <span class="badge bg-secondary me-1">
-        {{ t('clans') }}: {{ currentFilters.clans.join(', ') }}
-      </span>
-      }
-      @if(currentFilters.disciplines && currentFilters.disciplines.length) {
-      <span class="badge bg-secondary me-1">
-        {{ t('disciplines') }}: {{ currentFilters.disciplines.join(', ') }}
-      </span>
-      }
-    </small>
-  </div>
-  }
   <hr class="my-3 text-secondary">
   <ul class="nav nav-tabs">
     <li class="nav-item cursor-pointer">
@@ -122,14 +88,31 @@
     <li class="nav-item">
       <button class="nav-link" [ngClass]="{
           'active': (cardTypeFilter$ | async) === 'crypt'
-        }" (click)="onTabClick('crypt')">{{ t('crypt') }}</button>
+        }" (click)="onTabClick('crypt')">{{ t('crypt') }} <i class="bi bi-funnel"></i></button>
     </li>
     <li class="nav-item">
       <button class="nav-link" [ngClass]="{
           'active': (cardTypeFilter$ | async) === 'library'
-        }" (click)="onTabClick('library')">{{ t('library') }}</button>
+        }" (click)="onTabClick('library')">{{ t('library') }} <i class="bi bi-funnel"></i></button>
     </li>
   </ul>
+  @if((cardTypeFilter$ | async) === undefined) {
+  <small class="d-flex align-items-center gap-1 mt-2 text-muted">
+    <i class="bi bi-funnel"></i>
+    <span>{{ 'shared.card_filters_hint' | transloco }}</span>
+  </small>
+  }
+  <div class="row mt-2">
+    @if((cardTypeFilter$ | async) === 'crypt') {
+    <div [class]="(isMobileOrTablet$ | async) ? 'col-12' : 'col-3'">
+      <app-card-advanced-filters cardType="crypt" (cardIdsChange)="onAdvancedCardIds($event)" />
+    </div>
+    } @else if((cardTypeFilter$ | async) === 'library') {
+    <div [class]="(isMobileOrTablet$ | async) ? 'col-12' : 'col-3'">
+      <app-card-advanced-filters cardType="library" (cardIdsChange)="onAdvancedCardIds($event)" />
+    </div>
+    }
+    <div class="collection-results-column" [class]="(isMobileOrTablet$ | async) ? 'col-12' : 'col'">
   <div class="table-responsive">
     @if(groupBy === null){
     <ng-container [ngTemplateOutlet]="listView"
@@ -396,5 +379,7 @@
       </select>
     </div>
     }
+  </div>
+    </div>
   </div>
 </ng-container>

@@ -17,7 +17,15 @@
   </div>
 
   @if (presentCard$(); as present) {
-    <div class="t-card-present" data-cy="tutorial-card-present">
+    <div
+      class="t-card-present"
+      [class.t-card-present-clickable]="presentInteractive$()"
+      data-cy="tutorial-card-present"
+      [attr.role]="presentInteractive$() ? 'button' : null"
+      [attr.tabindex]="presentInteractive$() ? 0 : null"
+      (click)="onPresentCardClick()"
+      (keyup.enter)="onPresentCardClick()"
+    >
       <img [src]="present.url" [alt]="present.name" />
       <span class="t-card-present-name">{{ present.name }}</span>
     </div>

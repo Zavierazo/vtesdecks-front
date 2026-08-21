@@ -17,16 +17,17 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import {
   ApiWishlistCard,
   FILTER_CARD_NAME,
   FILTER_CARD_TYPE,
-  FILTER_CLANS,
-  FILTER_DISCIPLINES,
   FILTER_PRIORITY,
   FILTER_SET,
-  FILTER_TYPES,
 } from '@models'
 import {
   NgbDropdown,
@@ -47,13 +48,10 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
 import { isCryptId } from '@utils'
+import { CardAdvancedFiltersComponent } from '@deck-shared/card-advanced-filters/card-advanced-filters.component'
 import { catchError, debounceTime, EMPTY, switchMap, tap } from 'rxjs'
 import { CryptCardComponent } from '../../deck-shared/crypt-card/crypt-card.component'
 import { LibraryCardComponent } from '../../deck-shared/library-card/library-card.component'
-import {
-  CollectionFilters,
-  CollectionFiltersModalComponent,
-} from '../../collection/collection-filters-modal/collection-filters-modal.component'
 import { CollectionCardComponent } from '../../collection/collection-cards-list/collection-card/collection-card.component'
 import CollectionSetComponent from '../../collection/collection-cards-list/collection-set/collection-set.component'
 import { ConditionPipe } from '../../collection/pipes/condition.pipe'
@@ -94,6 +92,8 @@ import { WishlistQuery } from '../state/wishlist.query'
     ReactiveFormsModule,
     CollectionSetComponent,
     CurrencyPipe,
+    CardAdvancedFiltersComponent,
+    TranslocoPipe,
   ],
 })
 export class WishlistCardsListComponent implements OnInit, AfterViewInit {
@@ -131,10 +131,6 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
     priority: new FormControl<string | null>(null),
   })
   selectedCards = new FormArray<FormControl<boolean | null>>([])
-
-  // Advanced filters state
-  currentFilters: CollectionFilters = {}
-  hasActiveFilters = false
 
   @ViewChildren(WishlistSortableHeader)
   headers!: QueryList<WishlistSortableHeader>
@@ -203,18 +199,6 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
         this.form.get(controlName)?.patchValue(paramValue)
       }
     })
-
-    // Update filters if they exist in queryParams
-    const types = queryParams[FILTER_TYPES]
-    const clans = queryParams[FILTER_CLANS]
-    const disciplines = queryParams[FILTER_DISCIPLINES]
-    if (types || clans || disciplines) {
-      this.updateFilters({
-        types: types ? types.split(',') : undefined,
-        clans: clans ? clans.split(',') : undefined,
-        disciplines: disciplines ? disciplines.split(',') : undefined,
-      })
-    }
 
     // Update sortBy and sortDirection if they exist in queryParams
     const { sortBy, sortDirection } = queryParams
@@ -311,11 +295,11 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
   }
 
   onTabClick(tab: string) {
-    if (tab === 'all') {
-      this.wishlistService.setFilter(FILTER_CARD_TYPE)
-    } else {
-      this.wishlistService.setFilter(FILTER_CARD_TYPE, tab)
-    }
+    this.wishlistService.setCardTypeFilter(tab === 'all' ? undefined : tab)
+  }
+
+  onAdvancedCardIds(cardIds?: number[]) {
+    this.wishlistService.setCardIds(cardIds)
   }
 
   onNumberEdit(card: ApiWishlistCard, value: string | number) {
@@ -379,57 +363,11 @@ export class WishlistCardsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onOpenFilters() {
-    const modalRef = this.modalService.open(CollectionFiltersModalComponent, {
-      size: 'lg',
-      centered: true,
-    })
-    modalRef.componentInstance.initFilters(this.currentFilters)
-    modalRef.closed.subscribe((result: { filters?: CollectionFilters }) => {
-      if (result.filters) {
-        this.updateFilters(result.filters)
-      }
-    })
-  }
-
-  onClearFilters() {
-    this.updateFilters({})
-  }
-
   private getSelectedCards(): ApiWishlistCard[] {
     const cards = this.wishlistQuery.getAll()
     return this.selectedCards.controls
       .map((control, index) => (control.value ? cards[index] : null))
       .filter((card) => card !== undefined && card !== null)
-  }
-
-  private updateFilters(filters: CollectionFilters) {
-    this.currentFilters = filters
-    this.hasActiveFilters =
-      (this.currentFilters.types?.length ?? 0) > 0 ||
-      (this.currentFilters.clans?.length ?? 0) > 0 ||
-      (this.currentFilters.disciplines?.length ?? 0) > 0
-
-    // Update URL with new filters
-    this.updateQueryParams({
-      [FILTER_TYPES]: this.currentFilters.types?.join(','),
-      [FILTER_CLANS]: this.currentFilters.clans?.join(','),
-      [FILTER_DISCIPLINES]: this.currentFilters.disciplines?.join(','),
-    })
-
-    // Apply filters to wishlist service - send filter criteria, not card IDs
-    this.wishlistService.setFilter(
-      FILTER_TYPES,
-      this.currentFilters.types?.join(','),
-    )
-    this.wishlistService.setFilter(
-      FILTER_CLANS,
-      this.currentFilters.clans?.join(','),
-    )
-    this.wishlistService.setFilter(
-      FILTER_DISCIPLINES,
-      this.currentFilters.disciplines?.join(','),
-    )
   }
 
   private handleError(error: { status?: number; error?: string }): never {

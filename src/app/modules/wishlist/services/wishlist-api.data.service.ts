@@ -15,8 +15,9 @@ export class WishlistApiDataService {
   private static readonly publicCollectionsPath = '/collections'
 
   getCards(query: WishlistQueryState): Observable<ApiWishlistPage> {
-    return this.httpClient.get<ApiWishlistPage>(
-      `${environment.api.baseUrl}${WishlistApiDataService.wishlistPath}/cards?${this.getQueryFilterParams(query)}`,
+    return this.httpClient.post<ApiWishlistPage>(
+      `${environment.api.baseUrl}${WishlistApiDataService.wishlistPath}/cards/search`,
+      this.buildSearchBody(query),
     )
   }
 
@@ -60,25 +61,24 @@ export class WishlistApiDataService {
     username: string,
     query: WishlistQueryState,
   ): Observable<ApiWishlistPage | null> {
-    return this.httpClient.get<ApiWishlistPage | null>(
-      `${environment.api.baseUrl}${WishlistApiDataService.publicCollectionsPath}/users/${username}/wishlist?${this.getQueryFilterParams(query)}`,
+    return this.httpClient.post<ApiWishlistPage | null>(
+      `${environment.api.baseUrl}${WishlistApiDataService.publicCollectionsPath}/users/${username}/wishlist/search`,
+      this.buildSearchBody(query),
     )
   }
 
   // COMMON METHODS
 
-  private getQueryFilterParams(query: WishlistQueryState): string {
-    const params = new URLSearchParams()
-    params.set('page', query.page.toString())
-    params.set('size', query.pageSize.toString())
-    params.set('sortBy', query.sortBy)
-    params.set('sortDirection', query.sortDirection)
-    query.filters.forEach((filter) => {
-      const [key, value] = filter
-      if (value !== undefined) {
-        params.append(key, value.toString())
-      }
-    })
-    return params.toString()
+  private buildSearchBody(query: WishlistQueryState) {
+    return {
+      page: query.page,
+      size: query.pageSize,
+      sortBy: query.sortBy,
+      sortDirection: query.sortDirection,
+      filters: Object.fromEntries(
+        query.filters.filter(([, value]) => value !== undefined),
+      ),
+      cardIds: query.cardIds,
+    }
   }
 }

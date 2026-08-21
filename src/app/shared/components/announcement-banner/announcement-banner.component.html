@@ -1,0 +1,14 @@
+@if (message) {
+  <div
+    class="alert alert-{{ type }} alert-dismissible fade show text-center py-2 ps-3 ps-md-5 mb-0 rounded-0 border-0"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | transloco"
+      (click)="dismiss()"
+    ></button>
+  </div>
+}

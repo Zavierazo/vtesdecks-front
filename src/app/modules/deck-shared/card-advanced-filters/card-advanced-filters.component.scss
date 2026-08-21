@@ -1,0 +1,17 @@
+// Mirrors the /cards pages' desktop filter column (crypt-section.component.scss)
+.filters-desktop {
+  overflow-y: auto;
+  max-height: calc(100dvh - 65px);
+  max-height: calc(100vh - 65px);
+  position: sticky;
+  top: 65px;
+  direction: rtl;
+}
+
+.filters-desktop-container {
+  direction: ltr;
+  margin-bottom: 75px;
+  // Breathing room so sliders, floating labels and focus rings are not
+  // clipped by the scroll container.
+  padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+}

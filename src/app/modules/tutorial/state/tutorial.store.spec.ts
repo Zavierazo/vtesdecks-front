@@ -113,6 +113,21 @@ describe('TutorialStore', () => {
     expect(store.board$().you.ready[0].attachments).toHaveLength(1)
   })
 
+  it('simplified drag completes with a single tap on the card', () => {
+    const store = setup()
+    store.setSimplifiedDrag(true)
+    store.goToChapter(4) // ch5
+    store.next() // -> s2 drag blood doll onto Aline
+    // Only the source card is interactive; the destination does nothing.
+    expect(store.canInteract('card:you.aline')).toBe(false)
+    expect(store.canInteract('card:you.bloodDoll')).toBe(true)
+    store.clickTarget('card:you.aline')
+    expect(store.currentStep$().id).toBe('s2')
+    store.clickTarget('card:you.bloodDoll')
+    expect(store.currentStep$().id).toBe('s3')
+    expect(store.board$().you.ready[0].attachments).toHaveLength(1)
+  })
+
   it('choices run their branch and converge to the next main step', () => {
     const store = setup()
     store.goToChapter(4) // ch5

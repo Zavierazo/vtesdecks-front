@@ -6,9 +6,10 @@ import {
   inject,
   OnInit,
 } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
-import { SeoService } from '@services'
+import { MediaService, SeoService } from '@services'
 import { environment } from '@environments/environment'
 import { TUTORIAL_CARDS } from '../state/tutorial-cards.data'
 import { TutorialStore } from '../state/tutorial.store'
@@ -36,6 +37,10 @@ export class TutorialPlayComponent implements OnInit {
   private readonly router = inject(Router)
   readonly store = inject(TutorialStore)
 
+  private readonly isMobile$ = toSignal(inject(MediaService).observeMobile(), {
+    initialValue: false,
+  })
+
   readonly view$ = computed(() => this.store.currentStep$().view ?? 'board')
   readonly finished$ = computed(() => this.store.progress$().finished)
 
@@ -52,12 +57,40 @@ export class TutorialPlayComponent implements OnInit {
     }
   })
 
+  /**
+   * On steps that both present a card and wait for it to be clicked or
+   * dragged, the big presentation doubles as the click target so the player
+   * does not have to hunt for the small copy in the hand.
+   */
+  readonly presentInteractive$ = computed(() => {
+    const advance = this.store.currentStep$().advance
+    if (advance.type === 'click') {
+      return true
+    }
+    // Once the drag card is lifted, let clicks pass through again so the
+    // destination stays reachable even if the overlay covers it.
+    return (
+      advance.type === 'drag' && this.store.pendingDragRef$() === undefined
+    )
+  })
+
+  onPresentCardClick(): void {
+    const advance = this.store.currentStep$().advance
+    if (advance.type === 'click') {
+      this.store.clickTarget(advance.target)
+    } else if (advance.type === 'drag') {
+      this.store.clickTarget(`card:${advance.ref}`)
+    }
+  }
+
   constructor() {
     effect(() => {
       if (this.finished$()) {
         this.router.navigate(['/tutorial/resources'])
       }
     })
+    // Phones get the one-tap version of drag steps.
+    effect(() => this.store.setSimplifiedDrag(this.isMobile$()))
   }
 
   ngOnInit(): void {

@@ -34,6 +34,19 @@
   }
 }
 
+// When the presented card is itself the step's click target, it catches
+// clicks and pulses like any other actionable target.
+.t-card-present-clickable {
+  pointer-events: auto;
+  cursor: pointer;
+
+  img {
+    outline: 3px solid var(--bs-warning);
+    outline-offset: 2px;
+    animation: tutorial-target-pulse 1.1s ease-in-out infinite;
+  }
+}
+
 .t-card-present-name {
   font-weight: 700;
   font-size: 0.95rem;

@@ -4,6 +4,7 @@ import {
   ApiCollectionPage,
   FILTER_BINDER,
   FILTER_CARD_ID,
+  FILTER_CARD_TYPE,
   FILTER_SET,
 } from '@models'
 import { EMPTY, finalize, Observable, tap } from 'rxjs'
@@ -72,6 +73,29 @@ export abstract class CollectionService {
     }
   }
 
+  setCardIds(cardIds?: number[]): void {
+    this.collectionStore.updateQuery((query) => ({
+      ...query,
+      page: 0, // Reset to first page when changing filters
+      cardIds,
+    }))
+  }
+
+  setCardTypeFilter(cardType?: string): void {
+    this.collectionStore.updateQuery((query) => ({
+      ...query,
+      page: 0, // Reset to first page when changing filters
+      filters:
+        cardType !== undefined
+          ? [
+              ...query.filters.filter((f) => f[0] !== FILTER_CARD_TYPE),
+              [FILTER_CARD_TYPE, cardType],
+            ]
+          : query.filters.filter((f) => f[0] !== FILTER_CARD_TYPE),
+      cardIds: undefined,
+    }))
+  }
+
   toggleGroupCard(card: ApiCollectionCard): Observable<ApiCollectionPage> {
     if (card.groupItems) {
       this.collectionStore.updateGroupItems(card, undefined)
@@ -104,6 +128,8 @@ export abstract class CollectionService {
         sortBy: 'number',
         sortDirection: 'desc',
         filters,
+        // Keep the advanced card filter applied to expanded group rows
+        cardIds: this.collectionStore.getValue().query.cardIds,
       }).pipe(
         tap((data) =>
           this.collectionStore.updateGroupItems(card, data.content),

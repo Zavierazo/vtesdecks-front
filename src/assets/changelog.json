@@ -1,5 +1,14 @@
 [
   {
+    "version": "2.76.0",
+    "date": "21th August, 2026",
+    "changes": [
+      "Filtering your <strong>Collection</strong> and <strong>Wishlist</strong> is now as powerful as browsing the card catalog: open the Crypt or Library tab and use the full <strong>Card filters</strong>: clan, capacity, group, disciplines, card type, sect, title, taints, card text, artist and more, including icon exclusion and the ALL / ANY toggles",
+      "Improved the <strong>Learn to Play</strong> tutorial by fixing incorrect interactions and making it easier to use on mobile devices.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.75.0",
     "date": "18th July, 2026",
     "changes": [
@@ -7,8 +16,7 @@
       "Added <strong>Quick Reactions</strong> to decks and comments, making it easier to show appreciation, highlight great ideas, or give feedback with a single click. Decks use VTES-themed reactions, while comments include familiar emoji reactions.",
       "Want decks that are properly explained? The new <strong>Deck guide</strong> filter shows only decks that come with a thorough write-up or a gameplay video. Decks with a YouTube video also display a <i class=\"bi bi-youtube text-danger\"></i> icon on their deck card so you can spot them at a glance.",
       "The <strong>Table Seating</strong> tool now remembers your last shuffle: close the window or even the app and the seating arrangement will still be there when you come back.",
-      "Embed your decks anywhere! The new <strong>Embed</strong> option in the deck Export menu generates a snippet you can paste into any website, blog, or forum to display a live deck widget. Choose a dark, light, or auto theme, select which sections to display, customize its size, and hover over any card to preview its image.",
-      "Minor bug fixes and performance improvements."
+      "Embed your decks anywhere! The new <strong>Embed</strong> option in the deck Export menu generates a snippet you can paste into any website, blog, or forum to display a live deck widget. Choose a dark, light, or auto theme, select which sections to display, customize its size, and hover over any card to preview its image."
     ]
   },
   {

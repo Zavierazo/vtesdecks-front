@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  // The home hero pulls itself up 1rem to hug the header; hand that back so it
+  // starts below the notice instead of tucking its background under it.
+  margin-bottom: 1rem;
+  // Belt and braces for any other page whose first element pulls up: the hero
+  // is positioned, so a static banner would be painted underneath it.
+  position: relative;
+  z-index: 1;
+}
+
+// Bootstrap positions the dismiss button at the top with padding sized for a
+// default alert, so in this compact one it overflows below and lands on the
+// hero. Centre it on the banner instead, whatever the message's height.
+.btn-close {
+  top: 50%;
+  transform: translateY(-50%);
+  // Trimmed from Bootstrap's 1.25rem so the hit area fits the compact banner
+  // instead of spilling over the hero below it.
+  padding: 0.75rem 1rem;
+}
+
+// Mirrors the hero's own escape from the container gutter, so both run edge to
+// edge on mobile. The shorthand also clears the compensation above, which the
+// mobile hero does not need: its `margin` shorthand resets the negative pull.
+@media (max-width: 768px) {
+  :host {
+    margin: 0 calc(var(--bs-gutter-x) * -0.5);
+  }
+}

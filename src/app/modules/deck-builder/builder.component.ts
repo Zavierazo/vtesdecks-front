@@ -468,13 +468,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       scrollable: true,
     })
     modalRef.closed
-      .pipe(
-        untilDestroyed(this),
-        switchMap((deckId: string) =>
-          this.apiDataService.getDeckBuilder(deckId),
-        ),
-      )
-      .subscribe((deck) => {
+      .pipe(untilDestroyed(this))
+      .subscribe((deck: ApiDeckBuilder) => {
         this.deckBuilderService.cloneFrom(deck)
         this.onDeckLoaded()
         this.changeDetector.markForCheck()
@@ -487,7 +482,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
-          this.deckBuilderService.importDeck('AMARANTH', result),
+          this.deckBuilderService.applyImportedDeck(result),
         ),
         tap(() => this.onDeckLoaded()),
       )
@@ -508,7 +503,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .closed.pipe(
         untilDestroyed(this),
         switchMap((result) =>
-          this.deckBuilderService.importDeck('VDB', result),
+          this.deckBuilderService.applyImportedDeck(result),
         ),
         tap(() => this.onDeckLoaded()),
       )

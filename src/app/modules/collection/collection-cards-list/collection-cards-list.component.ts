@@ -23,18 +23,19 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import {
   ApiCollectionCard,
   ApiI18n,
   ApiSet,
   FILTER_CARD_NAME,
   FILTER_CARD_TYPE,
-  FILTER_CLANS,
-  FILTER_DISCIPLINES,
   FILTER_GROUP_BY,
   FILTER_SET,
-  FILTER_TYPES,
 } from '@models'
 import {
   NgbDropdown,
@@ -55,6 +56,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
 import { isCryptId, sortTrigramSimilarity } from '@utils'
+import { CardAdvancedFiltersComponent } from '@deck-shared/card-advanced-filters/card-advanced-filters.component'
 import {
   catchError,
   combineLatest,
@@ -71,10 +73,6 @@ import { LibraryCardComponent } from '../../deck-shared/library-card/library-car
 import { CardBinderModalComponent } from '../card-binder-modal/card-binder-modal.component'
 import { CardBulkEditModalComponent } from '../card-bulk-edit-modal/card-bulk-edit-modal.component'
 import { CardModalComponent } from '../card-modal/card-modal.component'
-import {
-  CollectionFilters,
-  CollectionFiltersModalComponent,
-} from '../collection-filters-modal/collection-filters-modal.component'
 import { CollectionHistoryComponent } from '../collection-history/collection-history.component'
 import {
   CollectionSortableHeader,
@@ -126,6 +124,8 @@ export interface SearchCard {
     CollectionSetComponent,
     NgTemplateOutlet,
     CurrencyPipe,
+    CardAdvancedFiltersComponent,
+    TranslocoPipe,
   ],
 })
 export class CollectionCardsListComponent implements OnInit, AfterViewInit {
@@ -167,10 +167,6 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
     groupBy: new FormControl<string | null>(null),
   })
   selectedCards = new FormArray<FormControl<boolean | null>>([])
-
-  // Advanced filters state
-  currentFilters: CollectionFilters = {}
-  hasActiveFilters = false
 
   @ViewChildren(CollectionSortableHeader)
   headers!: QueryList<CollectionSortableHeader>
@@ -239,18 +235,6 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
         this.form.get(controlName)?.patchValue(paramValue)
       }
     })
-
-    // Update filters if they exist in queryParams
-    const types = queryParams[FILTER_TYPES]
-    const clans = queryParams[FILTER_CLANS]
-    const disciplines = queryParams[FILTER_DISCIPLINES]
-    if (types || clans || disciplines) {
-      this.updateFilters({
-        types: types ? types.split(',') : undefined,
-        clans: clans ? clans.split(',') : undefined,
-        disciplines: disciplines ? disciplines.split(',') : undefined,
-      })
-    }
 
     // Update sortBy and sortDirection if they exist in queryParams
     const { sortBy, sortDirection } = queryParams
@@ -406,11 +390,11 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
   }
 
   onTabClick(tab: string) {
-    if (tab === 'all') {
-      this.collectionService.setFilter(FILTER_CARD_TYPE)
-    } else {
-      this.collectionService.setFilter(FILTER_CARD_TYPE, tab)
-    }
+    this.collectionService.setCardTypeFilter(tab === 'all' ? undefined : tab)
+  }
+
+  onAdvancedCardIds(cardIds?: number[]) {
+    this.collectionService.setCardIds(cardIds)
   }
 
   onNumberEdit(card: ApiCollectionCard, value: string | number) {
@@ -513,56 +497,10 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onOpenFilters() {
-    const modalRef = this.modalService.open(CollectionFiltersModalComponent, {
-      size: 'lg',
-      centered: true,
-    })
-    modalRef.componentInstance.initFilters(this.currentFilters)
-    modalRef.closed.subscribe((result: { filters?: CollectionFilters }) => {
-      if (result.filters) {
-        this.updateFilters(result.filters)
-      }
-    })
-  }
-
-  onClearFilters() {
-    this.updateFilters({})
-  }
-
   private getSelectedCards(): ApiCollectionCard[] {
     const cards = this.collectionQuery.getAll()
     return this.selectedCards.controls
       .map((control, index) => (control.value ? cards[index] : null))
       .filter((card) => card !== undefined && card !== null)
-  }
-
-  private updateFilters(filters: CollectionFilters) {
-    this.currentFilters = filters
-    this.hasActiveFilters =
-      (this.currentFilters.types?.length ?? 0) > 0 ||
-      (this.currentFilters.clans?.length ?? 0) > 0 ||
-      (this.currentFilters.disciplines?.length ?? 0) > 0
-
-    // Update URL with new filters
-    this.updateQueryParams({
-      [FILTER_TYPES]: this.currentFilters.types?.join(','),
-      [FILTER_CLANS]: this.currentFilters.clans?.join(','),
-      [FILTER_DISCIPLINES]: this.currentFilters.disciplines?.join(','),
-    })
-
-    // Apply filters to collection service - send filter criteria, not card IDs
-    this.collectionService.setFilter(
-      FILTER_TYPES,
-      this.currentFilters.types?.join(','),
-    )
-    this.collectionService.setFilter(
-      FILTER_CLANS,
-      this.currentFilters.clans?.join(','),
-    )
-    this.collectionService.setFilter(
-      FILTER_DISCIPLINES,
-      this.currentFilters.disciplines?.join(','),
-    )
   }
 }

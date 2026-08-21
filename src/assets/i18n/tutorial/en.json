@@ -13,7 +13,8 @@
     "exit": "Exit to menu",
     "rival_turn": "Rival's turn",
     "hint_click": "Click the highlighted element",
-    "hint_drag": "Click the card, then click its destination",
+    "hint_drag": "Drag the card onto its target, or click the card and then the target",
+    "hint_drag_mobile": "Tap the glowing card to play it",
     "chapter_progress": "Chapter {{current}}/{{total}}",
     "start_chapter": "Start chapter"
   },
@@ -172,7 +173,7 @@
   },
   "ch5": {
     "s1": "Your turn. Unlock phase: nothing is locked, Aline has not acted yet.",
-    "s2": "MASTER PHASE: play BLOOD DOLL, a master that attaches to one of your vampires and can move 1 blood between her and your pool every master phase. Click Blood Doll in your hand, then click Aline.",
+    "s2": "MASTER PHASE: play BLOOD DOLL, a master that attaches to one of your vampires and can move 1 blood between her and your pool every master phase. ATTACH the Blood Doll to Aline.",
     "s3": "Blood Doll is attached, and it could even be used right now, in this same master phase. Aline is at full blood though, so save it. Notice you drew a new card: whenever you play a card, you draw back up to 7.",
     "s4": "MINION PHASE: Aline can take one action. Basic actions like BLEED or HUNT need no card at all: any ready vampire can do them. Click Aline.",
     "s5": "What should Aline do?",
@@ -216,7 +217,7 @@
     "s3": "You gain 1 pool. Small, steady income like this wins long games.",
     "s3b": "You may also play your one master card of the turn. ANARCH TROUBLEMAKER is a master that stays in play instead of attaching to a vampire. Click it in your hand.",
     "s3c": "It stands in your ready region, in play but attached to nobody. Masters like this wait on the table until the right moment. Keep it in mind.",
-    "s4": "MINION PHASE: give Aline a weapon. Equipping is an action. The .44 MAGNUM costs 2 pool, strikes for 2 damage at any range and grants a maneuver each combat. Click the gun, then click Aline.",
+    "s4": "MINION PHASE: give Aline a weapon. Equipping is an action. The .44 MAGNUM costs 2 pool, strikes for 2 damage at any range and grants a maneuver each combat. EQUIP Aline with the Magnum.",
     "s5": "Nash is locked and wounded, so there is no block. Aline locks, pays 2 pool and takes the gun. You draw a new card.",
     "s6": "Equipment stays in play. In her next combat, the Magnum strikes for 2 damage, even at long range.",
     "s7": "INFLUENCE PHASE: 4 transfers to finish paying for Leumeah. Click her.",
@@ -255,7 +256,7 @@
   },
   "ch10": {
     "s1": "Same game, a few turns later. Everyone rebuilt: Blood Doll and hunting refilled your side, and Nash is back to 6 blood. Time to remove him for good, and to fight a combat in full detail. Watch the tracker above the board: every ROUND has a RANGE, STRIKE and PRESS step.",
-    "s1b": "MASTER PHASE first. Aline only has basic Celerity, so she cannot use the strong version of some cards. Play the CELERITY master card on her: it adds a level of Celerity (and 1 capacity). Drag it onto Aline.",
+    "s1b": "MASTER PHASE first. Aline only has basic Celerity, so she cannot use the strong version of some cards. Play the CELERITY master card on her: it adds a level of Celerity (and 1 capacity). ATTACH it to Aline.",
     "s1c": "Aline now has SUPERIOR Celerity. That unlocks the bold text of Celerity cards, which matters in a moment. You draw a replacement card too.",
     "s2": "MINION PHASE. Aline bleeds your rival — a bleed always targets the Methuselah, never a vampire. Click her.",
     "s3": "Nash BLOCKS this time. Both vampires lock, and combat begins.",

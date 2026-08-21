@@ -75,6 +75,16 @@
         </a>
       </div>
 
+      <div class="mb-2">
+        <label class="form-label" for="secondaryDeckId">{{ t('secondaryDeckId') }}</label>
+        <input id="secondaryDeckId" class="form-control" formControlName="secondaryDeckId" />
+        @if (form.value.secondaryDeckId) {
+        <a class="text-decoration-none" [href]="'/deck/' + form.value.secondaryDeckId" target="_blank"
+          rel="noopener noreferrer">
+          {{ t('preview') }}
+        </a>
+        }
+      </div>
 
       <div class="mb-2">
         <app-markdown-textarea [control]="descriptionControl" [placeholder]="t('description_placeholder')"

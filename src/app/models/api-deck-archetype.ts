@@ -7,6 +7,7 @@ export interface ApiDeckArchetype {
   type: string
   description?: string
   deckId: string
+  secondaryDeckId?: string | null
   enabled: boolean
   deckCount: number
   metaCount: number
