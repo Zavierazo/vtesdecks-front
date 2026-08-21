@@ -40,6 +40,7 @@ const initialState: CollectionState = {
 })
 export class CollectionStore {
   static readonly storeName = 'collection'
+  private context?: string
   private readonly state = signal<CollectionState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly entities = signal<ApiCollectionCard[]>([])
@@ -73,10 +74,15 @@ export class CollectionStore {
     return this.loadingBackground()
   }
 
-  reset(): void {
+  reset(context?: string): void {
+    this.context = context
     this.state.update(() => initialState)
     this.entities.update(() => [])
     this.loading.update(() => false)
+  }
+
+  isContext(context: string): boolean {
+    return this.context === context
   }
 
   setLoading(value = false) {

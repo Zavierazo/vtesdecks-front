@@ -10,7 +10,7 @@ import {
   FILTER_BINDER,
 } from '@models'
 import { CollectionCardStatsService } from '../../../services/collection-card-stats.service'
-import { finalize, map, Observable, switchMap, tap } from 'rxjs'
+import { EMPTY, filter, finalize, map, Observable, switchMap, tap } from 'rxjs'
 import { CollectionApiDataService } from '../services/collection-api.data.service'
 import { CollectionService } from './collection.service'
 import { CollectionQueryState } from './collection.store'
@@ -19,18 +19,22 @@ import { CollectionQueryState } from './collection.store'
   providedIn: 'root',
 })
 export class CollectionPrivateService extends CollectionService {
+  private static readonly context = 'private'
   private readonly collectionApiDataService = inject(CollectionApiDataService)
   private readonly collectionCardStatsService = inject(
     CollectionCardStatsService,
   )
 
   initialize(binderId?: number): Observable<ApiCollection> {
-    this.collectionStore.reset()
+    this.collectionStore.reset(CollectionPrivateService.context)
     this.collectionStore.setLoading(true)
     if (binderId) {
       this.setFilter(FILTER_BINDER, binderId)
     }
     return this.collectionApiDataService.getCollection().pipe(
+      filter(() =>
+        this.collectionStore.isContext(CollectionPrivateService.context),
+      ),
       tap((data) => {
         this.collectionStore.update((state) => ({
           ...state,
@@ -39,14 +43,24 @@ export class CollectionPrivateService extends CollectionService {
           modificationDate: data.modificationDate,
         }))
       }),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => {
+        if (this.collectionStore.isContext(CollectionPrivateService.context)) {
+          this.collectionStore.setLoading(false)
+        }
+      }),
     )
   }
 
   fetchCards(): Observable<ApiCollectionPage> {
+    if (!this.collectionStore.isContext(CollectionPrivateService.context)) {
+      return EMPTY
+    }
     const query = this.collectionStore.getValue().query
     this.collectionStore.setLoading(true)
     return this.collectionApiDataService.getCards(query).pipe(
+      filter(() =>
+        this.collectionStore.isContext(CollectionPrivateService.context),
+      ),
       tap((data) => {
         this.collectionStore.update((state) => ({
           ...state,
@@ -55,12 +69,25 @@ export class CollectionPrivateService extends CollectionService {
         }))
         this.collectionStore.setEntities(data.content)
       }),
-      finalize(() => this.collectionStore.setLoading(false)),
+      finalize(() => {
+        if (this.collectionStore.isContext(CollectionPrivateService.context)) {
+          this.collectionStore.setLoading(false)
+        }
+      }),
     )
   }
 
   getCards(query: CollectionQueryState): Observable<ApiCollectionPage> {
-    return this.collectionApiDataService.getCards(query)
+    if (!this.collectionStore.isContext(CollectionPrivateService.context)) {
+      return EMPTY
+    }
+    return this.collectionApiDataService
+      .getCards(query)
+      .pipe(
+        filter(() =>
+          this.collectionStore.isContext(CollectionPrivateService.context),
+        ),
+      )
   }
 
   getCardHistory(
