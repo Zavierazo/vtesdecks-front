@@ -31,7 +31,7 @@ import { isChristmasSnow, isHalloween } from '../../../utils/vtes-utils'
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from '../footer/footer.component'
 import { HeaderComponent } from '../header/header.component'
-import { MaintenanceBannerComponent } from '../maintenance-banner/maintenance-banner.component'
+import { AnnouncementBannerComponent } from '../announcement-banner/announcement-banner.component'
 
 /**
  * Default application layout: header, footer and every app-level side effect
@@ -48,7 +48,7 @@ import { MaintenanceBannerComponent } from '../maintenance-banner/maintenance-ba
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     HeaderComponent,
-    MaintenanceBannerComponent,
+    AnnouncementBannerComponent,
     RouterOutlet,
     FooterComponent,
   ],

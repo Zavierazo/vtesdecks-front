@@ -593,8 +593,7 @@
     "supporter": "Miembro en Patreon",
     "vtes_ai_chat": "Chat IA de VTES",
     "new": "Nuevo",
-    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo.",
-    "maintenance_banner_message": "⚠️ Mantenimiento programado: vtesdecks.com no estará disponible el {{ date }} de {{ start }} a {{ end }} ({{ timezone }}) por mantenimiento del proveedor de alojamiento. No se perderá ningún dato."
+    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo."
   },
   "game_timer": {
     "title": "Temporizador de partida",
