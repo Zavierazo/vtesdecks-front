@@ -13,6 +13,7 @@ import {
   DeckLibrarySortBy,
   LibraryFilter,
 } from '@models'
+import { CardReleaseStatusService } from '@services'
 import {
   isCrypt,
   isLibrary,
@@ -32,6 +33,7 @@ export class DeckBuilderQuery {
   private readonly store = inject(DeckBuilderStore)
   private libraryQuery = inject(LibraryQuery)
   private cryptQuery = inject(CryptQuery)
+  private readonly cardReleaseStatus = inject(CardReleaseStatusService)
 
   selectDeckId(): Observable<string | undefined> {
     return this.store.select((state) => state.id)
@@ -39,6 +41,10 @@ export class DeckBuilderQuery {
 
   selectCards(): Observable<ApiCard[]> {
     return this.store.select((state) => state.cards)
+  }
+
+  selectUnreleasedCardCount(): Observable<number> {
+    return this.cardReleaseStatus.selectUnreleasedCopyCount(this.selectCards())
   }
 
   selectSuggestedCards(): Observable<

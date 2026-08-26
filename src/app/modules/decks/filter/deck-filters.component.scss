@@ -5,7 +5,9 @@
   cursor: pointer;
 
   &.active {
+    background: rgba(var(--bs-primary-rgb), 0.16);
     border-color: rgba(var(--bs-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.15rem rgba(var(--bs-primary-rgb), 0.12);
   }
 
   &:hover {
@@ -14,5 +16,16 @@
     color: var(--bs-primary);
     transform: translateY(-1px);
     opacity: 1 !important;
+  }
+}
+.spoiler-tag {
+  color: #fff !important;
+  background: #6f42c1;
+  border: 1px solid #6f42c1;
+
+  &.active {
+    background: #6f42c1;
+    border-color: #fff;
+    box-shadow: 0 0 0 0.15rem rgba(111, 66, 193, 0.35);
   }
 }

@@ -41,7 +41,9 @@
         @for (tag of tags; track tag) {
         <span
           class="tag-pill active d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
-          (click)="onDeselectTag(tag)">
+          [class.spoiler-tag]="tag === 'spoiler'" (click)="onDeselectTag(tag)"
+          (keydown.enter)="onDeselectTag(tag)" role="button" tabindex="0" [attr.aria-pressed]="true"
+          [attr.title]="tag === 'spoiler' ? ('deck_shared.spoiler_accessible' | transloco) : null">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
         }
@@ -57,6 +59,15 @@
           class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer opacity-50"
           (click)="onSelectTag('2player')">
           #{{ 'vtes.tags.2player' | transloco }}
+        </span>
+        }
+        @if(availableTags.includes('spoiler') && !tags.includes('spoiler')) {
+        <span
+          class="tag-pill spoiler-tag d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium cursor-pointer opacity-75"
+          (click)="onSelectTag('spoiler')" (keydown.enter)="onSelectTag('spoiler')" role="button" tabindex="0"
+          [attr.aria-label]="'deck_shared.spoiler_accessible' | transloco"
+          [attr.title]="'deck_shared.spoiler_accessible' | transloco">
+          #{{ 'vtes.tags.spoiler' | transloco }}
         </span>
         }
       </div>

@@ -1,12 +1,21 @@
 [
   {
+    "version": "2.77.0",
+    "date": "26th August, 2026",
+    "changes": [
+      "Added preview cards from Noites Brasileiras and Secrets of New York. New preview cards will be added as they are officially revealed. Remember that preview cards are not legal for tournament play until their official release.",
+      "Improved and unified how preview cards are highlighted across card lists, grids, card details and the proxy generator.",
+      "Decks containing preview cards now use the <strong>#spoiler</strong> tag.",
+      "The Deck Builder now displays a live warning when a deck contains unreleased cards, while still allowing it to be saved, published, exported and printed.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.76.0",
     "date": "21th August, 2026",
     "changes": [
       "Filtering your <strong>Collection</strong> and <strong>Wishlist</strong> is now as powerful as browsing the card catalog: open the Crypt or Library tab and use the full <strong>Card filters</strong>: clan, capacity, group, disciplines, card type, sect, title, taints, card text, artist and more, including icon exclusion and the ALL / ANY toggles",
-      "Improved the <strong>Learn to Play</strong> tutorial by fixing incorrect interactions and making it easier to use on mobile devices.",
-      "Added preview cards from Noites Brasileiras and Secrets of New York.",
-      "Minor bug fixes and performance improvements."
+      "Improved the <strong>Learn to Play</strong> tutorial by fixing incorrect interactions and making it easier to use on mobile devices."
     ]
   },
   {

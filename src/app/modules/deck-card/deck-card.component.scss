@@ -100,6 +100,30 @@
       color: var(--bs-primary);
       transform: translateY(-1px);
     }
+
+    &.tag-pill-spoiler {
+      color: #fff !important;
+      background: #6f42c1;
+      border-color: #6f42c1;
+
+      &:hover {
+        color: #fff !important;
+        background: #59359a;
+        border-color: #59359a;
+      }
+    }
+
+    &.tag-pill-filtered {
+      color: var(--bs-primary) !important;
+      background: rgba(var(--bs-primary-rgb), 0.12);
+      border-color: rgba(var(--bs-primary-rgb), 0.55);
+    }
+
+    &.tag-pill-spoiler.tag-pill-filtered {
+      color: #fff !important;
+      background: #6940b5;
+      border-color: rgba(255, 255, 255, 0.55);
+    }
   }
 
   .card-badge {

@@ -1,4 +1,5 @@
 export * from './api.data.service'
+export * from './card-release-status.service'
 export * from './color-theme.service'
 export * from './deck-archetype-crud.service'
 export * from './deck-history.service'

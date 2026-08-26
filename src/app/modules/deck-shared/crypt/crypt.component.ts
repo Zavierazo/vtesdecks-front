@@ -14,6 +14,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { drawProbability } from '@utils'
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
@@ -40,6 +41,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
     CollectionCardTrackerComponent,
     CollectionCardMiniStatsComponent,
     RecommendedBadgeComponent,
+    SpoilerBadgeComponent,
   ],
 })
 export class CryptComponent implements OnInit {

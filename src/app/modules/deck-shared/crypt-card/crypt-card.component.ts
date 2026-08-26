@@ -25,6 +25,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService, ToastService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CardTextPipe } from '@shared/pipes/card-text.pipe'
+import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { catchError, Observable } from 'rxjs'
@@ -50,6 +51,7 @@ import { CardInfoComponent } from '../card-info/card-info.component'
     CardInfoComponent,
     RouterLink,
     CurrencyPipe,
+    SpoilerBadgeComponent,
   ],
 })
 export class CryptCardComponent implements OnInit, AfterViewInit, OnDestroy {

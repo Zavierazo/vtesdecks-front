@@ -153,6 +153,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   limitedFormat$ = this.deckBuilderQuery.selectLimitedFormat()
   collectionTracker$ = this.deckBuilderQuery.selectCollection()
   loading$ = this.deckBuilderQuery.selectLoading()
+  spoilerCardCount$ = this.deckBuilderQuery.selectUnreleasedCardCount()
   isDeckEmpty$ = this.deckBuilderQuery
     .selectCards()
     .pipe(map((cards) => cards.every((card) => card.number <= 0)))

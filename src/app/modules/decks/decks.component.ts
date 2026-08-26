@@ -8,6 +8,7 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import {
   FormBuilder,
   FormControl,
@@ -73,6 +74,15 @@ export class DecksComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly mediaService = inject(MediaService)
   private readonly offcanvasService = inject(NgbOffcanvas)
+
+  readonly selectedTags = toSignal(
+    this.route.queryParamMap.pipe(
+      map((params) =>
+        (params.get('tags') ?? '').split(',').filter((tag) => tag.length > 0),
+      ),
+    ),
+    { initialValue: [] },
+  )
 
   decks$!: Observable<ApiDeck[]>
   restorableDecks$!: Observable<ApiDeck[]>

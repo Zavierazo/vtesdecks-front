@@ -164,6 +164,7 @@
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
     "already_saved": "Deck already saved!",
     "name_required": "Deck name is required",
+    "spoiler_warning": "This deck contains {{ count }} unreleased card copies and is not tournament legal. You can still publish it.",
     "invalid_public_deck": "Invalid deck, public decks requires valid deck composition",
     "deck_saved": "Deck saved successfully! You can now share it with your friends!!",
     "link_copied": "Link copied to clipboard",
@@ -248,6 +249,9 @@
     "recommended_tip": "Recommended copies for similar decks: {{ min }}–{{ max }}",
     "banned": "Banned",
     "unreleased": "Unreleased",
+    "spoiler": "Spoiler",
+    "spoiler_accessible": "Spoiler: unreleased card content",
+    "spoiler_unavailable": "Not available yet",
     "rulings": "Rulings",
     "changes": "Change History",
     "no_rulings": "No rulings available",
@@ -333,7 +337,8 @@
     "select_all": "Select All",
     "reset": "Reset",
     "add_crypt_card_placeholder": "Add Crypt card by name...",
-    "add_library_card_placeholder": "Add Library card by name..."
+    "add_library_card_placeholder": "Add Library card by name...",
+    "spoiler_warning": "Cards with a Spoiler badge are unreleased previews and are not legal for tournament play until their official release."
   },
   "filters": {
     "crypt_cards": "Crypt Cards",
@@ -843,6 +848,7 @@
       "mmpa": "mmpa",
       "v5": "v5",
       "2player": "2player",
+      "spoiler": "spoiler",
       "advent2025": "advent2025"
     },
     "taints": {

@@ -99,7 +99,10 @@ export class DeckFiltersComponent implements OnInit {
       .getDeckTags()
       .pipe(
         untilDestroyed(this),
-        tap((tags) => (this.availableTags = tags)),
+        tap((tags) => {
+          this.availableTags = tags
+          this.changeDetector.markForCheck()
+        }),
       )
       .subscribe()
     this.initFilterForm()

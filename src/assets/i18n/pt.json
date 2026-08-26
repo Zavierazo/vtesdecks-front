@@ -164,6 +164,7 @@
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",
     "already_saved": "Baralho já salvo!",
     "name_required": "O nome do baralho é obrigatório",
+    "spoiler_warning": "Este baralho contém {{ count }} cópias de cartas de prévia e não é válido para torneios. Ainda assim, pode publicá-lo.",
     "invalid_public_deck": "Baralho não público, não é possível compartilhar baralhos com cartões privados",
     "deck_saved": "Baralho salvo com sucesso! Você pode agora compartilhar com seus amigos!",
     "link_copied": "Link copiado para a área de transferência",
@@ -248,6 +249,9 @@
     "recommended_tip": "Cópias recomendadas para decks semelhantes: {{ min }}–{{ max }}",
     "banned": "Banida",
     "unreleased": "Não lançada",
+    "spoiler": "Spoiler",
+    "spoiler_accessible": "Prévia: conteúdo de uma carta ainda não publicada",
+    "spoiler_unavailable": "Ainda não disponível",
     "rulings": "Regras",
     "changes": "Histórico de Mudanças",
     "no_rulings": "Nenhuma regra disponível",
@@ -333,7 +337,8 @@
     "select_all": "Selecionar Todos",
     "reset": "Repor",
     "add_crypt_card_placeholder": "Adicionar carta de Cripta pelo nome...",
-    "add_library_card_placeholder": "Adicionar carta de Biblioteca pelo nome..."
+    "add_library_card_placeholder": "Adicionar carta de Biblioteca pelo nome...",
+    "spoiler_warning": "As cartas com o selo Spoiler são prévias ainda não publicadas e não são permitidas em torneios até o lançamento oficial."
   },
   "filters": {
     "crypt_cards": "Cartões de cripta",
@@ -843,6 +848,7 @@
       "mmpa": "mmpa",
       "v5": "v5",
       "2player": "2jogadores",
+      "spoiler": "spoiler",
       "advent2025": "advento2025"
     },
     "taints": {
