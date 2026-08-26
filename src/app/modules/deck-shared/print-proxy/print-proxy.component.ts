@@ -22,7 +22,11 @@ import {
   NgbTypeaheadSelectItemEvent,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, ToastService } from '@services'
+import {
+  ApiDataService,
+  CardReleaseStatusService,
+  ToastService,
+} from '@services'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import {
@@ -61,6 +65,7 @@ export interface ApiProxyItem {
   setOptions: ApiProxyCardOption[]
   setControl?: FormControl<string | null>
   languageLabel?: string
+  unreleased: boolean
 }
 
 @UntilDestroy()
@@ -85,11 +90,16 @@ export class PrintProxyComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
+  private readonly cardReleaseStatus = inject(CardReleaseStatusService)
 
   @Input() title?: string
   @Input() cards!: ApiCard[]
   loading$ = new BehaviorSubject<boolean>(false)
   cardList = signal<ApiProxyItem[]>([])
+
+  get hasUnreleasedCards(): boolean {
+    return this.cardList().some((card) => card.unreleased && card.amount > 0)
+  }
 
   ngOnInit() {
     const cardList: ApiProxyItem[] = []
@@ -101,6 +111,7 @@ export class PrintProxyComponent implements OnInit {
         amount: 0,
         maxAmount: card.number,
         setOptions: [],
+        unreleased: this.cardReleaseStatus.isUnreleased(card.id),
       }
       cardList.push(proxyCard)
     })
@@ -374,6 +385,7 @@ export class PrintProxyComponent implements OnInit {
       isLibrary: isLibraryId(item.id),
       amount: 1,
       setOptions: [],
+      unreleased: item.unreleased ?? false,
     }
     this.cardList.update((cardList) => [...cardList, proxyCard])
     this.apiDataService

@@ -98,7 +98,8 @@
           @if ((decks$ | async)!; as decks) {
           @for (deck of decks; track deck) {
           <div class="col-12 px-2">
-            <app-deck-card [deck]="deck" [enablePreview]="true" (tagClick)="onTagClick($event)" />
+            <app-deck-card [deck]="deck" [enablePreview]="true" [selectedTags]="selectedTags()"
+              (tagClick)="onTagClick($event)" />
           </div>
           }
           @if (!(isLoading$ | async)! && decks.length === 0) {

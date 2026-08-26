@@ -136,12 +136,16 @@
         </div>
       </div>
 
-      @if (deck.tags; as tags) {
+      @if (deck.tags?.length) {
       <div class="deck-tags text-center mb-1">
-        @for (tag of tags; track tag) {
+        @for (tag of displayedTags; track tag) {
         <span
           class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
-          (click)="onTagClick(tag, $event)" role="button" tabindex="0">
+          [class.tag-pill-spoiler]="tag === 'spoiler'" [class.tag-pill-filtered]="isTagSelected(tag)"
+          [attr.aria-label]="tag === 'spoiler' ? ('deck_shared.spoiler_accessible' | transloco) : null"
+          [attr.title]="tag === 'spoiler' ? ('deck_shared.spoiler_accessible' | transloco) : null"
+          [attr.aria-pressed]="isTagSelected(tag)" (click)="onTagClick(tag, $event)"
+          (keydown.enter)="onTagClick(tag, $event)" role="button" tabindex="0">
           #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
         </span>
         }

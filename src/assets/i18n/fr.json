@@ -164,6 +164,7 @@
     "deck_not_exists": "Le deck n'existe pas. Veuillez réessayer plus tard.",
     "already_saved": "Deck déjà enregistré !",
     "name_required": "Le nom du deck est requis",
+    "spoiler_warning": "Ce deck contient {{ count }} exemplaires de cartes d’avant-première et n’est pas légal en tournoi. Vous pouvez tout de même le publier.",
     "invalid_public_deck": "Deck invalide, les decks publics nécessitent une composition de deck valide",
     "deck_saved": "Deck enregistré avec succès ! Vous pouvez maintenant le partager avec vos amis !!",
     "link_copied": "Lien copié dans le presse-papiers",
@@ -248,6 +249,9 @@
     "recommended_tip": "Copies recommandées pour des decks similaires : {{ min }}–{{ max }}",
     "banned": "Banni",
     "unreleased": "Non publié",
+    "spoiler": "Spoiler",
+    "spoiler_accessible": "Avant-première : contenu d’une carte non publiée",
+    "spoiler_unavailable": "Pas encore disponible",
     "rulings": "Rulings",
     "changes": "Historique des modifications",
     "no_rulings": "Aucun ruling disponible",
@@ -333,7 +337,8 @@
     "select_all": "Tout sélectionner",
     "reset": "Réinitialiser",
     "add_crypt_card_placeholder": "Ajouter une carte de Crypte par nom...",
-    "add_library_card_placeholder": "Ajouter une carte de Bibliothèque par nom..."
+    "add_library_card_placeholder": "Ajouter une carte de Bibliothèque par nom...",
+    "spoiler_warning": "Les cartes portant le badge Spoiler sont des aperçus non publiés et ne sont pas légales en tournoi avant leur sortie officielle."
   },
   "filters": {
     "crypt_cards": "Cartes de Crypte",
@@ -843,6 +848,7 @@
       "mmpa": "mmpa",
       "v5": "v5",
       "2player": "2player",
+      "spoiler": "spoiler",
       "advent2025": "advent2025"
     },
     "taints": {

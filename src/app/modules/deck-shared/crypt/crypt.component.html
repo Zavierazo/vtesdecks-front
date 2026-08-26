@@ -95,9 +95,7 @@
           </span>
           }
           @if(crypt.unreleased){
-          <span class="ms-1 float-start badge text-bg-danger">
-            {{ 'deck_shared.unreleased' | transloco }}
-          </span>
+          <app-spoiler-badge class="ms-1 float-start" [compact]="true" />
           }
         </div>
       </div>

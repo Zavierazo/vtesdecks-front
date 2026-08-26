@@ -283,6 +283,17 @@
       </div>
     </section>
   </div>
+  @if (spoilerCardCount$ | async; as count) {
+    <ul
+      class="list-unstyled text-warning d-flex flex-column align-items-center justify-content-center mt-2"
+      role="status"
+    >
+      <li class="fw-bold text-center">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i
+        >&nbsp;{{ t('spoiler_warning', { count }) }}
+      </li>
+    </ul>
+  }
   <div class="col-12 mt-4">
     <div class="deck-section-header">
       <div class="deck-section-header__title">

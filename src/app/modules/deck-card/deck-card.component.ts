@@ -59,6 +59,7 @@ export class DeckCardComponent implements OnInit {
   deck = input.required<ApiDeck>()
   height = input<string>('160px')
   enablePreview = input<boolean>(false)
+  selectedTags = input<string[]>([])
 
   readonly tagClick = output<string>()
 
@@ -92,7 +93,7 @@ export class DeckCardComponent implements OnInit {
     this.decksService.setLastViewedDeckId(this.deck().id)
   }
 
-  onTagClick(tag: string, event: MouseEvent): void {
+  onTagClick(tag: string, event: Event): void {
     if (!this.isMobileOrTablet) {
       event.preventDefault()
       event.stopPropagation()
@@ -110,6 +111,24 @@ export class DeckCardComponent implements OnInit {
 
   get isSupporter(): boolean {
     return isSupporter(this.deck().user?.roles)
+  }
+
+  get displayedTags(): string[] {
+    const tags = this.deck().tags ?? []
+    const selectedTags = this.selectedTags()
+
+    if (selectedTags.length === 0) {
+      return tags
+    }
+
+    return [
+      ...tags.filter((tag) => selectedTags.includes(tag)),
+      ...tags.filter((tag) => !selectedTags.includes(tag)),
+    ]
+  }
+
+  isTagSelected(tag: string): boolean {
+    return this.selectedTags().includes(tag)
   }
 
   loadPreview(): void {

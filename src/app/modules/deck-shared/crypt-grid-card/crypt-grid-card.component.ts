@@ -13,6 +13,7 @@ import { ApiArchetypeKeyCard, ApiCard, ApiCrypt } from '@models'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
@@ -37,6 +38,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
     NgbTooltip,
     TranslocoPipe,
     RecommendedBadgeComponent,
+    SpoilerBadgeComponent,
   ],
 })
 export class CryptGridCardComponent implements OnInit {

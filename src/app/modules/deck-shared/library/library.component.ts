@@ -14,6 +14,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
+import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { LibraryQuery } from '@state/library/library.query'
 import { drawProbability } from '@utils'
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader'
@@ -41,6 +42,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
     CollectionCardTrackerComponent,
     CollectionCardMiniStatsComponent,
     RecommendedBadgeComponent,
+    SpoilerBadgeComponent,
   ],
 })
 export class LibraryComponent implements OnInit {

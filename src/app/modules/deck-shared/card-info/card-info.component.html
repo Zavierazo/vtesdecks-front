@@ -175,8 +175,9 @@
       </div>
     }
     @if (
-      cardInfo &&
-      (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0)
+      card().unreleased ||
+      (cardInfo &&
+        (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0))
     ) {
       <div class="card border-0 shadow-sm mt-3">
         <div
@@ -192,6 +193,7 @@
           >
             <span>
               <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
+              @if (!card().unreleased) {
               <span class="badge bg-dark ms-2">{{
                 cardInfo.preconstructedDecks.length + cardInfo.shopList.length
               }}</span>
@@ -204,6 +206,7 @@
                     {{ cardInfo.maxPrice | currency: cardInfo.currency }}
                   }
                 </span>
+              }
               }
             </span>
             <i
@@ -218,8 +221,11 @@
           [ngbCollapse]="shopsCollapsed"
           #shopsCollapse="ngbCollapse"
         >
+          @if (card().unreleased) {
+            <div class="text-muted text-center py-2">{{ t('spoiler_unavailable') }}</div>
+          }
           @for (
-            deck of cardInfo.preconstructedDecks;
+            deck of (card().unreleased ? [] : cardInfo.preconstructedDecks);
             track deck.id;
             let last = $last
           ) {
@@ -243,7 +249,7 @@
               </a>
             </div>
           }
-          @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
+          @for (shop of (card().unreleased ? [] : cardInfo.shopList); track shop.link; let last = $last) {
             <div
               class="d-flex align-items-center justify-content-between py-1 border-dark"
               [class.border-bottom]="!last"
@@ -278,7 +284,7 @@
               </a>
             </div>
           }
-          @if (cardInfo.hasMoreShops) {
+          @if (!card().unreleased && cardInfo.hasMoreShops) {
             <div class="text-center mt-2">
               <button
                 class="btn btn-sm btn-outline-primary"
@@ -297,7 +303,7 @@
               </button>
             </div>
           }
-          @if (hasEbayShops()) {
+          @if (!card().unreleased && hasEbayShops()) {
             <p class="text-muted small mt-2 mb-0" style="font-size: 0.8rem">
               <i class="bi bi-info-circle me-1"></i
               >{{ t('ebay_affiliate_disclosure') }}
