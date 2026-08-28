@@ -123,6 +123,8 @@
   --app-surface-2: #f4f6fb;
   --app-surface-rgb: 255, 255, 255;
   --app-ring: rgba(28, 109, 208, 0.18);
+  --app-spoiler-new: #f6d365;
+  --app-spoiler-new-width: 3px;
 }
 
 body[data-bs-theme='dark'] {
@@ -130,6 +132,8 @@ body[data-bs-theme='dark'] {
   --app-surface-2: #1c2230;
   --app-surface-rgb: 22, 27, 34;
   --app-ring: rgba(56, 139, 253, 0.28);
+  --app-spoiler-new: #f6d365;
+  --app-spoiler-new-width: 2px;
 }
 
 html,

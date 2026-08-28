@@ -70,6 +70,38 @@
             {{ 'home.learn_to_play_cta' | transloco }}
           </a>
         </div>
+        @if (newSpoilerDecks.length) {
+          <div
+            class="spoiler-banner mb-4"
+            role="region"
+            aria-labelledby="spoiler-banner-title"
+            aria-live="polite"
+          >
+            <div id="spoiler-banner-title" class="spoiler-banner-heading">
+              <i class="bi bi-eye-fill" aria-hidden="true"></i>
+              <span>
+                {{
+                  (newSpoilerDecks.length === 1
+                    ? 'home.spoiler_banner_title'
+                    : 'home.spoiler_banner_title_plural'
+                  ) | transloco
+                }}
+              </span>
+            </div>
+            @for (spoilerDeck of newSpoilerDecks; track spoilerDeck.id) {
+              <a
+                [routerLink]="'/deck/' + spoilerDeck.id"
+                class="spoiler-banner-row"
+              >
+                <span class="spoiler-deck-name">{{ spoilerDeck.name }}</span>
+                <span class="spoiler-new-badge">
+                  {{ 'home.spoiler_new_leaks' | transloco }}
+                </span>
+                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+              </a>
+            }
+          </div>
+        }
         <div class="hero-actions">
           <div class="row g-3 justify-content-center">
             <div class="col-6 col-md-3">

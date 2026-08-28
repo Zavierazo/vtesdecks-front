@@ -46,6 +46,7 @@ import {
   MediaService,
   PreviousRouteService,
   SeoService,
+  SpoilerVisitService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
@@ -148,6 +149,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
+  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   id!: string
 
@@ -215,6 +217,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         if (deck) {
+          if (deck.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')) {
+            this.spoilerVisitService.markDeckVisited(
+              deck.id,
+              this.authQuery.serverDate()() ?? new Date(),
+            )
+          }
           const deckDescription = deck.description
             ? `${deck.description.slice(0, 155)}…`
             : `${deck.name} by ${deck.author} – a VTES deck on VTESDecks.com.`

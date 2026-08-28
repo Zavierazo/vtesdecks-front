@@ -1,6 +1,7 @@
 @if(crypt$ | async; as crypt){
 <!-- eslint-disable-next-line -->
 <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
+  [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
   [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
   (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="background && {
     background: 'url('+ cdnDomain + crypt.cropImage + ') scroll',
@@ -95,7 +96,7 @@
           </span>
           }
           @if(crypt.unreleased){
-          <app-spoiler-badge class="ms-1 float-start" [compact]="true" />
+          <app-spoiler-badge class="ms-1 float-start" [compact]="true" [lastUpdate]="crypt.lastUpdate" />
           }
         </div>
       </div>

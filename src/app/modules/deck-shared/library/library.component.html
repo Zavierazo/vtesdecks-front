@@ -2,7 +2,7 @@
   @if (library$ | async; as library) {
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
-    [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+    [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)" [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
     (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="background && {
       background: 'url('+ cdnDomain + library.cropImage + ') scroll',
       'background-repeat': 'no-repeat',
@@ -97,7 +97,7 @@
         <span class="ms-1 float-start badge text-bg-danger">{{ t('banned') }}</span>
         }
         @if(library.unreleased){
-        <app-spoiler-badge class="ms-1 float-start" [compact]="true" />
+        <app-spoiler-badge class="ms-1 float-start" [compact]="true" [lastUpdate]="library.lastUpdate" />
         }
         @if (library.trifle) {
         <span class="badge rounded-pill bg-light text-body d-none d-sm-inline ms-1 float-start">

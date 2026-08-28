@@ -20,3 +20,9 @@
     1px -1px var(--bs-body-bg),
     -1px 1px var(--bs-body-bg);
 }
+
+.spoiler-new-card {
+  outline: var(--app-spoiler-new-width, 2px) solid
+    var(--app-spoiler-new, #f6d365);
+  outline-offset: -2px;
+}

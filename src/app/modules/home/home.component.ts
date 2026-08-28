@@ -8,10 +8,15 @@ import {
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoPipe } from '@jsverse/transloco'
-import { ApiChangelog, ApiHome } from '@models'
+import { ApiChangelog, ApiDeck, ApiHome } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, LocalStorageService, SeoService } from '@services'
+import {
+  ApiDataService,
+  LocalStorageService,
+  SeoService,
+  SpoilerVisitService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
@@ -56,11 +61,13 @@ export class HomeComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly localStorage = inject(LocalStorageService)
   private readonly seoService = inject(SeoService)
+  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   private static readonly CHANGELOG_ALERT_KEY = 'changelog_alert_version'
   private readonly appVersion = environment.appVersion
 
   deckHome?: ApiHome
+  newSpoilerDecks: ApiDeck[] = []
   changelogAlert?: ApiChangelog
   showChangelogAlert = false
   serverDate = this.authQuery.serverDate()
@@ -122,6 +129,9 @@ export class HomeComponent implements OnInit {
         switchMap(() => this.apiDataService.getDeckHome()),
         tap((result) => {
           this.deckHome = result
+          this.newSpoilerDecks = (result.spoilerDecks ?? []).filter((deck) =>
+            this.spoilerVisitService.hasNewSpoilers(deck.id, deck.modifyDate),
+          )
           this.changeDetector.markForCheck()
         }),
       )

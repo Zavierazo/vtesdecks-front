@@ -12,7 +12,7 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiArchetypeKeyCard, ApiCard, ApiCrypt } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy } from '@ngneat/until-destroy'
-import { MediaService } from '@services'
+import { MediaService, SpoilerVisitService } from '@services'
 import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
@@ -47,6 +47,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
 export class CryptComponent implements OnInit {
   private cryptQuery = inject(CryptQuery)
   private mediaService = inject(MediaService)
+  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   @Input() card!: ApiCard
 
@@ -95,6 +96,10 @@ export class CryptComponent implements OnInit {
   removeCard(event: MouseEvent) {
     event.preventDefault()
     this.cardRemoved.emit(this.card.id)
+  }
+
+  isNewSpoiler(lastUpdate: Date | string | undefined): boolean {
+    return this.spoilerVisitService.isNewCard(lastUpdate)
   }
 
   getDrawProbability(copy: number): number {

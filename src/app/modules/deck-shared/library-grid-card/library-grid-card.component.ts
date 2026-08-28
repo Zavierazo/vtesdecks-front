@@ -18,6 +18,7 @@ import { LibraryQuery } from '@state/library/library.query'
 import { drawProbability } from '@utils'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { Observable } from 'rxjs'
+import { SpoilerVisitService } from '@services'
 import { environment } from '@environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
@@ -52,6 +53,8 @@ export class LibraryGridCardComponent implements OnInit {
   readonly cardAdded = output<number>()
   readonly cardRemoved = output<number>()
 
+  private readonly spoilerVisitService = inject(SpoilerVisitService)
+
   cdnDomain = environment.cdnDomain
   library$!: Observable<ApiLibrary | undefined>
 
@@ -69,6 +72,10 @@ export class LibraryGridCardComponent implements OnInit {
       shadows.push(`${offset}px ${offset}px 0px rgba(0,0,0,0.4)`)
     }
     return shadows.join(', ')
+  }
+
+  isNewSpoiler(lastUpdate: Date | string | undefined): boolean {
+    return this.spoilerVisitService.isNewCard(lastUpdate)
   }
 
   getDrawProbability(copy: number): number {

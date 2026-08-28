@@ -22,11 +22,12 @@
     </div>
     }
     <img class="grid-img rounded mx-auto d-block img-fluid" [style.box-shadow]="stackedShadow"
+      [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)"
       [defaultImage]="'/assets/img/cardbacklibrary.jpg'" [lazyLoad]="library | cardImage"
       [errorImage]="cdnDomain + library.image" [alt]="library.i18n?.name ?? library.name" [offset]="100" />
     @if (library.unreleased) {
     <div class="spoiler-grid-badge">
-      <app-spoiler-badge [compact]="true" [stacked]="true" />
+      <app-spoiler-badge [compact]="true" [stacked]="true" [lastUpdate]="library.lastUpdate" />
     </div>
     }
     @if(library.banned){

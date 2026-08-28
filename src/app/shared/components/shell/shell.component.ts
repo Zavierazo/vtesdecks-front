@@ -20,11 +20,14 @@ import { environment } from '@environments/environment'
 import { ApiChangelog } from '../../../models/api-changelog'
 import { ApiDataService } from '../../../services/api.data.service'
 import { ColorThemeService } from '../../../services/color-theme.service'
+import { SpoilerVisitService } from '../../../services/spoiler-visit.service'
 import { ToastService } from '../../../services/toast.service'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
+import { CryptQuery } from '@state/crypt/crypt.query'
 import { CryptService } from '@state/crypt/crypt.service'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
+import { LibraryQuery } from '@state/library/library.query'
 import { LibraryService } from '@state/library/library.service'
 import { SetService } from '@state/set/set.service'
 import { isChristmasSnow, isHalloween } from '../../../utils/vtes-utils'
@@ -66,7 +69,10 @@ export class ShellComponent implements OnInit {
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
   private readonly cryptService = inject(CryptService)
+  private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryService = inject(LibraryService)
+  private readonly libraryQuery = inject(LibraryQuery)
+  private readonly spoilerVisitService = inject(SpoilerVisitService)
   private readonly setService = inject(SetService)
   private readonly deckBuilderService = inject(DeckBuilderService)
 
@@ -167,11 +173,33 @@ export class ShellComponent implements OnInit {
       this.addAdSenseScript()
     }
     // Fetch crypt, library and sets data
-    this.cryptService.getCryptCards().subscribe()
-    this.libraryService.getLibraryCards().subscribe()
+    this.cryptService.getCryptCards().subscribe(() => this.markSpoilersSeen())
+    this.libraryService
+      .getLibraryCards()
+      .subscribe(() => this.markSpoilersSeen())
     this.setService.getSets().subscribe()
     // Cleanup expired deck builder drafts
     this.deckBuilderService.cleanupExpiredDrafts()
+  }
+
+  /**
+   * Freezes which spoiler cards count as new: every card revealed after the
+   * previously known batch stays highlighted until a newer one shows up.
+   */
+  private markSpoilersSeen() {
+    const latestSpoilerUpdate = [
+      ...this.cryptQuery.getAll({}),
+      ...this.libraryQuery.getAll({}),
+    ].reduce((latest, card) => {
+      if (!card.unreleased || !card.lastUpdate) {
+        return latest
+      }
+      const timestamp = new Date(card.lastUpdate).getTime()
+      return Number.isNaN(timestamp) ? latest : Math.max(latest, timestamp)
+    }, 0)
+    if (latestSpoilerUpdate > 0) {
+      this.spoilerVisitService.markSpoilersSeen(new Date(latestSpoilerUpdate))
+    }
   }
 
   private handleNavigationEnd(evt: NavigationEnd) {

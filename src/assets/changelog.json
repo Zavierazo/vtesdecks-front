@@ -7,6 +7,8 @@
       "Improved and unified how preview cards are highlighted across card lists, grids, card details and the proxy generator.",
       "Decks containing preview cards now use the <strong>#spoiler</strong> tag.",
       "The Deck Builder now displays a live warning when a deck contains unreleased cards, while still allowing it to be saved, published, exported and printed.",
+      "The home page now links directly to the preconstructed decks tagged <strong>#spoiler</strong>, with a <strong>New leaks</strong> badge for every spoiler deck updated since your last visit.",
+      "Preview cards revealed since your last visit are now highlighted with a coloured outline and a marker on their <strong>Spoiler</strong> badge, both inside spoiler decks and while browsing the crypt, the library, the card details or the deck builder.",
       "Minor bug fixes and performance improvements."
     ]
   },

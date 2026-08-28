@@ -17,9 +17,9 @@ Features: card browser, TWD deck browser, deck builder, collection manager, prox
 
 | Concern | Tool/Version |
 |---|---|
-| Framework | Angular 21 (standalone components) |
-| Language | TypeScript 5.9 (strict mode) |
-| Styling | SCSS + Bootstrap via `@ng-bootstrap/ng-bootstrap` 20 |
+| Framework | Angular 22 (standalone components) |
+| Language | TypeScript 6 (strict mode) |
+| Styling | SCSS + Bootstrap via `@ng-bootstrap/ng-bootstrap` 21 |
 | i18n | `@jsverse/transloco` 8 |
 | Auth | JWT via `@auth0/angular-jwt`, Google OAuth |
 | State | Custom Signal-based store (no NgRx) |
@@ -27,7 +27,7 @@ Features: card browser, TWD deck browser, deck builder, collection manager, prox
 | Markdown | `ngx-markdown` + `marked` |
 | Errors | Sentry 10 |
 | Analytics | `ngx-google-analytics` |
-| Testing | Karma + Jasmine |
+| Testing | Vitest |
 | Deployment | Cloudflare Workers (Wrangler 4) |
 | PWA | `@angular/service-worker` |
 

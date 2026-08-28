@@ -2,6 +2,7 @@ import { ApiDeck } from './api-deck'
 
 export interface ApiHome {
   preConstructedTotal: number
+  spoilerDecks?: ApiDeck[] | null
   tournamentTotal: number
   communityTotal: number
   userTotal?: number

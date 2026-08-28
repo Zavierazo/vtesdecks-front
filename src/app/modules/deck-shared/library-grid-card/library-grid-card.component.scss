@@ -33,3 +33,9 @@
   visibility: visible;
   opacity: 1;
 }
+
+.spoiler-new-card {
+  outline: var(--app-spoiler-new-width, 2px) solid
+    var(--app-spoiler-new, #f6d365);
+  outline-offset: 1px;
+}

@@ -40,6 +40,78 @@
     opacity: 0.92;
   }
 
+  .spoiler-banner {
+    width: min(100%, 30rem);
+    margin-inline: auto;
+    color: white;
+    background: linear-gradient(
+      135deg,
+      rgba(94, 53, 160, 0.92),
+      rgba(70, 40, 126, 0.92)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 0.75rem;
+    box-shadow: 0 3px 10px rgba(40, 20, 80, 0.2);
+    overflow: hidden;
+  }
+
+  .spoiler-banner-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .spoiler-banner-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.75rem;
+    color: white;
+    font-size: 0.88rem;
+    text-decoration: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: white;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    &:focus-visible {
+      outline: 2px solid white;
+      outline-offset: -3px;
+    }
+  }
+
+  .spoiler-deck-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .spoiler-new-badge {
+    flex: 0 0 auto;
+    padding: 0.15rem 0.4rem;
+    color: #3a215f;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: #f6d365;
+    border-radius: 999px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
   .hero-actions {
     .hero-card {
       display: flex;
@@ -251,6 +323,11 @@
 
     h1 {
       font-size: 2rem;
+    }
+
+    .spoiler-banner-row,
+    .spoiler-banner-heading {
+      font-size: 0.82rem;
     }
 
     .hero-actions {

@@ -22,11 +22,12 @@
     </div>
     }
     <img class="grid-img rounded mx-auto d-block img-fluid" [style.box-shadow]="stackedShadow"
+      [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
       [defaultImage]="'/assets/img/cardbackcrypt.jpg'" [lazyLoad]="crypt | cardImage"
       [errorImage]="cdnDomain + crypt.image" [alt]="crypt.i18n?.name ?? crypt.name" [offset]="100" />
     @if (crypt.unreleased) {
     <div class="spoiler-grid-badge">
-      <app-spoiler-badge [compact]="true" [stacked]="true" />
+      <app-spoiler-badge [compact]="true" [stacked]="true" [lastUpdate]="crypt.lastUpdate" />
     </div>
     }
     @if(crypt.banned){
