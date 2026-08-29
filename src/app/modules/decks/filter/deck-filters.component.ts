@@ -88,6 +88,9 @@ export class DeckFiltersComponent implements OnInit {
   disciplineMode: 'and' | 'or' = 'and'
   paths!: string[]
   availableTags: string[] = []
+  //Tournaments are played as 2R+F or 3R+F, the final is never counted as a round
+  readonly availableRounds = [2, 3]
+  rounds: number[] = []
 
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
@@ -103,6 +106,7 @@ export class DeckFiltersComponent implements OnInit {
     this.clanMode = this.getCurrentMode('clanMode')
     this.disciplineMode = this.getCurrentMode('disciplineMode')
     this.paths = this.getCurrentPaths()
+    this.rounds = this.getCurrentRounds()
     this.apiDataService
       .getDeckTags()
       .pipe(
@@ -122,6 +126,7 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('limitedFormat')?.patchValue('', { emitEvent: false })
     this.filterForm.get('author')?.patchValue('', { emitEvent: false })
     this.filterForm.get('tournament')?.patchValue('', { emitEvent: false })
+    this.filterForm.get('place')?.patchValue('', { emitEvent: false })
     this.filterForm.get('cardText')?.patchValue('', { emitEvent: false })
     this.filterForm
       .get('singleDiscipline')
@@ -168,6 +173,7 @@ export class DeckFiltersComponent implements OnInit {
     this.clanMode = 'and'
     this.disciplineMode = 'and'
     this.paths = []
+    this.rounds = []
     this.cardFilter().reset()
     this.resetFilters.emit()
   }
@@ -211,6 +217,20 @@ export class DeckFiltersComponent implements OnInit {
   changeDisciplineMode(mode: 'and' | 'or') {
     this.disciplineMode = mode
     this.changeMatchMode('disciplineMode', mode)
+  }
+
+  isRoundSelected(round: number): boolean {
+    return this.rounds.includes(round)
+  }
+
+  toggleRound(round: number) {
+    this.rounds = this.isRoundSelected(round)
+      ? this.rounds.filter((value) => value !== round)
+      : [...this.rounds, round].sort((a, b) => a - b)
+    this.changeListFilter(
+      'rounds',
+      this.rounds.map((value) => `${value}`),
+    )
   }
 
   changePathFilter() {
@@ -293,6 +313,12 @@ export class DeckFiltersComponent implements OnInit {
     })
   }
 
+  private getCurrentRounds(): number[] {
+    return this.getCurrentList('rounds')
+      .map((round) => Number(round))
+      .filter((round) => this.availableRounds.includes(round))
+  }
+
   private getCurrentPaths(): string[] {
     const paths = this.decksQuery.getParam('paths')
     if (paths) {
@@ -307,6 +333,7 @@ export class DeckFiltersComponent implements OnInit {
     this.listenAndNavigateString(this.filterForm, 'limitedFormat', '', 500)
     this.listenAndNavigateString(this.filterForm, 'author', '', 500)
     this.listenAndNavigateString(this.filterForm, 'tournament', '', 500)
+    this.listenAndNavigateString(this.filterForm, 'place', '', 500)
     this.listenAndNavigateString(this.filterForm, 'cardText', '', 500)
     this.listenAndNavigateBoolean(this.filterForm, 'singleDiscipline', false)
     this.listenAndNavigateBoolean(this.filterForm, 'singleClan', false)

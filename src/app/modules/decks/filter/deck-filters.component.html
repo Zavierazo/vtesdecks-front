@@ -175,6 +175,20 @@
         </label>
         <ngx-slider id="players" [options]="{ floor: 10, ceil: 200, step: 1 }" formControlName="players" />
       </div>
+      <div class="col-12 mb-2">
+        <div id="roundsLabel" class="form-label text-secondary fw-bold">
+          {{ t('rounds') }}
+        </div>
+        <div class="btn-group btn-group-sm d-flex" role="group" aria-labelledby="roundsLabel">
+          @for (round of availableRounds; track round) {
+          <button type="button" class="btn" [class.btn-primary]="isRoundSelected(round)"
+            [class.btn-outline-secondary]="!isRoundSelected(round)" [attr.aria-pressed]="isRoundSelected(round)"
+            (click)="toggleRound(round)">
+            {{ round }}R+F
+          </button>
+          }
+        </div>
+      </div>
     </div>
     <label class="form-label text-secondary fw-bold">
       {{ t('library_cards') }}
@@ -260,6 +274,12 @@
         formControlName="tournament" />
       <label for="deckTournament" class="text-primary">
         <i class="bi bi-trophy me-2"></i> {{ t('tournament_name') }}
+      </label>
+    </div>
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="deckPlace" [placeholder]="t('place')" formControlName="place" />
+      <label for="deckPlace" class="text-primary">
+        <i class="bi bi-geo-alt me-2"></i> {{ t('place') }}
       </label>
     </div>
     <div class="form-floating">

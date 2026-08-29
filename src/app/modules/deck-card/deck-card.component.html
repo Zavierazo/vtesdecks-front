@@ -126,6 +126,22 @@
         </span>
       </div>
       }
+      @if (deck.place || deck.country || deck.rounds) {
+      <div class="tournament-info text-center fs-7 mb-1 small text-secondary">
+        <span class="d-inline-flex align-items-center flex-wrap justify-content-center gap-2">
+          @if (deck.place ?? deck.country; as place) {
+          <span [title]="place">
+            <i class="bi bi-geo-alt me-1"></i>{{ place | truncate: 30:true }}
+          </span>
+          }
+          @if (deck.rounds) {
+          <span>
+            <i class="bi bi-diagram-3 me-1"></i>{{ deck.rounds }}R+F
+          </span>
+          }
+        </span>
+      </div>
+      }
 
       <div class="deck-author-date text-center fs-7 mb-1 small text-secondary">
         <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">

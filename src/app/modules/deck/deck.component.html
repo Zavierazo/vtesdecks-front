@@ -92,6 +92,17 @@
                     @if (deck.players) {
                     <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
                     }
+                    @if (deck.rounds) {
+                    <span class="text-muted ms-1" [title]="t('rounds')">{{ deck.rounds }}R+F</span>
+                    }
+                  </p>
+                  }
+                  @if (deck.place || deck.country) {
+                  <p class="mb-1">
+                    <b>{{ t('place') }}: </b>
+                    <i class="bi bi-geo-alt me-1"></i>
+                    <!-- The place usually already ends with the country, fall back to it when missing -->
+                    {{ deck.place ?? deck.country }}
                   </p>
                   }
                   @if (deck.limitedFormat) {
