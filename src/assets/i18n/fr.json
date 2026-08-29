@@ -535,7 +535,19 @@
   "notification": {
     "title": "Notifications",
     "mark_all_read": "Tout marquer comme lu",
-    "no_notifications": "Vous êtes à jour !"
+    "no_notifications": "Vous êtes à jour !",
+    "push_title": "Notifications push",
+    "push_enabled": "Activées sur cet appareil.",
+    "push_disabled": "Désactivées sur cet appareil.",
+    "push_processing": "Mise à jour de votre préférence...",
+    "push_blocked": "Les notifications sont bloquées. Activez-les dans les paramètres du navigateur pour continuer.",
+    "push_unsupported": "Les notifications push ne sont pas prises en charge par ce navigateur ou cette installation.",
+    "push_unavailable": "Les notifications push sont actuellement indisponibles.",
+    "push_error": "La préférence de notifications push n'a pas pu être synchronisée. Veuillez réessayer.",
+    "push_prompt_title": "Activer les notifications push ?",
+    "push_prompt_message": "Recevez vos notifications VTESDecks sur cet appareil, même lorsque le site est fermé.",
+    "push_enable": "Activer",
+    "push_not_now": "Pas maintenant"
   },
   "page_not_found": {
     "danger_text": "Oups !",

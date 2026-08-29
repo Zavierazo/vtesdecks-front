@@ -3,6 +3,7 @@
     "version": "2.78.0",
     "date": "1st September, 2026",
     "changes": [
+      "Never miss a reply again: <strong>push notifications</strong> can now be enabled per device from the notifications panel, so you receive your VTESDecks notifications even when the website is closed. Turn them on or off anytime with the new switch.",
       "Deck browsing filters now let you choose <strong>ALL / ANY</strong> matching for clans and disciplines, right-click an icon (long-press on mobile) to exclude it, and search tournament decks by tournament name.",
       "Preconstructed decks now display their official cover artwork on deck pages and in deck lists when an image is available.",
       "Minor bug fixes and performance improvements."

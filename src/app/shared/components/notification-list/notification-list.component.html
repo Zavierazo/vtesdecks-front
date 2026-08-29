@@ -1,49 +1,130 @@
 <ng-container *transloco="let t; prefix: 'notification'">
   <div class="offcanvas-header">
     <h4 class="offcanvas-title" id="offcanvas-basic-title">{{ t('title') }}</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="offcanvas.dismiss()"
+    ></button>
   </div>
-  @if ((notifications$ | async); as notifications) {
-  <div class="offcanvas-body notification-container">
-    <div class="d-flex flex-column justify-content-center mb-3">
-      @if (notifications.length > 0) {
-      <button type="button" class="btn btn-outline-info btn-sm" (click)="readAll()">
-        {{ t('mark_all_read') }}
-      </button>
+  @if (notifications$ | async; as notifications) {
+    <div class="offcanvas-body notification-container">
+      <section
+        class="push-settings border rounded p-3 mb-3"
+        aria-labelledby="push-notification-label"
+      >
+        <div
+          class="form-check form-switch d-flex align-items-center justify-content-between ps-0 mb-1"
+        >
+          <label
+            class="form-check-label fw-semibold"
+            id="push-notification-label"
+            for="push-notification-switch"
+          >
+            {{ t('push_title') }}
+          </label>
+          <input
+            class="form-check-input ms-3"
+            type="checkbox"
+            role="switch"
+            id="push-notification-switch"
+            [checked]="pushNotificationService.enabled()"
+            [disabled]="!pushNotificationService.canToggle()"
+            (change)="togglePushNotifications($event)"
+          />
+        </div>
+        <p class="small text-muted mb-0">
+          @switch (pushNotificationService.status()) {
+            @case ('enabled') {
+              {{ t('push_enabled') }}
+            }
+            @case ('disabled') {
+              {{ t('push_disabled') }}
+            }
+            @case ('processing') {
+              {{ t('push_processing') }}
+            }
+            @case ('blocked') {
+              {{ t('push_blocked') }}
+            }
+            @case ('unsupported') {
+              {{ t('push_unsupported') }}
+            }
+            @case ('unavailable') {
+              {{ t('push_unavailable') }}
+            }
+            @case ('error') {
+              {{ t('push_error') }}
+            }
+          }
+        </p>
+      </section>
+      <div class="d-flex flex-column justify-content-center mb-3">
+        @if (notifications.length > 0) {
+          <button
+            type="button"
+            class="btn btn-outline-info btn-sm"
+            (click)="readAll()"
+          >
+            {{ t('mark_all_read') }}
+          </button>
+        }
+      </div>
+      @for (notification of notifications; track notification) {
+        @if (notification.type === 'LINK') {
+          <a
+            class="text-decoration-none text-black notification-list"
+            [ngClass]="{
+              'notification-list--unread': !notification.read,
+            }"
+            [href]="notification.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            (click)="
+              !notification.read ? read(notification.id) : offcanvas.close()
+            "
+          >
+            <div class="notification-list_content">
+              <div class="notification-list_detail">
+                <p [innerHTML]="notification.notification"></p>
+                <p class="text-muted">
+                  <small>{{ notification.creationDate | dateAsAgo }}</small>
+                </p>
+              </div>
+            </div>
+          </a>
+        }
+        @if (
+          notification.type === 'GLOBAL' ||
+          notification.type === 'DECK' ||
+          notification.type === 'COMMENT' ||
+          notification.type === 'REACTION'
+        ) {
+          <a
+            class="text-decoration-none text-black notification-list"
+            [ngClass]="{
+              'notification-list--unread': !notification.read,
+            }"
+            [routerLink]="notification.link"
+            (click)="
+              !notification.read ? read(notification.id) : offcanvas.close()
+            "
+          >
+            <div class="notification-list_content">
+              <div class="notification-list_detail">
+                <p [innerHTML]="notification.notification"></p>
+                <p class="text-muted">
+                  <small>{{ notification.creationDate | dateAsAgo }}</small>
+                </p>
+              </div>
+            </div>
+          </a>
+        }
+      }
+      @if (notifications.length === 0) {
+        <p class="text-center">{{ t('no_notifications') }}</p>
       }
     </div>
-    @for (notification of notifications; track notification) {
-    @if(notification.type === 'LINK'){
-    <a class="text-decoration-none text-black notification-list" [ngClass]="{
-      'notification-list--unread': !notification.read
-    }" [href]="notification.link" target="_blank" rel="noopener noreferrer"
-      (click)="!notification.read ? read(notification.id): offcanvas.close()">
-      <div class="notification-list_content">
-        <div class="notification-list_detail">
-          <p [innerHTML]="notification.notification"></p>
-          <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
-        </div>
-      </div>
-    </a>
-    }
-    @if(notification.type === 'GLOBAL'|| notification.type === 'DECK' || notification.type === 'COMMENT' ||
-    notification.type === 'REACTION'){
-    <a class="text-decoration-none text-black notification-list" [ngClass]="{
-      'notification-list--unread': !notification.read
-    }" [routerLink]="notification.link" (click)="!notification.read ? read(notification.id): offcanvas.close()">
-      <div class="notification-list_content">
-        <div class="notification-list_detail">
-          <p [innerHTML]="notification.notification"></p>
-          <p class="text-muted"><small>{{ notification.creationDate | dateAsAgo }}</small></p>
-        </div>
-      </div>
-    </a>
-    }
-    }
-    @if (notifications.length === 0) {
-    <p class="text-center">{{
-      t('no_notifications') }}</p>
-    }
-  </div>
   }
 </ng-container>

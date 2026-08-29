@@ -535,7 +535,19 @@
   "notification": {
     "title": "Notifications",
     "mark_all_read": "Mark all as read",
-    "no_notifications": "You're all caught up!"
+    "no_notifications": "You're all caught up!",
+    "push_title": "Push notifications",
+    "push_enabled": "Enabled on this device.",
+    "push_disabled": "Disabled on this device.",
+    "push_processing": "Updating your preference...",
+    "push_blocked": "Notifications are blocked. Enable them in your browser settings to continue.",
+    "push_unsupported": "Push notifications are not supported by this browser or installation.",
+    "push_unavailable": "Push notifications are currently unavailable.",
+    "push_error": "The push notification preference could not be synchronized. Please try again.",
+    "push_prompt_title": "Enable push notifications?",
+    "push_prompt_message": "Receive your VTESDecks notifications on this device, even when the website is closed.",
+    "push_enable": "Enable",
+    "push_not_now": "Not now"
   },
   "page_not_found": {
     "danger_text": "Opps!",

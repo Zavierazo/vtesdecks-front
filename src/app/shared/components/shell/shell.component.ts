@@ -21,6 +21,7 @@ import { ApiChangelog } from '../../../models/api-changelog'
 import { ApiDataService } from '../../../services/api.data.service'
 import { ColorThemeService } from '../../../services/color-theme.service'
 import { SpoilerVisitService } from '../../../services/spoiler-visit.service'
+import { PushNotificationService } from '../../../services/push-notification.service'
 import { ToastService } from '../../../services/toast.service'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
@@ -73,6 +74,7 @@ export class ShellComponent implements OnInit {
   private readonly libraryService = inject(LibraryService)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly spoilerVisitService = inject(SpoilerVisitService)
+  private readonly pushNotificationService = inject(PushNotificationService)
   private readonly setService = inject(SetService)
   private readonly deckBuilderService = inject(DeckBuilderService)
 

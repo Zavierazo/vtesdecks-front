@@ -535,7 +535,19 @@
   "notification": {
     "title": "Notificações",
     "mark_all_read": "Marcar todas como lidas",
-    "no_notifications": "Você está tudo bem!"
+    "no_notifications": "Está tudo em dia!",
+    "push_title": "Notificações push",
+    "push_enabled": "Ativadas neste dispositivo.",
+    "push_disabled": "Desativadas neste dispositivo.",
+    "push_processing": "Atualizando sua preferência...",
+    "push_blocked": "As notificações estão bloqueadas. Ative-as nas configurações do navegador para continuar.",
+    "push_unsupported": "Este navegador ou instalação não oferece suporte a notificações push.",
+    "push_unavailable": "As notificações push não estão disponíveis no momento.",
+    "push_error": "Não foi possível sincronizar a preferência de notificações push. Tente novamente.",
+    "push_prompt_title": "Ativar notificações push?",
+    "push_prompt_message": "Receba suas notificações do VTESDecks neste dispositivo, mesmo quando o site estiver fechado.",
+    "push_enable": "Ativar",
+    "push_not_now": "Agora não"
   },
   "page_not_found": {
     "danger_text": "Ops!",
