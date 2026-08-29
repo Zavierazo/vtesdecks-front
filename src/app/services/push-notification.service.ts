@@ -27,6 +27,7 @@ export class PushNotificationService {
 
   private readonly configured = signal(false)
   private readonly active = signal(false)
+  private readonly permission = signal<NotificationPermission>('default')
   private readonly busy = signal(false)
   private readonly failed = signal(false)
   private config: ApiPushConfig | null = null
@@ -34,11 +35,11 @@ export class PushNotificationService {
   private initialization: Promise<void> | null = null
 
   readonly ready = signal(false)
-  readonly enabled = computed(() => this.active())
+  readonly enabled = computed(() => this.status() === 'enabled')
   readonly status = computed<PushNotificationStatus>(() => {
     if (this.busy()) return 'processing'
     if (!this.isBrowserSupported()) return 'unsupported'
-    if (globalThis.Notification.permission === 'denied') return 'blocked'
+    if (this.permission() === 'denied') return 'blocked'
     if (!this.configured()) return 'unavailable'
     if (this.failed()) return 'error'
     return this.active() ? 'enabled' : 'disabled'
@@ -85,6 +86,29 @@ export class PushNotificationService {
     return this.initialization
   }
 
+  /**
+   * Reconciles the stored state with the browser and the backend. The backend
+   * expires a subscription as soon as a push is rejected by the provider, so
+   * the cached "enabled" state goes stale without any local event.
+   */
+  async refresh(): Promise<void> {
+    await this.initialize()
+    const user = this.authQuery.getUser()
+    if (!user || !this.isBrowserSupported() || this.busy()) return
+    this.syncPermission()
+    if (this.permission() === 'denied') {
+      this.active.set(false)
+      return
+    }
+    if (!this.configured()) return
+    this.busy.set(true)
+    try {
+      await this.reconcileSubscription(user)
+    } finally {
+      this.busy.set(false)
+    }
+  }
+
   async enable(): Promise<void> {
     const user = this.authQuery.getUser()
     if (!user || !this.isBrowserSupported()) return
@@ -93,6 +117,7 @@ export class PushNotificationService {
     let subscription: PushSubscription | null = null
     try {
       await this.loadConfig()
+      this.syncPermission()
       if (!this.config?.enabled || !this.config.publicKey) return
       subscription = await this.swPush.requestSubscription({
         serverPublicKey: this.config.publicKey,
@@ -103,6 +128,7 @@ export class PushNotificationService {
         ),
       )
       this.localStorage.setValue(PushNotificationService.OWNER_KEY, user)
+      this.syncPermission()
       this.active.set(true)
     } catch {
       this.failed.set(true)
@@ -124,6 +150,7 @@ export class PushNotificationService {
     this.busy.set(true)
     this.failed.set(false)
     try {
+      this.syncPermission()
       const subscription = await firstValueFrom(this.swPush.subscription)
       if (subscription) {
         await firstValueFrom(
@@ -167,29 +194,76 @@ export class PushNotificationService {
     this.active.set(false)
     this.failed.set(false)
     if (!this.isBrowserSupported()) return
+    this.syncPermission()
     try {
       await this.loadConfig()
       if (!this.config?.enabled) return
-      let subscription = await firstValueFrom(this.swPush.subscription)
-      const owner = this.localStorage.getValue<string>(
-        PushNotificationService.OWNER_KEY,
-      )
-      if (subscription && owner !== user) {
-        await this.swPush.unsubscribe()
-        this.localStorage.clearValue(PushNotificationService.OWNER_KEY)
-        subscription = null
-      }
-      if (subscription) {
-        await firstValueFrom(
-          this.apiDataService.registerPushSubscription(
-            this.toApiSubscription(subscription),
-          ),
-        )
-        this.active.set(true)
-      }
+      await this.reconcileSubscription(user)
     } catch {
       this.failed.set(true)
     }
+  }
+
+  /**
+   * Re-asserts the browser subscription against the backend. A subscription the
+   * backend already expired is registered again, and one the browser no longer
+   * holds (permission revoked, site data cleared) turns the toggle off.
+   */
+  private async reconcileSubscription(user: string): Promise<void> {
+    let subscription = await firstValueFrom(this.swPush.subscription)
+    const owner = this.localStorage.getValue<string>(
+      PushNotificationService.OWNER_KEY,
+    )
+    if (subscription && owner !== user) {
+      await this.swPush.unsubscribe()
+      this.localStorage.clearValue(PushNotificationService.OWNER_KEY)
+      subscription = null
+    }
+    if (!subscription) {
+      this.localStorage.clearValue(PushNotificationService.OWNER_KEY)
+      this.active.set(false)
+      return
+    }
+    try {
+      await firstValueFrom(
+        this.apiDataService.registerPushSubscription(
+          this.toApiSubscription(subscription),
+        ),
+      )
+      this.failed.set(false)
+      this.active.set(true)
+    } catch (error) {
+      if (this.isRejectedSubscription(error)) {
+        await this.discardSubscription()
+        return
+      }
+      throw error
+    }
+  }
+
+  /** The endpoint is gone for good: drop it locally instead of showing it as active. */
+  private async discardSubscription(): Promise<void> {
+    try {
+      await this.swPush.unsubscribe()
+    } catch {
+      // Nothing else to clean up, the browser already dropped the subscription.
+    }
+    this.localStorage.clearValue(PushNotificationService.OWNER_KEY)
+    this.failed.set(false)
+    this.active.set(false)
+  }
+
+  private isRejectedSubscription(error: unknown): boolean {
+    const status = (error as { status?: number } | null)?.status
+    return status === 404 || status === 410
+  }
+
+  private syncPermission(): void {
+    this.permission.set(
+      typeof globalThis.Notification === 'undefined'
+        ? 'default'
+        : globalThis.Notification.permission,
+    )
   }
 
   private async loadConfig(): Promise<void> {

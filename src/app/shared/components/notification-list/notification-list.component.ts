@@ -76,7 +76,8 @@ export class NotificationListComponent implements OnInit {
   }
 
   private async initializePushNotifications(): Promise<void> {
-    await this.pushNotificationService.initialize()
+    // Reconcile on every open: the backend expires subscriptions on its own.
+    await this.pushNotificationService.refresh()
     if (!this.pushNotificationService.shouldShowInitialPrompt()) return
 
     this.pushNotificationService.markInitialPromptSeen()

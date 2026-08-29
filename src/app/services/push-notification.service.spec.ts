@@ -142,6 +142,73 @@ describe('PushNotificationService', () => {
     expect(service.enabled()).toBe(false)
   })
 
+  it('re-registers an endpoint the backend expired when the panel is reopened', async () => {
+    const subscription = pushSubscription(
+      'https://fcm.googleapis.com/fcm/send/expired',
+    )
+    subscription$.next(subscription)
+    storage['push_notifications_owner'] = user
+    await service.initialize()
+    registerPushSubscription.mockClear()
+
+    await service.refresh()
+
+    expect(registerPushSubscription).toHaveBeenCalledWith({
+      endpoint: subscription.endpoint,
+      expirationTime: null,
+      keys: { p256dh: 'AQID', auth: 'BAUG' },
+    })
+    expect(service.enabled()).toBe(true)
+  })
+
+  it('turns the toggle off when the backend rejects a gone endpoint', async () => {
+    subscription$.next(
+      pushSubscription('https://fcm.googleapis.com/fcm/send/gone'),
+    )
+    storage['push_notifications_owner'] = user
+    await service.initialize()
+    registerPushSubscription.mockReturnValue(
+      throwError(() => ({ status: 410 })),
+    )
+
+    await service.refresh()
+
+    expect(unsubscribe).toHaveBeenCalled()
+    expect(service.enabled()).toBe(false)
+    expect(service.status()).toBe('disabled')
+    expect(storage['push_notifications_owner']).toBeUndefined()
+  })
+
+  it('turns the toggle off when the browser no longer holds a subscription', async () => {
+    subscription$.next(
+      pushSubscription('https://fcm.googleapis.com/fcm/send/dropped'),
+    )
+    storage['push_notifications_owner'] = user
+    await service.refresh()
+    expect(service.enabled()).toBe(true)
+
+    subscription$.next(null)
+    await service.refresh()
+
+    expect(service.enabled()).toBe(false)
+    expect(storage['push_notifications_owner']).toBeUndefined()
+  })
+
+  it('reports the toggle as off once notifications are blocked', async () => {
+    subscription$.next(
+      pushSubscription('https://fcm.googleapis.com/fcm/send/blocked'),
+    )
+    storage['push_notifications_owner'] = user
+    await service.refresh()
+    expect(service.enabled()).toBe(true)
+
+    vi.stubGlobal('Notification', { permission: 'denied' })
+    await service.refresh()
+
+    expect(service.status()).toBe('blocked')
+    expect(service.enabled()).toBe(false)
+  })
+
   it('offers the initial prompt only once per user', async () => {
     await service.initialize()
 
