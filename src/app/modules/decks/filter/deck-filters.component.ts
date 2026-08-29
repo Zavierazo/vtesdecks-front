@@ -40,10 +40,10 @@ import {
 import { CardFilterComponent } from './card-filter/card-filter.component'
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
+import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CardProportionComponent } from './card-proportion/card-proportion.component'
 
 @UntilDestroy()
@@ -82,6 +82,10 @@ export class DeckFiltersComponent implements OnInit {
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]
+  notClans!: string[]
+  notDisciplines!: string[]
+  clanMode: 'and' | 'or' = 'and'
+  disciplineMode: 'and' | 'or' = 'and'
   paths!: string[]
   availableTags: string[] = []
 
@@ -94,6 +98,10 @@ export class DeckFiltersComponent implements OnInit {
   ngOnInit() {
     this.disciplines = this.getCurrentDisciplines()
     this.clans = this.getCurrentClans()
+    this.notClans = this.getCurrentList('notClans')
+    this.notDisciplines = this.getCurrentList('notDisciplines')
+    this.clanMode = this.getCurrentMode('clanMode')
+    this.disciplineMode = this.getCurrentMode('disciplineMode')
     this.paths = this.getCurrentPaths()
     this.apiDataService
       .getDeckTags()
@@ -113,6 +121,7 @@ export class DeckFiltersComponent implements OnInit {
     this.filterForm.get('name')?.patchValue('', { emitEvent: false })
     this.filterForm.get('limitedFormat')?.patchValue('', { emitEvent: false })
     this.filterForm.get('author')?.patchValue('', { emitEvent: false })
+    this.filterForm.get('tournament')?.patchValue('', { emitEvent: false })
     this.filterForm.get('cardText')?.patchValue('', { emitEvent: false })
     this.filterForm
       .get('singleDiscipline')
@@ -154,6 +163,10 @@ export class DeckFiltersComponent implements OnInit {
       ?.patchValue(100, { emitEvent: false })
     this.clans = []
     this.disciplines = []
+    this.notClans = []
+    this.notDisciplines = []
+    this.clanMode = 'and'
+    this.disciplineMode = 'and'
     this.paths = []
     this.cardFilter().reset()
     this.resetFilters.emit()
@@ -178,6 +191,26 @@ export class DeckFiltersComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     })
+  }
+
+  changeNotClanFilter(notClans: string[]) {
+    this.notClans = notClans
+    this.changeListFilter('notClans', notClans)
+  }
+
+  changeNotDisciplineFilter(notDisciplines: string[]) {
+    this.notDisciplines = notDisciplines
+    this.changeListFilter('notDisciplines', notDisciplines)
+  }
+
+  changeClanMode(mode: 'and' | 'or') {
+    this.clanMode = mode
+    this.changeMatchMode('clanMode', mode)
+  }
+
+  changeDisciplineMode(mode: 'and' | 'or') {
+    this.disciplineMode = mode
+    this.changeMatchMode('disciplineMode', mode)
   }
 
   changePathFilter() {
@@ -235,6 +268,31 @@ export class DeckFiltersComponent implements OnInit {
     return []
   }
 
+  private getCurrentList(name: string): string[] {
+    const value = this.decksQuery.getParam(name)
+    return value ? value.split(',') : []
+  }
+
+  private changeListFilter(name: string, values: string[]) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { [name]: values.length > 0 ? values.join(',') : undefined },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  private getCurrentMode(name: string): 'and' | 'or' {
+    return this.decksQuery.getParam(name) === 'or' ? 'or' : 'and'
+  }
+
+  private changeMatchMode(name: string, mode: 'and' | 'or') {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { [name]: mode === 'or' ? 'or' : undefined },
+      queryParamsHandling: 'merge',
+    })
+  }
+
   private getCurrentPaths(): string[] {
     const paths = this.decksQuery.getParam('paths')
     if (paths) {
@@ -248,6 +306,7 @@ export class DeckFiltersComponent implements OnInit {
     this.listenAndNavigateString(this.filterForm, 'name', '', 500)
     this.listenAndNavigateString(this.filterForm, 'limitedFormat', '', 500)
     this.listenAndNavigateString(this.filterForm, 'author', '', 500)
+    this.listenAndNavigateString(this.filterForm, 'tournament', '', 500)
     this.listenAndNavigateString(this.filterForm, 'cardText', '', 500)
     this.listenAndNavigateBoolean(this.filterForm, 'singleDiscipline', false)
     this.listenAndNavigateBoolean(this.filterForm, 'singleClan', false)
