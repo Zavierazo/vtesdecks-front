@@ -5,6 +5,10 @@
     'deck-card-standard': !deck.owner,
     'deck-card-owned': deck.owner
   }" [ngStyle]="{'min-height':height()}">
+    @if (deck.type === 'PRECONSTRUCTED') {
+    <img #deckCover class="deck-cover" [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'" [alt]="deck.name"
+      loading="lazy" (error)="deckCover.hidden = true" />
+    }
     <!-- Top Section -->
     <div class="deck-header px-3 pt-2 pb-1">
       <div class="deck-header-grid mb-1">
