@@ -400,8 +400,24 @@ export class CryptStore {
         return false
       }
     }
-    if (filter.title && entity.title !== filter.title) {
+    if (filter.advanced === 'base' && entity.adv) {
       return false
+    }
+    if (filter.advanced === 'advanced' && !entity.adv) {
+      return false
+    }
+    if (filter.title) {
+      if (filter.title === 'any') {
+        if (!entity.title) {
+          return false
+        }
+      } else if (filter.title === 'none') {
+        if (entity.title) {
+          return false
+        }
+      } else if (entity.title !== filter.title) {
+        return false
+      }
     }
     if (filter.sect && entity.sect !== filter.sect) {
       return false

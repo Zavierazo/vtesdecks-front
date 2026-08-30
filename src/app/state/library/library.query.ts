@@ -193,6 +193,12 @@ export class LibraryQuery {
     return clans
   }
 
+  getMaxConvictionCost(): number {
+    return this.store
+      .getEntities()
+      .reduce((max, library) => Math.max(max, library.convictionCost ?? 0), 4)
+  }
+
   getDefaultLibraryFilter(): LibraryFilter {
     return {
       name: '',
@@ -206,6 +212,8 @@ export class LibraryQuery {
       disciplineMode: 'and',
       bloodCostSlider: [0, 4],
       poolCostSlider: [0, 6],
+      convictionCostSlider: [0, this.getMaxConvictionCost()],
+      trifle: undefined,
       title: '',
       sect: '',
       path: '',

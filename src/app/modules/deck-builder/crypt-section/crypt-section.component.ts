@@ -335,6 +335,12 @@ export class CryptSectionComponent implements OnInit {
         .split(',')
         .map((v: string) => +v)
     }
+    if (
+      queryParams['advanced'] === 'base' ||
+      queryParams['advanced'] === 'advanced'
+    ) {
+      this.cryptFilter.advanced = queryParams['advanced']
+    }
     if (queryParams['taints']) {
       this.cryptFilter.taints = queryParams['taints'].split(',')
     }
@@ -470,6 +476,7 @@ export class CryptSectionComponent implements OnInit {
         isDefaultCapacity || !Array.isArray(this.cryptFilter.capacitySlider)
           ? undefined
           : this.cryptFilter.capacitySlider.join(','),
+      ['advanced']: this.cryptFilter.advanced || undefined,
       ['title']: this.cryptFilter.title || undefined,
       ['set']: this.cryptFilter.set || undefined,
       ['sect']: this.cryptFilter.sect || undefined,

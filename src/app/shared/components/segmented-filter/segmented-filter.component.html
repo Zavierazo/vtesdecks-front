@@ -1,0 +1,9 @@
+<div class="btn-group btn-group-sm" role="group" [attr.aria-label]="ariaLabel()">
+  @for (option of options(); track option.labelKey) {
+  <button type="button" class="btn" [class.btn-primary]="isActive(option)"
+    [class.btn-outline-secondary]="!isActive(option)" [attr.aria-pressed]="isActive(option)"
+    [title]="(option.titleKey ?? option.labelKey) | transloco" (click)="valueChange.emit(option.value)">
+    {{ option.labelKey | transloco }}
+  </button>
+  }
+</div>

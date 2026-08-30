@@ -16,6 +16,10 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { LibraryFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import {
+  SegmentedFilterComponent,
+  SegmentedFilterOption,
+} from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
 import { PATH_LIST } from '@utils'
@@ -40,6 +44,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     TranslocoFallbackPipe,
     TranslocoPipe,
     DatePipe,
+    SegmentedFilterComponent,
   ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
@@ -59,6 +64,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   setControl!: FormControl
   bloodCostSliderControl!: FormControl
   poolCostSliderControl!: FormControl
+  convictionCostSliderControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
   artistControl!: FormControl
@@ -69,7 +75,14 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   sets$ = this.libraryQuery.selectSets()
   pathList = PATH_LIST
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
+  maxConvictionCost = this.libraryQuery.getMaxConvictionCost()
   initialized = false
+
+  readonly trifleOptions: SegmentedFilterOption[] = [
+    { value: undefined, labelKey: 'library_builder_filter.trifle_any' },
+    { value: 'trifle', labelKey: 'library_builder_filter.trifle_only' },
+    { value: 'non_trifle', labelKey: 'library_builder_filter.trifle_non' },
+  ]
 
   ngOnInit() {
     this.initFormControls()
@@ -92,14 +105,23 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeSet()
     this.onChangeBloodCostSlider()
     this.onChangePoolCostSlider()
+    this.onChangeConvictionCostSlider()
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
     this.onChangeArtist()
   }
 
+  /** The trifle filter only makes sense while Master cards are in scope. */
+  get masterTypeSelected(): boolean {
+    return this.filter.types?.includes('Master') ?? false
+  }
+
   onChangeTypeFilter(types: string[]) {
     this.filter.types = types
+    if (!this.masterTypeSelected) {
+      this.filter.trifle = undefined
+    }
     this.filterChange.emit(this.filter)
   }
 
@@ -255,6 +277,26 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         }),
       )
       .subscribe()
+  }
+
+  onChangeConvictionCostSlider() {
+    this.convictionCostSliderControl = new FormControl(
+      this.filter.convictionCostSlider,
+    )
+    this.convictionCostSliderControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.filter.convictionCostSlider = value
+          this.filterChange.emit(this.filter)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeTrifle(trifle?: string) {
+    this.filter.trifle = trifle as 'trifle' | 'non_trifle' | undefined
+    this.filterChange.emit(this.filter)
   }
 
   onChangeTaint() {

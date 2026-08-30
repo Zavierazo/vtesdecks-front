@@ -12,6 +12,7 @@ export interface CryptFilter {
   notDisciplines?: string[]
   disciplineMode?: 'and' | 'or'
   groupSlider?: number[]
+  advanced?: 'base' | 'advanced'
   capacitySlider?: number[]
   title?: string
   sect?: string

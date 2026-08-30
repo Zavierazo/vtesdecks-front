@@ -25,6 +25,13 @@
       (notTypesChange)="onChangeNotTypeFilter($event)" [mode]="filter.typeMode ?? 'or'"
       (modeChange)="onChangeTypeMode($event)" />
   </div>
+  @if (masterTypeSelected) {
+  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mt-2">
+    <span class="form-label text-primary fw-bold mb-0">{{ t('trifle') }}</span>
+    <app-segmented-filter [options]="trifleOptions" [value]="filter.trifle" [ariaLabel]="t('trifle')"
+      (valueChange)="onChangeTrifle($event)" />
+  </div>
+  }
   }
   @if(filter.disciplines){
   <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
@@ -62,6 +69,16 @@
         showTicks: true,
         showTicksValues: true
       }" [formControl]="poolCostSliderControl" />
+  </div>
+  <div class="row g-1 mt-2">
+    <label for="convictionCost" class="form-label text-primary fw-bold">{{ t('conviction_cost') }}</label>
+    <ngx-slider id="convictionCost" [options]="{
+        floor: 0,
+        ceil: maxConvictionCost,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true
+      }" [formControl]="convictionCostSliderControl" />
   </div>
   @if (filter.limitedFormat === undefined) {
   <div class="row g-1 form-floating mt-2">

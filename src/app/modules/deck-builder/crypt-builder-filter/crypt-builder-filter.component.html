@@ -17,6 +17,11 @@
     </div>
   </div>
   }
+  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-2">
+    <span class="form-label text-primary fw-bold mb-0">{{ t('version') }}</span>
+    <app-segmented-filter [options]="advancedOptions" [value]="filter.advanced" [ariaLabel]="t('version')"
+      (valueChange)="onChangeAdvanced($event)" />
+  </div>
   @if(filter.clans){
   <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
   <div id="clans" class="row g-1">
@@ -45,6 +50,20 @@
         showTicksValues: true,
         translate: translateGroupSlider
       }" [formControl]="groupSliderControl" />
+    <div class="btn-group btn-group-sm mt-1 flex-wrap" role="group" [attr.aria-label]="t('group_shortcuts')">
+      <button type="button" class="btn" [class.btn-primary]="isActiveGroup(fullGroupRange)"
+        [class.btn-outline-secondary]="!isActiveGroup(fullGroupRange)"
+        [attr.aria-pressed]="isActiveGroup(fullGroupRange)" (click)="toggleGroupRange(fullGroupRange)">
+        {{ t('range_all') }}
+      </button>
+      @for (pair of groupPairs; track pair[0]) {
+      <button type="button" class="btn" [class.btn-primary]="isActiveGroup(pair)"
+        [class.btn-outline-secondary]="!isActiveGroup(pair)" [attr.aria-pressed]="isActiveGroup(pair)"
+        (click)="toggleGroupRange(pair)">
+        G{{ pair[0] }}/{{ pair[1] }}
+      </button>
+      }
+    </div>
   </div>
   <div class="row g-1 mt-2">
     <label for="capacity" class="form-label text-primary fw-bold">{{ t('capacity') }}</label>
@@ -55,6 +74,20 @@
         showTicks: true,
         showTicksValues: true
       }" [formControl]="capacitySliderControl" />
+    <div class="btn-group btn-group-sm mt-1 flex-wrap" role="group" [attr.aria-label]="t('capacity_shortcuts')">
+      <button type="button" class="btn" [class.btn-primary]="isActiveCapacity(fullCapacityRange)"
+        [class.btn-outline-secondary]="!isActiveCapacity(fullCapacityRange)"
+        [attr.aria-pressed]="isActiveCapacity(fullCapacityRange)" (click)="toggleCapacityRange(fullCapacityRange)">
+        {{ t('range_all') }}
+      </button>
+      @for (shortcut of capacityShortcuts; track shortcut.labelKey) {
+      <button type="button" class="btn" [class.btn-primary]="isActiveCapacity(shortcut.range)"
+        [class.btn-outline-secondary]="!isActiveCapacity(shortcut.range)"
+        [attr.aria-pressed]="isActiveCapacity(shortcut.range)" (click)="toggleCapacityRange(shortcut.range)">
+        {{ t(shortcut.labelKey) }}
+      </button>
+      }
+    </div>
   </div>
   @if ( filter.limitedFormat === undefined ) {
   <div class="row g-1 form-floating mt-2">
@@ -88,6 +121,8 @@
   <div class="row g-1 form-floating mt-2">
     <select class="form-select" id="title" [formControl]="titleControl">
       <option selected></option>
+      <option value="any">{{ 'shared.any_title' | transloco }}</option>
+      <option value="none">{{ 'shared.no_title' | transloco }}</option>
       @for (title of (titles$ | async); track title) {
       <option [value]="title">
         {{ title | titlecase }}

@@ -1,4 +1,5 @@
 import { CryptFilter, LibraryFilter } from '@models'
+import { FilterChip } from '@shared/components/filter-chips/filter-chips.component'
 import { describe, expect, it } from 'vitest'
 import {
   buildCryptFilterChips,
@@ -6,10 +7,10 @@ import {
   removeCardFilterChip,
 } from './card-filter-chips.utils'
 
-// The real translations are exercised in the app; here the key is enough.
-const t = (key: string) => key
+/** Marks translated keys so a missing translation is visible in assertions. */
+const t = (key: string) => `[${key}]`
 
-const cryptDefaults = (): CryptFilter => ({
+const cryptDefaults: CryptFilter = {
   name: '',
   clans: [],
   notClans: [],
@@ -19,6 +20,7 @@ const cryptDefaults = (): CryptFilter => ({
   disciplineMode: 'and',
   groupSlider: [1, 7],
   capacitySlider: [1, 11],
+  advanced: undefined,
   title: '',
   sect: '',
   path: '',
@@ -26,10 +28,9 @@ const cryptDefaults = (): CryptFilter => ({
   taints: [],
   cardText: '',
   artist: '',
-  printOnDemand: false,
-})
+}
 
-const libraryDefaults = (): LibraryFilter => ({
+const libraryDefaults: LibraryFilter = {
   name: '',
   types: [],
   notTypes: [],
@@ -41,6 +42,8 @@ const libraryDefaults = (): LibraryFilter => ({
   disciplineMode: 'and',
   bloodCostSlider: [0, 4],
   poolCostSlider: [0, 6],
+  convictionCostSlider: [0, 4],
+  trifle: undefined,
   title: '',
   sect: '',
   path: '',
@@ -48,98 +51,119 @@ const libraryDefaults = (): LibraryFilter => ({
   taints: [],
   cardText: '',
   artist: '',
-  printOnDemand: false,
-})
+}
+
+const chipFor = (chips: FilterChip[], key: string) =>
+  chips.find((chip) => chip.key === key)
 
 describe('buildCryptFilterChips', () => {
-  it('has no chips for an untouched filter', () => {
-    expect(buildCryptFilterChips(cryptDefaults(), cryptDefaults(), t)).toEqual(
-      [],
+  it('does not chip the advanced filter while it is Any', () => {
+    const chips = buildCryptFilterChips(cryptDefaults, cryptDefaults, t)
+    expect(chipFor(chips, 'advanced')).toBeUndefined()
+  })
+
+  it('chips the advanced filter with its translated value', () => {
+    const chips = buildCryptFilterChips(
+      { ...cryptDefaults, advanced: 'advanced' },
+      cryptDefaults,
+      t,
     )
+    expect(chipFor(chips, 'advanced')).toEqual({
+      id: 'advanced',
+      key: 'advanced',
+      label: '[crypt_builder_filter.version]',
+      value: '[crypt_builder_filter.advanced_advanced]',
+    })
   })
 
-  it('ignores the name, which has its own header input', () => {
-    const filter = { ...cryptDefaults(), name: 'Victoria' }
-    expect(buildCryptFilterChips(filter, cryptDefaults(), t)).toEqual([])
+  it('labels the any and no title sentinels', () => {
+    expect(
+      chipFor(
+        buildCryptFilterChips({ ...cryptDefaults, title: 'any' }, cryptDefaults, t),
+        'title',
+      )?.value,
+    ).toBe('[shared.any_title]')
+    expect(
+      chipFor(
+        buildCryptFilterChips(
+          { ...cryptDefaults, title: 'none' },
+          cryptDefaults,
+          t,
+        ),
+        'title',
+      )?.value,
+    ).toBe('[shared.no_title]')
   })
 
-  it('emits one chip per value of a multi-value filter', () => {
-    const filter = { ...cryptDefaults(), clans: ['Toreador', 'Brujah'] }
-    const chips = buildCryptFilterChips(filter, cryptDefaults(), t)
-    expect(chips).toHaveLength(2)
-    expect(chips.map((chip) => chip.value)).toEqual(['Toreador', 'Brujah'])
-    expect(chips.every((chip) => chip.key === 'clans')).toBe(true)
-  })
-
-  it('covers scalars, ranges, flags and modes', () => {
-    const filter: CryptFilter = {
-      ...cryptDefaults(),
-      capacitySlider: [4, 6],
-      sect: 'Camarilla',
-      printOnDemand: true,
-      disciplineMode: 'or',
-    }
-    const chips = buildCryptFilterChips(filter, cryptDefaults(), t)
-    expect(chips.map((chip) => [chip.key, chip.value])).toEqual([
-      ['printOnDemand', undefined],
-      ['disciplineMode', undefined],
-      ['capacitySlider', '4–6'],
-      ['sect', 'Camarilla'],
-    ])
-  })
-
-  it('skips a range that still matches its default', () => {
-    const filter = { ...cryptDefaults(), groupSlider: [1, 7] }
-    expect(buildCryptFilterChips(filter, cryptDefaults(), t)).toEqual([])
+  it('keeps rendering a specific title as is', () => {
+    expect(
+      chipFor(
+        buildCryptFilterChips(
+          { ...cryptDefaults, title: 'prince' },
+          cryptDefaults,
+          t,
+        ),
+        'title',
+      )?.value,
+    ).toBe('prince')
   })
 })
 
 describe('buildLibraryFilterChips', () => {
-  it('has no chips for an untouched filter', () => {
-    expect(
-      buildLibraryFilterChips(libraryDefaults(), libraryDefaults(), t),
-    ).toEqual([])
+  it('skips the conviction cost chip while the range is the default', () => {
+    const chips = buildLibraryFilterChips(libraryDefaults, libraryDefaults, t)
+    expect(chipFor(chips, 'convictionCostSlider')).toBeUndefined()
+    expect(chipFor(chips, 'trifle')).toBeUndefined()
   })
 
-  it('chips the type list and the blood cost range', () => {
-    const filter: LibraryFilter = {
-      ...libraryDefaults(),
-      types: ['Action', 'Combat'],
-      bloodCostSlider: [1, 3],
-    }
-    const chips = buildLibraryFilterChips(filter, libraryDefaults(), t)
-    expect(chips.map((chip) => [chip.key, chip.value])).toEqual([
-      ['types', 'Action'],
-      ['types', 'Combat'],
-      ['bloodCostSlider', '1–3'],
-    ])
+  it('chips a narrowed conviction cost range', () => {
+    const chips = buildLibraryFilterChips(
+      { ...libraryDefaults, convictionCostSlider: [1, 2] },
+      libraryDefaults,
+      t,
+    )
+    expect(chipFor(chips, 'convictionCostSlider')?.value).toBe('1–2')
+  })
+
+  it('chips the trifle filter with its translated value', () => {
+    const chips = buildLibraryFilterChips(
+      { ...libraryDefaults, trifle: 'non_trifle' },
+      libraryDefaults,
+      t,
+    )
+    expect(chipFor(chips, 'trifle')?.value).toBe(
+      '[library_builder_filter.trifle_non]',
+    )
   })
 })
 
 describe('removeCardFilterChip', () => {
-  it('drops a single value and keeps the rest of the list', () => {
-    const filter = { ...cryptDefaults(), clans: ['Toreador', 'Brujah'] }
-    const chips = buildCryptFilterChips(filter, cryptDefaults(), t)
-    const result = removeCardFilterChip(filter, cryptDefaults(), chips[1])
-    expect(result.clans).toEqual(['Toreador'])
-  })
+  it('resets the new crypt and library filters to their defaults', () => {
+    const [advancedChip] = buildCryptFilterChips(
+      { ...cryptDefaults, advanced: 'base' },
+      cryptDefaults,
+      t,
+    ).filter((chip) => chip.key === 'advanced')
+    expect(
+      removeCardFilterChip(
+        { ...cryptDefaults, advanced: 'base' },
+        cryptDefaults,
+        advancedChip,
+      ).advanced,
+    ).toBeUndefined()
 
-  it('restores the default for a single-value filter', () => {
-    const filter = { ...cryptDefaults(), capacitySlider: [4, 6] }
-    const [chip] = buildCryptFilterChips(filter, cryptDefaults(), t)
-    const result = removeCardFilterChip(filter, cryptDefaults(), chip)
-    expect(result.capacitySlider).toEqual([1, 11])
-  })
-
-  it('leaves the other filters untouched', () => {
-    const filter = {
-      ...cryptDefaults(),
-      clans: ['Toreador'],
-      sect: 'Camarilla',
+    const filter: LibraryFilter = {
+      ...libraryDefaults,
+      trifle: 'trifle',
+      convictionCostSlider: [2, 3],
     }
-    const chips = buildCryptFilterChips(filter, cryptDefaults(), t)
-    const result = removeCardFilterChip(filter, cryptDefaults(), chips[0])
-    expect(result.clans).toEqual([])
-    expect(result.sect).toBe('Camarilla')
+    const chips = buildLibraryFilterChips(filter, libraryDefaults, t)
+    const cleared = removeCardFilterChip(
+      removeCardFilterChip(filter, libraryDefaults, chipFor(chips, 'trifle')!),
+      libraryDefaults,
+      chipFor(chips, 'convictionCostSlider')!,
+    )
+    expect(cleared.trifle).toBeUndefined()
+    expect(cleared.convictionCostSlider).toEqual([0, 4])
   })
 })

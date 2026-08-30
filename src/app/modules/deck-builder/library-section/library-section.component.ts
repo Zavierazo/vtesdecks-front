@@ -372,6 +372,19 @@ export class LibrarySectionComponent implements OnInit {
         .split(',')
         .map((v: string) => +v)
     }
+    if (queryParams['convictionCostSlider']) {
+      this.libraryFilter.convictionCostSlider = queryParams[
+        'convictionCostSlider'
+      ]
+        .split(',')
+        .map((v: string) => +v)
+    }
+    if (
+      queryParams['trifle'] === 'trifle' ||
+      queryParams['trifle'] === 'non_trifle'
+    ) {
+      this.libraryFilter.trifle = queryParams['trifle']
+    }
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
         const card = this.libraryQuery.getEntity(Number(queryParams['cardId']))
@@ -444,6 +457,11 @@ export class LibrarySectionComponent implements OnInit {
       Array.isArray(this.libraryFilter.poolCostSlider) &&
       this.libraryFilter.poolCostSlider[0] === 0 &&
       this.libraryFilter.poolCostSlider[1] === 6
+    const isDefaultConvictionCost =
+      Array.isArray(this.libraryFilter.convictionCostSlider) &&
+      this.libraryFilter.convictionCostSlider[0] === 0 &&
+      this.libraryFilter.convictionCostSlider[1] ===
+        this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
       ['types']:
@@ -487,6 +505,12 @@ export class LibrarySectionComponent implements OnInit {
         isDefaultPoolCost || !Array.isArray(this.libraryFilter.poolCostSlider)
           ? undefined
           : this.libraryFilter.poolCostSlider.join(','),
+      ['convictionCostSlider']:
+        isDefaultConvictionCost ||
+        !Array.isArray(this.libraryFilter.convictionCostSlider)
+          ? undefined
+          : this.libraryFilter.convictionCostSlider.join(','),
+      ['trifle']: this.libraryFilter.trifle || undefined,
       ['taints']:
         this.libraryFilter.taints && this.libraryFilter.taints.length > 0
           ? this.libraryFilter.taints.join(',')

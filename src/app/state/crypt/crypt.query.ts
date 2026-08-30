@@ -240,6 +240,7 @@ export class CryptQuery {
       notDisciplines: [],
       disciplineMode: 'and',
       groupSlider: [1, this.getMaxGroup()],
+      advanced: undefined,
       capacitySlider: [1, this.getMaxCapacity()],
       title: '',
       sect: '',

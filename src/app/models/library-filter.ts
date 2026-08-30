@@ -17,6 +17,8 @@ export interface LibraryFilter {
   path?: string
   bloodCostSlider?: number[]
   poolCostSlider?: number[]
+  convictionCostSlider?: number[]
+  trifle?: 'trifle' | 'non_trifle'
   title?: string
   set?: string
   taints?: string[]

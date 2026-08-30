@@ -43,6 +43,35 @@ const libraryTypeLabel = (t: TranslateFn, type: string): string => {
 const taintLabel = (t: TranslateFn, taint: string): string =>
   translateOr(t, `vtes.taints.${taint}`, taint)
 
+/** `any` and `none` are sentinels of the crypt title filter, not real titles. */
+const cryptTitleLabel = (t: TranslateFn, title: string): string => {
+  if (title === 'any') {
+    return t('shared.any_title')
+  }
+  if (title === 'none') {
+    return t('shared.no_title')
+  }
+  return title
+}
+
+/** In the library, `none` means the card requires no title. */
+const libraryTitleLabel = (t: TranslateFn, title: string): string =>
+  title === 'none' ? t('shared.not_required') : title
+
+const enumLabel =
+  (scope: string) =>
+  (t: TranslateFn, value: string): string =>
+    translateOr(t, `${scope}${value}`, value)
+
+const trifleLabel = (t: TranslateFn, trifle: string): string =>
+  translateOr(
+    t,
+    trifle === 'trifle'
+      ? 'library_builder_filter.trifle_only'
+      : 'library_builder_filter.trifle_non',
+    trifle,
+  )
+
 const identity = (_t: TranslateFn, value: string): string => value
 
 class ChipBuilder {
@@ -146,7 +175,8 @@ export function buildCryptFilterChips(
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('groupSlider', `${scope}group`)
     .range('capacitySlider', `${scope}capacity`)
-    .scalar('title', `${scope}title`)
+    .scalar('advanced', `${scope}version`, enumLabel(`${scope}advanced_`))
+    .scalar('title', `${scope}title`, cryptTitleLabel)
     .scalar('sect', `${scope}sect`)
     .scalar('path', `${scope}path`, pathLabel)
     .scalar('set', `${scope}set`)
@@ -179,7 +209,9 @@ export function buildLibraryFilterChips(
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('bloodCostSlider', `${scope}blood_cost`)
     .range('poolCostSlider', `${scope}pool_cost`)
-    .scalar('title', `${scope}title`)
+    .range('convictionCostSlider', `${scope}conviction_cost`)
+    .scalar('trifle', `${scope}trifle`, trifleLabel)
+    .scalar('title', `${scope}title`, libraryTitleLabel)
     .scalar('sect', `${scope}sect`)
     .scalar('path', `${scope}path`, pathLabel)
     .scalar('set', `${scope}set`)

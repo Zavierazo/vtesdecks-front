@@ -436,6 +436,24 @@ export class LibraryStore {
         return false
       }
     }
+    if (filter.convictionCostSlider) {
+      const convictionCostMin = filter.convictionCostSlider[0]
+      const convictionCostMax = filter.convictionCostSlider[1]
+      const convictionCost = entity.convictionCost ?? 0
+      if (
+        convictionCost != -1 &&
+        (convictionCost < convictionCostMin ||
+          convictionCost > convictionCostMax)
+      ) {
+        return false
+      }
+    }
+    if (filter.trifle === 'trifle' && !entity.trifle) {
+      return false
+    }
+    if (filter.trifle === 'non_trifle' && entity.trifle) {
+      return false
+    }
     if (filter.taints) {
       for (const taint of filter.taints) {
         if (!entity.taints.includes(taint)) {
