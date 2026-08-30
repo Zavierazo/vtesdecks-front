@@ -27,7 +27,7 @@ import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { AuthQuery } from '@state/auth/auth.query'
 import { getCurrentAdventData } from '@utils'
-import { switchMap, tap } from 'rxjs'
+import { distinctUntilChanged, switchMap, tap } from 'rxjs'
 import { environment } from '@environments/environment'
 import { HomeCustomAdComponent } from './home-custom-ad/home-custom-ad.component'
 import { HomeMetagameComponent } from './home-metagame/home-metagame.component'
@@ -126,6 +126,7 @@ export class HomeComponent implements OnInit {
       .selectAuthenticated()
       .pipe(
         untilDestroyed(this),
+        distinctUntilChanged(),
         switchMap(() => this.apiDataService.getDeckHome()),
         tap((result) => {
           this.deckHome = result
