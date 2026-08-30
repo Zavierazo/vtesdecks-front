@@ -1,4 +1,5 @@
 export * from './advent-utils'
+export * from './card-filter-chips.utils'
 export * from './card-filter.utils'
 export * from './clans'
 export * from './disciplines'

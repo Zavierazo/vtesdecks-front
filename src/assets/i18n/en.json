@@ -64,7 +64,12 @@
     "card_text_placeholder": "Enter text or use /your-regex/",
     "set": "Set",
     "artist": "Artist",
-    "artist_placeholder": "Enter artist name..."
+    "artist_placeholder": "Enter artist name...",
+    "not_clans": "Excluded clan",
+    "superior_disciplines": "Superior discipline",
+    "not_disciplines": "Excluded discipline",
+    "discipline_mode_or": "Any discipline",
+    "predefined_limited_format": "Limited Format"
   },
   "crypt_section": {
     "card_name": "Card Name",
@@ -380,7 +385,12 @@
     "collection_tracker": "Collection Tracker",
     "filter_by_collection": "Filter by Collection",
     "deck_completion": "Deck Completion (%)",
-    "paths": "Paths"
+    "paths": "Paths",
+    "not_clans": "Excluded clan",
+    "not_disciplines": "Excluded discipline",
+    "clan_mode_or": "Any clan",
+    "discipline_mode_or": "Any discipline",
+    "absolute_proportion": "Absolute proportions"
   },
   "footer": {
     "trademark": "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit",
@@ -497,7 +507,13 @@
     "card_text_placeholder": "Enter text or use /your-regex/",
     "set": "Set",
     "artist": "Artist",
-    "artist_placeholder": "Enter artist name..."
+    "artist_placeholder": "Enter artist name...",
+    "not_types": "Excluded type",
+    "type_mode_and": "All types",
+    "not_clans": "Excluded clan",
+    "not_disciplines": "Excluded discipline",
+    "discipline_mode_or": "Any discipline",
+    "predefined_limited_format": "Limited Format"
   },
   "library_section": {
     "card_name": "Card Name",
@@ -622,7 +638,13 @@
     "proxy_generator": "Proxy Generator",
     "supporter": "Patreon Member",
     "vtes_ai_chat": "VTES AI Chat",
-    "new": "New"
+    "new": "New",
+    "sort_by": "Sort by",
+    "ascending": "ascending",
+    "descending": "descending",
+    "clear_all": "Clear all",
+    "remove_filter": "Remove {{ filter }}",
+    "active_filters": "Active filters"
   },
   "game_timer": {
     "title": "Game Timer",

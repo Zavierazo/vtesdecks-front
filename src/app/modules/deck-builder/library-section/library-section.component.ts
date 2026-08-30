@@ -16,31 +16,42 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import {
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-  NgbTooltip,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { LibraryQuery } from '@state/library/library.query'
-import { isRegexSearch } from '@utils'
+import {
+  buildLibraryFilterChips,
+  isRegexSearch,
+  removeCardFilterChip,
+} from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  filter,
   fromEvent,
   map,
+  merge,
   Observable,
   of,
   switchMap,
@@ -62,11 +73,6 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     LibraryComponent,
@@ -77,6 +83,9 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     ToggleIconComponent,
     LibraryGridCardComponent,
     AdSenseComponent,
+    SortControlComponent,
+    FilterChipsComponent,
+    StickyHeaderDirective,
   ],
 })
 export class LibrarySectionComponent implements OnInit {
@@ -90,6 +99,7 @@ export class LibrarySectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private readonly seoService = inject(SeoService)
+  private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private location = inject(Location)
 
@@ -103,9 +113,29 @@ export class LibrarySectionComponent implements OnInit {
   hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
+  readonly sortOptions: SortOption[] = [
+    { value: 'name', labelKey: 'library_section.name' },
+    { value: 'type', labelKey: 'library_section.type' },
+    {
+      value: 'deckPopularity',
+      labelKey: 'library_section.deck_popularity',
+      titleKey: 'library_section.deck_popularity_title',
+    },
+    {
+      value: 'cardPopularity',
+      labelKey: 'library_section.card_popularity',
+      titleKey: 'library_section.card_popularity_title',
+    },
+    { value: 'minPrice', labelKey: 'library_section.price' },
+  ]
+  private readonly relevanceOption: SortOption = {
+    value: 'trigramSimilarity',
+    labelKey: 'library_section.relevance',
+  }
   sortBy: LibrarySortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   libraryFilter = this.libraryQuery.getDefaultLibraryFilter()
+  filterChips: FilterChip[] = []
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
@@ -130,6 +160,43 @@ export class LibrarySectionComponent implements OnInit {
     })
     this.listenScroll()
     this.initFilters()
+    // Chip labels are translated eagerly, so rebuild them once the active
+    // language file lands and whenever the user switches language.
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(
+        untilDestroyed(this),
+        tap(() => {
+          this.updateFilterChips()
+          this.changeDetector.markForCheck()
+        }),
+      )
+      .subscribe()
+  }
+
+  private get defaultLibraryFilter(): LibraryFilter {
+    return {
+      ...this.libraryQuery.getDefaultLibraryFilter(),
+      printOnDemand: false,
+    }
+  }
+
+  private updateFilterChips() {
+    this.filterChips = buildLibraryFilterChips(
+      this.libraryFilter,
+      this.defaultLibraryFilter,
+      (key, params) => this.translocoService.translate(key, params),
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip) {
+    this.onChangeLibraryFilter(
+      removeCardFilterChip(this.libraryFilter, this.defaultLibraryFilter, chip),
+    )
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
@@ -170,6 +237,20 @@ export class LibrarySectionComponent implements OnInit {
     return name !== undefined && !isRegexSearch(name) && name.length > 3
   }
 
+  get displayedSortOptions(): SortOption[] {
+    return this.sortByTrigramSimilarity
+      ? [this.relevanceOption, ...this.sortOptions]
+      : this.sortOptions
+  }
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
     this.authService.updateCardsDisplayMode(displayModeValue)
@@ -198,6 +279,7 @@ export class LibrarySectionComponent implements OnInit {
       replaceUrl: true,
     })
     this.initDefaults()
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -253,10 +335,16 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['taints']) {
       this.libraryFilter.taints = queryParams['taints'].split(',')
     }
-    if (queryParams['sortBy']) {
+    if (
+      queryParams['sortBy'] &&
+      this.sortOptions.some((option) => option.value === queryParams['sortBy'])
+    ) {
       this.sortBy = queryParams['sortBy']
     }
-    if (queryParams['sortByOrder']) {
+    if (
+      queryParams['sortByOrder'] === 'asc' ||
+      queryParams['sortByOrder'] === 'desc'
+    ) {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
@@ -297,6 +385,7 @@ export class LibrarySectionComponent implements OnInit {
         queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
+    this.updateFilterChips()
     this.initQuery(true)
   }
 
@@ -310,9 +399,7 @@ export class LibrarySectionComponent implements OnInit {
     this.sortByOrder = 'asc'
   }
 
-  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: LibrarySortBy) {
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -409,6 +496,7 @@ export class LibrarySectionComponent implements OnInit {
       ['predefinedLimitedFormat']:
         this.libraryFilter.predefinedLimitedFormat || undefined,
     })
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -482,9 +570,13 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    this.document
-      .querySelector('.scroll-container')
-      ?.scrollIntoView({ behavior: 'smooth' })
+    // The chip row changes the sticky header height, which feeds the scroll
+    // offset: wait for the render pass before measuring the target.
+    requestAnimationFrame(() =>
+      this.document
+        .querySelector('.scroll-container')
+        ?.scrollIntoView({ behavior: 'smooth' }),
+    )
   }
 
   private listenScroll() {

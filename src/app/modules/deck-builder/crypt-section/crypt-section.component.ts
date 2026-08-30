@@ -16,31 +16,42 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
 import {
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-  NgbTooltip,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { isRegexSearch } from '@utils'
+import {
+  buildCryptFilterChips,
+  isRegexSearch,
+  removeCardFilterChip,
+} from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  filter,
   fromEvent,
   map,
+  merge,
   Observable,
   of,
   switchMap,
@@ -62,11 +73,6 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     CryptComponent,
@@ -77,6 +83,9 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     ToggleIconComponent,
     CryptGridCardComponent,
     AdSenseComponent,
+    SortControlComponent,
+    FilterChipsComponent,
+    StickyHeaderDirective,
   ],
 })
 export class CryptSectionComponent implements OnInit {
@@ -90,6 +99,7 @@ export class CryptSectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private readonly seoService = inject(SeoService)
+  private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private location = inject(Location)
 
@@ -103,9 +113,31 @@ export class CryptSectionComponent implements OnInit {
   hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
+  readonly sortOptions: SortOption[] = [
+    { value: 'name', labelKey: 'crypt_section.name' },
+    { value: 'capacity', labelKey: 'crypt_section.capacity' },
+    { value: 'clan', labelKey: 'crypt_section.clan' },
+    { value: 'group', labelKey: 'crypt_section.group' },
+    {
+      value: 'deckPopularity',
+      labelKey: 'crypt_section.deck_popularity',
+      titleKey: 'crypt_section.deck_popularity_title',
+    },
+    {
+      value: 'cardPopularity',
+      labelKey: 'crypt_section.card_popularity',
+      titleKey: 'crypt_section.card_popularity_title',
+    },
+    { value: 'minPrice', labelKey: 'crypt_section.price' },
+  ]
+  private readonly relevanceOption: SortOption = {
+    value: 'trigramSimilarity',
+    labelKey: 'crypt_section.relevance',
+  }
   sortBy: CryptSortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   cryptFilter = this.cryptQuery.getDefaultCryptFilter()
+  filterChips: FilterChip[] = []
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
     {
@@ -129,6 +161,40 @@ export class CryptSectionComponent implements OnInit {
     })
     this.listenScroll()
     this.initFilters()
+    // Chip labels are translated eagerly, so rebuild them once the active
+    // language file lands and whenever the user switches language.
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(
+        untilDestroyed(this),
+        tap(() => {
+          this.updateFilterChips()
+          this.changeDetector.markForCheck()
+        }),
+      )
+      .subscribe()
+  }
+
+  private get defaultCryptFilter(): CryptFilter {
+    return { ...this.cryptQuery.getDefaultCryptFilter(), printOnDemand: false }
+  }
+
+  private updateFilterChips() {
+    this.filterChips = buildCryptFilterChips(
+      this.cryptFilter,
+      this.defaultCryptFilter,
+      (key, params) => this.translocoService.translate(key, params),
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip) {
+    this.onChangeCryptFilter(
+      removeCardFilterChip(this.cryptFilter, this.defaultCryptFilter, chip),
+    )
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
@@ -169,6 +235,20 @@ export class CryptSectionComponent implements OnInit {
     return name !== undefined && !isRegexSearch(name) && name.length > 3
   }
 
+  get displayedSortOptions(): SortOption[] {
+    return this.sortByTrigramSimilarity
+      ? [this.relevanceOption, ...this.sortOptions]
+      : this.sortOptions
+  }
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
     this.authService.updateCardsDisplayMode(displayModeValue)
@@ -197,6 +277,7 @@ export class CryptSectionComponent implements OnInit {
       replaceUrl: true,
     })
     this.initDefaults()
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -257,10 +338,16 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['taints']) {
       this.cryptFilter.taints = queryParams['taints'].split(',')
     }
-    if (queryParams['sortBy']) {
+    if (
+      queryParams['sortBy'] &&
+      this.sortOptions.some((option) => option.value === queryParams['sortBy'])
+    ) {
       this.sortBy = queryParams['sortBy']
     }
-    if (queryParams['sortByOrder']) {
+    if (
+      queryParams['sortByOrder'] === 'asc' ||
+      queryParams['sortByOrder'] === 'desc'
+    ) {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
@@ -291,6 +378,7 @@ export class CryptSectionComponent implements OnInit {
         queryParams['predefinedLimitedFormat']
     }
     this.onChangeNameFilter()
+    this.updateFilterChips()
     this.initQuery(true)
   }
 
@@ -304,9 +392,7 @@ export class CryptSectionComponent implements OnInit {
     this.sortByOrder = 'asc'
   }
 
-  onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: CryptSortBy) {
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -397,6 +483,7 @@ export class CryptSectionComponent implements OnInit {
       ['predefinedLimitedFormat']:
         this.cryptFilter.predefinedLimitedFormat || undefined,
     })
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -470,9 +557,13 @@ export class CryptSectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    this.document
-      .querySelector('.scroll-container')
-      ?.scrollIntoView({ behavior: 'smooth' })
+    // The chip row changes the sticky header height, which feeds the scroll
+    // offset: wait for the render pass before measuring the target.
+    requestAnimationFrame(() =>
+      this.document
+        .querySelector('.scroll-container')
+        ?.scrollIntoView({ behavior: 'smooth' }),
+    )
   }
 
   private listenScroll() {

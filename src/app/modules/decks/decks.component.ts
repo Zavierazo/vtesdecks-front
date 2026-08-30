@@ -16,29 +16,48 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import { CryptQuery } from '@state/crypt/crypt.query'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
+import { LibraryQuery } from '@state/library/library.query'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
+  filter,
   fromEvent,
   map,
+  merge,
   Observable,
   skip,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { DeckRestorableCardComponent } from '../deck-restorable-card/deck-restorable-card.component'
+import {
+  buildDeckFilterChips,
+  removeDeckFilterChip,
+} from './filter/deck-filter-chips.utils'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
 
 @UntilDestroy()
@@ -62,6 +81,8 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     AsyncPipe,
     RouterLink,
     AdSenseComponent,
+    FilterChipsComponent,
+    StickyHeaderDirective,
   ],
 })
 export class DecksComponent implements OnInit {
@@ -74,6 +95,36 @@ export class DecksComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly mediaService = inject(MediaService)
   private readonly offcanvasService = inject(NgbOffcanvas)
+  private readonly translocoService = inject(TranslocoService)
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
+
+  /**
+   * Chip labels are translated eagerly, so rebuild them once the active
+   * language file lands and whenever the user switches language.
+   */
+  readonly chips = toSignal(
+    combineLatest([
+      this.route.queryParams,
+      merge(
+        this.translocoService.langChanges$,
+        this.translocoService.events$.pipe(
+          filter((event) => event.type === 'translationLoadSuccess'),
+        ),
+      ).pipe(startWith(null)),
+    ]).pipe(
+      map(([params]) =>
+        buildDeckFilterChips(
+          params,
+          (key, translateParams) =>
+            this.translocoService.translate(key, translateParams),
+          this.cryptQuery,
+          this.libraryQuery,
+        ),
+      ),
+    ),
+    { initialValue: [] as FilterChip[] },
+  )
 
   readonly selectedTags = toSignal(
     this.route.queryParamMap.pipe(
@@ -147,9 +198,13 @@ export class DecksComponent implements OnInit {
   }
 
   scrollToTop(): void {
-    this.document
-      .querySelector('.scroll-container')
-      ?.scrollIntoView({ behavior: 'smooth' })
+    // The chip row changes the sticky header height, which feeds the scroll
+    // offset: wait for the render pass before measuring the target.
+    requestAnimationFrame(() =>
+      this.document
+        .querySelector('.scroll-container')
+        ?.scrollIntoView({ behavior: 'smooth' }),
+    )
   }
 
   scrollToDeck(deckId: string): void {
@@ -183,6 +238,14 @@ export class DecksComponent implements OnInit {
 
   onTagClick(tag: string): void {
     this.filters()?.onSelectTag(tag)
+  }
+
+  onRemoveChip(chip: FilterChip): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: removeDeckFilterChip(this.route.snapshot.queryParams, chip),
+      queryParamsHandling: 'merge',
+    })
   }
 
   private listenScroll() {

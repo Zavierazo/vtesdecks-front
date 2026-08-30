@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -14,7 +15,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   NgbHighlight,
@@ -38,6 +39,12 @@ import {
   tap,
 } from 'rxjs'
 import { CardFilterComponent } from './card-filter/card-filter.component'
+import {
+  DECK_ROUND_OPTIONS,
+  deckFilterControlDefs,
+  isSameParamValue,
+  splitParamList,
+} from './deck-filter-defaults'
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
@@ -69,7 +76,7 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
     TranslocoFallbackPipe,
   ],
 })
-export class DeckFiltersComponent implements OnInit {
+export class DeckFiltersComponent implements OnInit, AfterViewInit {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly decksQuery = inject(DecksQuery)
@@ -88,8 +95,7 @@ export class DeckFiltersComponent implements OnInit {
   disciplineMode: 'and' | 'or' = 'and'
   paths!: string[]
   availableTags: string[] = []
-  //Tournaments are played as 2R+F or 3R+F, the final is never counted as a round
-  readonly availableRounds = [2, 3]
+  readonly availableRounds = DECK_ROUND_OPTIONS
   rounds: number[] = []
 
   tagFocus$ = new Subject<string>()
@@ -120,52 +126,21 @@ export class DeckFiltersComponent implements OnInit {
     this.initFilterForm()
   }
 
+  ngAfterViewInit() {
+    // The card filter is a view child, so wait for the view before syncing.
+    this.listenQueryParams()
+  }
+
   reset() {
     // Default value filter form
-    this.filterForm.get('name')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('limitedFormat')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('author')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('tournament')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('place')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('cardText')?.patchValue('', { emitEvent: false })
-    this.filterForm
-      .get('singleDiscipline')
-      ?.patchValue(false, { emitEvent: false })
-    this.filterForm.get('singleClan')?.patchValue(false, { emitEvent: false })
-    this.filterForm
-      .get('librarySize')
-      ?.patchValue([40, 90], { emitEvent: false })
-    this.filterForm.get('cryptSize')?.patchValue([12, 40], { emitEvent: false })
-    this.filterForm.get('group')?.patchValue([0, 7], { emitEvent: false })
-    this.filterForm.get('players')?.patchValue([10, 200], { emitEvent: false })
-    this.filterForm
-      .get('year')
-      ?.patchValue([1998, this.getCurrentYear()], { emitEvent: false })
-    this.filterForm
-      .get('absoluteProportion')
-      ?.patchValue(false, { emitEvent: false })
-    this.filterForm
-      .get('customProportion')
-      ?.patchValue(false, { emitEvent: false })
-    this.filterForm.get('master')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('action')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('political')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('retainer')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('equipment')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('ally')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('modifier')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('combat')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('reaction')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('event')?.patchValue('any', { emitEvent: false })
-    this.filterForm.get('tags')?.patchValue('', { emitEvent: false })
-    this.filterForm.get('favorite')?.patchValue(false, { emitEvent: false })
-    this.filterForm.get('detailed')?.patchValue(false, { emitEvent: false })
+    deckFilterControlDefs(this.getCurrentYear()).forEach((def) =>
+      this.filterForm
+        .get(def.name)
+        ?.patchValue(def.default, { emitEvent: false }),
+    )
     this.filterForm
       .get('collectionTracker')
       ?.patchValue(false, { emitEvent: false })
-    this.filterForm
-      .get('collectionPercentage')
-      ?.patchValue(100, { emitEvent: false })
     this.clans = []
     this.disciplines = []
     this.notClans = []
@@ -329,53 +304,99 @@ export class DeckFiltersComponent implements OnInit {
 
   private initFilterForm() {
     this.filterForm = this.formBuilder.group({})
-    this.listenAndNavigateString(this.filterForm, 'name', '', 500)
-    this.listenAndNavigateString(this.filterForm, 'limitedFormat', '', 500)
-    this.listenAndNavigateString(this.filterForm, 'author', '', 500)
-    this.listenAndNavigateString(this.filterForm, 'tournament', '', 500)
-    this.listenAndNavigateString(this.filterForm, 'place', '', 500)
-    this.listenAndNavigateString(this.filterForm, 'cardText', '', 500)
-    this.listenAndNavigateBoolean(this.filterForm, 'singleDiscipline', false)
-    this.listenAndNavigateBoolean(this.filterForm, 'singleClan', false)
-    this.listenAndNavigateSlider(this.filterForm, 'librarySize', 40, 90, 500)
-    this.listenAndNavigateSlider(this.filterForm, 'cryptSize', 12, 40, 500)
-    this.listenAndNavigateSlider(this.filterForm, 'group', 0, 7, 500)
-    this.listenAndNavigateSlider(this.filterForm, 'players', 10, 200, 500)
-    this.listenAndNavigateSlider(
-      this.filterForm,
-      'year',
-      1998,
-      this.getCurrentYear(),
-      500,
-    )
-    this.listenAndNavigateBoolean(this.filterForm, 'absoluteProportion', false)
-    this.listenAndNavigateBoolean(
-      this.filterForm,
-      'customProportion',
-      false,
-      0,
-      false,
-    )
-    this.listenAndNavigateString(this.filterForm, 'master', 'any')
-    this.listenAndNavigateString(this.filterForm, 'action', 'any')
-    this.listenAndNavigateString(this.filterForm, 'political', 'any')
-    this.listenAndNavigateString(this.filterForm, 'retainer', 'any')
-    this.listenAndNavigateString(this.filterForm, 'equipment', 'any')
-    this.listenAndNavigateString(this.filterForm, 'ally', 'any')
-    this.listenAndNavigateString(this.filterForm, 'modifier', 'any')
-    this.listenAndNavigateString(this.filterForm, 'combat', 'any')
-    this.listenAndNavigateString(this.filterForm, 'reaction', 'any')
-    this.listenAndNavigateString(this.filterForm, 'event', 'any')
-    this.listenAndNavigateString(this.filterForm, 'tags', '')
-    this.listenAndNavigateBoolean(this.filterForm, 'favorite', false)
-    this.listenAndNavigateBoolean(this.filterForm, 'detailed', false)
-    this.listenAndNavigateCollectionTracker()
-    this.listenAndNavigateSimpleSlider(
-      this.filterForm,
-      'collectionPercentage',
-      100,
-      500,
-    )
+    deckFilterControlDefs(this.getCurrentYear()).forEach((def) => {
+      const debounce = def.debounce ?? 0
+      const navigate = def.navigate ?? true
+      switch (def.kind) {
+        case 'range': {
+          const [min, max] = def.default as number[]
+          this.listenAndNavigateSlider(
+            this.filterForm,
+            def.name,
+            min,
+            max,
+            debounce,
+            navigate,
+          )
+          break
+        }
+        case 'boolean':
+          this.listenAndNavigateBoolean(
+            this.filterForm,
+            def.name,
+            def.default as boolean,
+            debounce,
+            navigate,
+          )
+          break
+        case 'number':
+          // The tracker switch drives the percentage slider, register it first.
+          this.listenAndNavigateCollectionTracker()
+          this.listenAndNavigateSimpleSlider(
+            this.filterForm,
+            def.name,
+            def.default as number,
+            debounce,
+            navigate,
+          )
+          break
+        default:
+          this.listenAndNavigateString(
+            this.filterForm,
+            def.name,
+            def.default as string,
+            debounce,
+            navigate,
+          )
+      }
+    })
+  }
+
+  /**
+   * The URL is the source of truth for every deck filter, but the controls are
+   * only read from it once at construction. Mirror later query param changes
+   * back into the sidebar so removing a filter chip, resetting, or navigating
+   * back keeps the panel in sync.
+   */
+  private listenQueryParams() {
+    this.route.queryParams
+      .pipe(
+        untilDestroyed(this),
+        tap((params) => this.syncFromParams(params)),
+      )
+      .subscribe()
+  }
+
+  private syncFromParams(params: Params) {
+    deckFilterControlDefs(this.getCurrentYear()).forEach((def) => {
+      if (def.navigate === false) {
+        return
+      }
+      const control = this.filterForm.get(def.name)
+      const value = params[def.name] ?? def.default
+      // A control's own navigation round-trips to the same value, so this
+      // guard keeps self-triggered emissions (and debounced typing) untouched.
+      if (control && !isSameParamValue(control.value, value)) {
+        control.patchValue(value, { emitEvent: false })
+      }
+    })
+    const tracker = this.filterForm.get('collectionTracker')
+    const trackerValue = params['collectionPercentage'] ?? false
+    if (tracker && !isSameParamValue(tracker.value, trackerValue)) {
+      tracker.patchValue(trackerValue, { emitEvent: false })
+    }
+    this.clans = splitParamList(params['clans'])
+    this.notClans = splitParamList(params['notClans'])
+    this.disciplines = splitParamList(params['disciplines'])
+    this.notDisciplines = splitParamList(params['notDisciplines'])
+    this.paths = splitParamList(params['paths'])
+    this.rounds = splitParamList(params['rounds'])
+      .map((round) => Number(round))
+      .filter((round) => this.availableRounds.includes(round))
+    this.clanMode = params['clanMode'] === 'or' ? 'or' : 'and'
+    this.disciplineMode = params['disciplineMode'] === 'or' ? 'or' : 'and'
+    this.cardFilter().syncFromParams(params)
+    this.changeDetector.markForCheck()
   }
 
   private listenAndNavigateString(

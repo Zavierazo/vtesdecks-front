@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiCrypt, ApiLibrary, CardFilter } from '@models'
 import {
@@ -33,6 +33,7 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '@environments/environment'
+import { parseCardFilterParam } from '../deck-filter-defaults'
 
 @UntilDestroy()
 @Component({
@@ -72,18 +73,19 @@ export class CardFilterComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
-    const cards = this.decksQuery.getParam('cards')
-    if (cards) {
-      cards.split(',').forEach((card: string) => {
-        const [cardId, countString] = card.split('=')
-        const id = Number(cardId)
-        const count = Number(countString)
-        if (!isNaN(id) && !isNaN(count)) {
-          this.cards.push({ id, count })
-        }
-      })
-    }
+    this.cards = parseCardFilterParam(this.decksQuery.getParam('cards'))
     this.initStarVampire()
+  }
+
+  /** Mirrors URL changes made elsewhere (filter chips, reset, browser back). */
+  syncFromParams(params: Params) {
+    this.cards = parseCardFilterParam(params['cards'])
+    const starVampire = params['starVampire'] ?? false
+    const control = this.form.get('starVampire')
+    if (control && `${control.value ?? ''}` !== `${starVampire}`) {
+      control.patchValue(starVampire, { emitEvent: false })
+    }
+    this.changeDetectorRef.markForCheck()
   }
 
   reset() {

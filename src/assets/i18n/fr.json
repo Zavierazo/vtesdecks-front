@@ -64,7 +64,12 @@
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
     "set": "Extension",
     "artist": "Artiste",
-    "artist_placeholder": "Entrez le nom de l'artiste..."
+    "artist_placeholder": "Entrez le nom de l'artiste...",
+    "not_clans": "Clan exclu",
+    "superior_disciplines": "Discipline supérieure",
+    "not_disciplines": "Discipline exclue",
+    "discipline_mode_or": "Au moins une discipline",
+    "predefined_limited_format": "Format Limité"
   },
   "crypt_section": {
     "card_name": "Nom de la carte",
@@ -380,7 +385,12 @@
     "collection_tracker": "Suivi de collection",
     "filter_by_collection": "Filtrer par collection",
     "deck_completion": "Complétion du deck (%)",
-    "paths": "Voies"
+    "paths": "Voies",
+    "not_clans": "Clan exclu",
+    "not_disciplines": "Discipline exclue",
+    "clan_mode_or": "Au moins un clan",
+    "discipline_mode_or": "Au moins une discipline",
+    "absolute_proportion": "Proportions absolues"
   },
   "footer": {
     "trademark": "Certains éléments sont les marques déposées et copyrights de Paradox Interactive AB, et sont utilisés avec leur permission. Tous droits réservés. Pour plus d'informations, visitez",
@@ -497,7 +507,13 @@
     "card_text_placeholder": "Entrez du texte ou utilisez /votre-regex/",
     "set": "Extension",
     "artist": "Artiste",
-    "artist_placeholder": "Entrez le nom de l'artiste..."
+    "artist_placeholder": "Entrez le nom de l'artiste...",
+    "not_types": "Type exclu",
+    "type_mode_and": "Tous les types",
+    "not_clans": "Clan exclu",
+    "not_disciplines": "Discipline exclue",
+    "discipline_mode_or": "Au moins une discipline",
+    "predefined_limited_format": "Format Limité"
   },
   "library_section": {
     "card_name": "Nom de la carte",
@@ -622,7 +638,13 @@
     "proxy_generator": "Générateur de Proxy",
     "supporter": "Membre Patreon",
     "vtes_ai_chat": "Chat VTES AI",
-    "new": "Nouveau"
+    "new": "Nouveau",
+    "sort_by": "Trier par",
+    "ascending": "croissant",
+    "descending": "décroissant",
+    "clear_all": "Tout effacer",
+    "remove_filter": "Supprimer {{ filter }}",
+    "active_filters": "Filtres actifs"
   },
   "game_timer": {
     "title": "Minuteur de partie",

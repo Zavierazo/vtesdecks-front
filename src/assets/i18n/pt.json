@@ -64,7 +64,12 @@
     "card_text_placeholder": "Digite o texto ou use /seu-regex/",
     "set": "Expansão",
     "artist": "Artista",
-    "artist_placeholder": "Digite o nome do artista..."
+    "artist_placeholder": "Digite o nome do artista...",
+    "not_clans": "Clã excluído",
+    "superior_disciplines": "Disciplina superior",
+    "not_disciplines": "Disciplina excluída",
+    "discipline_mode_or": "Qualquer disciplina",
+    "predefined_limited_format": "Formato Limitado"
   },
   "crypt_section": {
     "card_name": "Nome do cartão",
@@ -380,7 +385,12 @@
     "collection_tracker": "Rastreador de Coleção",
     "filter_by_collection": "Filtrar por Coleção",
     "deck_completion": "Cartas na Coleção (%)",
-    "paths": "Paths"
+    "paths": "Paths",
+    "not_clans": "Clã excluído",
+    "not_disciplines": "Disciplina excluída",
+    "clan_mode_or": "Qualquer clã",
+    "discipline_mode_or": "Qualquer disciplina",
+    "absolute_proportion": "Proporções absolutas"
   },
   "footer": {
     "trademark": "Partes da marca registradas são propriedade de Paradox Interactive AB e são usadas com permissão. Todos os direitos reservados. Para mais informações, visite",
@@ -497,7 +507,13 @@
     "card_text_placeholder": "Digite o texto ou use /seu-regex/",
     "set": "Expansão",
     "artist": "Artista",
-    "artist_placeholder": "Digite o nome do artista..."
+    "artist_placeholder": "Digite o nome do artista...",
+    "not_types": "Tipo excluído",
+    "type_mode_and": "Todos os tipos",
+    "not_clans": "Clã excluído",
+    "not_disciplines": "Disciplina excluída",
+    "discipline_mode_or": "Qualquer disciplina",
+    "predefined_limited_format": "Formato Limitado"
   },
   "library_section": {
     "card_name": "Nome do cartão",
@@ -622,7 +638,13 @@
     "vtes_ai_chat": "Chat IA de VTES",
     "new": "Novo",
     "supporter": "Membro no Patreon",
-    "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente."
+    "validation_error": "Erro de validação. Por favor, verifique o formulário e tente novamente.",
+    "sort_by": "Ordenar por",
+    "ascending": "ascendente",
+    "descending": "descendente",
+    "clear_all": "Limpar tudo",
+    "remove_filter": "Remover {{ filter }}",
+    "active_filters": "Filtros ativos"
   },
   "game_timer": {
     "title": "Temporizador de partida",

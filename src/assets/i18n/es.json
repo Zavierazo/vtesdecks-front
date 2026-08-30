@@ -64,7 +64,12 @@
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
     "set": "Expansion",
     "artist": "Artista",
-    "artist_placeholder": "Introduce el nombre del artista..."
+    "artist_placeholder": "Introduce el nombre del artista...",
+    "not_clans": "Clan excluido",
+    "superior_disciplines": "Disciplina superior",
+    "not_disciplines": "Disciplina excluida",
+    "discipline_mode_or": "Cualquier disciplina",
+    "predefined_limited_format": "Formato Limitado"
   },
   "crypt_section": {
     "card_name": "Nombre de carta",
@@ -380,7 +385,12 @@
     "collection_tracker": "Rastreador de Colección",
     "filter_by_collection": "Filtrar por Colección",
     "deck_completion": "Cartas en Colección (%)",
-    "paths": "Sendas"
+    "paths": "Sendas",
+    "not_clans": "Clan excluido",
+    "not_disciplines": "Disciplina excluida",
+    "clan_mode_or": "Cualquier clan",
+    "discipline_mode_or": "Cualquier disciplina",
+    "absolute_proportion": "Proporciones absolutas"
   },
   "footer": {
     "trademark": "Partes de los materiales son propiedad intelectual y marcas comerciales de Paradox Interactive AB y se utilizan con permiso. Todos los derechos reservados. Para más información, visite",
@@ -497,7 +507,13 @@
     "card_text_placeholder": "Introduce el texto o usa /tu-regex/",
     "set": "Expansion",
     "artist": "Artista",
-    "artist_placeholder": "Introduce el nombre del artista..."
+    "artist_placeholder": "Introduce el nombre del artista...",
+    "not_types": "Tipo excluido",
+    "type_mode_and": "Todos los tipos",
+    "not_clans": "Clan excluido",
+    "not_disciplines": "Disciplina excluida",
+    "discipline_mode_or": "Cualquier disciplina",
+    "predefined_limited_format": "Formato Limitado"
   },
   "library_section": {
     "card_name": "Nombre de carta",
@@ -622,7 +638,13 @@
     "supporter": "Miembro en Patreon",
     "vtes_ai_chat": "Chat IA de VTES",
     "new": "Nuevo",
-    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo."
+    "validation_error": "Error de validación. Por favor, revise el formulario e inténtelo de nuevo.",
+    "sort_by": "Ordenar por",
+    "ascending": "ascendente",
+    "descending": "descendente",
+    "clear_all": "Limpiar todo",
+    "remove_filter": "Quitar {{ filter }}",
+    "active_filters": "Filtros activos"
   },
   "game_timer": {
     "title": "Temporizador de partida",
