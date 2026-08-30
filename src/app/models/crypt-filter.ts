@@ -16,7 +16,8 @@ export interface CryptFilter {
   capacitySlider?: number[]
   title?: string
   sect?: string
-  path?: string
+  paths?: string[]
+  notPaths?: string[]
   set?: string
   taints?: string[]
   cardText?: string

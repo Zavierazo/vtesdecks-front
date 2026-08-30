@@ -12,6 +12,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
+import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -22,7 +23,6 @@ import {
 } from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
 
 @UntilDestroy()
@@ -36,6 +36,7 @@ import { tap } from 'rxjs'
     ReactiveFormsModule,
     ClanFilterComponent,
     DisciplineFilterComponent,
+    PathFilterComponent,
     NgxSliderModule,
     AsyncPipe,
     TitleCasePipe,
@@ -60,7 +61,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   capacitySliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
-  pathControl!: FormControl
   setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
@@ -70,7 +70,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   sects$ = this.cryptQuery.selectSects()
   taints$ = this.cryptQuery.selectTaints()
   sets$ = this.cryptQuery.selectSets()
-  pathList = PATH_LIST
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
@@ -122,7 +121,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeSect()
-    this.onChangePath()
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
@@ -151,6 +149,16 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   onChangeNotDisciplineFilter(notDisciplines: string[]) {
     this.filter.notDisciplines = notDisciplines
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangePathFilter(paths: string[]) {
+    this.filter.paths = paths
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeNotPathFilter(notPaths: string[]) {
+    this.filter.notPaths = notPaths
     this.filterChange.emit(this.filter)
   }
 
@@ -301,19 +309,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.sect = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangePath() {
-    this.pathControl = new FormControl(this.filter.path)
-    this.pathControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.path = value
           this.filterChange.emit(this.filter)
         }),
       )

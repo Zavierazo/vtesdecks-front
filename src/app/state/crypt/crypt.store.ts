@@ -422,7 +422,16 @@ export class CryptStore {
     if (filter.sect && entity.sect !== filter.sect) {
       return false
     }
-    if (filter.path && entity.path !== filter.path) {
+    const pathMatches = (path: string) =>
+      path === 'none' ? !entity.path : entity.path === path
+    if (
+      Array.isArray(filter.paths) &&
+      filter.paths.length > 0 &&
+      !filter.paths.some(pathMatches)
+    ) {
+      return false
+    }
+    if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
     if (filter.set) {

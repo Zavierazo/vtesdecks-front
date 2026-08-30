@@ -40,6 +40,14 @@
       (modeChange)="onChangeDisciplineMode($event)" />
   </div>
   }
+  @if (filter.paths) {
+  <label for="paths" class="form-label text-primary fw-bold mt-2">{{ t('path') }}</label>
+  <div id="paths" class="row g-1">
+    <app-path-filter [(paths)]="filter.paths" (pathsChange)="onChangePathFilter($event)" [showNotRequired]="true"
+      [allowExclude]="true" [notPaths]="filter.notPaths ?? []"
+      (notPathsChange)="onChangeNotPathFilter($event)" />
+  </div>
+  }
   <div class="row g-1 mt-2">
     <label for="group" class="form-label text-primary fw-bold">{{ t('group') }}</label>
     <ngx-slider id="group" [options]="{
@@ -141,18 +149,6 @@
       }
     </select>
     <label for="sect">{{ t('sect') }}</label>
-  </div>
-
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="path" [formControl]="pathControl">
-      <option selected></option>
-      @for (path of pathList; track path) {
-      <option [value]="path.name">
-        {{ path.label | transloco}}
-      </option>
-      }
-    </select>
-    <label for="path">{{ t('path') }}</label>
   </div>
   <div class="form-floating my-2">
     <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text_placeholder')"

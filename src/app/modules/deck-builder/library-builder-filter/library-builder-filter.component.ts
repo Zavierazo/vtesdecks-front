@@ -12,6 +12,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
+import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { LibraryFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -22,7 +23,6 @@ import {
 } from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
-import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
@@ -38,6 +38,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     LibraryTypeFilterComponent,
     DisciplineFilterComponent,
     ClanFilterComponent,
+    PathFilterComponent,
     NgxSliderModule,
     AsyncPipe,
     TitleCasePipe,
@@ -59,7 +60,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
   sectControl!: FormControl
-  pathControl!: FormControl
   titleControl!: FormControl
   setControl!: FormControl
   bloodCostSliderControl!: FormControl
@@ -73,7 +73,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   titles$ = this.libraryQuery.selectTitles()
   taints$ = this.libraryQuery.selectTaints()
   sets$ = this.libraryQuery.selectSets()
-  pathList = PATH_LIST
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   maxConvictionCost = this.libraryQuery.getMaxConvictionCost()
   initialized = false
@@ -100,7 +99,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangePrintOnDemand()
     this.onChangeLimitedFormat()
     this.onChangeSect()
-    this.onChangePath()
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeBloodCostSlider()
@@ -152,6 +150,16 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   onChangeNotDisciplineFilter(notDisciplines: string[]) {
     this.filter.notDisciplines = notDisciplines
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangePathFilter(paths: string[]) {
+    this.filter.paths = paths
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeNotPathFilter(notPaths: string[]) {
+    this.filter.notPaths = notPaths
     this.filterChange.emit(this.filter)
   }
 
@@ -208,19 +216,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.sect = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangePath() {
-    this.pathControl = new FormControl(this.filter.path)
-    this.pathControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.path = value
           this.filterChange.emit(this.filter)
         }),
       )

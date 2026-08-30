@@ -304,8 +304,11 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['sect']) {
       this.libraryFilter.sect = queryParams['sect']
     }
-    if (queryParams['path']) {
-      this.libraryFilter.path = queryParams['path']
+    if (queryParams['paths']) {
+      this.libraryFilter.paths = queryParams['paths'].split(',')
+    }
+    if (queryParams['notPaths']) {
+      this.libraryFilter.notPaths = queryParams['notPaths'].split(',')
     }
     if (queryParams['types']) {
       this.libraryFilter.types = queryParams['types'].split(',')
@@ -494,7 +497,14 @@ export class LibrarySectionComponent implements OnInit {
       ['disciplineMode']:
         this.libraryFilter.disciplineMode === 'or' ? 'or' : undefined,
       ['sect']: this.libraryFilter.sect || undefined,
-      ['path']: this.libraryFilter.path || undefined,
+      ['paths']:
+        this.libraryFilter.paths && this.libraryFilter.paths.length > 0
+          ? this.libraryFilter.paths.join(',')
+          : undefined,
+      ['notPaths']:
+        this.libraryFilter.notPaths && this.libraryFilter.notPaths.length > 0
+          ? this.libraryFilter.notPaths.join(',')
+          : undefined,
       ['title']: this.libraryFilter.title || undefined,
       ['set']: this.libraryFilter.set || undefined,
       ['bloodCostSlider']:

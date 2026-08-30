@@ -23,7 +23,8 @@ const cryptDefaults: CryptFilter = {
   advanced: undefined,
   title: '',
   sect: '',
-  path: '',
+  paths: [],
+  notPaths: [],
   set: '',
   taints: [],
   cardText: '',
@@ -46,7 +47,8 @@ const libraryDefaults: LibraryFilter = {
   trifle: undefined,
   title: '',
   sect: '',
-  path: '',
+  paths: [],
+  notPaths: [],
   set: '',
   taints: [],
   cardText: '',
@@ -79,7 +81,11 @@ describe('buildCryptFilterChips', () => {
   it('labels the any and no title sentinels', () => {
     expect(
       chipFor(
-        buildCryptFilterChips({ ...cryptDefaults, title: 'any' }, cryptDefaults, t),
+        buildCryptFilterChips(
+          { ...cryptDefaults, title: 'any' },
+          cryptDefaults,
+          t,
+        ),
         'title',
       )?.value,
     ).toBe('[shared.any_title]')
@@ -106,6 +112,52 @@ describe('buildCryptFilterChips', () => {
         'title',
       )?.value,
     ).toBe('prince')
+  })
+
+  it('creates one chip per selected or excluded path', () => {
+    const chips = buildCryptFilterChips(
+      {
+        ...cryptDefaults,
+        paths: ['Caine', 'Cathari'],
+        notPaths: ['Power and the Inner Voice'],
+      },
+      cryptDefaults,
+      t,
+    )
+
+    expect(chips.filter((chip) => chip.key === 'paths')).toEqual([
+      {
+        id: 'paths:Caine',
+        key: 'paths',
+        item: 'Caine',
+        label: '[crypt_builder_filter.path]',
+        value: '[vtes.path.caine]',
+      },
+      {
+        id: 'paths:Cathari',
+        key: 'paths',
+        item: 'Cathari',
+        label: '[crypt_builder_filter.path]',
+        value: '[vtes.path.cathari]',
+      },
+    ])
+    expect(chipFor(chips, 'notPaths')).toEqual({
+      id: 'notPaths:Power and the Inner Voice',
+      key: 'notPaths',
+      item: 'Power and the Inner Voice',
+      label: '[crypt_builder_filter.not_paths]',
+      value: '[vtes.path.power]',
+    })
+  })
+
+  it('labels the no-path sentinel as not required', () => {
+    const chips = buildCryptFilterChips(
+      { ...cryptDefaults, paths: ['none'] },
+      cryptDefaults,
+      t,
+    )
+
+    expect(chipFor(chips, 'paths')?.value).toBe('[shared.not_required]')
   })
 })
 

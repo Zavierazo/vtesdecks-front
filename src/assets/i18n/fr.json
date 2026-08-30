@@ -52,7 +52,7 @@
   "crypt_builder_filter": {
     "print_on_demand": "Impression à la demande (POD)",
     "clans": "Clans",
-    "path": "Voie",
+    "path": "Voies",
     "disciplines": "Disciplines",
     "group": "Groupe",
     "capacity": "Capacité",
@@ -76,6 +76,7 @@
     "artist": "Artiste",
     "artist_placeholder": "Entrez le nom de l'artiste...",
     "not_clans": "Clan exclu",
+    "not_paths": "Voie exclue",
     "superior_disciplines": "Discipline supérieure",
     "not_disciplines": "Discipline exclue",
     "discipline_mode_or": "Au moins une discipline",
@@ -508,7 +509,7 @@
     "type": "Type",
     "disciplines": "Disciplines",
     "clans": "Clans",
-    "path": "Voie",
+    "path": "Voies",
     "sect": "Secte",
     "title": "Titre",
     "blood_cost": "Coût en Sang",
@@ -528,6 +529,7 @@
     "not_types": "Type exclu",
     "type_mode_and": "Tous les types",
     "not_clans": "Clan exclu",
+    "not_paths": "Voie exclue",
     "not_disciplines": "Discipline exclue",
     "discipline_mode_or": "Au moins une discipline",
     "predefined_limited_format": "Format Limité"

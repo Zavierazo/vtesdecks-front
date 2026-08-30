@@ -302,8 +302,11 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['sect']) {
       this.cryptFilter.sect = queryParams['sect']
     }
-    if (queryParams['path']) {
-      this.cryptFilter.path = queryParams['path']
+    if (queryParams['paths']) {
+      this.cryptFilter.paths = queryParams['paths'].split(',')
+    }
+    if (queryParams['notPaths']) {
+      this.cryptFilter.notPaths = queryParams['notPaths'].split(',')
     }
     if (queryParams['clans']) {
       this.cryptFilter.clans = queryParams['clans'].split(',')
@@ -319,8 +322,7 @@ export class CryptSectionComponent implements OnInit {
         queryParams['superiorDisciplines'].split(',')
     }
     if (queryParams['notDisciplines']) {
-      this.cryptFilter.notDisciplines =
-        queryParams['notDisciplines'].split(',')
+      this.cryptFilter.notDisciplines = queryParams['notDisciplines'].split(',')
     }
     if (queryParams['disciplineMode'] === 'or') {
       this.cryptFilter.disciplineMode = 'or'
@@ -480,7 +482,14 @@ export class CryptSectionComponent implements OnInit {
       ['title']: this.cryptFilter.title || undefined,
       ['set']: this.cryptFilter.set || undefined,
       ['sect']: this.cryptFilter.sect || undefined,
-      ['path']: this.cryptFilter.path || undefined,
+      ['paths']:
+        this.cryptFilter.paths && this.cryptFilter.paths.length > 0
+          ? this.cryptFilter.paths.join(',')
+          : undefined,
+      ['notPaths']:
+        this.cryptFilter.notPaths && this.cryptFilter.notPaths.length > 0
+          ? this.cryptFilter.notPaths.join(',')
+          : undefined,
       ['taints']:
         this.cryptFilter.taints && this.cryptFilter.taints.length > 0
           ? this.cryptFilter.taints.join(',')

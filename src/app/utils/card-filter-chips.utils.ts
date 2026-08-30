@@ -31,6 +31,9 @@ const disciplineLabel = (t: TranslateFn, discipline: string): string => {
 }
 
 const pathLabel = (t: TranslateFn, path: string): string => {
+  if (path === 'none') {
+    return t('shared.not_required')
+  }
   const found = PATH_LIST.find((item) => item.name === path)
   return found ? translateOr(t, found.label, path) : path
 }
@@ -170,15 +173,20 @@ export function buildCryptFilterChips(
     .list('clans', `${scope}clans`, clanLabel)
     .list('notClans', `${scope}not_clans`, clanLabel)
     .list('disciplines', `${scope}disciplines`, disciplineLabel)
-    .list('superiorDisciplines', `${scope}superior_disciplines`, disciplineLabel)
+    .list(
+      'superiorDisciplines',
+      `${scope}superior_disciplines`,
+      disciplineLabel,
+    )
     .list('notDisciplines', `${scope}not_disciplines`, disciplineLabel)
+    .list('paths', `${scope}path`, pathLabel)
+    .list('notPaths', `${scope}not_paths`, pathLabel)
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('groupSlider', `${scope}group`)
     .range('capacitySlider', `${scope}capacity`)
     .scalar('advanced', `${scope}version`, enumLabel(`${scope}advanced_`))
     .scalar('title', `${scope}title`, cryptTitleLabel)
     .scalar('sect', `${scope}sect`)
-    .scalar('path', `${scope}path`, pathLabel)
     .scalar('set', `${scope}set`)
     .list('taints', `${scope}taints`, taintLabel)
     .flag('limitedFormat', `${scope}limited_format`)
@@ -206,6 +214,8 @@ export function buildLibraryFilterChips(
     .list('notClans', `${scope}not_clans`, clanLabel)
     .list('disciplines', `${scope}disciplines`, disciplineLabel)
     .list('notDisciplines', `${scope}not_disciplines`, disciplineLabel)
+    .list('paths', `${scope}path`, pathLabel)
+    .list('notPaths', `${scope}not_paths`, pathLabel)
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('bloodCostSlider', `${scope}blood_cost`)
     .range('poolCostSlider', `${scope}pool_cost`)
@@ -213,7 +223,6 @@ export function buildLibraryFilterChips(
     .scalar('trifle', `${scope}trifle`, trifleLabel)
     .scalar('title', `${scope}title`, libraryTitleLabel)
     .scalar('sect', `${scope}sect`)
-    .scalar('path', `${scope}path`, pathLabel)
     .scalar('set', `${scope}set`)
     .list('taints', `${scope}taints`, taintLabel)
     .flag('limitedFormat', `${scope}limited_format`)

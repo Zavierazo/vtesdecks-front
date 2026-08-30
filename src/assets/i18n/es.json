@@ -52,7 +52,7 @@
   "crypt_builder_filter": {
     "print_on_demand": "Impresión bajo demanda",
     "clans": "Clanes",
-    "path": "Senda",
+    "path": "Sendas",
     "disciplines": "Disciplinas",
     "group": "Grupo",
     "capacity": "Capacidad",
@@ -76,6 +76,7 @@
     "artist": "Artista",
     "artist_placeholder": "Introduce el nombre del artista...",
     "not_clans": "Clan excluido",
+    "not_paths": "Senda excluida",
     "superior_disciplines": "Disciplina superior",
     "not_disciplines": "Disciplina excluida",
     "discipline_mode_or": "Cualquier disciplina",
@@ -508,7 +509,7 @@
     "type": "Tipo",
     "disciplines": "Disciplinas",
     "clans": "Clanes",
-    "path": "Senda",
+    "path": "Sendas",
     "sect": "Secta",
     "title": "Título",
     "blood_cost": "Coste de sangre",
@@ -528,6 +529,7 @@
     "not_types": "Tipo excluido",
     "type_mode_and": "Todos los tipos",
     "not_clans": "Clan excluido",
+    "not_paths": "Senda excluida",
     "not_disciplines": "Disciplina excluida",
     "discipline_mode_or": "Cualquier disciplina",
     "predefined_limited_format": "Formato Limitado"

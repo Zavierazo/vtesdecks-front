@@ -8,8 +8,8 @@
       "Preconstructed decks now display their official cover artwork on deck pages and in deck lists when an image is available.",
       "The Crypt and Library <strong>sort control</strong> now shows the active sort field and direction instead of a generic icon.",
       "Crypt, Library and Decks display <strong>active filter chips</strong> above the results: remove one filter, <strong>Clear all</strong>, and an active-filter count on the mobile Filters button. Deck card filters now show localized card names instead of card ids.",
-      "The <strong>Crypt filters</strong> gained one-click <strong>group pairs</strong> (G1/2 to G6/7) and <strong>capacity shortcuts</strong> (Weenie, Mid-cap, High-cap) next to the sliders, a <strong>Base / Advanced</strong> filter to show only base or only advanced vampires, and <strong>Any title</strong> and <strong>No title</strong> options to find titled or untitled vampires.",
-      "The <strong>Library filters</strong> now include a <strong>Conviction cost</strong> range, alongside blood and pool cost, and a <strong>Trifle / Non-trifle</strong> filter for master cards.",
+      "The <strong>Crypt filters</strong> gained one-click <strong>group pairs</strong> (G1/2 to G6/7) and <strong>capacity shortcuts</strong> (Weenie, Mid-cap, High-cap) next to the sliders, a <strong>Base / Advanced</strong> filter to show only base or only advanced vampires, and <strong>Any title</strong> and <strong>No title</strong> options to find titled or untitled vampires. <strong>Path filtering</strong> now uses icons instead of a dropdown, supports several paths at once, includes a <strong>No path</strong> option, and supports right-click or long-press exclusion.",
+      "The <strong>Library filters</strong> now include a <strong>Conviction cost</strong> range, alongside blood and pool cost, and a <strong>Trifle / Non-trifle</strong> filter for master cards. <strong>Path filtering</strong> now uses icons instead of a dropdown, supports several paths at once, includes a <strong>No path</strong> option, and supports right-click or long-press exclusion.",
       "Minor bug fixes and performance improvements."
     ]
   },
