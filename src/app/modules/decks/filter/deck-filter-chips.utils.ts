@@ -73,15 +73,26 @@ const cardName = (
 }
 
 /**
+ * What the chip builder needs to turn ids into readable values. The name
+ * resolvers are optional: without them the chip falls back to the raw id.
+ */
+export interface DeckFilterChipContext {
+  t: TranslateFn
+  cryptQuery: CryptQuery
+  libraryQuery: LibraryQuery
+  archetypeName?: (id: string) => Observable<string>
+  deckName?: (id: string) => Observable<string>
+}
+
+/**
  * Chips for every non-default deck filter currently in the URL. `type` and
  * `order` are header controls, not filters, so they never get a chip.
  */
 export function buildDeckFilterChips(
   params: Params,
-  t: TranslateFn,
-  cryptQuery: CryptQuery,
-  libraryQuery: LibraryQuery,
+  context: DeckFilterChipContext,
 ): FilterChip[] {
+  const { t, cryptQuery, libraryQuery } = context
   const chips: FilterChip[] = []
   const absolute = !!params['absoluteProportion']
   deckFilterDefs().forEach((def) => {
@@ -106,6 +117,19 @@ export function buildDeckFilterChips(
       return
     }
     if (raw === undefined || raw === null || raw === '') {
+      return
+    }
+    // Set from outside the sidebar (metagame pages, "similar decks" button),
+    // so they carry an id that only an API lookup can turn into a name.
+    if (def.name === 'archetype' || def.name === 'bySimilarity') {
+      const resolve =
+        def.name === 'archetype' ? context.archetypeName : context.deckName
+      chips.push({
+        id: def.name,
+        key: def.name,
+        label: t(def.labelKey),
+        value$: resolve ? resolve(`${raw}`) : of(`${raw}`),
+      })
       return
     }
     switch (def.kind) {

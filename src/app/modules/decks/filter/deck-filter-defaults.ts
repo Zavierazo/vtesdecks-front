@@ -235,6 +235,20 @@ export function deckFilterDefs(
       control: false,
     },
     {
+      name: 'archetype',
+      kind: 'string',
+      default: '',
+      labelKey: 'filters.archetype',
+      control: false,
+    },
+    {
+      name: 'bySimilarity',
+      kind: 'string',
+      default: '',
+      labelKey: 'filters.similar_to',
+      control: false,
+    },
+    {
       name: 'starVampire',
       kind: 'boolean',
       default: false,

@@ -24,7 +24,7 @@ import {
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SeoService } from '@services'
+import { ApiDataService, MediaService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -39,6 +39,7 @@ import { DecksService } from '@state/decks/decks.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
+  catchError,
   combineLatest,
   debounceTime,
   distinctUntilChanged,
@@ -47,6 +48,8 @@ import {
   map,
   merge,
   Observable,
+  of,
+  shareReplay,
   skip,
   startWith,
   switchMap,
@@ -98,6 +101,10 @@ export class DecksComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
+  private readonly apiDataService = inject(ApiDataService)
+
+  /** Archetype and deck names are fetched once per id and reused. */
+  private readonly resolvedNames = new Map<string, Observable<string>>()
 
   /**
    * Chip labels are translated eagerly, so rebuild them once the active
@@ -114,13 +121,22 @@ export class DecksComponent implements OnInit {
       ).pipe(startWith(null)),
     ]).pipe(
       map(([params]) =>
-        buildDeckFilterChips(
-          params,
-          (key, translateParams) =>
+        buildDeckFilterChips(params, {
+          t: (key, translateParams) =>
             this.translocoService.translate(key, translateParams),
-          this.cryptQuery,
-          this.libraryQuery,
-        ),
+          cryptQuery: this.cryptQuery,
+          libraryQuery: this.libraryQuery,
+          archetypeName: (id) =>
+            this.resolveName(`archetype:${id}`, id, () =>
+              this.apiDataService
+                .getDeckArchetype(Number(id))
+                .pipe(map((archetype) => archetype.name)),
+            ),
+          deckName: (id) =>
+            this.resolveName(`deck:${id}`, id, () =>
+              this.apiDataService.getDeck(id).pipe(map((deck) => deck.name)),
+            ),
+        }),
       ),
     ),
     { initialValue: [] as FilterChip[] },
@@ -246,6 +262,22 @@ export class DecksComponent implements OnInit {
       queryParams: removeDeckFilterChip(this.route.snapshot.queryParams, chip),
       queryParamsHandling: 'merge',
     })
+  }
+
+  private resolveName(
+    cacheKey: string,
+    fallback: string,
+    request: () => Observable<string>,
+  ): Observable<string> {
+    let name$ = this.resolvedNames.get(cacheKey)
+    if (!name$) {
+      name$ = request().pipe(
+        catchError(() => of(fallback)),
+        shareReplay({ bufferSize: 1, refCount: false }),
+      )
+      this.resolvedNames.set(cacheKey, name$)
+    }
+    return name$
   }
 
   private listenScroll() {

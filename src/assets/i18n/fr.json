@@ -400,7 +400,9 @@
     "not_disciplines": "Discipline exclue",
     "clan_mode_or": "Au moins un clan",
     "discipline_mode_or": "Au moins une discipline",
-    "absolute_proportion": "Proportions absolues"
+    "absolute_proportion": "Proportions absolues",
+    "archetype": "Archétype",
+    "similar_to": "Similaire à"
   },
   "footer": {
     "trademark": "Certains éléments sont les marques déposées et copyrights de Paradox Interactive AB, et sont utilisés avec leur permission. Tous droits réservés. Pour plus d'informations, visitez",
