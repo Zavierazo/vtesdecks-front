@@ -9,6 +9,7 @@ import {
   output,
   viewChild,
 } from '@angular/core'
+import { AsyncPipe } from '@angular/common'
 import {
   FormBuilder,
   FormControl,
@@ -16,7 +17,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { ActivatedRoute, Params, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import {
   NgbHighlight,
   NgbTooltip,
@@ -25,6 +30,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import { ApiDeckArchetype } from '@models'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { DecksQuery } from '@state/decks/decks.query'
 import {
@@ -74,6 +80,7 @@ import { CardProportionComponent } from './card-proportion/card-proportion.compo
     CardProportionComponent,
     TranslocoPipe,
     TranslocoFallbackPipe,
+    AsyncPipe,
   ],
 })
 export class DeckFiltersComponent implements OnInit, AfterViewInit {
@@ -83,6 +90,7 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly translocoService = inject(TranslocoService)
 
   readonly resetFilters = output<void>()
   type = input.required<string>()
@@ -97,6 +105,9 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   availableTags: string[] = []
   readonly availableRounds = DECK_ROUND_OPTIONS
   rounds: number[] = []
+  archetypes: ApiDeckArchetype[] = []
+  selectedArchetype: ApiDeckArchetype | null = null
+  readonly currency$ = this.decksQuery.selectCurrency()
 
   tagFocus$ = new Subject<string>()
   tagClick$ = new Subject<string>()
@@ -119,6 +130,17 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
         untilDestroyed(this),
         tap((tags) => {
           this.availableTags = tags
+          this.changeDetector.markForCheck()
+        }),
+      )
+      .subscribe()
+    this.apiDataService
+      .getAllDeckArchetypes('TOURNAMENT')
+      .pipe(
+        untilDestroyed(this),
+        tap((archetypes) => {
+          this.archetypes = archetypes.filter((item) => item.enabled)
+          this.syncArchetype(this.route.snapshot.queryParams['archetype'])
           this.changeDetector.markForCheck()
         }),
       )
@@ -149,8 +171,79 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
     this.disciplineMode = 'and'
     this.paths = []
     this.rounds = []
+    this.selectedArchetype = null
     this.cardFilter().reset()
     this.resetFilters.emit()
+  }
+
+  searchArchetype: OperatorFunction<string, ApiDeckArchetype[]> = (text$) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map((term) => {
+        const normalized = term.toLowerCase().trim()
+        return this.archetypes
+          .filter((item) =>
+            (item.id === 0 ? 'unclassified' : item.name)
+              .toLowerCase()
+              .includes(normalized),
+          )
+          .slice(0, 20)
+      }),
+    )
+
+  archetypeFormatter = (item: ApiDeckArchetype) =>
+    item.id === 0
+      ? this.translocoService.translate('filters.unclassified')
+      : item.name
+
+  onSelectArchetype(event: NgbTypeaheadSelectItemEvent<ApiDeckArchetype>) {
+    this.selectedArchetype = event.item
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { archetype: event.item.id },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  clearArchetype() {
+    this.selectedArchetype = null
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { archetype: undefined },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  setCollectionShortcut(value: number) {
+    this.filterForm
+      .get('collectionTracker')
+      ?.patchValue(true, { emitEvent: false })
+    this.filterForm.get('collectionPercentage')?.patchValue(value)
+  }
+
+  isCollectionShortcut(value: number): boolean {
+    return (
+      this.collectionTracker &&
+      Number(this.getProportionValue('collectionPercentage')) === value
+    )
+  }
+
+  get priceRangeInvalid(): boolean {
+    const minRaw = this.filterForm?.get('minPrice')?.value
+    const maxRaw = this.filterForm?.get('maxPrice')?.value
+    const min = this.priceValue('minPrice')
+    const max = this.priceValue('maxPrice')
+    if (
+      (minRaw !== '' &&
+        minRaw !== null &&
+        minRaw !== undefined &&
+        min === null) ||
+      (maxRaw !== '' && maxRaw !== null && maxRaw !== undefined && max === null)
+    ) {
+      return true
+    }
+    return min !== null && max !== null && min > max
   }
 
   changeDisciplineFilter() {
@@ -340,6 +433,9 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
             navigate,
           )
           break
+        case 'decimal':
+          this.listenAndNavigatePrice(def.name, debounce)
+          break
         default:
           this.listenAndNavigateString(
             this.filterForm,
@@ -395,8 +491,45 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
       .filter((round) => this.availableRounds.includes(round))
     this.clanMode = params['clanMode'] === 'or' ? 'or' : 'and'
     this.disciplineMode = params['disciplineMode'] === 'or' ? 'or' : 'and'
+    this.syncArchetype(params['archetype'])
     this.cardFilter().syncFromParams(params)
     this.changeDetector.markForCheck()
+  }
+
+  private syncArchetype(value: unknown) {
+    this.selectedArchetype =
+      value === undefined || value === null || value === ''
+        ? null
+        : (this.archetypes.find((item) => `${item.id}` === `${value}`) ?? null)
+  }
+
+  private priceValue(name: string): number | null {
+    const raw = this.filterForm?.get(name)?.value
+    if (raw === '' || raw === null || raw === undefined) return null
+    const value = Number(raw)
+    return Number.isFinite(value) && value >= 0 ? value : null
+  }
+
+  private listenAndNavigatePrice(name: string, debounce = 0) {
+    const formControl = new FormControl(this.decksQuery.getParam(name) ?? '')
+    formControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(debounce),
+        tap(() => {
+          if (this.priceRangeInvalid) return
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+              minPrice: this.priceValue('minPrice') ?? undefined,
+              maxPrice: this.priceValue('maxPrice') ?? undefined,
+            },
+            queryParamsHandling: 'merge',
+          })
+        }),
+      )
+      .subscribe()
+    this.filterForm.addControl(name, formControl)
   }
 
   private listenAndNavigateString(

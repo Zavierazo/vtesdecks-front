@@ -116,6 +116,18 @@ export function buildDeckFilterChips(
       )
       return
     }
+    if (def.name === 'excludedCards') {
+      splitParamList(raw).forEach((id) =>
+        chips.push({
+          id: `excludedCards:${id}`,
+          key: 'excludedCards',
+          item: id,
+          label: t('filters.excluded_cards'),
+          value$: cardName(cryptQuery, libraryQuery, Number(id), 1),
+        }),
+      )
+      return
+    }
     if (raw === undefined || raw === null || raw === '') {
       return
     }
@@ -128,7 +140,16 @@ export function buildDeckFilterChips(
         id: def.name,
         key: def.name,
         label: t(def.labelKey),
-        value$: resolve ? resolve(`${raw}`) : of(`${raw}`),
+        value:
+          def.name === 'archetype' && Number(raw) === 0
+            ? t('filters.unclassified')
+            : undefined,
+        value$:
+          def.name === 'archetype' && Number(raw) === 0
+            ? undefined
+            : resolve
+              ? resolve(`${raw}`)
+              : of(`${raw}`),
       })
       return
     }
@@ -145,7 +166,7 @@ export function buildDeckFilterChips(
         )
         break
       case 'mode':
-        if (raw === 'or') {
+        if (raw === 'or' || raw === 'any') {
           chips.push({ id: def.name, key: def.name, label: t(def.labelKey) })
         }
         break
@@ -171,6 +192,14 @@ export function buildDeckFilterChips(
           key: def.name,
           label: t(def.labelKey),
           value: `${raw}%`,
+        })
+        break
+      case 'decimal':
+        chips.push({
+          id: def.name,
+          key: def.name,
+          label: t(def.labelKey),
+          value: `${raw}`,
         })
         break
       default:

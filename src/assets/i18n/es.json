@@ -360,6 +360,16 @@
     "spoiler_warning": "Las cartas con la insignia Spoiler son previews todavía no publicadas y no son legales para torneos hasta su lanzamiento oficial."
   },
   "filters": {
+    "archetype_placeholder": "Buscar arquetipos...",
+    "clear_archetype": "Borrar arquetipo",
+    "unclassified": "Sin clasificar",
+    "excluded_cards": "Cartas excluidas",
+    "remove_excluded_card": "Quitar carta excluida",
+    "deck_price": "Precio del mazo ({{currency}})",
+    "min_price": "Precio mínimo",
+    "max_price": "Precio máximo",
+    "price_range_invalid": "El precio mínimo no puede superar al máximo.",
+    "completion_shortcuts": "Atajos de cartas en colección",
     "crypt_cards": "Cartas de Cripta",
     "star_vampire": "Con vampiro estrella",
     "library_cards": "Cartas de Biblioteca",

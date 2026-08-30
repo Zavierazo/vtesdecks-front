@@ -3,13 +3,15 @@
     "version": "2.78.0",
     "date": "1st September, 2026",
     "changes": [
-      "Never miss a reply again: <strong>push notifications</strong> can now be enabled per device from the notifications panel, so you receive your VTESDecks notifications even when the website is closed. Turn them on or off anytime with the new switch.",
-      "Deck browsing filters now let you choose <strong>ALL / ANY</strong> matching for clans and disciplines, right-click an icon (long-press on mobile) to exclude it, and search tournament decks by tournament name, <strong>place or country</strong> and number of preliminary <strong>rounds</strong> (2R+F or 3R+F). Tournament place and rounds are now shown on deck pages and deck cards.",
-      "Preconstructed decks now display their official cover artwork on deck pages and in deck lists when an image is available.",
-      "The Crypt and Library <strong>sort control</strong> now shows the active sort field and direction instead of a generic icon.",
-      "Crypt, Library and Decks display <strong>active filter chips</strong> above the results: remove one filter, <strong>Clear all</strong>, and an active-filter count on the mobile Filters button. Deck card filters now show localized card names instead of card ids.",
-      "The <strong>Crypt filters</strong> gained one-click <strong>group pairs</strong> (G1/2 to G6/7) and <strong>capacity shortcuts</strong> (Weenie, Mid-cap, High-cap) next to the sliders, a <strong>Base / Advanced</strong> filter to show only base or only advanced vampires, and <strong>Any title</strong> and <strong>No title</strong> options to find titled or untitled vampires. <strong>Path filtering</strong> now uses icons instead of a dropdown, supports several paths at once, includes a <strong>No path</strong> option, and supports right-click or long-press exclusion.",
-      "The <strong>Library filters</strong> now include a <strong>Conviction cost</strong> range, alongside blood and pool cost, and a <strong>Trifle / Non-trifle</strong> filter for master cards. <strong>Path filtering</strong> now uses icons instead of a dropdown, supports several paths at once, includes a <strong>No path</strong> option, and supports right-click or long-press exclusion.",
+      "The notifications panel now lets you enable <strong>push notifications</strong> separately on each device, so replies can reach you even when VTESDecks is closed.",
+      "The <strong>Deck browser</strong> gained a searchable archetype selector, minimum and maximum deck-price filters, and quick 100%, 75%+ and 50%+ collection-completion shortcuts.",
+      "Card filters in the <strong>Deck browser</strong> can exclude crypt or library cards. Clan and discipline filters also support ALL / ANY matching plus right-click or long-press exclusion.",
+      "Tournament results in the <strong>Deck browser</strong> can now be searched by tournament name, place or country, and preliminary rounds (2R+F or 3R+F). Place and rounds are also shown on deck pages and deck cards.",
+      "Above the <strong>Crypt, Library and Deck</strong> results, active filters now appear as removable chips with Clear all, localized card names, and an active-filter count on the mobile Filters button.",
+      "The <strong>Crypt browser</strong> gained group-pair and capacity shortcuts, Base / Advanced selection, and Any title / No title filters. Its Path filter now uses icons, supports multiple paths and No path, and allows right-click or long-press exclusion.",
+      "The <strong>Library browser</strong> gained a Conviction cost range and a Trifle / Non-trifle master-card filter. Its Path filter now uses icons, supports multiple paths and No path, and allows right-click or long-press exclusion.",
+      "The <strong>Crypt and Library</strong> sort controls now show the active field and direction instead of a generic icon.",
+      "Preconstructed decks now show their official cover artwork on deck pages and in deck lists when available.",
       "Minor bug fixes and performance improvements."
     ]
   },

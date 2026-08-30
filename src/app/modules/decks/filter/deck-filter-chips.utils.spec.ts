@@ -103,9 +103,30 @@ describe('buildDeckFilterChips', () => {
     await expect(firstValueFrom(chip.value$!)).resolves.toBe('Baron protean')
   })
 
-  it('falls back to the raw id without a resolver', async () => {
+  it('gives the unclassified archetype a useful label', () => {
     const [chip] = buildDeckFilterChips({ archetype: '0' }, ctx)
-    await expect(firstValueFrom(chip.value$!)).resolves.toBe('0')
+    expect(chip.value).toBe('filters.unclassified')
+    expect(chip.value$).toBeUndefined()
+  })
+
+  it('names excluded cards and exposes price bounds', async () => {
+    const chips = buildDeckFilterChips(
+      {
+        excludedCards: '200130,101250',
+        minPrice: '10.5',
+        maxPrice: '50',
+      },
+      ctx,
+    )
+    expect(chips.map((chip) => chip.key)).toEqual([
+      'minPrice',
+      'maxPrice',
+      'excludedCards',
+      'excludedCards',
+    ])
+    await expect(firstValueFrom(chips[2].value$!)).resolves.toBe(
+      'Aren, Priest of Eshu',
+    )
   })
 })
 
@@ -134,5 +155,18 @@ describe('removeDeckFilterChip', () => {
     const params = { cards: '200130=2' }
     const [chip] = buildDeckFilterChips(params, ctx)
     expect(removeDeckFilterChip(params, chip)).toEqual({ cards: undefined })
+  })
+
+  it('removes one excluded card without touching required cards', () => {
+    const params = {
+      cards: '200130=2',
+      excludedCards: '200130,101250',
+    }
+    const chip = buildDeckFilterChips(params, ctx).find(
+      (item) => item.id === 'excludedCards:200130',
+    )!
+    expect(removeDeckFilterChip(params, chip)).toEqual({
+      excludedCards: '101250',
+    })
   })
 })

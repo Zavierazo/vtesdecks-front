@@ -129,6 +129,14 @@
       @if (collectionTracker) {
       <div class="col-12 mb-2">
         <label for="collectionPercentage" class="form-label text-secondary fw-bold">{{ t('deck_completion') }}</label>
+        <div class="btn-group btn-group-sm w-100 mb-2" role="group" [attr.aria-label]="t('completion_shortcuts')">
+          @for(shortcut of [100, 75, 50]; track shortcut) {
+          <button type="button" class="btn btn-outline-primary" [class.active]="isCollectionShortcut(shortcut)"
+            [attr.aria-pressed]="isCollectionShortcut(shortcut)" (click)="setCollectionShortcut(shortcut)">
+            {{ shortcut }}%{{ shortcut === 100 ? '' : '+' }}
+          </button>
+          }
+        </div>
         <ngx-slider id="collectionPercentage" [options]="{ floor: 0, ceil: 100, step: 5, showSelectionBar: true }"
           formControlName="collectionPercentage" />
       </div>
@@ -190,6 +198,40 @@
         </div>
       </div>
     </div>
+    <label for="deckArchetype" class="form-label text-primary fw-bold">
+      <i class="bi bi-diagram-3 me-2"></i>{{ t('archetype') }}
+    </label>
+    <div class="input-group mb-3">
+      <input id="deckArchetype" type="text" class="form-control"
+        [value]="selectedArchetype ? archetypeFormatter(selectedArchetype) : ''"
+        [placeholder]="t('archetype_placeholder')" [ngbTypeahead]="searchArchetype"
+        [inputFormatter]="archetypeFormatter" [resultFormatter]="archetypeFormatter" [editable]="false"
+        (selectItem)="onSelectArchetype($event)" />
+      @if(selectedArchetype) {
+      <button type="button" class="btn btn-outline-secondary" (click)="clearArchetype()"
+        [attr.aria-label]="t('clear_archetype')"><i class="bi bi-x-lg"></i></button>
+      }
+    </div>
+    @if(currency$ | async; as currency) {
+    <div class="mb-3">
+      <div class="form-label text-primary fw-bold">
+        <i class="bi bi-currency-exchange me-2"></i>{{ t('deck_price', { currency }) }}
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <input type="number" min="0" step="0.01" class="form-control" id="minPrice"
+            formControlName="minPrice" [placeholder]="t('min_price')" />
+        </div>
+        <div class="col-6">
+          <input type="number" min="0" step="0.01" class="form-control" id="maxPrice"
+            formControlName="maxPrice" [placeholder]="t('max_price')" />
+        </div>
+      </div>
+      @if(priceRangeInvalid) {
+      <div class="text-danger small mt-1" role="alert">{{ t('price_range_invalid') }}</div>
+      }
+    </div>
+    }
     <label class="form-label text-secondary fw-bold">
       {{ t('library_cards') }}
     </label>

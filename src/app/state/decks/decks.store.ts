@@ -9,6 +9,7 @@ export interface DecksState {
   hasMore: boolean
   offset: number
   total: number
+  currency: string
   restorableDecks: ApiDeck[]
   lastViewedDeckId: string | null
 }
@@ -18,6 +19,7 @@ const initialState: DecksState = {
   hasMore: true,
   offset: 0,
   total: 0,
+  currency: 'EUR',
   restorableDecks: [],
   lastViewedDeckId: null,
 }
@@ -54,6 +56,10 @@ export class DecksStore {
       ...state,
       total,
     }))
+  }
+
+  updateCurrency(currency: string) {
+    this.update((state) => ({ ...state, currency }))
   }
 
   updateRestorableDecks(restorableDecks: ApiDeck[]) {

@@ -360,6 +360,16 @@
     "spoiler_warning": "Cards with a Spoiler badge are unreleased previews and are not legal for tournament play until their official release."
   },
   "filters": {
+    "archetype_placeholder": "Search archetypes...",
+    "clear_archetype": "Clear archetype",
+    "unclassified": "Unclassified",
+    "excluded_cards": "Excluded Cards",
+    "remove_excluded_card": "Remove excluded card",
+    "deck_price": "Deck Price ({{currency}})",
+    "min_price": "Minimum price",
+    "max_price": "Maximum price",
+    "price_range_invalid": "Minimum price cannot exceed maximum price.",
+    "completion_shortcuts": "Collection completion shortcuts",
     "crypt_cards": "Crypt Cards",
     "star_vampire": "With Star Vampire",
     "library_cards": "Library Cards",

@@ -33,7 +33,7 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '@environments/environment'
-import { parseCardFilterParam } from '../deck-filter-defaults'
+import { parseCardFilterParam, splitParamList } from '../deck-filter-defaults'
 
 @UntilDestroy()
 @Component({
@@ -64,6 +64,7 @@ export class CardFilterComponent implements OnInit {
   @Input() showStarVampireFilter = true
 
   cards: CardFilter[] = []
+  excludedCards: number[] = []
 
   isMobile$!: Observable<boolean>
 
@@ -74,12 +75,16 @@ export class CardFilterComponent implements OnInit {
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.cards = parseCardFilterParam(this.decksQuery.getParam('cards'))
+    this.excludedCards = this.parseExcludedCards(
+      this.decksQuery.getParam('excludedCards'),
+    )
     this.initStarVampire()
   }
 
   /** Mirrors URL changes made elsewhere (filter chips, reset, browser back). */
   syncFromParams(params: Params) {
     this.cards = parseCardFilterParam(params['cards'])
+    this.excludedCards = this.parseExcludedCards(params['excludedCards'])
     const starVampire = params['starVampire'] ?? false
     const control = this.form.get('starVampire')
     if (control && `${control.value ?? ''}` !== `${starVampire}`) {
@@ -90,6 +95,7 @@ export class CardFilterComponent implements OnInit {
 
   reset() {
     this.cards = []
+    this.excludedCards = []
     this.form.get('starVampire')?.patchValue(false, { emitEvent: false })
     this.changeDetectorRef.detectChanges()
   }
@@ -103,7 +109,9 @@ export class CardFilterComponent implements OnInit {
           .selectByName(term, 10)
           .pipe(
             map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+              cards
+                .filter((card) => !this.excludedCards.includes(card.id))
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
             ),
           ),
       ),
@@ -119,13 +127,29 @@ export class CardFilterComponent implements OnInit {
           .selectByName(term, 10)
           .pipe(
             map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+              cards
+                .filter((card) => !this.excludedCards.includes(card.id))
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
             ),
           ),
       ),
     )
 
   formatter = (x: { name: string }) => x.name
+
+  searchExcludedCrypt: OperatorFunction<string, ApiCrypt[]> = (text$) =>
+    this.searchCrypt(text$).pipe(
+      map((cards) =>
+        cards.filter((card) => !this.cards.some((item) => item.id === card.id)),
+      ),
+    )
+
+  searchExcludedLibrary: OperatorFunction<string, ApiLibrary[]> = (text$) =>
+    this.searchLibrary(text$).pipe(
+      map((cards) =>
+        cards.filter((card) => !this.cards.some((item) => item.id === card.id)),
+      ),
+    )
 
   selectCryptItem(
     selectItemEvent: NgbTypeaheadSelectItemEvent<ApiCrypt>,
@@ -159,6 +183,19 @@ export class CardFilterComponent implements OnInit {
     }
   }
 
+  selectExcludedItem(
+    selectItemEvent: NgbTypeaheadSelectItemEvent<ApiCrypt | ApiLibrary>,
+    input: HTMLInputElement,
+  ) {
+    selectItemEvent.preventDefault()
+    input.value = ''
+    const id = selectItemEvent.item.id
+    if (!this.excludedCards.includes(id)) {
+      this.excludedCards = [...this.excludedCards, id]
+      this.applyExcludedChange()
+    }
+  }
+
   getCrypt(id: number): Observable<ApiCrypt | undefined> {
     return this.cryptQuery.selectEntity(id)
   }
@@ -186,6 +223,11 @@ export class CardFilterComponent implements OnInit {
     }
   }
 
+  removeExcluded(id: number) {
+    this.excludedCards = this.excludedCards.filter((cardId) => cardId !== id)
+    this.applyExcludedChange()
+  }
+
   applyChange() {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -197,6 +239,24 @@ export class CardFilterComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     })
+  }
+
+  private applyExcludedChange() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        excludedCards: this.excludedCards.length
+          ? this.excludedCards.join(',')
+          : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  private parseExcludedCards(value: unknown): number[] {
+    return splitParamList(value)
+      .map(Number)
+      .filter((id) => Number.isInteger(id))
   }
 
   private initStarVampire() {

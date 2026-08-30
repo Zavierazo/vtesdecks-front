@@ -8,7 +8,7 @@ import { CardFilter } from '@models'
  * `DecksComponent`, not sidebar filters.
  */
 export type DeckFilterKind =
-  'string' | 'boolean' | 'range' | 'number' | 'list' | 'mode'
+  'string' | 'boolean' | 'range' | 'number' | 'decimal' | 'list' | 'mode'
 
 export interface DeckFilterDef {
   name: string
@@ -153,6 +153,20 @@ export function deckFilterDefs(
     })),
     { name: 'tags', kind: 'string', default: '', labelKey: 'filters.tags' },
     {
+      name: 'minPrice',
+      kind: 'decimal',
+      default: '',
+      labelKey: 'filters.min_price',
+      debounce: 500,
+    },
+    {
+      name: 'maxPrice',
+      kind: 'decimal',
+      default: '',
+      labelKey: 'filters.max_price',
+      debounce: 500,
+    },
+    {
       name: 'favorite',
       kind: 'boolean',
       default: false,
@@ -232,6 +246,13 @@ export function deckFilterDefs(
       kind: 'list',
       default: [],
       labelKey: 'filters.crypt_cards',
+      control: false,
+    },
+    {
+      name: 'excludedCards',
+      kind: 'list',
+      default: [],
+      labelKey: 'filters.excluded_cards',
       control: false,
     },
     {

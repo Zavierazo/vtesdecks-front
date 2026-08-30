@@ -360,6 +360,16 @@
     "spoiler_warning": "Les cartes portant le badge Spoiler sont des aperçus non publiés et ne sont pas légales en tournoi avant leur sortie officielle."
   },
   "filters": {
+    "archetype_placeholder": "Rechercher des archétypes...",
+    "clear_archetype": "Effacer l’archétype",
+    "unclassified": "Non classé",
+    "excluded_cards": "Cartes exclues",
+    "remove_excluded_card": "Retirer la carte exclue",
+    "deck_price": "Prix du deck ({{currency}})",
+    "min_price": "Prix minimum",
+    "max_price": "Prix maximum",
+    "price_range_invalid": "Le prix minimum ne peut pas dépasser le maximum.",
+    "completion_shortcuts": "Raccourcis de complétion de collection",
     "crypt_cards": "Cartes de Crypte",
     "star_vampire": "Avec Star Vampire",
     "library_cards": "Cartes de Bibliothèque",

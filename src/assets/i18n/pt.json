@@ -360,6 +360,16 @@
     "spoiler_warning": "As cartas com o selo Spoiler são prévias ainda não publicadas e não são permitidas em torneios até o lançamento oficial."
   },
   "filters": {
+    "archetype_placeholder": "Pesquisar arquétipos...",
+    "clear_archetype": "Limpar arquétipo",
+    "unclassified": "Sem classificação",
+    "excluded_cards": "Cartas excluídas",
+    "remove_excluded_card": "Remover carta excluída",
+    "deck_price": "Preço do deck ({{currency}})",
+    "min_price": "Preço mínimo",
+    "max_price": "Preço máximo",
+    "price_range_invalid": "O preço mínimo não pode exceder o máximo.",
+    "completion_shortcuts": "Atalhos de conclusão da coleção",
     "crypt_cards": "Cartões de cripta",
     "star_vampire": "Com vampiro estrela",
     "library_cards": "Cartões de biblioteca",
