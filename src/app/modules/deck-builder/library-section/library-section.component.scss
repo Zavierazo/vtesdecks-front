@@ -32,7 +32,7 @@ header {
 // Search toolbar: on phones the search field keeps the full width of its own
 // row and the controls below it (display mode, sort, saved searches, filters)
 // are compacted so they all fit on a single line.
-@media (max-width: 575.98px) {
+@media (max-width: 575px) {
   .search-toolbar {
     > .col-auto {
       min-width: 0;
@@ -41,7 +41,7 @@ header {
 }
 
 // The smallest phones cannot fit the filters label next to its counter.
-@media (max-width: 359.98px) {
+@media (max-width: 375px) {
   .search-toolbar .filters-label {
     display: none;
   }

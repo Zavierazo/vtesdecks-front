@@ -7,7 +7,7 @@
 // Search toolbar: on phones the search field keeps the full width of its own
 // row and the controls below it (display mode, sort, filters) are compacted so
 // they all fit on a single line.
-@media (max-width: 575.98px) {
+@media (max-width: 575px) {
   .search-toolbar {
     > .col-auto {
       min-width: 0;
