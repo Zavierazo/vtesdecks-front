@@ -61,6 +61,38 @@
         {{ crypt.name }}
         }
       </span>
+      <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="excludeCard(card.id)"
+        [attr.aria-label]="t('exclude_card')" [title]="t('exclude_card')">
+        <i class="bi bi-ban" aria-hidden="true"></i>
+      </button>
+    </div>
+    }
+    }
+    @for(id of excludedCards; track id) {
+    @if(getCrypt(id) | async; as crypt) {
+    <div class="col-12 w-auto mt-2 d-inline-flex align-items-center text-danger">
+      <div class="btn-group btn-group-sm me-2">
+        <button type="button" class="btn btn-outline-danger" (click)="removeExcluded(id)"
+          [attr.aria-label]="t('remove_excluded_card')" [title]="t('remove_excluded_card')">
+          <i class="bi bi-trash" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="requireCard(id)"
+          [attr.aria-label]="t('include_card')" [title]="t('include_card')">
+          <i class="bi bi-ban" aria-hidden="true"></i>
+        </button>
+      </div>
+      <ng-template #excludedCryptImgPopover>
+        <img #image [ngClass]="{
+          'img-popover': !(isMobile$ | async)!,
+          'img-popover-mobile': (isMobile$ | async)!
+        }" [src]="crypt | cardImage" [alt]="crypt.name" (error)="image.src=cdnDomain + crypt.image" />
+      </ng-template>
+      <i class="vtes" [class]="crypt.clanIcon"></i>
+      @if(crypt.adv){
+      <i class="vtes advanced"></i>
+      }
+      <span #popover="ngbPopover" class="ms-1" [ngbPopover]="excludedCryptImgPopover"
+        triggers="mouseenter:mouseleave" (click)="popover.open()">{{ crypt.i18n?.name || crypt.name }}</span>
     </div>
     }
     }
@@ -121,59 +153,37 @@
         {{ library.name }}
         }
       </span>
+      <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="excludeCard(card.id)"
+        [attr.aria-label]="t('exclude_card')" [title]="t('exclude_card')">
+        <i class="bi bi-ban" aria-hidden="true"></i>
+      </button>
     </div>
     }
     }
-  </div>
-  <div class="mb-3">
-    <div class="form-label text-danger fw-bold">
-      <i class="bi bi-slash-circle me-1"></i>{{ t('excluded_cards') }}
-    </div>
-    <div class="mb-3 border-start border-danger ps-2">
-      <label for="excludedCrypt" class="form-label text-secondary fw-semibold">{{ t('crypt_cards') }}</label>
-      <input #excludedCryptInput id="excludedCrypt" type="text" class="form-control"
-        [ngbTypeahead]="searchExcludedCrypt" [resultTemplate]="cryptTemplate" [inputFormatter]="formatter"
-        [editable]="false" (selectItem)="selectExcludedItem($event, excludedCryptInput)" />
-      @for(id of excludedCards; track id) {
-      @if(getCrypt(id) | async; as crypt) {
-      <div class="mt-2 d-inline-flex align-items-center text-danger">
-        <button type="button" class="btn btn-sm btn-outline-danger me-2" (click)="removeExcluded(id)"
-          [attr.aria-label]="t('remove_excluded_card')"><i class="bi bi-x-lg"></i></button>
-        <ng-template #excludedCryptImgPopover>
-          <img #image class="excluded-card-img-popover" [ngClass]="{
-            'img-popover': !(isMobile$ | async)!,
-            'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="crypt | cardImage" [alt]="crypt.name" (error)="image.src=cdnDomain + crypt.image" />
-        </ng-template>
-        <i class="vtes" [class]="crypt.clanIcon"></i>
-        <span #popover="ngbPopover" class="ms-1" [ngbPopover]="excludedCryptImgPopover" triggers="mouseenter:mouseleave"
-          (click)="popover.open()">{{ crypt.i18n?.name || crypt.name }}</span>
+    @for(id of excludedCards; track id) {
+    @if(getLibrary(id) | async; as library) {
+    <div class="col-12 w-auto mt-2 d-inline-flex align-items-center text-danger">
+      <div class="btn-group btn-group-sm me-2">
+        <button type="button" class="btn btn-outline-danger" (click)="removeExcluded(id)"
+          [attr.aria-label]="t('remove_excluded_card')" [title]="t('remove_excluded_card')">
+          <i class="bi bi-trash" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="requireCard(id)"
+          [attr.aria-label]="t('include_card')" [title]="t('include_card')">
+          <i class="bi bi-ban" aria-hidden="true"></i>
+        </button>
       </div>
-      }
-      }
+      <ng-template #excludedLibraryImgPopover>
+        <img #image [ngClass]="{
+          'img-popover': !(isMobile$ | async)!,
+          'img-popover-mobile': (isMobile$ | async)!
+        }" [src]="library | cardImage" [alt]="library.name" (error)="image.src=cdnDomain + library.image" />
+      </ng-template>
+      @for(typeIcon of library.typeIcons; track typeIcon) { <i class="vtes" [class]="typeIcon"></i> }
+      <span #popover="ngbPopover" class="ms-1" [ngbPopover]="excludedLibraryImgPopover"
+        triggers="mouseenter:mouseleave" (click)="popover.open()">{{ library.i18n?.name || library.name }}</span>
     </div>
-    <div class="border-start border-danger ps-2">
-      <label for="excludedLibrary" class="form-label text-secondary fw-semibold">{{ t('library_cards') }}</label>
-      <input #excludedLibraryInput id="excludedLibrary" type="text" class="form-control"
-        [ngbTypeahead]="searchExcludedLibrary" [resultTemplate]="libraryTemplate" [inputFormatter]="formatter"
-        [editable]="false" (selectItem)="selectExcludedItem($event, excludedLibraryInput)" />
-      @for(id of excludedCards; track id) {
-      @if(getLibrary(id) | async; as library) {
-      <div class="mt-2 d-inline-flex align-items-center text-danger">
-        <button type="button" class="btn btn-sm btn-outline-danger me-2" (click)="removeExcluded(id)"
-          [attr.aria-label]="t('remove_excluded_card')"><i class="bi bi-x-lg"></i></button>
-        <ng-template #excludedLibraryImgPopover>
-          <img #image class="excluded-card-img-popover" [ngClass]="{
-            'img-popover': !(isMobile$ | async)!,
-            'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="library | cardImage" [alt]="library.name" (error)="image.src=cdnDomain + library.image" />
-        </ng-template>
-        @for(typeIcon of library.typeIcons; track typeIcon) { <i class="vtes" [class]="typeIcon"></i> }
-        <span #popover="ngbPopover" class="ms-1" [ngbPopover]="excludedLibraryImgPopover"
-          triggers="mouseenter:mouseleave" (click)="popover.open()">{{ library.i18n?.name || library.name }}</span>
-      </div>
-      }
-      }
-    </div>
+    }
+    }
   </div>
 </ng-container>

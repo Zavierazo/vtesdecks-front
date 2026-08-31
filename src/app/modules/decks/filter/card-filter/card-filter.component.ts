@@ -137,20 +137,6 @@ export class CardFilterComponent implements OnInit {
 
   formatter = (x: { name: string }) => x.name
 
-  searchExcludedCrypt: OperatorFunction<string, ApiCrypt[]> = (text$) =>
-    this.searchCrypt(text$).pipe(
-      map((cards) =>
-        cards.filter((card) => !this.cards.some((item) => item.id === card.id)),
-      ),
-    )
-
-  searchExcludedLibrary: OperatorFunction<string, ApiLibrary[]> = (text$) =>
-    this.searchLibrary(text$).pipe(
-      map((cards) =>
-        cards.filter((card) => !this.cards.some((item) => item.id === card.id)),
-      ),
-    )
-
   selectCryptItem(
     selectItemEvent: NgbTypeaheadSelectItemEvent<ApiCrypt>,
     input: any,
@@ -180,19 +166,6 @@ export class CardFilterComponent implements OnInit {
         count: 1,
       })
       this.applyChange()
-    }
-  }
-
-  selectExcludedItem(
-    selectItemEvent: NgbTypeaheadSelectItemEvent<ApiCrypt | ApiLibrary>,
-    input: HTMLInputElement,
-  ) {
-    selectItemEvent.preventDefault()
-    input.value = ''
-    const id = selectItemEvent.item.id
-    if (!this.excludedCards.includes(id)) {
-      this.excludedCards = [...this.excludedCards, id]
-      this.applyExcludedChange()
     }
   }
 
@@ -228,6 +201,22 @@ export class CardFilterComponent implements OnInit {
     this.applyExcludedChange()
   }
 
+  excludeCard(id: number) {
+    this.cards = this.cards.filter((card) => card.id !== id)
+    if (!this.excludedCards.includes(id)) {
+      this.excludedCards = [...this.excludedCards, id]
+    }
+    this.applyCardChanges()
+  }
+
+  requireCard(id: number) {
+    this.excludedCards = this.excludedCards.filter((cardId) => cardId !== id)
+    if (!this.cards.some((card) => card.id === id)) {
+      this.cards = [...this.cards, { id, count: 1 }]
+    }
+    this.applyCardChanges()
+  }
+
   applyChange() {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -245,6 +234,21 @@ export class CardFilterComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
+        excludedCards: this.excludedCards.length
+          ? this.excludedCards.join(',')
+          : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  private applyCardChanges() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        cards: this.cards.length
+          ? this.cards.map((card) => card.id + '=' + card.count).join(',')
+          : undefined,
         excludedCards: this.excludedCards.length
           ? this.excludedCards.join(',')
           : undefined,
@@ -273,7 +277,7 @@ export class CardFilterComponent implements OnInit {
           this.router.navigate([], {
             relativeTo: this.route,
             queryParams: {
-              starVampire: value ?? undefined,
+              starVampire: value ? true : undefined,
             },
             queryParamsHandling: 'merge',
           }),

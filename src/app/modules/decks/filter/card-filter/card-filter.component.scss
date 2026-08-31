@@ -1,9 +1,13 @@
 .img-popover {
-  width: 276px;
+  width: 220px;
+  max-height: 65vh;
   height: auto;
+  object-fit: contain;
 
   &-mobile {
-    width: 75vw;
-    max-width: 276px;
+    width: 65vw;
+    max-width: 220px;
+    max-height: 65vh;
+    object-fit: contain;
   }
 }

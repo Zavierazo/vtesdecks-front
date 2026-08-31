@@ -171,7 +171,9 @@ export function buildDeckFilterChips(
         }
         break
       case 'boolean':
-        chips.push({ id: def.name, key: def.name, label: t(def.labelKey) })
+        if (raw === true || raw === 'true') {
+          chips.push({ id: def.name, key: def.name, label: t(def.labelKey) })
+        }
         break
       case 'range': {
         const [min, max] = Array.isArray(raw) ? raw : splitParamList(raw)

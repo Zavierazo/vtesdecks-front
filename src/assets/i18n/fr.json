@@ -364,6 +364,8 @@
     "clear_archetype": "Effacer l’archétype",
     "unclassified": "Non classé",
     "excluded_cards": "Cartes exclues",
+    "exclude_card": "Exclure la carte",
+    "include_card": "Inclure la carte",
     "remove_excluded_card": "Retirer la carte exclue",
     "deck_price": "Prix du deck ({{currency}})",
     "min_price": "Prix minimum",

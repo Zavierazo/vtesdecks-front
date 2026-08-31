@@ -109,6 +109,11 @@ describe('buildDeckFilterChips', () => {
     expect(chip.value$).toBeUndefined()
   })
 
+  it('only shows boolean chips when the parameter is true', () => {
+    expect(buildDeckFilterChips({ starVampire: 'false' }, ctx)).toEqual([])
+    expect(buildDeckFilterChips({ starVampire: 'true' }, ctx)).toHaveLength(1)
+  })
+
   it('names excluded cards and exposes price bounds', async () => {
     const chips = buildDeckFilterChips(
       {

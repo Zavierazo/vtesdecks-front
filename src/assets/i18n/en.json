@@ -364,6 +364,8 @@
     "clear_archetype": "Clear archetype",
     "unclassified": "Unclassified",
     "excluded_cards": "Excluded Cards",
+    "exclude_card": "Exclude card",
+    "include_card": "Include card",
     "remove_excluded_card": "Remove excluded card",
     "deck_price": "Deck Price ({{currency}})",
     "min_price": "Minimum price",

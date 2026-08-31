@@ -364,6 +364,8 @@
     "clear_archetype": "Borrar arquetipo",
     "unclassified": "Sin clasificar",
     "excluded_cards": "Cartas excluidas",
+    "exclude_card": "Excluir carta",
+    "include_card": "Incluir carta",
     "remove_excluded_card": "Quitar carta excluida",
     "deck_price": "Precio del mazo ({{currency}})",
     "min_price": "Precio mínimo",
