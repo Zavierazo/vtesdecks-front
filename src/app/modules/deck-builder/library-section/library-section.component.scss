@@ -37,15 +37,6 @@ header {
     > .col-auto {
       min-width: 0;
     }
-
-    // ::ng-deep so the buttons rendered by the toggle/sort/searches child
-    // components are compacted too.
-    ::ng-deep .btn {
-      --bs-btn-padding-x: 0.5rem;
-      --bs-btn-padding-y: 0.25rem;
-      --bs-btn-font-size: 0.875rem;
-      white-space: nowrap;
-    }
   }
 }
 
