@@ -62,6 +62,7 @@ import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library
 import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
+import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
 
 @UntilDestroy()
 @Component({
@@ -577,13 +578,7 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    // The chip row changes the sticky header height, which feeds the scroll
-    // offset: wait for the render pass before measuring the target.
-    requestAnimationFrame(() =>
-      this.document
-        .querySelector('.scroll-container')
-        ?.scrollIntoView({ behavior: 'smooth' }),
-    )
+    scrollContainerIntoView(this.document)
   }
 
   private listenScroll() {

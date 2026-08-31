@@ -63,6 +63,7 @@ import {
   removeDeckFilterChip,
 } from './filter/deck-filter-chips.utils'
 import { DeckFiltersComponent } from './filter/deck-filters.component'
+import { scrollContainerIntoView } from '../../shared/utils/scroll.util'
 
 @UntilDestroy()
 @Component({
@@ -217,13 +218,7 @@ export class DecksComponent implements OnInit {
   }
 
   scrollToTop(): void {
-    // The chip row changes the sticky header height, which feeds the scroll
-    // offset: wait for the render pass before measuring the target.
-    requestAnimationFrame(() =>
-      this.document
-        .querySelector('.scroll-container')
-        ?.scrollIntoView({ behavior: 'smooth' }),
-    )
+    scrollContainerIntoView(this.document)
   }
 
   scrollToDeck(deckId: string): void {

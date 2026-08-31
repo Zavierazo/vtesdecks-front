@@ -62,6 +62,7 @@ import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
+import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
 
 @UntilDestroy()
 @Component({
@@ -546,13 +547,7 @@ export class CryptSectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    // The chip row changes the sticky header height, which feeds the scroll
-    // offset: wait for the render pass before measuring the target.
-    requestAnimationFrame(() =>
-      this.document
-        .querySelector('.scroll-container')
-        ?.scrollIntoView({ behavior: 'smooth' }),
-    )
+    scrollContainerIntoView(this.document)
   }
 
   private listenScroll() {
