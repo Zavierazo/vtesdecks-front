@@ -12,13 +12,17 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
+import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
+import {
+  SegmentedFilterComponent,
+  SegmentedFilterOption,
+} from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { PATH_LIST } from '@utils'
 import { tap } from 'rxjs'
 
 @UntilDestroy()
@@ -32,12 +36,14 @@ import { tap } from 'rxjs'
     ReactiveFormsModule,
     ClanFilterComponent,
     DisciplineFilterComponent,
+    PathFilterComponent,
     NgxSliderModule,
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,
     DatePipe,
+    SegmentedFilterComponent,
   ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
@@ -55,7 +61,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   capacitySliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
-  pathControl!: FormControl
   setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
@@ -65,11 +70,36 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   sects$ = this.cryptQuery.selectSects()
   taints$ = this.cryptQuery.selectTaints()
   sets$ = this.cryptQuery.selectSets()
-  pathList = PATH_LIST
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
   initialized = false
+
+  readonly advancedOptions: SegmentedFilterOption[] = [
+    { value: undefined, labelKey: 'crypt_builder_filter.advanced_any' },
+    { value: 'base', labelKey: 'crypt_builder_filter.advanced_base' },
+    { value: 'advanced', labelKey: 'crypt_builder_filter.advanced_advanced' },
+  ]
+
+  /** Legal group pairs, trimmed to the groups actually printed. */
+  get groupPairs(): number[][] {
+    return [
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+    ].filter(([, max]) => max <= this.maxGroup)
+  }
+
+  get capacityShortcuts(): { labelKey: string; range: number[] }[] {
+    return [
+      { labelKey: 'capacity_weenie', range: [1, 4] },
+      { labelKey: 'capacity_mid_cap', range: [5, 7] },
+      { labelKey: 'capacity_high_cap', range: [8, this.maxCapacity] },
+    ]
+  }
 
   ngOnInit() {
     this.initFormControls()
@@ -91,7 +121,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeSect()
-    this.onChangePath()
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
@@ -120,6 +149,16 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   onChangeNotDisciplineFilter(notDisciplines: string[]) {
     this.filter.notDisciplines = notDisciplines
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangePathFilter(paths: string[]) {
+    this.filter.paths = paths
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeNotPathFilter(notPaths: string[]) {
+    this.filter.notPaths = notPaths
     this.filterChange.emit(this.filter)
   }
 
@@ -182,6 +221,48 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
       .subscribe()
   }
 
+  onChangeAdvanced(advanced?: string) {
+    this.filter.advanced = advanced as 'base' | 'advanced' | undefined
+    this.filterChange.emit(this.filter)
+  }
+
+  get fullGroupRange(): number[] {
+    return [1, this.maxGroup]
+  }
+
+  get fullCapacityRange(): number[] {
+    return [1, this.maxCapacity]
+  }
+
+  isActiveGroup(range: number[]): boolean {
+    return this.isActiveRange(this.filter.groupSlider, range)
+  }
+
+  isActiveCapacity(range: number[]): boolean {
+    return this.isActiveRange(this.filter.capacitySlider, range)
+  }
+
+  /** Applies a shortcut range, or restores the full range when re-selected. */
+  toggleGroupRange(range: number[]) {
+    this.groupSliderControl.patchValue(
+      this.isActiveGroup(range) ? [1, this.maxGroup] : [...range],
+    )
+  }
+
+  toggleCapacityRange(range: number[]) {
+    this.capacitySliderControl.patchValue(
+      this.isActiveCapacity(range) ? [1, this.maxCapacity] : [...range],
+    )
+  }
+
+  private isActiveRange(current: number[] | undefined, range: number[]) {
+    return (
+      Array.isArray(current) &&
+      current[0] === range[0] &&
+      current[1] === range[1]
+    )
+  }
+
   onChangeCapacitySlider() {
     this.capacitySliderControl = new FormControl(this.filter.capacitySlider)
     this.capacitySliderControl.valueChanges
@@ -228,19 +309,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.sect = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangePath() {
-    this.pathControl = new FormControl(this.filter.path)
-    this.pathControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.path = value
           this.filterChange.emit(this.filter)
         }),
       )

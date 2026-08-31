@@ -11,8 +11,13 @@
       <section class="dark-grey-text col-12">
         <div class="deck-hero mb-3">
           <div class="container-fluid py-4">
-            <div class="row align-items-center">
-              <div class="col-12 col-md-8 text-center text-md-start">
+            <div class="row align-items-center g-4">
+              @if (deck.type === 'PRECONSTRUCTED') {
+              <img #deckCover class="deck-cover col-12 col-sm-auto"
+                [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'" [alt]="deck.name" loading="eager"
+                (error)="deckCover.hidden = true" />
+              }
+              <div class="col-12 col-md text-center text-md-start">
                 <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
                   <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
                     (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked">
@@ -87,6 +92,17 @@
                     @if (deck.players) {
                     <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
                     }
+                    @if (deck.rounds) {
+                    <span class="text-muted ms-1" [title]="t('rounds')">{{ deck.rounds }}R+F</span>
+                    }
+                  </p>
+                  }
+                  @if (deck.place || deck.country) {
+                  <p class="mb-1">
+                    <b>{{ t('place') }}: </b>
+                    <i class="bi bi-geo-alt me-1"></i>
+                    <!-- The place usually already ends with the country, fall back to it when missing -->
+                    {{ deck.place ?? deck.country }}
                   </p>
                   }
                   @if (deck.limitedFormat) {
@@ -127,7 +143,7 @@
                   }
                 </div>
               </div>
-              <div class="col-12 col-md-4 mt-3 mt-md-0">
+              <div class="col-12 col-md-4 col-xl-3 mt-3 mt-md-0">
                 <div class="deck-stats-panel">
                   <div class="deck-stat">
                     <span class="deck-stat__icon">

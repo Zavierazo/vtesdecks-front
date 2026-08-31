@@ -221,7 +221,7 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
       queryParams['sect'] = card.sects[0]
     }
     if (card.path) {
-      queryParams['path'] = card.path
+      queryParams['paths'] = card.path
     }
     this.modal.dismiss('Link click')
     this.router.navigate(['/cards/crypt'], { queryParams })

@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  Location,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -15,32 +14,44 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import {
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-  NgbTooltip,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SeoService } from '@services'
+import { MediaService, SearchFeaturesService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import { SearchFeaturesButtonComponent } from '@shared/components/search-features/search-features-button.component'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { LibraryQuery } from '@state/library/library.query'
-import { isRegexSearch } from '@utils'
+import {
+  buildLibraryFilterChips,
+  isRegexSearch,
+  removeCardFilterChip,
+} from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  filter,
   fromEvent,
   map,
+  merge,
   Observable,
   of,
   switchMap,
@@ -51,6 +62,7 @@ import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library
 import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
 import { LibraryCardComponent } from './../../deck-shared/library-card/library-card.component'
+import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
 
 @UntilDestroy()
 @Component({
@@ -62,11 +74,6 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     LibraryComponent,
@@ -77,6 +84,10 @@ import { LibraryCardComponent } from './../../deck-shared/library-card/library-c
     ToggleIconComponent,
     LibraryGridCardComponent,
     AdSenseComponent,
+    SortControlComponent,
+    FilterChipsComponent,
+    StickyHeaderDirective,
+    SearchFeaturesButtonComponent,
   ],
 })
 export class LibrarySectionComponent implements OnInit {
@@ -90,8 +101,9 @@ export class LibrarySectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private readonly seoService = inject(SeoService)
+  private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
-  private location = inject(Location)
+  private readonly searchFeatures = inject(SearchFeaturesService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -103,9 +115,29 @@ export class LibrarySectionComponent implements OnInit {
   hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
+  readonly sortOptions: SortOption[] = [
+    { value: 'name', labelKey: 'library_section.name' },
+    { value: 'type', labelKey: 'library_section.type' },
+    {
+      value: 'deckPopularity',
+      labelKey: 'library_section.deck_popularity',
+      titleKey: 'library_section.deck_popularity_title',
+    },
+    {
+      value: 'cardPopularity',
+      labelKey: 'library_section.card_popularity',
+      titleKey: 'library_section.card_popularity_title',
+    },
+    { value: 'minPrice', labelKey: 'library_section.price' },
+  ]
+  private readonly relevanceOption: SortOption = {
+    value: 'trigramSimilarity',
+    labelKey: 'library_section.relevance',
+  }
   sortBy: LibrarySortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   libraryFilter = this.libraryQuery.getDefaultLibraryFilter()
+  filterChips: FilterChip[] = []
 
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
@@ -129,36 +161,59 @@ export class LibrarySectionComponent implements OnInit {
       canonicalUrl: 'https://vtesdecks.com/cards/library',
     })
     this.listenScroll()
-    this.initFilters()
+    this.onChangeNameFilter()
+    this.route.queryParams
+      .pipe(
+        untilDestroyed(this),
+        tap((params) => this.initFilters(params)),
+      )
+      .subscribe()
+    // Chip labels are translated eagerly, so rebuild them once the active
+    // language file lands and whenever the user switches language.
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(
+        untilDestroyed(this),
+        tap(() => {
+          this.updateFilterChips()
+          this.changeDetector.markForCheck()
+        }),
+      )
+      .subscribe()
+  }
+
+  private get defaultLibraryFilter(): LibraryFilter {
+    return {
+      ...this.libraryQuery.getDefaultLibraryFilter(),
+      printOnDemand: false,
+    }
+  }
+
+  private updateFilterChips() {
+    this.filterChips = buildLibraryFilterChips(
+      this.libraryFilter,
+      this.defaultLibraryFilter,
+      (key, params) => this.translocoService.translate(key, params),
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip) {
+    this.onChangeLibraryFilter(
+      removeCardFilterChip(this.libraryFilter, this.defaultLibraryFilter, chip),
+    )
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
-    const currentParams = this.location.path().split('?')[1]
-    const currentSearchParams = new URLSearchParams(currentParams || '')
-    const mergedParams: Record<string, string> = {}
-
-    // First, copy all current params from URL
-    currentSearchParams.forEach((value, key) => {
-      mergedParams[key] = value
-    })
-
-    // Then, apply new params (overwrite or delete)
-    Object.keys(params).forEach((key) => {
-      if (params[key] === undefined || params[key] === null) {
-        delete mergedParams[key]
-      } else {
-        mergedParams[key] = params[key]!
-      }
-    })
-
-    // Create URL with merged params
-    const urlTree = this.router.createUrlTree([], {
+    void this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: mergedParams,
+      queryParams: params,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
     })
-
-    // Update URL without navigation
-    this.location.replaceState(urlTree.toString())
   }
 
   get nameFilter(): string | undefined {
@@ -170,6 +225,20 @@ export class LibrarySectionComponent implements OnInit {
     return name !== undefined && !isRegexSearch(name) && name.length > 3
   }
 
+  get displayedSortOptions(): SortOption[] {
+    return this.sortByTrigramSimilarity
+      ? [this.relevanceOption, ...this.sortOptions]
+      : this.sortOptions
+  }
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
     this.authService.updateCardsDisplayMode(displayModeValue)
@@ -177,7 +246,9 @@ export class LibrarySectionComponent implements OnInit {
 
   openModal(content: TemplateRef<unknown>) {
     this.modalService
-      .open(content)
+      // Scrollable keeps the footer (reset/apply) in view like the decks
+      // filters offcanvas, instead of pushing it below the filter list.
+      .open(content, { scrollable: true })
       .dismissed.pipe(
         untilDestroyed(this),
         tap(() => this.scrollToTop()),
@@ -191,6 +262,9 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   resetFilters() {
+    // Closes the recent-search entry being rewritten so the next search is
+    // stored as a new one.
+    this.searchFeatures.finalizeHistoryDraft('library')
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},
@@ -198,12 +272,12 @@ export class LibrarySectionComponent implements OnInit {
       replaceUrl: true,
     })
     this.initDefaults()
+    this.updateFilterChips()
     this.initQuery()
   }
 
-  initFilters() {
+  initFilters(queryParams: Params = this.route.snapshot.queryParams) {
     this.initDefaults()
-    const queryParams = this.route.snapshot.queryParams
     if (queryParams['name']) {
       this.libraryFilter.name = queryParams['name']
       this.nameFormControl.patchValue(queryParams['name'], {
@@ -222,8 +296,11 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['sect']) {
       this.libraryFilter.sect = queryParams['sect']
     }
-    if (queryParams['path']) {
-      this.libraryFilter.path = queryParams['path']
+    if (queryParams['paths']) {
+      this.libraryFilter.paths = queryParams['paths'].split(',')
+    }
+    if (queryParams['notPaths']) {
+      this.libraryFilter.notPaths = queryParams['notPaths'].split(',')
     }
     if (queryParams['types']) {
       this.libraryFilter.types = queryParams['types'].split(',')
@@ -253,10 +330,16 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['taints']) {
       this.libraryFilter.taints = queryParams['taints'].split(',')
     }
-    if (queryParams['sortBy']) {
+    if (
+      queryParams['sortBy'] &&
+      this.sortOptions.some((option) => option.value === queryParams['sortBy'])
+    ) {
       this.sortBy = queryParams['sortBy']
     }
-    if (queryParams['sortByOrder']) {
+    if (
+      queryParams['sortByOrder'] === 'asc' ||
+      queryParams['sortByOrder'] === 'desc'
+    ) {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
@@ -265,15 +348,6 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['artist']) {
       this.libraryFilter.artist = queryParams['artist']
     }
-    this.route.queryParams.subscribe((param) => {
-      // Used when coming from card info artist link
-      if (param['artist']) {
-        this.onChangeLibraryFilter({
-          ...this.libraryFilter,
-          artist: param['artist'],
-        })
-      }
-    })
     if (queryParams['bloodCostSlider']) {
       this.libraryFilter.bloodCostSlider = queryParams['bloodCostSlider']
         .split(',')
@@ -283,6 +357,19 @@ export class LibrarySectionComponent implements OnInit {
       this.libraryFilter.poolCostSlider = queryParams['poolCostSlider']
         .split(',')
         .map((v: string) => +v)
+    }
+    if (queryParams['convictionCostSlider']) {
+      this.libraryFilter.convictionCostSlider = queryParams[
+        'convictionCostSlider'
+      ]
+        .split(',')
+        .map((v: string) => +v)
+    }
+    if (
+      queryParams['trifle'] === 'trifle' ||
+      queryParams['trifle'] === 'non_trifle'
+    ) {
+      this.libraryFilter.trifle = queryParams['trifle']
     }
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
@@ -296,7 +383,7 @@ export class LibrarySectionComponent implements OnInit {
       this.libraryFilter.predefinedLimitedFormat =
         queryParams['predefinedLimitedFormat']
     }
-    this.onChangeNameFilter()
+    this.updateFilterChips()
     this.initQuery(true)
   }
 
@@ -310,9 +397,7 @@ export class LibrarySectionComponent implements OnInit {
     this.sortByOrder = 'asc'
   }
 
-  onChangeSortBy(sortBy: keyof ApiLibrary, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: LibrarySortBy) {
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -338,8 +423,6 @@ export class LibrarySectionComponent implements OnInit {
         untilDestroyed(this),
         debounceTime(500),
         tap(() => {
-          this.initQuery()
-          this.libraryFilter.name = this.nameFilter || ''
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
@@ -357,6 +440,11 @@ export class LibrarySectionComponent implements OnInit {
       Array.isArray(this.libraryFilter.poolCostSlider) &&
       this.libraryFilter.poolCostSlider[0] === 0 &&
       this.libraryFilter.poolCostSlider[1] === 6
+    const isDefaultConvictionCost =
+      Array.isArray(this.libraryFilter.convictionCostSlider) &&
+      this.libraryFilter.convictionCostSlider[0] === 0 &&
+      this.libraryFilter.convictionCostSlider[1] ===
+        this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
       ['types']:
@@ -389,7 +477,14 @@ export class LibrarySectionComponent implements OnInit {
       ['disciplineMode']:
         this.libraryFilter.disciplineMode === 'or' ? 'or' : undefined,
       ['sect']: this.libraryFilter.sect || undefined,
-      ['path']: this.libraryFilter.path || undefined,
+      ['paths']:
+        this.libraryFilter.paths && this.libraryFilter.paths.length > 0
+          ? this.libraryFilter.paths.join(',')
+          : undefined,
+      ['notPaths']:
+        this.libraryFilter.notPaths && this.libraryFilter.notPaths.length > 0
+          ? this.libraryFilter.notPaths.join(',')
+          : undefined,
       ['title']: this.libraryFilter.title || undefined,
       ['set']: this.libraryFilter.set || undefined,
       ['bloodCostSlider']:
@@ -400,6 +495,12 @@ export class LibrarySectionComponent implements OnInit {
         isDefaultPoolCost || !Array.isArray(this.libraryFilter.poolCostSlider)
           ? undefined
           : this.libraryFilter.poolCostSlider.join(','),
+      ['convictionCostSlider']:
+        isDefaultConvictionCost ||
+        !Array.isArray(this.libraryFilter.convictionCostSlider)
+          ? undefined
+          : this.libraryFilter.convictionCostSlider.join(','),
+      ['trifle']: this.libraryFilter.trifle || undefined,
       ['taints']:
         this.libraryFilter.taints && this.libraryFilter.taints.length > 0
           ? this.libraryFilter.taints.join(',')
@@ -409,6 +510,7 @@ export class LibrarySectionComponent implements OnInit {
       ['predefinedLimitedFormat']:
         this.libraryFilter.predefinedLimitedFormat || undefined,
     })
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -482,9 +584,7 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    this.document
-      .querySelector('.scroll-container')
-      ?.scrollIntoView({ behavior: 'smooth' })
+    scrollContainerIntoView(this.document)
   }
 
   private listenScroll() {

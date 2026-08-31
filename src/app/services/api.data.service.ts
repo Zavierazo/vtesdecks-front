@@ -24,6 +24,8 @@ import {
   ApiLibrary,
   ApiProxy,
   ApiProxyCardOption,
+  ApiPushConfig,
+  ApiPushSubscription,
   ApiPublicUser,
   ApiResetPassword,
   ApiResponse,
@@ -89,6 +91,7 @@ export class ApiDataService {
   private readonly changelogPath = '/changelog'
   private readonly setsPath = '/sets'
   private readonly userNotificationsPath = '/user/notifications'
+  private readonly userPushNotificationsPath = '/user/notifications/push'
   private readonly aiAskAsyncPath = '/ai/ask/async'
   private readonly proxyPath = '/proxy'
   private readonly proxyOptionsPath = '/proxy/options/'
@@ -516,6 +519,28 @@ export class ApiDataService {
     return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/markAsRead`,
       {},
+    )
+  }
+
+  getPushConfig(): Observable<ApiPushConfig> {
+    return this.httpClient.get<ApiPushConfig>(
+      `${environment.api.baseUrl}${this.userPushNotificationsPath}/config`,
+    )
+  }
+
+  registerPushSubscription(
+    subscription: ApiPushSubscription,
+  ): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.api.baseUrl}${this.userPushNotificationsPath}/subscription`,
+      subscription,
+    )
+  }
+
+  unregisterPushSubscription(endpoint: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.api.baseUrl}${this.userPushNotificationsPath}/subscription`,
+      { body: { endpoint } },
     )
   }
   userRefresh(): Observable<ApiUser> {

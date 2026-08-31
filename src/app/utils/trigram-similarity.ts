@@ -45,13 +45,36 @@ const convertString = (input?: string) => {
  * @returns {string}
  */
 const generateTrigram = (input?: string) => [
-  ...new Set( // De-duplication
+  ...new Set(
+    // De-duplication
     nGram(convertString(input), 3) // Generating trigrams w/ prepared input
       .filter(
         (trigramItem) => !/^[\p{Letter}\p{Mark}0-9]\s\s$/giu.test(trigramItem),
       ),
   ),
 ]
+
+/**
+ * The same card names and texts are compared over and over on every filter
+ * pass, so their trigrams are computed once and reused. Bounded by the number
+ * of distinct strings seen (card fields plus typed queries).
+ */
+const TRIGRAM_CACHE_LIMIT = 20000
+const trigramCache = new Map<string, Set<string>>()
+
+const getTrigrams = (input?: string): Set<string> => {
+  const key = input ?? ''
+  const cached = trigramCache.get(key)
+  if (cached) {
+    return cached
+  }
+  const trigrams = new Set(generateTrigram(input))
+  if (trigramCache.size >= TRIGRAM_CACHE_LIMIT) {
+    trigramCache.clear()
+  }
+  trigramCache.set(key, trigrams)
+  return trigrams
+}
 
 /**
  * Calculate trigram similarity between 2 strings
@@ -63,16 +86,16 @@ export const trigramSimilarity = (input1?: string, input2?: string) => {
   if (input1 && input1.trim() && input1 === input2) return 1
   if (input2 && input1?.toLowerCase().includes(input2.toLowerCase())) return 1
 
-  const trigrams1 = generateTrigram(input1)
-  const trigrams2 = generateTrigram(input2)
+  const trigrams1 = getTrigrams(input1)
+  const trigrams2 = getTrigrams(input2)
 
-  // Total trigrams
-  const total = [...new Set([...trigrams1, ...trigrams2])]
   // Trigrams both have in common
-  const common = []
+  let common = 0
   trigrams1.forEach((trigramItem) => {
-    if (trigrams2.includes(trigramItem)) common.push(trigramItem)
+    if (trigrams2.has(trigramItem)) common++
   })
+  // Total distinct trigrams across both sets
+  const total = trigrams1.size + trigrams2.size - common
 
-  return total.length === 0 ? 0 : common.length / total.length
+  return total === 0 ? 0 : common / total
 }

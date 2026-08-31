@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  Location,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -15,32 +14,44 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import {
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-  NgbTooltip,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SeoService } from '@services'
+import { MediaService, SearchFeaturesService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import { SearchFeaturesButtonComponent } from '@shared/components/search-features/search-features-button.component'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { isRegexSearch } from '@utils'
+import {
+  buildCryptFilterChips,
+  isRegexSearch,
+  removeCardFilterChip,
+} from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  filter,
   fromEvent,
   map,
+  merge,
   Observable,
   of,
   switchMap,
@@ -51,6 +62,7 @@ import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
 import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.component'
+import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
 
 @UntilDestroy()
 @Component({
@@ -62,11 +74,6 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     CryptComponent,
@@ -77,6 +84,10 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     ToggleIconComponent,
     CryptGridCardComponent,
     AdSenseComponent,
+    SortControlComponent,
+    FilterChipsComponent,
+    StickyHeaderDirective,
+    SearchFeaturesButtonComponent,
   ],
 })
 export class CryptSectionComponent implements OnInit {
@@ -90,8 +101,9 @@ export class CryptSectionComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
   private readonly seoService = inject(SeoService)
+  private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
-  private location = inject(Location)
+  private readonly searchFeatures = inject(SearchFeaturesService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -103,9 +115,31 @@ export class CryptSectionComponent implements OnInit {
   hasMore$ = new BehaviorSubject<boolean>(true)
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
+  readonly sortOptions: SortOption[] = [
+    { value: 'name', labelKey: 'crypt_section.name' },
+    { value: 'capacity', labelKey: 'crypt_section.capacity' },
+    { value: 'clan', labelKey: 'crypt_section.clan' },
+    { value: 'group', labelKey: 'crypt_section.group' },
+    {
+      value: 'deckPopularity',
+      labelKey: 'crypt_section.deck_popularity',
+      titleKey: 'crypt_section.deck_popularity_title',
+    },
+    {
+      value: 'cardPopularity',
+      labelKey: 'crypt_section.card_popularity',
+      titleKey: 'crypt_section.card_popularity_title',
+    },
+    { value: 'minPrice', labelKey: 'crypt_section.price' },
+  ]
+  private readonly relevanceOption: SortOption = {
+    value: 'trigramSimilarity',
+    labelKey: 'crypt_section.relevance',
+  }
   sortBy: CryptSortBy = 'name'
   sortByOrder: 'asc' | 'desc' = 'asc'
   cryptFilter = this.cryptQuery.getDefaultCryptFilter()
+  filterChips: FilterChip[] = []
   displayMode$ = this.authQuery.selectCardsDisplayMode()
   displayModeOptions = [
     {
@@ -128,36 +162,56 @@ export class CryptSectionComponent implements OnInit {
       canonicalUrl: 'https://vtesdecks.com/cards/crypt',
     })
     this.listenScroll()
-    this.initFilters()
+    this.onChangeNameFilter()
+    this.route.queryParams
+      .pipe(
+        untilDestroyed(this),
+        tap((params) => this.initFilters(params)),
+      )
+      .subscribe()
+    // Chip labels are translated eagerly, so rebuild them once the active
+    // language file lands and whenever the user switches language.
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(
+        untilDestroyed(this),
+        tap(() => {
+          this.updateFilterChips()
+          this.changeDetector.markForCheck()
+        }),
+      )
+      .subscribe()
+  }
+
+  private get defaultCryptFilter(): CryptFilter {
+    return { ...this.cryptQuery.getDefaultCryptFilter(), printOnDemand: false }
+  }
+
+  private updateFilterChips() {
+    this.filterChips = buildCryptFilterChips(
+      this.cryptFilter,
+      this.defaultCryptFilter,
+      (key, params) => this.translocoService.translate(key, params),
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip) {
+    this.onChangeCryptFilter(
+      removeCardFilterChip(this.cryptFilter, this.defaultCryptFilter, chip),
+    )
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
-    const currentParams = this.location.path().split('?')[1]
-    const currentSearchParams = new URLSearchParams(currentParams || '')
-    const mergedParams: Record<string, string> = {}
-
-    // First, copy all current params from URL
-    currentSearchParams.forEach((value, key) => {
-      mergedParams[key] = value
-    })
-
-    // Then, apply new params (overwrite or delete)
-    Object.keys(params).forEach((key) => {
-      if (params[key] === undefined || params[key] === null) {
-        delete mergedParams[key]
-      } else {
-        mergedParams[key] = params[key]!
-      }
-    })
-
-    // Create URL with merged params
-    const urlTree = this.router.createUrlTree([], {
+    void this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: mergedParams,
+      queryParams: params,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
     })
-
-    // Update URL without navigation
-    this.location.replaceState(urlTree.toString())
   }
 
   get nameFilter(): string | undefined {
@@ -169,6 +223,20 @@ export class CryptSectionComponent implements OnInit {
     return name !== undefined && !isRegexSearch(name) && name.length > 3
   }
 
+  get displayedSortOptions(): SortOption[] {
+    return this.sortByTrigramSimilarity
+      ? [this.relevanceOption, ...this.sortOptions]
+      : this.sortOptions
+  }
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
     this.authService.updateCardsDisplayMode(displayModeValue)
@@ -176,7 +244,9 @@ export class CryptSectionComponent implements OnInit {
 
   openModal(content: TemplateRef<unknown>) {
     this.modalService
-      .open(content)
+      // Scrollable keeps the footer (reset/apply) in view like the decks
+      // filters offcanvas, instead of pushing it below the filter list.
+      .open(content, { scrollable: true })
       .dismissed.pipe(
         untilDestroyed(this),
         tap(() => this.scrollToTop()),
@@ -190,6 +260,9 @@ export class CryptSectionComponent implements OnInit {
   }
 
   resetFilters() {
+    // Closes the recent-search entry being rewritten so the next search is
+    // stored as a new one.
+    this.searchFeatures.finalizeHistoryDraft('crypt')
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},
@@ -197,12 +270,12 @@ export class CryptSectionComponent implements OnInit {
       replaceUrl: true,
     })
     this.initDefaults()
+    this.updateFilterChips()
     this.initQuery()
   }
 
-  initFilters() {
+  initFilters(queryParams: Params = this.route.snapshot.queryParams) {
     this.initDefaults()
-    const queryParams = this.route.snapshot.queryParams
     if (queryParams['name']) {
       this.cryptFilter.name = queryParams['name']
       this.nameFormControl.patchValue(queryParams['name'], {
@@ -221,8 +294,11 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['sect']) {
       this.cryptFilter.sect = queryParams['sect']
     }
-    if (queryParams['path']) {
-      this.cryptFilter.path = queryParams['path']
+    if (queryParams['paths']) {
+      this.cryptFilter.paths = queryParams['paths'].split(',')
+    }
+    if (queryParams['notPaths']) {
+      this.cryptFilter.notPaths = queryParams['notPaths'].split(',')
     }
     if (queryParams['clans']) {
       this.cryptFilter.clans = queryParams['clans'].split(',')
@@ -238,8 +314,7 @@ export class CryptSectionComponent implements OnInit {
         queryParams['superiorDisciplines'].split(',')
     }
     if (queryParams['notDisciplines']) {
-      this.cryptFilter.notDisciplines =
-        queryParams['notDisciplines'].split(',')
+      this.cryptFilter.notDisciplines = queryParams['notDisciplines'].split(',')
     }
     if (queryParams['disciplineMode'] === 'or') {
       this.cryptFilter.disciplineMode = 'or'
@@ -254,13 +329,25 @@ export class CryptSectionComponent implements OnInit {
         .split(',')
         .map((v: string) => +v)
     }
+    if (
+      queryParams['advanced'] === 'base' ||
+      queryParams['advanced'] === 'advanced'
+    ) {
+      this.cryptFilter.advanced = queryParams['advanced']
+    }
     if (queryParams['taints']) {
       this.cryptFilter.taints = queryParams['taints'].split(',')
     }
-    if (queryParams['sortBy']) {
+    if (
+      queryParams['sortBy'] &&
+      this.sortOptions.some((option) => option.value === queryParams['sortBy'])
+    ) {
       this.sortBy = queryParams['sortBy']
     }
-    if (queryParams['sortByOrder']) {
+    if (
+      queryParams['sortByOrder'] === 'asc' ||
+      queryParams['sortByOrder'] === 'desc'
+    ) {
       this.sortByOrder = queryParams['sortByOrder']
     }
     if (queryParams['cardText']) {
@@ -269,15 +356,6 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['artist']) {
       this.cryptFilter.artist = queryParams['artist']
     }
-    this.route.queryParams.subscribe((param) => {
-      // Used when coming from card info artist link
-      if (param['artist']) {
-        this.onChangeCryptFilter({
-          ...this.cryptFilter,
-          artist: param['artist'],
-        })
-      }
-    })
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
         const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
@@ -290,7 +368,7 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter.predefinedLimitedFormat =
         queryParams['predefinedLimitedFormat']
     }
-    this.onChangeNameFilter()
+    this.updateFilterChips()
     this.initQuery(true)
   }
 
@@ -304,9 +382,7 @@ export class CryptSectionComponent implements OnInit {
     this.sortByOrder = 'asc'
   }
 
-  onChangeSortBy(sortBy: keyof ApiCrypt, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: CryptSortBy) {
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -332,8 +408,6 @@ export class CryptSectionComponent implements OnInit {
         untilDestroyed(this),
         debounceTime(500),
         tap(() => {
-          this.initQuery()
-          this.cryptFilter.name = this.nameFilter || ''
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )
@@ -384,10 +458,18 @@ export class CryptSectionComponent implements OnInit {
         isDefaultCapacity || !Array.isArray(this.cryptFilter.capacitySlider)
           ? undefined
           : this.cryptFilter.capacitySlider.join(','),
+      ['advanced']: this.cryptFilter.advanced || undefined,
       ['title']: this.cryptFilter.title || undefined,
       ['set']: this.cryptFilter.set || undefined,
       ['sect']: this.cryptFilter.sect || undefined,
-      ['path']: this.cryptFilter.path || undefined,
+      ['paths']:
+        this.cryptFilter.paths && this.cryptFilter.paths.length > 0
+          ? this.cryptFilter.paths.join(',')
+          : undefined,
+      ['notPaths']:
+        this.cryptFilter.notPaths && this.cryptFilter.notPaths.length > 0
+          ? this.cryptFilter.notPaths.join(',')
+          : undefined,
       ['taints']:
         this.cryptFilter.taints && this.cryptFilter.taints.length > 0
           ? this.cryptFilter.taints.join(',')
@@ -397,6 +479,7 @@ export class CryptSectionComponent implements OnInit {
       ['predefinedLimitedFormat']:
         this.cryptFilter.predefinedLimitedFormat || undefined,
     })
+    this.updateFilterChips()
     this.initQuery()
   }
 
@@ -470,9 +553,7 @@ export class CryptSectionComponent implements OnInit {
   }
 
   scrollToTop() {
-    this.document
-      .querySelector('.scroll-container')
-      ?.scrollIntoView({ behavior: 'smooth' })
+    scrollContainerIntoView(this.document)
   }
 
   private listenScroll() {

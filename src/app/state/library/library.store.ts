@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import {
   ApiClanStat,
@@ -7,9 +7,9 @@ import {
   LibraryFilter,
   LibrarySortBy,
 } from '@models'
-import { LocalStorageService } from '@services'
+import { IndexedDbService } from '@services'
 import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
-import { map, Observable } from 'rxjs'
+import { map, Observable, shareReplay } from 'rxjs'
 
 export interface LibraryStats {
   total: number
@@ -31,30 +31,39 @@ const initialState: LibraryState = {}
   providedIn: 'root',
 })
 export class LibraryStore {
-  private readonly localStorage = inject(LocalStorageService)
+  private readonly db = inject(IndexedDbService)
 
-  static readonly stateStoreName = 'library_v1_state'
-  static readonly entitiesStoreName = 'library_v1_entities'
+  static readonly dbStoreName = 'library'
+  static readonly dbStateName = 'library_state'
   private readonly state = signal<LibraryState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly entities = signal<ApiLibrary[]>([])
   private readonly entities$ = toObservable(this.entities)
+  private readonly entityById = computed(
+    () => new Map(this.entities().map((entity) => [entity.id, entity])),
+  )
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
+  /** Read-only view of the catalog, so queries can derive from it. */
+  readonly entitiesSignal = this.entities.asReadonly()
+
+  /** Resolves once the persisted catalog has been restored, if any. */
+  readonly ready: Promise<void>
+
   constructor() {
-    // Restore entities from local storage
-    const previousLocalEntities = this.localStorage.getValue<ApiLibrary[]>(
-      LibraryStore.entitiesStoreName,
-    )
-    if (previousLocalEntities) {
-      this.set(previousLocalEntities)
-      // Restore state from local storage
-      const previousLocalState = this.localStorage.getValue<LibraryState>(
-        LibraryStore.stateStoreName,
+    this.ready = this.hydrate()
+  }
+
+  private async hydrate(): Promise<void> {
+    const entities = await this.db.getAll<ApiLibrary>(LibraryStore.dbStoreName)
+    if (entities.length) {
+      this.entities.set(entities)
+      const state = await this.db.getMeta<LibraryState>(
+        LibraryStore.dbStateName,
       )
-      if (previousLocalState) {
-        this.update(() => previousLocalState)
+      if (state) {
+        this.state.set(state)
       }
     }
   }
@@ -144,13 +153,13 @@ export class LibraryStore {
         }
         return entities
       }),
+      // Templates subscribe to the same query through several async pipes
+      shareReplay({ bufferSize: 1, refCount: true }),
     )
   }
 
   selectEntity(id: number): Observable<ApiLibrary | undefined> {
-    return this.entities$.pipe(
-      map((entities) => entities.find((c) => c.id === id)),
-    )
+    return this.entities$.pipe(map(() => this.entityById().get(id)))
   }
 
   getEntities(
@@ -183,7 +192,7 @@ export class LibraryStore {
   }
 
   getEntity(id: number): ApiLibrary | undefined {
-    return this.entities().find((c) => c.id === id)
+    return this.entityById().get(id)
   }
 
   setLoading(value = false) {
@@ -192,12 +201,17 @@ export class LibraryStore {
 
   update(updateFn: (value: LibraryState) => LibraryState) {
     this.state.update(updateFn)
-    this.updateStorage()
+    const state = this.getValue()
+    if (state?.locale) {
+      void this.db.setMeta(LibraryStore.dbStateName, state)
+    }
   }
 
   set(entities: ApiLibrary[]) {
     this.entities.update(() => entities)
-    this.updateStorage()
+    if (entities.length > 0) {
+      void this.db.putAll(LibraryStore.dbStoreName, entities)
+    }
   }
 
   upsert(id: number, entity: ApiLibrary) {
@@ -205,18 +219,7 @@ export class LibraryStore {
       ...current.filter((c) => c.id !== id),
       entity,
     ])
-    this.updateStorage()
-  }
-
-  private updateStorage(): void {
-    const state = this.getValue()
-    if (state?.locale) {
-      this.localStorage.setValue(LibraryStore.stateStoreName, state)
-    }
-    const entities = this.getEntities()
-    if (entities?.length > 0) {
-      this.localStorage.setValue(LibraryStore.entitiesStoreName, entities)
-    }
+    void this.db.put(LibraryStore.dbStoreName, entity)
   }
 
   private getRelevanceWeight(entity: ApiLibrary, stats?: LibraryStats): number {
@@ -401,7 +404,16 @@ export class LibraryStore {
         return false
       }
     }
-    if (filter.path && entity.path !== filter.path) {
+    const pathMatches = (path: string) =>
+      path === 'none' ? !entity.path : entity.path === path
+    if (
+      Array.isArray(filter.paths) &&
+      filter.paths.length > 0 &&
+      !filter.paths.some(pathMatches)
+    ) {
+      return false
+    }
+    if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
     if (filter.title) {
@@ -435,6 +447,24 @@ export class LibraryStore {
       ) {
         return false
       }
+    }
+    if (filter.convictionCostSlider) {
+      const convictionCostMin = filter.convictionCostSlider[0]
+      const convictionCostMax = filter.convictionCostSlider[1]
+      const convictionCost = entity.convictionCost ?? 0
+      if (
+        convictionCost != -1 &&
+        (convictionCost < convictionCostMin ||
+          convictionCost > convictionCostMax)
+      ) {
+        return false
+      }
+    }
+    if (filter.trifle === 'trifle' && !entity.trifle) {
+      return false
+    }
+    if (filter.trifle === 'non_trifle' && entity.trifle) {
+      return false
     }
     if (filter.taints) {
       for (const taint of filter.taints) {

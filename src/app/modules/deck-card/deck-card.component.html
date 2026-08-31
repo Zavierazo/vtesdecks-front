@@ -5,6 +5,10 @@
     'deck-card-standard': !deck.owner,
     'deck-card-owned': deck.owner
   }" [ngStyle]="{'min-height':height()}">
+    @if (deck.type === 'PRECONSTRUCTED') {
+    <img #deckCover class="deck-cover" [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'" [alt]="deck.name"
+      loading="lazy" (error)="deckCover.hidden = true" />
+    }
     <!-- Top Section -->
     <div class="deck-header px-3 pt-2 pb-1">
       <div class="deck-header-grid mb-1">
@@ -119,6 +123,22 @@
         <span class="modern-badge badge-warning d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
           <i class="bi bi-award-fill me-1"></i>
           <span>{{ tournament }}</span>
+        </span>
+      </div>
+      }
+      @if (deck.place || deck.country || deck.rounds) {
+      <div class="tournament-info text-center fs-7 mb-1 small text-secondary">
+        <span class="d-inline-flex align-items-center flex-wrap justify-content-center gap-2">
+          @if (deck.place ?? deck.country; as place) {
+          <span [title]="place">
+            <i class="bi bi-geo-alt me-1"></i>{{ place | truncate: 30:true }}
+          </span>
+          }
+          @if (deck.rounds) {
+          <span>
+            <i class="bi bi-diagram-3 me-1"></i>{{ deck.rounds }}R+F
+          </span>
+          }
         </span>
       </div>
       }

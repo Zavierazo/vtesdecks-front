@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'decks'">
   <div id="container" class="h-100">
-    <header class="border-bottom mb-3 p-2 sticky-top bg-light">
+    <header class="border-bottom mb-3 p-2 sticky-top bg-light" appStickyHeader>
       <form [formGroup]="mainForm" class="d-flex flex-column flex-lg-row align-items-lg-center g-2">
         <div class="col-auto flex-fill text-center text-lg-start">
           <span class="me-lg-auto" [innerHTML]="t('total_decks', { total: total$ | async })">
@@ -62,12 +62,13 @@
             <div class="col-auto">
               <button type="button" class="btn btn-secondary" (click)="openFilters(filtersMobile)">
                 <i class="bi bi-funnel-fill"></i><span> {{ t('filters') }}</span>
+                @if (chips().length) {
+                <span class="badge text-bg-light ms-1">{{ chips().length }}</span>
+                }
               </button>
             </div>
             <div class="col-auto">
-              <button type="button" class="btn btn-danger" (click)="resetFilters()">
-                <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
-              </button>
+              <app-search-features-button scope="decks" />
             </div>
           </div>
           }
@@ -79,13 +80,28 @@
           </a>
         </div>
         }
+        @if (!(isMobileOrTablet$ | async)!) {
+        <div class="ms-lg-2 mt-2 mt-lg-0 align-self-center">
+          <app-search-features-button scope="decks" />
+        </div>
+        }
+        @if (!(isMobileOrTablet$ | async)!) {
+        <div class="ms-2 mt-2 mt-lg-0 align-self-center">
+          <button type="button" class="btn btn-danger" (click)="resetFilters()">
+            <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+          </button>
+        </div>
+        }
       </form>
+      @if (!(isMobileOrTablet$ | async)!) {
+      <app-filter-chips [chips]="chips()" (remove)="onRemoveChip($event)" (clearAll)="resetFilters()" />
+      }
     </header>
     <div class="scroll-container row">
       @if (!(isMobileOrTablet$ | async)!) {
       <div class="col-3 filters-desktop">
         <div class="filters-desktop-container">
-          <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
+          <app-deck-filters #filters (resetFilters)="reset()" [type]="type" [showReset]="false" />
         </div>
       </div>
       }
@@ -151,11 +167,14 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
     </div>
     <div class="offcanvas-body">
-      <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
+      <app-deck-filters #filters (resetFilters)="reset()" [type]="type" [showReset]="false" />
     </div>
     <div class="offcanvas-footer">
-      <div class="d-grid gap-2">
-        <button type="button" class="btn btn-primary" (click)="offcanvas.dismiss('Apply')">
+      <div class="d-flex gap-2 w-100">
+        <button type="button" class="btn btn-danger flex-fill" (click)="resetFilters()">
+          <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+        </button>
+        <button type="button" class="btn btn-primary flex-fill" (click)="offcanvas.dismiss('Apply')">
           {{ 'shared.apply' | transloco }}
         </button>
       </div>

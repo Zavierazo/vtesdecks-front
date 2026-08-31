@@ -11,17 +11,9 @@ import {
   RouterOutlet,
 } from '@angular/router'
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker'
+import { environment } from '@environments/environment'
 import { TranslocoService } from '@jsverse/transloco'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { NgcCookieConsentService } from 'ngx-cookieconsent'
-import { GoogleAnalyticsService } from 'ngx-google-analytics'
-import { distinct, filter, switchMap, tap } from 'rxjs'
-import { environment } from '@environments/environment'
-import { ApiChangelog } from '../../../models/api-changelog'
-import { ApiDataService } from '../../../services/api.data.service'
-import { ColorThemeService } from '../../../services/color-theme.service'
-import { SpoilerVisitService } from '../../../services/spoiler-visit.service'
-import { ToastService } from '../../../services/toast.service'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
@@ -30,11 +22,20 @@ import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { LibraryService } from '@state/library/library.service'
 import { SetService } from '@state/set/set.service'
+import { NgcCookieConsentService } from 'ngx-cookieconsent'
+import { GoogleAnalyticsService } from 'ngx-google-analytics'
+import { distinct, filter, switchMap, tap } from 'rxjs'
+import { ApiChangelog } from '../../../models/api-changelog'
+import { ApiDataService } from '../../../services/api.data.service'
+import { ColorThemeService } from '../../../services/color-theme.service'
+import { PushNotificationService } from '../../../services/push-notification.service'
+import { SpoilerVisitService } from '../../../services/spoiler-visit.service'
+import { ToastService } from '../../../services/toast.service'
 import { isChristmasSnow, isHalloween } from '../../../utils/vtes-utils'
+import { AnnouncementBannerComponent } from '../announcement-banner/announcement-banner.component'
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component'
 import { FooterComponent } from '../footer/footer.component'
 import { HeaderComponent } from '../header/header.component'
-import { AnnouncementBannerComponent } from '../announcement-banner/announcement-banner.component'
 
 /**
  * Default application layout: header, footer and every app-level side effect
@@ -73,10 +74,12 @@ export class ShellComponent implements OnInit {
   private readonly libraryService = inject(LibraryService)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly spoilerVisitService = inject(SpoilerVisitService)
+  private readonly pushNotificationService = inject(PushNotificationService)
   private readonly setService = inject(SetService)
   private readonly deckBuilderService = inject(DeckBuilderService)
 
   versionAvailable = false
+  private lastNavigationPath?: string
 
   constructor() {
     // Load color theme
@@ -97,6 +100,7 @@ export class ShellComponent implements OnInit {
     // Check expired session
     this.authService.refreshToken().subscribe()
     // Navigation events
+    this.lastNavigationPath = this.router.url.split('?')[0]
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         this.handleNavigationEnd(evt)
@@ -204,6 +208,12 @@ export class ShellComponent implements OnInit {
 
   private handleNavigationEnd(evt: NavigationEnd) {
     if (evt.url.startsWith('/decks')) {
+      return
+    }
+    const path = evt.urlAfterRedirects.split('?')[0]
+    const samePath = path === this.lastNavigationPath
+    this.lastNavigationPath = path
+    if (samePath) {
       return
     }
     window.scrollTo(0, 0)

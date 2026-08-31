@@ -18,6 +18,9 @@ export interface ApiDeck {
   comments: number
   tournament: string
   players: number
+  rounds?: number
+  place?: string
+  country?: string
   year: number
   author: string
   user?: ApiPublicUser

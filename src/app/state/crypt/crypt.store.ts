@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable, signal } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop'
 import {
   ApiClanStat,
@@ -7,9 +7,9 @@ import {
   CryptFilter,
   CryptSortBy,
 } from '@models'
-import { LocalStorageService } from '@services'
+import { IndexedDbService } from '@services'
 import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
-import { map, Observable } from 'rxjs'
+import { map, Observable, shareReplay } from 'rxjs'
 
 export interface CryptStats {
   total: number
@@ -31,30 +31,37 @@ const initialState: CryptState = {}
   providedIn: 'root',
 })
 export class CryptStore {
-  private readonly localStorage = inject(LocalStorageService)
+  private readonly db = inject(IndexedDbService)
 
-  static readonly stateStoreName = 'crypt_v1_state'
-  static readonly entitiesStoreName = 'crypt_v1_entities'
+  static readonly dbStoreName = 'crypt'
+  static readonly dbStateName = 'crypt_state'
   private readonly state = signal<CryptState>(initialState)
   private readonly state$ = toObservable(this.state)
   private readonly entities = signal<ApiCrypt[]>([])
   private readonly entities$ = toObservable(this.entities)
+  private readonly entityById = computed(
+    () => new Map(this.entities().map((entity) => [entity.id, entity])),
+  )
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
+  /** Read-only view of the catalog, so queries can derive from it. */
+  readonly entitiesSignal = this.entities.asReadonly()
+
+  /** Resolves once the persisted catalog has been restored, if any. */
+  readonly ready: Promise<void>
+
   constructor() {
-    // Restore entities from local storage
-    const previousLocalEntities = this.localStorage.getValue<ApiCrypt[]>(
-      CryptStore.entitiesStoreName,
-    )
-    if (previousLocalEntities) {
-      this.set(previousLocalEntities)
-      // Restore state from local storage
-      const previousLocalState = this.localStorage.getValue<CryptState>(
-        CryptStore.stateStoreName,
-      )
-      if (previousLocalState) {
-        this.update(() => previousLocalState)
+    this.ready = this.hydrate()
+  }
+
+  private async hydrate(): Promise<void> {
+    const entities = await this.db.getAll<ApiCrypt>(CryptStore.dbStoreName)
+    if (entities.length) {
+      this.entities.set(entities)
+      const state = await this.db.getMeta<CryptState>(CryptStore.dbStateName)
+      if (state) {
+        this.state.set(state)
       }
     }
   }
@@ -145,13 +152,13 @@ export class CryptStore {
         }
         return entities
       }),
+      // Templates subscribe to the same query through several async pipes
+      shareReplay({ bufferSize: 1, refCount: true }),
     )
   }
 
   selectEntity(id: number): Observable<ApiCrypt | undefined> {
-    return this.entities$.pipe(
-      map((entities) => entities.find((c) => c.id === id)),
-    )
+    return this.entities$.pipe(map(() => this.entityById().get(id)))
   }
 
   getEntities(
@@ -184,7 +191,7 @@ export class CryptStore {
   }
 
   getEntity(id: number): ApiCrypt | undefined {
-    return this.entities().find((c) => c.id === id)
+    return this.entityById().get(id)
   }
 
   setLoading(value = false) {
@@ -193,12 +200,17 @@ export class CryptStore {
 
   update(updateFn: (value: CryptState) => CryptState) {
     this.state.update(updateFn)
-    this.updateStorage()
+    const state = this.getValue()
+    if (state?.locale) {
+      void this.db.setMeta(CryptStore.dbStateName, state)
+    }
   }
 
   set(entities: ApiCrypt[]) {
     this.entities.update(() => entities)
-    this.updateStorage()
+    if (entities.length > 0) {
+      void this.db.putAll(CryptStore.dbStoreName, entities)
+    }
   }
 
   upsert(id: number, entity: ApiCrypt) {
@@ -206,18 +218,7 @@ export class CryptStore {
       ...current.filter((c) => c.id !== id),
       entity,
     ])
-    this.updateStorage()
-  }
-
-  private updateStorage(): void {
-    const state = this.getValue()
-    if (state?.locale) {
-      this.localStorage.setValue(CryptStore.stateStoreName, state)
-    }
-    const entities = this.getEntities()
-    if (entities?.length > 0) {
-      this.localStorage.setValue(CryptStore.entitiesStoreName, entities)
-    }
+    void this.db.put(CryptStore.dbStoreName, entity)
   }
 
   private getRelevanceWeight(entity: ApiCrypt, stats?: CryptStats): number {
@@ -400,13 +401,38 @@ export class CryptStore {
         return false
       }
     }
-    if (filter.title && entity.title !== filter.title) {
+    if (filter.advanced === 'base' && entity.adv) {
       return false
+    }
+    if (filter.advanced === 'advanced' && !entity.adv) {
+      return false
+    }
+    if (filter.title) {
+      if (filter.title === 'any') {
+        if (!entity.title) {
+          return false
+        }
+      } else if (filter.title === 'none') {
+        if (entity.title) {
+          return false
+        }
+      } else if (entity.title !== filter.title) {
+        return false
+      }
     }
     if (filter.sect && entity.sect !== filter.sect) {
       return false
     }
-    if (filter.path && entity.path !== filter.path) {
+    const pathMatches = (path: string) =>
+      path === 'none' ? !entity.path : entity.path === path
+    if (
+      Array.isArray(filter.paths) &&
+      filter.paths.length > 0 &&
+      !filter.paths.some(pathMatches)
+    ) {
+      return false
+    }
+    if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
     if (filter.set) {

@@ -14,9 +14,12 @@ export interface LibraryFilter {
   notDisciplines?: string[]
   disciplineMode?: 'and' | 'or'
   sect?: string
-  path?: string
+  paths?: string[]
+  notPaths?: string[]
   bloodCostSlider?: number[]
   poolCostSlider?: number[]
+  convictionCostSlider?: number[]
+  trifle?: 'trifle' | 'non_trifle'
   title?: string
   set?: string
   taints?: string[]

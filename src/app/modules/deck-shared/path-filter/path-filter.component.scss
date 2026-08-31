@@ -1,3 +1,32 @@
 .non-selected {
   opacity: 0.3;
 }
+
+span {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.excluded {
+  position: relative;
+  display: inline-flex;
+
+  i {
+    opacity: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 8%;
+    background: linear-gradient(
+      to top right,
+      transparent 44%,
+      var(--bs-danger) 44%,
+      var(--bs-danger) 56%,
+      transparent 56%
+    );
+    pointer-events: none;
+  }
+}

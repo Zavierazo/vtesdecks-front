@@ -1,0 +1,21 @@
+@if (chips().length) {
+<div class="filter-chips d-flex flex-wrap align-items-center gap-1 pb-1" role="group"
+  [attr.aria-label]="'shared.active_filters' | transloco">
+  @for (chip of chips(); track chip.id) {
+  @let value = chip.value$ ? (chip.value$ | async) : chip.value;
+  @let description = value ? chip.label + ': ' + value : chip.label;
+  <span class="filter-chip">
+    <span class="filter-chip__label">{{ chip.label }}</span>
+    @if (value) {
+    <span class="filter-chip__value">{{ value }}</span>
+    }
+    <button type="button" class="btn-close filter-chip__close" (click)="remove.emit(chip)"
+      [title]="'shared.remove_filter' | transloco: { filter: description }"
+      [attr.aria-label]="'shared.remove_filter' | transloco: { filter: description }"></button>
+  </span>
+  }
+  <button type="button" class="btn btn-link btn-sm filter-chips__clear" (click)="clearAll.emit()">
+    {{ 'shared.clear_all' | transloco }}
+  </button>
+</div>
+}

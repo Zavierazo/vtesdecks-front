@@ -21,6 +21,10 @@ export class DecksQuery {
     return this.store.select((decks: DecksState) => decks.total)
   }
 
+  selectCurrency(): Observable<string> {
+    return this.store.select((decks: DecksState) => decks.currency)
+  }
+
   selectParams(): Observable<Params> {
     return this.store.select((decks: DecksState) => decks.params)
   }

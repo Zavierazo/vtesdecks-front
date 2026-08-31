@@ -35,6 +35,24 @@
   letter-spacing: -0.02em;
 }
 
+.deck-cover {
+  width: min(220px, calc(100vw - 3rem));
+  height: auto;
+  max-height: 300px;
+  margin-inline: auto;
+  padding: 0;
+  object-fit: contain;
+  border-radius: var(--bs-border-radius-lg);
+  box-shadow: var(--bs-box-shadow);
+}
+
+@media (min-width: 768px) {
+  .deck-cover {
+    margin-right: 0;
+    margin-left: calc(var(--bs-gutter-x) * 0.5);
+  }
+}
+
 .bookmark-toggle {
   cursor: pointer;
   display: inline-flex;

@@ -1,13 +1,13 @@
 <ng-container *transloco="let t;read: 'crypt_section'">
   <div id="container" class="min-vh-100">
-    <header class="border-bottom mb-0 mb-lg-3 pt-2 p-1 px-3 sticky-top bg-light">
+    <header class="border-bottom mb-0 mb-lg-3 pt-2 p-1 px-3 sticky-top bg-light" appStickyHeader>
       <form class="flex-fill mb-2">
-        <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+        <div class="row search-toolbar g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
           <div class="col-12 col-sm">
             <div class="input-group">
               <input type="text" class="form-control" id="name" [placeholder]="t('card_name')"
                 [formControl]="nameFormControl">
-              <button type="button" class="btn btn-primary px-4" (click)="openCameraScanner()" [title]="t('scan_card')"
+              <button type="button" class="btn btn-primary px-3" (click)="openCameraScanner()" [title]="t('scan_card')"
                 [attr.aria-label]="t('scan_card')">
                 <i class="bi bi-camera-fill" aria-hidden="true"></i>
                 <span class="visually-hidden">{{ t('scan_card') }}</span>
@@ -16,40 +16,9 @@
           </div>
           <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
             (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
-          <div ngbDropdown class="col-auto d-inline-block">
-            <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
-              [disabled]="sortByTrigramSimilarity">
-              <i class="bi bi-sort-alpha-down"></i>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownSortBy">
-              <button ngbDropdownItem (click)="onChangeSortBy('name',$event)" [ngClass]="{'active': sortBy ==='name'}">
-                {{ t('name') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('capacity',$event)"
-                [ngClass]="{'active': sortBy ==='capacity'}">
-                {{ t('capacity') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('clan',$event)" [ngClass]="{'active': sortBy ==='clan'}">
-                {{ t('clan') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('group',$event)"
-                [ngClass]="{'active': sortBy ==='group'}">
-                {{ t('group') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('deckPopularity',$event)"
-                [ngClass]="{'active': sortBy ==='deckPopularity'}" [title]="t('deck_popularity_title')">
-                {{ t('deck_popularity') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('cardPopularity',$event)"
-                [ngClass]="{'active': sortBy ==='cardPopularity'}" [title]="t('card_popularity_title')">
-                {{ t('card_popularity') }}
-              </button>
-              <button ngbDropdownItem (click)="onChangeSortBy('minPrice',$event)"
-                [ngClass]="{'active': sortBy ==='minPrice'}">
-                {{ t('price') }}
-              </button>
-            </div>
-          </div>
+          <app-sort-control class="col-auto d-inline-block" [options]="displayedSortOptions" [active]="displayedSortBy"
+            [order]="displayedSortByOrder" [disabled]="sortByTrigramSimilarity" (sortChange)="onChangeSortBy($any($event))" />
+          <app-search-features-button class="col-auto d-inline-block" scope="crypt" />
           @if (!(isMobileOrTablet$ | async)!) {
           <div class="col-auto d-inline-block">
             <button type="button" class="btn btn-danger" (click)="resetFilters()">
@@ -60,12 +29,18 @@
           @if ((isMobileOrTablet$ | async)!) {
           <div class="col-auto">
             <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
-              <i class="bi bi-funnel-fill"></i><span> {{ t('filters') }}</span>
+              <i class="bi bi-funnel-fill"></i><span class="filters-label"> {{ t('filters') }}</span>
+              @if (filterChips.length) {
+              <span class="badge text-bg-light ms-1">{{ filterChips.length }}</span>
+              }
             </button>
           </div>
           }
         </div>
       </form>
+      @if (!(isMobileOrTablet$ | async)!) {
+      <app-filter-chips [chips]="filterChips" (remove)="onRemoveFilterChip($event)" (clearAll)="resetFilters()" />
+      }
     </header>
     <div class="crypt-body">
       <div class="scroll-container row">
@@ -108,7 +83,7 @@
           </ul>
           }
           }
-          @if (!(hasMore$ | async)) {
+          @if ((hasMore$ | async) === false) {
           <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="2673177636" adFormat="auto"
             fullWidthResponsive="true" />
           }
@@ -134,8 +109,11 @@
       <ng-container *ngTemplateOutlet="filter" />
     </div>
     <div class="modal-footer">
-      <div class="d-grid gap-2 w-100">
-        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Apply')">
+      <div class="d-flex gap-2 w-100">
+        <button type="button" class="btn btn-danger flex-fill" (click)="resetFilters()">
+          <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+        </button>
+        <button type="button" class="btn btn-primary flex-fill" (click)="modal.dismiss('Apply')">
           {{ 'shared.apply' | transloco }}
         </button>
       </div>

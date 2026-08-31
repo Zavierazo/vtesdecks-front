@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiCrypt, ApiLibrary, CardFilter } from '@models'
 import {
@@ -33,6 +33,7 @@ import {
   tap,
 } from 'rxjs'
 import { environment } from '@environments/environment'
+import { parseCardFilterParam, splitParamList } from '../deck-filter-defaults'
 
 @UntilDestroy()
 @Component({
@@ -63,6 +64,7 @@ export class CardFilterComponent implements OnInit {
   @Input() showStarVampireFilter = true
 
   cards: CardFilter[] = []
+  excludedCards: number[] = []
 
   isMobile$!: Observable<boolean>
 
@@ -72,22 +74,28 @@ export class CardFilterComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
-    const cards = this.decksQuery.getParam('cards')
-    if (cards) {
-      cards.split(',').forEach((card: string) => {
-        const [cardId, countString] = card.split('=')
-        const id = Number(cardId)
-        const count = Number(countString)
-        if (!isNaN(id) && !isNaN(count)) {
-          this.cards.push({ id, count })
-        }
-      })
-    }
+    this.cards = parseCardFilterParam(this.decksQuery.getParam('cards'))
+    this.excludedCards = this.parseExcludedCards(
+      this.decksQuery.getParam('excludedCards'),
+    )
     this.initStarVampire()
+  }
+
+  /** Mirrors URL changes made elsewhere (filter chips, reset, browser back). */
+  syncFromParams(params: Params) {
+    this.cards = parseCardFilterParam(params['cards'])
+    this.excludedCards = this.parseExcludedCards(params['excludedCards'])
+    const starVampire = params['starVampire'] ?? false
+    const control = this.form.get('starVampire')
+    if (control && `${control.value ?? ''}` !== `${starVampire}`) {
+      control.patchValue(starVampire, { emitEvent: false })
+    }
+    this.changeDetectorRef.markForCheck()
   }
 
   reset() {
     this.cards = []
+    this.excludedCards = []
     this.form.get('starVampire')?.patchValue(false, { emitEvent: false })
     this.changeDetectorRef.detectChanges()
   }
@@ -101,7 +109,9 @@ export class CardFilterComponent implements OnInit {
           .selectByName(term, 10)
           .pipe(
             map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+              cards
+                .filter((card) => !this.excludedCards.includes(card.id))
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
             ),
           ),
       ),
@@ -117,7 +127,9 @@ export class CardFilterComponent implements OnInit {
           .selectByName(term, 10)
           .pipe(
             map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+              cards
+                .filter((card) => !this.excludedCards.includes(card.id))
+                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
             ),
           ),
       ),
@@ -184,6 +196,27 @@ export class CardFilterComponent implements OnInit {
     }
   }
 
+  removeExcluded(id: number) {
+    this.excludedCards = this.excludedCards.filter((cardId) => cardId !== id)
+    this.applyExcludedChange()
+  }
+
+  excludeCard(id: number) {
+    this.cards = this.cards.filter((card) => card.id !== id)
+    if (!this.excludedCards.includes(id)) {
+      this.excludedCards = [...this.excludedCards, id]
+    }
+    this.applyCardChanges()
+  }
+
+  requireCard(id: number) {
+    this.excludedCards = this.excludedCards.filter((cardId) => cardId !== id)
+    if (!this.cards.some((card) => card.id === id)) {
+      this.cards = [...this.cards, { id, count: 1 }]
+    }
+    this.applyCardChanges()
+  }
+
   applyChange() {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -195,6 +228,39 @@ export class CardFilterComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     })
+  }
+
+  private applyExcludedChange() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        excludedCards: this.excludedCards.length
+          ? this.excludedCards.join(',')
+          : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  private applyCardChanges() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        cards: this.cards.length
+          ? this.cards.map((card) => card.id + '=' + card.count).join(',')
+          : undefined,
+        excludedCards: this.excludedCards.length
+          ? this.excludedCards.join(',')
+          : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  private parseExcludedCards(value: unknown): number[] {
+    return splitParamList(value)
+      .map(Number)
+      .filter((id) => Number.isInteger(id))
   }
 
   private initStarVampire() {
@@ -211,7 +277,7 @@ export class CardFilterComponent implements OnInit {
           this.router.navigate([], {
             relativeTo: this.route,
             queryParams: {
-              starVampire: value ?? undefined,
+              starVampire: value ? true : undefined,
             },
             queryParamsHandling: 'merge',
           }),

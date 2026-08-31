@@ -13,10 +13,10 @@ header {
 
 .filters-desktop {
   overflow-y: auto;
-  max-height: calc(100dvh - 65px);
-  max-height: calc(100vh - 65px);
+  max-height: calc(100dvh - var(--page-header-height, 65px));
+  max-height: calc(100vh - var(--page-header-height, 65px));
   position: sticky;
-  top: 65px;
+  top: var(--page-header-height, 65px);
   direction: rtl;
 }
 
@@ -26,5 +26,14 @@ header {
 }
 
 .scroll-container {
-  scroll-margin-top: 65px;
+  scroll-margin-top: calc(var(--page-header-height, 65px) + 0.75rem);
+}
+
+.offcanvas-footer {
+  // Bootstrap ships no footer for offcanvas: match .modal-footer spacing so the
+  // reset/apply pair sits like the crypt and library filter modals.
+  background-color: var(--bs-offcanvas-bg, var(--app-surface));
+  border-top: 1px solid var(--bs-border-color);
+  flex-shrink: 0;
+  padding: 0.75rem;
 }

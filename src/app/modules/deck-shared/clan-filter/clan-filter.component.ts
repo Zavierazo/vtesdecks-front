@@ -26,12 +26,23 @@ export class ClanFilterComponent {
 
   @Input() showNotRequired = false
   @Input() allowExclude = false
+  @Input() showAndOr = false
   @Input() clans: string[] = []
   readonly clansChange = output<string[]>()
   @Input() notClans: string[] = []
   readonly notClansChange = output<string[]>()
+  @Input() mode: 'and' | 'or' = 'and'
+  readonly modeChange = output<'and' | 'or'>()
 
   clansList = CLAN_LIST
+
+  setMode(mode: 'and' | 'or') {
+    if (this.mode !== mode) {
+      this.mode = mode
+      this.modeChange.emit(mode)
+      this.changeDetectorRef.detectChanges()
+    }
+  }
 
   toggleNotRequired() {
     this.toggle('none')

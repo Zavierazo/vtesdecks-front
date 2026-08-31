@@ -5,7 +5,10 @@ type CardFilter = CryptFilter | LibraryFilter
 const isEmptyValue = (value: unknown): boolean =>
   value === undefined || value === null || value === '' || value === false
 
-const isDefaultValue = (value: unknown, defaultValue: unknown): boolean => {
+export const isDefaultValue = (
+  value: unknown,
+  defaultValue: unknown,
+): boolean => {
   if (Array.isArray(value) || Array.isArray(defaultValue)) {
     const current = (value ?? []) as unknown[]
     const defaults = (defaultValue ?? []) as unknown[]

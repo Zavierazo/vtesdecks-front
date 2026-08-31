@@ -13,10 +13,10 @@ header {
 
 .filters-desktop {
   overflow-y: auto;
-  max-height: calc(100dvh - 65px);
-  max-height: calc(100vh - 65px);
+  max-height: calc(100dvh - var(--page-header-height, 65px));
+  max-height: calc(100vh - var(--page-header-height, 65px));
   position: sticky;
-  top: 65px;
+  top: var(--page-header-height, 65px);
   direction: rtl;
 }
 
@@ -26,5 +26,32 @@ header {
 }
 
 .scroll-container {
-  scroll-margin-top: 65px;
+  scroll-margin-top: calc(var(--page-header-height, 65px) + 0.75rem);
+}
+
+// Search toolbar: on phones the search field keeps the full width of its own
+// row and the controls below it (display mode, sort, saved searches, filters)
+// are compacted so they all fit on a single line.
+@media (max-width: 575.98px) {
+  .search-toolbar {
+    > .col-auto {
+      min-width: 0;
+    }
+
+    // ::ng-deep so the buttons rendered by the toggle/sort/searches child
+    // components are compacted too.
+    ::ng-deep .btn {
+      --bs-btn-padding-x: 0.5rem;
+      --bs-btn-padding-y: 0.25rem;
+      --bs-btn-font-size: 0.875rem;
+      white-space: nowrap;
+    }
+  }
+}
+
+// The smallest phones cannot fit the filters label next to its counter.
+@media (max-width: 359.98px) {
+  .search-toolbar .filters-label {
+    display: none;
+  }
 }

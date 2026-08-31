@@ -1,5 +1,22 @@
 [
   {
+    "version": "2.78.0",
+    "date": "1st September, 2026",
+    "changes": [
+      "The notifications panel now lets you enable <strong>push notifications</strong> separately on each device, so replies can reach you even when VTESDecks is closed.",
+      "The <strong>Deck browser</strong> gained a searchable archetype selector, minimum and maximum deck-price filters, and quick 100%, 75%+ and 50%+ collection-completion shortcuts.",
+      "Card filters in the <strong>Deck browser</strong> can exclude crypt or library cards. Clan and discipline filters also support ALL / ANY matching plus right-click or long-press exclusion.",
+      "Tournament results in the <strong>Deck browser</strong> can now be searched by tournament name, place or country, and preliminary rounds (2R+F or 3R+F). Place and rounds are also shown on deck pages and deck cards.",
+      "Above the <strong>Crypt, Library and Deck</strong> results, active filters now appear as removable chips with Clear all, localized card names, and an active-filter count on the mobile Filters button.",
+      "The <strong>Crypt browser</strong> gained group-pair and capacity shortcuts, Base / Advanced selection, and Any title / No title filters. Its Path filter now uses icons, supports multiple paths and No path, and allows right-click or long-press exclusion.",
+      "The <strong>Library browser</strong> gained a Conviction cost range and a Trifle / Non-trifle master-card filter. Its Path filter now uses icons, supports multiple paths and No path, and allows right-click or long-press exclusion.",
+      "The <strong>Crypt and Library</strong> sort controls now show the active field and direction instead of a generic icon.",
+      "Searches in the <strong>Crypt, Library and Deck browsers</strong> can now be copied as shareable links, saved as named presets and quickly reopened from a private recent-search history stored only on your device.",
+      "Preconstructed decks now show their official cover artwork on deck pages and in deck lists when available.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.77.0",
     "date": "26th August, 2026",
     "changes": [

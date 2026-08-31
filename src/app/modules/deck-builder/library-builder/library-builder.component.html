@@ -7,7 +7,7 @@
   </div>
   <div class="modal-header">
     <form class="flex-fill mb-2">
-      <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+      <div class="row search-toolbar g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
         <div class="col-12 col-sm mb-2">
           <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
             [formControl]="nameFormControl">

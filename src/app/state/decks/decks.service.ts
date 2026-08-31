@@ -60,6 +60,7 @@ export class DecksService {
     const nextOffset = response.offset + limit
     this.decksStore.add(response.decks)
     this.decksStore.updateTotal(response.total)
+    this.decksStore.updateCurrency(response.currency ?? 'EUR')
     this.decksStore.updatePage(response.total > nextOffset, nextOffset)
     if (response.offset === 0) {
       this.decksStore.updateRestorableDecks(response.restorableDecks)

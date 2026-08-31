@@ -1,0 +1,27 @@
+<div ngbDropdown class="d-inline-block">
+  <button type="button" class="btn btn-primary sort-control-toggle" id="dropdownSortBy" ngbDropdownToggle
+    [disabled]="disabled()"
+    [title]="('shared.sort_by' | transloco) + ': ' + (activeLabelKey() | transloco) + ' (' + (orderLabelKey() | transloco) + ')'"
+    [attr.aria-label]="('shared.sort_by' | transloco) + ': ' + (activeLabelKey() | transloco) + ' (' + (orderLabelKey() | transloco) + ')'">
+    <i class="bi bi-sort-alpha-down" aria-hidden="true"></i>
+    <span class="d-none d-lg-inline ms-1 sort-control-label">{{ activeLabelKey() | transloco }}</span>
+    <i class="bi ms-1" [class.bi-arrow-up]="order() === 'asc'" [class.bi-arrow-down]="order() === 'desc'"
+      aria-hidden="true"></i>
+    <span class="visually-hidden">
+      {{ 'shared.sort_by' | transloco }}: {{ activeLabelKey() | transloco }} ({{ orderLabelKey() | transloco }})
+    </span>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="dropdownSortBy">
+    @for (option of options(); track option.value) {
+    <button ngbDropdownItem (click)="onSelect(option, $event)" [class.active]="option.value === active()"
+      [title]="option.titleKey ? (option.titleKey | transloco) : null">
+      {{ option.labelKey | transloco }}
+      @if (option.value === active()) {
+      <i class="bi ms-1" [class.bi-arrow-up]="order() === 'asc'" [class.bi-arrow-down]="order() === 'desc'"
+        aria-hidden="true"></i>
+      <span class="visually-hidden">({{ orderLabelKey() | transloco }})</span>
+      }
+    </button>
+    }
+  </div>
+</div>

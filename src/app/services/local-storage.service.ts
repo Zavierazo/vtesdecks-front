@@ -4,8 +4,22 @@ import { Injectable } from '@angular/core'
   providedIn: 'root',
 })
 export class LocalStorageService {
+  /**
+   * Keys of the card catalogs, which now live in IndexedDB. Cleaned up at
+   * startup to free the quota they used to take.
+   * TODO: remove in a future release, once clients have been updated.
+   */
+  private static readonly deprecatedKeys = [
+    'AkitaStores',
+    'crypt_v1_entities',
+    'crypt_v1_state',
+    'library_v1_entities',
+    'library_v1_state',
+    'set_v1_entities',
+  ]
+
   constructor() {
-    this.clearValue('AkitaStores')
+    LocalStorageService.deprecatedKeys.forEach((key) => this.clearValue(key))
   }
 
   getValue<T>(key: string): T | null {

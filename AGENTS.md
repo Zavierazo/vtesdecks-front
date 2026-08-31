@@ -6,30 +6,31 @@
 
 ## Project Overview
 
-**VTESDecks** is an Angular PWA for the *Vampire: The Eternal Struggle* (VTES) trading card game.
+**VTESDecks** is an Angular PWA for the _Vampire: The Eternal Struggle_ (VTES) trading card game.
 Live at **vtesdecks.com**. Backed by a separate Spring Boot API (`vtesdecks-back`).
 
-Features: card browser, TWD deck browser, deck builder, collection manager, proxy generator, metagame stats, AI deck-building assistant, daily card game (Vtesdle).
+Features: card browser, TWD deck browser, deck builder, collection manager, proxy generator, metagame stats, AI deck-building assistant, daily card game (Vtesdle), and multi-device Web Push notifications.
 
 ---
 
 ## Tech Stack
 
-| Concern | Tool/Version |
-|---|---|
-| Framework | Angular 22 (standalone components) |
-| Language | TypeScript 6 (strict mode) |
-| Styling | SCSS + Bootstrap via `@ng-bootstrap/ng-bootstrap` 21 |
-| i18n | `@jsverse/transloco` 8 |
-| Auth | JWT via `@auth0/angular-jwt`, Google OAuth |
-| State | Custom Signal-based store (no NgRx) |
-| Charts | `ng2-charts` + `chart.js` |
-| Markdown | `ngx-markdown` + `marked` |
-| Errors | Sentry 10 |
-| Analytics | `ngx-google-analytics` |
-| Testing | Vitest |
-| Deployment | Cloudflare Workers (Wrangler 4) |
-| PWA | `@angular/service-worker` |
+| Concern    | Tool/Version                                         |
+| ---------- | ---------------------------------------------------- |
+| Framework  | Angular 22 (standalone components)                   |
+| Language   | TypeScript 6 (strict mode)                           |
+| Styling    | SCSS + Bootstrap via `@ng-bootstrap/ng-bootstrap` 21 |
+| i18n       | `@jsverse/transloco` 8                               |
+| Auth       | JWT via `@auth0/angular-jwt`, Google OAuth           |
+| State      | Custom Signal-based store (no NgRx)                  |
+| Charts     | `ng2-charts` + `chart.js`                            |
+| Markdown   | `ngx-markdown` + `marked`                            |
+| Errors     | Sentry 10                                            |
+| Analytics  | `ngx-google-analytics`                               |
+| Testing    | Vitest                                               |
+| Deployment | Cloudflare Workers (Wrangler 4)                      |
+| PWA        | `@angular/service-worker`                            |
+| Push       | Angular `SwPush` + VAPID Web Push backend            |
 
 ---
 
@@ -52,10 +53,13 @@ Dev environment points to `http://localhost:8080/api/1.0`.
 ## Architecture
 
 ### Standalone Components + Lazy Routing
+
 All feature modules are lazy-loaded via `loadChildren` in the router. No shared NgModule wrappers — components are standalone.
 
 ### State Pattern (Signal Store)
+
 Each domain has three files in `src/app/state/<domain>/`:
+
 - `*.store.ts` — `signal()`-based state container, persisted to LocalStorage/SessionStorage
 - `*.service.ts` — business logic, API calls, store mutations
 - `*.query.ts` — reactive selectors returning Observables
@@ -63,11 +67,21 @@ Each domain has three files in `src/app/state/<domain>/`:
 State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, `decks`, `comments`, `set`, `vtes-ai`.
 
 ### HTTP Interceptor
+
 `http-monitor.interceptor.ts` — adds locale/version query params, cache-control headers, retry logic (10 retries, 5 s delay). Only applies to API requests.
 
 ### Guards
+
 - `CanActivateUser` — redirects unauthenticated users, opens login modal
 - `CanDeactivateComponent` — unsaved-changes confirmation
+
+### Push Notifications
+
+`PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.
+
+### Reusable Browser Searches
+
+Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
 
 ---
 
@@ -93,6 +107,7 @@ src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 ```
 
 ### Path Aliases (tsconfig)
+
 ```
 @models           → src/app/models/index.ts
 @services         → src/app/services/index.ts
@@ -121,11 +136,13 @@ src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 ---
 
 ## Supported Languages
+
 English (en), Español (es), Français (fr), Português (pt).
 
 ---
 
 ## API Base
+
 - Dev: `http://localhost:8080/api/1.0`
 - Prod: `https://api.vtesdecks.com/1.0`
 

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core'
+import { Injectable, computed, inject } from '@angular/core'
 import {
   ApiCard,
   ApiClanStat,
@@ -8,9 +8,10 @@ import {
   CryptFilter,
   CryptSortBy,
 } from '@models'
+import { toObservable } from '@angular/core/rxjs-interop'
 import { SetQuery } from '@state/set/set.query'
 import { getSetAbbrev } from '@utils'
-import { Observable, map, switchMap } from 'rxjs'
+import { Observable, switchMap } from 'rxjs'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,61 @@ import { CryptStats, CryptStore } from './crypt.store'
 export class CryptQuery {
   private readonly store = inject(CryptStore)
   private readonly setQuery = inject(SetQuery)
+
+  private readonly titles = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((crypt) => crypt.title !== undefined)
+          .map((crypt) => crypt.title!),
+      ),
+    ].sort(),
+  )
+  private readonly titles$ = toObservable(this.titles)
+  private readonly sects = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((crypt) => crypt.sect)
+          .map((crypt) => crypt.sect),
+      ),
+    ].sort(),
+  )
+  private readonly sects$ = toObservable(this.sects)
+  private readonly taints = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((crypt) => crypt.taints)
+          .flatMap((crypt) => crypt.taints),
+      ),
+    ].sort(),
+  )
+  private readonly taints$ = toObservable(this.taints)
+  private readonly setAbbrevs = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((crypt) => crypt.sets)
+          .flatMap((crypt) => crypt.sets),
+      ),
+    ].map(getSetAbbrev),
+  )
+  private readonly setAbbrevs$ = toObservable(this.setAbbrevs)
+  private readonly maxCapacity = computed(() =>
+    this.store
+      .entitiesSignal()
+      .reduce((max, crypt) => Math.max(max, crypt.capacity), 11),
+  )
+  private readonly maxGroup = computed(() =>
+    this.store
+      .entitiesSignal()
+      .reduce((max, crypt) => Math.max(max, crypt.group), 7),
+  )
 
   selectEntity(id: number): Observable<ApiCrypt | undefined> {
     return this.store.selectEntity(id)
@@ -75,46 +131,19 @@ export class CryptQuery {
   }
 
   selectTitles(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((crypt) =>
-        crypt
-          .filter((crypt: ApiCrypt) => crypt.title !== undefined)
-          .map((crypt) => crypt.title!),
-      ),
-      map((titles) => [...new Set(titles)].sort()),
-    )
+    return this.titles$
   }
 
   selectSects(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((crypt) =>
-        crypt.filter((crypt) => crypt.sect).map((crypt) => crypt.sect),
-      ),
-      map((sects) => [...new Set(sects)].sort()),
-    )
+    return this.sects$
   }
 
   selectTaints(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((crypt) =>
-        crypt
-          .filter((crypt) => crypt.taints)
-          .map((crypt) => crypt.taints)
-          .flat(),
-      ),
-      map((taints) => [...new Set(taints)].sort()),
-    )
+    return this.taints$
   }
 
   selectSets(): Observable<ApiSet[]> {
-    return this.store.selectAll().pipe(
-      map((library) =>
-        library
-          .filter((library) => library.sets)
-          .map((library) => library.sets)
-          .flat(),
-      ),
-      map((sets) => [...new Set(sets)].map(getSetAbbrev)),
+    return this.setAbbrevs$.pipe(
       switchMap((setIds) =>
         this.setQuery.selectAll({
           filterBy: (set) => setIds.includes(set.abbrev),
@@ -126,28 +155,15 @@ export class CryptQuery {
   }
 
   getMaxCapacity(): number {
-    return this.store
-      .getEntities()
-      .reduce((max, crypt) => Math.max(max, crypt.capacity), 11)
+    return this.maxCapacity()
   }
 
   getMaxGroup(): number {
-    return this.store
-      .getEntities()
-      .reduce((max, crypt) => Math.max(max, crypt.group), 7)
+    return this.maxGroup()
   }
 
   getTaints(): string[] {
-    return [
-      ...new Set(
-        this.store
-          .getEntities()
-          .filter((crypt) => crypt.taints)
-          .map((crypt) => crypt.taints)
-          .flat()
-          .sort(),
-      ),
-    ]
+    return this.taints()
   }
 
   getClans(cards: ApiCard[]): ApiClanStat[] {
@@ -240,10 +256,12 @@ export class CryptQuery {
       notDisciplines: [],
       disciplineMode: 'and',
       groupSlider: [1, this.getMaxGroup()],
+      advanced: undefined,
       capacitySlider: [1, this.getMaxCapacity()],
       title: '',
       sect: '',
-      path: '',
+      paths: [],
+      notPaths: [],
       set: '',
       taints: [],
       cardText: '',

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { computed, inject, Injectable } from '@angular/core'
 import {
   ApiCard,
   ApiClanStat,
@@ -8,9 +8,10 @@ import {
   LibraryFilter,
   LibrarySortBy,
 } from '@models'
+import { toObservable } from '@angular/core/rxjs-interop'
 import { SetQuery } from '@state/set/set.query'
 import { getSetAbbrev } from '@utils'
-import { map, Observable, switchMap } from 'rxjs'
+import { Observable, switchMap } from 'rxjs'
 import { LibraryStats, LibraryStore } from './library.store'
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,56 @@ import { LibraryStats, LibraryStore } from './library.store'
 export class LibraryQuery {
   private readonly store = inject(LibraryStore)
   private readonly setQuery = inject(SetQuery)
+
+  private readonly titles = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((library) => library.titles)
+          .flatMap((library) => library.titles),
+      ),
+    ].sort(),
+  )
+  private readonly titles$ = toObservable(this.titles)
+  private readonly sects = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((library) => library.sects)
+          .flatMap((library) => library.sects),
+      ),
+    ].sort(),
+  )
+  private readonly sects$ = toObservable(this.sects)
+  private readonly taints = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((library) => library.taints)
+          .flatMap((library) => library.taints),
+      ),
+    ].sort(),
+  )
+  private readonly taints$ = toObservable(this.taints)
+  private readonly setAbbrevs = computed(() =>
+    [
+      ...new Set(
+        this.store
+          .entitiesSignal()
+          .filter((library) => library.sets)
+          .flatMap((library) => library.sets),
+      ),
+    ].map(getSetAbbrev),
+  )
+  private readonly setAbbrevs$ = toObservable(this.setAbbrevs)
+  private readonly maxConvictionCost = computed(() =>
+    this.store
+      .entitiesSignal()
+      .reduce((max, library) => Math.max(max, library.convictionCost ?? 0), 4),
+  )
 
   selectEntity(id: number): Observable<ApiLibrary | undefined> {
     return this.store.selectEntity(id)
@@ -75,50 +126,19 @@ export class LibraryQuery {
   }
 
   selectSects(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((library) =>
-        library
-          .filter((library) => library.sects)
-          .map((library) => library.sects)
-          .flat(),
-      ),
-      map((sects) => [...new Set(sects)].sort()),
-    )
+    return this.sects$
   }
 
   selectTitles(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((library) =>
-        library
-          .filter((library) => library.titles)
-          .map((library) => library.titles)
-          .flat(),
-      ),
-      map((titles) => [...new Set(titles)].sort()),
-    )
+    return this.titles$
   }
 
   selectTaints(): Observable<string[]> {
-    return this.store.selectAll().pipe(
-      map((library) =>
-        library
-          .filter((library) => library.taints)
-          .map((library) => library.taints)
-          .flat(),
-      ),
-      map((taints) => [...new Set(taints)].sort()),
-    )
+    return this.taints$
   }
 
   selectSets(): Observable<ApiSet[]> {
-    return this.store.selectAll().pipe(
-      map((library) =>
-        library
-          .filter((library) => library.sets)
-          .map((library) => library.sets)
-          .flat(),
-      ),
-      map((sets) => [...new Set(sets)].map(getSetAbbrev)),
+    return this.setAbbrevs$.pipe(
       switchMap((setIds) =>
         this.setQuery.selectAll({
           filterBy: (set) => setIds.includes(set.abbrev),
@@ -130,16 +150,7 @@ export class LibraryQuery {
   }
 
   getTaints(): string[] {
-    return [
-      ...new Set(
-        this.store
-          .getEntities()
-          .filter((library) => library.taints)
-          .map((library) => library.taints)
-          .flat()
-          .sort(),
-      ),
-    ]
+    return this.taints()
   }
 
   getDisciplines(cards: ApiCard[]): ApiDisciplineStat[] {
@@ -193,6 +204,10 @@ export class LibraryQuery {
     return clans
   }
 
+  getMaxConvictionCost(): number {
+    return this.maxConvictionCost()
+  }
+
   getDefaultLibraryFilter(): LibraryFilter {
     return {
       name: '',
@@ -206,9 +221,12 @@ export class LibraryQuery {
       disciplineMode: 'and',
       bloodCostSlider: [0, 4],
       poolCostSlider: [0, 6],
+      convictionCostSlider: [0, this.getMaxConvictionCost()],
+      trifle: undefined,
       title: '',
       sect: '',
-      path: '',
+      paths: [],
+      notPaths: [],
       set: '',
       taints: [],
       cardText: '',
