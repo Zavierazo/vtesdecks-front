@@ -17,7 +17,7 @@
             (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
           <app-sort-control class="col-auto d-inline-block" [options]="displayedSortOptions" [active]="displayedSortBy"
             [order]="displayedSortByOrder" [disabled]="sortByTrigramSimilarity" (sortChange)="onChangeSortBy($any($event))" />
-          <app-search-features-button class="col-auto d-inline-block" browserType="library" />
+          <app-search-features-button class="col-auto d-inline-block" scope="library" />
           @if (!(isMobileOrTablet$ | async)!) {
           <div class="col-auto d-inline-block">
             <button type="button" class="btn btn-danger" (click)="resetFilters()">
@@ -82,7 +82,7 @@
           </ul>
           }
           }
-          @if (!(hasMore$ | async)) {
+          @if ((hasMore$ | async) === false) {
           <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="7267028769" adFormat="auto"
             fullWidthResponsive="true" />
           }

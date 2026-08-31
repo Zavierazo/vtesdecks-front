@@ -1,10 +1,11 @@
-export type SearchBrowserType = 'crypt' | 'library' | 'decks'
+export type SearchPresetScope = 'crypt' | 'library' | 'decks'
 
 export type SearchParams = Record<string, string>
 
 export interface SavedSearchPreset {
   id: string
-  browserType: SearchBrowserType
+  remoteId?: number
+  scope: SearchPresetScope
   name: string
   params: SearchParams
   createdAt: string
@@ -13,7 +14,7 @@ export interface SavedSearchPreset {
 
 export interface RecentSearch {
   id: string
-  browserType: SearchBrowserType
+  scope: SearchPresetScope
   params: SearchParams
   createdAt: string
 }

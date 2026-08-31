@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common'
 import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { SearchBrowserType, SearchParams } from '@models'
+import { SearchPresetScope, SearchParams } from '@models'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { buildSearchPath, normalizeSearchParams } from '@utils'
@@ -16,10 +16,10 @@ export class SearchFeaturesUiService {
   private readonly libraryQuery = inject(LibraryQuery)
 
   async copyLink(
-    browserType: SearchBrowserType,
+    scope: SearchPresetScope,
     params: SearchParams,
   ): Promise<boolean> {
-    const url = `${this.document.location.origin}${buildSearchPath(browserType, params)}`
+    const url = `${this.document.location.origin}${buildSearchPath(scope, params)}`
     try {
       const clipboard = this.document.defaultView?.navigator.clipboard
       if (!clipboard) throw new Error('Clipboard API unavailable')
@@ -36,14 +36,14 @@ export class SearchFeaturesUiService {
     }
   }
 
-  summary(browserType: SearchBrowserType, params: SearchParams): string {
-    const entries = Object.entries(normalizeSearchParams(browserType, params))
+  summary(scope: SearchPresetScope, params: SearchParams): string {
+    const entries = Object.entries(normalizeSearchParams(scope, params))
     if (!entries.length) {
       return this.transloco.translate('search_features.default_search')
     }
     const parts = entries.slice(0, 4).map(([key, value]) => {
       const label = this.paramLabel(key)
-      return `${label}: ${this.paramValue(browserType, key, value)}`
+      return `${label}: ${this.paramValue(scope, key, value)}`
     })
     if (entries.length > 4) {
       parts.push(
@@ -67,7 +67,7 @@ export class SearchFeaturesUiService {
   }
 
   private paramValue(
-    browserType: SearchBrowserType,
+    scope: SearchPresetScope,
     key: string,
     value: string,
   ): string {
@@ -76,7 +76,7 @@ export class SearchFeaturesUiService {
         value === 'desc' ? 'shared.descending' : 'shared.ascending',
       )
     }
-    if (key === 'order' || (key === 'type' && browserType === 'decks')) {
+    if (key === 'order' || (key === 'type' && scope === 'decks')) {
       const translated = this.transloco.translate(
         `decks.${value.toLowerCase()}`,
       )
@@ -85,7 +85,7 @@ export class SearchFeaturesUiService {
     if (key === 'sortBy') {
       const snakeCase = value.replace(/([A-Z])/g, '_$1').toLowerCase()
       const translated = this.transloco.translate(
-        `${browserType === 'crypt' ? 'crypt_section' : 'library_section'}.${snakeCase}`,
+        `${scope === 'crypt' ? 'crypt_section' : 'library_section'}.${snakeCase}`,
       )
       return translated.endsWith(`.${snakeCase}`) ? value : translated
     }

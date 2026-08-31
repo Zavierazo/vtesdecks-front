@@ -81,7 +81,7 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 ### Reusable Browser Searches
 
-Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` persists versioned named presets and recent filtered searches locally; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
+Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
 
 ---
 

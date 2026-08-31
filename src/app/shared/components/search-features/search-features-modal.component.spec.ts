@@ -1,7 +1,13 @@
 import { TestBed } from '@angular/core/testing'
 import { TranslocoService } from '@jsverse/transloco'
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap'
-import { SearchFeaturesService, SearchFeaturesUiService } from '@services'
+import {
+  SearchFeaturesService,
+  SearchFeaturesUiService,
+  ToastService,
+} from '@services'
+import { AuthQuery } from '@state/auth/auth.query'
+import { of } from 'rxjs'
 import { SearchFeaturesModalComponent } from './search-features-modal.component'
 
 describe('SearchFeaturesModalComponent', () => {
@@ -11,8 +17,8 @@ describe('SearchFeaturesModalComponent', () => {
 
   const setup = () => {
     close = vi.fn()
-    renamePreset = vi.fn(() => 'renamed')
-    deletePreset = vi.fn()
+    renamePreset = vi.fn(() => of('renamed'))
+    deletePreset = vi.fn(() => of(undefined))
     TestBed.configureTestingModule({
       providers: [
         { provide: NgbActiveOffcanvas, useValue: { close, dismiss: vi.fn() } },
@@ -25,6 +31,8 @@ describe('SearchFeaturesModalComponent', () => {
             deletePreset,
             deleteHistory: vi.fn(),
             clearHistory: vi.fn(),
+            syncing: vi.fn(() => false),
+            remoteAvailable: vi.fn(() => true),
           },
         },
         {
@@ -34,6 +42,11 @@ describe('SearchFeaturesModalComponent', () => {
         {
           provide: TranslocoService,
           useValue: { translate: vi.fn((key: string) => key) },
+        },
+        { provide: ToastService, useValue: { show: vi.fn() } },
+        {
+          provide: AuthQuery,
+          useValue: { isAuthenticated: vi.fn(() => false) },
         },
       ],
     })
@@ -59,7 +72,7 @@ describe('SearchFeaturesModalComponent', () => {
     const component = setup()
     const preset = {
       id: 'preset-1',
-      browserType: 'crypt' as const,
+      scope: 'crypt' as const,
       name: 'Old',
       params: {},
       createdAt: '',

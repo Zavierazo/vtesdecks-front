@@ -35,8 +35,8 @@
       }
       <small
         class="text-body-secondary d-block current-search-summary"
-        [title]="ui.summary(browserType(), currentParams)"
-        >{{ ui.summary(browserType(), currentParams) }}</small
+        [title]="ui.summary(scope(), currentParams)"
+        >{{ ui.summary(scope(), currentParams) }}</small
       >
     </div>
     <button type="button" ngbDropdownItem (click)="copyLink()">
@@ -60,7 +60,7 @@
         >
           <strong class="d-block text-truncate">{{ preset.name }}</strong>
           <small class="text-body-secondary d-block text-truncate">{{
-            ui.summary(browserType(), preset.params)
+            ui.summary(scope(), preset.params)
           }}</small>
         </button>
       }
@@ -77,7 +77,7 @@
           (click)="apply(entry.params)"
         >
           <span class="d-block text-truncate">{{
-            ui.summary(browserType(), entry.params)
+            ui.summary(scope(), entry.params)
           }}</span>
         </button>
       }

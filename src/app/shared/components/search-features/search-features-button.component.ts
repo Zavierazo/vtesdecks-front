@@ -11,7 +11,7 @@ import { TranslocoDirective } from '@jsverse/transloco'
 import {
   RecentSearch,
   SavedSearchPreset,
-  SearchBrowserType,
+  SearchPresetScope,
   SearchParams,
 } from '@models'
 import {
@@ -50,7 +50,7 @@ import { SaveSearchPresetModalComponent } from './save-search-preset-modal.compo
   ],
 })
 export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
-  readonly browserType = input.required<SearchBrowserType>()
+  readonly scope = input.required<SearchPresetScope>()
 
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
@@ -60,52 +60,48 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
   readonly ui = inject(SearchFeaturesUiService)
 
   get currentParams(): SearchParams {
-    return normalizeSearchParams(
-      this.browserType(),
-      this.route.snapshot.queryParams,
-    )
+    return normalizeSearchParams(this.scope(), this.route.snapshot.queryParams)
   }
 
   get quickPresets(): SavedSearchPreset[] {
-    return this.searchFeatures.getPresets(this.browserType()).slice(0, 2)
+    return this.searchFeatures.getPresets(this.scope()).slice(0, 2)
   }
 
   get currentPreset(): SavedSearchPreset | undefined {
-    const signature = searchSignature(this.browserType(), this.currentParams)
+    const signature = searchSignature(this.scope(), this.currentParams)
     return this.searchFeatures
-      .getPresets(this.browserType())
+      .getPresets(this.scope())
       .find(
-        (preset) =>
-          searchSignature(this.browserType(), preset.params) === signature,
+        (preset) => searchSignature(this.scope(), preset.params) === signature,
       )
   }
 
   get quickHistory(): RecentSearch[] {
-    return this.searchFeatures.getHistory(this.browserType()).slice(0, 2)
+    return this.searchFeatures.getHistory(this.scope()).slice(0, 2)
   }
 
   ngOnInit(): void {
     // A previous visit may have been interrupted before its search was closed:
     // do not let this visit keep rewriting that entry.
-    this.searchFeatures.finalizeHistoryDraft(this.browserType())
+    this.searchFeatures.finalizeHistoryDraft(this.scope())
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
-        map((params) => normalizeSearchParams(this.browserType(), params)),
+        map((params) => normalizeSearchParams(this.scope(), params)),
         debounceTime(1000),
         distinctUntilChanged(
           (a, b) =>
-            searchSignature(this.browserType(), a) ===
-            searchSignature(this.browserType(), b),
+            searchSignature(this.scope(), a) ===
+            searchSignature(this.scope(), b),
         ),
         tap((params) => {
-          if (!hasMeaningfulSearchFilters(this.browserType(), params)) {
+          if (!hasMeaningfulSearchFilters(this.scope(), params)) {
             // Filters were reset: close the entry so the next search starts a
             // new one instead of overwriting it.
-            this.searchFeatures.finalizeHistoryDraft(this.browserType())
+            this.searchFeatures.finalizeHistoryDraft(this.scope())
             return
           }
-          this.searchFeatures.recordHistory(this.browserType(), params)
+          this.searchFeatures.recordHistory(this.scope(), params)
         }),
       )
       .subscribe()
@@ -113,11 +109,11 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // Leaving the page closes the current search.
-    this.searchFeatures.finalizeHistoryDraft(this.browserType())
+    this.searchFeatures.finalizeHistoryDraft(this.scope())
   }
 
   copyLink(): void {
-    void this.ui.copyLink(this.browserType(), this.currentParams)
+    void this.ui.copyLink(this.scope(), this.currentParams)
   }
 
   openSave(): void {
@@ -127,7 +123,7 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
     })
     const component =
       modalRef.componentInstance as SaveSearchPresetModalComponent
-    component.initialize(this.browserType(), this.currentParams)
+    component.initialize(this.scope(), this.currentParams)
   }
 
   apply(params: SearchParams): void {
@@ -142,13 +138,13 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
     })
     const component =
       offcanvasRef.componentInstance as SearchFeaturesModalComponent
-    component.initialize(this.browserType(), (params) => this.navigate(params))
+    component.initialize(this.scope(), (params) => this.navigate(params))
   }
 
   private navigate(params: SearchParams): Promise<boolean> {
     return this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: normalizeSearchParams(this.browserType(), params),
+      queryParams: normalizeSearchParams(this.scope(), params),
       queryParamsHandling: 'replace',
     })
   }

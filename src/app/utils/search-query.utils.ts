@@ -1,5 +1,5 @@
 import { Params } from '@angular/router'
-import { SearchBrowserType, SearchParams } from '@models'
+import { SearchPresetScope, SearchParams } from '@models'
 
 interface SearchBrowserDefinition {
   path: string
@@ -105,7 +105,7 @@ const DECK_FILTERS = [
   'year',
 ] as const
 
-const definitions: Record<SearchBrowserType, SearchBrowserDefinition> = {
+const definitions: Record<SearchPresetScope, SearchBrowserDefinition> = {
   crypt: {
     path: '/cards/crypt',
     allowedParams: [...CRYPT_FILTERS, 'sortBy', 'sortByOrder'].sort(),
@@ -238,10 +238,10 @@ const normalizeValue = (value: unknown): string | undefined => {
 }
 
 export function normalizeSearchParams(
-  browserType: SearchBrowserType,
+  scope: SearchPresetScope,
   params: Params | SearchParams,
 ): SearchParams {
-  const definition = definitions[browserType]
+  const definition = definitions[scope]
   const normalized: SearchParams = {}
   definition.allowedParams.forEach((key) => {
     const value = normalizeValue(params[key])
@@ -258,34 +258,34 @@ export function normalizeSearchParams(
 }
 
 export function searchSignature(
-  browserType: SearchBrowserType,
+  scope: SearchPresetScope,
   params: Params | SearchParams,
 ): string {
-  return `${browserType}:${new URLSearchParams(
-    normalizeSearchParams(browserType, params),
+  return `${scope}:${new URLSearchParams(
+    normalizeSearchParams(scope, params),
   ).toString()}`
 }
 
 export function hasMeaningfulSearchFilters(
-  browserType: SearchBrowserType,
+  scope: SearchPresetScope,
   params: Params | SearchParams,
 ): boolean {
-  const normalized = normalizeSearchParams(browserType, params)
+  const normalized = normalizeSearchParams(scope, params)
   return Object.keys(normalized).some((key) =>
-    definitions[browserType].filterParams.has(key),
+    definitions[scope].filterParams.has(key),
   )
 }
 
 export function buildSearchPath(
-  browserType: SearchBrowserType,
+  scope: SearchPresetScope,
   params: Params | SearchParams,
 ): string {
   const query = new URLSearchParams(
-    normalizeSearchParams(browserType, params),
+    normalizeSearchParams(scope, params),
   ).toString()
-  return `${definitions[browserType].path}${query ? `?${query}` : ''}`
+  return `${definitions[scope].path}${query ? `?${query}` : ''}`
 }
 
-export function getSearchBrowserPath(browserType: SearchBrowserType): string {
-  return definitions[browserType].path
+export function getSearchBrowserPath(scope: SearchPresetScope): string {
+  return definitions[scope].path
 }
