@@ -58,13 +58,30 @@ export function isPrideMonth() {
   return now.getMonth() === 5
 }
 
+/**
+ * Card names and texts are normalized on every filter pass, so the result is
+ * memoized. Bounded by the number of distinct strings seen (card fields plus
+ * typed queries).
+ */
+const NORMALIZE_CACHE_LIMIT = 20000
+const normalizeCache = new Map<string, string>()
+
 export const normalizeText = (text: string): string => {
-  return text
+  const cached = normalizeCache.get(text)
+  if (cached !== undefined) {
+    return cached
+  }
+  const normalized = text
     .normalize('NFD') // Decompose accented characters
     .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
     .toLowerCase() // Convert to lowercase
     .replace(/[^\w]/g, '') // Keep only word characters
     .trim()
+  if (normalizeCache.size >= NORMALIZE_CACHE_LIMIT) {
+    normalizeCache.clear()
+  }
+  normalizeCache.set(text, normalized)
+  return normalized
 }
 
 export const isRegexSearch = (searchString: string): boolean => {

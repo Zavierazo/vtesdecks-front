@@ -1,7 +1,16 @@
 import { inject, Injectable } from '@angular/core'
 import { ApiSet } from '@models'
 import { ApiDataService } from '@services'
-import { defaultIfEmpty, filter, map, Observable, switchMap, tap } from 'rxjs'
+import {
+  defaultIfEmpty,
+  defer,
+  filter,
+  from,
+  map,
+  Observable,
+  switchMap,
+  tap,
+} from 'rxjs'
 import { SetQuery } from './set.query'
 import { SetStore } from './set.store'
 @Injectable({ providedIn: 'root' })
@@ -13,17 +22,23 @@ export class SetService {
   static readonly limit = 10
 
   getSets(): Observable<ApiSet[]> {
-    const request$ = this.apiDataService
-      .getSets()
-      .pipe(tap((sets: ApiSet[]) => this.setStore.set(sets)))
-    return this.apiDataService.getSetLastUpdate().pipe(
-      map((sets) => sets?.lastUpdate),
-      filter(
-        (lastUpdate) =>
-          !!lastUpdate && lastUpdate !== this.setQuery.getLastUpdate(),
-      ),
-      switchMap(() => request$),
-      defaultIfEmpty([]),
+    // The store rehydrates from IndexedDB asynchronously, so wait for it before
+    // deciding whether the cached sets are still up to date
+    return defer(() => from(this.setStore.ready)).pipe(
+      switchMap(() => {
+        const request$ = this.apiDataService
+          .getSets()
+          .pipe(tap((sets: ApiSet[]) => this.setStore.set(sets)))
+        return this.apiDataService.getSetLastUpdate().pipe(
+          map((sets) => sets?.lastUpdate),
+          filter(
+            (lastUpdate) =>
+              !!lastUpdate && lastUpdate !== this.setQuery.getLastUpdate(),
+          ),
+          switchMap(() => request$),
+          defaultIfEmpty([] as ApiSet[]),
+        )
+      }),
     )
   }
 }
