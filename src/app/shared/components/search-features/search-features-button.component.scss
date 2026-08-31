@@ -3,7 +3,13 @@
 }
 
 .search-trigger-label {
-  max-width: 10rem;
+  // Always visible, but a long preset name must not push the header buttons
+  // out of a phone-sized row.
+  max-width: 6rem;
+
+  @media (min-width: 992px) {
+    max-width: 10rem;
+  }
 }
 
 .current-search-summary {

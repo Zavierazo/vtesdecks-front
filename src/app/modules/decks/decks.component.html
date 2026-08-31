@@ -70,11 +70,6 @@
             <div class="col-auto">
               <app-search-features-button browserType="decks" />
             </div>
-            <div class="col-auto">
-              <button type="button" class="btn btn-danger" (click)="resetFilters()">
-                <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
-              </button>
-            </div>
           </div>
           }
         </div>
@@ -172,11 +167,14 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
     </div>
     <div class="offcanvas-body">
-      <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
+      <app-deck-filters #filters (resetFilters)="reset()" [type]="type" [showReset]="false" />
     </div>
     <div class="offcanvas-footer">
-      <div class="d-grid gap-2">
-        <button type="button" class="btn btn-primary" (click)="offcanvas.dismiss('Apply')">
+      <div class="d-flex gap-2 w-100">
+        <button type="button" class="btn btn-danger flex-fill" (click)="resetFilters()">
+          <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+        </button>
+        <button type="button" class="btn btn-primary flex-fill" (click)="offcanvas.dismiss('Apply')">
           {{ 'shared.apply' | transloco }}
         </button>
       </div>

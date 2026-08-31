@@ -244,7 +244,9 @@ export class CryptSectionComponent implements OnInit {
 
   openModal(content: TemplateRef<unknown>) {
     this.modalService
-      .open(content)
+      // Scrollable keeps the footer (reset/apply) in view like the decks
+      // filters offcanvas, instead of pushing it below the filter list.
+      .open(content, { scrollable: true })
       .dismissed.pipe(
         untilDestroyed(this),
         tap(() => this.scrollToTop()),
