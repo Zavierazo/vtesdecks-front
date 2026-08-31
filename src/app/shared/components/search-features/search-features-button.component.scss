@@ -3,9 +3,13 @@
 }
 
 .search-trigger-label {
-  // Always visible, but a long preset name must not push the header buttons
-  // out of a phone-sized row.
+  // Hidden on phones so the whole search toolbar fits on a single line; a long
+  // preset name must not push the header buttons out of a tablet-sized row.
   max-width: 6rem;
+
+  @media (max-width: 575.98px) {
+    display: none;
+  }
 
   @media (min-width: 992px) {
     max-width: 10rem;

@@ -3,8 +3,10 @@
   <button type="button" class="btn" [ngClass]="{
     'btn-primary': option.option === active(),
     'btn-outline-primary': option.option !== active()
-  }" (click)="onToggle(option)">
-    <i class="bi bi-{{ option.icon }}"></i> {{ option.label | transloco}}
+  }" (click)="onToggle(option)" [title]="option.label | transloco"
+    [attr.aria-label]="option.label | transloco">
+    <i class="bi bi-{{ option.icon }}"></i>
+    <span class="d-none d-sm-inline ms-1">{{ option.label | transloco}}</span>
   </button>
   }
 </div>

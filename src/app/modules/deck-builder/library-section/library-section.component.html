@@ -2,12 +2,12 @@
   <div id="container" class="min-vh-100">
     <header class="border-bottom mb-0 mb-lg-3 pt-2 p-1 px-3 sticky-top bg-light" appStickyHeader>
       <form class="flex-fill mb-2">
-        <div class="row g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
+        <div class="row search-toolbar g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
           <div class="col-12 col-sm">
             <div class="input-group">
               <input type="text" class="form-control" id="name" [placeholder]="t('card_name')"
                 [formControl]="nameFormControl">
-              <button type="button" class="btn btn-primary px-4" (click)="openCameraScanner()" [title]="t('scan_card')"
+              <button type="button" class="btn btn-primary px-3" (click)="openCameraScanner()" [title]="t('scan_card')"
                 [attr.aria-label]="t('scan_card')">
                 <i class="bi bi-camera-fill"></i>
               </button>
@@ -28,7 +28,7 @@
           @if ((isMobileOrTablet$ | async)!) {
           <div class="col-auto">
             <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
-              <i class="bi bi-funnel-fill"></i><span> {{ t('filters')}}</span>
+              <i class="bi bi-funnel-fill"></i><span class="filters-label"> {{ t('filters')}}</span>
               @if (filterChips.length) {
               <span class="badge text-bg-light ms-1">{{ filterChips.length }}</span>
               }
