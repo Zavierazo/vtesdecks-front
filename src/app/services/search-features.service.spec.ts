@@ -67,19 +67,46 @@ describe('SearchFeaturesService', () => {
     ])
   })
 
-  it('records only meaningful searches and skips consecutive duplicates', () => {
+  it('records only meaningful searches and rewrites the open entry', () => {
     configure()
     service.recordHistory('crypt', { sortBy: 'capacity', sortByOrder: 'desc' })
     service.recordHistory('crypt', { name: 'Arika' })
-    service.recordHistory('crypt', { name: 'Arika', cardId: '1' })
+    service.recordHistory('crypt', { name: 'Arika Ambrosius' })
     expect(service.getHistory('crypt')).toHaveLength(1)
-    expect(service.getHistory('crypt')[0].params).toEqual({ name: 'Arika' })
+    expect(service.getHistory('crypt')[0].params).toEqual({
+      name: 'Arika Ambrosius',
+    })
+  })
+
+  it('starts a new entry once the open one is finalized', () => {
+    configure()
+    service.recordHistory('crypt', { name: 'Arika' })
+    const [draft] = service.getHistory('crypt')
+    service.finalizeHistoryDraft('crypt')
+    service.recordHistory('crypt', { name: 'Anson' })
+    const history = service.getHistory('crypt')
+    expect(history).toHaveLength(2)
+    expect(history[0].params).toEqual({ name: 'Anson' })
+    expect(history[1].id).toBe(draft.id)
+  })
+
+  it('moves an already stored search to the top instead of duplicating it', () => {
+    configure()
+    service.recordHistory('crypt', { name: 'Arika' })
+    service.finalizeHistoryDraft('crypt')
+    service.recordHistory('crypt', { name: 'Anson' })
+    service.finalizeHistoryDraft('crypt')
+    service.recordHistory('crypt', { name: 'Arika' })
+    expect(
+      service.getHistory('crypt').map((entry) => entry.params['name']),
+    ).toEqual(['Arika', 'Anson'])
   })
 
   it('limits history to ten entries per browser and clears one browser only', () => {
     configure()
     for (let index = 0; index < 12; index++) {
       service.recordHistory('decks', { name: `Deck ${index}` })
+      service.finalizeHistoryDraft('decks')
     }
     service.recordHistory('library', { name: 'Library card' })
     expect(service.getHistory('decks')).toHaveLength(10)

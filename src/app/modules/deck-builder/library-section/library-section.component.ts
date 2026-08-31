@@ -23,7 +23,7 @@ import {
 import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SeoService } from '@services'
+import { MediaService, SearchFeaturesService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -103,6 +103,7 @@ export class LibrarySectionComponent implements OnInit {
   private readonly seoService = inject(SeoService)
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
+  private readonly searchFeatures = inject(SearchFeaturesService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -259,6 +260,9 @@ export class LibrarySectionComponent implements OnInit {
   }
 
   resetFilters() {
+    // Closes the recent-search entry being rewritten so the next search is
+    // stored as a new one.
+    this.searchFeatures.finalizeHistoryDraft('library')
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},

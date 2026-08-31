@@ -24,7 +24,12 @@ import {
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, MediaService, SeoService } from '@services'
+import {
+  ApiDataService,
+  MediaService,
+  SearchFeaturesService,
+  SeoService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -105,6 +110,7 @@ export class DecksComponent implements OnInit {
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly searchFeatures = inject(SearchFeaturesService)
 
   /** Archetype and deck names are fetched once per id and reused. */
   private readonly resolvedNames = new Map<string, Observable<string>>()
@@ -246,6 +252,9 @@ export class DecksComponent implements OnInit {
   }
 
   resetFilters(): void {
+    // Closes the recent-search entry being rewritten so the next search is
+    // stored as a new one.
+    this.searchFeatures.finalizeHistoryDraft('decks')
     this.filters()?.reset()
     this.reset()
   }

@@ -5,3 +5,13 @@
 .search-trigger-label {
   max-width: 10rem;
 }
+
+.current-search-summary {
+  // Keep a long filter list from stretching the dropdown.
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}

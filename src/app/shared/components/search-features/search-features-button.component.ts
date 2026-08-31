@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   input,
+  OnDestroy,
   OnInit,
 } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -24,7 +25,11 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { SearchFeaturesService, SearchFeaturesUiService } from '@services'
-import { normalizeSearchParams, searchSignature } from '@utils'
+import {
+  hasMeaningfulSearchFilters,
+  normalizeSearchParams,
+  searchSignature,
+} from '@utils'
 import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs'
 import { SearchFeaturesModalComponent } from './search-features-modal.component'
 import { SaveSearchPresetModalComponent } from './save-search-preset-modal.component'
@@ -44,7 +49,7 @@ import { SaveSearchPresetModalComponent } from './save-search-preset-modal.compo
     NgbDropdownButtonItem,
   ],
 })
-export class SearchFeaturesButtonComponent implements OnInit {
+export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
   readonly browserType = input.required<SearchBrowserType>()
 
   private readonly route = inject(ActivatedRoute)
@@ -80,6 +85,9 @@ export class SearchFeaturesButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // A previous visit may have been interrupted before its search was closed:
+    // do not let this visit keep rewriting that entry.
+    this.searchFeatures.finalizeHistoryDraft(this.browserType())
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -90,11 +98,22 @@ export class SearchFeaturesButtonComponent implements OnInit {
             searchSignature(this.browserType(), a) ===
             searchSignature(this.browserType(), b),
         ),
-        tap((params) =>
-          this.searchFeatures.recordHistory(this.browserType(), params),
-        ),
+        tap((params) => {
+          if (!hasMeaningfulSearchFilters(this.browserType(), params)) {
+            // Filters were reset: close the entry so the next search starts a
+            // new one instead of overwriting it.
+            this.searchFeatures.finalizeHistoryDraft(this.browserType())
+            return
+          }
+          this.searchFeatures.recordHistory(this.browserType(), params)
+        }),
       )
       .subscribe()
+  }
+
+  ngOnDestroy(): void {
+    // Leaving the page closes the current search.
+    this.searchFeatures.finalizeHistoryDraft(this.browserType())
   }
 
   copyLink(): void {

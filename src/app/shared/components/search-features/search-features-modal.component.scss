@@ -1,3 +1,22 @@
+// The offcanvas hosts this component as a flex child: without an explicit
+// height chain the body grows past the panel and nothing scrolls.
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.search-features-manager {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.offcanvas-body {
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .min-width-0 {
   min-width: 0;
 }

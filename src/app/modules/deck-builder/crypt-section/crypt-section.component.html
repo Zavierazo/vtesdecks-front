@@ -38,7 +38,9 @@
           }
         </div>
       </form>
+      @if (!(isMobileOrTablet$ | async)!) {
       <app-filter-chips [chips]="filterChips" (remove)="onRemoveFilterChip($event)" (clearAll)="resetFilters()" />
+      }
     </header>
     <div class="crypt-body">
       <div class="scroll-container row">

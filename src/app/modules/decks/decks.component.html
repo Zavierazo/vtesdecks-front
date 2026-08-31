@@ -68,6 +68,9 @@
               </button>
             </div>
             <div class="col-auto">
+              <app-search-features-button browserType="decks" />
+            </div>
+            <div class="col-auto">
               <button type="button" class="btn btn-danger" (click)="resetFilters()">
                 <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
               </button>
@@ -82,9 +85,11 @@
           </a>
         </div>
         }
+        @if (!(isMobileOrTablet$ | async)!) {
         <div class="ms-lg-2 mt-2 mt-lg-0 align-self-center">
           <app-search-features-button browserType="decks" />
         </div>
+        }
         @if (!(isMobileOrTablet$ | async)!) {
         <div class="ms-2 mt-2 mt-lg-0 align-self-center">
           <button type="button" class="btn btn-danger" (click)="resetFilters()">
@@ -93,7 +98,9 @@
         </div>
         }
       </form>
+      @if (!(isMobileOrTablet$ | async)!) {
       <app-filter-chips [chips]="chips()" (remove)="onRemoveChip($event)" (clearAll)="resetFilters()" />
+      }
     </header>
     <div class="scroll-container row">
       @if (!(isMobileOrTablet$ | async)!) {

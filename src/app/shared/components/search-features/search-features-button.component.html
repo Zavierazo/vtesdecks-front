@@ -33,9 +33,11 @@
           t('saved_as', { name: currentPreset.name })
         }}</span>
       }
-      <small class="text-body-secondary d-block text-break">{{
-        ui.summary(browserType(), currentParams)
-      }}</small>
+      <small
+        class="text-body-secondary d-block current-search-summary"
+        [title]="ui.summary(browserType(), currentParams)"
+        >{{ ui.summary(browserType(), currentParams) }}</small
+      >
     </div>
     <button type="button" ngbDropdownItem (click)="copyLink()">
       <i class="bi bi-link-45deg me-2" aria-hidden="true"></i

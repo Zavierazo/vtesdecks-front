@@ -27,6 +27,8 @@ export class SearchFeaturesService {
 
   private readonly localStorage = inject(LocalStorageService)
   private readonly state = signal<SearchFeaturesStorageV1>(this.load())
+  /** Id of the history entry each browser is currently rewriting, if any. */
+  private readonly drafts = new Map<SearchBrowserType, string>()
 
   readonly presets = computed(() => this.state().presets)
   readonly history = computed(() => this.state().history)
@@ -124,34 +126,61 @@ export class SearchFeaturesService {
     })
   }
 
+  /**
+   * Records the current search as the most recent one. While the user keeps
+   * tweaking filters on the same visit the entry is rewritten instead of
+   * appended, so a single session leaves a single history entry. The entry is
+   * closed by `finalizeHistoryDraft` (filters reset, leaving the page, or a new
+   * visit taking over an interrupted one).
+   */
   recordHistory(browserType: SearchBrowserType, params: SearchParams): void {
     const normalized = normalizeSearchParams(browserType, params)
     if (!hasMeaningfulSearchFilters(browserType, normalized)) return
+    const signature = searchSignature(browserType, normalized)
     const browserHistory = this.getHistory(browserType)
-    if (
-      browserHistory[0] &&
-      searchSignature(browserType, browserHistory[0].params) ===
-        searchSignature(browserType, normalized)
-    ) {
-      return
-    }
+    const draftId = this.drafts.get(browserType)
+    const draft = draftId
+      ? browserHistory.find((entry) => entry.id === draftId)
+      : undefined
     const entry: RecentSearch = {
-      id: this.createId(),
+      id: draft?.id ?? this.createId(),
       browserType,
       params: normalized,
       createdAt: new Date().toISOString(),
     }
+    if (
+      draft &&
+      searchSignature(browserType, draft.params) === signature &&
+      browserHistory[0]?.id === draft.id
+    ) {
+      return
+    }
+    this.drafts.set(browserType, entry.id)
+    const kept = browserHistory.filter(
+      (item) =>
+        item.id !== entry.id &&
+        searchSignature(browserType, item.params) !== signature,
+    )
     const otherHistory = this.state().history.filter(
       (item) => item.browserType !== browserType,
     )
-    const limited = [entry, ...browserHistory].slice(
+    const limited = [entry, ...kept].slice(
       0,
       SearchFeaturesService.HISTORY_LIMIT,
     )
     this.update({ ...this.state(), history: [...otherHistory, ...limited] })
   }
 
+  /**
+   * Closes the entry `recordHistory` is currently rewriting, so the next search
+   * starts a new one.
+   */
+  finalizeHistoryDraft(browserType: SearchBrowserType): void {
+    this.drafts.delete(browserType)
+  }
+
   deleteHistory(id: string): void {
+    this.forgetDraft(id)
     this.update({
       ...this.state(),
       history: this.state().history.filter((entry) => entry.id !== id),
@@ -159,12 +188,19 @@ export class SearchFeaturesService {
   }
 
   clearHistory(browserType: SearchBrowserType): void {
+    this.drafts.delete(browserType)
     this.update({
       ...this.state(),
       history: this.state().history.filter(
         (entry) => entry.browserType !== browserType,
       ),
     })
+  }
+
+  private forgetDraft(id: string): void {
+    for (const [browserType, draftId] of this.drafts) {
+      if (draftId === id) this.drafts.delete(browserType)
+    }
   }
 
   private load(): SearchFeaturesStorageV1 {
