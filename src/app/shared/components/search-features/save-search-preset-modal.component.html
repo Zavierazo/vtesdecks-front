@@ -1,0 +1,75 @@
+<div *transloco="let t; read: 'search_features'">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="bi bi-bookmark-plus me-2"></i>{{ t('save_preset') }}
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | transloco"
+      (click)="activeModal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p class="small text-body-secondary text-break mb-3">
+      {{ ui.summary(browserType, params) }}
+    </p>
+    <label class="form-label" for="searchPresetName">{{
+      t('preset_name')
+    }}</label>
+    <input
+      id="searchPresetName"
+      type="text"
+      class="form-control"
+      [(ngModel)]="presetName"
+      (ngModelChange)="overwritePreset = null"
+      (keyup.enter)="save()"
+      ngbAutofocus
+    />
+    @if (validationError) {
+      <div class="text-danger small mt-1" role="alert">
+        {{ validationError }}
+      </div>
+    }
+    @if (overwritePreset) {
+      <div class="alert alert-warning mt-3 mb-0" role="alert">
+        <div
+          [innerHTML]="t('overwrite_message', { name: overwritePreset.name })"
+        ></div>
+        <div class="d-flex gap-2 justify-content-end mt-2">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            (click)="overwritePreset = null"
+          >
+            {{ 'shared.cancel' | transloco }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-warning"
+            (click)="save(true)"
+          >
+            {{ t('overwrite') }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="activeModal.dismiss()"
+    >
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      [disabled]="!!overwritePreset"
+      (click)="save()"
+    >
+      {{ t('save') }}
+    </button>
+  </div>
+</div>

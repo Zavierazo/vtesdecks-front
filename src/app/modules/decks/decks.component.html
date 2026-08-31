@@ -82,6 +82,16 @@
           </a>
         </div>
         }
+        <div class="ms-lg-2 mt-2 mt-lg-0 align-self-center">
+          <app-search-features-button browserType="decks" />
+        </div>
+        @if (!(isMobileOrTablet$ | async)!) {
+        <div class="ms-2 mt-2 mt-lg-0 align-self-center">
+          <button type="button" class="btn btn-danger" (click)="resetFilters()">
+            <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+          </button>
+        </div>
+        }
       </form>
       <app-filter-chips [chips]="chips()" (remove)="onRemoveChip($event)" (clearAll)="resetFilters()" />
     </header>
@@ -89,7 +99,7 @@
       @if (!(isMobileOrTablet$ | async)!) {
       <div class="col-3 filters-desktop">
         <div class="filters-desktop-container">
-          <app-deck-filters #filters (resetFilters)="reset()" [type]="type" />
+          <app-deck-filters #filters (resetFilters)="reset()" [type]="type" [showReset]="false" />
         </div>
       </div>
       }

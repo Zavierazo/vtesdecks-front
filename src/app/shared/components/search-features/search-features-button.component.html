@@ -1,0 +1,91 @@
+<div
+  ngbDropdown
+  placement="bottom-end"
+  container="body"
+  *transloco="let t; read: 'search_features'"
+>
+  <button
+    type="button"
+    class="btn btn-secondary d-inline-flex align-items-center gap-1"
+    ngbDropdownToggle
+    [attr.aria-label]="
+      currentPreset
+        ? t('active_preset', { name: currentPreset.name })
+        : t('searches')
+    "
+  >
+    <i
+      class="bi"
+      [class.bi-bookmark-fill]="currentPreset"
+      [class.bi-bookmark]="!currentPreset"
+      aria-hidden="true"
+    ></i>
+    <span class="d-none d-xl-inline text-truncate search-trigger-label">{{
+      currentPreset?.name || t('searches')
+    }}</span>
+  </button>
+
+  <div ngbDropdownMenu class="dropdown-menu search-features-menu shadow">
+    <div class="px-3 pt-2 pb-1">
+      <strong class="d-block">{{ t('current_search') }}</strong>
+      @if (currentPreset) {
+        <span class="badge text-bg-success mb-1">{{
+          t('saved_as', { name: currentPreset.name })
+        }}</span>
+      }
+      <small class="text-body-secondary d-block text-break">{{
+        ui.summary(browserType(), currentParams)
+      }}</small>
+    </div>
+    <button type="button" ngbDropdownItem (click)="copyLink()">
+      <i class="bi bi-link-45deg me-2" aria-hidden="true"></i
+      >{{ t('copy_link') }}
+    </button>
+    <button type="button" ngbDropdownItem (click)="openSave()">
+      <i class="bi bi-bookmark-plus me-2" aria-hidden="true"></i
+      >{{ t('save_as_preset') }}
+    </button>
+
+    @if (quickPresets.length) {
+      <div class="dropdown-divider"></div>
+      <h6 class="dropdown-header">{{ t('presets') }}</h6>
+      @for (preset of quickPresets; track preset.id) {
+        <button
+          type="button"
+          ngbDropdownItem
+          class="py-2"
+          (click)="apply(preset.params)"
+        >
+          <strong class="d-block text-truncate">{{ preset.name }}</strong>
+          <small class="text-body-secondary d-block text-truncate">{{
+            ui.summary(browserType(), preset.params)
+          }}</small>
+        </button>
+      }
+    }
+
+    @if (quickHistory.length) {
+      <div class="dropdown-divider"></div>
+      <h6 class="dropdown-header">{{ t('recent') }}</h6>
+      @for (entry of quickHistory; track entry.id) {
+        <button
+          type="button"
+          ngbDropdownItem
+          class="py-2"
+          (click)="apply(entry.params)"
+        >
+          <span class="d-block text-truncate">{{
+            ui.summary(browserType(), entry.params)
+          }}</span>
+        </button>
+      }
+    }
+
+    <div class="dropdown-divider"></div>
+    <button type="button" ngbDropdownItem (click)="openManager()">
+      <i class="bi bi-sliders me-2" aria-hidden="true"></i
+      >{{ t('manage_searches') }}
+      <i class="bi bi-chevron-right float-end mt-1" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>

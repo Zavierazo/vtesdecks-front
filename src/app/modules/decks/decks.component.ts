@@ -33,6 +33,7 @@ import {
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import { SearchFeaturesButtonComponent } from '@shared/components/search-features/search-features-button.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
@@ -86,6 +87,7 @@ import { DeckFiltersComponent } from './filter/deck-filters.component'
     AdSenseComponent,
     FilterChipsComponent,
     StickyHeaderDirective,
+    SearchFeaturesButtonComponent,
   ],
 })
 export class DecksComponent implements OnInit {
@@ -178,6 +180,7 @@ export class DecksComponent implements OnInit {
         distinctUntilChanged(),
         skip(1),
         tap((params) => {
+          this.syncMainForm(params)
           this.scrollToTop()
           this.decksService.init(params)
         }),
@@ -291,6 +294,17 @@ export class DecksComponent implements OnInit {
     this.mainForm = this.formBuilder.group({})
     this.listenAndNavigateString(this.mainForm, 'type', 'ALL')
     this.listenAndNavigateString(this.mainForm, 'order', 'NEWEST')
+  }
+
+  private syncMainForm(params: Record<string, unknown>): void {
+    const type = params['type'] ?? 'ALL'
+    const order = params['order'] ?? 'NEWEST'
+    if (this.mainForm.get('type')?.value !== type) {
+      this.mainForm.get('type')?.patchValue(type, { emitEvent: false })
+    }
+    if (this.mainForm.get('order')?.value !== order) {
+      this.mainForm.get('order')?.patchValue(order, { emitEvent: false })
+    }
   }
 
   private listenAndNavigateString(

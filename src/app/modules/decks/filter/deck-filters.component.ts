@@ -94,6 +94,7 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
 
   readonly resetFilters = output<void>()
   type = input.required<string>()
+  showReset = input(true)
   filterForm!: FormGroup
   disciplines!: string[]
   clans!: string[]

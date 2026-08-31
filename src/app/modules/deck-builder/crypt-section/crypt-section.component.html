@@ -18,6 +18,7 @@
             (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
           <app-sort-control class="col-auto d-inline-block" [options]="displayedSortOptions" [active]="displayedSortBy"
             [order]="displayedSortByOrder" [disabled]="sortByTrigramSimilarity" (sortChange)="onChangeSortBy($any($event))" />
+          <app-search-features-button class="col-auto d-inline-block" browserType="crypt" />
           @if (!(isMobileOrTablet$ | async)!) {
           <div class="col-auto d-inline-block">
             <button type="button" class="btn btn-danger" (click)="resetFilters()">
@@ -106,8 +107,11 @@
       <ng-container *ngTemplateOutlet="filter" />
     </div>
     <div class="modal-footer">
-      <div class="d-grid gap-2 w-100">
-        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Apply')">
+      <div class="d-flex gap-2 w-100">
+        <button type="button" class="btn btn-danger flex-fill" (click)="resetFilters()">
+          <i class="bi bi-arrow-clockwise"></i> {{ t('reset') }}
+        </button>
+        <button type="button" class="btn btn-primary flex-fill" (click)="modal.dismiss('Apply')">
           {{ 'shared.apply' | transloco }}
         </button>
       </div>

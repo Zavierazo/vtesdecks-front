@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  Location,
   NgClass,
   NgTemplateOutlet,
   ViewportScroller,
@@ -15,7 +14,7 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -31,6 +30,7 @@ import {
   FilterChipsComponent,
 } from '@shared/components/filter-chips/filter-chips.component'
 import { StickyHeaderDirective } from '@shared/directives/sticky-header.directive'
+import { SearchFeaturesButtonComponent } from '@shared/components/search-features/search-features-button.component'
 import {
   SortControlComponent,
   SortOption,
@@ -86,6 +86,7 @@ import { CryptCardComponent } from './../../deck-shared/crypt-card/crypt-card.co
     SortControlComponent,
     FilterChipsComponent,
     StickyHeaderDirective,
+    SearchFeaturesButtonComponent,
   ],
 })
 export class CryptSectionComponent implements OnInit {
@@ -101,7 +102,6 @@ export class CryptSectionComponent implements OnInit {
   private readonly seoService = inject(SeoService)
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
-  private location = inject(Location)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -160,7 +160,13 @@ export class CryptSectionComponent implements OnInit {
       canonicalUrl: 'https://vtesdecks.com/cards/crypt',
     })
     this.listenScroll()
-    this.initFilters()
+    this.onChangeNameFilter()
+    this.route.queryParams
+      .pipe(
+        untilDestroyed(this),
+        tap((params) => this.initFilters(params)),
+      )
+      .subscribe()
     // Chip labels are translated eagerly, so rebuild them once the active
     // language file lands and whenever the user switches language.
     merge(
@@ -198,32 +204,12 @@ export class CryptSectionComponent implements OnInit {
   }
 
   private updateQueryParams(params: Record<string, string | undefined>) {
-    const currentParams = this.location.path().split('?')[1]
-    const currentSearchParams = new URLSearchParams(currentParams || '')
-    const mergedParams: Record<string, string> = {}
-
-    // First, copy all current params from URL
-    currentSearchParams.forEach((value, key) => {
-      mergedParams[key] = value
-    })
-
-    // Then, apply new params (overwrite or delete)
-    Object.keys(params).forEach((key) => {
-      if (params[key] === undefined || params[key] === null) {
-        delete mergedParams[key]
-      } else {
-        mergedParams[key] = params[key]!
-      }
-    })
-
-    // Create URL with merged params
-    const urlTree = this.router.createUrlTree([], {
+    void this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: mergedParams,
+      queryParams: params,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
     })
-
-    // Update URL without navigation
-    this.location.replaceState(urlTree.toString())
   }
 
   get nameFilter(): string | undefined {
@@ -281,9 +267,8 @@ export class CryptSectionComponent implements OnInit {
     this.initQuery()
   }
 
-  initFilters() {
+  initFilters(queryParams: Params = this.route.snapshot.queryParams) {
     this.initDefaults()
-    const queryParams = this.route.snapshot.queryParams
     if (queryParams['name']) {
       this.cryptFilter.name = queryParams['name']
       this.nameFormControl.patchValue(queryParams['name'], {
@@ -364,15 +349,6 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['artist']) {
       this.cryptFilter.artist = queryParams['artist']
     }
-    this.route.queryParams.subscribe((param) => {
-      // Used when coming from card info artist link
-      if (param['artist']) {
-        this.onChangeCryptFilter({
-          ...this.cryptFilter,
-          artist: param['artist'],
-        })
-      }
-    })
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
       setTimeout(() => {
         const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
@@ -385,7 +361,6 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter.predefinedLimitedFormat =
         queryParams['predefinedLimitedFormat']
     }
-    this.onChangeNameFilter()
     this.updateFilterChips()
     this.initQuery(true)
   }
@@ -426,8 +401,6 @@ export class CryptSectionComponent implements OnInit {
         untilDestroyed(this),
         debounceTime(500),
         tap(() => {
-          this.initQuery()
-          this.cryptFilter.name = this.nameFilter || ''
           this.updateQueryParams({ ['name']: this.nameFilter })
         }),
       )

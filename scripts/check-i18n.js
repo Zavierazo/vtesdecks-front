@@ -13,6 +13,14 @@ const fs = require('fs')
 const path = require('path')
 
 const I18N_DIR = path.join(__dirname, '..', 'src', 'assets', 'i18n')
+const SEARCH_QUERY_FILE = path.join(
+  __dirname,
+  '..',
+  'src',
+  'app',
+  'utils',
+  'search-query.utils.ts',
+)
 const LANGS = ['en', 'es', 'fr', 'pt']
 
 const flatten = (obj, prefix = '', acc = {}) => {
@@ -68,6 +76,40 @@ for (const scope of scopes) {
       console.error(`\n✗ ${label} is missing ${missing.length} key(s):`)
       missing.forEach((k) => console.error(`    ${k}`))
     }
+  }
+}
+
+// Every canonical search parameter is rendered in saved/recent-search
+// summaries. Keep a readable label for each one so Transloco never falls back
+// to a raw key or logs a missing-translation warning at runtime.
+const searchQuerySource = fs.readFileSync(SEARCH_QUERY_FILE, 'utf8')
+const searchParamKeys = new Set(['sortBy', 'sortByOrder', 'order'])
+for (const arrayName of ['CRYPT_FILTERS', 'LIBRARY_FILTERS', 'DECK_FILTERS']) {
+  const match = searchQuerySource.match(
+    new RegExp(`const ${arrayName} = \\[([\\s\\S]*?)\\] as const`),
+  )
+  if (!match) {
+    hasError = true
+    console.error(`\n✗ Could not inspect ${arrayName} in search-query.utils.ts.`)
+    continue
+  }
+  for (const value of match[1].matchAll(/'([^']+)'/g)) {
+    searchParamKeys.add(value[1])
+  }
+}
+
+for (const lang of LANGS) {
+  const locale = JSON.parse(
+    fs.readFileSync(path.join(I18N_DIR, `${lang}.json`), 'utf8'),
+  )
+  const labels = locale.search_features?.params ?? {}
+  const missing = [...searchParamKeys].filter((key) => !(key in labels)).sort()
+  if (missing.length) {
+    hasError = true
+    console.error(
+      `\n✗ ${lang}.json is missing ${missing.length} reusable-search parameter label(s):`,
+    )
+    missing.forEach((key) => console.error(`    search_features.params.${key}`))
   }
 }
 

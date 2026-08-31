@@ -127,6 +127,22 @@
   --app-spoiler-new-width: 3px;
 }
 
+.search-features-menu {
+  width: min(22rem, calc(100vw - 1rem));
+  max-height: min(34rem, calc(100vh - 5rem));
+  overflow-y: auto;
+}
+
+.search-features-offcanvas {
+  width: min(28rem, 100vw) !important;
+}
+
+@media (max-width: 575.98px) {
+  .search-features-offcanvas {
+    width: 100vw !important;
+  }
+}
+
 body[data-bs-theme='dark'] {
   --app-surface: #161b22;
   --app-surface-2: #1c2230;

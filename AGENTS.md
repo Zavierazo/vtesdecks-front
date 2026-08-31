@@ -79,6 +79,10 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 `PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.
 
+### Reusable Browser Searches
+
+Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` persists versioned named presets and recent filtered searches locally; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
+
 ---
 
 ## Directory Map
