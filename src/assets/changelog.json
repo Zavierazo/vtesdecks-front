@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.79.0",
+    "date": "6th September, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.78.0",
     "date": "1st September, 2026",
     "changes": [
@@ -12,8 +19,7 @@
       "The <strong>Library browser</strong> gained a Conviction cost range and a Trifle / Non-trifle master-card filter. Its Path filter now uses icons, supports multiple paths and No path, and allows right-click or long-press exclusion.",
       "The <strong>Crypt and Library</strong> sort controls now show the active field and direction instead of a generic icon.",
       "Searches in the <strong>Crypt, Library and Deck browsers</strong> can now be copied as shareable links, saved as named presets and quickly reopened from a private recent-search history stored only on your device.",
-      "Preconstructed decks now show their official cover artwork on deck pages and in deck lists when available.",
-      "Minor bug fixes and performance improvements."
+      "Preconstructed decks now show their official cover artwork on deck pages and in deck lists when available."
     ]
   },
   {
