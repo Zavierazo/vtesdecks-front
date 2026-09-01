@@ -4,6 +4,7 @@
     "date": "6th September, 2026",
     "changes": [
       "Opening a <strong>push notification</strong> now marks it as read and keeps the unread notification count in sync.",
+      "The <strong>Crypt and Library browsers</strong> can now filter cards by their current in-stock availability at DriveThruCards, GamePod, CardGameGeek, TCG Market or Ebay.",
       "Minor bug fixes and performance improvements."
     ]
   },

@@ -166,10 +166,12 @@ export function buildCryptFilterChips(
   filter: CryptFilter,
   defaults: CryptFilter,
   t: TranslateFn,
+  shopLabel: (value: string) => string = (value) => value,
 ): FilterChip[] {
   const scope = 'crypt_builder_filter.'
   return new ChipBuilder(filter, defaults, t)
     .flag('printOnDemand', `${scope}print_on_demand`)
+    .scalar('shop', `${scope}shop_availability`, (_t, value) => shopLabel(value))
     .list('clans', `${scope}clans`, clanLabel)
     .list('notClans', `${scope}not_clans`, clanLabel)
     .list('disciplines', `${scope}disciplines`, disciplineLabel)
@@ -203,10 +205,12 @@ export function buildLibraryFilterChips(
   filter: LibraryFilter,
   defaults: LibraryFilter,
   t: TranslateFn,
+  shopLabel: (value: string) => string = (value) => value,
 ): FilterChip[] {
   const scope = 'library_builder_filter.'
   return new ChipBuilder(filter, defaults, t)
     .flag('printOnDemand', `${scope}print_on_demand`)
+    .scalar('shop', `${scope}shop_availability`, (_t, value) => shopLabel(value))
     .list('types', `${scope}type`, libraryTypeLabel)
     .list('notTypes', `${scope}not_types`, libraryTypeLabel)
     .flag('typeMode', `${scope}type_mode_and`)

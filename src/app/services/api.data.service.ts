@@ -84,6 +84,7 @@ export class ApiDataService {
   private readonly cardLibraryLastUpdatePath = '/cards/library/lastUpdate'
   private readonly cardLibraryDetailPath = '/cards/library/'
   private readonly cardScanPath = '/cards/scan'
+  private readonly cardShopsPath = '/cards/shops'
   private readonly cardTodayPath = '/vtesdle/todayCard'
   private readonly commentsDeckPath = '/comments/decks/'
   private readonly contactPath = '/contact'
@@ -472,6 +473,12 @@ export class ApiDataService {
     return this.httpClient.get<ApiShop[]>(
       `${environment.api.baseUrl}/cards/${cardId}/shops`,
       { params },
+    )
+  }
+
+  getInStockCardIds(platform: string): Observable<number[]> {
+    return this.httpClient.get<number[]>(
+      `${environment.api.baseUrl}${this.cardShopsPath}/${encodeURIComponent(platform)}/in-stock-card-ids`,
     )
   }
 

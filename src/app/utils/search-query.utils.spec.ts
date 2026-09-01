@@ -11,12 +11,13 @@ describe('search query utilities', () => {
       normalizeSearchParams('crypt', {
         name: 'Arika',
         clans: 'ventrue,toreador',
+        shop: 'DTC',
         sortBy: 'name',
         sortByOrder: 'asc',
         cardId: '100',
         unsupported: 'value',
       }),
-    ).toEqual({ clans: 'ventrue,toreador', name: 'Arika' })
+    ).toEqual({ clans: 'ventrue,toreador', name: 'Arika', shop: 'DTC' })
   })
 
   it('keeps library filters and non-default sorting', () => {

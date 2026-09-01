@@ -83,6 +83,8 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
 
+Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts` and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.
+
 ---
 
 ## Directory Map

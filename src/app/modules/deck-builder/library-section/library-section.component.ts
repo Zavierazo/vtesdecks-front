@@ -23,7 +23,13 @@ import {
 import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SearchFeaturesService, SeoService } from '@services'
+import {
+  CardShopAvailabilityService,
+  MediaService,
+  SearchFeaturesService,
+  SeoService,
+  ToastService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -41,19 +47,25 @@ import { AuthService } from '@state/auth/auth.service'
 import { LibraryQuery } from '@state/library/library.query'
 import {
   buildLibraryFilterChips,
+  filterCardsByShopAvailability,
+  getCardShopName,
   isRegexSearch,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
+  catchError,
   debounceTime,
+  distinctUntilChanged,
+  EMPTY,
   filter,
   fromEvent,
   map,
   merge,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs'
@@ -104,6 +116,10 @@ export class LibrarySectionComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
+  private readonly cardShopAvailability = inject(
+    CardShopAvailabilityService,
+  )
+  private readonly toastService = inject(ToastService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -113,6 +129,8 @@ export class LibrarySectionComponent implements OnInit {
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
   hasMore$ = new BehaviorSubject<boolean>(true)
+  private readonly shopSelection$ = new Subject<string>()
+  private inStockCardIds?: ReadonlySet<number>
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   readonly sortOptions: SortOption[] = [
@@ -162,6 +180,7 @@ export class LibrarySectionComponent implements OnInit {
     })
     this.listenScroll()
     this.onChangeNameFilter()
+    this.listenShopAvailability()
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -190,6 +209,7 @@ export class LibrarySectionComponent implements OnInit {
     return {
       ...this.libraryQuery.getDefaultLibraryFilter(),
       printOnDemand: false,
+      shop: '',
     }
   }
 
@@ -198,6 +218,7 @@ export class LibrarySectionComponent implements OnInit {
       this.libraryFilter,
       this.defaultLibraryFilter,
       (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
     )
   }
 
@@ -287,6 +308,10 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['printOnDemand']) {
       this.libraryFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
+    if (queryParams['shop']) {
+      this.libraryFilter.shop = queryParams['shop']
+    }
+    this.shopSelection$.next(this.libraryFilter.shop ?? '')
     if (queryParams['set']) {
       this.libraryFilter.set = queryParams['set']
     }
@@ -393,6 +418,7 @@ export class LibrarySectionComponent implements OnInit {
       emitEvent: false,
     })
     this.libraryFilter.printOnDemand = false
+    this.libraryFilter.shop = ''
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }
@@ -431,6 +457,7 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeLibraryFilter(filter: LibraryFilter) {
     this.libraryFilter = filter
+    this.shopSelection$.next(this.libraryFilter.shop ?? '')
 
     const isDefaultBloodCost =
       Array.isArray(this.libraryFilter.bloodCostSlider) &&
@@ -447,6 +474,7 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
+      ['shop']: this.libraryFilter.shop || undefined,
       ['types']:
         this.libraryFilter.types && this.libraryFilter.types.length > 0
           ? this.libraryFilter.types.join(',')
@@ -532,6 +560,13 @@ export class LibrarySectionComponent implements OnInit {
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       })
       .pipe(
+        map((results) =>
+          filterCardsByShopAvailability(
+            results,
+            this.libraryFilter.shop,
+            this.inStockCardIds,
+          ),
+        ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
           const sliced = results.slice(0, this.limitTo)
@@ -540,6 +575,49 @@ export class LibrarySectionComponent implements OnInit {
         }),
       )
     this.changeDetector.markForCheck()
+  }
+
+  private listenShopAvailability(): void {
+    this.shopSelection$
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((platform) => {
+          this.inStockCardIds = undefined
+          if (!platform) {
+            return EMPTY
+          }
+          return this.cardShopAvailability.getInStock(platform).pipe(
+            catchError(() => {
+              this.clearShopFilter(true)
+              return EMPTY
+            }),
+          )
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe((availability) => {
+        if (!availability) {
+          this.clearShopFilter(false)
+          return
+        }
+        this.inStockCardIds = availability.cardIds
+        this.updateFilterChips()
+        this.initQuery()
+      })
+  }
+
+  private clearShopFilter(showError: boolean): void {
+    this.inStockCardIds = undefined
+    this.libraryFilter.shop = ''
+    if (showError) {
+      this.toastService.show(
+        this.translocoService.translate('shared.shop_availability_error'),
+        { classname: 'bg-danger text-light' },
+      )
+    }
+    this.updateQueryParams({ shop: undefined })
+    this.updateFilterChips()
+    this.initQuery()
   }
 
   getCard(card: ApiLibrary): ApiCard {
@@ -565,11 +643,17 @@ export class LibrarySectionComponent implements OnInit {
       centered: true,
       scrollable: true,
     })
-    const libraryList = this.libraryQuery.getAll({
-      filter: this.libraryFilter,
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-    })
+    const libraryList = filterCardsByShopAvailability(
+      this.libraryQuery.getAll({
+        filter: this.libraryFilter,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      }),
+      this.libraryFilter.shop,
+      this.inStockCardIds,
+    )
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)
   }

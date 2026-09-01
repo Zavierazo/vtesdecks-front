@@ -23,6 +23,7 @@ import {
 } from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { CARD_SHOPS } from '@utils'
 import { tap } from 'rxjs'
 
 @UntilDestroy()
@@ -55,6 +56,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly filterChange = output<CryptFilter>()
 
   printOnDemandControl!: FormControl
+  shopControl!: FormControl
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
   groupSliderControl!: FormControl
@@ -71,6 +73,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   taints$ = this.cryptQuery.selectTaints()
   sets$ = this.cryptQuery.selectSets()
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
+  readonly shops = CARD_SHOPS
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
   initialized = false
@@ -115,6 +118,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
+    this.onChangeShop()
     this.onChangeLimitedFormat()
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
@@ -174,6 +178,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.printOnDemand = value
+          this.filterChange.emit(this.filter)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeShop() {
+    this.shopControl = new FormControl(this.filter.shop)
+    this.shopControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.filter.shop = value
           this.filterChange.emit(this.filter)
         }),
       )

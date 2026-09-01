@@ -51,6 +51,7 @@
   },
   "crypt_builder_filter": {
     "print_on_demand": "Print on Demand",
+    "shop_availability": "Shop availability",
     "clans": "Clans",
     "path": "Paths",
     "disciplines": "Disciplines",
@@ -518,6 +519,7 @@
   },
   "library_builder_filter": {
     "print_on_demand": "Print on Demand",
+    "shop_availability": "Shop availability",
     "type": "Type",
     "disciplines": "Disciplines",
     "clans": "Clans",
@@ -728,6 +730,7 @@
       "retainer": "Retainer cards",
       "rounds": "Rounds",
       "sect": "Sect",
+      "shop": "Shop availability",
       "singleClan": "Single clan",
       "singleDiscipline": "Single discipline",
       "starVampire": "Star vampire",
@@ -749,6 +752,7 @@
     "loading": "Loading",
     "field_required": "{{ field }} is required.",
     "service_temporarily_unavailable": "Service temporarily unavailable. Please wait...",
+    "shop_availability_error": "Could not load shop availability. Please try again.",
     "crypt": "Crypt",
     "add_to_crypt": "Add to Crypt",
     "library": "Library",

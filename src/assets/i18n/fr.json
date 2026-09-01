@@ -51,6 +51,7 @@
   },
   "crypt_builder_filter": {
     "print_on_demand": "Impression à la demande (POD)",
+    "shop_availability": "Disponibilité en boutique",
     "clans": "Clans",
     "path": "Voies",
     "disciplines": "Disciplines",
@@ -518,6 +519,7 @@
   },
   "library_builder_filter": {
     "print_on_demand": "Impression à la demande",
+    "shop_availability": "Disponibilité en boutique",
     "type": "Type",
     "disciplines": "Disciplines",
     "clans": "Clans",
@@ -728,6 +730,7 @@
       "retainer": "Serviteurs",
       "rounds": "Rondes",
       "sect": "Secte",
+      "shop": "Disponibilité en boutique",
       "singleClan": "Clan unique",
       "singleDiscipline": "Discipline unique",
       "starVampire": "Vampire vedette",
@@ -749,6 +752,7 @@
     "loading": "Chargement",
     "field_required": "{{ field }} est requis.",
     "service_temporarily_unavailable": "Service temporairement indisponible. Veuillez patienter...",
+    "shop_availability_error": "Impossible de charger la disponibilité de la boutique. Veuillez réessayer.",
     "crypt": "Crypte",
     "add_to_crypt": "Ajouter à la Crypte",
     "library": "Bibliothèque",

@@ -23,6 +23,7 @@ import {
 } from '@shared/components/segmented-filter/segmented-filter.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
+import { CARD_SHOPS } from '@utils'
 import { tap } from 'rxjs'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
@@ -57,6 +58,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly filterChange = output<LibraryFilter>()
 
   printOnDemandControl!: FormControl
+  shopControl!: FormControl
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
   sectControl!: FormControl
@@ -74,6 +76,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   taints$ = this.libraryQuery.selectTaints()
   sets$ = this.libraryQuery.selectSets()
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
+  readonly shops = CARD_SHOPS
   maxConvictionCost = this.libraryQuery.getMaxConvictionCost()
   initialized = false
 
@@ -97,6 +100,7 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
+    this.onChangeShop()
     this.onChangeLimitedFormat()
     this.onChangeSect()
     this.onChangeTitle()
@@ -175,6 +179,19 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.printOnDemand = value
+          this.filterChange.emit(this.filter)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeShop() {
+    this.shopControl = new FormControl(this.filter.shop)
+    this.shopControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.filter.shop = value
           this.filterChange.emit(this.filter)
         }),
       )

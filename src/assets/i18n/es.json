@@ -51,6 +51,7 @@
   },
   "crypt_builder_filter": {
     "print_on_demand": "Impresión bajo demanda",
+    "shop_availability": "Disponibilidad en tiendas",
     "clans": "Clanes",
     "path": "Sendas",
     "disciplines": "Disciplinas",
@@ -518,6 +519,7 @@
   },
   "library_builder_filter": {
     "print_on_demand": "Impresión bajo demanda",
+    "shop_availability": "Disponibilidad en tiendas",
     "type": "Tipo",
     "disciplines": "Disciplinas",
     "clans": "Clanes",
@@ -728,6 +730,7 @@
       "retainer": "Criados",
       "rounds": "Rondas",
       "sect": "Secta",
+      "shop": "Disponibilidad en tiendas",
       "singleClan": "Un solo clan",
       "singleDiscipline": "Una sola disciplina",
       "starVampire": "Vampiro estrella",
@@ -749,6 +752,7 @@
     "loading": "Cargando",
     "field_required": "{{ field }} es obligatorio.",
     "service_temporarily_unavailable": "Servicio no disponible temporalmente. Por favor, inténtelo de nuevo más tarde.",
+    "shop_availability_error": "No se pudo cargar la disponibilidad de la tienda. Inténtalo de nuevo.",
     "crypt": "Cripta",
     "add_to_crypt": "Añadir a la Cripta",
     "library": "Biblioteca",

@@ -2,6 +2,7 @@ import { ApiDeckLimitedFormat } from './api-deck-limited-format'
 
 export interface LibraryFilter {
   printOnDemand?: boolean
+  shop?: string
   limitedFormat?: boolean
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string

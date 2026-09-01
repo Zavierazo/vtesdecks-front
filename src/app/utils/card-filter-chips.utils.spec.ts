@@ -59,6 +59,21 @@ const chipFor = (chips: FilterChip[], key: string) =>
   chips.find((chip) => chip.key === key)
 
 describe('buildCryptFilterChips', () => {
+  it('uses the shop display name in the availability chip', () => {
+    const chips = buildCryptFilterChips(
+      { ...cryptDefaults, shop: 'DTC' },
+      { ...cryptDefaults, shop: '' },
+      t,
+      (platform) => (platform === 'DTC' ? 'DriveThruCards' : platform),
+    )
+    expect(chipFor(chips, 'shop')).toEqual({
+      id: 'shop',
+      key: 'shop',
+      label: '[crypt_builder_filter.shop_availability]',
+      value: 'DriveThruCards',
+    })
+  })
+
   it('does not chip the advanced filter while it is Any', () => {
     const chips = buildCryptFilterChips(cryptDefaults, cryptDefaults, t)
     expect(chipFor(chips, 'advanced')).toBeUndefined()

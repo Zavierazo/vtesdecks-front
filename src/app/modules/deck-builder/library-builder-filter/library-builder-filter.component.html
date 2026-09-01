@@ -141,6 +141,17 @@
     </select>
     <label for="sect">{{ t('sect') }}</label>
   </div>
+  @if (filter.shop !== undefined) {
+  <div class="row g-1 form-floating mt-2">
+    <select id="shop" class="form-select" [formControl]="shopControl">
+      <option selected></option>
+      @for (shop of shops; track shop.name) {
+      <option [value]="shop.name">{{ shop.fullName }}</option>
+      }
+    </select>
+    <label for="shop">{{ t('shop_availability') }}</label>
+  </div>
+  }
   <div class="form-floating my-2">
     <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text_placeholder')"
       [formControl]="cardTextControl" />

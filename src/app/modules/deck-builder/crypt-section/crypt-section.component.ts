@@ -23,7 +23,13 @@ import {
 import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SearchFeaturesService, SeoService } from '@services'
+import {
+  CardShopAvailabilityService,
+  MediaService,
+  SearchFeaturesService,
+  SeoService,
+  ToastService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -41,19 +47,25 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   buildCryptFilterChips,
+  filterCardsByShopAvailability,
+  getCardShopName,
   isRegexSearch,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
+  catchError,
   debounceTime,
+  distinctUntilChanged,
+  EMPTY,
   filter,
   fromEvent,
   map,
   merge,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs'
@@ -104,6 +116,10 @@ export class CryptSectionComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
+  private readonly cardShopAvailability = inject(
+    CardShopAvailabilityService,
+  )
+  private readonly toastService = inject(ToastService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -113,6 +129,8 @@ export class CryptSectionComponent implements OnInit {
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
   hasMore$ = new BehaviorSubject<boolean>(true)
+  private readonly shopSelection$ = new Subject<string>()
+  private inStockCardIds?: ReadonlySet<number>
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
   readonly sortOptions: SortOption[] = [
@@ -163,6 +181,7 @@ export class CryptSectionComponent implements OnInit {
     })
     this.listenScroll()
     this.onChangeNameFilter()
+    this.listenShopAvailability()
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -188,7 +207,11 @@ export class CryptSectionComponent implements OnInit {
   }
 
   private get defaultCryptFilter(): CryptFilter {
-    return { ...this.cryptQuery.getDefaultCryptFilter(), printOnDemand: false }
+    return {
+      ...this.cryptQuery.getDefaultCryptFilter(),
+      printOnDemand: false,
+      shop: '',
+    }
   }
 
   private updateFilterChips() {
@@ -196,6 +219,7 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter,
       this.defaultCryptFilter,
       (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
     )
   }
 
@@ -285,6 +309,10 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['printOnDemand']) {
       this.cryptFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
+    if (queryParams['shop']) {
+      this.cryptFilter.shop = queryParams['shop']
+    }
+    this.shopSelection$.next(this.cryptFilter.shop ?? '')
     if (queryParams['set']) {
       this.cryptFilter.set = queryParams['set']
     }
@@ -378,6 +406,7 @@ export class CryptSectionComponent implements OnInit {
       emitEvent: false,
     })
     this.cryptFilter.printOnDemand = false
+    this.cryptFilter.shop = ''
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }
@@ -416,6 +445,7 @@ export class CryptSectionComponent implements OnInit {
 
   onChangeCryptFilter(filter: CryptFilter) {
     this.cryptFilter = filter
+    this.shopSelection$.next(this.cryptFilter.shop ?? '')
     const isDefaultGroup =
       Array.isArray(this.cryptFilter.groupSlider) &&
       this.cryptFilter.groupSlider[0] === 1 &&
@@ -426,6 +456,7 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter.capacitySlider[1] === this.cryptQuery.getMaxCapacity()
     this.updateQueryParams({
       ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
+      ['shop']: this.cryptFilter.shop || undefined,
       ['clans']:
         this.cryptFilter.clans && this.cryptFilter.clans.length > 0
           ? this.cryptFilter.clans.join(',')
@@ -501,6 +532,13 @@ export class CryptSectionComponent implements OnInit {
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       })
       .pipe(
+        map((results) =>
+          filterCardsByShopAvailability(
+            results,
+            this.cryptFilter.shop,
+            this.inStockCardIds,
+          ),
+        ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
           const sliced = results.slice(0, this.limitTo)
@@ -509,6 +547,49 @@ export class CryptSectionComponent implements OnInit {
         }),
       )
     this.changeDetector.markForCheck()
+  }
+
+  private listenShopAvailability(): void {
+    this.shopSelection$
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((platform) => {
+          this.inStockCardIds = undefined
+          if (!platform) {
+            return EMPTY
+          }
+          return this.cardShopAvailability.getInStock(platform).pipe(
+            catchError(() => {
+              this.clearShopFilter(true)
+              return EMPTY
+            }),
+          )
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe((availability) => {
+        if (!availability) {
+          this.clearShopFilter(false)
+          return
+        }
+        this.inStockCardIds = availability.cardIds
+        this.updateFilterChips()
+        this.initQuery()
+      })
+  }
+
+  private clearShopFilter(showError: boolean): void {
+    this.inStockCardIds = undefined
+    this.cryptFilter.shop = ''
+    if (showError) {
+      this.toastService.show(
+        this.translocoService.translate('shared.shop_availability_error'),
+        { classname: 'bg-danger text-light' },
+      )
+    }
+    this.updateQueryParams({ shop: undefined })
+    this.updateFilterChips()
+    this.initQuery()
   }
 
   getCard(card: ApiCrypt): ApiCard {
@@ -523,11 +604,17 @@ export class CryptSectionComponent implements OnInit {
       centered: true,
       scrollable: true,
     })
-    const cryptList = this.cryptQuery.getAll({
-      filter: this.cryptFilter,
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-    })
+    const cryptList = filterCardsByShopAvailability(
+      this.cryptQuery.getAll({
+        filter: this.cryptFilter,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      }),
+      this.cryptFilter.shop,
+      this.inStockCardIds,
+    )
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = cryptList.indexOf(card)
   }
