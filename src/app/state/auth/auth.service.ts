@@ -28,6 +28,16 @@ export class AuthService {
     }
   }
 
+  refreshNotificationCount(): Observable<number> {
+    return this.apiDataService
+      .getNotificationUnreadCount()
+      .pipe(
+        tap((notificationCount) =>
+          this.authStore.updateNotificationCount(notificationCount),
+        ),
+      )
+  }
+
   loginOauth(token: string, remember: boolean): Observable<ApiUser> {
     this.authStore.setLoading(true)
     return this.apiDataService.loginOauth(token).pipe(

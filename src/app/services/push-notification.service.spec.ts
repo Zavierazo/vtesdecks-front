@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { SwPush } from '@angular/service-worker'
 import { AuthQuery } from '@state/auth/auth.query'
+import { AuthService } from '@state/auth/auth.service'
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs'
 import { ApiDataService } from './api.data.service'
 import { LocalStorageService } from './local-storage.service'
@@ -14,20 +15,29 @@ describe('PushNotificationService', () => {
     oldSubscription: PushSubscription | null
     newSubscription: PushSubscription | null
   }>
+  let notificationClicks$: Subject<{
+    action: string
+    notification: NotificationOptions & { title: string }
+  }>
   let requestSubscription: ReturnType<typeof vi.fn>
   let unsubscribe: ReturnType<typeof vi.fn>
   let registerPushSubscription: ReturnType<typeof vi.fn>
   let unregisterPushSubscription: ReturnType<typeof vi.fn>
+  let readNotification: ReturnType<typeof vi.fn>
+  let refreshNotificationCount: ReturnType<typeof vi.fn>
   let storage: Record<string, unknown>
 
   beforeEach(() => {
     vi.stubGlobal('Notification', { permission: 'default' })
     subscription$ = new BehaviorSubject<PushSubscription | null>(null)
     changes$ = new Subject()
+    notificationClicks$ = new Subject()
     requestSubscription = vi.fn()
     unsubscribe = vi.fn(async () => subscription$.next(null))
     registerPushSubscription = vi.fn(() => of(undefined))
     unregisterPushSubscription = vi.fn(() => of(undefined))
+    readNotification = vi.fn(() => of(undefined))
+    refreshNotificationCount = vi.fn(() => of(3))
     storage = {}
 
     TestBed.configureTestingModule({
@@ -39,6 +49,7 @@ describe('PushNotificationService', () => {
             isEnabled: true,
             subscription: subscription$,
             pushSubscriptionChanges: changes$,
+            notificationClicks: notificationClicks$,
             requestSubscription,
             unsubscribe,
           },
@@ -50,6 +61,7 @@ describe('PushNotificationService', () => {
               of({ enabled: true, publicKey: 'vapid-public-key' }),
             registerPushSubscription,
             unregisterPushSubscription,
+            readNotification,
           },
         },
         {
@@ -58,6 +70,10 @@ describe('PushNotificationService', () => {
             selectUser: () => of(user),
             getUser: () => user,
           },
+        },
+        {
+          provide: AuthService,
+          useValue: { refreshNotificationCount },
         },
         {
           provide: LocalStorageService,
@@ -216,6 +232,35 @@ describe('PushNotificationService', () => {
     service.markInitialPromptSeen()
     expect(service.shouldShowInitialPrompt()).toBe(false)
   })
+
+  it('marks a clicked push as read and refreshes the unread count', () => {
+    notificationClicks$.next(notificationClick(42))
+
+    expect(readNotification).toHaveBeenCalledWith(42)
+    expect(refreshNotificationCount).toHaveBeenCalledOnce()
+  })
+
+  it('ignores malformed click payloads and read failures', () => {
+    notificationClicks$.next(notificationClick('invalid'))
+    expect(readNotification).not.toHaveBeenCalled()
+
+    readNotification.mockReturnValue(
+      throwError(() => new Error('expired login')),
+    )
+    notificationClicks$.next(notificationClick(42))
+
+    expect(refreshNotificationCount).not.toHaveBeenCalled()
+  })
+
+  function notificationClick(notificationId: unknown) {
+    return {
+      action: '',
+      notification: {
+        title: 'VTESDecks',
+        data: { notificationId },
+      } as NotificationOptions & { title: string },
+    }
+  }
 
   function pushSubscription(endpoint: string): PushSubscription {
     return {

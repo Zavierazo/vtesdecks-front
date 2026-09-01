@@ -2,7 +2,8 @@ import { computed, inject, Injectable, signal } from '@angular/core'
 import { SwPush } from '@angular/service-worker'
 import { ApiPushConfig, ApiPushSubscription } from '@models'
 import { AuthQuery } from '@state/auth/auth.query'
-import { distinctUntilChanged, filter, firstValueFrom } from 'rxjs'
+import { AuthService } from '@state/auth/auth.service'
+import { distinctUntilChanged, filter, firstValueFrom, switchMap } from 'rxjs'
 import { ApiDataService } from './api.data.service'
 import { LocalStorageService } from './local-storage.service'
 
@@ -23,6 +24,7 @@ export class PushNotificationService {
   private readonly swPush = inject(SwPush)
   private readonly apiDataService = inject(ApiDataService)
   private readonly authQuery = inject(AuthQuery)
+  private readonly authService = inject(AuthService)
   private readonly localStorage = inject(LocalStorageService)
 
   private readonly configured = signal(false)
@@ -55,6 +57,24 @@ export class PushNotificationService {
       .subscribe((user) => void this.initialize(user))
 
     if (this.swPush.isEnabled) {
+      this.swPush.notificationClicks.subscribe(({ notification }) => {
+        const notificationId = (
+          notification.data as { notificationId?: unknown } | undefined
+        )?.notificationId
+        if (
+          !Number.isInteger(notificationId) ||
+          (notificationId as number) <= 0
+        )
+          return
+        this.apiDataService
+          .readNotification(notificationId as number)
+          .pipe(switchMap(() => this.authService.refreshNotificationCount()))
+          .subscribe({
+            error: () => {
+              // Navigation is handled independently by the Angular service worker.
+            },
+          })
+      })
       this.swPush.pushSubscriptionChanges.subscribe(
         ({ oldSubscription, newSubscription }) => {
           void this.synchronizeSubscriptionChange(

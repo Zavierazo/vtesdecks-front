@@ -3,6 +3,7 @@
     "version": "2.79.0",
     "date": "6th September, 2026",
     "changes": [
+      "Opening a <strong>push notification</strong> now marks it as read and keeps the unread notification count in sync.",
       "Minor bug fixes and performance improvements."
     ]
   },

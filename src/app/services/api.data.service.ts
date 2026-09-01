@@ -508,6 +508,12 @@ export class ApiDataService {
     )
   }
 
+  getNotificationUnreadCount(): Observable<number> {
+    return this.httpClient.get<number>(
+      `${environment.api.baseUrl}${this.userNotificationsPath}/unreadCount`,
+    )
+  }
+
   readNotification(id: number): Observable<unknown> {
     return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/${id}/markAsRead`,
