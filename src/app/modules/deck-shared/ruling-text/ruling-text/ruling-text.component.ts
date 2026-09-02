@@ -67,15 +67,28 @@ export class RulingTextComponent implements OnInit {
   }
 
   private addCardText(currentPart: string) {
-    const card = this.ruling.cards?.find((card) => card?.name === currentPart)
-    if (card) {
+    // KRCG v4 format: "{id|Card Name}". Legacy format: "{Card Name}".
+    const separatorIndex = currentPart.indexOf('|')
+    let cardId: number | undefined
+    let cardName = currentPart
+    if (separatorIndex >= 0) {
+      const parsedId = Number(currentPart.slice(0, separatorIndex))
+      cardName = currentPart.slice(separatorIndex + 1)
+      if (Number.isInteger(parsedId)) {
+        cardId = parsedId
+      }
+    }
+    if (cardId === undefined) {
+      cardId = this.ruling.cards?.find((card) => card?.name === cardName)?.id
+    }
+    if (cardId !== undefined) {
       this.rulingsText.push({
         type: 'card',
-        text: currentPart,
-        popoverImage: `${environment.cdnDomain}/img/cards/${card.id}.jpg`,
+        text: cardName,
+        popoverImage: `${environment.cdnDomain}/img/cards/${cardId}.jpg`,
       })
     } else {
-      this.rulingsText.push({ type: 'card', text: currentPart })
+      this.rulingsText.push({ type: 'card', text: cardName })
     }
   }
 
