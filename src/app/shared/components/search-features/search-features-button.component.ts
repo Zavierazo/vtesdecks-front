@@ -116,6 +116,10 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
     void this.ui.copyLink(this.scope(), this.currentParams)
   }
 
+  onOpenChange(open: boolean): void {
+    if (open) this.searchFeatures.loadPresets()
+  }
+
   openSave(): void {
     const modalRef = this.modal.open(SaveSearchPresetModalComponent, {
       centered: true,

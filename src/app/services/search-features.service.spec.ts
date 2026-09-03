@@ -165,7 +165,7 @@ describe('SearchFeaturesService', () => {
     expect(service.getHistory('decks')).toEqual([])
   })
 
-  it('hydrates the per-user cache immediately', () => {
+  it('hydrates the per-user cache without loading remote presets', () => {
     const list$ = new Subject<ApiSearchPreset[]>()
     configure(null, { user: 'alice', apiList: list$ })
     const cached = saved('cached', 'Cached', { clans: 'ventrue' }, 10)
@@ -176,14 +176,21 @@ describe('SearchFeaturesService', () => {
     configureWithExistingValues('alice', list$)
 
     expect(service.getPresets('crypt')).toEqual([cached])
+    expect(api.list).not.toHaveBeenCalled()
+    expect(service.syncing()).toBe(false)
+
+    service.loadPresets()
+
+    expect(api.list).toHaveBeenCalledOnce()
     expect(service.syncing()).toBe(true)
   })
 
-  it('adopts list results when there are no local presets', () => {
+  it('adopts list results after presets are explicitly loaded', () => {
     const remote = apiPreset(7, 'remote-client', 'Server', {
       clans: 'malkavian',
     })
     configure(null, { user: 'alice', apiList: of([remote]) })
+    service.loadPresets()
 
     expect(service.getPresets('crypt')[0]).toMatchObject({
       id: 'remote-client',
@@ -197,6 +204,7 @@ describe('SearchFeaturesService', () => {
     const initial = storage([saved('local', 'Local', { clans: 'ventrue' })])
     const remote = apiPreset(7, 'remote', 'Remote', { clans: 'ventrue' })
     configure(initial, { user: 'alice', apiList: of([remote]) })
+    service.loadPresets()
 
     expect(api.merge).not.toHaveBeenCalled()
     expect(service.getPresets('crypt').map((preset) => preset.name)).toEqual([
@@ -208,14 +216,18 @@ describe('SearchFeaturesService', () => {
     const initial = storage([saved('local', 'Ventrue', { name: 'Arika' })])
     const remote = apiPreset(7, 'remote', 'Ventrue', { clans: 'ventrue' })
     configure(initial, { user: 'alice', apiList: of([remote]) })
+    service.loadPresets()
 
     expect(api.merge).toHaveBeenCalledWith([
       expect.objectContaining({ clientId: 'local', name: 'Ventrue (2)' }),
     ])
   })
 
-  it('does not repeat login synchronization for the same user', () => {
+  it('does not repeat preset synchronization for the same user', () => {
     configure(null, { user: 'alice', apiList: of([]) })
+    expect(api.list).not.toHaveBeenCalled()
+    service.loadPresets()
+    service.loadPresets()
     user$.next('alice')
     expect(api.list).toHaveBeenCalledTimes(1)
   })
@@ -226,6 +238,7 @@ describe('SearchFeaturesService', () => {
       user: 'alice',
       apiList: list$,
     })
+    service.loadPresets()
     let result: unknown
     service
       .savePreset('crypt', 'Ventrue', { name: 'Arika' }, true)
@@ -273,6 +286,7 @@ describe('SearchFeaturesService', () => {
       user: 'alice',
       apiList: throwError(() => ({ status: 404 })),
     })
+    service.loadPresets()
     expect(service.remoteAvailable()).toBe(false)
 
     const result = take(
@@ -285,6 +299,7 @@ describe('SearchFeaturesService', () => {
 
   it('degrades and commits locally after create 500', () => {
     configure(null, { user: 'alice', apiList: of([]) })
+    service.loadPresets()
     api.create.mockReturnValue(throwError(() => ({ status: 500 })))
 
     const result = take(
@@ -298,6 +313,7 @@ describe('SearchFeaturesService', () => {
 
   it('returns an error without disabling remote after create 400', () => {
     configure(null, { user: 'alice', apiList: of([]) })
+    service.loadPresets()
     api.create.mockReturnValue(throwError(() => ({ status: 400 })))
 
     expect(take(service.savePreset('crypt', 'Rejected', {}))).toEqual({

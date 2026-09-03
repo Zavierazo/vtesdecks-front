@@ -1,5 +1,6 @@
 <div
   ngbDropdown
+  (openChange)="onOpenChange($event)"
   placement="bottom-end"
   container="body"
   *transloco="let t; read: 'search_features'"

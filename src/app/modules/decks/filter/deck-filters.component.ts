@@ -34,12 +34,15 @@ import { ApiDeckArchetype } from '@models'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { DecksQuery } from '@state/decks/decks.query'
 import {
+  BehaviorSubject,
+  combineLatest,
   Observable,
   OperatorFunction,
   Subject,
   debounceTime,
   distinctUntilChanged,
   filter,
+  finalize,
   map,
   merge,
   tap,
@@ -108,6 +111,9 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   rounds: number[] = []
   archetypes: ApiDeckArchetype[] = []
   selectedArchetype: ApiDeckArchetype | null = null
+  private archetypesLoaded = false
+  private archetypesLoading = false
+  private readonly archetypesState = new BehaviorSubject<ApiDeckArchetype[]>([])
   readonly currency$ = this.decksQuery.selectCurrency()
 
   tagFocus$ = new Subject<string>()
@@ -131,17 +137,6 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
         untilDestroyed(this),
         tap((tags) => {
           this.availableTags = tags
-          this.changeDetector.markForCheck()
-        }),
-      )
-      .subscribe()
-    this.apiDataService
-      .getAllDeckArchetypes('TOURNAMENT')
-      .pipe(
-        untilDestroyed(this),
-        tap((archetypes) => {
-          this.archetypes = archetypes.filter((item) => item.enabled)
-          this.syncArchetype(this.route.snapshot.queryParams['archetype'])
           this.changeDetector.markForCheck()
         }),
       )
@@ -178,12 +173,13 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   }
 
   searchArchetype: OperatorFunction<string, ApiDeckArchetype[]> = (text$) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) => {
+    combineLatest([
+      text$.pipe(debounceTime(200), distinctUntilChanged()),
+      this.archetypesState,
+    ]).pipe(
+      map(([term, archetypes]) => {
         const normalized = term.toLowerCase().trim()
-        return this.archetypes
+        return archetypes
           .filter((item) =>
             (item.id === 0 ? 'unclassified' : item.name)
               .toLowerCase()
@@ -197,6 +193,25 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
     item.id === 0
       ? this.translocoService.translate('filters.unclassified')
       : item.name
+
+  loadArchetypes(): void {
+    if (this.archetypesLoaded || this.archetypesLoading) return
+    this.archetypesLoading = true
+    this.apiDataService
+      .getAllDeckArchetypes('TOURNAMENT')
+      .pipe(
+        untilDestroyed(this),
+        tap((archetypes) => {
+          this.archetypes = archetypes.filter((item) => item.enabled)
+          this.archetypesState.next(this.archetypes)
+          this.archetypesLoaded = true
+          this.syncArchetype(this.route.snapshot.queryParams['archetype'])
+          this.changeDetector.markForCheck()
+        }),
+        finalize(() => (this.archetypesLoading = false)),
+      )
+      .subscribe()
+  }
 
   onSelectArchetype(event: NgbTypeaheadSelectItemEvent<ApiDeckArchetype>) {
     this.selectedArchetype = event.item
