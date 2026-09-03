@@ -56,6 +56,10 @@ export class DecksService {
     this.decksStore.setLastViewedDeckId(deckId)
   }
 
+  markVisited(deckId: string): void {
+    this.decksStore.markVisited(deckId)
+  }
+
   private updateDecks(response: ApiDecks, limit: number) {
     const nextOffset = response.offset + limit
     this.decksStore.add(response.decks)

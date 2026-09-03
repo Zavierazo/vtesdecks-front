@@ -153,6 +153,20 @@
           </span>
           <span class="text-muted">•</span>
           <span class="deck-date text-secondary">{{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}</span>
+          @if (deck.visitStatus === 'VIEWED') {
+          <span class="visit-indicator visit-indicator-viewed" [attr.aria-label]="'decks.viewed' | transloco"
+            [title]="'decks.viewed' | transloco">
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
+          </span>
+          }
+          @if (deck.visitStatus === 'UPDATED') {
+          <span class="visit-indicator visit-indicator-updated"
+            [attr.aria-label]="'decks.updated_since_visit' | transloco"
+            [title]="'decks.updated_since_visit' | transloco">
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
+            <span class="visit-update-dot" aria-hidden="true"></span>
+          </span>
+          }
         </div>
       </div>
 

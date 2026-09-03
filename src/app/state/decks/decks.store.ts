@@ -110,6 +110,14 @@ export class DecksStore {
     this.entities.update((current) => [...current, ...entities])
   }
 
+  markVisited(deckId: string) {
+    this.entities.update((current) =>
+      current.map((deck) =>
+        deck.id === deckId ? { ...deck, visitStatus: 'VIEWED' } : deck,
+      ),
+    )
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(selector: (state: DecksState) => any): Observable<any> {
     return this.state$.pipe(map(selector))

@@ -327,7 +327,9 @@
     "price_cheapest": "Precio: Menor",
     "price_expensive": "Precio: Mayor",
     "deck_preview": "Vista previa",
-    "new_deck": "Nuevo Mazo"
+    "new_deck": "Nuevo Mazo",
+    "viewed": "Visto",
+    "updated_since_visit": "Actualizado desde tu última visita"
   },
   "draw_cards": {
     "title": "Robar Cartas",

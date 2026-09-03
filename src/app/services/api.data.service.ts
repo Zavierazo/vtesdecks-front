@@ -44,8 +44,9 @@ import {
   FeatureFlagValue,
   MetaType,
 } from '@models'
-import { Observable, of } from 'rxjs'
+import { Observable, of, tap } from 'rxjs'
 import { SessionStorageService } from './session-storage.service'
+import { AuthQuery } from '@state/auth/auth.query'
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +54,7 @@ import { SessionStorageService } from './session-storage.service'
 export class ApiDataService {
   private httpClient = inject(HttpClient)
   private sessionStorageService = inject(SessionStorageService)
+  private authQuery = inject(AuthQuery)
 
   private readonly loginPath = '/auth/login'
   private readonly loginOauthPath = '/auth/oauth/login'
@@ -251,16 +253,18 @@ export class ApiDataService {
   }
 
   deckView(id: string, source: string): Observable<boolean> {
-    const deckViewId = `deck-view-${id}`
+    const viewer = this.authQuery.getUser() ?? 'anonymous'
+    const deckViewId = `deck-view-${viewer}-${id}`
     const deckView = this.sessionStorageService.getValue(deckViewId)
     if (deckView) {
       return of(true)
     }
-    this.sessionStorageService.setValue(deckViewId, true)
-    return this.httpClient.post<boolean>(
-      `${environment.api.baseUrl}${this.deckDetailPath}${id}/view`,
-      { source },
-    )
+    return this.httpClient
+      .post<boolean>(
+        `${environment.api.baseUrl}${this.deckDetailPath}${id}/view`,
+        { source },
+      )
+      .pipe(tap(() => this.sessionStorageService.setValue(deckViewId, true)))
   }
 
   getDecks(

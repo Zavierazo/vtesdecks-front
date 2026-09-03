@@ -46,3 +46,6 @@ Thumbs.db
 
 # Wrangler
 .wrangler
+
+# Codegraph
+.codegraph

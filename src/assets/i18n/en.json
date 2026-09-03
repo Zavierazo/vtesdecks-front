@@ -327,7 +327,9 @@
     "price_cheapest": "Price: Lowest",
     "price_expensive": "Price: Highest",
     "deck_preview": "Deck Preview",
-    "new_deck": "New Deck"
+    "new_deck": "New Deck",
+    "viewed": "Viewed",
+    "updated_since_visit": "Updated since your last visit"
   },
   "draw_cards": {
     "title": "Draw Cards",

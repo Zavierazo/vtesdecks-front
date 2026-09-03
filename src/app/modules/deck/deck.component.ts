@@ -263,6 +263,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
             this.previousRouteService.getPreviousUrl(),
           ),
         ),
+        tap(() => this.decksService.markVisited(this.id)),
       )
       .subscribe()
   }

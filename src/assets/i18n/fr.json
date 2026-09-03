@@ -327,7 +327,9 @@
     "price_cheapest": "Prix : Le moins cher",
     "price_expensive": "Prix : Le plus cher",
     "deck_preview": "Aperçu du deck",
-    "new_deck": "Nouveau Deck"
+    "new_deck": "Nouveau Deck",
+    "viewed": "Vu",
+    "updated_since_visit": "Mis à jour depuis votre dernière visite"
   },
   "draw_cards": {
     "title": "Tirage de cartes",

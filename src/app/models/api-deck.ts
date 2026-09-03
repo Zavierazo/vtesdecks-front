@@ -7,6 +7,8 @@ import { ApiCardErrata } from './api-errata'
 import { ApiPublicUser } from './api-public-user'
 import { ApiReactionSummary, DeckReactionKey } from './api-reaction'
 
+export type DeckVisitStatus = 'VIEWED' | 'UPDATED'
+
 export interface ApiDeck {
   id: string
   type: string
@@ -47,6 +49,7 @@ export interface ApiDeck {
   tags?: string[]
   reactions?: ApiReactionSummary[]
   reaction?: DeckReactionKey
+  visitStatus?: DeckVisitStatus
   creationDate: Date
   modifyDate: Date
   extra?: ApiDeckExtra

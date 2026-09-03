@@ -327,7 +327,9 @@
     "price_cheapest": "Preço: Barato",
     "price_expensive": "Preço: Caro",
     "deck_preview": "Vista previa",
-    "new_deck": "Novo Baralho"
+    "new_deck": "Novo Baralho",
+    "viewed": "Visto",
+    "updated_since_visit": "Atualizado desde a sua última visita"
   },
   "draw_cards": {
     "title": "Comprar Cartas",
