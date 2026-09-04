@@ -13,7 +13,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
@@ -28,8 +28,13 @@ import {
 } from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CARD_SHOPS, CRYPT_VOTES_RANGE, normalizeSetSelection } from '@utils'
-import { map, tap } from 'rxjs'
+import {
+  CARD_SHOPS,
+  CRYPT_VOTES_RANGE,
+  normalizeMultiSelectValues,
+  normalizeSetSelection,
+} from '@utils'
+import { combineLatest, map, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -47,7 +52,6 @@ import { map, tap } from 'rxjs'
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe,
     SegmentedFilterComponent,
     MultiSelectComponent,
   ],
@@ -55,6 +59,8 @@ import { map, tap } from 'rxjs'
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
   private apiDataService = inject(ApiDataService)
+  private translocoService = inject(TranslocoService)
+  private titleCasePipe = new TitleCasePipe()
 
   @Input() filter!: CryptFilter
   @Input() showSet = true
@@ -66,14 +72,38 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   groupSliderControl!: FormControl
   capacitySliderControl!: FormControl
   votesSliderControl!: FormControl
-  titleControl!: FormControl
-  sectControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
   artistControl!: FormControl
 
-  titles$ = this.cryptQuery.selectTitles()
-  sects$ = this.cryptQuery.selectSects()
+  readonly titleExclusiveValues = ['any', 'none']
+  titleOptions$ = combineLatest([
+    this.cryptQuery.selectTitles(),
+    this.translocoService.langChanges$,
+  ]).pipe(
+    map(([titles]) => [
+      {
+        value: 'any',
+        label: this.translocoService.translate('shared.any_title'),
+      },
+      {
+        value: 'none',
+        label: this.translocoService.translate('shared.no_title'),
+      },
+      ...titles.map((title) => ({
+        value: title,
+        label: this.titleCasePipe.transform(title),
+      })),
+    ]),
+  )
+  sectOptions$ = this.cryptQuery.selectSects().pipe(
+    map((sects) =>
+      sects.map((sect) => ({
+        value: sect,
+        label: this.titleCasePipe.transform(sect),
+      })),
+    ),
+  )
   taints$ = this.cryptQuery.selectTaints()
   setOptions$ = this.cryptQuery.selectSets().pipe(
     map((sets) =>
@@ -142,8 +172,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
     this.onChangeVotesSlider()
-    this.onChangeTitle()
-    this.onChangeSect()
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
@@ -216,6 +244,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     )
     this.filter.sets = sets
     this.filter.notSets = notSets
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeTitleSelection(selection: MultiSelectSelection) {
+    this.filter.titles = normalizeMultiSelectValues(
+      selection.selected,
+      this.titleExclusiveValues,
+    )
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSectSelection(selection: MultiSelectSelection) {
+    this.filter.sects = normalizeMultiSelectValues(selection.selected)
     this.filterChange.emit(this.filter)
   }
 
@@ -322,32 +363,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.votesSlider = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeTitle() {
-    this.titleControl = new FormControl(this.filter.title)
-    this.titleControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.title = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSect() {
-    this.sectControl = new FormControl(this.filter.sect)
-    this.sectControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.sect = value
           this.filterChange.emit(this.filter)
         }),
       )

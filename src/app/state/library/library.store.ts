@@ -402,10 +402,12 @@ export class LibraryStore {
     if (filter.notDisciplines?.some(disciplineMatches)) {
       return false
     }
-    if (filter.sect) {
-      if (filter.sect === 'none') {
-        return entity.sects.length === 0
-      } else if (!entity.sects.includes(filter.sect)) {
+    if (filter.sects?.length) {
+      if (filter.sects.includes('none')) {
+        if (entity.sects.length > 0) {
+          return false
+        }
+      } else if (!filter.sects.some((sect) => entity.sects.includes(sect))) {
         return false
       }
     }
@@ -421,10 +423,14 @@ export class LibraryStore {
     if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
-    if (filter.title) {
-      if (filter.title === 'none') {
-        return entity.titles.length === 0
-      } else if (!entity.titles.includes(filter.title)) {
+    if (filter.titles?.length) {
+      if (filter.titles.includes('none')) {
+        if (entity.titles.length > 0) {
+          return false
+        }
+      } else if (
+        !filter.titles.some((title) => entity.titles.includes(title))
+      ) {
         return false
       }
     }

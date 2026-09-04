@@ -52,6 +52,24 @@ describe('MultiSelectComponent', () => {
     expect(fixture.componentInstance.summary()).toBe('One, !2')
   })
 
+  it('keeps exclusive values mutually exclusive with normal values', () => {
+    const fixture = createComponent(false)
+    const emit = vi.spyOn(fixture.componentInstance.selectionChange, 'emit')
+    fixture.componentRef.setInput('exclusiveValues', ['any', 'none'])
+    fixture.componentRef.setInput('selected', ['one', 'two'])
+
+    fixture.componentInstance.toggle('any')
+    expect(emit).toHaveBeenLastCalledWith({ selected: ['any'], excluded: [] })
+
+    fixture.componentRef.setInput('selected', ['any'])
+    fixture.componentInstance.toggle('one')
+    expect(emit).toHaveBeenLastCalledWith({ selected: ['one'], excluded: [] })
+
+    fixture.componentRef.setInput('selected', ['any'])
+    fixture.componentInstance.toggle('none')
+    expect(emit).toHaveBeenLastCalledWith({ selected: ['none'], excluded: [] })
+  })
+
   it('shows no value when nothing is selected', () => {
     const fixture = createComponent(true)
 

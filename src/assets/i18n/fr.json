@@ -697,6 +697,8 @@
       "set": "Extension",
       "sets": "Extensions",
       "notSets": "Extensions exclues",
+      "titles": "Titres",
+      "sects": "Sectes",
       "tags": "Étiquettes",
       "type": "Type de deck",
       "order": "Ordre",

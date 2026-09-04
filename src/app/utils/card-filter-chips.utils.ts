@@ -61,6 +61,9 @@ const cryptTitleLabel = (t: TranslateFn, title: string): string => {
 const libraryTitleLabel = (t: TranslateFn, title: string): string =>
   title === 'none' ? t('shared.not_required') : title
 
+const optionalValueLabel = (t: TranslateFn, value: string): string =>
+  value === 'none' ? t('shared.not_required') : value
+
 const enumLabel =
   (scope: string) =>
   (t: TranslateFn, value: string): string =>
@@ -191,8 +194,8 @@ export function buildCryptFilterChips(
     .range('capacitySlider', `${scope}capacity`)
     .range('votesSlider', `${scope}votes`)
     .scalar('advanced', `${scope}version`, enumLabel(`${scope}advanced_`))
-    .scalar('title', `${scope}title`, cryptTitleLabel)
-    .scalar('sect', `${scope}sect`)
+    .list('titles', `${scope}title`, cryptTitleLabel)
+    .list('sects', `${scope}sect`)
     .list('sets', `${scope}set`)
     .list('notSets', `${scope}set_exclude`)
     .list('taints', `${scope}taints`, taintLabel)
@@ -233,8 +236,8 @@ export function buildLibraryFilterChips(
     .range('poolCostSlider', `${scope}pool_cost`)
     .range('convictionCostSlider', `${scope}conviction_cost`)
     .scalar('trifle', `${scope}trifle`, trifleLabel)
-    .scalar('title', `${scope}title`, libraryTitleLabel)
-    .scalar('sect', `${scope}sect`)
+    .list('titles', `${scope}title`, libraryTitleLabel)
+    .list('sects', `${scope}sect`, optionalValueLabel)
     .list('sets', `${scope}set`)
     .list('notSets', `${scope}set_exclude`)
     .list('taints', `${scope}taints`, taintLabel)

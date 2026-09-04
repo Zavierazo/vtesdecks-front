@@ -419,20 +419,20 @@ export class CryptStore {
     if (filter.advanced === 'advanced' && !entity.adv) {
       return false
     }
-    if (filter.title) {
-      if (filter.title === 'any') {
+    if (filter.titles?.length) {
+      if (filter.titles.includes('any')) {
         if (!entity.title) {
           return false
         }
-      } else if (filter.title === 'none') {
+      } else if (filter.titles.includes('none')) {
         if (entity.title) {
           return false
         }
-      } else if (entity.title !== filter.title) {
+      } else if (!entity.title || !filter.titles.includes(entity.title)) {
         return false
       }
     }
-    if (filter.sect && entity.sect !== filter.sect) {
+    if (filter.sects?.length && !filter.sects.includes(entity.sect)) {
       return false
     }
     const pathMatches = (path: string) =>

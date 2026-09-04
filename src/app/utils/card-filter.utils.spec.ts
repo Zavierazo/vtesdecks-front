@@ -14,8 +14,8 @@ describe('isDefaultCardFilter', () => {
     groupSlider: [1, 7],
     capacitySlider: [1, 11],
     votesSlider: [0, 4],
-    title: '',
-    sect: '',
+    titles: [],
+    sects: [],
     paths: [],
     notPaths: [],
     sets: [],
@@ -44,10 +44,10 @@ describe('isDefaultCardFilter', () => {
     expect(isDefaultCardFilter(filter, defaults())).toBe(true)
   })
 
-  it('treats empty string, undefined and false as equivalent defaults', () => {
+  it('treats empty arrays, undefined and false as equivalent defaults', () => {
     const filter = {
       ...defaults(),
-      title: undefined,
+      titles: undefined,
       printOnDemand: false,
     }
     expect(isDefaultCardFilter(filter, defaults())).toBe(true)

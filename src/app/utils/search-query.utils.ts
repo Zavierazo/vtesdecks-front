@@ -2,6 +2,7 @@ import { Params } from '@angular/router'
 import { SearchPresetScope, SearchParams } from '@models'
 import { getValidCardShopNames } from './card-shops'
 import { normalizeSetSelection } from './card-set-filter.utils'
+import { normalizeMultiSelectValues } from './multi-select-filter.utils'
 
 interface SearchBrowserDefinition {
   path: string
@@ -27,14 +28,14 @@ const CRYPT_FILTERS = [
   'paths',
   'predefinedLimitedFormat',
   'printOnDemand',
-  'sect',
+  'sects',
   'sets',
   'notSets',
   'shops',
   'notShops',
   'superiorDisciplines',
   'taints',
-  'title',
+  'titles',
   'votes',
 ] as const
 
@@ -55,13 +56,13 @@ const LIBRARY_FILTERS = [
   'poolCostSlider',
   'predefinedLimitedFormat',
   'printOnDemand',
-  'sect',
+  'sects',
   'sets',
   'notSets',
   'shops',
   'notShops',
   'taints',
-  'title',
+  'titles',
   'trifle',
   'typeMode',
   'types',
@@ -279,6 +280,19 @@ export function normalizeSearchParams(
     source['sets'] = sets.join(',') || undefined
     source['notSets'] = notSets.join(',') || undefined
     delete source['set']
+
+    const titles = normalizeMultiSelectValues(
+      normalizeList(source['titles'] ?? source['title']),
+      scope === 'crypt' ? ['any', 'none'] : ['none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      normalizeList(source['sects'] ?? source['sect']),
+      scope === 'library' ? ['none'] : [],
+    )
+    source['titles'] = titles.join(',') || undefined
+    source['sects'] = sects.join(',') || undefined
+    delete source['title']
+    delete source['sect']
   }
   const normalized: SearchParams = {}
   definition.allowedParams.forEach((key) => {

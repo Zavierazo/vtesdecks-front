@@ -48,6 +48,38 @@ describe('search query utilities', () => {
     )
   })
 
+  it('canonicalizes title and sect lists', () => {
+    expect(
+      normalizeSearchParams('library', {
+        titles: 'prince,baron,prince',
+        sects: 'Sabbat,Anarch,Sabbat',
+      }),
+    ).toEqual({ sects: 'Anarch,Sabbat', titles: 'baron,prince' })
+  })
+
+  it('migrates legacy title and sect parameters', () => {
+    expect(
+      normalizeSearchParams('crypt', {
+        title: 'prince',
+        sect: 'Camarilla',
+      }),
+    ).toEqual({ sects: 'Camarilla', titles: 'prince' })
+  })
+
+  it('normalizes title and sect special values as exclusive', () => {
+    expect(
+      normalizeSearchParams('crypt', {
+        titles: 'none,prince,any',
+      }),
+    ).toEqual({ titles: 'any' })
+    expect(
+      normalizeSearchParams('library', {
+        titles: 'prince,none',
+        sects: 'Anarch,none',
+      }),
+    ).toEqual({ sects: 'none', titles: 'none' })
+  })
+
   it('keeps library filters and non-default sorting', () => {
     expect(
       buildSearchPath('library', {
@@ -101,6 +133,9 @@ describe('search query utilities', () => {
     )
     expect(searchSignature('crypt', { sets: 'KoT,HttB' })).toBe(
       searchSignature('crypt', { sets: 'HttB,KoT' }),
+    )
+    expect(searchSignature('library', { titles: 'prince,baron' })).toBe(
+      searchSignature('library', { titles: 'baron,prince' }),
     )
   })
 

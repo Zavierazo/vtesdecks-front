@@ -22,8 +22,8 @@ const cryptDefaults: CryptFilter = {
   capacitySlider: [1, 11],
   votesSlider: [0, 4],
   advanced: undefined,
-  title: '',
-  sect: '',
+  titles: [],
+  sects: [],
   paths: [],
   notPaths: [],
   sets: [],
@@ -47,8 +47,8 @@ const libraryDefaults: LibraryFilter = {
   poolCostSlider: [0, 6],
   convictionCostSlider: [0, 4],
   trifle: undefined,
-  title: '',
-  sect: '',
+  titles: [],
+  sects: [],
   paths: [],
   notPaths: [],
   sets: [],
@@ -146,21 +146,21 @@ describe('buildCryptFilterChips', () => {
     expect(
       chipFor(
         buildCryptFilterChips(
-          { ...cryptDefaults, title: 'any' },
+          { ...cryptDefaults, titles: ['any'] },
           cryptDefaults,
           t,
         ),
-        'title',
+        'titles',
       )?.value,
     ).toBe('[shared.any_title]')
     expect(
       chipFor(
         buildCryptFilterChips(
-          { ...cryptDefaults, title: 'none' },
+          { ...cryptDefaults, titles: ['none'] },
           cryptDefaults,
           t,
         ),
-        'title',
+        'titles',
       )?.value,
     ).toBe('[shared.no_title]')
   })
@@ -169,13 +169,40 @@ describe('buildCryptFilterChips', () => {
     expect(
       chipFor(
         buildCryptFilterChips(
-          { ...cryptDefaults, title: 'prince' },
+          { ...cryptDefaults, titles: ['prince'] },
           cryptDefaults,
           t,
         ),
-        'title',
+        'titles',
       )?.value,
     ).toBe('prince')
+  })
+
+  it('creates individually removable title and sect chips', () => {
+    const chips = buildCryptFilterChips(
+      {
+        ...cryptDefaults,
+        titles: ['baron', 'prince'],
+        sects: ['Anarch', 'Camarilla'],
+      },
+      cryptDefaults,
+      t,
+    )
+    const prince = chips.find((chip) => chip.id === 'titles:prince')!
+
+    expect(chips.filter((chip) => chip.key === 'titles')).toHaveLength(2)
+    expect(chips.filter((chip) => chip.key === 'sects')).toHaveLength(2)
+    expect(
+      removeCardFilterChip(
+        {
+          ...cryptDefaults,
+          titles: ['baron', 'prince'],
+          sects: ['Anarch', 'Camarilla'],
+        },
+        cryptDefaults,
+        prince,
+      ).titles,
+    ).toEqual(['baron'])
   })
 
   it('creates one chip per selected or excluded path', () => {
@@ -249,6 +276,17 @@ describe('buildCryptFilterChips', () => {
 })
 
 describe('buildLibraryFilterChips', () => {
+  it('labels not-required title and sect sentinels', () => {
+    const chips = buildLibraryFilterChips(
+      { ...libraryDefaults, titles: ['none'], sects: ['none'] },
+      libraryDefaults,
+      t,
+    )
+
+    expect(chipFor(chips, 'titles')?.value).toBe('[shared.not_required]')
+    expect(chipFor(chips, 'sects')?.value).toBe('[shared.not_required]')
+  })
+
   it('skips the conviction cost chip while the range is the default', () => {
     const chips = buildLibraryFilterChips(libraryDefaults, libraryDefaults, t)
     expect(chipFor(chips, 'convictionCostSlider')).toBeUndefined()

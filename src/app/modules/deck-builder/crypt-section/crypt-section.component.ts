@@ -52,6 +52,7 @@ import {
   getCardShopName,
   getValidCardShopNames,
   isRegexSearch,
+  normalizeMultiSelectValues,
   normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
@@ -339,11 +340,31 @@ export class CryptSectionComponent implements OnInit {
         sets: sets.join(',') || undefined,
       })
     }
-    if (queryParams['title']) {
-      this.cryptFilter.title = queryParams['title']
-    }
-    if (queryParams['sect']) {
-      this.cryptFilter.sect = queryParams['sect']
+    const titles = normalizeMultiSelectValues(
+      queryParams['titles']?.split(',') ??
+        (queryParams['title'] ? [queryParams['title']] : []),
+      ['any', 'none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      queryParams['sects']?.split(',') ??
+        (queryParams['sect'] ? [queryParams['sect']] : []),
+    )
+    this.cryptFilter.titles = titles
+    this.cryptFilter.sects = sects
+    const canonicalTitles = titles.join(',') || undefined
+    const canonicalSects = sects.join(',') || undefined
+    if (
+      queryParams['title'] ||
+      queryParams['sect'] ||
+      queryParams['titles'] !== canonicalTitles ||
+      queryParams['sects'] !== canonicalSects
+    ) {
+      this.updateQueryParams({
+        title: undefined,
+        sect: undefined,
+        titles: canonicalTitles,
+        sects: canonicalSects,
+      })
     }
     if (queryParams['paths']) {
       this.cryptFilter.paths = queryParams['paths'].split(',')
@@ -493,6 +514,8 @@ export class CryptSectionComponent implements OnInit {
     this.updateQueryParams({
       ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
       ['set']: undefined,
+      ['title']: undefined,
+      ['sect']: undefined,
       ['shop']: undefined,
       ['shops']:
         this.cryptFilter.shops && this.cryptFilter.shops.length > 0
@@ -539,7 +562,10 @@ export class CryptSectionComponent implements OnInit {
           ? undefined
           : this.cryptFilter.votesSlider.join(','),
       ['advanced']: this.cryptFilter.advanced || undefined,
-      ['title']: this.cryptFilter.title || undefined,
+      ['titles']:
+        this.cryptFilter.titles && this.cryptFilter.titles.length > 0
+          ? this.cryptFilter.titles.join(',')
+          : undefined,
       ['sets']:
         this.cryptFilter.sets && this.cryptFilter.sets.length > 0
           ? this.cryptFilter.sets.join(',')
@@ -548,7 +574,10 @@ export class CryptSectionComponent implements OnInit {
         this.cryptFilter.notSets && this.cryptFilter.notSets.length > 0
           ? this.cryptFilter.notSets.join(',')
           : undefined,
-      ['sect']: this.cryptFilter.sect || undefined,
+      ['sects']:
+        this.cryptFilter.sects && this.cryptFilter.sects.length > 0
+          ? this.cryptFilter.sects.join(',')
+          : undefined,
       ['paths']:
         this.cryptFilter.paths && this.cryptFilter.paths.length > 0
           ? this.cryptFilter.paths.join(',')

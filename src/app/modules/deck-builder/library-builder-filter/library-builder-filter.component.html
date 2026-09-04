@@ -190,29 +190,25 @@
       />
     </div>
   }
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="title" [formControl]="titleControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }}</option>
-      @for (title of titles$ | async; track title) {
-        <option [value]="title">
-          {{ title | titlecase }}
-        </option>
-      }
-    </select>
-    <label for="title">{{ t('title') }}</label>
+  <div class="mt-2">
+    <app-multi-select
+      [options]="(titleOptions$ | async) ?? []"
+      [selected]="filter.titles ?? []"
+      [exclusiveValues]="exclusiveValues"
+      controlId="titles"
+      [label]="t('title')"
+      (selectionChange)="onChangeTitleSelection($event)"
+    />
   </div>
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="sect" [formControl]="sectControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }}</option>
-      @for (sect of sects$ | async; track sect) {
-        <option [value]="sect">
-          {{ sect | titlecase }}
-        </option>
-      }
-    </select>
-    <label for="sect">{{ t('sect') }}</label>
+  <div class="mt-2">
+    <app-multi-select
+      [options]="(sectOptions$ | async) ?? []"
+      [selected]="filter.sects ?? []"
+      [exclusiveValues]="exclusiveValues"
+      controlId="sects"
+      [label]="t('sect')"
+      (selectionChange)="onChangeSectSelection($event)"
+    />
   </div>
   @if (filter.shops !== undefined || filter.notShops !== undefined) {
     <div class="mt-2">

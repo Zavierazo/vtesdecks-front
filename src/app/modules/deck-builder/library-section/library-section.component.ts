@@ -51,6 +51,7 @@ import {
   getCardShopName,
   getValidCardShopNames,
   isRegexSearch,
+  normalizeMultiSelectValues,
   normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
@@ -337,11 +338,32 @@ export class LibrarySectionComponent implements OnInit {
         sets: sets.join(',') || undefined,
       })
     }
-    if (queryParams['title']) {
-      this.libraryFilter.title = queryParams['title']
-    }
-    if (queryParams['sect']) {
-      this.libraryFilter.sect = queryParams['sect']
+    const titles = normalizeMultiSelectValues(
+      queryParams['titles']?.split(',') ??
+        (queryParams['title'] ? [queryParams['title']] : []),
+      ['none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      queryParams['sects']?.split(',') ??
+        (queryParams['sect'] ? [queryParams['sect']] : []),
+      ['none'],
+    )
+    this.libraryFilter.titles = titles
+    this.libraryFilter.sects = sects
+    const canonicalTitles = titles.join(',') || undefined
+    const canonicalSects = sects.join(',') || undefined
+    if (
+      queryParams['title'] ||
+      queryParams['sect'] ||
+      queryParams['titles'] !== canonicalTitles ||
+      queryParams['sects'] !== canonicalSects
+    ) {
+      this.updateQueryParams({
+        title: undefined,
+        sect: undefined,
+        titles: canonicalTitles,
+        sects: canonicalSects,
+      })
     }
     if (queryParams['paths']) {
       this.libraryFilter.paths = queryParams['paths'].split(',')
@@ -501,6 +523,8 @@ export class LibrarySectionComponent implements OnInit {
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
       ['set']: undefined,
+      ['title']: undefined,
+      ['sect']: undefined,
       ['shop']: undefined,
       ['shops']:
         this.libraryFilter.shops && this.libraryFilter.shops.length > 0
@@ -539,7 +563,10 @@ export class LibrarySectionComponent implements OnInit {
           : undefined,
       ['disciplineMode']:
         this.libraryFilter.disciplineMode === 'or' ? 'or' : undefined,
-      ['sect']: this.libraryFilter.sect || undefined,
+      ['sects']:
+        this.libraryFilter.sects && this.libraryFilter.sects.length > 0
+          ? this.libraryFilter.sects.join(',')
+          : undefined,
       ['paths']:
         this.libraryFilter.paths && this.libraryFilter.paths.length > 0
           ? this.libraryFilter.paths.join(',')
@@ -548,7 +575,10 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryFilter.notPaths && this.libraryFilter.notPaths.length > 0
           ? this.libraryFilter.notPaths.join(',')
           : undefined,
-      ['title']: this.libraryFilter.title || undefined,
+      ['titles']:
+        this.libraryFilter.titles && this.libraryFilter.titles.length > 0
+          ? this.libraryFilter.titles.join(',')
+          : undefined,
       ['sets']:
         this.libraryFilter.sets && this.libraryFilter.sets.length > 0
           ? this.libraryFilter.sets.join(',')

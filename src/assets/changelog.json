@@ -8,6 +8,7 @@
       "Opening a <strong>push notification</strong> now marks it as read and keeps the unread notification count in sync.",
       "The <strong>Crypt and Library browsers</strong> can now filter cards by their current shop in-stock availability.",
       "The <strong>Crypt, Library and Deck Builder</strong> set filter now supports selecting multiple expansions and excluding unwanted ones.",
+      "The <strong>Title and Sect</strong> card filters now support selecting multiple values while keeping options such as Has any title, No title and Not required easy to use.",
       "Crypt card filters now include a <strong>Votes</strong> range, available in the card browser, Deck Builder, Collection and Wishlist.",
       "Logged-in users can now spot previously viewed decks by a subtle check beside the date.",
       "Minor bug fixes and performance improvements."

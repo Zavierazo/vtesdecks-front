@@ -17,8 +17,8 @@ export interface CryptFilter {
   advanced?: 'base' | 'advanced'
   capacitySlider?: number[]
   votesSlider?: number[]
-  title?: string
-  sect?: string
+  titles?: string[]
+  sects?: string[]
   paths?: string[]
   notPaths?: string[]
   sets?: string[]

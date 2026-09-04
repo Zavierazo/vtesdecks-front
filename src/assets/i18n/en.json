@@ -697,6 +697,8 @@
       "set": "Set",
       "sets": "Sets",
       "notSets": "Excluded sets",
+      "titles": "Titles",
+      "sects": "Sects",
       "tags": "Tags",
       "type": "Deck type",
       "order": "Order",
@@ -807,7 +809,7 @@
     "clear_search": "Clear search",
     "remove_filter": "Remove {{ filter }}",
     "active_filters": "Active filters",
-    "any_title": "Any title",
+    "any_title": "Has any title",
     "no_title": "No title"
   },
   "game_timer": {

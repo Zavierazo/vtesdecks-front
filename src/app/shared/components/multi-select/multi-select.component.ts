@@ -40,6 +40,7 @@ export class MultiSelectComponent {
   readonly selected = input<readonly string[]>([])
   readonly excluded = input<readonly string[]>([])
   readonly allowExclude = input(false)
+  readonly exclusiveValues = input<readonly string[]>([])
   readonly controlId = input.required<string>()
   readonly label = input.required<string>()
   readonly placeholder = input('')
@@ -70,13 +71,16 @@ export class MultiSelectComponent {
   }
 
   toggle(value: string): void {
-    const selected = this.selected().filter((item) => item !== value)
+    let selected = this.selected().filter((item) => item !== value)
     const excluded = this.allowExclude()
       ? this.excluded().filter((item) => item !== value)
       : []
     const state = this.state(value)
 
     if (state === 'unchecked') {
+      selected = this.exclusiveValues().includes(value)
+        ? []
+        : selected.filter((item) => !this.exclusiveValues().includes(item))
       selected.push(value)
     } else if (state === 'checked' && this.allowExclude()) {
       excluded.push(value)

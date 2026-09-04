@@ -22,9 +22,21 @@ describe('CryptStore set filtering', () => {
     })
     store = TestBed.inject(CryptStore)
     store.set([
-      { id: 1, sets: ['KoT:C'], text: 'Alpha' } as ApiCrypt,
-      { id: 2, sets: ['KoT:C', 'HttB:R'], text: 'Beta' } as ApiCrypt,
-      { id: 3, sets: ['Anarchs:C'], text: 'Beta' } as ApiCrypt,
+      {
+        id: 1,
+        sets: ['KoT:C'],
+        text: 'Alpha',
+        title: 'prince',
+        sect: 'Camarilla',
+      } as ApiCrypt,
+      {
+        id: 2,
+        sets: ['KoT:C', 'HttB:R'],
+        text: 'Beta',
+        title: 'baron',
+        sect: 'Anarch',
+      } as ApiCrypt,
+      { id: 3, sets: ['Anarchs:C'], text: 'Beta', sect: '' } as ApiCrypt,
     ])
   })
 
@@ -38,5 +50,23 @@ describe('CryptStore set filtering', () => {
         })
         .map((card) => card.id),
     ).toEqual([3])
+  })
+
+  it('matches any selected title or sect', () => {
+    expect(
+      store.getEntities({ titles: ['baron', 'prince'] }).map(({ id }) => id),
+    ).toEqual([1, 2])
+    expect(
+      store.getEntities({ sects: ['Anarch', 'Sabbat'] }).map(({ id }) => id),
+    ).toEqual([2])
+  })
+
+  it('supports any-title and no-title sentinels', () => {
+    expect(store.getEntities({ titles: ['any'] }).map(({ id }) => id)).toEqual([
+      1, 2,
+    ])
+    expect(store.getEntities({ titles: ['none'] }).map(({ id }) => id)).toEqual(
+      [3],
+    )
   })
 })
