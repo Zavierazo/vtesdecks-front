@@ -3,14 +3,11 @@
     "version": "2.79.0",
     "date": "6th September, 2026",
     "changes": [
-      "The <strong>Metagame</strong> now supports shareable archetype search, type, trend, clan and discipline filters, sortable rankings, period-aware trends and clearer archetype cards.",
-      "The header <strong>search</strong> now finds deck archetypes and links directly to their metagame details.",
-      "Opening a <strong>push notification</strong> now marks it as read and keeps the unread notification count in sync.",
-      "The <strong>Crypt and Library browsers</strong> can now filter cards by their current shop in-stock availability.",
-      "The <strong>Crypt, Library and Deck Builder</strong> set filter now supports selecting multiple expansions and excluding unwanted ones.",
-      "The <strong>Title and Sect</strong> card filters now support selecting multiple values while keeping options such as Has any title, No title and Not required easy to use.",
-      "Crypt card filters now include a <strong>Votes</strong> range, available in the card browser, Deck Builder, Collection and Wishlist.",
-      "Logged-in users can now spot previously viewed decks by a subtle check beside the date.",
+      "The <strong>Metagame</strong> now offers shareable archetype searches, more filters, sortable rankings, period-aware trends and clearer archetype cards.",
+      "The header <strong>search</strong> now finds deck archetypes and opens their Metagame details directly.",
+      "Card filtering has been expanded throughout VTESDecks: <strong>Title and Sect</strong> now support multiple selections, <strong>Set</strong> supports including or excluding multiple expansions and Crypt filters include a new <strong>Votes</strong> range and current in-stock availability across supported shops.",
+      "Opening a <strong>push notification</strong> now marks it as read and keeps the unread count synchronized.",
+      "Previously viewed decks are now marked with a subtle check beside the date for logged-in users.",
       "Minor bug fixes and performance improvements."
     ]
   },
