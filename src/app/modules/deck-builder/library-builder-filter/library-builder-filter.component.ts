@@ -21,6 +21,11 @@ import {
   SegmentedFilterComponent,
   SegmentedFilterOption,
 } from '@shared/components/segmented-filter/segmented-filter.component'
+import {
+  MultiSelectComponent,
+  MultiSelectOption,
+  MultiSelectSelection,
+} from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
 import { CARD_SHOPS } from '@utils'
@@ -47,6 +52,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     TranslocoPipe,
     DatePipe,
     SegmentedFilterComponent,
+    MultiSelectComponent,
   ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
@@ -58,7 +64,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   readonly filterChange = output<LibraryFilter>()
 
   printOnDemandControl!: FormControl
-  shopControl!: FormControl
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
   sectControl!: FormControl
@@ -76,7 +81,13 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   taints$ = this.libraryQuery.selectTaints()
   sets$ = this.libraryQuery.selectSets()
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
-  readonly shops = CARD_SHOPS
+  readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
+    (shop) => ({
+      value: shop.name,
+      label: shop.fullName,
+      shortLabel: shop.name,
+    }),
+  )
   maxConvictionCost = this.libraryQuery.getMaxConvictionCost()
   initialized = false
 
@@ -100,7 +111,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
-    this.onChangeShop()
     this.onChangeLimitedFormat()
     this.onChangeSect()
     this.onChangeTitle()
@@ -185,17 +195,10 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
       .subscribe()
   }
 
-  onChangeShop() {
-    this.shopControl = new FormControl(this.filter.shop)
-    this.shopControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.shop = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
+  onChangeShopAvailability(selection: MultiSelectSelection) {
+    this.filter.shops = selection.selected
+    this.filter.notShops = selection.excluded
+    this.filterChange.emit(this.filter)
   }
 
   onChangeLimitedFormat() {

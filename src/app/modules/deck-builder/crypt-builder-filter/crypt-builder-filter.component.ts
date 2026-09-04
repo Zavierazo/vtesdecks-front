@@ -21,6 +21,11 @@ import {
   SegmentedFilterComponent,
   SegmentedFilterOption,
 } from '@shared/components/segmented-filter/segmented-filter.component'
+import {
+  MultiSelectComponent,
+  MultiSelectOption,
+  MultiSelectSelection,
+} from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { CARD_SHOPS } from '@utils'
@@ -45,6 +50,7 @@ import { tap } from 'rxjs'
     TranslocoPipe,
     DatePipe,
     SegmentedFilterComponent,
+    MultiSelectComponent,
   ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
@@ -56,7 +62,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   readonly filterChange = output<CryptFilter>()
 
   printOnDemandControl!: FormControl
-  shopControl!: FormControl
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
   groupSliderControl!: FormControl
@@ -73,7 +78,13 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   taints$ = this.cryptQuery.selectTaints()
   sets$ = this.cryptQuery.selectSets()
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
-  readonly shops = CARD_SHOPS
+  readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
+    (shop) => ({
+      value: shop.name,
+      label: shop.fullName,
+      shortLabel: shop.name,
+    }),
+  )
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
   initialized = false
@@ -118,7 +129,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
 
   initFormControls() {
     this.onChangePrintOnDemand()
-    this.onChangeShop()
     this.onChangeLimitedFormat()
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
@@ -184,17 +194,10 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
       .subscribe()
   }
 
-  onChangeShop() {
-    this.shopControl = new FormControl(this.filter.shop)
-    this.shopControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.shop = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
+  onChangeShopAvailability(selection: MultiSelectSelection) {
+    this.filter.shops = selection.selected
+    this.filter.notShops = selection.excluded
+    this.filterChange.emit(this.filter)
   }
 
   onChangeLimitedFormat() {

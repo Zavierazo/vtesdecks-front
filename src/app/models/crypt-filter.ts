@@ -2,7 +2,8 @@ import { ApiDeckLimitedFormat } from './api-deck-limited-format'
 
 export interface CryptFilter {
   printOnDemand?: boolean
-  shop?: string
+  shops?: string[]
+  notShops?: string[]
   limitedFormat?: boolean
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string

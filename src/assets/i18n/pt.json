@@ -52,6 +52,7 @@
   "crypt_builder_filter": {
     "print_on_demand": "Impressão em demanda",
     "shop_availability": "Disponibilidade em lojas",
+    "shop_availability_exclude": "Excluir loja",
     "clans": "Clãs",
     "path": "Paths",
     "disciplines": "Disciplinas",
@@ -526,6 +527,7 @@
   "library_builder_filter": {
     "print_on_demand": "Impressão em demanda",
     "shop_availability": "Disponibilidade em lojas",
+    "shop_availability_exclude": "Excluir loja",
     "type": "Tipo",
     "disciplines": "Disciplinas",
     "clans": "Clãs",
@@ -736,7 +738,8 @@
       "retainer": "Lacaios",
       "rounds": "Rondas",
       "sect": "Seita",
-      "shop": "Disponibilidade em lojas",
+      "shops": "Disponível em lojas",
+      "notShops": "Indisponível em lojas",
       "singleClan": "Clã único",
       "singleDiscipline": "Disciplina única",
       "starVampire": "Vampiro principal",

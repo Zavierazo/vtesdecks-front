@@ -59,19 +59,35 @@ const chipFor = (chips: FilterChip[], key: string) =>
   chips.find((chip) => chip.key === key)
 
 describe('buildCryptFilterChips', () => {
-  it('uses the shop display name in the availability chip', () => {
+  it('creates removable chips for included and excluded shops', () => {
     const chips = buildCryptFilterChips(
-      { ...cryptDefaults, shop: 'DTC' },
-      { ...cryptDefaults, shop: '' },
+      { ...cryptDefaults, shops: ['DTC'], notShops: ['EBAY'] },
+      { ...cryptDefaults, shops: [], notShops: [] },
       t,
       (platform) => (platform === 'DTC' ? 'DriveThruCards' : platform),
     )
-    expect(chipFor(chips, 'shop')).toEqual({
-      id: 'shop',
-      key: 'shop',
+    expect(chipFor(chips, 'shops')).toEqual({
+      id: 'shops:DTC',
+      key: 'shops',
+      item: 'DTC',
       label: '[crypt_builder_filter.shop_availability]',
       value: 'DriveThruCards',
     })
+    expect(chipFor(chips, 'notShops')).toEqual({
+      id: 'notShops:EBAY',
+      key: 'notShops',
+      item: 'EBAY',
+      label: '[crypt_builder_filter.shop_availability_exclude]',
+      value: 'EBAY',
+    })
+
+    expect(
+      removeCardFilterChip(
+        { ...cryptDefaults, shops: ['DTC'], notShops: ['EBAY'] },
+        { ...cryptDefaults, shops: [], notShops: [] },
+        chipFor(chips, 'shops')!,
+      ).shops,
+    ).toEqual([])
   })
 
   it('does not chip the advanced filter while it is Any', () => {

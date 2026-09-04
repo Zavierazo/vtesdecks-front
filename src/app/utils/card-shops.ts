@@ -13,3 +13,10 @@ export const CARD_SHOPS: readonly CardShopOption[] = [
 
 export const getCardShopName = (platform: string): string =>
   CARD_SHOPS.find((shop) => shop.name === platform)?.fullName ?? platform
+
+export const getValidCardShopNames = (
+  platforms: readonly string[] | undefined,
+): string[] =>
+  [...new Set(platforms ?? [])].filter((platform) =>
+    CARD_SHOPS.some((shop) => shop.name === platform),
+  )

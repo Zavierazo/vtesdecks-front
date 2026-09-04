@@ -49,16 +49,15 @@ import {
   buildLibraryFilterChips,
   filterCardsByShopAvailability,
   getCardShopName,
+  getValidCardShopNames,
   isRegexSearch,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
-  catchError,
   debounceTime,
   distinctUntilChanged,
-  EMPTY,
   filter,
   fromEvent,
   map,
@@ -116,9 +115,7 @@ export class LibrarySectionComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
-  private readonly cardShopAvailability = inject(
-    CardShopAvailabilityService,
-  )
+  private readonly cardShopAvailability = inject(CardShopAvailabilityService)
   private readonly toastService = inject(ToastService)
 
   private static readonly PAGE_SIZE = 50
@@ -129,8 +126,11 @@ export class LibrarySectionComponent implements OnInit {
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
   hasMore$ = new BehaviorSubject<boolean>(true)
-  private readonly shopSelection$ = new Subject<string>()
-  private inStockCardIds?: ReadonlySet<number>
+  private readonly shopSelection$ = new Subject<{
+    shops: string[]
+    notShops: string[]
+  }>()
+  private readonly availabilityByShop = new Map<string, ReadonlySet<number>>()
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   readonly sortOptions: SortOption[] = [
@@ -209,7 +209,8 @@ export class LibrarySectionComponent implements OnInit {
     return {
       ...this.libraryQuery.getDefaultLibraryFilter(),
       printOnDemand: false,
-      shop: '',
+      shops: [],
+      notShops: [],
     }
   }
 
@@ -308,10 +309,20 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['printOnDemand']) {
       this.libraryFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
+    const notShops = getValidCardShopNames(queryParams['notShops']?.split(','))
+    const shops = getValidCardShopNames(
+      queryParams['shops']?.split(',') ??
+        (queryParams['shop'] ? [queryParams['shop']] : []),
+    ).filter((shop) => !notShops.includes(shop))
+    this.libraryFilter.shops = shops
+    this.libraryFilter.notShops = notShops
+    this.shopSelection$.next({ shops, notShops })
     if (queryParams['shop']) {
-      this.libraryFilter.shop = queryParams['shop']
+      this.updateQueryParams({
+        shop: undefined,
+        shops: shops.join(',') || undefined,
+      })
     }
-    this.shopSelection$.next(this.libraryFilter.shop ?? '')
     if (queryParams['set']) {
       this.libraryFilter.set = queryParams['set']
     }
@@ -418,7 +429,8 @@ export class LibrarySectionComponent implements OnInit {
       emitEvent: false,
     })
     this.libraryFilter.printOnDemand = false
-    this.libraryFilter.shop = ''
+    this.libraryFilter.shops = []
+    this.libraryFilter.notShops = []
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }
@@ -457,7 +469,10 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeLibraryFilter(filter: LibraryFilter) {
     this.libraryFilter = filter
-    this.shopSelection$.next(this.libraryFilter.shop ?? '')
+    this.shopSelection$.next({
+      shops: this.libraryFilter.shops ?? [],
+      notShops: this.libraryFilter.notShops ?? [],
+    })
 
     const isDefaultBloodCost =
       Array.isArray(this.libraryFilter.bloodCostSlider) &&
@@ -474,7 +489,15 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
-      ['shop']: this.libraryFilter.shop || undefined,
+      ['shop']: undefined,
+      ['shops']:
+        this.libraryFilter.shops && this.libraryFilter.shops.length > 0
+          ? this.libraryFilter.shops.join(',')
+          : undefined,
+      ['notShops']:
+        this.libraryFilter.notShops && this.libraryFilter.notShops.length > 0
+          ? this.libraryFilter.notShops.join(',')
+          : undefined,
       ['types']:
         this.libraryFilter.types && this.libraryFilter.types.length > 0
           ? this.libraryFilter.types.join(',')
@@ -563,8 +586,9 @@ export class LibrarySectionComponent implements OnInit {
         map((results) =>
           filterCardsByShopAvailability(
             results,
-            this.libraryFilter.shop,
-            this.inStockCardIds,
+            this.libraryFilter.shops,
+            this.libraryFilter.notShops,
+            this.availabilityByShop,
           ),
         ),
         tap((results) => this.resultsCount$.next(results.length)),
@@ -580,44 +604,45 @@ export class LibrarySectionComponent implements OnInit {
   private listenShopAvailability(): void {
     this.shopSelection$
       .pipe(
-        distinctUntilChanged(),
-        switchMap((platform) => {
-          this.inStockCardIds = undefined
-          if (!platform) {
-            return EMPTY
-          }
-          return this.cardShopAvailability.getInStock(platform).pipe(
-            catchError(() => {
-              this.clearShopFilter(true)
-              return EMPTY
-            }),
-          )
+        distinctUntilChanged(
+          (a, b) =>
+            a.shops.join(',') === b.shops.join(',') &&
+            a.notShops.join(',') === b.notShops.join(','),
+        ),
+        switchMap((selection) => {
+          const missing = [
+            ...new Set([...selection.shops, ...selection.notShops]),
+          ].filter((shop) => !this.availabilityByShop.has(shop))
+          return this.cardShopAvailability
+            .getInStockForShops(missing)
+            .pipe(map((batch) => ({ selection, batch })))
         }),
         untilDestroyed(this),
       )
-      .subscribe((availability) => {
-        if (!availability) {
-          this.clearShopFilter(false)
-          return
+      .subscribe(({ selection, batch }) => {
+        batch.availabilityByShop.forEach((ids, shop) =>
+          this.availabilityByShop.set(shop, ids),
+        )
+        if (batch.failedShops.length > 0) {
+          const failed = new Set(batch.failedShops)
+          this.libraryFilter = {
+            ...this.libraryFilter,
+            shops: selection.shops.filter((shop) => !failed.has(shop)),
+            notShops: selection.notShops.filter((shop) => !failed.has(shop)),
+          }
+          this.toastService.show(
+            this.translocoService.translate('shared.shop_availability_error'),
+            { classname: 'bg-danger text-light' },
+          )
+          this.updateQueryParams({
+            shop: undefined,
+            shops: this.libraryFilter.shops?.join(',') || undefined,
+            notShops: this.libraryFilter.notShops?.join(',') || undefined,
+          })
         }
-        this.inStockCardIds = availability.cardIds
         this.updateFilterChips()
         this.initQuery()
       })
-  }
-
-  private clearShopFilter(showError: boolean): void {
-    this.inStockCardIds = undefined
-    this.libraryFilter.shop = ''
-    if (showError) {
-      this.toastService.show(
-        this.translocoService.translate('shared.shop_availability_error'),
-        { classname: 'bg-danger text-light' },
-      )
-    }
-    this.updateQueryParams({ shop: undefined })
-    this.updateFilterChips()
-    this.initQuery()
   }
 
   getCard(card: ApiLibrary): ApiCard {
@@ -651,8 +676,9 @@ export class LibrarySectionComponent implements OnInit {
           : this.sortBy,
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       }),
-      this.libraryFilter.shop,
-      this.inStockCardIds,
+      this.libraryFilter.shops,
+      this.libraryFilter.notShops,
+      this.availabilityByShop,
     )
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)

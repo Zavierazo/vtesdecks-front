@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing'
-import { firstValueFrom, of } from 'rxjs'
+import { firstValueFrom, of, throwError } from 'rxjs'
 import { describe, expect, it, vi } from 'vitest'
 import { ApiDataService } from './api.data.service'
 import { CardShopAvailabilityService } from './card-shop-availability.service'
@@ -12,7 +12,10 @@ describe('CardShopAvailabilityService', () => {
 
   const setup = () => {
     const api = {
-      getInStockCardIds: vi.fn(() => of([1, 2, 2])),
+      getInStockCardIds: vi.fn((platform?: string) => {
+        void platform
+        return of([1, 2, 2])
+      }),
     }
     TestBed.configureTestingModule({
       providers: [
@@ -40,5 +43,20 @@ describe('CardShopAvailabilityService', () => {
 
     expect(await firstValueFrom(service.getInStock('UNKNOWN'))).toBeUndefined()
     expect(api.getInStockCardIds).not.toHaveBeenCalled()
+  })
+
+  it('loads valid shops concurrently and reports partial failures', async () => {
+    const { api, service } = setup()
+    api.getInStockCardIds.mockImplementation((platform?: string) =>
+      platform === 'GP' ? throwError(() => new Error('failed')) : of([1, 2]),
+    )
+
+    const result = await firstValueFrom(
+      service.getInStockForShops(['DTC', 'GP', 'UNKNOWN', 'DTC']),
+    )
+
+    expect([...result.availabilityByShop.get('DTC')!]).toEqual([1, 2])
+    expect(result.failedShops).toEqual(['GP'])
+    expect(api.getInStockCardIds).toHaveBeenCalledTimes(2)
   })
 })

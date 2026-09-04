@@ -1,5 +1,6 @@
 import { Params } from '@angular/router'
 import { SearchPresetScope, SearchParams } from '@models'
+import { getValidCardShopNames } from './card-shops'
 
 interface SearchBrowserDefinition {
   path: string
@@ -27,7 +28,8 @@ const CRYPT_FILTERS = [
   'printOnDemand',
   'sect',
   'set',
-  'shop',
+  'shops',
+  'notShops',
   'superiorDisciplines',
   'taints',
   'title',
@@ -52,7 +54,8 @@ const LIBRARY_FILTERS = [
   'printOnDemand',
   'sect',
   'set',
-  'shop',
+  'shops',
+  'notShops',
   'taints',
   'title',
   'trifle',
@@ -244,9 +247,21 @@ export function normalizeSearchParams(
   params: Params | SearchParams,
 ): SearchParams {
   const definition = definitions[scope]
+  const source: Params | SearchParams = { ...params }
+  if (scope === 'crypt' || scope === 'library') {
+    const notShops = getValidCardShopNames(
+      normalizeValue(source['notShops'])?.split(','),
+    )
+    const shops = getValidCardShopNames(
+      normalizeValue(source['shops'] ?? source['shop'])?.split(','),
+    ).filter((shop) => !notShops.includes(shop))
+    source['shops'] = shops.join(',') || undefined
+    source['notShops'] = notShops.join(',') || undefined
+    delete source['shop']
+  }
   const normalized: SearchParams = {}
   definition.allowedParams.forEach((key) => {
-    const value = normalizeValue(params[key])
+    const value = normalizeValue(source[key])
     const allowedValues = definition.allowedValues?.[key]
     if (
       value !== undefined &&

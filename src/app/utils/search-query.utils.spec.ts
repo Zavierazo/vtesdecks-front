@@ -17,7 +17,16 @@ describe('search query utilities', () => {
         cardId: '100',
         unsupported: 'value',
       }),
-    ).toEqual({ clans: 'ventrue,toreador', name: 'Arika', shop: 'DTC' })
+    ).toEqual({ clans: 'ventrue,toreador', name: 'Arika', shops: 'DTC' })
+  })
+
+  it('canonicalizes shop lists, ignores unknown shops, and lets exclusions win', () => {
+    expect(
+      normalizeSearchParams('library', {
+        shops: 'DTC,GP,UNKNOWN,DTC',
+        notShops: 'GP,EBAY',
+      }),
+    ).toEqual({ notShops: 'GP,EBAY', shops: 'DTC' })
   })
 
   it('keeps library filters and non-default sorting', () => {
