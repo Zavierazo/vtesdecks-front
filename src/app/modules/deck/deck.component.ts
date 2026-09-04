@@ -16,6 +16,17 @@ import {
   ViewChild,
 } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
+import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
+import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
+import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
+import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
+import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
+import { environment } from '@environments/environment'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -69,21 +80,10 @@ import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { filter, Observable, switchMap, tap, timer } from 'rxjs'
-import { environment } from '@environments/environment'
 import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
-import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
-import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
-import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '@deck-shared/crypt/crypt.component'
-import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
-import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
-import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
-import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
-import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
-import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -217,7 +217,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         if (deck) {
-          if (deck.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')) {
+          if (
+            deck.type === 'PRECONSTRUCTED' &&
+            deck.tags?.includes('spoiler')
+          ) {
             this.spoilerVisitService.markDeckVisited(
               deck.id,
               this.authQuery.serverDate()() ?? new Date(),
@@ -254,7 +257,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    timer(10000)
+    timer(5000)
       .pipe(
         untilDestroyed(this),
         switchMap(() =>
@@ -374,9 +377,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   async onEmbed(): Promise<void> {
     // Lazy import to keep the embed modal out of the deck chunk
-    const { EmbedSnippetModalComponent } = await import(
-      '@deck-shared/embed-snippet-modal/embed-snippet-modal.component'
-    )
+    const { EmbedSnippetModalComponent } =
+      await import('@deck-shared/embed-snippet-modal/embed-snippet-modal.component')
     const modalRef = this.modalService.open(EmbedSnippetModalComponent, {
       size: 'xl',
       centered: true,
@@ -455,9 +457,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
       return
     }
     // Lazy import to keep the wishlist modal out of the deck chunk
-    const { AddMissingToWishlistModalComponent } = await import(
-      '../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component'
-    )
+    const { AddMissingToWishlistModalComponent } =
+      await import('../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component')
     const modalRef = this.modalService.open(
       AddMissingToWishlistModalComponent,
       {
