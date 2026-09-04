@@ -92,10 +92,13 @@ export class DeckMetagameModalComponent {
       next: (res) => this.modal.close(res),
       error: (err) => {
         this.loading.set(false)
-        this.toast.show(err?.message || this.transloco.translate('error'), {
-          classname: 'bg-danger text-light',
-          delay: 10000,
-        })
+        this.toast.show(
+          err?.message || this.transloco.translate('shared.unexpected_error'),
+          {
+            classname: 'bg-danger text-light',
+            delay: 10000,
+          },
+        )
       },
     })
   }
