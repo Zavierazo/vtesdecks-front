@@ -2,7 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": "77d7b52f-9e51-4a6f-b57f-2f90163ebb55",
-    "schematicCollections": ["angular-eslint"]
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -27,7 +29,9 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -36,7 +40,8 @@
               "src/robots.txt",
               "src/ads.txt",
               "src/manifest.webmanifest",
-              "src/.well-known"
+              "src/.well-known",
+              "src/.assetsignore"
             ],
             "styles": [
               "src/styles.scss",
@@ -50,6 +55,11 @@
           },
           "configurations": {
             "production": {
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "hidden": true
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -80,9 +90,13 @@
               "aot": false,
               "optimization": false,
               "extractLicenses": false,
-              "styles": ["src/styles.scss"],
+              "styles": [
+                "src/styles.scss"
+              ],
               "scripts": [],
-              "polyfills": ["src/polyfills.ts"]
+              "polyfills": [
+                "src/polyfills.ts"
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -109,9 +123,16 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "reporters": ["default"],
-            "coverageReporters": ["html", "text-summary"],
-            "setupFiles": ["src/test.ts"],
+            "reporters": [
+              "default"
+            ],
+            "coverageReporters": [
+              "html",
+              "text-summary"
+            ],
+            "setupFiles": [
+              "src/test.ts"
+            ],
             "buildTarget": ":build:testing",
             "runner": "vitest"
           }
@@ -119,7 +140,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }

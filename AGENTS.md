@@ -79,6 +79,8 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 `PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.
 
+The production service worker prefetches all JavaScript bundles and core media during installation so every route is immediately offline-capable. Production builds retain hidden JavaScript sourcemaps for Sentry, while `src/.assetsignore` prevents Wrangler from publishing maps and `src/_headers` defines browser caching for fingerprinted assets.
+
 ### Reusable Browser Searches
 
 Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
