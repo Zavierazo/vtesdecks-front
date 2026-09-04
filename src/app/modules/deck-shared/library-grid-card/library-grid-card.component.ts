@@ -29,7 +29,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   selector: 'app-library-grid-card',
   templateUrl: './library-grid-card.component.html',
   styleUrls: ['./library-grid-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     CardImagePipe,

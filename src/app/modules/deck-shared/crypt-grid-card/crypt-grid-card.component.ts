@@ -29,7 +29,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   selector: 'app-crypt-grid-card',
   templateUrl: './crypt-grid-card.component.html',
   styleUrls: ['./crypt-grid-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     CardImagePipe,
