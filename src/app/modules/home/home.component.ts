@@ -20,9 +20,6 @@ import {
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
-import { GameTimerComponent } from '@shared/components/game-timer/game-timer.component'
-import { LoginComponent } from '@shared/components/login/login.component'
-import { TableSeatingComponent } from '@shared/components/table-seating/table-seating.component'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { AuthQuery } from '@state/auth/auth.query'
@@ -150,15 +147,21 @@ export class HomeComponent implements OnInit {
     this.changeDetector.markForCheck()
   }
 
-  openLoginModal() {
+  async openLoginModal() {
+    const { LoginComponent } =
+      await import('@shared/components/login/login.component')
     this.modalService.open(LoginComponent)
   }
 
-  openTableSeatingModal() {
+  async openTableSeatingModal() {
+    const { TableSeatingComponent } =
+      await import('@shared/components/table-seating/table-seating.component')
     this.modalService.open(TableSeatingComponent, { size: 'xl' })
   }
 
-  openGameTimerModal() {
+  async openGameTimerModal() {
+    const { GameTimerComponent } =
+      await import('@shared/components/game-timer/game-timer.component')
     this.modalService.open(GameTimerComponent, { fullscreen: true })
   }
 }

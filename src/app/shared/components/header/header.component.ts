@@ -25,12 +25,9 @@ import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { Observable } from 'rxjs'
 import { IsLoggedDirective } from '../../directives/is-logged.directive'
 import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component'
-import { GameTimerComponent } from '../game-timer/game-timer.component'
 import { LangSelectorComponent } from '../lang-selector/lang-selector.component'
-import { LoginComponent, Tabs } from '../login/login.component'
 import { NotificationListComponent } from '../notification-list/notification-list.component'
 import { SearchBarComponent } from '../search-bar/search-bar.component'
-import { TableSeatingComponent } from '../table-seating/table-seating.component'
 import { ThemeSelectorComponent } from '../theme-selector/theme-selector.component'
 
 @Component({
@@ -89,13 +86,15 @@ export class HeaderComponent implements OnInit {
     this.isAdmin$ = this.authQuery.selectAdmin()
   }
 
-  openLoginModal() {
+  async openLoginModal() {
     this.isCollapsed = true
+    const { LoginComponent } = await import('../login/login.component')
     this.modalService.open(LoginComponent)
   }
 
-  openSignUpModal() {
+  async openSignUpModal() {
     this.isCollapsed = true
+    const { LoginComponent, Tabs } = await import('../login/login.component')
     const modalRef = this.modalService.open(LoginComponent)
     modalRef.componentInstance.tab = Tabs.SignUp
   }
@@ -110,13 +109,17 @@ export class HeaderComponent implements OnInit {
     this.authService.logout()
   }
 
-  openTableSeatingModal() {
+  async openTableSeatingModal() {
     this.isCollapsed = true
+    const { TableSeatingComponent } =
+      await import('../table-seating/table-seating.component')
     this.modalService.open(TableSeatingComponent, { size: 'xl' })
   }
 
-  openGameTimerModal() {
+  async openGameTimerModal() {
     this.isCollapsed = true
+    const { GameTimerComponent } =
+      await import('../game-timer/game-timer.component')
     this.modalService.open(GameTimerComponent, { fullscreen: true })
   }
 
