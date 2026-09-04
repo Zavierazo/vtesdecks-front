@@ -3,11 +3,23 @@
     <h5 class="modal-title">{{ form.value.id ? t('edit') : t('create') }}</h5>
     <form [formGroup]="form">
       <div class="form-check form-switch ms-2 mb-0">
-        <input class="form-check-input" type="checkbox" id="enabled" formControlName="enabled" />
-        <label class="form-check-label small text-muted" for="enabled">{{ t('enabled') }}</label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="enabled"
+          formControlName="enabled"
+        />
+        <label class="form-check-label small text-muted" for="enabled">{{
+          t('enabled')
+        }}</label>
       </div>
     </form>
-    <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="cancel()"
+    ></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
@@ -15,22 +27,30 @@
         <div class="row g-2 align-items-center">
           <div class="col-3">
             <label class="form-label" for="icon">{{ t('icon') }}</label>
-            <div class="d-flex align-items-center justify-content-between w-100">
+            <div
+              class="d-flex align-items-center justify-content-between w-100"
+            >
               <div class="d-flex align-items-center w-100">
                 <i class="vtes me-2" [ngClass]="iconValue"></i>
-                <select id="icon" class="form-select ms-2 me-3 flex-grow-1" formControlName="icon">
+                <select
+                  id="icon"
+                  class="form-select ms-2 me-3 flex-grow-1"
+                  formControlName="icon"
+                >
                   <option value="">--</option>
                   <optgroup label="Clans">
-                    @for(c of clans; track c){
-                    <option [value]="c.icon">{{ c.name }}</option>
+                    @for (c of clans; track c) {
+                      <option [value]="c.icon">{{ c.name }}</option>
                     }
                   </optgroup>
                   <optgroup label="Disciplines">
-                    @for(d of disciplines; track d){
-                    <option [value]="d.icon">{{ d.name }}</option>
-                    @if(d.hasSuperior){
-                    <option [value]="d.iconSuperior">{{ d.name }} (sup)</option>
-                    }
+                    @for (d of disciplines; track d) {
+                      <option [value]="d.icon">{{ d.name }}</option>
+                      @if (d.hasSuperior) {
+                        <option [value]="d.iconSuperior">
+                          {{ d.name }} (sup)
+                        </option>
+                      }
                     }
                   </optgroup>
                 </select>
@@ -70,34 +90,56 @@
       <div class="mb-2">
         <label class="form-label" for="deckId">{{ t('deckId') }}</label>
         <input id="deckId" class="form-control" formControlName="deckId" />
-        <a class="text-decoration-none" [href]="'/deck/' + form.value.deckId" target="_blank" rel="noopener noreferrer">
+        <a
+          class="text-decoration-none"
+          [href]="'/deck/' + form.value.deckId"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {{ t('preview') }}
         </a>
       </div>
 
       <div class="mb-2">
-        <label class="form-label" for="secondaryDeckId">{{ t('secondaryDeckId') }}</label>
-        <input id="secondaryDeckId" class="form-control" formControlName="secondaryDeckId" />
+        <label class="form-label" for="secondaryDeckId">{{
+          t('secondaryDeckId')
+        }}</label>
+        <input
+          id="secondaryDeckId"
+          class="form-control"
+          formControlName="secondaryDeckId"
+        />
         @if (form.value.secondaryDeckId) {
-        <a class="text-decoration-none" [href]="'/deck/' + form.value.secondaryDeckId" target="_blank"
-          rel="noopener noreferrer">
-          {{ t('preview') }}
-        </a>
+          <a
+            class="text-decoration-none"
+            [href]="'/deck/' + form.value.secondaryDeckId"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ t('preview') }}
+          </a>
         }
       </div>
 
       <div class="mb-2">
-        <app-markdown-textarea [control]="descriptionControl" [placeholder]="t('description_placeholder')"
-          [label]="t('description')"></app-markdown-textarea>
+        <app-markdown-textarea
+          [control]="descriptionControl"
+          [placeholder]="t('description_placeholder')"
+          [label]="t('description')"
+        ></app-markdown-textarea>
       </div>
-
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="cancel()">{{ 'shared.cancel' | transloco }}</button>
-    <button class="btn btn-primary" (click)="save()" [disabled]="loading">
-      @if (loading) {
-      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+    <button class="btn btn-secondary" (click)="cancel()">
+      {{ 'shared.cancel' | transloco }}
+    </button>
+    <button class="btn btn-primary" (click)="save()" [disabled]="loading()">
+      @if (loading()) {
+        <span
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+        ></span>
       }
       {{ 'shared.apply' | transloco }}
     </button>

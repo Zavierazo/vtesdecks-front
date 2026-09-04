@@ -1,77 +1,314 @@
 <ng-container *transloco="let t; prefix: 'deck_metagame'">
   <section>
     @let isMaintainer = isMaintainer$ | async;
-    @if(!limit){
-    <div class="container-fluid d-flex justify-content-between align-items-center my-4">
-      <h3 class="mb-0 text-start">
-        {{ t('title') }}
-        <i class="bi bi-question-circle fs-4 ms-2 text-secondary" [ngbTooltip]="t('tooltip')" placement="right"
-          triggers="mouseenter:mouseleave" tabindex="0" role="button" [attr.aria-label]="t('tooltip')"></i>
-      </h3>
 
-      <div class="d-flex gap-2 align-items-center flex-nowrap">
-        {{ t('show_from_last') }}
-        <select class="form-select form-select-sm w-auto" [formControl]="metaTypeControl" aria-label="Select meta type">
-          <option value="TOURNAMENT_90">{{ t('meta_type.90_days') }}</option>
-          <option value="TOURNAMENT_180">{{ t('meta_type.180_days') }}</option>
-          <option value="TOURNAMENT_365">{{ t('meta_type.365_days') }}</option>
-          <option value="TOURNAMENT_730">{{ t('meta_type.730_days') }}</option>
-          <option value="TOURNAMENT">{{ t('meta_type.all_time') }}</option>
-        </select>
+    @if (!limit) {
+      <div
+        class="container-fluid d-flex justify-content-between align-items-center my-4 gap-3"
+      >
+        <h3 class="mb-0 text-start">
+          {{ t('title') }}
+          <i
+            class="bi bi-question-circle fs-4 ms-2 text-secondary"
+            [ngbTooltip]="t('tooltip')"
+            placement="right"
+            triggers="mouseenter:mouseleave"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="t('tooltip')"
+          ></i>
+        </h3>
         @if (isMaintainer) {
-        <button class="btn btn-sm btn-primary" (click)="openModal()">
-          {{ t('create') }}
-        </button>
+          <button class="btn btn-sm btn-primary" (click)="openModal()">
+            {{ t('create') }}
+          </button>
         }
       </div>
-    </div>
-    }
-    <div class="container-fluid row g-3 card-deck-archetype text-start mb-3">
-      @if(suggestions$ | async; as suggestions){
-      @if(isMaintainer && limit === undefined) {
-      @for (archetype of suggestions; track archetype.name) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="suggestion h-100">
-          <app-deck-metagame-card [archetype]="archetype"></app-deck-metagame-card>
-        </div>
-      </div>
-      }
-      }
-      }
-      @if(archetypes$ | async; as archetypes){
-      @for (archetype of (limit ? (archetypes | slice:0:limit) : archetypes); track archetype.id) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <app-deck-metagame-card [archetype]="archetype"></app-deck-metagame-card>
-      </div>
-      }
-      } @else {
-      @for (item of [].constructor(limit ?? 9); track $index) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="metagame-skeleton rounded-3 h-100 overflow-hidden bg-body d-flex flex-column" aria-hidden="true">
-          <div class="metagame-skeleton__header px-3 pt-3 pb-2">
-            <div class="d-flex align-items-center mb-2">
-              <div class="metagame-skeleton__icon rounded-2 me-2"></div>
-              <div class="flex-grow-1">
-                <div class="metagame-skeleton__line metagame-skeleton__line--title mb-1"></div>
-                <div class="metagame-skeleton__line metagame-skeleton__line--subtitle"></div>
+
+      <div class="container-fluid mb-3">
+        <div class="metagame-toolbar bg-body rounded-3 p-3">
+          <div class="toolbar-controls row g-2 align-items-center">
+            <div class="toolbar-search col-12 col-xl">
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="bi bi-search" aria-hidden="true"></i
+                ></span>
+                <input
+                  class="form-control"
+                  type="search"
+                  [formControl]="nameControl"
+                  [placeholder]="t('search_placeholder')"
+                  [attr.aria-label]="t('search_placeholder')"
+                />
+              </div>
+            </div>
+
+            <div
+              class="toolbar-type col-auto"
+              ngbDropdown
+              [autoClose]="'outside'"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                ngbDropdownToggle
+              >
+                <i class="bi bi-tags-fill me-1"></i>{{ t('type') }}
+                @if (selectedTypes().length) {
+                  <span class="badge text-bg-primary ms-1">{{
+                    selectedTypes().length
+                  }}</span>
+                }
+              </button>
+              <div ngbDropdownMenu class="type-menu p-2">
+                @for (option of typeOptions(); track option.type) {
+                  <button
+                    type="button"
+                    ngbDropdownItem
+                    class="d-flex align-items-center gap-2"
+                    (click)="toggleType(option.type)"
+                  >
+                    <i
+                      class="bi"
+                      [class.bi-check-square-fill]="typeSelected(option.type)"
+                      [class.bi-square]="!typeSelected(option.type)"
+                    ></i>
+                    <span class="flex-grow-1">{{ option.type }}</span>
+                    <span class="badge text-bg-secondary">{{
+                      option.count
+                    }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="toolbar-trends col-auto">
+              <div
+                class="btn-group trend-pills"
+                role="group"
+                [attr.aria-label]="t('trend_label')"
+              >
+                @for (trend of trends; track trend) {
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    [class.active]="trendSelected(trend)"
+                    (click)="toggleTrend(trend)"
+                    [attr.aria-pressed]="trendSelected(trend)"
+                    [disabled]="!isTrendAvailable()"
+                  >
+                    @if (trend === 'TRENDING') {
+                      <i class="bi bi-graph-up-arrow me-1"></i>
+                    } @else if (trend === 'DECLINING') {
+                      <i class="bi bi-graph-down-arrow me-1"></i>
+                    } @else {
+                      <i class="bi bi-dash-lg me-1"></i>
+                    }
+                    {{ t('trend.' + trend) }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="toolbar-period col-auto">
+              <label class="visually-hidden" for="metagamePeriod">{{
+                t('show_from_last')
+              }}</label>
+              <select
+                id="metagamePeriod"
+                class="form-select"
+                [formControl]="metaTypeControl"
+              >
+                <option value="TOURNAMENT_90">
+                  {{ t('meta_type.90_days') }}
+                </option>
+                <option value="TOURNAMENT_180">
+                  {{ t('meta_type.180_days') }}
+                </option>
+                <option value="TOURNAMENT_365">
+                  {{ t('meta_type.365_days') }}
+                </option>
+                <option value="TOURNAMENT_730">
+                  {{ t('meta_type.730_days') }}
+                </option>
+                <option value="TOURNAMENT">
+                  {{ t('meta_type.all_time') }}
+                </option>
+              </select>
+            </div>
+
+            <app-sort-control
+              class="toolbar-sort col-auto d-inline-block"
+              [options]="sortOptions"
+              [active]="sortBy()"
+              [order]="sortOrder()"
+              (sortChange)="onChangeSortBy($event)"
+            />
+
+            <div class="toolbar-filters col-auto">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="filtersCollapsed.set(!filtersCollapsed())"
+                [attr.aria-expanded]="!filtersCollapsed()"
+              >
+                <i class="bi bi-funnel-fill me-1"></i>{{ t('filters') }}
+                @if (advancedFilterCount()) {
+                  <span class="badge text-bg-light ms-1">{{
+                    advancedFilterCount()
+                  }}</span>
+                }
+              </button>
+            </div>
+          </div>
+
+          <div [ngbCollapse]="filtersCollapsed()">
+            <div class="row g-3 border-top mt-3 pt-3">
+              <div class="col-12 col-xl-6">
+                <h5>{{ t('clans') }}</h5>
+                <app-clan-filter
+                  [clans]="clans()"
+                  (clansChange)="setClans($event)"
+                  [notClans]="notClans()"
+                  (notClansChange)="setNotClans($event)"
+                  [showAndOr]="true"
+                  [allowExclude]="true"
+                  [mode]="clanMode()"
+                  (modeChange)="setClanMode($event)"
+                />
+              </div>
+              <div class="col-12 col-xl-6">
+                <h5>{{ t('disciplines') }}</h5>
+                <app-discipline-filter
+                  [disciplines]="disciplines()"
+                  (disciplinesChange)="setDisciplines($event)"
+                  [notDisciplines]="notDisciplines()"
+                  (notDisciplinesChange)="setNotDisciplines($event)"
+                  [showSuperior]="false"
+                  [showAndOr]="true"
+                  [allowExclude]="true"
+                  [mode]="disciplineMode()"
+                  (modeChange)="setDisciplineMode($event)"
+                />
               </div>
             </div>
           </div>
-          <div class="metagame-skeleton__body flex-grow-1 px-3 py-2">
-            <div class="metagame-skeleton__line mb-2"></div>
-            <div class="metagame-skeleton__line metagame-skeleton__line--short mb-2"></div>
-            <div class="metagame-skeleton__line mb-2"></div>
+
+          <div
+            class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2"
+          >
+            <strong class="small text-body-secondary">{{
+              t('results_count', { count: resultCount(), total: totalCount() })
+            }}</strong>
           </div>
-          <div class="metagame-skeleton__footer px-3 py-2 border-top border-opacity-10">
-            <div class="d-flex gap-2">
-              <div class="metagame-skeleton__badge rounded-2"></div>
-              <div class="metagame-skeleton__badge rounded-2"></div>
-            </div>
-          </div>
+          <app-filter-chips
+            [chips]="filterChips()"
+            (remove)="removeFilterChip($event)"
+            (clearAll)="clearFilters()"
+          />
         </div>
       </div>
+
+      @if (isMaintainer && (suggestions$ | async); as suggestions) {
+        @if (suggestions.length) {
+          <div class="container-fluid mb-4">
+            <h4 class="mb-3">{{ t('suggested_archetypes') }}</h4>
+            <div class="row g-3 text-start">
+              @for (archetype of suggestions; track archetype.name) {
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="suggestion h-100">
+                    <app-deck-metagame-card
+                      [archetype]="archetype"
+                      [metaType]="metaTypeControl.value"
+                    />
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
       }
+    }
+
+    @if (loadError()) {
+      <div class="container-fluid text-center py-5">
+        <p class="text-danger mb-3">{{ t('load_error') }}</p>
+        <button type="button" class="btn btn-primary" (click)="retry()">
+          <i class="bi bi-arrow-clockwise me-1"></i>{{ t('retry') }}
+        </button>
+      </div>
+    } @else if (displayedArchetypes(); as archetypes) {
+      @if (archetypes.length) {
+        <div
+          class="container-fluid row g-3 card-deck-archetype text-start mb-3"
+        >
+          @for (
+            archetype of archetypes;
+            track archetype.id;
+            let index = $index
+          ) {
+            <div class="col-12 col-md-6 col-xl-4">
+              <app-deck-metagame-card
+                [archetype]="archetype"
+                [rank]="rankFor(index, archetype)"
+                [metaType]="metaTypeControl.value"
+              />
+            </div>
+          }
+        </div>
+      } @else if (!limit) {
+        <div class="container-fluid text-center py-5">
+          <i class="bi bi-search fs-1 text-body-secondary"></i>
+          <p class="mt-2 mb-3">{{ t('no_results') }}</p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="clearFilters()"
+          >
+            {{ t('clear_filters') }}
+          </button>
+        </div>
       }
-    </div>
+    } @else {
+      <div class="container-fluid row g-3 card-deck-archetype text-start mb-3">
+        @for (item of [].constructor(limit ?? 9); track $index) {
+          <div class="col-12 col-md-6 col-xl-4">
+            <div
+              class="metagame-skeleton rounded-3 h-100 overflow-hidden bg-body d-flex flex-column"
+              aria-hidden="true"
+            >
+              <div class="metagame-skeleton__header px-3 pt-3 pb-2">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="metagame-skeleton__icon rounded-2 me-2"></div>
+                  <div class="flex-grow-1">
+                    <div
+                      class="metagame-skeleton__line metagame-skeleton__line--title mb-1"
+                    ></div>
+                    <div
+                      class="metagame-skeleton__line metagame-skeleton__line--subtitle"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="metagame-skeleton__body flex-grow-1 px-3 py-2">
+                <div class="metagame-skeleton__line mb-2"></div>
+                <div
+                  class="metagame-skeleton__line metagame-skeleton__line--short mb-2"
+                ></div>
+                <div class="metagame-skeleton__line mb-2"></div>
+              </div>
+              <div
+                class="metagame-skeleton__footer px-3 py-2 border-top border-opacity-10"
+              >
+                <div class="d-flex gap-2">
+                  <div class="metagame-skeleton__badge rounded-2"></div>
+                  <div class="metagame-skeleton__badge rounded-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
   </section>
 </ng-container>

@@ -647,9 +647,17 @@ export class ApiDataService {
     )
   }
 
-  getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
+  getDeckArchetype(
+    id: number,
+    metaType?: MetaType,
+  ): Observable<ApiDeckArchetype> {
+    let params = new HttpParams()
+    if (metaType) {
+      params = params.set('metaType', metaType)
+    }
     return this.httpClient.get<ApiDeckArchetype>(
       `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+      { params },
     )
   }
 
