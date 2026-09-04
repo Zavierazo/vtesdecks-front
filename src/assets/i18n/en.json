@@ -795,6 +795,7 @@
     "ascending": "ascending",
     "descending": "descending",
     "clear_all": "Clear all",
+    "clear_search": "Clear search",
     "remove_filter": "Remove {{ filter }}",
     "active_filters": "Active filters",
     "any_title": "Any title",
