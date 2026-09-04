@@ -1458,12 +1458,13 @@
     "column_total_price": "Prix total"
   },
   "search_bar": {
-    "search_placeholder": "Rechercher des decks, des cartes, des utilisateurs...",
+    "search_placeholder": "Rechercher des decks, des cartes, des archétypes, des utilisateurs...",
     "to_select": "pour sélectionner",
     "to_navigate": "pour naviguer",
     "to_close": "pour fermer",
     "no_results": "Aucun résultat trouvé",
     "card_results": "Résultats des cartes",
+    "archetype_results": "Résultats des archétypes",
     "deck_results": "Résultats des decks",
     "user_results": "Résultats des utilisateurs"
   },

@@ -1458,12 +1458,13 @@
     "column_total_price": "Precio total"
   },
   "search_bar": {
-    "search_placeholder": "Buscar mazos, cartas, usuarios...",
+    "search_placeholder": "Buscar mazos, cartas, arquetipos, usuarios...",
     "to_select": "para seleccionar",
     "to_navigate": "para navegar",
     "to_close": "para cerrar",
     "no_results": "No se encontraron resultados",
     "card_results": "Resultados de Cartas",
+    "archetype_results": "Resultados de Arquetipos",
     "deck_results": "Resultados de Mazos",
     "user_results": "Resultados de Usuarios"
   },
