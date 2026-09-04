@@ -11,6 +11,7 @@ import { IndexedDbService } from '@services'
 import {
   getSetAbbrev,
   isCryptTitleInVotesRange,
+  matchesSetSelection,
   searchIncludes,
   trigramSimilarity,
 } from '@utils'
@@ -446,8 +447,8 @@ export class CryptStore {
     if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
-    if (filter.set) {
-      return entity.sets.some((set) => set.startsWith(filter.set + ':'))
+    if (!matchesSetSelection(entity.sets, filter.sets, filter.notSets)) {
+      return false
     }
     if (filter.taints) {
       for (const taint of filter.taints) {

@@ -1,6 +1,7 @@
 import { Params } from '@angular/router'
 import { SearchPresetScope, SearchParams } from '@models'
 import { getValidCardShopNames } from './card-shops'
+import { normalizeSetSelection } from './card-set-filter.utils'
 
 interface SearchBrowserDefinition {
   path: string
@@ -27,7 +28,8 @@ const CRYPT_FILTERS = [
   'predefinedLimitedFormat',
   'printOnDemand',
   'sect',
-  'set',
+  'sets',
+  'notSets',
   'shops',
   'notShops',
   'superiorDisciplines',
@@ -54,7 +56,8 @@ const LIBRARY_FILTERS = [
   'predefinedLimitedFormat',
   'printOnDemand',
   'sect',
-  'set',
+  'sets',
+  'notSets',
   'shops',
   'notShops',
   'taints',
@@ -244,6 +247,14 @@ const normalizeValue = (value: unknown): string | undefined => {
   return `${value}`
 }
 
+const normalizeList = (value: unknown): string[] => [
+  ...new Set(
+    (normalizeValue(value)?.split(',') ?? [])
+      .map((item) => item.trim())
+      .filter(Boolean),
+  ),
+]
+
 export function normalizeSearchParams(
   scope: SearchPresetScope,
   params: Params | SearchParams,
@@ -260,6 +271,14 @@ export function normalizeSearchParams(
     source['shops'] = shops.join(',') || undefined
     source['notShops'] = notShops.join(',') || undefined
     delete source['shop']
+
+    const { sets, notSets } = normalizeSetSelection(
+      normalizeList(source['sets'] ?? source['set']),
+      normalizeList(source['notSets']),
+    )
+    source['sets'] = sets.join(',') || undefined
+    source['notSets'] = notSets.join(',') || undefined
+    delete source['set']
   }
   const normalized: SearchParams = {}
   definition.allowedParams.forEach((key) => {

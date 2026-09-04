@@ -20,6 +20,15 @@
 
 .multi-select-menu {
   min-width: 100%;
+  max-height: min(24rem, calc(100vh - 2rem));
+  overflow-y: auto;
+  scrollbar-color: rgba(var(--bs-body-color-rgb), 0.25)
+    var(--bs-dropdown-bg);
+}
+
+.multi-select-menu::-webkit-scrollbar-track,
+.multi-select-menu::-webkit-scrollbar-corner {
+  background-color: var(--bs-dropdown-bg);
 }
 
 .multi-select-menu[data-popper-placement^='bottom'] {

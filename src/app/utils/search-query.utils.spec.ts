@@ -4,6 +4,7 @@ import {
   normalizeSearchParams,
   searchSignature,
 } from './search-query.utils'
+import { describe, expect, it } from 'vitest'
 
 describe('search query utilities', () => {
   it('normalizes crypt filters and removes defaults and transient params', () => {
@@ -27,6 +28,24 @@ describe('search query utilities', () => {
         notShops: 'GP,EBAY',
       }),
     ).toEqual({ notShops: 'GP,EBAY', shops: 'DTC' })
+  })
+
+  it('canonicalizes set lists and lets exclusions win', () => {
+    expect(
+      normalizeSearchParams('crypt', {
+        sets: 'KoT,HttB,KoT',
+        notSets: 'HttB,Anarchs,HttB',
+      }),
+    ).toEqual({ notSets: 'Anarchs,HttB', sets: 'KoT' })
+  })
+
+  it('migrates the legacy singular set parameter', () => {
+    expect(normalizeSearchParams('library', { set: 'KoT' })).toEqual({
+      sets: 'KoT',
+    })
+    expect(buildSearchPath('library', { set: 'KoT' })).toBe(
+      '/cards/library?sets=KoT',
+    )
   })
 
   it('keeps library filters and non-default sorting', () => {
@@ -79,6 +98,9 @@ describe('search query utilities', () => {
   it('produces deterministic signatures regardless of input order', () => {
     expect(searchSignature('crypt', { name: 'A', clans: 'b' })).toBe(
       searchSignature('crypt', { clans: 'b', name: 'A' }),
+    )
+    expect(searchSignature('crypt', { sets: 'KoT,HttB' })).toBe(
+      searchSignature('crypt', { sets: 'HttB,KoT' }),
     )
   })
 

@@ -51,6 +51,7 @@ import {
   getCardShopName,
   getValidCardShopNames,
   isRegexSearch,
+  normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
@@ -323,8 +324,18 @@ export class LibrarySectionComponent implements OnInit {
         shops: shops.join(',') || undefined,
       })
     }
+    const { sets, notSets } = normalizeSetSelection(
+      queryParams['sets']?.split(',') ??
+        (queryParams['set'] ? [queryParams['set']] : []),
+      queryParams['notSets']?.split(',') ?? [],
+    )
+    this.libraryFilter.sets = sets
+    this.libraryFilter.notSets = notSets
     if (queryParams['set']) {
-      this.libraryFilter.set = queryParams['set']
+      this.updateQueryParams({
+        set: undefined,
+        sets: sets.join(',') || undefined,
+      })
     }
     if (queryParams['title']) {
       this.libraryFilter.title = queryParams['title']
@@ -489,6 +500,7 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
+      ['set']: undefined,
       ['shop']: undefined,
       ['shops']:
         this.libraryFilter.shops && this.libraryFilter.shops.length > 0
@@ -537,7 +549,14 @@ export class LibrarySectionComponent implements OnInit {
           ? this.libraryFilter.notPaths.join(',')
           : undefined,
       ['title']: this.libraryFilter.title || undefined,
-      ['set']: this.libraryFilter.set || undefined,
+      ['sets']:
+        this.libraryFilter.sets && this.libraryFilter.sets.length > 0
+          ? this.libraryFilter.sets.join(',')
+          : undefined,
+      ['notSets']:
+        this.libraryFilter.notSets && this.libraryFilter.notSets.length > 0
+          ? this.libraryFilter.notSets.join(',')
+          : undefined,
       ['bloodCostSlider']:
         isDefaultBloodCost || !Array.isArray(this.libraryFilter.bloodCostSlider)
           ? undefined

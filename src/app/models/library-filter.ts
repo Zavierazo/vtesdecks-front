@@ -23,7 +23,8 @@ export interface LibraryFilter {
   convictionCostSlider?: number[]
   trifle?: 'trifle' | 'non_trifle'
   title?: string
-  set?: string
+  sets?: string[]
+  notSets?: string[]
   taints?: string[]
   cardText?: string
   artist?: string

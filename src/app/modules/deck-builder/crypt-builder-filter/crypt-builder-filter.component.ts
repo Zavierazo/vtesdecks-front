@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,8 +28,8 @@ import {
 } from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CARD_SHOPS, CRYPT_VOTES_RANGE } from '@utils'
-import { tap } from 'rxjs'
+import { CARD_SHOPS, CRYPT_VOTES_RANGE, normalizeSetSelection } from '@utils'
+import { map, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -48,7 +48,6 @@ import { tap } from 'rxjs'
     TitleCasePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,
-    DatePipe,
     SegmentedFilterComponent,
     MultiSelectComponent,
   ],
@@ -69,7 +68,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   votesSliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
-  setControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
   artistControl!: FormControl
@@ -77,7 +75,15 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   titles$ = this.cryptQuery.selectTitles()
   sects$ = this.cryptQuery.selectSects()
   taints$ = this.cryptQuery.selectTaints()
-  sets$ = this.cryptQuery.selectSets()
+  setOptions$ = this.cryptQuery.selectSets().pipe(
+    map((sets) =>
+      sets.map((set) => ({
+        value: set.abbrev,
+        label: `${set.releaseDate ? `${new Date(set.releaseDate).getFullYear()} - ` : ''}${set.fullName}`,
+        shortLabel: set.abbrev,
+      })),
+    ),
+  )
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
     (shop) => ({
@@ -137,7 +143,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeCapacitySlider()
     this.onChangeVotesSlider()
     this.onChangeTitle()
-    this.onChangeSet()
     this.onChangeSect()
     this.onChangeTaint()
     this.onChangeCardText()
@@ -201,6 +206,16 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   onChangeShopAvailability(selection: MultiSelectSelection) {
     this.filter.shops = selection.selected
     this.filter.notShops = selection.excluded
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSetSelection(selection: MultiSelectSelection) {
+    const { sets, notSets } = normalizeSetSelection(
+      selection.selected,
+      selection.excluded,
+    )
+    this.filter.sets = sets
+    this.filter.notSets = notSets
     this.filterChange.emit(this.filter)
   }
 
@@ -320,19 +335,6 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.title = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSet() {
-    this.setControl = new FormControl(this.filter.set)
-    this.setControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.set = value
           this.filterChange.emit(this.filter)
         }),
       )

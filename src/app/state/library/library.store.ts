@@ -8,7 +8,12 @@ import {
   LibrarySortBy,
 } from '@models'
 import { IndexedDbService } from '@services'
-import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
+import {
+  getSetAbbrev,
+  matchesSetSelection,
+  searchIncludes,
+  trigramSimilarity,
+} from '@utils'
 import { map, Observable, shareReplay } from 'rxjs'
 
 export interface LibraryStats {
@@ -423,8 +428,8 @@ export class LibraryStore {
         return false
       }
     }
-    if (filter.set) {
-      return entity.sets.some((set) => set.startsWith(filter.set + ':'))
+    if (!matchesSetSelection(entity.sets, filter.sets, filter.notSets)) {
+      return false
     }
     if (filter.bloodCostSlider) {
       const bloodCostMin = filter.bloodCostSlider[0]

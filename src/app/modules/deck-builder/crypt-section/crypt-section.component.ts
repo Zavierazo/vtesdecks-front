@@ -52,6 +52,7 @@ import {
   getCardShopName,
   getValidCardShopNames,
   isRegexSearch,
+  normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
@@ -325,8 +326,18 @@ export class CryptSectionComponent implements OnInit {
         shops: shops.join(',') || undefined,
       })
     }
+    const { sets, notSets } = normalizeSetSelection(
+      queryParams['sets']?.split(',') ??
+        (queryParams['set'] ? [queryParams['set']] : []),
+      queryParams['notSets']?.split(',') ?? [],
+    )
+    this.cryptFilter.sets = sets
+    this.cryptFilter.notSets = notSets
     if (queryParams['set']) {
-      this.cryptFilter.set = queryParams['set']
+      this.updateQueryParams({
+        set: undefined,
+        sets: sets.join(',') || undefined,
+      })
     }
     if (queryParams['title']) {
       this.cryptFilter.title = queryParams['title']
@@ -481,6 +492,7 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter.votesSlider[1] === CRYPT_VOTES_RANGE[1]
     this.updateQueryParams({
       ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
+      ['set']: undefined,
       ['shop']: undefined,
       ['shops']:
         this.cryptFilter.shops && this.cryptFilter.shops.length > 0
@@ -528,7 +540,14 @@ export class CryptSectionComponent implements OnInit {
           : this.cryptFilter.votesSlider.join(','),
       ['advanced']: this.cryptFilter.advanced || undefined,
       ['title']: this.cryptFilter.title || undefined,
-      ['set']: this.cryptFilter.set || undefined,
+      ['sets']:
+        this.cryptFilter.sets && this.cryptFilter.sets.length > 0
+          ? this.cryptFilter.sets.join(',')
+          : undefined,
+      ['notSets']:
+        this.cryptFilter.notSets && this.cryptFilter.notSets.length > 0
+          ? this.cryptFilter.notSets.join(',')
+          : undefined,
       ['sect']: this.cryptFilter.sect || undefined,
       ['paths']:
         this.cryptFilter.paths && this.cryptFilter.paths.length > 0

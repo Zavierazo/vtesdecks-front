@@ -26,7 +26,8 @@ const cryptDefaults: CryptFilter = {
   sect: '',
   paths: [],
   notPaths: [],
-  set: '',
+  sets: [],
+  notSets: [],
   taints: [],
   cardText: '',
   artist: '',
@@ -50,7 +51,8 @@ const libraryDefaults: LibraryFilter = {
   sect: '',
   paths: [],
   notPaths: [],
-  set: '',
+  sets: [],
+  notSets: [],
   taints: [],
   cardText: '',
   artist: '',
@@ -60,6 +62,36 @@ const chipFor = (chips: FilterChip[], key: string) =>
   chips.find((chip) => chip.key === key)
 
 describe('buildCryptFilterChips', () => {
+  it('creates removable chips for included and excluded sets', () => {
+    const chips = buildCryptFilterChips(
+      { ...cryptDefaults, sets: ['KoT'], notSets: ['HttB'] },
+      cryptDefaults,
+      t,
+    )
+
+    expect(chipFor(chips, 'sets')).toEqual({
+      id: 'sets:KoT',
+      key: 'sets',
+      item: 'KoT',
+      label: '[crypt_builder_filter.set]',
+      value: 'KoT',
+    })
+    expect(chipFor(chips, 'notSets')).toEqual({
+      id: 'notSets:HttB',
+      key: 'notSets',
+      item: 'HttB',
+      label: '[crypt_builder_filter.set_exclude]',
+      value: 'HttB',
+    })
+    expect(
+      removeCardFilterChip(
+        { ...cryptDefaults, sets: ['KoT'], notSets: ['HttB'] },
+        cryptDefaults,
+        chipFor(chips, 'sets')!,
+      ).sets,
+    ).toEqual([])
+  })
+
   it('creates removable chips for included and excluded shops', () => {
     const chips = buildCryptFilterChips(
       { ...cryptDefaults, shops: ['DTC'], notShops: ['EBAY'] },

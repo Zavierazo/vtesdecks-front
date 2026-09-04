@@ -213,19 +213,16 @@
     </div>
   }
   @if (showSet) {
-    <div class="row g-1 form-floating mt-2">
-      <select class="form-select" id="set" [formControl]="setControl">
-        <option selected></option>
-        @for (set of sets$ | async; track set) {
-          <option [value]="set.abbrev">
-            @if (set.releaseDate) {
-              {{ set.releaseDate | date: 'yyyy' }} -
-            }
-            {{ set.fullName }}
-          </option>
-        }
-      </select>
-      <label for="set">{{ t('set') }}</label>
+    <div class="mt-2">
+      <app-multi-select
+        [options]="(setOptions$ | async) ?? []"
+        [selected]="filter.sets ?? []"
+        [excluded]="filter.notSets ?? []"
+        [allowExclude]="true"
+        controlId="sets"
+        [label]="t('set')"
+        (selectionChange)="onChangeSetSelection($event)"
+      />
     </div>
   }
   <div class="row g-1 form-floating mt-2">

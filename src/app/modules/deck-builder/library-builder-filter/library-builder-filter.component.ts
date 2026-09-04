@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,8 +28,8 @@ import {
 } from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
-import { CARD_SHOPS } from '@utils'
-import { tap } from 'rxjs'
+import { CARD_SHOPS, normalizeSetSelection } from '@utils'
+import { map, tap } from 'rxjs'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
 @UntilDestroy()
@@ -50,7 +50,6 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     TitleCasePipe,
     TranslocoFallbackPipe,
     TranslocoPipe,
-    DatePipe,
     SegmentedFilterComponent,
     MultiSelectComponent,
   ],
@@ -68,7 +67,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   predefinedLimitedFormatControl!: FormControl
   sectControl!: FormControl
   titleControl!: FormControl
-  setControl!: FormControl
   bloodCostSliderControl!: FormControl
   poolCostSliderControl!: FormControl
   convictionCostSliderControl!: FormControl
@@ -79,7 +77,15 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   sects$ = this.libraryQuery.selectSects()
   titles$ = this.libraryQuery.selectTitles()
   taints$ = this.libraryQuery.selectTaints()
-  sets$ = this.libraryQuery.selectSets()
+  setOptions$ = this.libraryQuery.selectSets().pipe(
+    map((sets) =>
+      sets.map((set) => ({
+        value: set.abbrev,
+        label: `${set.releaseDate ? `${new Date(set.releaseDate).getFullYear()} - ` : ''}${set.fullName}`,
+        shortLabel: set.abbrev,
+      })),
+    ),
+  )
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
   readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
     (shop) => ({
@@ -114,7 +120,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeLimitedFormat()
     this.onChangeSect()
     this.onChangeTitle()
-    this.onChangeSet()
     this.onChangeBloodCostSlider()
     this.onChangePoolCostSlider()
     this.onChangeConvictionCostSlider()
@@ -201,6 +206,16 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
     this.filterChange.emit(this.filter)
   }
 
+  onChangeSetSelection(selection: MultiSelectSelection) {
+    const { sets, notSets } = normalizeSetSelection(
+      selection.selected,
+      selection.excluded,
+    )
+    this.filter.sets = sets
+    this.filter.notSets = notSets
+    this.filterChange.emit(this.filter)
+  }
+
   onChangeLimitedFormat() {
     this.limitedFormatControl = new FormControl(this.filter.limitedFormat)
     this.limitedFormatControl.valueChanges
@@ -249,19 +264,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.title = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSet() {
-    this.setControl = new FormControl(this.filter.set)
-    this.setControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.set = value
           this.filterChange.emit(this.filter)
         }),
       )

@@ -1,6 +1,7 @@
 export * from './advent-utils'
 export * from './card-filter-chips.utils'
 export * from './card-filter.utils'
+export * from './card-set-filter.utils'
 export * from './card-shops'
 export * from './crypt-votes.utils'
 export * from './clans'

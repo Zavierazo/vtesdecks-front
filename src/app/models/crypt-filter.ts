@@ -21,7 +21,8 @@ export interface CryptFilter {
   sect?: string
   paths?: string[]
   notPaths?: string[]
-  set?: string
+  sets?: string[]
+  notSets?: string[]
   taints?: string[]
   cardText?: string
   artist?: string
