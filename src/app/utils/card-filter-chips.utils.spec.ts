@@ -20,6 +20,7 @@ const cryptDefaults: CryptFilter = {
   disciplineMode: 'and',
   groupSlider: [1, 7],
   capacitySlider: [1, 11],
+  votesSlider: [0, 4],
   advanced: undefined,
   title: '',
   sect: '',
@@ -179,6 +180,29 @@ describe('buildCryptFilterChips', () => {
       label: '[crypt_builder_filter.not_paths]',
       value: '[vtes.path.power]',
     })
+  })
+
+  it('chips and resets a narrowed votes range', () => {
+    const chips = buildCryptFilterChips(
+      { ...cryptDefaults, votesSlider: [2, 4] },
+      cryptDefaults,
+      t,
+    )
+    const chip = chipFor(chips, 'votesSlider')!
+
+    expect(chip).toEqual({
+      id: 'votesSlider',
+      key: 'votesSlider',
+      label: '[crypt_builder_filter.votes]',
+      value: '2–4',
+    })
+    expect(
+      removeCardFilterChip(
+        { ...cryptDefaults, votesSlider: [2, 4] },
+        cryptDefaults,
+        chip,
+      ).votesSlider,
+    ).toEqual([0, 4])
   })
 
   it('labels the no-path sentinel as not required', () => {

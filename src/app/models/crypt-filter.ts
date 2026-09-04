@@ -16,6 +16,7 @@ export interface CryptFilter {
   groupSlider?: number[]
   advanced?: 'base' | 'advanced'
   capacitySlider?: number[]
+  votesSlider?: number[]
   title?: string
   sect?: string
   paths?: string[]

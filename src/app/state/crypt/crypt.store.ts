@@ -8,7 +8,12 @@ import {
   CryptSortBy,
 } from '@models'
 import { IndexedDbService } from '@services'
-import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
+import {
+  getSetAbbrev,
+  isCryptTitleInVotesRange,
+  searchIncludes,
+  trigramSimilarity,
+} from '@utils'
 import { map, Observable, shareReplay } from 'rxjs'
 
 export interface CryptStats {
@@ -400,6 +405,12 @@ export class CryptStore {
       if (entity.capacity < capacityMin || entity.capacity > capacityMax) {
         return false
       }
+    }
+    if (
+      filter.votesSlider &&
+      !isCryptTitleInVotesRange(entity.title, filter.votesSlider)
+    ) {
+      return false
     }
     if (filter.advanced === 'base' && entity.adv) {
       return false

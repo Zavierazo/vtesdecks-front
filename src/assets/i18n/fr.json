@@ -58,6 +58,7 @@
     "disciplines": "Disciplines",
     "group": "Groupe",
     "capacity": "Capacité",
+    "votes": "Votes",
     "version": "Version",
     "advanced_any": "Indifférent",
     "advanced_base": "Base",
@@ -746,6 +747,7 @@
       "superiorDisciplines": "Disciplines supérieures",
       "taints": "Traits",
       "title": "Titre",
+      "votes": "Votes",
       "trifle": "Trifle",
       "typeMode": "Correspondance des types",
       "year": "Année"

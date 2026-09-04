@@ -10,7 +10,7 @@ import {
 } from '@models'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { SetQuery } from '@state/set/set.query'
-import { getSetAbbrev } from '@utils'
+import { CRYPT_VOTES_RANGE, getSetAbbrev } from '@utils'
 import { Observable, switchMap } from 'rxjs'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({
@@ -258,6 +258,7 @@ export class CryptQuery {
       groupSlider: [1, this.getMaxGroup()],
       advanced: undefined,
       capacitySlider: [1, this.getMaxCapacity()],
+      votesSlider: [...CRYPT_VOTES_RANGE],
       title: '',
       sect: '',
       paths: [],

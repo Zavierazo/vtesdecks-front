@@ -179,6 +179,22 @@
       }
     </div>
   </div>
+  <div class="row g-1 mt-2">
+    <label for="votes" class="form-label text-primary fw-bold">{{
+      t('votes')
+    }}</label>
+    <ngx-slider
+      id="votes"
+      [options]="{
+        floor: minVotes,
+        ceil: maxVotes,
+        step: 1,
+        showTicks: true,
+        showTicksValues: true,
+      }"
+      [formControl]="votesSliderControl"
+    />
+  </div>
   @if (filter.limitedFormat === undefined) {
     <div class="row g-1 form-floating mt-2">
       <select

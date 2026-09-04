@@ -33,6 +33,7 @@ const CRYPT_FILTERS = [
   'superiorDisciplines',
   'taints',
   'title',
+  'votes',
 ] as const
 
 const LIBRARY_FILTERS = [
@@ -122,6 +123,7 @@ const definitions: Record<SearchPresetScope, SearchBrowserDefinition> = {
       disciplineMode: 'and',
       group: '1,7',
       capacity: '1,11',
+      votes: '0,4',
     },
     allowedValues: {
       sortBy: new Set([

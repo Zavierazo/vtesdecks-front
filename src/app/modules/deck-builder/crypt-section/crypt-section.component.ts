@@ -47,6 +47,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   buildCryptFilterChips,
+  CRYPT_VOTES_RANGE,
   filterCardsByShopAvailability,
   getCardShopName,
   getValidCardShopNames,
@@ -368,6 +369,11 @@ export class CryptSectionComponent implements OnInit {
         .split(',')
         .map((v: string) => +v)
     }
+    if (queryParams['votes']) {
+      this.cryptFilter.votesSlider = queryParams['votes']
+        .split(',')
+        .map((v: string) => +v)
+    }
     if (
       queryParams['advanced'] === 'base' ||
       queryParams['advanced'] === 'advanced'
@@ -469,6 +475,10 @@ export class CryptSectionComponent implements OnInit {
       Array.isArray(this.cryptFilter.capacitySlider) &&
       this.cryptFilter.capacitySlider[0] === 1 &&
       this.cryptFilter.capacitySlider[1] === this.cryptQuery.getMaxCapacity()
+    const isDefaultVotes =
+      Array.isArray(this.cryptFilter.votesSlider) &&
+      this.cryptFilter.votesSlider[0] === CRYPT_VOTES_RANGE[0] &&
+      this.cryptFilter.votesSlider[1] === CRYPT_VOTES_RANGE[1]
     this.updateQueryParams({
       ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
       ['shop']: undefined,
@@ -512,6 +522,10 @@ export class CryptSectionComponent implements OnInit {
         isDefaultCapacity || !Array.isArray(this.cryptFilter.capacitySlider)
           ? undefined
           : this.cryptFilter.capacitySlider.join(','),
+      ['votes']:
+        isDefaultVotes || !Array.isArray(this.cryptFilter.votesSlider)
+          ? undefined
+          : this.cryptFilter.votesSlider.join(','),
       ['advanced']: this.cryptFilter.advanced || undefined,
       ['title']: this.cryptFilter.title || undefined,
       ['set']: this.cryptFilter.set || undefined,

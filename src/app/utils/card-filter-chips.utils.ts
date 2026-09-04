@@ -189,6 +189,7 @@ export function buildCryptFilterChips(
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('groupSlider', `${scope}group`)
     .range('capacitySlider', `${scope}capacity`)
+    .range('votesSlider', `${scope}votes`)
     .scalar('advanced', `${scope}version`, enumLabel(`${scope}advanced_`))
     .scalar('title', `${scope}title`, cryptTitleLabel)
     .scalar('sect', `${scope}sect`)

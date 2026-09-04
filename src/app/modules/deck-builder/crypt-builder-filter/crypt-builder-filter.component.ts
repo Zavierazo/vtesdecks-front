@@ -28,7 +28,7 @@ import {
 } from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { CARD_SHOPS } from '@utils'
+import { CARD_SHOPS, CRYPT_VOTES_RANGE } from '@utils'
 import { tap } from 'rxjs'
 
 @UntilDestroy()
@@ -66,6 +66,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   predefinedLimitedFormatControl!: FormControl
   groupSliderControl!: FormControl
   capacitySliderControl!: FormControl
+  votesSliderControl!: FormControl
   titleControl!: FormControl
   sectControl!: FormControl
   setControl!: FormControl
@@ -87,6 +88,8 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   )
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
+  readonly minVotes = CRYPT_VOTES_RANGE[0]
+  readonly maxVotes = CRYPT_VOTES_RANGE[1]
   initialized = false
 
   readonly advancedOptions: SegmentedFilterOption[] = [
@@ -132,6 +135,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeLimitedFormat()
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
+    this.onChangeVotesSlider()
     this.onChangeTitle()
     this.onChangeSet()
     this.onChangeSect()
@@ -290,6 +294,19 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.capacitySlider = value
+          this.filterChange.emit(this.filter)
+        }),
+      )
+      .subscribe()
+  }
+
+  onChangeVotesSlider() {
+    this.votesSliderControl = new FormControl(this.filter.votesSlider)
+    this.votesSliderControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        tap((value) => {
+          this.filter.votesSlider = value
           this.filterChange.emit(this.filter)
         }),
       )

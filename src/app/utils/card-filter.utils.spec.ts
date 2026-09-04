@@ -13,6 +13,7 @@ describe('isDefaultCardFilter', () => {
     disciplineMode: 'and',
     groupSlider: [1, 7],
     capacitySlider: [1, 11],
+    votesSlider: [0, 4],
     title: '',
     sect: '',
     paths: [],

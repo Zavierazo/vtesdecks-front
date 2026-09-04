@@ -42,6 +42,22 @@ describe('search query utilities', () => {
     )
   })
 
+  it('keeps a narrowed crypt votes range and removes the default range', () => {
+    expect(
+      normalizeSearchParams('crypt', {
+        votes: '2,4',
+      }),
+    ).toEqual({ votes: '2,4' })
+    expect(
+      normalizeSearchParams('crypt', {
+        votes: [0, 4],
+      }),
+    ).toEqual({})
+    expect(buildSearchPath('crypt', { votes: [1, 3] })).toBe(
+      '/cards/crypt?votes=1%2C3',
+    )
+  })
+
   it('supports all reusable deck-only filters but not local UI state', () => {
     expect(
       normalizeSearchParams('decks', {
