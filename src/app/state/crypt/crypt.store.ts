@@ -10,7 +10,6 @@ import {
 import { IndexedDbService } from '@services'
 import {
   getSetAbbrev,
-  isCryptTitleInVotesRange,
   matchesSetSelection,
   searchIncludes,
   trigramSimilarity,
@@ -409,7 +408,8 @@ export class CryptStore {
     }
     if (
       filter.votesSlider &&
-      !isCryptTitleInVotesRange(entity.title, filter.votesSlider)
+      (entity.votes < filter.votesSlider[0] ||
+        entity.votes > filter.votesSlider[1])
     ) {
       return false
     }

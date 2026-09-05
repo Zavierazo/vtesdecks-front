@@ -27,6 +27,7 @@ describe('CryptStore set filtering', () => {
         sets: ['KoT:C'],
         text: 'Alpha',
         title: 'prince',
+        votes: 3,
         sect: 'Camarilla',
       } as ApiCrypt,
       {
@@ -34,9 +35,16 @@ describe('CryptStore set filtering', () => {
         sets: ['KoT:C', 'HttB:R'],
         text: 'Beta',
         title: 'baron',
+        votes: 1,
         sect: 'Anarch',
       } as ApiCrypt,
-      { id: 3, sets: ['Anarchs:C'], text: 'Beta', sect: '' } as ApiCrypt,
+      {
+        id: 3,
+        sets: ['Anarchs:C'],
+        text: 'Beta',
+        votes: 0,
+        sect: '',
+      } as ApiCrypt,
     ])
   })
 
@@ -68,5 +76,11 @@ describe('CryptStore set filtering', () => {
     expect(store.getEntities({ titles: ['none'] }).map(({ id }) => id)).toEqual(
       [3],
     )
+  })
+
+  it('filters by the vote count supplied by the API', () => {
+    expect(
+      store.getEntities({ votesSlider: [2, 3] }).map(({ id }) => id),
+    ).toEqual([1])
   })
 })

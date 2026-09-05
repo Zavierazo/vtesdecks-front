@@ -5,12 +5,13 @@ import {
   ApiCrypt,
   ApiDisciplineStat,
   ApiSet,
+  CRYPT_VOTES_RANGE,
   CryptFilter,
   CryptSortBy,
 } from '@models'
 import { toObservable } from '@angular/core/rxjs-interop'
 import { SetQuery } from '@state/set/set.query'
-import { CRYPT_VOTES_RANGE, getSetAbbrev } from '@utils'
+import { getSetAbbrev } from '@utils'
 import { Observable, switchMap } from 'rxjs'
 import { CryptStats, CryptStore } from './crypt.store'
 @Injectable({

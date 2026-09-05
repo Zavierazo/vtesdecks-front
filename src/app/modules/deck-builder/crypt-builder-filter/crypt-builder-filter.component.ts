@@ -14,7 +14,7 @@ import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.compon
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
-import { CryptFilter } from '@models'
+import { CRYPT_VOTES_RANGE, CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import {
@@ -30,7 +30,6 @@ import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   CARD_SHOPS,
-  CRYPT_VOTES_RANGE,
   normalizeMultiSelectValues,
   normalizeSetSelection,
 } from '@utils'

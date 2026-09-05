@@ -20,7 +20,13 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import {
+  ApiCard,
+  ApiCrypt,
+  CRYPT_VOTES_RANGE,
+  CryptFilter,
+  CryptSortBy,
+} from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
@@ -47,7 +53,6 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   buildCryptFilterChips,
-  CRYPT_VOTES_RANGE,
   filterCardsByShopAvailability,
   getCardShopName,
   getValidCardShopNames,

@@ -1,5 +1,7 @@
 import { ApiDeckLimitedFormat } from './api-deck-limited-format'
 
+export const CRYPT_VOTES_RANGE = [0, 4] as const
+
 export interface CryptFilter {
   printOnDemand?: boolean
   shops?: string[]
