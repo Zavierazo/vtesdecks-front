@@ -48,6 +48,10 @@
                     @if(deck.user.user) {
                     <app-user-follow-button [username]="deck.user.user" />
                     }
+                    @if (deck.user.achievementBadges?.length) {
+                      <app-achievement-badges class="w-100" [featured]="true"
+                        [badges]="deck.user.achievementBadges!" />
+                    }
                     }@else {
                     <b>{{ t('created_by') }}: </b>
                     <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{

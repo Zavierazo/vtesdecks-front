@@ -81,6 +81,86 @@
       </div>
     </div>
 
+    <!-- Achievements Section -->
+    <div class="col-12 mb-4" id="achievements">
+      <div class="card achievement-gallery">
+        <div class="card-header">
+          <h4 class="mb-0"><i class="bi bi-trophy me-2"></i>{{ 'achievements.title' | transloco }}</h4>
+        </div>
+        <div class="card-body">
+          @if (isOwner()) {
+            <div class="alert alert-info d-flex align-items-center gap-2 py-2 px-3 small" role="note">
+              <i class="bi bi-clock-history flex-shrink-0" aria-hidden="true"></i>
+              <span>{{ 'achievements.update_notice' | transloco }}</span>
+            </div>
+          }
+          @if (achievementsLoading()) {
+            <div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>
+          } @else if (displayedAchievements().length === 0) {
+            <p class="text-muted text-center mb-0 py-3">{{ 'achievements.empty' | transloco }}</p>
+          } @else {
+            <div class="row g-3">
+              @for (family of displayedAchievements(); track family.id; let achievementIndex = $index) {
+                @let earned = highestEarned(family);
+                <div class="col-12 col-md-6 col-xl-4"
+                  [class.d-none]="!isOwner() && achievementIndex >= 3 && !achievementsExpanded()">
+                  <div class="achievement-card h-100" [class.locked]="!earned">
+                    <div class="achievement-medal" [class]="'achievement-medal ' + family.id">
+                      <i class="bi" [class]="'bi ' + family.icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                      <h5 class="fs-6 mb-1">{{ 'achievements.family.' + family.id | transloco }}</h5>
+                      <p class="small text-muted mb-2">{{ 'achievements.description.' + family.id | transloco }}</p>
+                      @if (family.repeatCount) {
+                        <span class="badge text-bg-warning">×{{ family.repeatCount }}</span>
+                      } @else if (earned) {
+                        <span class="badge text-bg-secondary">{{ 'achievements.tier' | transloco: { count: earned.threshold } }}</span>
+                      }
+                      @if (isOwner() && family.nextThreshold) {
+                        <div class="progress mt-2" role="progressbar"
+                          [attr.aria-valuenow]="family.progress" [attr.aria-valuemax]="family.nextThreshold">
+                          <div class="progress-bar" [style.width.%]="progressPercent(family)"></div>
+                        </div>
+                        <div class="small text-muted mt-1">{{ 'achievements.progress' | transloco: { current: family.progress, target: family.nextThreshold } }}</div>
+                      }
+                      @if (family.tiers.length || (family.earnedDates?.length ?? 0) > 1) {
+                        <details class="small mt-2">
+                          <summary>{{ 'achievements.history' | transloco }}</summary>
+                          <ul class="list-unstyled mb-0 mt-1 text-muted">
+                            @if (family.repeatCount) {
+                              @for (date of family.earnedDates ?? []; track date) {
+                                <li>{{ date | date:'MMMM y':'UTC' }}</li>
+                              }
+                            } @else {
+                              @for (tier of family.tiers; track tier.id) {
+                                @if (tier.earned) { <li>{{ 'achievements.tier' | transloco: { count: tier.threshold } }}</li> }
+                              }
+                            }
+                          </ul>
+                        </details>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+            @if (!isOwner() && additionalAchievementsCount() > 0) {
+              <div class="text-center mt-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary"
+                  [attr.aria-expanded]="achievementsExpanded()"
+                  (click)="achievementsExpanded.set(!achievementsExpanded())">
+                  <i class="bi me-1" [class.bi-chevron-down]="!achievementsExpanded()"
+                    [class.bi-chevron-up]="achievementsExpanded()" aria-hidden="true"></i>
+                  {{ (achievementsExpanded() ? 'achievements.show_less' : 'achievements.show_more') |
+                    transloco: { count: additionalAchievementsCount() } }}
+                </button>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
     <!-- Decks Section -->
     <div class="col-12 mb-4">
       <div class="card">

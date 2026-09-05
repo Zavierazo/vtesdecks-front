@@ -1,4 +1,4 @@
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common'
+import { AsyncPipe, DatePipe, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,13 +13,14 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiCollection, ApiDeck, ApiPublicUser } from '@models'
+import { ApiAchievementFamily, ApiCollection, ApiDeck, ApiPublicUser } from '@models'
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
+import { AuthQuery } from '@state/auth/auth.query'
 import { isSupporter } from '@utils'
 import { catchError, Observable, of, tap } from 'rxjs'
 import { CollectionApiDataService } from '../../collection/services/collection-api.data.service'
@@ -41,6 +42,7 @@ import { DeckCardComponent } from '../../deck-card/deck-card.component'
     UserFollowButtonComponent,
     NgbPopover,
     NgTemplateOutlet,
+    DatePipe,
   ],
 })
 export class UserPublicProfileComponent implements OnInit {
@@ -52,6 +54,7 @@ export class UserPublicProfileComponent implements OnInit {
   private apiDataService = inject(ApiDataService)
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
+  private authQuery = inject(AuthQuery)
 
   username = signal<string>('')
   user = signal<ApiPublicUser | undefined>(undefined)
@@ -64,6 +67,21 @@ export class UserPublicProfileComponent implements OnInit {
   collection = signal<ApiCollection | undefined>(undefined)
   collectionLoading = signal<boolean>(false)
   wishlistAvailable = signal<boolean>(false)
+  achievements = signal<ApiAchievementFamily[]>([])
+  achievementsLoading = signal(false)
+  achievementsExpanded = signal(false)
+  isOwner = computed(() => this.authQuery.getUser() === this.username())
+  displayedAchievements = computed(() => {
+    const achievements = this.achievements()
+    if (!this.isOwner()) return achievements
+    return [
+      ...achievements.filter((family) => family.tiers.some((tier) => tier.earned)),
+      ...achievements.filter((family) => !family.tiers.some((tier) => tier.earned)),
+    ]
+  })
+  additionalAchievementsCount = computed(() =>
+    Math.max(0, this.displayedAchievements().length - 3),
+  )
 
   ngOnInit() {
     this.loading$ = this.decksQuery.selectLoading()
@@ -74,11 +92,37 @@ export class UserPublicProfileComponent implements OnInit {
       const username = params['username']
       if (username) {
         this.username.set(username)
+        this.achievementsExpanded.set(false)
         this.loadUserData(username)
         this.loadUserDecks(username)
         this.loadUserBinders(username)
         this.loadUserWishlist(username)
+        this.loadAchievements(username)
       }
+    })
+  }
+
+  highestEarned(family: ApiAchievementFamily) {
+    return family.tiers.filter((tier) => tier.earned).at(-1)
+  }
+
+  progressPercent(family: ApiAchievementFamily): number {
+    if (!family.nextThreshold || family.progress === undefined) return 100
+    const previous = this.highestEarned(family)?.threshold ?? 0
+    return Math.min(100, Math.max(0, ((family.progress - previous) / (family.nextThreshold - previous)) * 100))
+  }
+
+  private loadAchievements(username: string) {
+    this.achievementsLoading.set(true)
+    const request = this.authQuery.getUser() === username
+      ? this.apiDataService.getMyAchievements()
+      : this.apiDataService.getPublicUserAchievements(username)
+    request.pipe(untilDestroyed(this)).subscribe({
+      next: (achievements) => {
+        this.achievements.set(achievements)
+        this.achievementsLoading.set(false)
+      },
+      error: () => this.achievementsLoading.set(false),
     })
   }
 

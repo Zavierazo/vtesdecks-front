@@ -1,0 +1,15 @@
+<span class="achievement-badges" [class.achievement-badges--featured]="featured()"
+  [attr.aria-label]="'achievements.badges' | transloco">
+  @for (badge of badges(); track badge.achievementId + (badge.count ?? 0)) {
+    <span class="achievement-badge" [ngClass]="badge.family"
+      [attr.aria-label]="('achievements.family.' + badge.family | transloco) + (badge.count ? ' ×' + badge.count : '')"
+      [title]="('achievements.family.' + badge.family | transloco) + (badge.count ? ' ×' + badge.count : '')">
+      <span class="achievement-badge__medal"><i class="bi" [ngClass]="badge.icon" aria-hidden="true"></i></span>
+      @if (badge.count) {
+        <span class="achievement-badge__value">×{{ badge.count }}</span>
+      } @else if (featured()) {
+        <span class="achievement-badge__value">{{ badge.tier }}</span>
+      }
+    </span>
+  }
+</span>

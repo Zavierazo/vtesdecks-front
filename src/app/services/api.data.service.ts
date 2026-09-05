@@ -27,6 +27,7 @@ import {
   ApiPushConfig,
   ApiPushSubscription,
   ApiPublicUser,
+  ApiAchievementFamily,
   ApiResetPassword,
   ApiResponse,
   ApiSearchResponse,
@@ -726,6 +727,18 @@ export class ApiDataService {
   getPublicUser(username: string): Observable<ApiPublicUser> {
     return this.httpClient.get<ApiPublicUser>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
+    )
+  }
+
+  getPublicUserAchievements(username: string): Observable<ApiAchievementFamily[]> {
+    return this.httpClient.get<ApiAchievementFamily[]>(
+      `${environment.api.baseUrl}${this.publicUserPath}/${username}/achievements`,
+    )
+  }
+
+  getMyAchievements(): Observable<ApiAchievementFamily[]> {
+    return this.httpClient.get<ApiAchievementFamily[]>(
+      `${environment.api.baseUrl}/user/achievements`,
     )
   }
 

@@ -1518,6 +1518,12 @@
     "you_save": "Você economiza",
     "singles_cheapest": "Comprar cartas avulsas já é a opção mais barata"
   },
+  "achievements": {
+    "title": "Conquistas", "badges": "Emblemas de conquistas", "empty": "Ainda não há conquistas obtidas.", "update_notice": "Algumas conquistas não são avaliadas imediatamente e podem demorar até uma hora a atualizar.",
+    "tier": "Marco {{count}}", "progress": "{{current}} de {{target}}", "history": "Histórico obtido", "show_more": "Mostrar mais {{count}}", "show_less": "Mostrar menos",
+    "family": { "published_decks": "Construtor de decks", "deck_comments": "Voz da comunidade", "deck_appreciation": "Apreciação de decks", "community_favorite": "Favorito da comunidade", "followers": "Reunindo seguidores", "conversation_starter": "Iniciador de conversas", "standout_deck": "Deck em destaque", "consistent_contributor": "Colaborador constante", "collection_cards": "Colecionador de cartas", "anniversary": "Aniversário", "monthly_gold": "Utilizador do mês", "monthly_silver": "Segundo lugar mensal", "monthly_bronze": "Pódio mensal" },
+    "description": { "published_decks": "Publique decks da comunidade.", "deck_comments": "Comente em decks de jogadores diferentes.", "deck_appreciation": "Receba apreciação de jogadores diferentes.", "community_favorite": "Faça jogadores diferentes guardarem os seus decks.", "followers": "Aumente a sua comunidade de seguidores.", "conversation_starter": "Atraia diferentes comentadores aos seus decks.", "standout_deck": "Receba apreciação num único deck.", "consistent_contributor": "Some uma vez por cada mês com um deck publicado ou comentário.", "collection_cards": "Adicione cartas à sua coleção.", "anniversary": "Some uma vez por cada ano completo na comunidade.", "monthly_gold": "Termine em primeiro num ranking mensal.", "monthly_silver": "Termine em segundo num ranking mensal.", "monthly_bronze": "Termine em terceiro num ranking mensal." }
+  },
   "embed": {
     "title": "Incorporar deck",
     "theme": "Tema",

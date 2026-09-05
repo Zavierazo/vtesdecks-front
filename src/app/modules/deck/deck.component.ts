@@ -62,6 +62,7 @@ import {
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { AchievementBadgesComponent } from '@shared/components/achievement-badges/achievement-badges.component'
 import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
@@ -92,6 +93,7 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AchievementBadgesComponent,
     LoadingComponent,
     TranslocoDirective,
     NgbDropdown,

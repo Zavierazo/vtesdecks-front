@@ -87,6 +87,10 @@ Crypt, Library, and Deck browser URLs are normalized through `search-query.utils
 
 Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`, support per-shop include/exclude selection, and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`. Multiple included shops use union semantics and excluded shops are subtracted; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.
 
+### Achievements
+
+The backend owns the achievement catalog and permanently records earned tiers. Repeatable families store one occurrence and expose a multiplier; milestone families expose their highest earned tier. Public profiles load earned achievement families from `/public/user/{username}/achievements`; owners load the full catalog and progress from `/user/achievements`. `ApiPublicUser.achievementBadges` is the compact, server-prioritized top-three list used on the full deck view, not on deck cards. Frontend components must use stable family IDs for translations and presentation and must not independently decide whether an achievement has been earned.
+
 ---
 
 ## Directory Map
