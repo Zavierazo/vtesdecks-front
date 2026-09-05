@@ -32,59 +32,67 @@
                   <h3 class="deck-title fw-bold mb-0">{{ deck.name | titlecase }}</h3>
                 </div>
                 <div class="deck-meta">
-                  <p class="mb-1 d-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
+                  <p class="mb-1">
                     @if(deck.user){
-                    <a class="text-decoration-none d-inline-flex align-items-center"
-                      [routerLink]="'/user/' + deck.user.user">
-                      @if(deck.user.profileImage) {
-                      <img [src]="deck.user.profileImage" [alt]="deck.user.displayName" class="rounded-circle me-2"
-                        width="32" height="32">
+                    <span class="deck-author-details d-inline-flex flex-column align-items-center align-items-md-start">
+                      <span class="d-inline-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
+                        <a class="text-decoration-none d-inline-flex align-items-center"
+                          [routerLink]="'/user/' + deck.user.user">
+                          @if(deck.user.profileImage) {
+                          <img [src]="deck.user.profileImage" [alt]="deck.user.displayName"
+                            class="rounded-circle me-2" width="32" height="32">
+                          }
+                          <strong>{{ deck.author }}</strong>
+                          @if(isSupporter){
+                          <i class="bi bi-patch-check-fill text-primary ms-1"
+                            [title]="'shared.supporter' | transloco"></i>
+                          }
+                        </a>
+                        @if(deck.user.user) {
+                        <app-user-follow-button [username]="deck.user.user" />
+                        }
+                        <ng-container *ngTemplateOutlet="deckDatePrice" />
+                      </span>
+                      @if (deck.user.achievementBadges?.length) {
+                      <app-achievement-badges [class.deck-author-badges-with-avatar]="deck.user.profileImage"
+                        [featured]="true" [badges]="deck.user.achievementBadges!" />
                       }
-                      <span>
-                        <strong>{{ deck.author }}</strong>
-                        @if(isSupporter){
-                        <i class="bi bi-patch-check-fill text-primary ms-1"
-                          [title]="'shared.supporter' | transloco"></i>
+                    </span>
+                    }@else {
+                    <span class="d-inline-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
+                      <b>{{ t('created_by') }}: </b>
+                      <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{
+                        author: deck.author,
+                        type: deck.type
+                      }">
+                        <strong>
+                          {{ deck.author }}
+                          @if(isSupporter){
+                          <i class="bi bi-patch-check-fill" [title]="'shared.supporter' | transloco"></i>
+                          }
+                        </strong>
+                      </a>
+                      <ng-container *ngTemplateOutlet="deckDatePrice" />
+                    </span>
+                    }
+                    <ng-template #deckDatePrice>
+                      <span class="text-dark mx-1">•</span>
+                      <span class="text-muted d-none d-md-inline">
+                        {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
+                      </span>
+                      <span class="text-muted d-md-none">
+                        {{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}
+                      </span>
+                      @if(deck.stats.price || deck.stats.msrp) {
+                      <span class="text-dark mx-1">•</span>
+                      <span class="text-muted" [title]="t('price')">
+                        {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency }}
+                        @if(deck.stats.msrp && deck.stats.price){
+                        ({{ t('estimated_value') }} {{ deck.stats.price | currency:deck.stats.currency }})
                         }
                       </span>
-                    </a>
-                    @if(deck.user.user) {
-                    <app-user-follow-button [username]="deck.user.user" />
-                    }
-                    @if (deck.user.achievementBadges?.length) {
-                      <app-achievement-badges class="w-100" [featured]="true"
-                        [badges]="deck.user.achievementBadges!" />
-                    }
-                    }@else {
-                    <b>{{ t('created_by') }}: </b>
-                    <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{
-                      author: deck.author,
-                      type: deck.type
-                    }">
-                      <strong>
-                        {{ deck.author }}
-                        @if(isSupporter){
-                        <i class="bi bi-patch-check-fill" [title]="'shared.supporter' | transloco"></i>
-                        }
-                      </strong>
-                    </a>
-                    }
-                    <span class="text-dark mx-1">•</span>
-                    <span class="text-muted d-none d-md-inline">
-                      {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
-                    </span>
-                    <span class="text-muted d-md-none">
-                      {{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}
-                    </span>
-                    @if(deck.stats.price || deck.stats.msrp) {
-                    <span class="text-dark mx-1">•</span>
-                    <span class="text-muted" [title]="t('price')">
-                      {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency }}
-                      @if(deck.stats.msrp && deck.stats.price){
-                      ({{ t('estimated_value') }} {{ deck.stats.price | currency:deck.stats.currency }})
                       }
-                    </span>
-                    }
+                    </ng-template>
                   </p>
                   @if (deck.tournament) {
                   <p class="mb-1">
