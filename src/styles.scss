@@ -794,3 +794,27 @@ ins.adsbygoogle[data-ad-status='unfilled'] {
     box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
   }
 }
+.search-input-wrapper {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+
+.search-input-clear {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  z-index: 5;
+  padding: 0.25rem 0.4rem;
+  transform: translateY(-50%);
+  color: var(--bs-secondary-color);
+  background: transparent;
+  border: 0;
+  line-height: 1;
+}
+
+.search-input-clear:hover,
+.search-input-clear:focus-visible {
+  color: var(--bs-body-color);
+}

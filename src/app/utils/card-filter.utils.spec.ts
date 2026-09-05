@@ -13,11 +13,13 @@ describe('isDefaultCardFilter', () => {
     disciplineMode: 'and',
     groupSlider: [1, 7],
     capacitySlider: [1, 11],
-    title: '',
-    sect: '',
+    votesSlider: [0, 4],
+    titles: [],
+    sects: [],
     paths: [],
     notPaths: [],
-    set: '',
+    sets: [],
+    notSets: [],
     taints: [],
     cardText: '',
     artist: '',
@@ -42,10 +44,10 @@ describe('isDefaultCardFilter', () => {
     expect(isDefaultCardFilter(filter, defaults())).toBe(true)
   })
 
-  it('treats empty string, undefined and false as equivalent defaults', () => {
+  it('treats empty arrays, undefined and false as equivalent defaults', () => {
     const filter = {
       ...defaults(),
-      title: undefined,
+      titles: undefined,
       printOnDemand: false,
     }
     expect(isDefaultCardFilter(filter, defaults())).toBe(true)

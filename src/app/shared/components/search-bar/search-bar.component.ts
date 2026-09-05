@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +16,7 @@ import {
   ApiDeck,
   ApiLibrary,
   ApiPublicUser,
+  ApiSearchArchetype,
   ApiSearchResponse,
 } from '@models'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -41,7 +43,7 @@ import { LibraryCardComponent } from '@deck-shared/library-card/library-card.com
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, ReactiveFormsModule],
+  imports: [TranslocoDirective, ReactiveFormsModule, NgClass],
 })
 export class SearchBarComponent implements OnInit {
   activeModal = inject(NgbActiveModal)
@@ -53,6 +55,7 @@ export class SearchBarComponent implements OnInit {
 
   queryControl = new FormControl<string>('')
   cardResults = signal<(ApiCrypt | ApiLibrary)[]>([])
+  archetypeResults = signal<ApiSearchArchetype[]>([])
   deckResults = signal<ApiDeck[]>([])
   userResults = signal<ApiPublicUser[]>([])
   selectedIndex = signal<number>(-1)
@@ -69,11 +72,16 @@ export class SearchBarComponent implements OnInit {
           query.length >= 3
             ? this.apiDataService
                 .search(query)
-                .pipe(catchError(() => of({ cards: [], decks: [], users: [] })))
-            : of({ cards: [], decks: [], users: [] }),
+                .pipe(
+                  catchError(() =>
+                    of({ cards: [], archetypes: [], decks: [], users: [] }),
+                  ),
+                )
+            : of({ cards: [], archetypes: [], decks: [], users: [] }),
         ),
         tap((results: ApiSearchResponse) => {
           this.cardResults.set(results.cards)
+          this.archetypeResults.set(results.archetypes ?? [])
           this.deckResults.set(results.decks)
           this.userResults.set(results.users)
           this.selectedIndex.set(-1)
@@ -84,10 +92,14 @@ export class SearchBarComponent implements OnInit {
 
   onKeydown(event: KeyboardEvent): void {
     const cardResults = this.cardResults()
+    const archetypeResults = this.archetypeResults()
     const deckResults = this.deckResults()
     const userResults = this.userResults()
     const totalResults =
-      cardResults.length + deckResults.length + userResults.length
+      cardResults.length +
+      archetypeResults.length +
+      deckResults.length +
+      userResults.length
 
     if (totalResults === 0) return
 
@@ -115,6 +127,7 @@ export class SearchBarComponent implements OnInit {
 
   selectResult(index: number): void {
     const cardResults = this.cardResults()
+    const archetypeResults = this.archetypeResults()
     const deckResults = this.deckResults()
     const userResults = this.userResults()
 
@@ -127,13 +140,26 @@ export class SearchBarComponent implements OnInit {
       } else {
         this.openLibraryCard(card.id)
       }
-    } else if (index < cardResults.length + deckResults.length) {
+    } else if (index < cardResults.length + archetypeResults.length) {
+      const archetype = archetypeResults[index - cardResults.length]
+      this.router.navigate(['metagame', archetype.id])
+    } else if (
+      index <
+      cardResults.length + archetypeResults.length + deckResults.length
+    ) {
       // Selected a deck
-      const deck = deckResults[index - cardResults.length]
+      const deck =
+        deckResults[index - cardResults.length - archetypeResults.length]
       this.router.navigate(['deck', deck.id])
     } else {
       // Selected a user
-      const user = userResults[index - cardResults.length - deckResults.length]
+      const user =
+        userResults[
+          index -
+            cardResults.length -
+            archetypeResults.length -
+            deckResults.length
+        ]
       this.router.navigate(['user', user.user])
     }
     this.activeModal.close()

@@ -121,6 +121,40 @@
             </div>
           </a>
         }
+        @if (notification.type === 'ACHIEVEMENT') {
+          <a
+            class="text-decoration-none text-black notification-list"
+            [ngClass]="{
+              'notification-list--unread': !notification.read,
+            }"
+            [routerLink]="notification.link"
+            fragment="achievements"
+            (click)="
+              !notification.read ? read(notification.id) : offcanvas.close()
+            "
+          >
+            <div class="notification-list_content">
+              <div class="notification-list_detail">
+                @if (notification.data?.family && notification.data?.tier) {
+                  <p>
+                    <strong>{{ t('achievement_unlocked') }}</strong
+                    ><br />
+                    {{
+                      'achievements.family.' + notification.data.family
+                        | transloco
+                    }}
+                    · {{ notification.data.tier }}
+                  </p>
+                } @else {
+                  <p [innerHTML]="notification.notification"></p>
+                }
+                <p class="text-muted">
+                  <small>{{ notification.creationDate | dateAsAgo }}</small>
+                </p>
+              </div>
+            </div>
+          </a>
+        }
       }
       @if (notifications.length === 0) {
         <p class="text-center">{{ t('no_notifications') }}</p>

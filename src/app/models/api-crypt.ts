@@ -22,6 +22,7 @@ export interface ApiCrypt {
   text: string
   sets: string[]
   title?: string
+  votes: number
   banned?: string
   artist: string
   image: string

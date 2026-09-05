@@ -8,7 +8,12 @@ import {
   CryptSortBy,
 } from '@models'
 import { IndexedDbService } from '@services'
-import { getSetAbbrev, searchIncludes, trigramSimilarity } from '@utils'
+import {
+  getSetAbbrev,
+  matchesSetSelection,
+  searchIncludes,
+  trigramSimilarity,
+} from '@utils'
 import { map, Observable, shareReplay } from 'rxjs'
 
 export interface CryptStats {
@@ -401,26 +406,33 @@ export class CryptStore {
         return false
       }
     }
+    if (
+      filter.votesSlider &&
+      (entity.votes < filter.votesSlider[0] ||
+        entity.votes > filter.votesSlider[1])
+    ) {
+      return false
+    }
     if (filter.advanced === 'base' && entity.adv) {
       return false
     }
     if (filter.advanced === 'advanced' && !entity.adv) {
       return false
     }
-    if (filter.title) {
-      if (filter.title === 'any') {
+    if (filter.titles?.length) {
+      if (filter.titles.includes('any')) {
         if (!entity.title) {
           return false
         }
-      } else if (filter.title === 'none') {
+      } else if (filter.titles.includes('none')) {
         if (entity.title) {
           return false
         }
-      } else if (entity.title !== filter.title) {
+      } else if (!entity.title || !filter.titles.includes(entity.title)) {
         return false
       }
     }
-    if (filter.sect && entity.sect !== filter.sect) {
+    if (filter.sects?.length && !filter.sects.includes(entity.sect)) {
       return false
     }
     const pathMatches = (path: string) =>
@@ -435,8 +447,8 @@ export class CryptStore {
     if (Array.isArray(filter.notPaths) && filter.notPaths.some(pathMatches)) {
       return false
     }
-    if (filter.set) {
-      return entity.sets.some((set) => set.startsWith(filter.set + ':'))
+    if (!matchesSetSelection(entity.sets, filter.sets, filter.notSets)) {
+      return false
     }
     if (filter.taints) {
       for (const taint of filter.taints) {

@@ -9,14 +9,12 @@ import {
 
 import * as Sentry from '@sentry/angular'
 
-import { CommonModule } from '@angular/common'
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
   withXhr,
 } from '@angular/common/http'
-import { ReactiveFormsModule } from '@angular/forms'
 import { bootstrapApplication } from '@angular/platform-browser'
 import {
   provideRouter,
@@ -26,7 +24,7 @@ import {
 } from '@angular/router'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModalModule, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap'
 import { GlobalErrorHandler } from '@services'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2'
 import {
@@ -256,7 +254,7 @@ Sentry.init({
     }),
   ],
   // Tracing
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
+  tracesSampleRate: 0.1,
   // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
   tracePropagationTargets: [
     'localhost',
@@ -272,9 +270,8 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideZonelessChangeDetection(),
     importProvidersFrom(
-      CommonModule,
-      NgbModule,
-      ReactiveFormsModule,
+      NgbModalModule,
+      NgbOffcanvasModule,
       RecaptchaV3Module,
       NgcCookieConsentModule.forRoot(cookieConfig),
       JwtModule.forRoot({
@@ -302,7 +299,7 @@ bootstrapApplication(AppComponent, {
       NgxGoogleAnalyticsRouterModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
-        registrationStrategy: 'registerImmediately',
+        registrationStrategy: 'registerWhenStable:10000',
       }),
       TranslocoRootModule,
     ),

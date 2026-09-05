@@ -64,6 +64,7 @@ export class SearchFeaturesService {
   private readonly drafts = new Map<SearchPresetScope, string>()
   private activeUser: string | undefined
   private mergedForUser: string | undefined
+  private loadingForUser: string | undefined
   private syncingOperations = 0
 
   readonly presets = computed(() => this.state().presets)
@@ -104,6 +105,46 @@ export class SearchFeaturesService {
     return this.history()
       .filter((entry) => entry.scope === scope)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  }
+
+  loadPresets(): void {
+    const user = this.activeUser
+    if (
+      !user ||
+      !this.useRemote() ||
+      this.mergedForUser === user ||
+      this.loadingForUser === user
+    ) {
+      return
+    }
+    this.loadingForUser = user
+    this.withSyncing(
+      this.enqueueRemote(() =>
+        this.api
+          .list()
+          .pipe(
+            switchMap((remote) =>
+              this.mergeLocalPresets(this.state().presets, remote),
+            ),
+          ),
+      ),
+    )
+      .pipe(
+        tap((remote) => {
+          if (this.activeUser !== user) return
+          this.adoptRemote(user, remote)
+          this.mergedForUser = user
+        }),
+        catchError(() => {
+          if (this.activeUser === user) this.remoteAvailableState.set(false)
+          return EMPTY
+        }),
+        finalize(() => {
+          if (this.loadingForUser === user) this.loadingForUser = undefined
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe()
   }
 
   savePreset(
@@ -277,7 +318,7 @@ export class SearchFeaturesService {
   }
 
   private onLogin(user: string): void {
-    if (this.mergedForUser === user) return
+    if (this.activeUser !== user) this.mergedForUser = undefined
     this.activeUser = user
     this.remoteAvailableState.set(true)
     const anonymous = this.loadAnonymous()
@@ -287,30 +328,6 @@ export class SearchFeaturesService {
       presets: this.uniqueById([...cached, ...anonymous.presets]),
       history: anonymous.history,
     })
-    this.withSyncing(
-      this.enqueueRemote(() =>
-        this.api
-          .list()
-          .pipe(
-            switchMap((remote) =>
-              this.mergeLocalPresets(this.state().presets, remote),
-            ),
-          ),
-      ),
-    )
-      .pipe(
-        tap((remote) => {
-          if (this.activeUser !== user) return
-          this.adoptRemote(user, remote)
-          this.mergedForUser = user
-        }),
-        catchError(() => {
-          if (this.activeUser === user) this.remoteAvailableState.set(false)
-          return EMPTY
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe()
   }
 
   private onLogout(): void {
@@ -320,6 +337,7 @@ export class SearchFeaturesService {
     }
     this.activeUser = undefined
     this.mergedForUser = undefined
+    this.loadingForUser = undefined
     this.remoteAvailableState.set(true)
     this.state.set(this.loadAnonymous())
   }

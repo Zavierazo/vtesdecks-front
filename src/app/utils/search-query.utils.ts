@@ -1,5 +1,8 @@
 import { Params } from '@angular/router'
 import { SearchPresetScope, SearchParams } from '@models'
+import { getValidCardShopNames } from './card-shops'
+import { normalizeSetSelection } from './card-set-filter.utils'
+import { normalizeMultiSelectValues } from './multi-select-filter.utils'
 
 interface SearchBrowserDefinition {
   path: string
@@ -25,11 +28,15 @@ const CRYPT_FILTERS = [
   'paths',
   'predefinedLimitedFormat',
   'printOnDemand',
-  'sect',
-  'set',
+  'sects',
+  'sets',
+  'notSets',
+  'shops',
+  'notShops',
   'superiorDisciplines',
   'taints',
-  'title',
+  'titles',
+  'votes',
 ] as const
 
 const LIBRARY_FILTERS = [
@@ -49,10 +56,13 @@ const LIBRARY_FILTERS = [
   'poolCostSlider',
   'predefinedLimitedFormat',
   'printOnDemand',
-  'sect',
-  'set',
+  'sects',
+  'sets',
+  'notSets',
+  'shops',
+  'notShops',
   'taints',
-  'title',
+  'titles',
   'trifle',
   'typeMode',
   'types',
@@ -117,6 +127,7 @@ const definitions: Record<SearchPresetScope, SearchBrowserDefinition> = {
       disciplineMode: 'and',
       group: '1,7',
       capacity: '1,11',
+      votes: '0,4',
     },
     allowedValues: {
       sortBy: new Set([
@@ -237,14 +248,55 @@ const normalizeValue = (value: unknown): string | undefined => {
   return `${value}`
 }
 
+const normalizeList = (value: unknown): string[] => [
+  ...new Set(
+    (normalizeValue(value)?.split(',') ?? [])
+      .map((item) => item.trim())
+      .filter(Boolean),
+  ),
+]
+
 export function normalizeSearchParams(
   scope: SearchPresetScope,
   params: Params | SearchParams,
 ): SearchParams {
   const definition = definitions[scope]
+  const source: Params | SearchParams = { ...params }
+  if (scope === 'crypt' || scope === 'library') {
+    const notShops = getValidCardShopNames(
+      normalizeValue(source['notShops'])?.split(','),
+    )
+    const shops = getValidCardShopNames(
+      normalizeValue(source['shops'] ?? source['shop'])?.split(','),
+    ).filter((shop) => !notShops.includes(shop))
+    source['shops'] = shops.join(',') || undefined
+    source['notShops'] = notShops.join(',') || undefined
+    delete source['shop']
+
+    const { sets, notSets } = normalizeSetSelection(
+      normalizeList(source['sets'] ?? source['set']),
+      normalizeList(source['notSets']),
+    )
+    source['sets'] = sets.join(',') || undefined
+    source['notSets'] = notSets.join(',') || undefined
+    delete source['set']
+
+    const titles = normalizeMultiSelectValues(
+      normalizeList(source['titles'] ?? source['title']),
+      scope === 'crypt' ? ['any', 'none'] : ['none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      normalizeList(source['sects'] ?? source['sect']),
+      scope === 'library' ? ['none'] : [],
+    )
+    source['titles'] = titles.join(',') || undefined
+    source['sects'] = sects.join(',') || undefined
+    delete source['title']
+    delete source['sect']
+  }
   const normalized: SearchParams = {}
   definition.allowedParams.forEach((key) => {
-    const value = normalizeValue(params[key])
+    const value = normalizeValue(source[key])
     const allowedValues = definition.allowedValues?.[key]
     if (
       value !== undefined &&

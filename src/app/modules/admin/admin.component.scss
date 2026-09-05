@@ -1,0 +1,13 @@
+.admin-nav {
+  gap: 0.5rem;
+}
+
+.scheduler-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 0.75rem;
+}
+
+.scheduler-item {
+  background: var(--app-surface);
+}

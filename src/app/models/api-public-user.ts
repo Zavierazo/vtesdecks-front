@@ -1,3 +1,5 @@
+import { ApiAchievementBadge } from './api-achievement'
+
 export interface ApiPublicUser {
   user: string
   displayName: string
@@ -5,4 +7,5 @@ export interface ApiPublicUser {
   roles: string[]
   followers: ApiPublicUser[]
   following: ApiPublicUser[]
+  achievementBadges?: ApiAchievementBadge[]
 }

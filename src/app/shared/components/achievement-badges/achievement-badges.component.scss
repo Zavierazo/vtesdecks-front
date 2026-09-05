@@ -1,0 +1,69 @@
+.achievement-badges {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
+
+.achievement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  padding: 0.1rem 0.34rem;
+  border: 1px solid #8a6b3f;
+  border-radius: 999px;
+  color: #d2ad68;
+  background: linear-gradient(145deg, #30251f, #151215);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+
+  &__medal { display: inline-flex; }
+  &__value { font-size: 0.62rem; font-weight: 800; }
+}
+
+.achievement-badges--featured {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0.25rem 0 0;
+
+  .achievement-badge {
+    position: relative;
+    min-height: 1.75rem;
+    padding: 0.18rem 0.32rem 0.18rem 0.2rem;
+    border-radius: 999px;
+    gap: 0.2rem;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .achievement-badge__medal {
+    width: 1.25rem;
+    height: 1.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem;
+  }
+
+  .achievement-badge__value {
+    min-width: 1.1rem;
+    padding: 0.05rem 0.2rem;
+    border-radius: 999px;
+    font-size: 0.55rem;
+    text-align: center;
+  }
+}
+
+.monthly_gold { color: #ffd76a; border-color: #c89b2a; }
+.monthly_silver { color: #e3e7ed; border-color: #949ba5; }
+.monthly_bronze { color: #d99567; border-color: #9b5934; }
+
+.achievement-badges--featured .achievement-badge__value {
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:host(.w-100) { display: flex; flex-basis: 100%; }

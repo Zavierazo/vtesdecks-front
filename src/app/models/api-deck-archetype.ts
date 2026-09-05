@@ -12,11 +12,16 @@ export interface ApiDeckArchetype {
   deckCount: number
   metaCount: number
   metaTotal: number
+  previousMetaCount?: number | null
+  previousMetaTotal?: number | null
+  metaShareChange?: number | null
   price?: number
   currency?: string
   creationDate: Date
   modificationDate: Date
   keyCrypt?: ApiArchetypeKeyCard[]
   keyLibrary?: ApiArchetypeKeyCard[]
+  clans?: string[]
+  disciplines?: string[]
   trend?: 'TRENDING' | 'DECLINING' | 'STABLE'
 }

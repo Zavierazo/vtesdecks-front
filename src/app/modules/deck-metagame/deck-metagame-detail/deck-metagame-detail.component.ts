@@ -12,6 +12,7 @@ import {
   ApiClanStat,
   ApiDeckArchetype,
   ApiDisciplineStat,
+  MetaType,
 } from '@models'
 import {
   NgbCollapseModule,
@@ -89,14 +90,30 @@ export class DeckMetagameDetailComponent implements OnInit {
   private readonly libraryQuery = inject(LibraryQuery)
 
   archetype$!: Observable<ApiDeckArchetype>
+  metaType: MetaType = 'TOURNAMENT_365'
 
   cryptSuggestionsCollapsed = true
   expandedLibrarySuggestions: Record<string, boolean> = {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'))
+    const requestedMetaType = this.route.snapshot.queryParamMap.get(
+      'metaType',
+    ) as MetaType | null
+    if (
+      requestedMetaType &&
+      [
+        'TOURNAMENT',
+        'TOURNAMENT_90',
+        'TOURNAMENT_180',
+        'TOURNAMENT_365',
+        'TOURNAMENT_730',
+      ].includes(requestedMetaType)
+    ) {
+      this.metaType = requestedMetaType
+    }
     this.archetype$ = this.apiDataService
-      .getDeckArchetype(id)
+      .getDeckArchetype(id, this.metaType)
       .pipe(untilDestroyed(this))
   }
 
@@ -207,7 +224,8 @@ export class DeckMetagameDetailComponent implements OnInit {
   }
 
   toggleLibrarySuggestions(type: string): void {
-    this.expandedLibrarySuggestions[type] = !this.expandedLibrarySuggestions[type]
+    this.expandedLibrarySuggestions[type] =
+      !this.expandedLibrarySuggestions[type]
   }
 
   private libraryTypeOrder(type: string): number {

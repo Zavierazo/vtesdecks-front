@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
 import {
+  ApiAdminScheduler,
+  ApiAdminUser,
+  ApiAdminUserAccess,
   ApiCard,
   ApiCardInfo,
   ApiCardScanRequest,
@@ -27,6 +30,7 @@ import {
   ApiPushConfig,
   ApiPushSubscription,
   ApiPublicUser,
+  ApiAchievementFamily,
   ApiResetPassword,
   ApiResponse,
   ApiSearchResponse,
@@ -44,8 +48,9 @@ import {
   FeatureFlagValue,
   MetaType,
 } from '@models'
-import { Observable, of } from 'rxjs'
+import { Observable, of, tap } from 'rxjs'
 import { SessionStorageService } from './session-storage.service'
+import { AuthQuery } from '@state/auth/auth.query'
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +58,7 @@ import { SessionStorageService } from './session-storage.service'
 export class ApiDataService {
   private httpClient = inject(HttpClient)
   private sessionStorageService = inject(SessionStorageService)
+  private authQuery = inject(AuthQuery)
 
   private readonly loginPath = '/auth/login'
   private readonly loginOauthPath = '/auth/oauth/login'
@@ -84,6 +90,7 @@ export class ApiDataService {
   private readonly cardLibraryLastUpdatePath = '/cards/library/lastUpdate'
   private readonly cardLibraryDetailPath = '/cards/library/'
   private readonly cardScanPath = '/cards/scan'
+  private readonly cardShopsPath = '/cards/shops'
   private readonly cardTodayPath = '/vtesdle/todayCard'
   private readonly commentsDeckPath = '/comments/decks/'
   private readonly contactPath = '/contact'
@@ -97,6 +104,8 @@ export class ApiDataService {
   private readonly proxyOptionsPath = '/proxy/options/'
   private readonly deckArchetypePath = '/deck-archetype'
   private readonly shoppingOptimizePath = '/shopping/optimize'
+  private readonly adminPath = '/admin'
+  private readonly adminUsersPath = `${this.adminPath}/users`
   private readonly featureFlagPath = '/feature-flag'
 
   login(
@@ -111,6 +120,49 @@ export class ApiDataService {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.loginPath}`,
       formData,
+    )
+  }
+
+  getAdminUser(identifier: string): Observable<ApiAdminUser> {
+    return this.httpClient.get<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}`,
+    )
+  }
+
+  updateAdminUserAccess(
+    identifier: string,
+    access: ApiAdminUserAccess,
+  ): Observable<ApiAdminUser> {
+    return this.httpClient.put<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/access`,
+      access,
+    )
+  }
+
+  validateAdminUser(identifier: string): Observable<ApiAdminUser> {
+    return this.httpClient.post<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/validate`,
+      null,
+    )
+  }
+
+  sendAdminUserPasswordReset(identifier: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/password-reset`,
+      null,
+    )
+  }
+
+  getAdminSchedulers(): Observable<ApiAdminScheduler[]> {
+    return this.httpClient.get<ApiAdminScheduler[]>(
+      `${environment.api.baseUrl}${this.adminPath}/schedulers`,
+    )
+  }
+
+  runAdminScheduler(key: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.api.baseUrl}${this.adminPath}/schedulers/${encodeURIComponent(key)}`,
+      null,
     )
   }
 
@@ -250,16 +302,18 @@ export class ApiDataService {
   }
 
   deckView(id: string, source: string): Observable<boolean> {
-    const deckViewId = `deck-view-${id}`
+    const viewer = this.authQuery.getUser() ?? 'anonymous'
+    const deckViewId = `deck-view-${viewer}-${id}`
     const deckView = this.sessionStorageService.getValue(deckViewId)
     if (deckView) {
       return of(true)
     }
-    this.sessionStorageService.setValue(deckViewId, true)
-    return this.httpClient.post<boolean>(
-      `${environment.api.baseUrl}${this.deckDetailPath}${id}/view`,
-      { source },
-    )
+    return this.httpClient
+      .post<boolean>(
+        `${environment.api.baseUrl}${this.deckDetailPath}${id}/view`,
+        { source },
+      )
+      .pipe(tap(() => this.sessionStorageService.setValue(deckViewId, true)))
   }
 
   getDecks(
@@ -475,6 +529,12 @@ export class ApiDataService {
     )
   }
 
+  getInStockCardIds(platform: string): Observable<number[]> {
+    return this.httpClient.get<number[]>(
+      `${environment.api.baseUrl}${this.cardShopsPath}/${encodeURIComponent(platform)}/in-stock-card-ids`,
+    )
+  }
+
   shoppingOptimize(
     request: ApiShoppingOptimizeRequest,
   ): Observable<ApiShoppingOptimizeResponse> {
@@ -505,6 +565,12 @@ export class ApiDataService {
   getNotifications(): Observable<ApiUserNotification[]> {
     return this.httpClient.get<ApiUserNotification[]>(
       `${environment.api.baseUrl}${this.userNotificationsPath}`,
+    )
+  }
+
+  getNotificationUnreadCount(): Observable<number> {
+    return this.httpClient.get<number>(
+      `${environment.api.baseUrl}${this.userNotificationsPath}/unreadCount`,
     )
   }
 
@@ -630,9 +696,17 @@ export class ApiDataService {
     )
   }
 
-  getDeckArchetype(id: number): Observable<ApiDeckArchetype> {
+  getDeckArchetype(
+    id: number,
+    metaType?: MetaType,
+  ): Observable<ApiDeckArchetype> {
+    let params = new HttpParams()
+    if (metaType) {
+      params = params.set('metaType', metaType)
+    }
     return this.httpClient.get<ApiDeckArchetype>(
       `${environment.api.baseUrl}${this.deckArchetypePath}/${id}`,
+      { params },
     )
   }
 
@@ -677,7 +751,7 @@ export class ApiDataService {
     value: FeatureFlagValue,
   ): Observable<ApiFeatureFlag> {
     return this.httpClient.put<ApiFeatureFlag>(
-      `${environment.api.baseUrl}${this.featureFlagPath}/${key}`,
+      `${environment.api.baseUrl}${this.adminPath}/feature-flags/${key}`,
       { value },
     )
   }
@@ -701,6 +775,20 @@ export class ApiDataService {
   getPublicUser(username: string): Observable<ApiPublicUser> {
     return this.httpClient.get<ApiPublicUser>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}`,
+    )
+  }
+
+  getPublicUserAchievements(
+    username: string,
+  ): Observable<ApiAchievementFamily[]> {
+    return this.httpClient.get<ApiAchievementFamily[]>(
+      `${environment.api.baseUrl}${this.publicUserPath}/${username}/achievements`,
+    )
+  }
+
+  getMyAchievements(): Observable<ApiAchievementFamily[]> {
+    return this.httpClient.get<ApiAchievementFamily[]>(
+      `${environment.api.baseUrl}/user/achievements`,
     )
   }
 

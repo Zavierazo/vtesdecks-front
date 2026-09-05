@@ -13,7 +13,6 @@ interface SpoilerCatalog {
 })
 export class SpoilerVisitService {
   private static readonly CATALOG_KEY = 'spoiler_catalog'
-  private static readonly DECK_VISITS_KEY = 'spoiler_deck_visits'
   private readonly localStorage = inject(LocalStorageService)
   private readonly catalogSeen = signal(0)
 
@@ -21,40 +20,6 @@ export class SpoilerVisitService {
     this.catalogSeen()
     return this.getCatalog().newSince
   })
-
-  /** True when the deck changed since this browser last opened it. */
-  hasNewSpoilers(
-    deckId: string,
-    lastUpdate: Date | string | null | undefined,
-  ): boolean {
-    const updateTimestamp = this.parseTimestamp(lastUpdate)
-    if (updateTimestamp === null) {
-      return false
-    }
-
-    const visitTimestamp = this.parseTimestamp(this.getDeckVisits()[deckId])
-    return visitTimestamp === null || updateTimestamp > visitTimestamp
-  }
-
-  /** Records when this browser opened the deck. */
-  markDeckVisited(
-    deckId: string,
-    visitedAt: Date | string | null | undefined,
-  ): void {
-    const visitTimestamp = this.parseTimestamp(visitedAt)
-    if (visitTimestamp === null) {
-      return
-    }
-
-    const visits = this.getDeckVisits()
-    const storedTimestamp = this.parseTimestamp(visits[deckId])
-    if (storedTimestamp !== null && visitTimestamp <= storedTimestamp) {
-      return
-    }
-
-    visits[deckId] = new Date(visitTimestamp).toISOString()
-    this.localStorage.setValue(SpoilerVisitService.DECK_VISITS_KEY, visits)
-  }
 
   /**
    * Records the newest known spoiler card. Whenever a newer one shows up, the
@@ -107,24 +72,6 @@ export class SpoilerVisitService {
       latest: this.validDateString(catalog['latest']),
       newSince: this.validDateString(catalog['newSince']),
     }
-  }
-
-  private getDeckVisits(): Record<string, string> {
-    const value = this.localStorage.getValue<unknown>(
-      SpoilerVisitService.DECK_VISITS_KEY,
-    )
-    if (!value || typeof value !== 'object' || Array.isArray(value)) {
-      return {}
-    }
-
-    const visits: Record<string, string> = {}
-    for (const [deckId, visitedAt] of Object.entries(value)) {
-      const visit = this.validDateString(visitedAt)
-      if (deckId && visit) {
-        visits[deckId] = visit
-      }
-    }
-    return visits
   }
 
   private validDateString(value: unknown): string | undefined {

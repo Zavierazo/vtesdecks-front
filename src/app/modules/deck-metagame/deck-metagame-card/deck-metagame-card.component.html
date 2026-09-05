@@ -1,119 +1,255 @@
-@if(archetype(); as archetype){
-@let isMaintainer = isMaintainer$ | async;
-<div class="metagame-card rounded-3 h-100 overflow-hidden bg-body d-flex flex-column"
-  *transloco="let t; prefix: 'deck_metagame'"
-  [class.metagame-card--clickable]="archetype.id !== undefined && archetype.id > 0"
-  [routerLink]="archetype.id !== undefined && archetype.id > 0 ? ['/metagame', archetype.id] : null"
-  [attr.role]="archetype.id !== undefined && archetype.id > 0 ? 'link' : null"
-  [attr.tabindex]="archetype.id !== undefined && archetype.id > 0 ? 0 : null" (keydown.enter)="navigate(archetype)">
-  <!-- Header Section -->
-  <div class="metagame-header px-3 pt-3 pb-2">
-    <div class="d-flex align-items-start justify-content-between mb-2">
-      <div class="d-flex align-items-center flex-grow-1">
-        @if (archetype.icon) {
-        <div class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2 me-2">
-          <i class="vtes" [class]="archetype.icon"></i>
+@if (archetype(); as archetype) {
+  @let isAdmin = isAdmin$ | async;
+  @let profileClans = getProfileClans(archetype);
+  @let profileDisciplines = getProfileDisciplines(archetype);
+  <div
+    class="metagame-card rounded-3 h-100 overflow-hidden bg-body d-flex flex-column"
+    *transloco="let t; prefix: 'deck_metagame'"
+    [class.metagame-card--clickable]="
+      archetype.id !== undefined && archetype.id > 0
+    "
+    [routerLink]="
+      archetype.id !== undefined && archetype.id > 0
+        ? ['/metagame', archetype.id]
+        : null
+    "
+    [queryParams]="detailQueryParams"
+    [attr.role]="archetype.id !== undefined && archetype.id > 0 ? 'link' : null"
+    [attr.tabindex]="archetype.id !== undefined && archetype.id > 0 ? 0 : null"
+    (keydown.enter)="navigate(archetype)"
+  >
+    <!-- Header Section -->
+    <div class="metagame-header px-3 pt-3 pb-2">
+      <div class="d-flex align-items-start justify-content-between mb-2">
+        <div class="d-flex align-items-center flex-grow-1">
+          @if (rank()) {
+            <span class="rank-badge me-2">#{{ rank() }}</span>
+          }
+          @if (archetype.icon) {
+            <div
+              class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2 me-2"
+            >
+              <i class="vtes" [class]="archetype.icon"></i>
+            </div>
+          }
+          <div class="flex-grow-1">
+            <h5
+              class="card-title mb-1 fw-bold text-body d-flex align-items-center gap-1"
+            >
+              @if (archetype.id === undefined && isAdmin) {
+                <button
+                  class="btn btn-link text-start fw-bold text-decoration-none p-0"
+                  (click)="$event.stopPropagation(); openModal(archetype)"
+                >
+                  {{ archetype.name }}
+                </button>
+              } @else if (archetype.id !== undefined && archetype.id > 0) {
+                <a
+                  class="text-decoration-none"
+                  [routerLink]="['/metagame', archetype.id]"
+                  [queryParams]="detailQueryParams"
+                  (click)="$event.stopPropagation()"
+                >
+                  {{ archetype.name }}
+                </a>
+              } @else if (archetype.id === 0) {
+                <a
+                  class="text-decoration-none"
+                  [routerLink]="['/decks']"
+                  [queryParams]="{ archetype: 0 }"
+                >
+                  {{ archetype.name }}
+                </a>
+              } @else {
+                {{ archetype.name }}
+              }
+              @if (archetype.trend === 'TRENDING') {
+                <span
+                  class="trend-badge trend-badge--trending"
+                  [ngbTooltip]="t('trend.TRENDING_tooltip')"
+                >
+                  <i class="bi bi-graph-up-arrow"></i>{{ t('trend.TRENDING') }}
+                </span>
+              } @else if (archetype.trend === 'DECLINING') {
+                <span
+                  class="trend-badge trend-badge--declining"
+                  [ngbTooltip]="t('trend.DECLINING_tooltip')"
+                >
+                  <i class="bi bi-graph-down-arrow"></i
+                  >{{ t('trend.DECLINING') }}
+                </span>
+              }
+              @if (
+                archetype.metaShareChange !== null &&
+                archetype.metaShareChange !== undefined
+              ) {
+                <span
+                  class="share-change"
+                  [class.text-success]="archetype.metaShareChange > 0"
+                  [class.text-danger]="archetype.metaShareChange < 0"
+                  [ngbTooltip]="
+                    t('share_change_tooltip', {
+                      current: archetype.metaCount,
+                      previous: archetype.previousMetaCount,
+                    })
+                  "
+                >
+                  {{ archetype.metaShareChange > 0 ? '+' : ''
+                  }}{{ archetype.metaShareChange | number: '1.0-2' }} pp
+                </span>
+              }
+            </h5>
+            <div
+              class="card-subtitle text-muted small d-flex align-items-center flex-wrap gap-2"
+            >
+              <span>{{ archetype.type }}</span>
+              @if (profileClans.length > 0 || profileDisciplines.length > 0) {
+                <span class="profile-divider" aria-hidden="true"></span>
+                <span
+                  class="profile-inline d-inline-flex align-items-center gap-2"
+                >
+                  @if (profileClans.length > 0) {
+                    <span
+                      class="profile-group d-inline-flex align-items-center gap-1"
+                    >
+                      @for (clan of profileClans; track clan) {
+                        <i
+                          class="vtes"
+                          [ngClass]="getClanIcon(clan)"
+                          [title]="clan"
+                        ></i>
+                      }
+                    </span>
+                  }
+                  @if (
+                    profileClans.length > 0 && profileDisciplines.length > 0
+                  ) {
+                    <span class="profile-divider" aria-hidden="true"></span>
+                  }
+                  @if (profileDisciplines.length > 0) {
+                    <span
+                      class="profile-group d-inline-flex align-items-center gap-1"
+                    >
+                      @for (
+                        discipline of profileDisciplines;
+                        track discipline
+                      ) {
+                        <i
+                          class="vtes"
+                          [ngClass]="getDisciplineIcon(discipline)"
+                          [title]="discipline"
+                        ></i>
+                      }
+                    </span>
+                  }
+                </span>
+              }
+            </div>
+          </div>
         </div>
-        }
-        <div class="flex-grow-1">
-          <h5 class="card-title mb-1 fw-bold text-body d-flex align-items-center gap-1">
-            @if(archetype.id === undefined && isMaintainer){
-            <button class="btn btn-link text-start fw-bold text-decoration-none p-0"
-              (click)="$event.stopPropagation(); openModal(archetype)">
-              {{ archetype.name }}
+        @if (isAdmin && archetype.id && archetype.id > 0) {
+          <div class="d-flex align-items-center gap-2 ms-2">
+            <span
+              class="status-badge"
+              [class.status-enabled]="archetype.enabled"
+              [class.status-disabled]="!archetype.enabled"
+            >
+              @if (archetype.enabled) {
+                <i class="bi bi-check-circle-fill"></i>
+              } @else {
+                <i class="bi bi-x-circle-fill"></i>
+              }
+            </span>
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              (click)="$event.stopPropagation(); openModal(archetype)"
+              [attr.aria-label]="t('edit')"
+            >
+              <i class="bi bi-pencil-fill" aria-hidden="true"></i>
             </button>
-            } @else if (archetype.id !== undefined && archetype.id > 0) {
-            <a class="text-decoration-none" [routerLink]="['/metagame', archetype.id]"
-              (click)="$event.stopPropagation()">
-              {{ archetype.name }}
-            </a>
-            } @else if (archetype.id === 0) {
-            <a class="text-decoration-none" [routerLink]="['/decks']" [queryParams]="{ archetype: 0 }">
-              {{ archetype.name }}
-            </a>
-            }@else {
-            {{ archetype.name }}
-            }
-            @if (archetype.trend === 'TRENDING') {
-            <span class="trend-badge trend-badge--trending" [ngbTooltip]="t('trend.TRENDING_tooltip')">
-              <i class="bi bi-graph-up-arrow"></i>{{ t('trend.TRENDING') }}
-            </span>
-            } @else if (archetype.trend === 'DECLINING') {
-            <span class="trend-badge trend-badge--declining" [ngbTooltip]="t('trend.DECLINING_tooltip')">
-              <i class="bi bi-graph-down-arrow"></i>{{ t('trend.DECLINING') }}
-            </span>
-            }
-          </h5>
-          <div class="card-subtitle text-muted small">{{ archetype.type }}</div>
-        </div>
-      </div>
-      @if (isMaintainer && archetype.id && archetype.id > 0) {
-      <div class="d-flex align-items-center gap-2">
-        <span class="status-badge" [class.status-enabled]="archetype.enabled"
-          [class.status-disabled]="!archetype.enabled">
-          @if (archetype.enabled) {
-          <i class="bi bi-check-circle-fill"></i>
-          } @else {
-          <i class="bi bi-x-circle-fill"></i>
-          }
-        </span>
-        <button class="btn btn-sm btn-outline-secondary" (click)="$event.stopPropagation(); openModal(archetype)"
-          [attr.aria-label]="t('edit')">
-          <i class="bi bi-pencil-fill" aria-hidden="true"></i>
-        </button>
-        <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); delete(archetype)"
-          [attr.aria-label]="t('delete')">
-          <i class="bi bi-trash-fill" aria-hidden="true"></i>
-        </button>
-      </div>
-      }
-    </div>
-  </div>
-
-  <!-- Description Section -->
-  <div class="metagame-body flex-grow-1 px-3 py-2">
-    <div class="description-content text-secondary small" (click)="onDescriptionClick($event)">
-      <app-markdown-text [data]="archetype.description"></app-markdown-text>
-    </div>
-  </div>
-
-  <!-- Footer Section -->
-  <div class="metagame-footer px-3 py-2 border-top border-opacity-10">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-      <div class="d-flex align-items-center gap-2 flex-wrap" placement="top" [ngbTooltip]="t('meta', {
-      percentage: (metaPercentage | number:'1.0-2'),
-      count: archetype.metaCount
-    })">
-        <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
-          <i class="bi bi-bar-chart-fill me-1"></i>
-          <span class="fw-semibold">{{ metaPercentage | number:'1.0-2' }}%</span>
-        </span>
-        <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium">
-          <i class="bi bi-collection-fill me-1"></i>
-          <span>{{ archetype.metaCount }}</span>
-        </span>
-        @if(archetype.price) {
-        <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
-          <i class="bi bi-tag-fill me-1"></i>
-          {{ archetype.price | currency: archetype.currency }}
-        </span>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="$event.stopPropagation(); delete(archetype)"
+              [attr.aria-label]="t('delete')"
+            >
+              <i class="bi bi-trash-fill" aria-hidden="true"></i>
+            </button>
+          </div>
         }
       </div>
-      @if(archetype.id !== undefined) {
-      <div class="d-flex align-items-center gap-2 flex-wrap">
-        <a class="view-decks-link d-inline-flex align-items-center text-decoration-none" [routerLink]="['/decks']"
-          [queryParams]="{ archetype: archetype.id }" [attr.aria-label]="t('decks_with_metagame')"
-          (click)="$event.stopPropagation()">
-          <span class="small fw-medium">{{ t('decks_with_metagame') }}</span>
-          @if(archetype.deckCount > 0) {
-          <span class="count-badge ms-2 d-inline-flex align-items-center justify-content-center rounded-2">{{
-            archetype.deckCount }}</span>
-          }
-          <i class="bi bi-arrow-right ms-1"></i>
-        </a>
+    </div>
+
+    <!-- Description Section -->
+    <div class="metagame-body flex-grow-1 px-3 py-2">
+      <div
+        class="description-content text-secondary small"
+        (click)="onDescriptionClick($event)"
+      >
+        <app-markdown-text [data]="archetype.description"></app-markdown-text>
       </div>
-      }
+    </div>
+
+    <!-- Footer Section -->
+    <div class="metagame-footer px-3 py-2 border-top border-opacity-10">
+      <div
+        class="metagame-footer-row d-flex align-items-center justify-content-between flex-nowrap gap-2"
+      >
+        <div
+          class="d-flex align-items-center gap-2 flex-nowrap"
+          placement="top"
+          [ngbTooltip]="
+            t('meta', {
+              percentage: (metaPercentage | number: '1.0-2'),
+              count: archetype.metaCount,
+            })
+          "
+        >
+          <span
+            class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium"
+          >
+            <i class="bi bi-bar-chart-fill me-1"></i>
+            <span class="fw-semibold"
+              >{{ metaPercentage | number: '1.0-2' }}%</span
+            >
+          </span>
+          <span
+            class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium"
+          >
+            <i class="bi bi-collection-fill me-1"></i>
+            <span>{{ archetype.metaCount }}</span>
+          </span>
+          @if (archetype.price) {
+            <span
+              class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+            >
+              <i class="bi bi-tag-fill me-1"></i>
+              {{ archetype.price | currency: archetype.currency }}
+            </span>
+          }
+        </div>
+        @if (archetype.id !== undefined) {
+          <div class="d-flex align-items-center flex-nowrap">
+            <a
+              class="view-decks-link d-inline-flex align-items-center text-decoration-none"
+              [routerLink]="['/decks']"
+              [queryParams]="{ archetype: archetype.id }"
+              [attr.aria-label]="t('decks_with_metagame')"
+              (click)="$event.stopPropagation()"
+            >
+              <span class="small fw-medium">{{
+                t('decks_with_metagame')
+              }}</span>
+              @if (archetype.deckCount > 0) {
+                <span
+                  class="count-badge ms-2 d-inline-flex align-items-center justify-content-center rounded-2"
+                  >{{ archetype.deckCount }}</span
+                >
+              }
+              <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        }
+      </div>
     </div>
   </div>
-</div>
 }

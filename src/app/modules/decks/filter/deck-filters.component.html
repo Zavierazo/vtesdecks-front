@@ -208,7 +208,7 @@
         [value]="selectedArchetype ? archetypeFormatter(selectedArchetype) : ''"
         [placeholder]="t('archetype_placeholder')" [ngbTypeahead]="searchArchetype"
         [inputFormatter]="archetypeFormatter" [resultFormatter]="archetypeFormatter" [editable]="false"
-        (selectItem)="onSelectArchetype($event)" />
+        (click)="loadArchetypes()" (selectItem)="onSelectArchetype($event)" />
       @if(selectedArchetype) {
       <button type="button" class="btn btn-outline-secondary" (click)="clearArchetype()"
         [attr.aria-label]="t('clear_archetype')"><i class="bi bi-x-lg"></i></button>

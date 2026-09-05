@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +13,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
 import { LibraryFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
@@ -21,9 +21,19 @@ import {
   SegmentedFilterComponent,
   SegmentedFilterOption,
 } from '@shared/components/segmented-filter/segmented-filter.component'
+import {
+  MultiSelectComponent,
+  MultiSelectOption,
+  MultiSelectSelection,
+} from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { LibraryQuery } from '@state/library/library.query'
-import { tap } from 'rxjs'
+import {
+  CARD_SHOPS,
+  normalizeMultiSelectValues,
+  normalizeSetSelection,
+} from '@utils'
+import { combineLatest, map, tap } from 'rxjs'
 import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-filter.component'
 
 @UntilDestroy()
@@ -43,14 +53,15 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe,
-    DatePipe,
     SegmentedFilterComponent,
+    MultiSelectComponent,
   ],
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
   private apiDataService = inject(ApiDataService)
+  private translocoService = inject(TranslocoService)
+  private titleCasePipe = new TitleCasePipe()
 
   @Input() filter!: LibraryFilter
   @Input() showSet = true
@@ -59,9 +70,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   printOnDemandControl!: FormControl
   limitedFormatControl!: FormControl
   predefinedLimitedFormatControl!: FormControl
-  sectControl!: FormControl
-  titleControl!: FormControl
-  setControl!: FormControl
   bloodCostSliderControl!: FormControl
   poolCostSliderControl!: FormControl
   convictionCostSliderControl!: FormControl
@@ -69,11 +77,55 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   cardTextControl!: FormControl
   artistControl!: FormControl
 
-  sects$ = this.libraryQuery.selectSects()
-  titles$ = this.libraryQuery.selectTitles()
+  readonly exclusiveValues = ['none']
+  titleOptions$ = combineLatest([
+    this.libraryQuery.selectTitles(),
+    this.translocoService.langChanges$,
+  ]).pipe(
+    map(([titles]) => [
+      {
+        value: 'none',
+        label: this.translocoService.translate('shared.not_required'),
+      },
+      ...titles.map((title) => ({
+        value: title,
+        label: this.titleCasePipe.transform(title),
+      })),
+    ]),
+  )
+  sectOptions$ = combineLatest([
+    this.libraryQuery.selectSects(),
+    this.translocoService.langChanges$,
+  ]).pipe(
+    map(([sects]) => [
+      {
+        value: 'none',
+        label: this.translocoService.translate('shared.not_required'),
+      },
+      ...sects.map((sect) => ({
+        value: sect,
+        label: this.titleCasePipe.transform(sect),
+      })),
+    ]),
+  )
   taints$ = this.libraryQuery.selectTaints()
-  sets$ = this.libraryQuery.selectSets()
+  setOptions$ = this.libraryQuery.selectSets().pipe(
+    map((sets) =>
+      sets.map((set) => ({
+        value: set.abbrev,
+        label: `${set.releaseDate ? `${new Date(set.releaseDate).getFullYear()} - ` : ''}${set.fullName}`,
+        shortLabel: set.abbrev,
+      })),
+    ),
+  )
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
+  readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
+    (shop) => ({
+      value: shop.name,
+      label: shop.fullName,
+      shortLabel: shop.name,
+    }),
+  )
   maxConvictionCost = this.libraryQuery.getMaxConvictionCost()
   initialized = false
 
@@ -98,9 +150,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   initFormControls() {
     this.onChangePrintOnDemand()
     this.onChangeLimitedFormat()
-    this.onChangeSect()
-    this.onChangeTitle()
-    this.onChangeSet()
     this.onChangeBloodCostSlider()
     this.onChangePoolCostSlider()
     this.onChangeConvictionCostSlider()
@@ -181,6 +230,38 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
       .subscribe()
   }
 
+  onChangeShopAvailability(selection: MultiSelectSelection) {
+    this.filter.shops = selection.selected
+    this.filter.notShops = selection.excluded
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSetSelection(selection: MultiSelectSelection) {
+    const { sets, notSets } = normalizeSetSelection(
+      selection.selected,
+      selection.excluded,
+    )
+    this.filter.sets = sets
+    this.filter.notSets = notSets
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeTitleSelection(selection: MultiSelectSelection) {
+    this.filter.titles = normalizeMultiSelectValues(
+      selection.selected,
+      this.exclusiveValues,
+    )
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSectSelection(selection: MultiSelectSelection) {
+    this.filter.sects = normalizeMultiSelectValues(
+      selection.selected,
+      this.exclusiveValues,
+    )
+    this.filterChange.emit(this.filter)
+  }
+
   onChangeLimitedFormat() {
     this.limitedFormatControl = new FormControl(this.filter.limitedFormat)
     this.limitedFormatControl.valueChanges
@@ -203,45 +284,6 @@ export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
         untilDestroyed(this),
         tap((value) => {
           this.filter.predefinedLimitedFormat = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSect() {
-    this.sectControl = new FormControl(this.filter.sect)
-    this.sectControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.sect = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeTitle() {
-    this.titleControl = new FormControl(this.filter.title)
-    this.titleControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.title = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSet() {
-    this.setControl = new FormControl(this.filter.set)
-    this.setControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.set = value
           this.filterChange.emit(this.filter)
         }),
       )

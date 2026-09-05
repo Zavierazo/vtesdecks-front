@@ -20,10 +20,22 @@ import {
   TranslocoPipe,
   TranslocoService,
 } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import {
+  ApiCard,
+  ApiCrypt,
+  CRYPT_VOTES_RANGE,
+  CryptFilter,
+  CryptSortBy,
+} from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SearchFeaturesService, SeoService } from '@services'
+import {
+  CardShopAvailabilityService,
+  MediaService,
+  SearchFeaturesService,
+  SeoService,
+  ToastService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -41,19 +53,26 @@ import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import {
   buildCryptFilterChips,
+  filterCardsByShopAvailability,
+  getCardShopName,
+  getValidCardShopNames,
   isRegexSearch,
+  normalizeMultiSelectValues,
+  normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  distinctUntilChanged,
   filter,
   fromEvent,
   map,
   merge,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs'
@@ -104,6 +123,8 @@ export class CryptSectionComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
+  private readonly cardShopAvailability = inject(CardShopAvailabilityService)
+  private readonly toastService = inject(ToastService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -113,6 +134,11 @@ export class CryptSectionComponent implements OnInit {
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
   hasMore$ = new BehaviorSubject<boolean>(true)
+  private readonly shopSelection$ = new Subject<{
+    shops: string[]
+    notShops: string[]
+  }>()
+  private readonly availabilityByShop = new Map<string, ReadonlySet<number>>()
 
   private limitTo = CryptSectionComponent.PAGE_SIZE
   readonly sortOptions: SortOption[] = [
@@ -163,6 +189,7 @@ export class CryptSectionComponent implements OnInit {
     })
     this.listenScroll()
     this.onChangeNameFilter()
+    this.listenShopAvailability()
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -188,7 +215,12 @@ export class CryptSectionComponent implements OnInit {
   }
 
   private get defaultCryptFilter(): CryptFilter {
-    return { ...this.cryptQuery.getDefaultCryptFilter(), printOnDemand: false }
+    return {
+      ...this.cryptQuery.getDefaultCryptFilter(),
+      printOnDemand: false,
+      shops: [],
+      notShops: [],
+    }
   }
 
   private updateFilterChips() {
@@ -196,6 +228,7 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter,
       this.defaultCryptFilter,
       (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
     )
   }
 
@@ -285,14 +318,58 @@ export class CryptSectionComponent implements OnInit {
     if (queryParams['printOnDemand']) {
       this.cryptFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
+    const notShops = getValidCardShopNames(queryParams['notShops']?.split(','))
+    const shops = getValidCardShopNames(
+      queryParams['shops']?.split(',') ??
+        (queryParams['shop'] ? [queryParams['shop']] : []),
+    ).filter((shop) => !notShops.includes(shop))
+    this.cryptFilter.shops = shops
+    this.cryptFilter.notShops = notShops
+    this.shopSelection$.next({ shops, notShops })
+    if (queryParams['shop']) {
+      this.updateQueryParams({
+        shop: undefined,
+        shops: shops.join(',') || undefined,
+      })
+    }
+    const { sets, notSets } = normalizeSetSelection(
+      queryParams['sets']?.split(',') ??
+        (queryParams['set'] ? [queryParams['set']] : []),
+      queryParams['notSets']?.split(',') ?? [],
+    )
+    this.cryptFilter.sets = sets
+    this.cryptFilter.notSets = notSets
     if (queryParams['set']) {
-      this.cryptFilter.set = queryParams['set']
+      this.updateQueryParams({
+        set: undefined,
+        sets: sets.join(',') || undefined,
+      })
     }
-    if (queryParams['title']) {
-      this.cryptFilter.title = queryParams['title']
-    }
-    if (queryParams['sect']) {
-      this.cryptFilter.sect = queryParams['sect']
+    const titles = normalizeMultiSelectValues(
+      queryParams['titles']?.split(',') ??
+        (queryParams['title'] ? [queryParams['title']] : []),
+      ['any', 'none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      queryParams['sects']?.split(',') ??
+        (queryParams['sect'] ? [queryParams['sect']] : []),
+    )
+    this.cryptFilter.titles = titles
+    this.cryptFilter.sects = sects
+    const canonicalTitles = titles.join(',') || undefined
+    const canonicalSects = sects.join(',') || undefined
+    if (
+      queryParams['title'] ||
+      queryParams['sect'] ||
+      queryParams['titles'] !== canonicalTitles ||
+      queryParams['sects'] !== canonicalSects
+    ) {
+      this.updateQueryParams({
+        title: undefined,
+        sect: undefined,
+        titles: canonicalTitles,
+        sects: canonicalSects,
+      })
     }
     if (queryParams['paths']) {
       this.cryptFilter.paths = queryParams['paths'].split(',')
@@ -326,6 +403,11 @@ export class CryptSectionComponent implements OnInit {
     }
     if (queryParams['capacity']) {
       this.cryptFilter.capacitySlider = queryParams['capacity']
+        .split(',')
+        .map((v: string) => +v)
+    }
+    if (queryParams['votes']) {
+      this.cryptFilter.votesSlider = queryParams['votes']
         .split(',')
         .map((v: string) => +v)
     }
@@ -378,6 +460,8 @@ export class CryptSectionComponent implements OnInit {
       emitEvent: false,
     })
     this.cryptFilter.printOnDemand = false
+    this.cryptFilter.shops = []
+    this.cryptFilter.notShops = []
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }
@@ -416,6 +500,10 @@ export class CryptSectionComponent implements OnInit {
 
   onChangeCryptFilter(filter: CryptFilter) {
     this.cryptFilter = filter
+    this.shopSelection$.next({
+      shops: this.cryptFilter.shops ?? [],
+      notShops: this.cryptFilter.notShops ?? [],
+    })
     const isDefaultGroup =
       Array.isArray(this.cryptFilter.groupSlider) &&
       this.cryptFilter.groupSlider[0] === 1 &&
@@ -424,8 +512,24 @@ export class CryptSectionComponent implements OnInit {
       Array.isArray(this.cryptFilter.capacitySlider) &&
       this.cryptFilter.capacitySlider[0] === 1 &&
       this.cryptFilter.capacitySlider[1] === this.cryptQuery.getMaxCapacity()
+    const isDefaultVotes =
+      Array.isArray(this.cryptFilter.votesSlider) &&
+      this.cryptFilter.votesSlider[0] === CRYPT_VOTES_RANGE[0] &&
+      this.cryptFilter.votesSlider[1] === CRYPT_VOTES_RANGE[1]
     this.updateQueryParams({
       ['printOnDemand']: this.cryptFilter.printOnDemand ? 'true' : undefined,
+      ['set']: undefined,
+      ['title']: undefined,
+      ['sect']: undefined,
+      ['shop']: undefined,
+      ['shops']:
+        this.cryptFilter.shops && this.cryptFilter.shops.length > 0
+          ? this.cryptFilter.shops.join(',')
+          : undefined,
+      ['notShops']:
+        this.cryptFilter.notShops && this.cryptFilter.notShops.length > 0
+          ? this.cryptFilter.notShops.join(',')
+          : undefined,
       ['clans']:
         this.cryptFilter.clans && this.cryptFilter.clans.length > 0
           ? this.cryptFilter.clans.join(',')
@@ -458,10 +562,27 @@ export class CryptSectionComponent implements OnInit {
         isDefaultCapacity || !Array.isArray(this.cryptFilter.capacitySlider)
           ? undefined
           : this.cryptFilter.capacitySlider.join(','),
+      ['votes']:
+        isDefaultVotes || !Array.isArray(this.cryptFilter.votesSlider)
+          ? undefined
+          : this.cryptFilter.votesSlider.join(','),
       ['advanced']: this.cryptFilter.advanced || undefined,
-      ['title']: this.cryptFilter.title || undefined,
-      ['set']: this.cryptFilter.set || undefined,
-      ['sect']: this.cryptFilter.sect || undefined,
+      ['titles']:
+        this.cryptFilter.titles && this.cryptFilter.titles.length > 0
+          ? this.cryptFilter.titles.join(',')
+          : undefined,
+      ['sets']:
+        this.cryptFilter.sets && this.cryptFilter.sets.length > 0
+          ? this.cryptFilter.sets.join(',')
+          : undefined,
+      ['notSets']:
+        this.cryptFilter.notSets && this.cryptFilter.notSets.length > 0
+          ? this.cryptFilter.notSets.join(',')
+          : undefined,
+      ['sects']:
+        this.cryptFilter.sects && this.cryptFilter.sects.length > 0
+          ? this.cryptFilter.sects.join(',')
+          : undefined,
       ['paths']:
         this.cryptFilter.paths && this.cryptFilter.paths.length > 0
           ? this.cryptFilter.paths.join(',')
@@ -501,6 +622,14 @@ export class CryptSectionComponent implements OnInit {
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       })
       .pipe(
+        map((results) =>
+          filterCardsByShopAvailability(
+            results,
+            this.cryptFilter.shops,
+            this.cryptFilter.notShops,
+            this.availabilityByShop,
+          ),
+        ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
           const sliced = results.slice(0, this.limitTo)
@@ -509,6 +638,50 @@ export class CryptSectionComponent implements OnInit {
         }),
       )
     this.changeDetector.markForCheck()
+  }
+
+  private listenShopAvailability(): void {
+    this.shopSelection$
+      .pipe(
+        distinctUntilChanged(
+          (a, b) =>
+            a.shops.join(',') === b.shops.join(',') &&
+            a.notShops.join(',') === b.notShops.join(','),
+        ),
+        switchMap((selection) => {
+          const missing = [
+            ...new Set([...selection.shops, ...selection.notShops]),
+          ].filter((shop) => !this.availabilityByShop.has(shop))
+          return this.cardShopAvailability
+            .getInStockForShops(missing)
+            .pipe(map((batch) => ({ selection, batch })))
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe(({ selection, batch }) => {
+        batch.availabilityByShop.forEach((ids, shop) =>
+          this.availabilityByShop.set(shop, ids),
+        )
+        if (batch.failedShops.length > 0) {
+          const failed = new Set(batch.failedShops)
+          this.cryptFilter = {
+            ...this.cryptFilter,
+            shops: selection.shops.filter((shop) => !failed.has(shop)),
+            notShops: selection.notShops.filter((shop) => !failed.has(shop)),
+          }
+          this.toastService.show(
+            this.translocoService.translate('shared.shop_availability_error'),
+            { classname: 'bg-danger text-light' },
+          )
+          this.updateQueryParams({
+            shop: undefined,
+            shops: this.cryptFilter.shops?.join(',') || undefined,
+            notShops: this.cryptFilter.notShops?.join(',') || undefined,
+          })
+        }
+        this.updateFilterChips()
+        this.initQuery()
+      })
   }
 
   getCard(card: ApiCrypt): ApiCard {
@@ -523,11 +696,18 @@ export class CryptSectionComponent implements OnInit {
       centered: true,
       scrollable: true,
     })
-    const cryptList = this.cryptQuery.getAll({
-      filter: this.cryptFilter,
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-    })
+    const cryptList = filterCardsByShopAvailability(
+      this.cryptQuery.getAll({
+        filter: this.cryptFilter,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      }),
+      this.cryptFilter.shops,
+      this.cryptFilter.notShops,
+      this.availabilityByShop,
+    )
     modalRef.componentInstance.cardList = cryptList
     modalRef.componentInstance.index = cryptList.indexOf(card)
   }

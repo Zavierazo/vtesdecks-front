@@ -6,77 +6,283 @@
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="me-3">
-              <img [src]="user()?.profileImage || '/assets/img/default_user.png'"
-                [alt]="user()?.displayName || username()" class="rounded-circle" width="80" height="80">
+              <img
+                [src]="user()?.profileImage || '/assets/img/default_user.png'"
+                [alt]="user()?.displayName || username()"
+                class="rounded-circle"
+                width="80"
+                height="80"
+              />
             </div>
-            @if(user(); as user){
-            <div>
-              <h2 class="mb-0">
-                {{ user.displayName }}
+            @if (user(); as user) {
+              <div>
+                <h2 class="mb-0">
+                  {{ user.displayName }}
 
-                @if( isSupporter() ) {
-                <i class="bi bi-patch-check-fill text-primary me-2" [title]="'shared.supporter' | transloco"></i>
-                }
-                @if(user && username()){
-                <app-user-follow-button [username]="username()" />
-                }
-              </h2>
-              <p class="text-muted fs-6 my-1">
-                @{{ user.user }}
-              </p>
-              <p class="text-muted my-1">
-                <i class="bi bi-stack me-1"></i>
-                {{ (total$ | async) || 0 }} {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
-              </p>
-              <div class="d-flex gap-3">
-                <span class="follow-stat" [ngbPopover]="followersPopover" triggers="click" container="body"
-                  placement="bottom" #followersBtn="ngbPopover">
-                  <strong>{{ followersCount() }}</strong>
-                  <span class="text-muted ms-1">{{ t('followers') }}</span>
-                  <ng-template #followersPopover>
-                    <ng-container *ngTemplateOutlet="userListTemplate; context: {
-                      users: user.followers,
-                      count: followersCount(),
-                      emptyMessage: t('no_followers'),
-                      popover: followersBtn
-                    }"></ng-container>
-                  </ng-template>
-                </span>
-                <span class="follow-stat" [ngbPopover]="followingPopover" triggers="click" container="body"
-                  placement="bottom" #followingBtn="ngbPopover">
-                  <strong>{{ followingCount() }}</strong>
-                  <span class="text-muted ms-1">{{ t('following') }}</span>
-                  <ng-template #followingPopover>
-                    <ng-container *ngTemplateOutlet="userListTemplate; context: {
-                      users: user.following,
-                      count: followingCount(),
-                      emptyMessage: t('no_following'),
-                      popover: followingBtn
-                    }"></ng-container>
-                  </ng-template>
-                </span>
-              </div>
-              <!-- Reusable user list template -->
-              <ng-template #userListTemplate let-users="users" let-count="count" let-emptyMessage="emptyMessage"
-                let-popover="popover">
-                <div class="popover-users">
-                  @if (count === 0) {
-                  <div class="p-2 text-center text-muted">{{ emptyMessage }}</div>
-                  } @else {
-                  @for (user of users; track user.user) {
-                  <a [routerLink]="'/user/' + user.user" class="user-item" (click)="popover.close()">
-                    <img [src]="user.profileImage || '/assets/img/default_user.png'" [alt]="user.displayName"
-                      class="user-avatar">
-                    <span class="user-name">{{ user.displayName }}</span>
-                  </a>
+                  @if (isSupporter()) {
+                    <i
+                      class="bi bi-patch-check-fill text-primary me-2"
+                      [title]="'shared.supporter' | transloco"
+                    ></i>
                   }
+                  @if (user && username()) {
+                    <app-user-follow-button [username]="username()" />
                   }
+                </h2>
+                <p class="text-muted fs-6 my-1">@{{ user.user }}</p>
+                @if (isAdmin$ | async) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-warning my-1"
+                    (click)="openAdminSettings()"
+                  >
+                    <i class="bi bi-shield-lock-fill me-1"></i>
+                    {{ 'admin_user.open_settings' | transloco }}
+                  </button>
+                }
+                <p class="text-muted my-1">
+                  <i class="bi bi-stack me-1"></i>
+                  {{ (total$ | async) || 0 }}
+                  {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
+                </p>
+                <div class="d-flex gap-3">
+                  <span
+                    class="follow-stat"
+                    [ngbPopover]="followersPopover"
+                    triggers="click"
+                    container="body"
+                    placement="bottom"
+                    #followersBtn="ngbPopover"
+                  >
+                    <strong>{{ followersCount() }}</strong>
+                    <span class="text-muted ms-1">{{ t('followers') }}</span>
+                    <ng-template #followersPopover>
+                      <ng-container
+                        *ngTemplateOutlet="
+                          userListTemplate;
+                          context: {
+                            users: user.followers,
+                            count: followersCount(),
+                            emptyMessage: t('no_followers'),
+                            popover: followersBtn,
+                          }
+                        "
+                      ></ng-container>
+                    </ng-template>
+                  </span>
+                  <span
+                    class="follow-stat"
+                    [ngbPopover]="followingPopover"
+                    triggers="click"
+                    container="body"
+                    placement="bottom"
+                    #followingBtn="ngbPopover"
+                  >
+                    <strong>{{ followingCount() }}</strong>
+                    <span class="text-muted ms-1">{{ t('following') }}</span>
+                    <ng-template #followingPopover>
+                      <ng-container
+                        *ngTemplateOutlet="
+                          userListTemplate;
+                          context: {
+                            users: user.following,
+                            count: followingCount(),
+                            emptyMessage: t('no_following'),
+                            popover: followingBtn,
+                          }
+                        "
+                      ></ng-container>
+                    </ng-template>
+                  </span>
                 </div>
-              </ng-template>
-
-            </div>
+                <!-- Reusable user list template -->
+                <ng-template
+                  #userListTemplate
+                  let-users="users"
+                  let-count="count"
+                  let-emptyMessage="emptyMessage"
+                  let-popover="popover"
+                >
+                  <div class="popover-users">
+                    @if (count === 0) {
+                      <div class="p-2 text-center text-muted">
+                        {{ emptyMessage }}
+                      </div>
+                    } @else {
+                      @for (user of users; track user.user) {
+                        <a
+                          [routerLink]="'/user/' + user.user"
+                          class="user-item"
+                          (click)="popover.close()"
+                        >
+                          <img
+                            [src]="
+                              user.profileImage ||
+                              '/assets/img/default_user.png'
+                            "
+                            [alt]="user.displayName"
+                            class="user-avatar"
+                          />
+                          <span class="user-name">{{ user.displayName }}</span>
+                        </a>
+                      }
+                    }
+                  </div>
+                </ng-template>
+              </div>
             }
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Section -->
+    <div class="col-12 mb-4" id="achievements">
+      <div class="card achievement-gallery">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="bi bi-trophy me-2"></i
+            >{{ 'achievements.title' | transloco }}
+          </h4>
+        </div>
+        <div class="card-body">
+          @if (achievementsLoading()) {
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+          } @else if (displayedAchievements().length === 0) {
+            <p class="text-muted text-center mb-0 py-3">
+              {{ 'achievements.empty' | transloco }}
+            </p>
+          } @else {
+            <div class="row g-3">
+              @for (
+                family of displayedAchievements();
+                track family.id;
+                let achievementIndex = $index
+              ) {
+                @let earned = highestEarned(family);
+                <div
+                  class="col-12 col-md-6 col-xl-4"
+                  [class.d-none]="
+                    !isOwner() &&
+                    achievementIndex >= 3 &&
+                    !achievementsExpanded()
+                  "
+                >
+                  <div class="achievement-card h-100" [class.locked]="!earned">
+                    <div
+                      class="achievement-medal"
+                      [class]="'achievement-medal ' + family.id"
+                    >
+                      <i
+                        class="bi"
+                        [class]="'bi ' + family.icon"
+                        aria-hidden="true"
+                      ></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                      <h5 class="fs-6 mb-1">
+                        {{ 'achievements.family.' + family.id | transloco }}
+                      </h5>
+                      <p class="small text-muted mb-2">
+                        {{
+                          'achievements.description.' + family.id | transloco
+                        }}
+                      </p>
+                      @if (family.repeatCount) {
+                        <span class="badge text-bg-warning"
+                          >×{{ family.repeatCount }}</span
+                        >
+                      } @else if (earned) {
+                        <span class="badge text-bg-secondary">{{
+                          'achievements.tier'
+                            | transloco: { count: earned.threshold }
+                        }}</span>
+                      }
+                      @if (isOwner() && family.nextThreshold) {
+                        <div
+                          class="progress mt-2"
+                          role="progressbar"
+                          [attr.aria-valuenow]="family.progress"
+                          [attr.aria-valuemax]="family.nextThreshold"
+                        >
+                          <div
+                            class="progress-bar"
+                            [style.width.%]="progressPercent(family)"
+                          ></div>
+                        </div>
+                        <div class="small text-muted mt-1">
+                          {{
+                            'achievements.progress'
+                              | transloco
+                                : {
+                                    current: family.progress,
+                                    target: family.nextThreshold,
+                                  }
+                          }}
+                        </div>
+                      }
+                      @if (
+                        family.tiers.length ||
+                        (family.earnedDates?.length ?? 0) > 1
+                      ) {
+                        <details class="small mt-2">
+                          <summary>
+                            {{ 'achievements.history' | transloco }}
+                          </summary>
+                          <ul class="list-unstyled mb-0 mt-1 text-muted">
+                            @if (family.repeatCount) {
+                              @for (
+                                date of family.earnedDates ?? [];
+                                track date
+                              ) {
+                                <li>{{ date | date: 'MMMM y' : 'UTC' }}</li>
+                              }
+                            } @else {
+                              @for (tier of family.tiers; track tier.id) {
+                                @if (tier.earned) {
+                                  <li>
+                                    {{
+                                      'achievements.tier'
+                                        | transloco: { count: tier.threshold }
+                                    }}
+                                  </li>
+                                }
+                              }
+                            }
+                          </ul>
+                        </details>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+            @if (!isOwner() && additionalAchievementsCount() > 0) {
+              <div class="text-center mt-3">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  [attr.aria-expanded]="achievementsExpanded()"
+                  (click)="achievementsExpanded.set(!achievementsExpanded())"
+                >
+                  <i
+                    class="bi me-1"
+                    [class.bi-chevron-down]="!achievementsExpanded()"
+                    [class.bi-chevron-up]="achievementsExpanded()"
+                    aria-hidden="true"
+                  ></i>
+                  {{
+                    (achievementsExpanded()
+                      ? 'achievements.show_less'
+                      : 'achievements.show_more'
+                    ) | transloco: { count: additionalAchievementsCount() }
+                  }}
+                </button>
+              </div>
+            }
+          }
         </div>
       </div>
     </div>
@@ -92,35 +298,39 @@
         </div>
         <div class="card-body">
           @if (loading$ | async) {
-          <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">{{ t('loading') }}</span>
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">{{ t('loading') }}</span>
+              </div>
             </div>
-          </div>
           } @else if ((decks$ | async)?.length === 0) {
-          <div class="text-center py-5">
-            <i class="bi bi-inbox display-1 text-muted"></i>
-            <p class="text-muted mt-3">{{ t('no_decks_found') }}</p>
-          </div>
-          } @else {
-          <div class="row">
-            @for (deck of (decks$ | async); track deck.id) {
-            <div class="col-12 col-lg-6 col-xl-4 mb-3">
-              <app-deck-card [deck]="deck" height="230px" />
+            <div class="text-center py-5">
+              <i class="bi bi-inbox display-1 text-muted"></i>
+              <p class="text-muted mt-3">{{ t('no_decks_found') }}</p>
             </div>
+          } @else {
+            <div class="row">
+              @for (deck of decks$ | async; track deck.id) {
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <app-deck-card [deck]="deck" height="230px" />
+                </div>
+              }
+            </div>
+            @if ((total$ | async) && (total$ | async)! > 6) {
+              <div class="text-center">
+                <a
+                  [routerLink]="'/decks'"
+                  [queryParams]="{
+                    username: username(),
+                    type: 'COMMUNITY',
+                    order: 'POPULAR',
+                  }"
+                  class="btn btn-primary"
+                >
+                  {{ t('view_all_decks') }}
+                </a>
+              </div>
             }
-          </div>
-          @if ((total$ | async) && (total$ | async)! > 6) {
-          <div class="text-center">
-            <a [routerLink]="'/decks'" [queryParams]="{
-              username: username(),
-              type: 'COMMUNITY',
-              order: 'POPULAR'
-       }" class="btn btn-primary">
-              {{ t('view_all_decks') }}
-            </a>
-          </div>
-          }
           }
         </div>
       </div>
@@ -137,61 +347,88 @@
         </div>
         <div class="card-body">
           @if (collectionLoading()) {
-          <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">{{ t('loading') }}</span>
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">{{ t('loading') }}</span>
+              </div>
             </div>
-          </div>
-          } @else if ((!collection() || collection()!.binders.length === 0) && !wishlistAvailable()) {
-          <div class="text-center py-5">
-            <i class="bi bi-inbox display-1 text-muted"></i>
-            <p class="text-muted mt-3">{{ t('no_binders_found') }}</p>
-          </div>
+          } @else if (
+            (!collection() || collection()!.binders.length === 0) &&
+            !wishlistAvailable()
+          ) {
+            <div class="text-center py-5">
+              <i class="bi bi-inbox display-1 text-muted"></i>
+              <p class="text-muted mt-3">{{ t('no_binders_found') }}</p>
+            </div>
           } @else {
-          <div class="row">
-            @for (binder of collection()?.binders ?? []; track binder.id) {
-            <div class="col-12 col-lg-6 col-xl-4 mb-3">
-              <a [routerLink]="'/collection/binders/' + binder.publicHash" class="text-decoration-none">
-                <div class="shelf-card card border h-100">
-                  <div class="card-body d-flex align-items-center gap-3">
-                    <div class="shelf-icon shelf-icon-binder flex-shrink-0">
-                      @if (binder.icon) {
-                      <i class="vtes {{ binder.icon }}"></i>
-                      } @else {
-                      <i class="bi bi-archive"></i>
-                      }
+            <div class="row">
+              @for (binder of collection()?.binders ?? []; track binder.id) {
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <a
+                    [routerLink]="'/collection/binders/' + binder.publicHash"
+                    class="text-decoration-none"
+                  >
+                    <div class="shelf-card card border h-100">
+                      <div class="card-body d-flex align-items-center gap-3">
+                        <div class="shelf-icon shelf-icon-binder flex-shrink-0">
+                          @if (binder.icon) {
+                            <i class="vtes {{ binder.icon }}"></i>
+                          } @else {
+                            <i class="bi bi-archive"></i>
+                          }
+                        </div>
+                        <div class="shelf-body flex-grow-1">
+                          <h6 class="shelf-title mb-0 text-truncate">
+                            {{ binder.name }}
+                          </h6>
+                          @if (binder.description) {
+                            <p class="shelf-desc mb-0">
+                              {{ binder.description }}
+                            </p>
+                          }
+                        </div>
+                        <i
+                          class="bi bi-chevron-right shelf-arrow flex-shrink-0"
+                        ></i>
+                      </div>
                     </div>
-                    <div class="shelf-body flex-grow-1">
-                      <h6 class="shelf-title mb-0 text-truncate">{{ binder.name }}</h6>
-                      @if (binder.description) {
-                      <p class="shelf-desc mb-0">{{ binder.description }}</p>
-                      }
-                    </div>
-                    <i class="bi bi-chevron-right shelf-arrow flex-shrink-0"></i>
-                  </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-            }
-            @if (wishlistAvailable()) {
-            <div class="col-12 col-lg-6 col-xl-4 mb-3">
-              <a [routerLink]="'/collections/users/' + username() + '/wishlist'" class="text-decoration-none">
-                <div class="shelf-card shelf-card-wishlist card border h-100">
-                  <div class="card-body d-flex align-items-center gap-3">
-                    <div class="shelf-icon shelf-icon-wishlist flex-shrink-0">
-                      <i class="bi bi-heart-fill"></i>
+              }
+              @if (wishlistAvailable()) {
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <a
+                    [routerLink]="
+                      '/collections/users/' + username() + '/wishlist'
+                    "
+                    class="text-decoration-none"
+                  >
+                    <div
+                      class="shelf-card shelf-card-wishlist card border h-100"
+                    >
+                      <div class="card-body d-flex align-items-center gap-3">
+                        <div
+                          class="shelf-icon shelf-icon-wishlist flex-shrink-0"
+                        >
+                          <i class="bi bi-heart-fill"></i>
+                        </div>
+                        <div class="shelf-body flex-grow-1">
+                          <h6 class="shelf-title mb-0 text-truncate">
+                            {{ t('public_wishlist') }}
+                          </h6>
+                          <p class="shelf-desc mb-0">
+                            {{ t('view_wishlist') }}
+                          </p>
+                        </div>
+                        <i
+                          class="bi bi-chevron-right shelf-arrow flex-shrink-0"
+                        ></i>
+                      </div>
                     </div>
-                    <div class="shelf-body flex-grow-1">
-                      <h6 class="shelf-title mb-0 text-truncate">{{ t('public_wishlist') }}</h6>
-                      <p class="shelf-desc mb-0">{{ t('view_wishlist') }}</p>
-                    </div>
-                    <i class="bi bi-chevron-right shelf-arrow flex-shrink-0"></i>
-                  </div>
+                  </a>
                 </div>
-              </a>
+              }
             </div>
-            }
-          </div>
           }
         </div>
       </div>

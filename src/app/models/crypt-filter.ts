@@ -1,7 +1,11 @@
 import { ApiDeckLimitedFormat } from './api-deck-limited-format'
 
+export const CRYPT_VOTES_RANGE = [0, 4] as const
+
 export interface CryptFilter {
   printOnDemand?: boolean
+  shops?: string[]
+  notShops?: string[]
   limitedFormat?: boolean
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string
@@ -14,11 +18,13 @@ export interface CryptFilter {
   groupSlider?: number[]
   advanced?: 'base' | 'advanced'
   capacitySlider?: number[]
-  title?: string
-  sect?: string
+  votesSlider?: number[]
+  titles?: string[]
+  sects?: string[]
   paths?: string[]
   notPaths?: string[]
-  set?: string
+  sets?: string[]
+  notSets?: string[]
   taints?: string[]
   cardText?: string
   artist?: string

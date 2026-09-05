@@ -23,7 +23,13 @@ import {
 import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { MediaService, SearchFeaturesService, SeoService } from '@services'
+import {
+  CardShopAvailabilityService,
+  MediaService,
+  SearchFeaturesService,
+  SeoService,
+  ToastService,
+} from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -41,19 +47,26 @@ import { AuthService } from '@state/auth/auth.service'
 import { LibraryQuery } from '@state/library/library.query'
 import {
   buildLibraryFilterChips,
+  filterCardsByShopAvailability,
+  getCardShopName,
+  getValidCardShopNames,
   isRegexSearch,
+  normalizeMultiSelectValues,
+  normalizeSetSelection,
   removeCardFilterChip,
 } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
+  distinctUntilChanged,
   filter,
   fromEvent,
   map,
   merge,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs'
@@ -104,6 +117,8 @@ export class LibrarySectionComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
+  private readonly cardShopAvailability = inject(CardShopAvailabilityService)
+  private readonly toastService = inject(ToastService)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl('')
@@ -113,6 +128,11 @@ export class LibrarySectionComponent implements OnInit {
   showScrollButton$!: Observable<boolean>
   resultsCount$ = new BehaviorSubject<number>(0)
   hasMore$ = new BehaviorSubject<boolean>(true)
+  private readonly shopSelection$ = new Subject<{
+    shops: string[]
+    notShops: string[]
+  }>()
+  private readonly availabilityByShop = new Map<string, ReadonlySet<number>>()
 
   private limitTo = LibrarySectionComponent.PAGE_SIZE
   readonly sortOptions: SortOption[] = [
@@ -162,6 +182,7 @@ export class LibrarySectionComponent implements OnInit {
     })
     this.listenScroll()
     this.onChangeNameFilter()
+    this.listenShopAvailability()
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -190,6 +211,8 @@ export class LibrarySectionComponent implements OnInit {
     return {
       ...this.libraryQuery.getDefaultLibraryFilter(),
       printOnDemand: false,
+      shops: [],
+      notShops: [],
     }
   }
 
@@ -198,6 +221,7 @@ export class LibrarySectionComponent implements OnInit {
       this.libraryFilter,
       this.defaultLibraryFilter,
       (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
     )
   }
 
@@ -287,14 +311,59 @@ export class LibrarySectionComponent implements OnInit {
     if (queryParams['printOnDemand']) {
       this.libraryFilter.printOnDemand = queryParams['printOnDemand'] === 'true'
     }
+    const notShops = getValidCardShopNames(queryParams['notShops']?.split(','))
+    const shops = getValidCardShopNames(
+      queryParams['shops']?.split(',') ??
+        (queryParams['shop'] ? [queryParams['shop']] : []),
+    ).filter((shop) => !notShops.includes(shop))
+    this.libraryFilter.shops = shops
+    this.libraryFilter.notShops = notShops
+    this.shopSelection$.next({ shops, notShops })
+    if (queryParams['shop']) {
+      this.updateQueryParams({
+        shop: undefined,
+        shops: shops.join(',') || undefined,
+      })
+    }
+    const { sets, notSets } = normalizeSetSelection(
+      queryParams['sets']?.split(',') ??
+        (queryParams['set'] ? [queryParams['set']] : []),
+      queryParams['notSets']?.split(',') ?? [],
+    )
+    this.libraryFilter.sets = sets
+    this.libraryFilter.notSets = notSets
     if (queryParams['set']) {
-      this.libraryFilter.set = queryParams['set']
+      this.updateQueryParams({
+        set: undefined,
+        sets: sets.join(',') || undefined,
+      })
     }
-    if (queryParams['title']) {
-      this.libraryFilter.title = queryParams['title']
-    }
-    if (queryParams['sect']) {
-      this.libraryFilter.sect = queryParams['sect']
+    const titles = normalizeMultiSelectValues(
+      queryParams['titles']?.split(',') ??
+        (queryParams['title'] ? [queryParams['title']] : []),
+      ['none'],
+    )
+    const sects = normalizeMultiSelectValues(
+      queryParams['sects']?.split(',') ??
+        (queryParams['sect'] ? [queryParams['sect']] : []),
+      ['none'],
+    )
+    this.libraryFilter.titles = titles
+    this.libraryFilter.sects = sects
+    const canonicalTitles = titles.join(',') || undefined
+    const canonicalSects = sects.join(',') || undefined
+    if (
+      queryParams['title'] ||
+      queryParams['sect'] ||
+      queryParams['titles'] !== canonicalTitles ||
+      queryParams['sects'] !== canonicalSects
+    ) {
+      this.updateQueryParams({
+        title: undefined,
+        sect: undefined,
+        titles: canonicalTitles,
+        sects: canonicalSects,
+      })
     }
     if (queryParams['paths']) {
       this.libraryFilter.paths = queryParams['paths'].split(',')
@@ -393,6 +462,8 @@ export class LibrarySectionComponent implements OnInit {
       emitEvent: false,
     })
     this.libraryFilter.printOnDemand = false
+    this.libraryFilter.shops = []
+    this.libraryFilter.notShops = []
     this.sortBy = 'name'
     this.sortByOrder = 'asc'
   }
@@ -431,6 +502,10 @@ export class LibrarySectionComponent implements OnInit {
 
   onChangeLibraryFilter(filter: LibraryFilter) {
     this.libraryFilter = filter
+    this.shopSelection$.next({
+      shops: this.libraryFilter.shops ?? [],
+      notShops: this.libraryFilter.notShops ?? [],
+    })
 
     const isDefaultBloodCost =
       Array.isArray(this.libraryFilter.bloodCostSlider) &&
@@ -447,6 +522,18 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryQuery.getMaxConvictionCost()
     this.updateQueryParams({
       ['printOnDemand']: this.libraryFilter.printOnDemand ? 'true' : undefined,
+      ['set']: undefined,
+      ['title']: undefined,
+      ['sect']: undefined,
+      ['shop']: undefined,
+      ['shops']:
+        this.libraryFilter.shops && this.libraryFilter.shops.length > 0
+          ? this.libraryFilter.shops.join(',')
+          : undefined,
+      ['notShops']:
+        this.libraryFilter.notShops && this.libraryFilter.notShops.length > 0
+          ? this.libraryFilter.notShops.join(',')
+          : undefined,
       ['types']:
         this.libraryFilter.types && this.libraryFilter.types.length > 0
           ? this.libraryFilter.types.join(',')
@@ -476,7 +563,10 @@ export class LibrarySectionComponent implements OnInit {
           : undefined,
       ['disciplineMode']:
         this.libraryFilter.disciplineMode === 'or' ? 'or' : undefined,
-      ['sect']: this.libraryFilter.sect || undefined,
+      ['sects']:
+        this.libraryFilter.sects && this.libraryFilter.sects.length > 0
+          ? this.libraryFilter.sects.join(',')
+          : undefined,
       ['paths']:
         this.libraryFilter.paths && this.libraryFilter.paths.length > 0
           ? this.libraryFilter.paths.join(',')
@@ -485,8 +575,18 @@ export class LibrarySectionComponent implements OnInit {
         this.libraryFilter.notPaths && this.libraryFilter.notPaths.length > 0
           ? this.libraryFilter.notPaths.join(',')
           : undefined,
-      ['title']: this.libraryFilter.title || undefined,
-      ['set']: this.libraryFilter.set || undefined,
+      ['titles']:
+        this.libraryFilter.titles && this.libraryFilter.titles.length > 0
+          ? this.libraryFilter.titles.join(',')
+          : undefined,
+      ['sets']:
+        this.libraryFilter.sets && this.libraryFilter.sets.length > 0
+          ? this.libraryFilter.sets.join(',')
+          : undefined,
+      ['notSets']:
+        this.libraryFilter.notSets && this.libraryFilter.notSets.length > 0
+          ? this.libraryFilter.notSets.join(',')
+          : undefined,
       ['bloodCostSlider']:
         isDefaultBloodCost || !Array.isArray(this.libraryFilter.bloodCostSlider)
           ? undefined
@@ -532,6 +632,14 @@ export class LibrarySectionComponent implements OnInit {
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       })
       .pipe(
+        map((results) =>
+          filterCardsByShopAvailability(
+            results,
+            this.libraryFilter.shops,
+            this.libraryFilter.notShops,
+            this.availabilityByShop,
+          ),
+        ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
           const sliced = results.slice(0, this.limitTo)
@@ -540,6 +648,50 @@ export class LibrarySectionComponent implements OnInit {
         }),
       )
     this.changeDetector.markForCheck()
+  }
+
+  private listenShopAvailability(): void {
+    this.shopSelection$
+      .pipe(
+        distinctUntilChanged(
+          (a, b) =>
+            a.shops.join(',') === b.shops.join(',') &&
+            a.notShops.join(',') === b.notShops.join(','),
+        ),
+        switchMap((selection) => {
+          const missing = [
+            ...new Set([...selection.shops, ...selection.notShops]),
+          ].filter((shop) => !this.availabilityByShop.has(shop))
+          return this.cardShopAvailability
+            .getInStockForShops(missing)
+            .pipe(map((batch) => ({ selection, batch })))
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe(({ selection, batch }) => {
+        batch.availabilityByShop.forEach((ids, shop) =>
+          this.availabilityByShop.set(shop, ids),
+        )
+        if (batch.failedShops.length > 0) {
+          const failed = new Set(batch.failedShops)
+          this.libraryFilter = {
+            ...this.libraryFilter,
+            shops: selection.shops.filter((shop) => !failed.has(shop)),
+            notShops: selection.notShops.filter((shop) => !failed.has(shop)),
+          }
+          this.toastService.show(
+            this.translocoService.translate('shared.shop_availability_error'),
+            { classname: 'bg-danger text-light' },
+          )
+          this.updateQueryParams({
+            shop: undefined,
+            shops: this.libraryFilter.shops?.join(',') || undefined,
+            notShops: this.libraryFilter.notShops?.join(',') || undefined,
+          })
+        }
+        this.updateFilterChips()
+        this.initQuery()
+      })
   }
 
   getCard(card: ApiLibrary): ApiCard {
@@ -565,11 +717,18 @@ export class LibrarySectionComponent implements OnInit {
       centered: true,
       scrollable: true,
     })
-    const libraryList = this.libraryQuery.getAll({
-      filter: this.libraryFilter,
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-    })
+    const libraryList = filterCardsByShopAvailability(
+      this.libraryQuery.getAll({
+        filter: this.libraryFilter,
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+      }),
+      this.libraryFilter.shops,
+      this.libraryFilter.notShops,
+      this.availabilityByShop,
+    )
     modalRef.componentInstance.cardList = libraryList
     modalRef.componentInstance.index = libraryList.indexOf(card)
   }

@@ -2,6 +2,8 @@ import { ApiDeckLimitedFormat } from './api-deck-limited-format'
 
 export interface LibraryFilter {
   printOnDemand?: boolean
+  shops?: string[]
+  notShops?: string[]
   limitedFormat?: boolean
   customLimitedFormat?: ApiDeckLimitedFormat
   name?: string
@@ -13,15 +15,16 @@ export interface LibraryFilter {
   disciplines?: string[]
   notDisciplines?: string[]
   disciplineMode?: 'and' | 'or'
-  sect?: string
+  sects?: string[]
   paths?: string[]
   notPaths?: string[]
   bloodCostSlider?: number[]
   poolCostSlider?: number[]
   convictionCostSlider?: number[]
   trifle?: 'trifle' | 'non_trifle'
-  title?: string
-  set?: string
+  titles?: string[]
+  sets?: string[]
+  notSets?: string[]
   taints?: string[]
   cardText?: string
   artist?: string

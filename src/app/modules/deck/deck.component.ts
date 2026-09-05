@@ -16,6 +16,17 @@ import {
   ViewChild,
 } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
+import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
+import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
+import { CryptComponent } from '@deck-shared/crypt/crypt.component'
+import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
+import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
+import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
+import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
+import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
+import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
+import { environment } from '@environments/environment'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -46,11 +57,11 @@ import {
   MediaService,
   PreviousRouteService,
   SeoService,
-  SpoilerVisitService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
+import { AchievementBadgesComponent } from '@shared/components/achievement-badges/achievement-badges.component'
 import { DeleteDialogComponent } from '@shared/components/delete-dialog/delete-dialog.component'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
@@ -68,22 +79,11 @@ import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { filter, Observable, switchMap, tap, timer } from 'rxjs'
-import { environment } from '@environments/environment'
+import { filter, Observable, of, switchMap, tap, timer } from 'rxjs'
 import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
-import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
-import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
-import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
-import { CryptComponent } from '@deck-shared/crypt/crypt.component'
-import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
-import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
-import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
-import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
-import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
-import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer-modal/shopping-optimizer-modal.component'
 
 @UntilDestroy()
 @Component({
@@ -92,6 +92,7 @@ import { ShoppingOptimizerModalComponent } from '@deck-shared/shopping-optimizer
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AchievementBadgesComponent,
     LoadingComponent,
     TranslocoDirective,
     NgbDropdown,
@@ -149,7 +150,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
-  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   id!: string
 
@@ -172,6 +172,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
   isAdmin$!: Observable<boolean>
 
   isBookmarked = false
+
+  bookmarkCount = 0
 
   isRated = false
 
@@ -200,7 +202,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   ]
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id')!
     this.isLoading$ = this.deckQuery.selectLoading()
     this.isAuthenticated$ = this.authQuery.selectAuthenticated()
     this.userDisplayName$ = this.authQuery.selectDisplayName()
@@ -211,18 +212,13 @@ export class DeckComponent implements OnInit, AfterViewInit {
       untilDestroyed(this),
       tap((deck) => {
         this.isBookmarked = deck?.favorite ?? false
+        this.bookmarkCount = deck?.bookmarks ?? 0
         this.isRated = deck?.rated ?? false
         this.isSupporter = isSupporter(deck?.user?.roles)
         const collectionTrackerOwner = deck?.owner ? deck.collection : false
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         if (deck) {
-          if (deck.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')) {
-            this.spoilerVisitService.markDeckVisited(
-              deck.id,
-              this.authQuery.serverDate()() ?? new Date(),
-            )
-          }
           const deckDescription = deck.description
             ? `${deck.description.slice(0, 155)}…`
             : `${deck.name} by ${deck.author} – a VTES deck on VTESDecks.com.`
@@ -239,7 +235,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
         }
       }),
     )
-    this.route.paramMap.subscribe(() => this.fetchSimilarDecks())
+    this.route.paramMap.pipe(untilDestroyed(this)).subscribe((params) => {
+      this.id = params.get('id')!
+      this.fetchSimilarDecks()
+    })
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -254,7 +253,14 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    timer(10000)
+    const deck = this.deckQuery.getDeck()
+    const isSpoilerPreconstructed =
+      deck?.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')
+    const viewTrigger$: Observable<unknown> = isSpoilerPreconstructed
+      ? of(undefined)
+      : timer(5000)
+
+    viewTrigger$
       .pipe(
         untilDestroyed(this),
         switchMap(() =>
@@ -263,6 +269,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
             this.previousRouteService.getPreviousUrl(),
           ),
         ),
+        tap(() => this.decksService.markVisited(this.id)),
       )
       .subscribe()
   }
@@ -302,8 +309,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   toggleBookmark() {
+    const bookmark = !this.isBookmarked
     this.apiDataService
-      .bookmarkDeck(this.id, !this.isBookmarked)
+      .bookmarkDeck(this.id, bookmark)
       .pipe(untilDestroyed(this))
       .subscribe({
         error: () =>
@@ -312,7 +320,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
             { classname: 'bg-danger text-light', delay: 5000 },
           ),
         complete: () => {
-          this.isBookmarked = !this.isBookmarked
+          this.isBookmarked = bookmark
+          this.bookmarkCount = Math.max(
+            0,
+            this.bookmarkCount + (bookmark ? 1 : -1),
+          )
           this.changeDetectorRef.detectChanges()
         },
       })
@@ -373,9 +385,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   async onEmbed(): Promise<void> {
     // Lazy import to keep the embed modal out of the deck chunk
-    const { EmbedSnippetModalComponent } = await import(
-      '@deck-shared/embed-snippet-modal/embed-snippet-modal.component'
-    )
+    const { EmbedSnippetModalComponent } =
+      await import('@deck-shared/embed-snippet-modal/embed-snippet-modal.component')
     const modalRef = this.modalService.open(EmbedSnippetModalComponent, {
       size: 'xl',
       centered: true,
@@ -454,9 +465,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
       return
     }
     // Lazy import to keep the wishlist modal out of the deck chunk
-    const { AddMissingToWishlistModalComponent } = await import(
-      '../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component'
-    )
+    const { AddMissingToWishlistModalComponent } =
+      await import('../wishlist/add-missing-to-wishlist-modal/add-missing-to-wishlist-modal.component')
     const modalRef = this.modalService.open(
       AddMissingToWishlistModalComponent,
       {

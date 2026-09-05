@@ -1,5 +1,5 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
-import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common'
+import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,17 +13,27 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ClanFilterComponent } from '@deck-shared/clan-filter/clan-filter.component'
 import { DisciplineFilterComponent } from '@deck-shared/discipline-filter/discipline-filter.component'
 import { PathFilterComponent } from '@deck-shared/path-filter/path-filter.component'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { CryptFilter } from '@models'
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
+import { CRYPT_VOTES_RANGE, CryptFilter } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import {
   SegmentedFilterComponent,
   SegmentedFilterOption,
 } from '@shared/components/segmented-filter/segmented-filter.component'
+import {
+  MultiSelectComponent,
+  MultiSelectOption,
+  MultiSelectSelection,
+} from '@shared/components/multi-select/multi-select.component'
 import { TranslocoFallbackPipe } from '@shared/pipes/transloco-fallback'
 import { CryptQuery } from '@state/crypt/crypt.query'
-import { tap } from 'rxjs'
+import {
+  CARD_SHOPS,
+  normalizeMultiSelectValues,
+  normalizeSetSelection,
+} from '@utils'
+import { combineLatest, map, tap } from 'rxjs'
 
 @UntilDestroy()
 @Component({
@@ -41,14 +51,15 @@ import { tap } from 'rxjs'
     AsyncPipe,
     TitleCasePipe,
     TranslocoFallbackPipe,
-    TranslocoPipe,
-    DatePipe,
     SegmentedFilterComponent,
+    MultiSelectComponent,
   ],
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
   private apiDataService = inject(ApiDataService)
+  private translocoService = inject(TranslocoService)
+  private titleCasePipe = new TitleCasePipe()
 
   @Input() filter!: CryptFilter
   @Input() showSet = true
@@ -59,20 +70,61 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   predefinedLimitedFormatControl!: FormControl
   groupSliderControl!: FormControl
   capacitySliderControl!: FormControl
-  titleControl!: FormControl
-  sectControl!: FormControl
-  setControl!: FormControl
+  votesSliderControl!: FormControl
   taintGroup!: FormGroup
   cardTextControl!: FormControl
   artistControl!: FormControl
 
-  titles$ = this.cryptQuery.selectTitles()
-  sects$ = this.cryptQuery.selectSects()
+  readonly titleExclusiveValues = ['any', 'none']
+  titleOptions$ = combineLatest([
+    this.cryptQuery.selectTitles(),
+    this.translocoService.langChanges$,
+  ]).pipe(
+    map(([titles]) => [
+      {
+        value: 'any',
+        label: this.translocoService.translate('shared.any_title'),
+      },
+      {
+        value: 'none',
+        label: this.translocoService.translate('shared.no_title'),
+      },
+      ...titles.map((title) => ({
+        value: title,
+        label: this.titleCasePipe.transform(title),
+      })),
+    ]),
+  )
+  sectOptions$ = this.cryptQuery.selectSects().pipe(
+    map((sects) =>
+      sects.map((sect) => ({
+        value: sect,
+        label: this.titleCasePipe.transform(sect),
+      })),
+    ),
+  )
   taints$ = this.cryptQuery.selectTaints()
-  sets$ = this.cryptQuery.selectSets()
+  setOptions$ = this.cryptQuery.selectSets().pipe(
+    map((sets) =>
+      sets.map((set) => ({
+        value: set.abbrev,
+        label: `${set.releaseDate ? `${new Date(set.releaseDate).getFullYear()} - ` : ''}${set.fullName}`,
+        shortLabel: set.abbrev,
+      })),
+    ),
+  )
   predefinedLimitedFormats$ = this.apiDataService.getLimitedFormats()
+  readonly shopOptions: readonly MultiSelectOption[] = CARD_SHOPS.map(
+    (shop) => ({
+      value: shop.name,
+      label: shop.fullName,
+      shortLabel: shop.name,
+    }),
+  )
   maxCapacity = this.cryptQuery.getMaxCapacity()
   maxGroup = this.cryptQuery.getMaxGroup()
+  readonly minVotes = CRYPT_VOTES_RANGE[0]
+  readonly maxVotes = CRYPT_VOTES_RANGE[1]
   initialized = false
 
   readonly advancedOptions: SegmentedFilterOption[] = [
@@ -118,9 +170,7 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
     this.onChangeLimitedFormat()
     this.onChangeGroupSlider()
     this.onChangeCapacitySlider()
-    this.onChangeTitle()
-    this.onChangeSet()
-    this.onChangeSect()
+    this.onChangeVotesSlider()
     this.onChangeTaint()
     this.onChangeCardText()
     this.onChangePredefinedLimitedFormat()
@@ -178,6 +228,35 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
         }),
       )
       .subscribe()
+  }
+
+  onChangeShopAvailability(selection: MultiSelectSelection) {
+    this.filter.shops = selection.selected
+    this.filter.notShops = selection.excluded
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSetSelection(selection: MultiSelectSelection) {
+    const { sets, notSets } = normalizeSetSelection(
+      selection.selected,
+      selection.excluded,
+    )
+    this.filter.sets = sets
+    this.filter.notSets = notSets
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeTitleSelection(selection: MultiSelectSelection) {
+    this.filter.titles = normalizeMultiSelectValues(
+      selection.selected,
+      this.titleExclusiveValues,
+    )
+    this.filterChange.emit(this.filter)
+  }
+
+  onChangeSectSelection(selection: MultiSelectSelection) {
+    this.filter.sects = normalizeMultiSelectValues(selection.selected)
+    this.filterChange.emit(this.filter)
   }
 
   onChangeLimitedFormat() {
@@ -276,39 +355,13 @@ export class CryptBuilderFilterComponent implements OnInit, OnChanges {
       .subscribe()
   }
 
-  onChangeTitle() {
-    this.titleControl = new FormControl(this.filter.title)
-    this.titleControl.valueChanges
+  onChangeVotesSlider() {
+    this.votesSliderControl = new FormControl(this.filter.votesSlider)
+    this.votesSliderControl.valueChanges
       .pipe(
         untilDestroyed(this),
         tap((value) => {
-          this.filter.title = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSet() {
-    this.setControl = new FormControl(this.filter.set)
-    this.setControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.set = value
-          this.filterChange.emit(this.filter)
-        }),
-      )
-      .subscribe()
-  }
-
-  onChangeSect() {
-    this.sectControl = new FormControl(this.filter.sect)
-    this.sectControl.valueChanges
-      .pipe(
-        untilDestroyed(this),
-        tap((value) => {
-          this.filter.sect = value
+          this.filter.votesSlider = value
           this.filterChange.emit(this.filter)
         }),
       )

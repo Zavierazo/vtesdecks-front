@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DecimalPipe } from '@angular/common'
+import { AsyncPipe, CurrencyPipe, DecimalPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +7,14 @@ import {
 } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
-import { ApiDeckArchetype } from '@models'
+import { ApiDeckArchetype, MetaType } from '@models'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { AuthQuery } from '@state/auth/auth.query'
+import { getClanIcon, getDisciplineIcon } from '@utils'
 import { catchError, EMPTY, switchMap } from 'rxjs'
 import { DeckMetagameModalComponent } from '../deck-metagame-modal/deck-metagame-modal.component'
 
@@ -31,6 +32,7 @@ import { DeckMetagameModalComponent } from '../deck-metagame-modal/deck-metagame
     DecimalPipe,
     CurrencyPipe,
     NgbTooltip,
+    NgClass,
   ],
 })
 export class DeckMetagameCardComponent {
@@ -42,12 +44,16 @@ export class DeckMetagameCardComponent {
   private readonly router = inject(Router)
 
   archetype = input<ApiDeckArchetype>()
+  rank = input<number | undefined>()
+  metaType = input<MetaType>('TOURNAMENT_365')
 
-  isMaintainer$ = this.authQuery.selectRole('maintainer')
+  isAdmin$ = this.authQuery.selectAdmin()
 
   navigate(archetype: ApiDeckArchetype) {
     if (archetype.id !== undefined && archetype.id > 0) {
-      this.router.navigate(['/metagame', archetype.id])
+      this.router.navigate(['/metagame', archetype.id], {
+        queryParams: this.detailQueryParams,
+      })
     }
   }
 
@@ -107,5 +113,41 @@ export class DeckMetagameCardComponent {
       return 0
     }
     return (archetype.metaCount / archetype.metaTotal) * 100 || 0
+  }
+
+  get detailQueryParams(): { metaType: MetaType } | undefined {
+    return this.metaType() === 'TOURNAMENT_365'
+      ? undefined
+      : { metaType: this.metaType() }
+  }
+
+  getClanIcon(clan: string): string | undefined {
+    return getClanIcon(clan)
+  }
+
+  getDisciplineIcon(discipline: string): string | undefined {
+    return getDisciplineIcon(discipline, false)
+  }
+
+  getProfileClans(archetype: ApiDeckArchetype): string[] {
+    return (archetype.clans ?? []).filter(
+      (clan) => !this.isMainIcon(getClanIcon(clan), archetype.icon),
+    )
+  }
+
+  getProfileDisciplines(archetype: ApiDeckArchetype): string[] {
+    return (archetype.disciplines ?? []).filter(
+      (discipline) =>
+        !this.isMainIcon(getDisciplineIcon(discipline, false), archetype.icon),
+    )
+  }
+
+  private isMainIcon(
+    profileIcon: string | undefined,
+    archetypeIcon: string | undefined,
+  ): boolean {
+    return Boolean(
+      profileIcon && archetypeIcon?.split(/\s+/).includes(profileIcon),
+    )
   }
 }

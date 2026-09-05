@@ -5,8 +5,16 @@
         <div class="row search-toolbar g-2 justify-content-center" [ngClass]="{ 'g-1': (isMobileOrTablet$ | async)! }">
           <div class="col-12 col-sm">
             <div class="input-group">
-              <input type="text" class="form-control" id="name" [placeholder]="t('card_name')"
-                [formControl]="nameFormControl">
+              <div class="search-input-wrapper">
+                <input #nameInput type="text" class="form-control pe-5 rounded-end-0" id="name"
+                  [placeholder]="t('card_name')" [formControl]="nameFormControl">
+                @if (nameFormControl.value) {
+                <button type="button" class="search-input-clear" (click)="nameFormControl.setValue(''); nameInput.focus()"
+                  [attr.aria-label]="'shared.clear_search' | transloco">
+                  <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+                }
+              </div>
               <button type="button" class="btn btn-primary px-3" (click)="openCameraScanner()" [title]="t('scan_card')"
                 [attr.aria-label]="t('scan_card')">
                 <i class="bi bi-camera-fill"></i>

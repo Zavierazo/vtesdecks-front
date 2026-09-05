@@ -79,9 +79,21 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 `PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.
 
+The production service worker prefetches all JavaScript bundles and core media during installation so every route is immediately offline-capable. Production builds retain hidden JavaScript sourcemaps for Sentry, while `src/.assetsignore` prevents Wrangler from publishing maps and `src/_headers` defines browser caching for fingerprinted assets.
+
 ### Reusable Browser Searches
 
 Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
+
+Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`, support per-shop include/exclude selection, and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`. Multiple included shops use union semantics and excluded shops are subtracted; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.
+
+### Achievements
+
+The backend owns the achievement catalog and permanently records earned tiers. Repeatable families store one occurrence and expose a multiplier; milestone families expose their highest earned tier. Public profiles load earned achievement families from `/public/user/{username}/achievements`; owners load the full catalog and progress from `/user/achievements`. `ApiPublicUser.achievementBadges` is the compact, server-prioritized top-three list used on the full deck view, not on deck cards. Frontend components must use stable family IDs for translations and presentation and must not independently decide whether an achievement has been earned.
+
+### Admin User Management
+
+The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set and take effect for the affected user after their authentication token is refreshed.
 
 ---
 

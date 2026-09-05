@@ -46,6 +46,11 @@
   overflow-y: auto;
   overflow-x: hidden;
 
+  .search-result-item i.vtes {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
   h5 {
     font-size: 0.8rem;
     text-transform: uppercase;

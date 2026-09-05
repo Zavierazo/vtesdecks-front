@@ -6,8 +6,11 @@ import {
   inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective } from '@jsverse/transloco'
-import { TranslocoService } from '@jsverse/transloco'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiUserNotification } from '@models'
 import { NgbActiveOffcanvas, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
@@ -23,7 +26,14 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   templateUrl: './notification-list.component.html',
   styleUrls: ['./notification-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, NgClass, RouterLink, AsyncPipe, DateAsAgoPipe],
+  imports: [
+    TranslocoDirective,
+    TranslocoPipe,
+    NgClass,
+    RouterLink,
+    AsyncPipe,
+    DateAsAgoPipe,
+  ],
 })
 export class NotificationListComponent implements OnInit {
   offcanvas = inject(NgbActiveOffcanvas)

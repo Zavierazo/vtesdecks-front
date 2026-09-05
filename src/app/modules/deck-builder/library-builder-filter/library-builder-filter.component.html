@@ -1,168 +1,267 @@
 <ng-container *transloco="let t; prefix: 'library_builder_filter'">
   @if (filter.limitedFormat !== undefined) {
-  <div class="row g-1 mb-2 items-center">
-    <div class="form-check form-switch form-check-inline">
-      <input class="form-check-input" type="checkbox" role="switch" id="limitedFormatCheck"
-        [formControl]="limitedFormatControl" />
-      <label class="form-check-label" for="limitedFormatCheck">{{ t('limited_format') }}</label>
+    <div class="row g-1 mb-2 items-center">
+      <div class="form-check form-switch form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="limitedFormatCheck"
+          [formControl]="limitedFormatControl"
+        />
+        <label class="form-check-label" for="limitedFormatCheck">{{
+          t('limited_format')
+        }}</label>
+      </div>
     </div>
-  </div>
   }
   @if (filter.printOnDemand !== undefined) {
-  <div class="row g-1 mb-2 items-center">
-    <div class="form-check form-switch form-check-inline">
-      <input class="form-check-input" type="checkbox" role="switch" id="printOnDemandCheck"
-        [formControl]="printOnDemandControl" />
-      <label class="form-check-label" for="printOnDemandCheck">{{ t('print_on_demand') }}</label>
+    <div class="row g-1 mb-2 items-center">
+      <div class="form-check form-switch form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="printOnDemandCheck"
+          [formControl]="printOnDemandControl"
+        />
+        <label class="form-check-label" for="printOnDemandCheck">{{
+          t('print_on_demand')
+        }}</label>
+      </div>
     </div>
-  </div>
   }
-  @if(filter.types){
-  <label for="type" class="form-label text-primary fw-bold">{{ t('type') }}</label>
-  <div id="type" class="row g-1">
-    <app-library-type-filter [(types)]="filter.types" (typesChange)="onChangeTypeFilter($event)"
-      [allowExclude]="true" [showAndOr]="true" [notTypes]="filter.notTypes ?? []"
-      (notTypesChange)="onChangeNotTypeFilter($event)" [mode]="filter.typeMode ?? 'or'"
-      (modeChange)="onChangeTypeMode($event)" />
-  </div>
-  @if (masterTypeSelected) {
-  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mt-2">
-    <span class="form-label text-primary fw-bold mb-0">{{ t('trifle') }}</span>
-    <app-segmented-filter [options]="trifleOptions" [value]="filter.trifle" [ariaLabel]="t('trifle')"
-      (valueChange)="onChangeTrifle($event)" />
-  </div>
+  @if (filter.types) {
+    <label for="type" class="form-label text-primary fw-bold">{{
+      t('type')
+    }}</label>
+    <div id="type" class="row g-1">
+      <app-library-type-filter
+        [(types)]="filter.types"
+        (typesChange)="onChangeTypeFilter($event)"
+        [allowExclude]="true"
+        [showAndOr]="true"
+        [notTypes]="filter.notTypes ?? []"
+        (notTypesChange)="onChangeNotTypeFilter($event)"
+        [mode]="filter.typeMode ?? 'or'"
+        (modeChange)="onChangeTypeMode($event)"
+      />
+    </div>
+    @if (masterTypeSelected) {
+      <div
+        class="d-flex align-items-center justify-content-between gap-2 flex-wrap mt-2"
+      >
+        <span class="form-label text-primary fw-bold mb-0">{{
+          t('trifle')
+        }}</span>
+        <app-segmented-filter
+          [options]="trifleOptions"
+          [value]="filter.trifle"
+          [ariaLabel]="t('trifle')"
+          (valueChange)="onChangeTrifle($event)"
+        />
+      </div>
+    }
   }
+  @if (filter.disciplines) {
+    <label for="disciplines" class="form-label text-primary fw-bold">{{
+      t('disciplines')
+    }}</label>
+    <div id="disciplines" class="row g-1">
+      <app-discipline-filter
+        [(disciplines)]="filter.disciplines"
+        (disciplinesChange)="onChangeDisciplineFilter($event)"
+        [showNotRequired]="true"
+        [showSuperior]="false"
+        [allowExclude]="true"
+        [showAndOr]="true"
+        [notDisciplines]="filter.notDisciplines ?? []"
+        (notDisciplinesChange)="onChangeNotDisciplineFilter($event)"
+        [mode]="filter.disciplineMode ?? 'and'"
+        (modeChange)="onChangeDisciplineMode($event)"
+      />
+    </div>
   }
-  @if(filter.disciplines){
-  <label for="disciplines" class="form-label text-primary fw-bold">{{ t('disciplines') }}</label>
-  <div id="disciplines" class="row g-1">
-    <app-discipline-filter [(disciplines)]="filter.disciplines" (disciplinesChange)="onChangeDisciplineFilter($event)"
-      [showNotRequired]="true" [showSuperior]="false" [allowExclude]="true" [showAndOr]="true"
-      [notDisciplines]="filter.notDisciplines ?? []" (notDisciplinesChange)="onChangeNotDisciplineFilter($event)"
-      [mode]="filter.disciplineMode ?? 'and'" (modeChange)="onChangeDisciplineMode($event)" />
-  </div>
-  }
-  @if(filter.clans){
-  <label for="clans" class="form-label text-primary fw-bold">{{ t('clans') }}</label>
-  <div id="clans" class="row g-1">
-    <app-clan-filter [(clans)]="filter.clans" (clansChange)="onChangeClanFilter($event)" [showNotRequired]="true"
-      [allowExclude]="true" [notClans]="filter.notClans ?? []"
-      (notClansChange)="onChangeNotClanFilter($event)" />
-  </div>
+  @if (filter.clans) {
+    <label for="clans" class="form-label text-primary fw-bold">{{
+      t('clans')
+    }}</label>
+    <div id="clans" class="row g-1">
+      <app-clan-filter
+        [(clans)]="filter.clans"
+        (clansChange)="onChangeClanFilter($event)"
+        [showNotRequired]="true"
+        [allowExclude]="true"
+        [notClans]="filter.notClans ?? []"
+        (notClansChange)="onChangeNotClanFilter($event)"
+      />
+    </div>
   }
   @if (filter.paths) {
-  <label for="paths" class="form-label text-primary fw-bold mt-2">{{ t('path') }}</label>
-  <div id="paths" class="row g-1">
-    <app-path-filter [(paths)]="filter.paths" (pathsChange)="onChangePathFilter($event)" [showNotRequired]="true"
-      [allowExclude]="true" [notPaths]="filter.notPaths ?? []"
-      (notPathsChange)="onChangeNotPathFilter($event)" />
-  </div>
+    <label for="paths" class="form-label text-primary fw-bold mt-2">{{
+      t('path')
+    }}</label>
+    <div id="paths" class="row g-1">
+      <app-path-filter
+        [(paths)]="filter.paths"
+        (pathsChange)="onChangePathFilter($event)"
+        [showNotRequired]="true"
+        [allowExclude]="true"
+        [notPaths]="filter.notPaths ?? []"
+        (notPathsChange)="onChangeNotPathFilter($event)"
+      />
+    </div>
   }
   <div class="row g-1 mt-2">
-    <label for="bloodCost" class="form-label text-primary fw-bold">{{ t('blood_cost') }}</label>
-    <ngx-slider id="bloodCost" [options]="{
+    <label for="bloodCost" class="form-label text-primary fw-bold">{{
+      t('blood_cost')
+    }}</label>
+    <ngx-slider
+      id="bloodCost"
+      [options]="{
         floor: 0,
         ceil: 4,
         step: 1,
         showTicks: true,
-        showTicksValues: true
-      }" [formControl]="bloodCostSliderControl" />
+        showTicksValues: true,
+      }"
+      [formControl]="bloodCostSliderControl"
+    />
   </div>
   <div class="row g-1 mt-2">
-    <label for="poolCost" class="form-label text-primary fw-bold">{{ t('pool_cost') }}</label>
-    <ngx-slider id="poolCost" [options]="{
+    <label for="poolCost" class="form-label text-primary fw-bold">{{
+      t('pool_cost')
+    }}</label>
+    <ngx-slider
+      id="poolCost"
+      [options]="{
         floor: 0,
         ceil: 6,
         step: 1,
         showTicks: true,
-        showTicksValues: true
-      }" [formControl]="poolCostSliderControl" />
+        showTicksValues: true,
+      }"
+      [formControl]="poolCostSliderControl"
+    />
   </div>
   <div class="row g-1 mt-2">
-    <label for="convictionCost" class="form-label text-primary fw-bold">{{ t('conviction_cost') }}</label>
-    <ngx-slider id="convictionCost" [options]="{
+    <label for="convictionCost" class="form-label text-primary fw-bold">{{
+      t('conviction_cost')
+    }}</label>
+    <ngx-slider
+      id="convictionCost"
+      [options]="{
         floor: 0,
         ceil: maxConvictionCost,
         step: 1,
         showTicks: true,
-        showTicksValues: true
-      }" [formControl]="convictionCostSliderControl" />
+        showTicksValues: true,
+      }"
+      [formControl]="convictionCostSliderControl"
+    />
   </div>
   @if (filter.limitedFormat === undefined) {
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="limitedFormatSelect" [formControl]="predefinedLimitedFormatControl">
-      <option selected></option>
-      @for (format of (predefinedLimitedFormats$ | async); track format.id) {
-      <option [value]="format.id">
-        {{ format.name }}
-      </option>
-      }
-    </select>
-    <label for="limitedFormatSelect">{{ t('limited_format') }}</label>
-  </div>
+    <div class="row g-1 form-floating mt-2">
+      <select
+        class="form-select"
+        id="limitedFormatSelect"
+        [formControl]="predefinedLimitedFormatControl"
+      >
+        <option selected></option>
+        @for (format of predefinedLimitedFormats$ | async; track format.id) {
+          <option [value]="format.id">
+            {{ format.name }}
+          </option>
+        }
+      </select>
+      <label for="limitedFormatSelect">{{ t('limited_format') }}</label>
+    </div>
   }
   @if (showSet) {
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="set" [formControl]="setControl">
-      <option selected></option>
-      @for (set of (sets$ | async); track set) {
-      <option [value]="set.abbrev">
-        @if(set.releaseDate){
-        {{ set.releaseDate | date:'yyyy' }} -
-        }
-        {{ set.fullName }}
-      </option>
-      }
-    </select>
-    <label for="set">{{ t('set') }}</label>
-  </div>
+    <div class="mt-2">
+      <app-multi-select
+        [options]="(setOptions$ | async) ?? []"
+        [selected]="filter.sets ?? []"
+        [excluded]="filter.notSets ?? []"
+        [allowExclude]="true"
+        controlId="sets"
+        [label]="t('set')"
+        (selectionChange)="onChangeSetSelection($event)"
+      />
+    </div>
   }
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="title" [formControl]="titleControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }} </option>
-      @for (title of (titles$ | async); track title) {
-      <option [value]="title">
-        {{ title | titlecase }}
-      </option>
-      }
-    </select>
-    <label for="title">{{ t('title') }}</label>
+  <div class="mt-2">
+    <app-multi-select
+      [options]="(titleOptions$ | async) ?? []"
+      [selected]="filter.titles ?? []"
+      [exclusiveValues]="exclusiveValues"
+      controlId="titles"
+      [label]="t('title')"
+      (selectionChange)="onChangeTitleSelection($event)"
+    />
   </div>
-  <div class="row g-1 form-floating mt-2">
-    <select class="form-select" id="sect" [formControl]="sectControl">
-      <option selected></option>
-      <option value="none">{{ 'shared.not_required' | transloco }} </option>
-      @for (sect of (sects$ | async); track sect) {
-      <option [value]="sect">
-        {{ sect | titlecase }}
-      </option>
-      }
-    </select>
-    <label for="sect">{{ t('sect') }}</label>
+  <div class="mt-2">
+    <app-multi-select
+      [options]="(sectOptions$ | async) ?? []"
+      [selected]="filter.sects ?? []"
+      [exclusiveValues]="exclusiveValues"
+      controlId="sects"
+      [label]="t('sect')"
+      (selectionChange)="onChangeSectSelection($event)"
+    />
   </div>
+  @if (filter.shops !== undefined || filter.notShops !== undefined) {
+    <div class="mt-2">
+      <app-multi-select
+        [options]="shopOptions"
+        [selected]="filter.shops ?? []"
+        [excluded]="filter.notShops ?? []"
+        [allowExclude]="true"
+        controlId="shopAvailability"
+        [label]="t('shop_availability')"
+        (selectionChange)="onChangeShopAvailability($event)"
+      />
+    </div>
+  }
   <div class="form-floating my-2">
-    <input type="text" class="form-control" id="deckCardText" [placeholder]="t('card_text_placeholder')"
-      [formControl]="cardTextControl" />
+    <input
+      type="text"
+      class="form-control"
+      id="deckCardText"
+      [placeholder]="t('card_text_placeholder')"
+      [formControl]="cardTextControl"
+    />
     <label for="deckCardText" class="text-primary">{{ t('card_text') }}</label>
   </div>
   <div class="form-floating my-2">
-    <input type="text" class="form-control" id="artist" [placeholder]="t('artist_placeholder')"
-      [formControl]="artistControl" />
+    <input
+      type="text"
+      class="form-control"
+      id="artist"
+      [placeholder]="t('artist_placeholder')"
+      [formControl]="artistControl"
+    />
     <label for="artist" class="text-primary">{{ t('artist') }}</label>
   </div>
-  <label for="taints" class="form-label text-primary fw-bold mt-2">{{ t('taints') }}</label>
+  <label for="taints" class="form-label text-primary fw-bold mt-2">{{
+    t('taints')
+  }}</label>
   <form [formGroup]="taintGroup" id="taints" class="row g-1 form-floating">
-    @for (taint of (taints$ | async); track taint) {
-    <div class="col-6 form-check">
-      <input class="form-check-input" type="checkbox" [id]="taint" [formControlName]="taint">
-      <label class="form-check-label" [for]="taint">
-        @if( taint === 'Flight') {
-        <i class="vtes vtes-small flight"></i>
-        }
-        {{ 'vtes.taints.' + taint | translocoFallback: taint | titlecase }}
-      </label>
-    </div>
+    @for (taint of taints$ | async; track taint) {
+      <div class="col-6 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [id]="taint"
+          [formControlName]="taint"
+        />
+        <label class="form-check-label" [for]="taint">
+          @if (taint === 'Flight') {
+            <i class="vtes vtes-small flight"></i>
+          }
+          {{ 'vtes.taints.' + taint | translocoFallback: taint | titlecase }}
+        </label>
+      </div>
     }
   </form>
 </ng-container>

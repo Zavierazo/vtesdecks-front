@@ -61,6 +61,9 @@ const cryptTitleLabel = (t: TranslateFn, title: string): string => {
 const libraryTitleLabel = (t: TranslateFn, title: string): string =>
   title === 'none' ? t('shared.not_required') : title
 
+const optionalValueLabel = (t: TranslateFn, value: string): string =>
+  value === 'none' ? t('shared.not_required') : value
+
 const enumLabel =
   (scope: string) =>
   (t: TranslateFn, value: string): string =>
@@ -166,10 +169,15 @@ export function buildCryptFilterChips(
   filter: CryptFilter,
   defaults: CryptFilter,
   t: TranslateFn,
+  shopLabel: (value: string) => string = (value) => value,
 ): FilterChip[] {
   const scope = 'crypt_builder_filter.'
   return new ChipBuilder(filter, defaults, t)
     .flag('printOnDemand', `${scope}print_on_demand`)
+    .list('shops', `${scope}shop_availability`, (_t, value) => shopLabel(value))
+    .list('notShops', `${scope}shop_availability_exclude`, (_t, value) =>
+      shopLabel(value),
+    )
     .list('clans', `${scope}clans`, clanLabel)
     .list('notClans', `${scope}not_clans`, clanLabel)
     .list('disciplines', `${scope}disciplines`, disciplineLabel)
@@ -184,10 +192,12 @@ export function buildCryptFilterChips(
     .flag('disciplineMode', `${scope}discipline_mode_or`)
     .range('groupSlider', `${scope}group`)
     .range('capacitySlider', `${scope}capacity`)
+    .range('votesSlider', `${scope}votes`)
     .scalar('advanced', `${scope}version`, enumLabel(`${scope}advanced_`))
-    .scalar('title', `${scope}title`, cryptTitleLabel)
-    .scalar('sect', `${scope}sect`)
-    .scalar('set', `${scope}set`)
+    .list('titles', `${scope}title`, cryptTitleLabel)
+    .list('sects', `${scope}sect`)
+    .list('sets', `${scope}set`)
+    .list('notSets', `${scope}set_exclude`)
     .list('taints', `${scope}taints`, taintLabel)
     .flag('limitedFormat', `${scope}limited_format`)
     .scalar('predefinedLimitedFormat', `${scope}predefined_limited_format`)
@@ -203,10 +213,15 @@ export function buildLibraryFilterChips(
   filter: LibraryFilter,
   defaults: LibraryFilter,
   t: TranslateFn,
+  shopLabel: (value: string) => string = (value) => value,
 ): FilterChip[] {
   const scope = 'library_builder_filter.'
   return new ChipBuilder(filter, defaults, t)
     .flag('printOnDemand', `${scope}print_on_demand`)
+    .list('shops', `${scope}shop_availability`, (_t, value) => shopLabel(value))
+    .list('notShops', `${scope}shop_availability_exclude`, (_t, value) =>
+      shopLabel(value),
+    )
     .list('types', `${scope}type`, libraryTypeLabel)
     .list('notTypes', `${scope}not_types`, libraryTypeLabel)
     .flag('typeMode', `${scope}type_mode_and`)
@@ -221,9 +236,10 @@ export function buildLibraryFilterChips(
     .range('poolCostSlider', `${scope}pool_cost`)
     .range('convictionCostSlider', `${scope}conviction_cost`)
     .scalar('trifle', `${scope}trifle`, trifleLabel)
-    .scalar('title', `${scope}title`, libraryTitleLabel)
-    .scalar('sect', `${scope}sect`)
-    .scalar('set', `${scope}set`)
+    .list('titles', `${scope}title`, libraryTitleLabel)
+    .list('sects', `${scope}sect`, optionalValueLabel)
+    .list('sets', `${scope}set`)
+    .list('notSets', `${scope}set_exclude`)
     .list('taints', `${scope}taints`, taintLabel)
     .flag('limitedFormat', `${scope}limited_format`)
     .scalar('predefinedLimitedFormat', `${scope}predefined_limited_format`)

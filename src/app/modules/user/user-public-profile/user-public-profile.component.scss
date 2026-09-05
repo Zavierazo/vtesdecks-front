@@ -93,6 +93,15 @@
   object-fit: cover;
 }
 
+.achievement-card { display: flex; align-items: center; gap: .85rem; padding: 1rem; border: 1px solid rgba(150,110,55,.5); border-radius: .8rem; background: linear-gradient(145deg, rgba(72,46,32,.18), rgba(20,15,19,.08)); }
+.achievement-card.locked { filter: grayscale(1); opacity: .62; }
+.achievement-medal { flex: 0 0 58px; width: 58px; height: 66px; display: grid; place-items: center; clip-path: polygon(50% 0, 91% 23%, 91% 72%, 50% 100%, 9% 72%, 9% 23%); color: #ddb76f; background: linear-gradient(145deg, #4c382b, #181318); border: 1px solid #9c7444; font-size: 1.5rem; }
+.achievement-medal.monthly_gold { color: #ffe17d; background: linear-gradient(145deg,#765617,#21190d); }
+.achievement-medal.monthly_silver { color: #eef2f6; background: linear-gradient(145deg,#606773,#1a1d22); }
+.achievement-medal.monthly_bronze { color: #e6a175; background: linear-gradient(145deg,#6c3b25,#20130e); }
+.achievement-card .progress { height: .35rem; }
+.min-width-0 { min-width: 0; }
+
 .follow-stat {
   cursor: pointer;
   user-select: none;
