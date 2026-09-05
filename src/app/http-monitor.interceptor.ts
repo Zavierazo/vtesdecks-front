@@ -43,9 +43,16 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         .set('locale', this.translocoService.getActiveLang())
         .set('version', environment.appVersion),
     })
+    const retryable = !(
+      httpRequest.method === 'POST' &&
+      httpRequest.url.includes('/admin/schedulers/')
+    )
     return next.handle(httpRequest).pipe(
       tap((event) => this.updateServerDate(event)),
-      retry({ count: retryCount, delay: (error) => this.shouldRetry(error) }),
+      retry({
+        count: retryable ? retryCount : 0,
+        delay: (error) => this.shouldRetry(error),
+      }),
     )
   }
 

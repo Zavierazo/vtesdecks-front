@@ -9,9 +9,7 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./feature-flags/feature-flags.component').then(
-            (m) => m.FeatureFlagsComponent,
-          ),
+          import('./admin.component').then((m) => m.AdminComponent),
         title: 'VTES Decks - Admin',
       },
     ],

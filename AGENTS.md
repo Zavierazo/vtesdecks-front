@@ -91,6 +91,10 @@ Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`
 
 The backend owns the achievement catalog and permanently records earned tiers. Repeatable families store one occurrence and expose a multiplier; milestone families expose their highest earned tier. Public profiles load earned achievement families from `/public/user/{username}/achievements`; owners load the full catalog and progress from `/user/achievements`. `ApiPublicUser.achievementBadges` is the compact, server-prioritized top-three list used on the full deck view, not on deck cards. Frontend components must use stable family IDs for translations and presentation and must not independently decide whether an achievement has been earned.
 
+### Admin User Management
+
+The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set and take effect for the affected user after their authentication token is refreshed.
+
 ---
 
 ## Directory Map

@@ -1,0 +1,121 @@
+<div class="container py-4" *transloco="let t; prefix: 'admin'">
+  <div class="d-flex align-items-center gap-2 mb-4">
+    <i class="bi bi-shield-lock-fill fs-2 text-primary"></i>
+    <h1 class="mb-0">{{ t('title') }}</h1>
+  </div>
+
+  <ul class="nav nav-pills admin-nav mb-4">
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="activeSection() === 'users'"
+        (click)="selectSection('users')"
+      >
+        <i class="bi bi-people me-1"></i>{{ t('users') }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="activeSection() === 'schedulers'"
+        (click)="selectSection('schedulers')"
+      >
+        <i class="bi bi-play-circle me-1"></i>{{ t('manual_schedulers') }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="activeSection() === 'feature-flags'"
+        (click)="selectSection('feature-flags')"
+      >
+        <i class="bi bi-toggles me-1"></i>{{ t('feature_flags_title') }}
+      </button>
+    </li>
+  </ul>
+
+  @switch (activeSection()) {
+    @case ('users') {
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h4">{{ t('user_management') }}</h2>
+          <p class="text-muted">{{ t('user_management_hint') }}</p>
+          <form class="row g-2" (submit)="$event.preventDefault(); openUser()">
+            <div class="col-12 col-md-8 col-lg-6">
+              <label class="visually-hidden" for="admin-user-identifier">{{
+                t('username_or_email')
+              }}</label>
+              <input
+                id="admin-user-identifier"
+                type="text"
+                class="form-control"
+                [value]="userIdentifier()"
+                [placeholder]="t('username_or_email')"
+                autocomplete="off"
+                (input)="updateUserIdentifier($event)"
+              />
+            </div>
+            <div class="col-auto">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!userIdentifier().trim()"
+              >
+                <i class="bi bi-person-gear me-1"></i>{{ t('manage_user') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+    @case ('schedulers') {
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h4">{{ t('manual_schedulers') }}</h2>
+          <p class="text-muted">{{ t('manual_schedulers_hint') }}</p>
+          @if (schedulersLoading()) {
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+          } @else {
+            <div class="scheduler-grid">
+              @for (scheduler of schedulers(); track scheduler.key) {
+                <div
+                  class="scheduler-item border rounded p-3 d-flex align-items-center justify-content-between gap-3"
+                >
+                  <div>
+                    <code>{{ scheduler.key }}</code>
+                    <div class="fw-semibold mt-1">
+                      {{ schedulerLabel(scheduler.key) }}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary flex-shrink-0"
+                    [disabled]="!!runningScheduler()"
+                    (click)="runScheduler(scheduler)"
+                  >
+                    @if (runningScheduler() === scheduler.key) {
+                      <span
+                        class="spinner-border spinner-border-sm me-1"
+                      ></span>
+                    }
+                    <i class="bi bi-play-fill me-1"></i>{{ t('run') }}
+                  </button>
+                </div>
+              } @empty {
+                <p class="text-muted mb-0">{{ t('no_schedulers') }}</p>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @case ('feature-flags') {
+      <app-feature-flags />
+    }
+  }
+</div>

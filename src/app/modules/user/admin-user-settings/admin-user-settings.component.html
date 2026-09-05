@@ -1,0 +1,151 @@
+<div *transloco="let t; prefix: 'admin_user'">
+  <div class="modal-header d-flex align-items-center gap-2">
+    <i class="bi bi-shield-lock-fill text-warning"></i>
+    <h4 class="modal-title flex-grow-1">{{ t('title') }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="t('close')"
+      (click)="activeModal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    @if (loading()) {
+      <div class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ t('loading') }}</span>
+        </div>
+      </div>
+    } @else if (loadError(); as error) {
+      <div class="alert alert-danger mb-0" role="alert">
+        <h5 class="alert-heading">
+          {{ t(error === 'not-found' ? 'user_not_found' : 'load_error') }}
+        </h5>
+        <p class="mb-3">
+          {{
+            t(
+              error === 'not-found' ? 'user_not_found_hint' : 'load_error_hint',
+              { identifier }
+            )
+          }}
+        </p>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="activeModal.dismiss()"
+        >
+          {{ t('close') }}
+        </button>
+      </div>
+    } @else if (user(); as managedUser) {
+      <div class="row g-4">
+        <div class="col-12 col-lg-6">
+          <h5>{{ t('account') }}</h5>
+          <dl class="row mb-3">
+            <dt class="col-sm-4">{{ t('email') }}</dt>
+            <dd class="col-sm-8 text-break">{{ managedUser.email }}</dd>
+            <dt class="col-sm-4">{{ t('status') }}</dt>
+            <dd class="col-sm-8">
+              <span
+                class="badge"
+                [class.text-bg-success]="managedUser.validated"
+                [class.text-bg-warning]="!managedUser.validated"
+              >
+                {{
+                  t(managedUser.validated ? 'validated' : 'pending_validation')
+                }}
+              </span>
+            </dd>
+          </dl>
+          <div class="d-flex flex-wrap gap-2">
+            @if (!managedUser.validated) {
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                [disabled]="!!activeAction()"
+                (click)="validateAccount()"
+              >
+                @if (activeAction() === 'validate') {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                }
+                {{ t('validate_account') }}
+              </button>
+            }
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              [disabled]="!!activeAction()"
+              (click)="sendPasswordReset()"
+            >
+              @if (activeAction() === 'password-reset') {
+                <span class="spinner-border spinner-border-sm me-1"></span>
+              }
+              {{ t('send_password_reset') }}
+            </button>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <h5>{{ t('access') }}</h5>
+          <div class="form-check form-switch mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="admin-access"
+              [checked]="draftAdmin()"
+              (change)="toggleAdmin($event)"
+            />
+            <label class="form-check-label fw-semibold" for="admin-access">{{
+              t('administrator')
+            }}</label>
+          </div>
+          <div class="mb-3">
+            <div class="fw-semibold mb-2">{{ t('roles') }}</div>
+            @if (managedUser.availableRoles.length === 0) {
+              <p class="text-muted small">{{ t('no_roles') }}</p>
+            } @else {
+              <div class="role-grid">
+                @for (role of managedUser.availableRoles; track role) {
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="'role-' + role"
+                      [checked]="draftRoles().has(role)"
+                      (change)="toggleRole(role, $event)"
+                    />
+                    <label class="form-check-label" [for]="'role-' + role">{{
+                      role
+                    }}</label>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          <p class="small text-muted">{{ t('reload_notice') }}</p>
+          <div class="d-flex justify-content-end gap-2">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              [disabled]="!dirty() || saving()"
+              (click)="reset()"
+            >
+              {{ t('reset') }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="!dirty() || saving()"
+              (click)="save()"
+            >
+              @if (saving()) {
+                <span class="spinner-border spinner-border-sm me-1"></span>
+              }
+              {{ t('save') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
 import {
+  ApiAdminUser,
+  ApiAdminUserAccess,
+  ApiAdminScheduler,
   ApiCard,
   ApiCardInfo,
   ApiCardScanRequest,
@@ -101,6 +104,8 @@ export class ApiDataService {
   private readonly proxyOptionsPath = '/proxy/options/'
   private readonly deckArchetypePath = '/deck-archetype'
   private readonly shoppingOptimizePath = '/shopping/optimize'
+  private readonly adminPath = '/admin'
+  private readonly adminUsersPath = `${this.adminPath}/users`
   private readonly featureFlagPath = '/feature-flag'
 
   login(
@@ -115,6 +120,49 @@ export class ApiDataService {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.loginPath}`,
       formData,
+    )
+  }
+
+  getAdminUser(identifier: string): Observable<ApiAdminUser> {
+    return this.httpClient.get<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}`,
+    )
+  }
+
+  updateAdminUserAccess(
+    identifier: string,
+    access: ApiAdminUserAccess,
+  ): Observable<ApiAdminUser> {
+    return this.httpClient.put<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/access`,
+      access,
+    )
+  }
+
+  validateAdminUser(identifier: string): Observable<ApiAdminUser> {
+    return this.httpClient.post<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/validate`,
+      null,
+    )
+  }
+
+  sendAdminUserPasswordReset(identifier: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/password-reset`,
+      null,
+    )
+  }
+
+  getAdminSchedulers(): Observable<ApiAdminScheduler[]> {
+    return this.httpClient.get<ApiAdminScheduler[]>(
+      `${environment.api.baseUrl}${this.adminPath}/schedulers`,
+    )
+  }
+
+  runAdminScheduler(key: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.api.baseUrl}${this.adminPath}/schedulers/${encodeURIComponent(key)}`,
+      null,
     )
   }
 
@@ -703,7 +751,7 @@ export class ApiDataService {
     value: FeatureFlagValue,
   ): Observable<ApiFeatureFlag> {
     return this.httpClient.put<ApiFeatureFlag>(
-      `${environment.api.baseUrl}${this.featureFlagPath}/${key}`,
+      `${environment.api.baseUrl}${this.adminPath}/feature-flags/${key}`,
       { value },
     )
   }
@@ -730,7 +778,9 @@ export class ApiDataService {
     )
   }
 
-  getPublicUserAchievements(username: string): Observable<ApiAchievementFamily[]> {
+  getPublicUserAchievements(
+    username: string,
+  ): Observable<ApiAchievementFamily[]> {
     return this.httpClient.get<ApiAchievementFamily[]>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}/achievements`,
     )

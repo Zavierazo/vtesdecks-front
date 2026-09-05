@@ -90,7 +90,8 @@ export class FeatureFlagsComponent implements OnInit {
   isListDirty(flag: ApiFeatureFlag): boolean {
     const draft = this.listDrafts.get(flag.key)
     return (
-      draft !== undefined && JSON.stringify(draft) !== JSON.stringify(flag.value)
+      draft !== undefined &&
+      JSON.stringify(draft) !== JSON.stringify(flag.value)
     )
   }
 
