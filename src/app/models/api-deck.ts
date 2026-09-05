@@ -17,6 +17,7 @@ export interface ApiDeck {
   viewsLastMonth: number
   rate?: number
   votes: number
+  bookmarks?: number
   comments: number
   tournament: string
   players: number

@@ -20,11 +20,14 @@
               <div class="col-12 col-md text-center text-md-start">
                 <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
                   <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
-                    (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked">
-                    <i class="bi bi-fs-1_5x" [ngClass]="{
+                    (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked"
+                    [attr.aria-label]="t('add_to_bookmarks')" aria-describedby="bookmark-count-description">
+                    <i class="bi bi-fs-1_5x" aria-hidden="true" [ngClass]="{
                       'bi-bookmark-star': !isBookmarked,
                       'bi-bookmark-star-fill': isBookmarked
                     }"></i>
+                    <span class="bookmark-count" aria-hidden="true">{{ bookmarkCount }}</span>
+                    <span id="bookmark-count-description" class="visually-hidden">{{ t('bookmark_count', { count: bookmarkCount }) }}</span>
                   </a>
                   <h3 class="deck-title fw-bold mb-0">{{ deck.name | titlecase }}</h3>
                 </div>

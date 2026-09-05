@@ -120,6 +120,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Añadir a favoritos",
+    "bookmark_count": "Personas que han guardado este mazo: {{ count }}",
     "created_by": "Creado por",
     "tournament": "Torneo",
     "limited_format": "Formato Limitado",

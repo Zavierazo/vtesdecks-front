@@ -9,6 +9,7 @@
       "Card filtering has been expanded throughout VTESDecks: <strong>Title and Sect</strong> now support multiple selections, <strong>Set</strong> supports including or excluding multiple expansions and Crypt filters include a new <strong>Votes</strong> range and current in-stock availability across supported shops.",
       "Opening a <strong>push notification</strong> now marks it as read and keeps the unread count synchronized.",
       "Previously viewed decks are now marked with a subtle check beside the date for logged-in users.",
+      "Deck pages now show how many players have added each deck to their <strong>bookmarks</strong>.",
       "Minor bug fixes and performance improvements."
     ]
   },

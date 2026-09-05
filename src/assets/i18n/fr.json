@@ -120,6 +120,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Ajouter aux favoris",
+    "bookmark_count": "Personnes ayant ajouté ce deck aux favoris : {{ count }}",
     "created_by": "Créé par",
     "tournament": "Tournoi",
     "limited_format": "Format Limité",

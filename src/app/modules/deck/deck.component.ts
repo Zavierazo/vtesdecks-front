@@ -173,6 +173,8 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isBookmarked = false
 
+  bookmarkCount = 0
+
   isRated = false
 
   isSupporter = false
@@ -210,6 +212,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
       untilDestroyed(this),
       tap((deck) => {
         this.isBookmarked = deck?.favorite ?? false
+        this.bookmarkCount = deck?.bookmarks ?? 0
         this.isRated = deck?.rated ?? false
         this.isSupporter = isSupporter(deck?.user?.roles)
         const collectionTrackerOwner = deck?.owner ? deck.collection : false
@@ -306,8 +309,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   toggleBookmark() {
+    const bookmark = !this.isBookmarked
     this.apiDataService
-      .bookmarkDeck(this.id, !this.isBookmarked)
+      .bookmarkDeck(this.id, bookmark)
       .pipe(untilDestroyed(this))
       .subscribe({
         error: () =>
@@ -316,7 +320,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
             { classname: 'bg-danger text-light', delay: 5000 },
           ),
         complete: () => {
-          this.isBookmarked = !this.isBookmarked
+          this.isBookmarked = bookmark
+          this.bookmarkCount = Math.max(
+            0,
+            this.bookmarkCount + (bookmark ? 1 : -1),
+          )
           this.changeDetectorRef.detectChanges()
         },
       })
