@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   inject,
 } from '@angular/core'
 import {
@@ -21,7 +23,12 @@ import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { AuthQuery } from '@state/auth/auth.query'
 import { CommentsQuery } from '@state/comments/comments.query'
 import { CommentsService } from '@state/comments/comments.service'
-import { Observable } from 'rxjs'
+import {
+  distinctUntilChanged,
+  Observable,
+  ReplaySubject,
+  switchMap,
+} from 'rxjs'
 import { CommentComponent } from './comment/comment.component'
 
 @UntilDestroy()
@@ -40,10 +47,11 @@ import { CommentComponent } from './comment/comment.component'
     MarkdownTextareaComponent,
   ],
 })
-export class CommentsComponent implements OnInit {
+export class CommentsComponent implements OnInit, OnChanges {
   private readonly authQuery = inject(AuthQuery)
   private readonly commentsQuery = inject(CommentsQuery)
   private readonly commentsService = inject(CommentsService)
+  private readonly deckId$ = new ReplaySubject<string>(1)
 
   @Input() deckId!: string
 
@@ -55,10 +63,20 @@ export class CommentsComponent implements OnInit {
 
   form!: FormGroup
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const deckId = changes['deckId']?.currentValue
+    if (deckId) {
+      this.deckId$.next(deckId)
+    }
+  }
+
   ngOnInit() {
-    this.commentsService
-      .getComments(this.deckId)
-      .pipe(untilDestroyed(this))
+    this.deckId$
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((deckId) => this.commentsService.getComments(deckId)),
+        untilDestroyed(this),
+      )
       .subscribe()
     this.isLoading$ = this.commentsQuery.selectLoading()
     this.comments$ = this.commentsQuery.selectAll()

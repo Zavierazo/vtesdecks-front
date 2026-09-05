@@ -202,7 +202,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   ]
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id')!
     this.isLoading$ = this.deckQuery.selectLoading()
     this.isAuthenticated$ = this.authQuery.selectAuthenticated()
     this.userDisplayName$ = this.authQuery.selectDisplayName()
@@ -244,7 +243,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
         }
       }),
     )
-    this.route.paramMap.subscribe(() => this.fetchSimilarDecks())
+    this.route.paramMap.pipe(untilDestroyed(this)).subscribe((params) => {
+      this.id = params.get('id')!
+      this.fetchSimilarDecks()
+    })
   }
 
   onChangeDisplayMode(displayMode: string) {
