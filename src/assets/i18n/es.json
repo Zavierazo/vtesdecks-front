@@ -27,25 +27,7 @@
     "run_scheduler_message": "¿Ejecutar {{scheduler}} ahora?",
     "scheduler_completed": "Tarea completada",
     "scheduler_error": "La tarea ha fallado",
-    "schedulers_load_error": "No se pudieron cargar las tareas manuales",
-    "schedulers": {
-      "deck-views-clean": "Limpiar visitas de mazos",
-      "deck-clean": "Limpiar mazos",
-      "scrap-decks": "Importar mazos de torneos",
-      "scrap-decks-old": "Importar mazos de torneos antiguos",
-      "scrap-decks-eternal-vigilance": "Importar mazos de Eternal Vigilance",
-      "drive-thru-cards": "Sincronizar DriveThruCards",
-      "game-pod": "Sincronizar Game Pod",
-      "card-game-geek": "Sincronizar Card Game Geek",
-      "market": "Sincronizar precios del mercado",
-      "vtesdle-today": "Seleccionar la carta de Vtesdle de hoy",
-      "proxy-card-options": "Actualizar opciones de cartas proxy",
-      "deck-archetypes": "Actualizar arquetipos de mazos",
-      "deck-archetype-index": "Reconstruir índice de arquetipos",
-      "user-month": "Calcular usuarios del mes",
-      "achievements": "Reconciliar logros",
-      "patreon-reminder": "Enviar recordatorios de Patreon"
-    }
+    "schedulers_load_error": "No se pudieron cargar las tareas manuales"
   },
   "admin_user": {
     "title": "Ajustes de administración del usuario",

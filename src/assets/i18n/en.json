@@ -27,25 +27,7 @@
     "run_scheduler_message": "Run {{scheduler}} now?",
     "scheduler_completed": "Scheduler completed",
     "scheduler_error": "Scheduler failed",
-    "schedulers_load_error": "Could not load manual schedulers",
-    "schedulers": {
-      "deck-views-clean": "Clean deck views",
-      "deck-clean": "Clean decks",
-      "scrap-decks": "Import tournament decks",
-      "scrap-decks-old": "Import legacy tournament decks",
-      "scrap-decks-eternal-vigilance": "Import Eternal Vigilance decks",
-      "drive-thru-cards": "Synchronize DriveThruCards",
-      "game-pod": "Synchronize Game Pod",
-      "card-game-geek": "Synchronize Card Game Geek",
-      "market": "Synchronize market prices",
-      "vtesdle-today": "Select today's Vtesdle card",
-      "proxy-card-options": "Refresh proxy card options",
-      "deck-archetypes": "Refresh deck archetypes",
-      "deck-archetype-index": "Rebuild deck archetype index",
-      "user-month": "Calculate users of the month",
-      "achievements": "Reconcile achievements",
-      "patreon-reminder": "Send Patreon reminders"
-    }
+    "schedulers_load_error": "Could not load manual schedulers"
   },
   "admin_user": {
     "title": "Admin user settings",

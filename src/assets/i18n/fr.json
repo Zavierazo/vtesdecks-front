@@ -27,25 +27,7 @@
     "run_scheduler_message": "Exécuter {{scheduler}} maintenant ?",
     "scheduler_completed": "Tâche terminée",
     "scheduler_error": "Échec de la tâche",
-    "schedulers_load_error": "Impossible de charger les tâches manuelles",
-    "schedulers": {
-      "deck-views-clean": "Nettoyer les vues des decks",
-      "deck-clean": "Nettoyer les decks",
-      "scrap-decks": "Importer les decks de tournoi",
-      "scrap-decks-old": "Importer les anciens decks de tournoi",
-      "scrap-decks-eternal-vigilance": "Importer les decks Eternal Vigilance",
-      "drive-thru-cards": "Synchroniser DriveThruCards",
-      "game-pod": "Synchroniser Game Pod",
-      "card-game-geek": "Synchroniser Card Game Geek",
-      "market": "Synchroniser les prix du marché",
-      "vtesdle-today": "Sélectionner la carte Vtesdle du jour",
-      "proxy-card-options": "Actualiser les options de cartes proxy",
-      "deck-archetypes": "Actualiser les archétypes de decks",
-      "deck-archetype-index": "Reconstruire l’index des archétypes",
-      "user-month": "Calculer les utilisateurs du mois",
-      "achievements": "Réconcilier les succès",
-      "patreon-reminder": "Envoyer les rappels Patreon"
-    }
+    "schedulers_load_error": "Impossible de charger les tâches manuelles"
   },
   "admin_user": {
     "title": "Paramètres d’administration de l’utilisateur",

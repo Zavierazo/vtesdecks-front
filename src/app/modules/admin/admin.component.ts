@@ -83,7 +83,7 @@ export class AdminComponent implements OnInit {
     )
     modalRef.componentInstance.message = this.translocoService.translate(
       'admin.run_scheduler_message',
-      { scheduler: this.schedulerLabel(scheduler.key) },
+      { scheduler: scheduler.description },
     )
     modalRef.closed
       .pipe(
@@ -104,10 +104,6 @@ export class AdminComponent implements OnInit {
           this.failure('scheduler_error')
         },
       })
-  }
-
-  schedulerLabel(key: string): string {
-    return this.translocoService.translate(`admin.schedulers.${key}`)
   }
 
   private success(key: string): void {

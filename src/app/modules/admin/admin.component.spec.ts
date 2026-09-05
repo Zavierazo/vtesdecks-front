@@ -12,7 +12,10 @@ describe('AdminComponent', () => {
   function setup() {
     const api = {
       getAdminSchedulers: vi.fn(() =>
-        of([{ key: 'deck-clean' }, { key: 'achievements' }]),
+        of([
+          { key: 'deck-clean', description: 'Clean decks' },
+          { key: 'achievements', description: 'Reconcile achievements' },
+        ]),
       ),
       runAdminScheduler: vi.fn(() => of(undefined)),
     }
@@ -42,8 +45,8 @@ describe('AdminComponent', () => {
 
     expect(api.getAdminSchedulers).toHaveBeenCalledOnce()
     expect(component.schedulers()).toEqual([
-      { key: 'deck-clean' },
-      { key: 'achievements' },
+      { key: 'deck-clean', description: 'Clean decks' },
+      { key: 'achievements', description: 'Reconcile achievements' },
     ])
   })
 
@@ -63,7 +66,7 @@ describe('AdminComponent', () => {
   it('runs a scheduler after confirmation', () => {
     const { component, api, toast } = setup()
 
-    component.runScheduler({ key: 'deck-clean' })
+    component.runScheduler({ key: 'deck-clean', description: 'Clean decks' })
 
     expect(api.runAdminScheduler).toHaveBeenCalledWith('deck-clean')
     expect(component.runningScheduler()).toBeUndefined()
