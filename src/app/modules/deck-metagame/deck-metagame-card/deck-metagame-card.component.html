@@ -1,5 +1,5 @@
 @if (archetype(); as archetype) {
-  @let isMaintainer = isMaintainer$ | async;
+  @let isAdmin = isAdmin$ | async;
   @let profileClans = getProfileClans(archetype);
   @let profileDisciplines = getProfileDisciplines(archetype);
   <div
@@ -36,7 +36,7 @@
             <h5
               class="card-title mb-1 fw-bold text-body d-flex align-items-center gap-1"
             >
-              @if (archetype.id === undefined && isMaintainer) {
+              @if (archetype.id === undefined && isAdmin) {
                 <button
                   class="btn btn-link text-start fw-bold text-decoration-none p-0"
                   (click)="$event.stopPropagation(); openModal(archetype)"
@@ -147,7 +147,7 @@
             </div>
           </div>
         </div>
-        @if (isMaintainer && archetype.id && archetype.id > 0) {
+        @if (isAdmin && archetype.id && archetype.id > 0) {
           <div class="d-flex align-items-center gap-2 ms-2">
             <span
               class="status-badge"

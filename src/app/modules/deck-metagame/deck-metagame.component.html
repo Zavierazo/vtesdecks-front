@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'deck_metagame'">
   <section>
-    @let isMaintainer = isMaintainer$ | async;
+    @let isAdmin = isAdmin$ | async;
 
     @if (!limit) {
       <div
@@ -18,7 +18,7 @@
             [attr.aria-label]="t('tooltip')"
           ></i>
         </h3>
-        @if (isMaintainer) {
+        @if (isAdmin) {
           <button class="btn btn-sm btn-primary" (click)="openModal()">
             {{ t('create') }}
           </button>
@@ -222,7 +222,7 @@
         </div>
       </div>
 
-      @if (isMaintainer && (suggestions$ | async); as suggestions) {
+      @if (isAdmin && (suggestions$ | async); as suggestions) {
         @if (suggestions.length) {
           <div class="container-fluid mb-4">
             <h4 class="mb-3">{{ t('suggested_archetypes') }}</h4>

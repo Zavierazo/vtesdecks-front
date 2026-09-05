@@ -47,7 +47,7 @@ export class DeckMetagameCardComponent {
   rank = input<number | undefined>()
   metaType = input<MetaType>('TOURNAMENT_365')
 
-  isMaintainer$ = this.authQuery.selectRole('maintainer')
+  isAdmin$ = this.authQuery.selectAdmin()
 
   navigate(archetype: ApiDeckArchetype) {
     if (archetype.id !== undefined && archetype.id > 0) {

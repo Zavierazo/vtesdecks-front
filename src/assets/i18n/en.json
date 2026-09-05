@@ -1346,7 +1346,7 @@
     "discipline_mode": "Discipline matching",
     "match_any": "Any",
     "results_count": "{{count}} of {{total}} archetypes",
-    "suggested_archetypes": "Maintainer suggestions",
+    "suggested_archetypes": "Admin suggestions",
     "no_results": "No archetypes match these filters.",
     "clear_filters": "Clear filters",
     "load_error": "The metagame could not be loaded.",

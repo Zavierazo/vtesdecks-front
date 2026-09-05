@@ -28,10 +28,6 @@ export class AuthQuery {
     return this.store.select((user: ApiUser) => Boolean(user.admin))
   }
 
-  selectRole(role: string): Observable<boolean> {
-    return this.store.select((user: ApiUser) => user.roles?.includes(role))
-  }
-
   selectUser(): Observable<string | undefined> {
     return this.store.select((user: ApiUser) => user.user)
   }
@@ -128,9 +124,5 @@ export class AuthQuery {
 
   getCountryCode(): string | undefined {
     return this.store.getValue().countryCode
-  }
-
-  isRole(role: string): boolean {
-    return this.store.getValue().roles?.includes(role) || false
   }
 }

@@ -84,7 +84,7 @@ export class DeckMetagameComponent implements OnInit {
   @Input() limit?: number
 
   readonly suggestions$ = this.crud.selectSuggestions()
-  readonly isMaintainer$ = this.authQuery.selectRole('maintainer')
+  readonly isAdmin$ = this.authQuery.selectAdmin()
   readonly rawArchetypes = toSignal(this.crud.selectAll(), {
     initialValue: null,
   })
@@ -222,7 +222,7 @@ export class DeckMetagameComponent implements OnInit {
       this.restoreQueryState()
     }
     this.loadArchetypes()
-    if (this.authQuery.isRole('maintainer')) {
+    if (this.authQuery.isAdmin()) {
       this.crud.loadSuggestions().pipe(untilDestroyed(this)).subscribe()
     }
 
