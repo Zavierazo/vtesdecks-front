@@ -51,17 +51,28 @@ export class DeckArchetypeCrudService {
   }
 
   update(archetype: ApiDeckArchetype): Observable<ApiDeckArchetype> {
-    return this.api
-      .updateDeckArchetype(archetype)
-      .pipe(
-        tap((updated) =>
-          this._items$.next(
-            (this._items$.value ?? []).map((i) =>
-              i.id === updated.id ? updated : i,
-            ),
+    return this.api.updateDeckArchetype(archetype).pipe(
+      tap((updated) =>
+        this._items$.next(
+          (this._items$.value ?? []).map((i) =>
+            i.id === updated.id
+              ? {
+                  ...updated,
+                  // The update endpoint returns all-time metrics, while the
+                  // list may be showing a shorter metagame period. Keep the
+                  // active list's period-specific values until it is reloaded.
+                  metaCount: i.metaCount,
+                  metaTotal: i.metaTotal,
+                  previousMetaCount: i.previousMetaCount,
+                  previousMetaTotal: i.previousMetaTotal,
+                  metaShareChange: i.metaShareChange,
+                  trend: i.trend,
+                }
+              : i,
           ),
         ),
-      )
+      ),
+    )
   }
 
   delete(id: number): Observable<void> {
