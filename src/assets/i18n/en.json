@@ -611,7 +611,8 @@
     "push_prompt_title": "Enable push notifications?",
     "push_prompt_message": "Receive your VTESDecks notifications on this device, even when the website is closed.",
     "push_enable": "Enable",
-    "push_not_now": "Not now"
+    "push_not_now": "Not now",
+    "achievement_unlocked": "Achievement unlocked"
   },
   "page_not_found": {
     "danger_text": "Opps!",
@@ -1519,7 +1520,7 @@
     "singles_cheapest": "Buying singles is already the cheapest option"
   },
   "achievements": {
-    "title": "Achievements", "badges": "Achievement badges", "empty": "No achievements earned yet.", "update_notice": "Some achievements are not evaluated instantly and may take up to an hour to update.",
+    "title": "Achievements", "badges": "Achievement badges", "empty": "No achievements earned yet.",
     "tier": "Milestone {{count}}", "progress": "{{current}} of {{target}}", "history": "Earned history", "show_more": "Show {{count}} more", "show_less": "Show fewer",
     "family": { "published_decks": "Deck Builder", "deck_comments": "Community Voice", "deck_appreciation": "Deck Appreciation", "community_favorite": "Community Favorite", "followers": "Gathering a Following", "conversation_starter": "Conversation Starter", "standout_deck": "Standout Deck", "consistent_contributor": "Consistent Contributor", "collection_cards": "Card Collector", "anniversary": "Anniversary", "monthly_gold": "User of the Month", "monthly_silver": "Monthly Runner-up", "monthly_bronze": "Monthly Podium" },
     "description": { "published_decks": "Publish community decks.", "deck_comments": "Comment on different players' decks.", "deck_appreciation": "Receive appreciation from different players.", "community_favorite": "Have different players bookmark your decks.", "followers": "Build your community of followers.", "conversation_starter": "Bring different commenters to your decks.", "standout_deck": "Receive appreciation on a single deck.", "consistent_contributor": "Earn another count for every calendar month with a published deck or comment.", "collection_cards": "Add cards to your collection.", "anniversary": "Earn another count for every completed year in the community.", "monthly_gold": "Finish first in a monthly ranking.", "monthly_silver": "Finish second in a monthly ranking.", "monthly_bronze": "Finish third in a monthly ranking." }

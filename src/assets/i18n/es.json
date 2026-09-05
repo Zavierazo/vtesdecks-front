@@ -611,7 +611,8 @@
     "push_prompt_title": "¿Activar las notificaciones push?",
     "push_prompt_message": "Recibe tus notificaciones de VTESDecks en este dispositivo, incluso cuando la web esté cerrada.",
     "push_enable": "Activar",
-    "push_not_now": "Ahora no"
+    "push_not_now": "Ahora no",
+    "achievement_unlocked": "Logro desbloqueado"
   },
   "page_not_found": {
     "danger_text": "¡Ups!",
@@ -1519,7 +1520,7 @@
     "singles_cheapest": "Comprar cartas sueltas ya es la opción más barata"
   },
   "achievements": {
-    "title": "Logros", "badges": "Insignias de logros", "empty": "Todavía no ha conseguido ningún logro.", "update_notice": "Algunos logros no se evalúan al instante y pueden tardar hasta una hora en actualizarse.",
+    "title": "Logros", "badges": "Insignias de logros", "empty": "Todavía no ha conseguido ningún logro.",
     "tier": "Hito {{count}}", "progress": "{{current}} de {{target}}", "history": "Historial obtenido", "show_more": "Mostrar {{count}} más", "show_less": "Mostrar menos",
     "family": { "published_decks": "Constructor de mazos", "deck_comments": "Voz de la comunidad", "deck_appreciation": "Aprecio por los mazos", "community_favorite": "Favorito de la comunidad", "followers": "Creando seguidores", "conversation_starter": "Iniciador de conversaciones", "standout_deck": "Mazo destacado", "consistent_contributor": "Colaborador constante", "collection_cards": "Coleccionista de cartas", "anniversary": "Aniversario", "monthly_gold": "Usuario del mes", "monthly_silver": "Subcampeón mensual", "monthly_bronze": "Podio mensual" },
     "description": { "published_decks": "Publica mazos de la comunidad.", "deck_comments": "Comenta en mazos de distintos jugadores.", "deck_appreciation": "Recibe reconocimiento de distintos jugadores.", "community_favorite": "Consigue que distintos jugadores guarden tus mazos.", "followers": "Haz crecer tu comunidad de seguidores.", "conversation_starter": "Atrae comentaristas distintos a tus mazos.", "standout_deck": "Recibe reconocimiento en un solo mazo.", "consistent_contributor": "Suma una vez por cada mes con un mazo publicado o un comentario.", "collection_cards": "Añade cartas a tu colección.", "anniversary": "Suma una vez por cada año completado en la comunidad.", "monthly_gold": "Termina primero en una clasificación mensual.", "monthly_silver": "Termina segundo en una clasificación mensual.", "monthly_bronze": "Termina tercero en una clasificación mensual." }

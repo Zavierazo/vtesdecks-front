@@ -611,7 +611,8 @@
     "push_prompt_title": "Activer les notifications push ?",
     "push_prompt_message": "Recevez vos notifications VTESDecks sur cet appareil, même lorsque le site est fermé.",
     "push_enable": "Activer",
-    "push_not_now": "Pas maintenant"
+    "push_not_now": "Pas maintenant",
+    "achievement_unlocked": "Succès débloqué"
   },
   "page_not_found": {
     "danger_text": "Oups !",
@@ -1519,7 +1520,7 @@
     "singles_cheapest": "Acheter à l'unité est déjà l'option la moins chère"
   },
   "achievements": {
-    "title": "Succès", "badges": "Badges de succès", "empty": "Aucun succès obtenu pour le moment.", "update_notice": "Certains succès ne sont pas évalués instantanément et leur mise à jour peut prendre jusqu’à une heure.",
+    "title": "Succès", "badges": "Badges de succès", "empty": "Aucun succès obtenu pour le moment.",
     "tier": "Palier {{count}}", "progress": "{{current}} sur {{target}}", "history": "Historique obtenu", "show_more": "Afficher {{count}} de plus", "show_less": "Afficher moins",
     "family": { "published_decks": "Constructeur de decks", "deck_comments": "Voix de la communauté", "deck_appreciation": "Decks appréciés", "community_favorite": "Favori de la communauté", "followers": "Rassembler des abonnés", "conversation_starter": "Lanceur de conversations", "standout_deck": "Deck remarquable", "consistent_contributor": "Contributeur régulier", "collection_cards": "Collectionneur de cartes", "anniversary": "Anniversaire", "monthly_gold": "Utilisateur du mois", "monthly_silver": "Deuxième du mois", "monthly_bronze": "Podium mensuel" },
     "description": { "published_decks": "Publiez des decks communautaires.", "deck_comments": "Commentez les decks de différents joueurs.", "deck_appreciation": "Recevez l'appréciation de différents joueurs.", "community_favorite": "Faites ajouter vos decks aux favoris.", "followers": "Développez votre communauté d'abonnés.", "conversation_starter": "Attirez différents commentateurs sur vos decks.", "standout_deck": "Recevez de l'appréciation sur un seul deck.", "consistent_contributor": "Ajoutez un point pour chaque mois avec un deck publié ou un commentaire.", "collection_cards": "Ajoutez des cartes à votre collection.", "anniversary": "Ajoutez un point pour chaque année passée dans la communauté.", "monthly_gold": "Terminez premier d'un classement mensuel.", "monthly_silver": "Terminez deuxième d'un classement mensuel.", "monthly_bronze": "Terminez troisième d'un classement mensuel." }
