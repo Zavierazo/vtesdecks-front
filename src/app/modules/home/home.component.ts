@@ -11,12 +11,7 @@ import { TranslocoPipe } from '@jsverse/transloco'
 import { ApiChangelog, ApiDeck, ApiHome } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import {
-  ApiDataService,
-  LocalStorageService,
-  SeoService,
-  SpoilerVisitService,
-} from '@services'
+import { ApiDataService, LocalStorageService, SeoService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { AndroidBannerComponent } from '@shared/components/android-banner/android-banner.component'
 import { AnimatedDigitComponent } from '@shared/components/animated-digit/animated-digit.component'
@@ -24,7 +19,7 @@ import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
 import { IsSupporterDirective } from '@shared/directives/is-supporter.directive'
 import { AuthQuery } from '@state/auth/auth.query'
 import { getCurrentAdventData } from '@utils'
-import { distinctUntilChanged, switchMap, tap } from 'rxjs'
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs'
 import { environment } from '@environments/environment'
 import { HomeCustomAdComponent } from './home-custom-ad/home-custom-ad.component'
 import { HomeMetagameComponent } from './home-metagame/home-metagame.component'
@@ -58,7 +53,6 @@ export class HomeComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef)
   private readonly localStorage = inject(LocalStorageService)
   private readonly seoService = inject(SeoService)
-  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   private static readonly CHANGELOG_ALERT_KEY = 'changelog_alert_version'
   private readonly appVersion = environment.appVersion
@@ -124,12 +118,18 @@ export class HomeComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         distinctUntilChanged(),
-        switchMap(() => this.apiDataService.getDeckHome()),
-        tap((result) => {
+        switchMap((isAuthenticated) =>
+          this.apiDataService
+            .getDeckHome()
+            .pipe(map((result) => ({ isAuthenticated, result }))),
+        ),
+        tap(({ isAuthenticated, result }) => {
           this.deckHome = result
-          this.newSpoilerDecks = (result.spoilerDecks ?? []).filter((deck) =>
-            this.spoilerVisitService.hasNewSpoilers(deck.id, deck.modifyDate),
-          )
+          this.newSpoilerDecks = isAuthenticated
+            ? (result.spoilerDecks ?? []).filter(
+                (deck) => deck.visitStatus !== 'VIEWED',
+              )
+            : []
           this.changeDetector.markForCheck()
         }),
       )

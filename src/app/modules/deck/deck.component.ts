@@ -57,7 +57,6 @@ import {
   MediaService,
   PreviousRouteService,
   SeoService,
-  SpoilerVisitService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
@@ -80,7 +79,7 @@ import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { filter, Observable, switchMap, tap, timer } from 'rxjs'
+import { filter, Observable, of, switchMap, tap, timer } from 'rxjs'
 import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
@@ -151,7 +150,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
-  private readonly spoilerVisitService = inject(SpoilerVisitService)
 
   id!: string
 
@@ -218,15 +216,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         if (deck) {
-          if (
-            deck.type === 'PRECONSTRUCTED' &&
-            deck.tags?.includes('spoiler')
-          ) {
-            this.spoilerVisitService.markDeckVisited(
-              deck.id,
-              this.authQuery.serverDate()() ?? new Date(),
-            )
-          }
           const deckDescription = deck.description
             ? `${deck.description.slice(0, 155)}…`
             : `${deck.name} by ${deck.author} – a VTES deck on VTESDecks.com.`
@@ -261,7 +250,14 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    timer(5000)
+    const deck = this.deckQuery.getDeck()
+    const isSpoilerPreconstructed =
+      deck?.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')
+    const viewTrigger$: Observable<unknown> = isSpoilerPreconstructed
+      ? of(undefined)
+      : timer(5000)
+
+    viewTrigger$
       .pipe(
         untilDestroyed(this),
         switchMap(() =>

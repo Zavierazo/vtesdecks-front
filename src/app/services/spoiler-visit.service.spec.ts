@@ -22,48 +22,6 @@ describe('SpoilerVisitService', () => {
     service = TestBed.inject(SpoilerVisitService)
   })
 
-  it('shows a deck never visited', () => {
-    expect(service.hasNewSpoilers('deck-1', '2026-08-28T12:00:00Z')).toBe(true)
-  })
-
-  it('shows a deck updated after it was visited', () => {
-    store['spoiler_deck_visits'] = { 'deck-1': '2026-08-20T12:00:00Z' }
-
-    expect(service.hasNewSpoilers('deck-1', '2026-08-28T12:00:00Z')).toBe(true)
-  })
-
-  it('does not show a deck visited after its last update', () => {
-    store['spoiler_deck_visits'] = { 'deck-1': '2026-08-28T12:00:00Z' }
-
-    expect(service.hasNewSpoilers('deck-1', '2026-08-27T12:00:00Z')).toBe(false)
-    expect(service.hasNewSpoilers('deck-2', '2026-08-27T12:00:00Z')).toBe(true)
-  })
-
-  it('ignores a missing or invalid deck update', () => {
-    expect(service.hasNewSpoilers('deck-1', null)).toBe(false)
-    expect(service.hasNewSpoilers('deck-1', 'invalid-date')).toBe(false)
-  })
-
-  it('stores the visit date without touching the other decks', () => {
-    store['spoiler_deck_visits'] = { 'deck-1': '2026-08-20T12:00:00Z' }
-
-    service.markDeckVisited('deck-2', '2026-08-28T12:00:00Z')
-
-    expect(setValue).toHaveBeenCalledWith('spoiler_deck_visits', {
-      'deck-1': '2026-08-20T12:00:00Z',
-      'deck-2': '2026-08-28T12:00:00.000Z',
-    })
-  })
-
-  it('never rolls back a stored visit', () => {
-    store['spoiler_deck_visits'] = { 'deck-1': '2026-08-29T12:00:00Z' }
-
-    service.markDeckVisited('deck-1', '2026-08-28T12:00:00Z')
-    service.markDeckVisited('deck-1', 'invalid')
-
-    expect(setValue).not.toHaveBeenCalled()
-  })
-
   it('highlights nothing the first time the catalog is stored', () => {
     service.markSpoilersSeen('2026-08-28T09:00:00Z')
 
