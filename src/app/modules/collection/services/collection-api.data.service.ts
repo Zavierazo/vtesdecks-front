@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpContext, HttpResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import {
   ApiCollection,
@@ -12,6 +12,7 @@ import {
 import { map, Observable } from 'rxjs'
 import { environment } from '@environments/environment'
 import { CollectionQueryState } from '../state/collection.store'
+import { RETRY_REPEATABLE_POST } from '../../../http-retry.context'
 
 @Injectable({
   providedIn: 'root',
@@ -79,6 +80,7 @@ export class CollectionApiDataService {
     return this.httpClient.post<ApiCollectionPage>(
       `${environment.api.baseUrl}${CollectionApiDataService.collectionsPath}/cards/search`,
       this.buildSearchBody(query),
+      { context: new HttpContext().set(RETRY_REPEATABLE_POST, true) },
     )
   }
 
@@ -295,6 +297,7 @@ export class CollectionApiDataService {
     return this.httpClient.post<ApiCollectionPage>(
       `${environment.api.baseUrl}${CollectionApiDataService.publicCollectionsPath}/binders/${publicHash}/cards/search`,
       this.buildSearchBody(query),
+      { context: new HttpContext().set(RETRY_REPEATABLE_POST, true) },
     )
   }
 

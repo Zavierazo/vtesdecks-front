@@ -12,9 +12,18 @@ import { Observable, retry, tap, timer } from 'rxjs'
 import { environment } from '@environments/environment'
 import { ToastService } from './services/toast.service'
 import { AuthStore } from './state/auth/auth.store'
+import { RETRY_REPEATABLE_POST } from './http-retry.context'
 
 export const retryCount = 10
 export const retryWaitMilliSeconds = 5000
+
+export function isRetryableRequest(request: HttpRequest<unknown>): boolean {
+  return (
+    request.method === 'GET' ||
+    request.method === 'HEAD' ||
+    (request.method === 'POST' && request.context.get(RETRY_REPEATABLE_POST))
+  )
+}
 
 @Injectable()
 export class HttpMonitorInterceptor implements HttpInterceptor {
@@ -43,10 +52,7 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         .set('locale', this.translocoService.getActiveLang())
         .set('version', environment.appVersion),
     })
-    const retryable = !(
-      httpRequest.method === 'POST' &&
-      httpRequest.url.includes('/admin/schedulers/')
-    )
+    const retryable = isRetryableRequest(httpRequest)
     return next.handle(httpRequest).pipe(
       tap((event) => this.updateServerDate(event)),
       retry({

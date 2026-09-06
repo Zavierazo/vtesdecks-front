@@ -9,6 +9,7 @@ import { environment } from '@environments/environment'
 import { afterEach, describe, expect, it } from 'vitest'
 import { WishlistQueryState } from '../state/wishlist.store'
 import { WishlistApiDataService } from './wishlist-api.data.service'
+import { RETRY_REPEATABLE_POST } from '../../../http-retry.context'
 
 describe('WishlistApiDataService', () => {
   function setup() {
@@ -41,6 +42,7 @@ describe('WishlistApiDataService', () => {
       `${environment.api.baseUrl}/user/wishlist/cards/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body).toEqual({
       page: 1,
       size: 50,
@@ -60,6 +62,7 @@ describe('WishlistApiDataService', () => {
       `${environment.api.baseUrl}/user/wishlist/cards/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body).toEqual({
       page: 1,
       size: 50,
@@ -79,6 +82,7 @@ describe('WishlistApiDataService', () => {
       `${environment.api.baseUrl}/collections/users/alice/wishlist/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body.cardIds).toBeUndefined()
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
   })

@@ -9,8 +9,9 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ApiDataService } from './api.data.service'
 import { SessionStorageService } from './session-storage.service'
+import { RETRY_REPEATABLE_POST } from '../http-retry.context'
 
-describe('ApiDataService deck views', () => {
+describe('ApiDataService', () => {
   let service: ApiDataService
   let http: HttpTestingController
   const getValue = vi.fn()
@@ -35,6 +36,72 @@ describe('ApiDataService deck views', () => {
   })
 
   afterEach(() => http.verify())
+
+  it('marks bulk collection statistics as a repeatable POST', () => {
+    service.getCardCollectionStatsBulk([100001, 200001], true).subscribe()
+
+    const request = http.expectOne(
+      `${environment.api.baseUrl}/user/collections/cards/stats`,
+    )
+    expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
+    request.flush([])
+  })
+
+  it('marks login as a repeatable POST and refreshes with GET', () => {
+    service.login('alice', 'secret', 'captcha').subscribe()
+
+    const login = http.expectOne(`${environment.api.baseUrl}/auth/login`)
+    expect(login.request.method).toBe('POST')
+    expect(login.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
+    login.flush({ user: 'alice' })
+
+    service.userRefresh().subscribe()
+    const refresh = http.expectOne(`${environment.api.baseUrl}/user/refresh`)
+    expect(refresh.request.method).toBe('GET')
+    refresh.flush({ user: 'alice' })
+  })
+
+  it('retries ordinary saves for an existing deck only', () => {
+    service.saveDeckBuilder({ id: 'deck-1', cards: [] }).subscribe()
+    const existing = http.expectOne(
+      `${environment.api.baseUrl}/user/decks/builder`,
+    )
+    expect(existing.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
+    existing.flush({ id: 'deck-1', cards: [] })
+
+    service.saveDeckBuilder({ cards: [] }).subscribe()
+    const created = http.expectOne(
+      `${environment.api.baseUrl}/user/decks/builder`,
+    )
+    expect(created.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    created.flush({ id: 'deck-2', cards: [] })
+
+    service
+      .saveDeckBuilder({ id: 'deck-1', cards: [], tagLabel: 'Checkpoint' })
+      .subscribe()
+    const tagged = http.expectOne(
+      `${environment.api.baseUrl}/user/decks/builder`,
+    )
+    expect(tagged.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    tagged.flush({ id: 'deck-1', cards: [] })
+  })
+
+  it('marks explicit state changes as repeatable but leaves creates unmarked', () => {
+    service.rateDeck('deck-1', 5).subscribe()
+    const rating = http.expectOne(
+      `${environment.api.baseUrl}/user/decks/rating`,
+    )
+    expect(rating.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
+    rating.flush(true)
+
+    service
+      .register('alice', 'alice@example.com', 'secret', 'secret', 'captcha')
+      .subscribe()
+    const register = http.expectOne(`${environment.api.baseUrl}/auth/create`)
+    expect(register.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    register.flush({})
+  })
 
   it('deduplicates views by authenticated account and stores only successful posts', () => {
     service.deckView('deck-1', '/decks').subscribe()

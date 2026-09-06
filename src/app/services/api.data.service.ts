@@ -1,6 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
+import {
+  HttpClient,
+  HttpContext,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
+import { RETRY_REPEATABLE_POST } from '../http-retry.context'
 import {
   ApiAdminScheduler,
   ApiAdminUser,
@@ -120,6 +126,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.loginPath}`,
       formData,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -153,6 +160,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/impersonate`,
       null,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -160,6 +168,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiAdminUser>(
       `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/validate`,
       null,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -189,6 +198,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.loginOauthPath}`,
       formData,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -234,7 +244,7 @@ export class ApiDataService {
     return this.httpClient.post<boolean>(
       `${environment.api.baseUrl}${this.userVerifyPath}`,
       {},
-      { headers },
+      { headers, context: this.repeatablePostContext() },
     )
   }
 
@@ -265,6 +275,7 @@ export class ApiDataService {
         deck,
         rating,
       },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -275,6 +286,7 @@ export class ApiDataService {
         deck,
         favorite: bookmark,
       },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -290,6 +302,7 @@ export class ApiDataService {
         reaction,
         active,
       },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -304,6 +317,7 @@ export class ApiDataService {
         reaction,
         active,
       },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -392,6 +406,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiCardScanResponse>(
       `${environment.api.baseUrl}${this.cardScanPath}`,
       request,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -451,6 +466,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/${type}/import`,
       url,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -458,7 +474,10 @@ export class ApiDataService {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/text/import`,
       text,
-      { headers: { 'Content-Type': 'text/plain' } },
+      {
+        headers: { 'Content-Type': 'text/plain' },
+        context: this.repeatablePostContext(),
+      },
     )
   }
 
@@ -473,6 +492,10 @@ export class ApiDataService {
     return this.httpClient.post<ApiDeckBuilder>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}`,
       deck,
+      {
+        context:
+          deck.id && !deck.tagLabel ? this.repeatablePostContext() : undefined,
+      },
     )
   }
 
@@ -480,6 +503,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiSuggestedCardsResponse>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/suggested-cards`,
       { cards },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -558,6 +582,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiShoppingOptimizeResponse>(
       `${environment.api.baseUrl}${this.shoppingOptimizePath}`,
       request,
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -595,6 +620,7 @@ export class ApiDataService {
     return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/${id}/markAsRead`,
       {},
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -602,6 +628,7 @@ export class ApiDataService {
     return this.httpClient.post<unknown>(
       `${environment.api.baseUrl}${this.userNotificationsPath}/markAsRead`,
       {},
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -669,7 +696,10 @@ export class ApiDataService {
     return this.httpClient.post(
       `${environment.api.baseUrl}${this.proxyPath}`,
       request,
-      { responseType: 'blob' },
+      {
+        responseType: 'blob',
+        context: this.repeatablePostContext(),
+      },
     )
   }
 
@@ -695,6 +725,7 @@ export class ApiDataService {
     return this.httpClient.post<ApiCollectionCardStats[]>(
       `${environment.api.baseUrl}/user/collections/cards/stats`,
       { cardIds, summary },
+      { context: new HttpContext().set(RETRY_REPEATABLE_POST, true) },
     )
   }
 
@@ -780,6 +811,7 @@ export class ApiDataService {
         user,
         follow,
       },
+      { context: this.repeatablePostContext() },
     )
   }
 
@@ -821,5 +853,9 @@ export class ApiDataService {
       `${environment.api.baseUrl}/search`,
       { params },
     )
+  }
+
+  private repeatablePostContext(): HttpContext {
+    return new HttpContext().set(RETRY_REPEATABLE_POST, true)
   }
 }

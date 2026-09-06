@@ -68,7 +68,7 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 
 ### HTTP Interceptor
 
-`http-monitor.interceptor.ts` — adds locale/version query params, cache-control headers, retry logic (10 retries, 5 s delay). Only applies to API requests.
+`http-monitor.interceptor.ts` — adds locale/version query params and cache-control headers to API requests. Transient-error retries (10 retries, 5 s delay) are limited to GET/HEAD and POST requests explicitly marked as safe to repeat with `RETRY_REPEATABLE_POST`. Additive creates, collection imports, email sends, tagged deck saves, and other POST requests that can duplicate effects must remain unmarked; ordinary saves may opt in when the deck already has an ID.
 
 ### Guards
 

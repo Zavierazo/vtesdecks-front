@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpContext } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { ApiWishlistCard, ApiWishlistPage } from '@models'
 import { Observable } from 'rxjs'
 import { environment } from '@environments/environment'
 import { WishlistQueryState } from '../state/wishlist.store'
+import { RETRY_REPEATABLE_POST } from '../../../http-retry.context'
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class WishlistApiDataService {
     return this.httpClient.post<ApiWishlistPage>(
       `${environment.api.baseUrl}${WishlistApiDataService.wishlistPath}/cards/search`,
       this.buildSearchBody(query),
+      { context: new HttpContext().set(RETRY_REPEATABLE_POST, true) },
     )
   }
 
@@ -64,6 +66,7 @@ export class WishlistApiDataService {
     return this.httpClient.post<ApiWishlistPage | null>(
       `${environment.api.baseUrl}${WishlistApiDataService.publicCollectionsPath}/users/${username}/wishlist/search`,
       this.buildSearchBody(query),
+      { context: new HttpContext().set(RETRY_REPEATABLE_POST, true) },
     )
   }
 

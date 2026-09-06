@@ -9,6 +9,7 @@ import { environment } from '@environments/environment'
 import { afterEach, describe, expect, it } from 'vitest'
 import { CollectionQueryState } from '../state/collection.store'
 import { CollectionApiDataService } from './collection-api.data.service'
+import { RETRY_REPEATABLE_POST } from '../../../http-retry.context'
 
 describe('CollectionApiDataService', () => {
   function setup() {
@@ -44,6 +45,7 @@ describe('CollectionApiDataService', () => {
       `${environment.api.baseUrl}/user/collections/cards/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body).toEqual({
       page: 0,
       size: 20,
@@ -63,6 +65,7 @@ describe('CollectionApiDataService', () => {
       `${environment.api.baseUrl}/user/collections/cards/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body).toEqual({
       page: 0,
       size: 20,
@@ -93,7 +96,19 @@ describe('CollectionApiDataService', () => {
       `${environment.api.baseUrl}/collections/binders/abc123/cards/search`,
     )
     expect(request.request.method).toBe('POST')
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(true)
     expect(request.request.body.cardIds).toBeUndefined()
     request.flush({ totalPages: 0, totalElements: 0, content: [] })
+  })
+
+  it('leaves additive card creation unmarked', () => {
+    const { service, http } = setup()
+    service.addCardsBulk([]).subscribe()
+
+    const request = http.expectOne(
+      `${environment.api.baseUrl}/user/collections/cards/bulk`,
+    )
+    expect(request.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    request.flush([])
   })
 })
