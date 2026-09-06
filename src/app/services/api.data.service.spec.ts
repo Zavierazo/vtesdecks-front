@@ -37,6 +37,22 @@ describe('ApiDataService', () => {
 
   afterEach(() => http.verify())
 
+  it('requests a specific notification page with backward-compatible defaults', () => {
+    service.getNotifications().subscribe()
+    const firstPage = http.expectOne(
+      `${environment.api.baseUrl}/user/notifications?page=0&limit=50`,
+    )
+    expect(firstPage.request.method).toBe('GET')
+    firstPage.flush([])
+
+    service.getNotifications(2, 25).subscribe()
+    const requestedPage = http.expectOne(
+      `${environment.api.baseUrl}/user/notifications?page=2&limit=25`,
+    )
+    expect(requestedPage.request.method).toBe('GET')
+    requestedPage.flush([])
+  })
+
   it('marks bulk collection statistics as a repeatable POST', () => {
     service.getCardCollectionStatsBulk([100001, 200001], true).subscribe()
 

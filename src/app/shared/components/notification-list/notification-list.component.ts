@@ -1,9 +1,10 @@
-import { AsyncPipe, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
+  signal,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
@@ -16,7 +17,7 @@ import { NgbActiveOffcanvas, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, PushNotificationService } from '@services'
 import { AuthService } from '@state/auth/auth.service'
-import { Observable, tap } from 'rxjs'
+import { tap } from 'rxjs'
 import { DateAsAgoPipe } from '../../pipes/date-ago.pipe'
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component'
 
@@ -31,7 +32,6 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
     TranslocoPipe,
     NgClass,
     RouterLink,
-    AsyncPipe,
     DateAsAgoPipe,
   ],
 })
@@ -43,11 +43,41 @@ export class NotificationListComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService)
   readonly pushNotificationService = inject(PushNotificationService)
 
-  notifications$!: Observable<ApiUserNotification[]>
+  private static readonly PAGE_SIZE = 50
+  readonly notifications = signal<ApiUserNotification[]>([])
+  readonly loading = signal(false)
+  readonly loadError = signal(false)
+  readonly hasMore = signal(true)
+  private nextPage = 0
 
   ngOnInit() {
-    this.notifications$ = this.apiDataService.getNotifications()
+    this.loadMore()
     void this.initializePushNotifications()
+  }
+
+  loadMore(): void {
+    if (this.loading() || !this.hasMore()) return
+    this.loading.set(true)
+    this.loadError.set(false)
+    this.apiDataService
+      .getNotifications(this.nextPage, NotificationListComponent.PAGE_SIZE)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (page) => {
+          const byId = new Map(
+            this.notifications().map((item) => [item.id, item]),
+          )
+          page.forEach((item) => byId.set(item.id, item))
+          this.notifications.set([...byId.values()])
+          this.hasMore.set(page.length === NotificationListComponent.PAGE_SIZE)
+          this.nextPage += 1
+          this.loading.set(false)
+        },
+        error: () => {
+          this.loading.set(false)
+          this.loadError.set(true)
+        },
+      })
   }
 
   async togglePushNotifications(event: Event): Promise<void> {

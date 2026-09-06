@@ -604,9 +604,9 @@ export class ApiDataService {
     )
   }
 
-  getNotifications(): Observable<ApiUserNotification[]> {
+  getNotifications(page = 0, limit = 50): Observable<ApiUserNotification[]> {
     return this.httpClient.get<ApiUserNotification[]>(
-      `${environment.api.baseUrl}${this.userNotificationsPath}`,
+      `${environment.api.baseUrl}${this.userNotificationsPath}?page=${page}&limit=${limit}`,
     )
   }
 
