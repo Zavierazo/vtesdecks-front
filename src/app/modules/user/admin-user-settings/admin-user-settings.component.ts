@@ -17,6 +17,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { AuthService } from '@state/auth/auth.service'
+import { Router } from '@angular/router'
 import { filter, of, switchMap } from 'rxjs'
 
 @UntilDestroy()
@@ -29,7 +31,9 @@ import { filter, of, switchMap } from 'rxjs'
 })
 export class AdminUserSettingsComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
+  private readonly authService = inject(AuthService)
   private readonly modalService = inject(NgbModal)
+  private readonly router = inject(Router)
   private readonly toastService = inject(ToastService)
   private readonly translocoService = inject(TranslocoService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
@@ -41,8 +45,15 @@ export class AdminUserSettingsComponent implements OnInit {
   readonly loading = signal(true)
   readonly loadError = signal<'not-found' | 'error' | undefined>(undefined)
   readonly saving = signal(false)
-  readonly activeAction = signal<'validate' | 'password-reset' | undefined>(
-    undefined,
+  readonly activeAction = signal<
+    'validate' | 'password-reset' | 'email' | 'impersonate' | undefined
+  >(undefined)
+  readonly draftEmail = signal('')
+  readonly emailDirty = computed(
+    () => this.draftEmail().trim() !== (this.user()?.email ?? ''),
+  )
+  readonly emailValid = computed(() =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.draftEmail().trim()),
   )
   readonly draftAdmin = signal(false)
   readonly draftRoles = signal<Set<string>>(new Set())
@@ -62,6 +73,67 @@ export class AdminUserSettingsComponent implements OnInit {
 
   toggleAdmin(event: Event): void {
     this.draftAdmin.set((event.target as HTMLInputElement).checked)
+  }
+
+  updateDraftEmail(event: Event): void {
+    this.draftEmail.set((event.target as HTMLInputElement).value)
+  }
+
+  resetEmail(): void {
+    this.draftEmail.set(this.user()?.email ?? '')
+  }
+
+  saveEmail(): void {
+    if (!this.emailDirty() || !this.emailValid() || this.activeAction()) return
+    const email = this.draftEmail().trim()
+    this.confirm('confirm_email_title', 'confirm_email_message', { email })
+      .pipe(
+        filter(Boolean),
+        switchMap(() => {
+          this.activeAction.set('email')
+          return this.apiDataService.updateAdminUserEmail(
+            this.identifier,
+            email,
+          )
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe({
+        next: (user) => {
+          this.apply(user)
+          this.activeAction.set(undefined)
+          this.success('email_saved')
+        },
+        error: (error: HttpErrorResponse) => {
+          this.activeAction.set(undefined)
+          this.failure(
+            error.status === 409 ? 'email_in_use' : 'email_save_error',
+          )
+        },
+      })
+  }
+
+  impersonate(): void {
+    if (this.activeAction()) return
+    this.confirm('confirm_impersonate_title', 'confirm_impersonate_message')
+      .pipe(
+        filter(Boolean),
+        switchMap(() => {
+          this.activeAction.set('impersonate')
+          return this.authService.impersonate(this.identifier)
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe({
+        next: () => {
+          this.activeModal.close()
+          void this.router.navigateByUrl('/')
+        },
+        error: () => {
+          this.activeAction.set(undefined)
+          this.failure('impersonate_error')
+        },
+      })
   }
 
   toggleRole(role: string, event: Event): void {
@@ -190,13 +262,18 @@ export class AdminUserSettingsComponent implements OnInit {
 
   private apply(user: ApiAdminUser): void {
     this.user.set(user)
+    this.draftEmail.set(user.email)
     this.draftAdmin.set(user.admin)
     this.draftRoles.set(new Set(user.roles))
     this.saving.set(false)
     this.changeDetectorRef.markForCheck()
   }
 
-  private confirm(title: string, message: string) {
+  private confirm(
+    title: string,
+    message: string,
+    params: Record<string, unknown> = {},
+  ) {
     const modalRef = this.modalService.open(ConfirmDialogComponent, {
       size: 'sm',
       centered: true,
@@ -206,7 +283,7 @@ export class AdminUserSettingsComponent implements OnInit {
     )
     modalRef.componentInstance.message = this.translocoService.translate(
       `admin_user.${message}`,
-      { user: this.user()?.user ?? this.identifier },
+      { user: this.user()?.user ?? this.identifier, ...params },
     )
     return modalRef.closed
   }

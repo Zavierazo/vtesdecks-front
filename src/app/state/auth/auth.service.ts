@@ -71,6 +71,20 @@ export class AuthService {
     )
   }
 
+  impersonate(identifier: string): Observable<ApiUser> {
+    this.authStore.setLoading(true)
+    return this.apiDataService.impersonateAdminUser(identifier).pipe(
+      tap({
+        next: (response) => {
+          this.authStore.setLoading()
+          this.authStore.updateToken(response, false)
+          this.authStore.setError(undefined)
+        },
+        error: () => this.authStore.setLoading(),
+      }),
+    )
+  }
+
   register(
     username: string,
     email: string,

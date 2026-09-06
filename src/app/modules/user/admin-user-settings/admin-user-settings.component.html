@@ -42,8 +42,6 @@
         <div class="col-12 col-lg-6">
           <h5>{{ t('account') }}</h5>
           <dl class="row mb-3">
-            <dt class="col-sm-4">{{ t('email') }}</dt>
-            <dd class="col-sm-8 text-break">{{ managedUser.email }}</dd>
             <dt class="col-sm-4">{{ t('status') }}</dt>
             <dd class="col-sm-8">
               <span
@@ -57,6 +55,42 @@
               </span>
             </dd>
           </dl>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="admin-user-email">{{
+              t('email')
+            }}</label>
+            <div class="input-group">
+              <input
+                id="admin-user-email"
+                type="email"
+                class="form-control"
+                [class.is-invalid]="emailDirty() && !emailValid()"
+                [value]="draftEmail()"
+                [disabled]="!!activeAction()"
+                (input)="updateDraftEmail($event)"
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                [disabled]="!emailDirty() || !!activeAction()"
+                (click)="resetEmail()"
+              >
+                {{ t('reset') }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [disabled]="!emailDirty() || !emailValid() || !!activeAction()"
+                (click)="saveEmail()"
+              >
+                @if (activeAction() === 'email') {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                }
+                {{ t('save_email') }}
+              </button>
+            </div>
+            <div class="form-text">{{ t('email_trusted_notice') }}</div>
+          </div>
           <div class="d-flex flex-wrap gap-2">
             @if (!managedUser.validated) {
               <button
@@ -81,6 +115,17 @@
                 <span class="spinner-border spinner-border-sm me-1"></span>
               }
               {{ t('send_password_reset') }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-warning"
+              [disabled]="!!activeAction()"
+              (click)="impersonate()"
+            >
+              @if (activeAction() === 'impersonate') {
+                <span class="spinner-border spinner-border-sm me-1"></span>
+              }
+              {{ t('impersonate') }}
             </button>
           </div>
         </div>

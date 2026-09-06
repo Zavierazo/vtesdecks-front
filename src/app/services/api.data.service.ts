@@ -139,6 +139,23 @@ export class ApiDataService {
     )
   }
 
+  updateAdminUserEmail(
+    identifier: string,
+    email: string,
+  ): Observable<ApiAdminUser> {
+    return this.httpClient.put<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/email`,
+      { email },
+    )
+  }
+
+  impersonateAdminUser(identifier: string): Observable<ApiUser> {
+    return this.httpClient.post<ApiUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/impersonate`,
+      null,
+    )
+  }
+
   validateAdminUser(identifier: string): Observable<ApiAdminUser> {
     return this.httpClient.post<ApiAdminUser>(
       `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/validate`,

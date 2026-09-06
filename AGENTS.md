@@ -93,7 +93,7 @@ The backend owns the achievement catalog and permanently records earned tiers. R
 
 ### Admin User Management
 
-The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set and take effect for the affected user after their authentication token is refreshed.
+The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set and take effect for the affected user after their authentication token is refreshed. Admin email changes are trusted immediately by the backend and do not require verification. Impersonation replaces the current browser authentication with the target user's token and navigates away from the admin area; there is no retained admin session to restore.
 
 ---
 

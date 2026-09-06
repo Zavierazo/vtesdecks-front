@@ -1,10 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http'
 import { ChangeDetectorRef } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
+import { Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
 import { ApiAdminUser } from '@models'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService, ToastService } from '@services'
+import { AuthService } from '@state/auth/auth.service'
 import { of, throwError } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdminUserSettingsComponent } from './admin-user-settings.component'
@@ -29,6 +31,9 @@ describe('AdminUserSettingsComponent', () => {
       updateAdminUserAccess: vi.fn(() =>
         of({ ...managedUser, admin: true, roles: ['supporter', 'tester'] }),
       ),
+      updateAdminUserEmail: vi.fn(() =>
+        of({ ...managedUser, email: 'new@example.com', validated: true }),
+      ),
       validateAdminUser: vi.fn(() => of({ ...managedUser, validated: true })),
       sendAdminUserPasswordReset: vi.fn(() => of(undefined)),
       ...overrides,
@@ -37,12 +42,21 @@ describe('AdminUserSettingsComponent', () => {
     const modal = {
       open: vi.fn(() => ({ componentInstance: {}, closed: of(true) })),
     }
+    const auth = {
+      impersonate: vi.fn(() =>
+        of({ user: 'target', token: 'target-token', admin: false }),
+      ),
+    }
+    const activeModal = { dismiss: vi.fn(), close: vi.fn() }
+    const router = { navigateByUrl: vi.fn(() => Promise.resolve(true)) }
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiDataService, useValue: api },
         { provide: ToastService, useValue: toast },
         { provide: NgbModal, useValue: modal },
-        { provide: NgbActiveModal, useValue: { dismiss: vi.fn() } },
+        { provide: NgbActiveModal, useValue: activeModal },
+        { provide: AuthService, useValue: auth },
+        { provide: Router, useValue: router },
         { provide: ChangeDetectorRef, useValue: { markForCheck: vi.fn() } },
         {
           provide: TranslocoService,
@@ -54,7 +68,7 @@ describe('AdminUserSettingsComponent', () => {
       () => new AdminUserSettingsComponent(),
     )
     component.identifier = 'target'
-    return { component, api, toast, modal }
+    return { component, api, toast, modal, auth, activeModal, router }
   }
 
   it('does not fetch private data until the modal component initializes', () => {
@@ -140,5 +154,33 @@ describe('AdminUserSettingsComponent', () => {
       'admin_user.password_reset_cooldown',
       expect.objectContaining({ classname: 'bg-danger text-light' }),
     )
+  })
+
+  it('updates and immediately trusts an admin-provided email', () => {
+    const { component, api } = setup()
+    component.ngOnInit()
+    component.updateDraftEmail({
+      target: { value: 'new@example.com' },
+    } as unknown as Event)
+
+    component.saveEmail()
+
+    expect(api.updateAdminUserEmail).toHaveBeenCalledWith(
+      'target',
+      'new@example.com',
+    )
+    expect(component.user()?.email).toBe('new@example.com')
+    expect(component.user()?.validated).toBe(true)
+  })
+
+  it('replaces the browser authentication when impersonating', () => {
+    const { component, auth, activeModal, router } = setup()
+    component.ngOnInit()
+
+    component.impersonate()
+
+    expect(auth.impersonate).toHaveBeenCalledWith('target')
+    expect(activeModal.close).toHaveBeenCalled()
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/')
   })
 })
