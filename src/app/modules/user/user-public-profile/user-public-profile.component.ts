@@ -8,11 +8,7 @@ import {
   signal,
 } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
-import {
-  TranslocoDirective,
-  TranslocoPipe,
-  TranslocoService,
-} from '@jsverse/transloco'
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import {
   ApiAchievementFamily,
   ApiCollection,
@@ -21,7 +17,7 @@ import {
 } from '@models'
 import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, ToastService } from '@services'
+import { ApiDataService } from '@services'
 import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
@@ -58,8 +54,6 @@ export class UserPublicProfileComponent implements OnInit {
   private collectionApiService = inject(CollectionApiDataService)
   private wishlistApiService = inject(WishlistApiDataService)
   private apiDataService = inject(ApiDataService)
-  private toastService = inject(ToastService)
-  private translocoService = inject(TranslocoService)
   private authQuery = inject(AuthQuery)
   private modalService = inject(NgbModal)
 
@@ -100,12 +94,13 @@ export class UserPublicProfileComponent implements OnInit {
     this.decks$ = this.decksQuery.selectAll()
     this.total$ = this.decksQuery.selectTotal()
 
-    this.route.params.pipe(untilDestroyed(this)).subscribe((params) => {
-      const username = params['username']
-      if (username) {
+    this.route.data.pipe(untilDestroyed(this)).subscribe((data) => {
+      const user = data['user'] as ApiPublicUser
+      if (user) {
+        const username = user.user
         this.username.set(username)
+        this.user.set(user)
         this.achievementsExpanded.set(false)
-        this.loadUserData(username)
         this.loadUserDecks(username)
         this.loadUserBinders(username)
         this.loadUserWishlist(username)
@@ -160,25 +155,6 @@ export class UserPublicProfileComponent implements OnInit {
       },
       error: () => this.achievementsLoading.set(false),
     })
-  }
-
-  private loadUserData(username: string) {
-    this.apiDataService
-      .getPublicUser(username)
-      .pipe(
-        untilDestroyed(this),
-        tap((user) => this.user.set(user)),
-        catchError((error) => {
-          this.toastService.show(
-            this.translocoService.translate(
-              'user_public_profile.user_not_found',
-            ),
-            { classname: 'bg-danger text-light', delay: 5000 },
-          )
-          throw error
-        }),
-      )
-      .subscribe()
   }
 
   private loadUserDecks(username: string) {

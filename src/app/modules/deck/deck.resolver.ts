@@ -1,13 +1,20 @@
 import { inject } from '@angular/core'
-import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router'
+import {
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router'
 import { ApiDeck } from '@models'
 import { DeckService } from '@state/deck/deck.service'
-import { EMPTY, Observable, catchError } from 'rxjs'
+import { redirectNotFound } from '@utils'
 
 export const deckResolver: ResolveFn<ApiDeck> = (
   route: ActivatedRouteSnapshot,
-): Observable<ApiDeck> => {
+  state: RouterStateSnapshot,
+) => {
   const id = route.paramMap.get('id')
   const deckService = inject(DeckService)
-  return deckService.getDeck(id!).pipe(catchError(() => EMPTY))
+  const router = inject(Router)
+  return redirectNotFound(deckService.getDeck(id!), router, state.url)
 }

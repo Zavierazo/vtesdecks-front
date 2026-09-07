@@ -143,7 +143,7 @@ src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 - **Images**: lazy-loaded via `ng-lazyload-image`; URLs built by `card-image.pipe`.
 - **Auth tokens**: stored in LocalStorage (remember me) or SessionStorage (session only).
 - **SEO**: `SeoService` sets canonical URL and meta tags per route.
-- **Resolvers**: data pre-fetched via route `resolve` before component render.
+- **Resolvers**: data pre-fetched via route `resolve` before component render. Detail routes for decks, public users, and archetypes render the shared not-found page for HTTP 404 responses while preserving the requested URL; other request failures propagate normally.
 
 ---
 

@@ -19,8 +19,6 @@ import {
   NgbModal,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import { MarkdownTextComponent } from '@shared/components/markdown-text/markdown-text.component'
 import { CryptQuery } from '@state/crypt/crypt.query'
@@ -31,7 +29,7 @@ import {
   getLibraryTypeIcons,
   LIBRARY_TYPE_LIST,
 } from '@utils'
-import { Observable } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
@@ -40,6 +38,7 @@ import { LibraryTypeTranslocoPipe } from '@deck-shared/library-type-transloco/li
 import { LibraryCardComponent } from '@deck-shared/library-card/library-card.component'
 import { LibraryComponent } from '@deck-shared/library/library.component'
 import { ArchetypeCardStatsComponent } from './archetype-card-stats/archetype-card-stats.component'
+import { getArchetypeMetaType } from '../deck-metagame.resolver'
 
 export interface LibraryTypeGroup {
   type: string
@@ -56,7 +55,6 @@ export interface CryptCapacity {
   avg: number
 }
 
-@UntilDestroy()
 @Component({
   selector: 'app-deck-metagame-detail',
   templateUrl: './deck-metagame-detail.component.html',
@@ -84,7 +82,6 @@ export interface CryptCapacity {
 })
 export class DeckMetagameDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute)
-  private readonly apiDataService = inject(ApiDataService)
   private readonly modalService = inject(NgbModal)
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
@@ -96,25 +93,10 @@ export class DeckMetagameDetailComponent implements OnInit {
   expandedLibrarySuggestions: Record<string, boolean> = {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'))
-    const requestedMetaType = this.route.snapshot.queryParamMap.get(
-      'metaType',
-    ) as MetaType | null
-    if (
-      requestedMetaType &&
-      [
-        'TOURNAMENT',
-        'TOURNAMENT_90',
-        'TOURNAMENT_180',
-        'TOURNAMENT_365',
-        'TOURNAMENT_730',
-      ].includes(requestedMetaType)
-    ) {
-      this.metaType = requestedMetaType
-    }
-    this.archetype$ = this.apiDataService
-      .getDeckArchetype(id, this.metaType)
-      .pipe(untilDestroyed(this))
+    this.metaType = getArchetypeMetaType(this.route.snapshot)
+    this.archetype$ = this.route.data.pipe(
+      map((data) => data['archetype'] as ApiDeckArchetype),
+    )
   }
 
   getCoreCrypt(archetype: ApiDeckArchetype): ApiArchetypeKeyCard[] {

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router'
+import { deckMetagameResolver } from './deck-metagame.resolver'
 
 export const DECK_METAGAME_ROUTES: Routes = [
   {
@@ -14,6 +15,7 @@ export const DECK_METAGAME_ROUTES: Routes = [
       import('./deck-metagame-detail/deck-metagame-detail.component').then(
         (m) => m.DeckMetagameDetailComponent,
       ),
+    resolve: { archetype: deckMetagameResolver },
     title: 'VTES Decks - Archetype',
   },
 ]

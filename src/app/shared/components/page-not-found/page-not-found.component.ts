@@ -1,15 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 
 @Component({
   selector: 'app-page-not-found',
   templateUrl: './page-not-found.component.html',
   styleUrls: ['./page-not-found.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [TranslocoDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoDirective, RouterLink],
 })
-export class PageNotFoundComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class PageNotFoundComponent {}

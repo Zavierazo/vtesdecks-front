@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router'
 import { CanActivateUser } from '@shared/guards/can-activate-user.guard'
+import { userResolver } from './user.resolver'
 
 export const USER_ROUTES: Routes = [
   {
@@ -17,6 +18,7 @@ export const USER_ROUTES: Routes = [
       import('./user-public-profile/user-public-profile.component').then(
         (m) => m.UserPublicProfileComponent,
       ),
+    resolve: { user: userResolver },
     title: 'VTES Decks - User Profile',
   },
 ]
