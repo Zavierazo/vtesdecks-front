@@ -24,7 +24,7 @@ Features: card browser, TWD deck browser, deck builder, collection manager, prox
 | Auth       | JWT via `@auth0/angular-jwt`, Google OAuth           |
 | State      | Custom Signal-based store (no NgRx)                  |
 | Charts     | `ng2-charts` + `chart.js`                            |
-| Markdown   | `ngx-markdown` + `marked`                            |
+| Markdown   | `marked` + DOMPurify                                 |
 | Errors     | Sentry 10                                            |
 | Analytics  | `ngx-google-analytics`                               |
 | Testing    | Vitest                                               |
@@ -142,6 +142,7 @@ SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page
 
 ## Key Conventions
 
+- **Markdown**: `MarkdownService` parses first and sanitizes generated HTML with an explicit DOMPurify tag, attribute, and URL allowlist. Only this service may mark sanitized Markdown as trusted for Angular, preserving the card custom element and validated YouTube embeds. Custom renderers must HTML-encode interpolated values and accept only validated YouTube video IDs.
 - **Change detection**: `OnPush` everywhere.
 - **Subscriptions**: cleaned up with `@ngneat/until-destroy`.
 - **API calls**: go through `ApiDataService` only.
