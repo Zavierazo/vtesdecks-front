@@ -29,7 +29,7 @@
                     <span class="bookmark-count" aria-hidden="true">{{ bookmarkCount }}</span>
                     <span id="bookmark-count-description" class="visually-hidden">{{ t('bookmark_count', { count: bookmarkCount }) }}</span>
                   </a>
-                  <h3 class="deck-title fw-bold mb-0">{{ deck.name | titlecase }}</h3>
+                  <h1 class="deck-title fw-bold mb-0">{{ deck.name }}</h1>
                 </div>
                 <div class="deck-meta">
                   <p class="mb-1">
@@ -366,7 +366,7 @@
     <div class="col-12 mt-4">
       <div class="deck-section-header">
         <div class="deck-section-header__title">
-          <h1 class="mb-0">{{ 'shared.crypt' | transloco }}</h1>
+          <h2 class="h1 mb-0">{{ 'shared.crypt' | transloco }}</h2>
           <span class="circle_number" [title]="t('total_crypt')">
             {{ deck.stats.crypt }}
           </span>
@@ -465,7 +465,7 @@
     <div class="col-12 mt-5">
       <div class="deck-section-header">
         <div class="deck-section-header__title">
-          <h1 class="mb-0">{{ 'shared.library' | transloco }}</h1>
+          <h2 class="h1 mb-0">{{ 'shared.library' | transloco }}</h2>
           <span class="circle_number" [title]="t('total_library')">
             {{ deck.stats.library }}
           </span>

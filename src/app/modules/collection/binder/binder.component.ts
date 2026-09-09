@@ -1,4 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
+import { HttpErrorResponse } from '@angular/common/http'
 import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -19,12 +20,16 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ToastService } from '@services'
+import { SeoService, ToastService } from '@services'
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component'
+import { PageNotFoundComponent } from '@shared/components/page-not-found/page-not-found.component'
 import {
   catchError,
+  EMPTY,
+  throwError,
   distinctUntilChanged,
   Observable,
+  map,
   of,
   switchMap,
   tap,
@@ -46,6 +51,7 @@ import { CollectionQuery } from '../state/collection.query'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
+    PageNotFoundComponent,
     CollectionCardsListComponent,
     NgbDropdown,
     NgbDropdownToggle,
@@ -69,50 +75,70 @@ export class BinderComponent implements OnInit {
   private router = inject(Router)
   private clipboard = inject(Clipboard)
 
-  binder$!: Observable<ApiCollectionBinder | undefined>
+  binder$?: Observable<ApiCollectionBinder | undefined>
   multiSelect = false
   isPublic = false
+  private readonly seo = inject(SeoService)
+  unavailable = false
   private collectionService!: CollectionPrivateService | CollectionPublicService
 
   ngOnInit() {
-    const binderIdParam = this.route.snapshot.params['binderId']
-    if (!binderIdParam || isNaN(Number(binderIdParam))) {
-      this.isPublic = true
-      this.collectionService = this.collectionPublicService
-      const binderId = binderIdParam
-      this.collectionService.reset()
-      this.collectionService
-        .initialize(binderId)
-        .pipe(
-          untilDestroyed(this),
-          tap((data) => {
-            this.binder$ = this.collectionQuery.selectBinder(data.id)
-            this.changeDetectorRef.markForCheck()
-          }),
-          switchMap(() => this.collectionQuery.selectQuery()),
-          distinctUntilChanged(),
-          switchMap(() => this.collectionService.fetchCards()),
-        )
-        .subscribe()
-    } else {
-      this.isPublic = false
-      this.collectionService = this.collectionPrivateService
-      const binderId = Number(binderIdParam)
-      this.collectionService.reset()
-      this.collectionService
-        .initialize(binderId)
-        .pipe(
-          untilDestroyed(this),
-          tap(() => {
-            this.binder$ = this.collectionQuery.selectBinder(binderId)
-            this.changeDetectorRef.markForCheck()
-          }),
-          switchMap(() => this.collectionQuery.selectQuery()),
-          distinctUntilChanged(),
-          switchMap(() => this.collectionService.fetchCards()),
-        )
-        .subscribe()
-    }
+    this.route.paramMap
+      .pipe(
+        map((params) => params.get('binderId') ?? ''),
+        distinctUntilChanged(),
+        switchMap((binderId) => {
+          this.isPublic = !binderId || isNaN(Number(binderId))
+          this.unavailable = false
+          this.binder$ = undefined
+          this.collectionService = this.isPublic
+            ? this.collectionPublicService
+            : this.collectionPrivateService
+          this.collectionService.reset()
+          const request = this.isPublic
+            ? this.collectionPublicService.initialize(binderId)
+            : this.collectionPrivateService.initialize(Number(binderId)).pipe(
+                map((collection) => {
+                  const binder = collection.binders?.find(
+                    (item) => item.id === Number(binderId),
+                  )
+                  if (!binder) throw new HttpErrorResponse({ status: 404 })
+                  return binder
+                }),
+              )
+          const path = `/collection/binders/${encodeURIComponent(binderId)}`
+          return request.pipe(
+            tap((binder) => {
+              this.binder$ = this.collectionQuery.selectBinder(binder.id)
+              this.seo.update({
+                page: 'binder',
+                params: { name: binder.name },
+                canonicalUrl: path,
+                index: this.isPublic && binder.publicVisibility === true,
+                schemaType: 'CollectionPage',
+              })
+              this.changeDetectorRef.markForCheck()
+            }),
+            switchMap(() => this.collectionQuery.selectQuery()),
+            distinctUntilChanged(),
+            switchMap(() => this.collectionService.fetchCards()),
+            catchError((error: { status?: number }) => {
+              if (error.status !== 404) return throwError(() => error)
+              this.unavailable = true
+              this.binder$ = undefined
+              this.seo.update({
+                page: 'notFound',
+                index: false,
+                canonicalUrl: path,
+              })
+              this.changeDetectorRef.markForCheck()
+              return EMPTY
+            }),
+          )
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe()
   }
 
   onToggleMultiSelect() {

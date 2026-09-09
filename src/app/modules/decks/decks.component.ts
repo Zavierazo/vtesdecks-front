@@ -24,12 +24,7 @@ import {
 import { ApiDeck } from '@models'
 import { NgbOffcanvas, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import {
-  ApiDataService,
-  MediaService,
-  SearchFeaturesService,
-  SeoService,
-} from '@services'
+import { ApiDataService, MediaService, SearchFeaturesService } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
 import {
   FilterChip,
@@ -170,15 +165,8 @@ export class DecksComponent implements OnInit {
   mainForm!: FormGroup
 
   readonly filters = viewChild<DeckFiltersComponent>('filters')
-  private readonly seoService = inject(SeoService)
 
   ngOnInit() {
-    this.seoService.update({
-      title: 'Decks',
-      description:
-        'Browse and search thousands of VTES tournament-winning and community decks. Filter by clan, discipline, author and more.',
-      canonicalUrl: 'https://vtesdecks.com/decks',
-    })
     this.isLoading$ = this.decksQuery.selectLoading()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.route.queryParams

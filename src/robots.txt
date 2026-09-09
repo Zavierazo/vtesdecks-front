@@ -1,6 +1,5 @@
 User-agent: *
-Disallow: /collection
-Disallow: /user
+Allow: /
 Disallow: /reset-password
 Disallow: /verify-account
 

@@ -20,7 +20,7 @@ import {
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DeckArchetypeCrudService, SeoService } from '@services'
+import { DeckArchetypeCrudService } from '@services'
 import {
   FilterChip,
   FilterChipsComponent,
@@ -75,7 +75,6 @@ export class DeckMetagameComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly crud = inject(DeckArchetypeCrudService)
   private readonly authQuery = inject(AuthQuery)
-  private readonly seoService = inject(SeoService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly transloco = inject(TranslocoService)
@@ -213,12 +212,6 @@ export class DeckMetagameComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.limit) {
-      this.seoService.update({
-        title: 'Metagame',
-        description:
-          'Explore the current VTES metagame. Discover the top tournament archetypes and their performance.',
-        canonicalUrl: 'https://vtesdecks.com/metagame',
-      })
       this.restoreQueryState()
     }
     this.loadArchetypes()

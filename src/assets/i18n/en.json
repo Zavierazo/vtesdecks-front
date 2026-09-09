@@ -1651,5 +1651,131 @@
     "height": "Height",
     "size_auto": "Auto",
     "size_hint": "Any CSS size works: 400px, 30rem, 100%…"
+  },
+  "seo": {
+    "home": {
+      "title": "Home",
+      "description": "Browse tournament-winning and community Vampire: The Eternal Struggle decks, explore cards, and build your own VTES deck."
+    },
+    "decks": {
+      "title": "Decks",
+      "description": "Search tournament-winning and community VTES decks by clan, discipline, author, and more."
+    },
+    "crypt": {
+      "title": "Crypt cards",
+      "description": "Browse VTES vampire cards by name, clan, discipline, capacity, and group."
+    },
+    "library": {
+      "title": "Library cards",
+      "description": "Browse VTES library cards by name, card text, type, discipline, and clan."
+    },
+    "metagame": {
+      "title": "Metagame",
+      "description": "Explore VTES deck archetypes, tournament results, key cards, and metagame trends."
+    },
+    "statistics": {
+      "title": "Tournament statistics",
+      "description": "Explore VTES tournament wins by clan and discipline and compare trends over time."
+    },
+    "vtesdle": {
+      "title": "VTESDLE",
+      "description": "Play VTESDLE, the daily Vampire: The Eternal Struggle card guessing game."
+    },
+    "advent": {
+      "title": "Advent Calendar",
+      "description": "Explore the VTES Advent Calendar and discover its featured decks."
+    },
+    "proxy": {
+      "title": "Proxy generator",
+      "description": "Create printable card proxies for your Vampire: The Eternal Struggle decks."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Contact the VTES Decks team with questions, suggestions, or feedback."
+    },
+    "changelog": {
+      "title": "Changelog",
+      "description": "Discover the latest VTES Decks features, improvements, and fixes."
+    },
+    "terms": {
+      "title": "Terms of use",
+      "description": "Read the terms of use for VTES Decks."
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "description": "Learn how VTES Decks handles personal data and privacy."
+    },
+    "tutorial": {
+      "title": "Learn to play",
+      "description": "Learn Vampire: The Eternal Struggle with an interactive guided game."
+    },
+    "resources": {
+      "title": "Resources for new players",
+      "description": "Find the VTES rulebook, starter decks, buying advice, and community resources."
+    },
+    "deck": {
+      "title": "{{name}}",
+      "description": "{{name}} by {{author}}. Explore its VTES crypt and library cards. {{details}}"
+    },
+    "archetype": {
+      "title": "{{name}} - Archetype",
+      "description": "Explore the {{name}} VTES archetype, its key cards, deck examples, and tournament statistics."
+    },
+    "profile": {
+      "title": "{{name}} (@{{username}})",
+      "description": "Discover public VTES decks and shared collections from {{name}} (@{{username}})."
+    },
+    "publicWishlist": {
+      "title": "{{username}} - Wishlist",
+      "description": "Browse the publicly shared VTES card wishlist of {{username}}."
+    },
+    "binder": {
+      "title": "{{name}} - Binder",
+      "description": "Explore the publicly shared VTES card binder {{name}}."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "This page is unavailable or could not be found. Browse public decks and cards on VTES Decks."
+    },
+    "loading": {
+      "title": "Loading",
+      "description": "Loading this VTES Decks page."
+    },
+    "account": {
+      "title": "Account",
+      "description": "Manage your VTES Decks account."
+    },
+    "settings": {
+      "title": "Account settings",
+      "description": "Manage your VTES Decks account settings."
+    },
+    "admin": {
+      "title": "Administration",
+      "description": "VTES Decks administration."
+    },
+    "verify": {
+      "title": "Verify account",
+      "description": "Verify your VTES Decks account."
+    },
+    "reset": {
+      "title": "Reset password",
+      "description": "Reset your VTES Decks account password."
+    },
+    "builder": {
+      "title": "Deck builder",
+      "description": "Build and manage your Vampire: The Eternal Struggle decks."
+    },
+    "collection": {
+      "title": "My collection",
+      "description": "Manage your VTES card collection and binders."
+    },
+    "wishlist": {
+      "title": "My wishlist",
+      "description": "Manage your VTES card wishlist."
+    },
+    "embed": {
+      "title": "{{name}} - Embedded deck",
+      "description": "Embedded view of the VTES deck {{name}}."
+    }
   }
 }

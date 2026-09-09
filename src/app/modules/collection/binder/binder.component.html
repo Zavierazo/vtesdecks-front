@@ -1,5 +1,8 @@
 <ng-container *transloco="let t; prefix: 'collection'">
-  @if(!isPublic){
+  @if (unavailable) {
+    <app-page-not-found />
+  }
+  @if(!isPublic && !unavailable){
   <nav class="mt-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a routerLink="/collection">{{ t('title') }}</a></li>

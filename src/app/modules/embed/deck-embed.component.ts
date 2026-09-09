@@ -9,7 +9,6 @@ import {
   inject,
   signal,
 } from '@angular/core'
-import { Meta } from '@angular/platform-browser'
 import { ActivatedRoute } from '@angular/router'
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco'
 import { ApiCard, ApiDeck } from '@models'
@@ -68,7 +67,6 @@ export class DeckEmbedComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly libraryService = inject(LibraryService)
   private readonly apiDataService = inject(ApiDataService)
   private readonly translocoService = inject(TranslocoService)
-  private readonly meta = inject(Meta)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
 
   sections: EmbedSections = { stats: true, crypt: true, library: true }
@@ -116,9 +114,6 @@ export class DeckEmbedComponent implements OnInit, AfterViewInit, OnDestroy {
     if (lang && SUPPORTED_LANGUAGES.some((l) => l.code === lang)) {
       this.translocoService.setActiveLang(lang)
     }
-
-    // Embed pages should never be indexed
-    this.meta.updateTag({ name: 'robots', content: 'noindex' })
 
     // Card database is only needed to resolve names for the enabled lists
     if (this.sections.crypt) {

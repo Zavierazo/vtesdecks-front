@@ -1,10 +1,10 @@
+import { deckSeo } from '../../services/seo-route.config'
 import { Clipboard } from '@angular/cdk/clipboard'
 import {
   AsyncPipe,
   CurrencyPipe,
   NgClass,
   NgTemplateOutlet,
-  TitleCasePipe,
 } from '@angular/common'
 import {
   AfterViewInit,
@@ -113,7 +113,6 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
     QuickReactionsComponent,
     AsyncPipe,
     CurrencyPipe,
-    TitleCasePipe,
     TranslocoFallbackPipe,
     DisciplineTranslocoPipe,
     ClanTranslocoPipe,
@@ -219,14 +218,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
         this.collectionTracker =
           this.collectionTracker || collectionTrackerOwner
         if (deck) {
-          const deckDescription = deck.description
-            ? `${deck.description.slice(0, 155)}…`
-            : `${deck.name} by ${deck.author} – a VTES deck on VTESDecks.com.`
-          this.seoService.update({
-            title: `Deck ${deck.name}`,
-            description: `Browse thousands of tournament-winning and community VTES decks, build your own, track your collection and explore the metagame. ${deckDescription}`,
-            canonicalUrl: `https://vtesdecks.com/deck/${deck.id}`,
-          })
+          this.seoService.update(deckSeo(deck))
           this.deckHistoryService.addVisitedDeck(
             deck.id,
             deck.name,

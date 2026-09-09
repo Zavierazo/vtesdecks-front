@@ -1,13 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { SeoService } from '@services'
 
 interface TutorialResource {
   key: string
@@ -56,17 +50,6 @@ const RESOURCES: TutorialResource[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, RouterLink, NgxGoogleAnalyticsModule],
 })
-export class TutorialResourcesComponent implements OnInit {
-  private readonly seoService = inject(SeoService)
-
+export class TutorialResourcesComponent {
   readonly resources = RESOURCES
-
-  ngOnInit(): void {
-    this.seoService.update({
-      title: 'VTES Resources for New Players',
-      description:
-        'Rulebook, buying guide, community links and starter decks: everything a new Vampire: The Eternal Struggle player needs.',
-      canonicalUrl: 'https://vtesdecks.com/tutorial/resources',
-    })
-  }
 }

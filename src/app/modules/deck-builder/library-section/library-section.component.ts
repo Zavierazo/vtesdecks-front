@@ -27,7 +27,6 @@ import {
   CardShopAvailabilityService,
   MediaService,
   SearchFeaturesService,
-  SeoService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
@@ -113,7 +112,6 @@ export class LibrarySectionComponent implements OnInit {
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
-  private readonly seoService = inject(SeoService)
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
@@ -174,12 +172,6 @@ export class LibrarySectionComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.seoService.update({
-      title: 'Library',
-      description:
-        'Browse and search the complete VTES Library card database. Find action, reaction, equipment, and combat cards by type, discipline, and clan.',
-      canonicalUrl: 'https://vtesdecks.com/cards/library',
-    })
     this.listenScroll()
     this.onChangeNameFilter()
     this.listenShopAvailability()

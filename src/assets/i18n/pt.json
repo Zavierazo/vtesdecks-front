@@ -1651,5 +1651,131 @@
     "height": "Altura",
     "size_auto": "Auto",
     "size_hint": "Qualquer tamanho CSS funciona: 400px, 30rem, 100%…"
+  },
+  "seo": {
+    "home": {
+      "title": "Início",
+      "description": "Explore decks vencedores e da comunidade de Vampire: The Eternal Struggle, consulte cartas e construa o seu deck de VTES."
+    },
+    "decks": {
+      "title": "Decks",
+      "description": "Pesquise decks vencedores e da comunidade de VTES por clã, disciplina, autor e outros critérios."
+    },
+    "crypt": {
+      "title": "Cartas de cripta",
+      "description": "Consulte vampiros de VTES por nome, clã, disciplina, capacidade e grupo."
+    },
+    "library": {
+      "title": "Cartas de biblioteca",
+      "description": "Consulte cartas de biblioteca de VTES por nome, texto, tipo, disciplina e clã."
+    },
+    "metagame": {
+      "title": "Metajogo",
+      "description": "Explore arquétipos de decks de VTES, resultados de torneios, cartas-chave e tendências do metajogo."
+    },
+    "statistics": {
+      "title": "Estatísticas de torneios",
+      "description": "Explore vitórias em torneios de VTES por clã e disciplina e compare a sua evolução."
+    },
+    "vtesdle": {
+      "title": "VTESDLE",
+      "description": "Jogue VTESDLE, o desafio diário de adivinhar cartas de Vampire: The Eternal Struggle."
+    },
+    "advent": {
+      "title": "Calendário do Advento",
+      "description": "Explore o calendário do Advento de VTES e descubra os seus decks em destaque."
+    },
+    "proxy": {
+      "title": "Gerador de proxies",
+      "description": "Crie proxies para impressão dos seus decks de Vampire: The Eternal Struggle."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Contacte a equipa de VTES Decks com perguntas, sugestões ou comentários."
+    },
+    "changelog": {
+      "title": "Novidades",
+      "description": "Descubra as últimas funcionalidades, melhorias e correções de VTES Decks."
+    },
+    "terms": {
+      "title": "Termos de utilização",
+      "description": "Consulte os termos de utilização de VTES Decks."
+    },
+    "privacy": {
+      "title": "Política de privacidade",
+      "description": "Saiba como VTES Decks trata os dados pessoais e a privacidade."
+    },
+    "tutorial": {
+      "title": "Aprender a jogar",
+      "description": "Aprenda Vampire: The Eternal Struggle com uma partida guiada interativa."
+    },
+    "resources": {
+      "title": "Recursos para iniciantes",
+      "description": "Encontre as regras de VTES, decks iniciais, conselhos de compra e recursos da comunidade."
+    },
+    "deck": {
+      "title": "{{name}}",
+      "description": "{{name}}, de {{author}}. Consulte as suas cartas de cripta e biblioteca de VTES. {{details}}"
+    },
+    "archetype": {
+      "title": "{{name}} - Arquétipo",
+      "description": "Explore o arquétipo de VTES {{name}}, as suas cartas-chave, exemplos de decks e estatísticas de torneios."
+    },
+    "profile": {
+      "title": "{{name}} (@{{username}})",
+      "description": "Descubra os decks públicos e as coleções partilhadas de VTES de {{name}} (@{{username}})."
+    },
+    "publicWishlist": {
+      "title": "{{username}} - Lista de desejos",
+      "description": "Consulte a lista de desejos de cartas de VTES partilhada publicamente por {{username}}."
+    },
+    "binder": {
+      "title": "{{name}} - Pasta",
+      "description": "Explore a pasta de cartas de VTES {{name}}, partilhada publicamente."
+    },
+    "notFound": {
+      "title": "Página não encontrada",
+      "description": "Esta página está indisponível ou não foi encontrada. Explore decks e cartas públicos em VTES Decks."
+    },
+    "loading": {
+      "title": "A carregar",
+      "description": "A carregar esta página de VTES Decks."
+    },
+    "account": {
+      "title": "Conta",
+      "description": "Faça a gestão da sua conta de VTES Decks."
+    },
+    "settings": {
+      "title": "Definições da conta",
+      "description": "Faça a gestão das definições da sua conta de VTES Decks."
+    },
+    "admin": {
+      "title": "Administração",
+      "description": "Administração de VTES Decks."
+    },
+    "verify": {
+      "title": "Verificar conta",
+      "description": "Verifique a sua conta de VTES Decks."
+    },
+    "reset": {
+      "title": "Repor palavra-passe",
+      "description": "Reponha a palavra-passe da sua conta de VTES Decks."
+    },
+    "builder": {
+      "title": "Construtor de decks",
+      "description": "Construa e faça a gestão dos seus decks de Vampire: The Eternal Struggle."
+    },
+    "collection": {
+      "title": "A minha coleção",
+      "description": "Faça a gestão da sua coleção de cartas e pastas de VTES."
+    },
+    "wishlist": {
+      "title": "A minha lista de desejos",
+      "description": "Faça a gestão da sua lista de desejos de cartas de VTES."
+    },
+    "embed": {
+      "title": "{{name}} - Deck incorporado",
+      "description": "Vista incorporada do deck de VTES {{name}}."
+    }
   }
 }

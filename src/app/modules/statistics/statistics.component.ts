@@ -15,7 +15,7 @@ import {
 import { TranslocoDirective } from '@jsverse/transloco'
 import { ApiHistoricStatistic, ApiYearStatistic } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, SeoService } from '@services'
+import { ApiDataService } from '@services'
 import { CLAN_LIST, DISCIPLINE_LIST } from '@utils'
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts'
 import { BehaviorSubject, Observable, tap } from 'rxjs'
@@ -42,7 +42,6 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component'
 export class StatisticsComponent implements OnInit {
   private readonly apiDataService = inject(ApiDataService)
   private readonly formBuilder = inject(FormBuilder)
-  private readonly seoService = inject(SeoService)
 
   currentYear = new Date().getFullYear()
   years = this.range(1998, this.currentYear)
@@ -57,12 +56,6 @@ export class StatisticsComponent implements OnInit {
   yearForm!: FormGroup
 
   ngOnInit() {
-    this.seoService.update({
-      title: 'Statistics',
-      description:
-        'VTES tournament statistics: historic win rates by clan and discipline, yearly trends and metagame evolution.',
-      canonicalUrl: 'https://vtesdecks.com/statistics',
-    })
     this.globalForm = this.formBuilder.group({
       year: new FormControl([1998, this.currentYear]),
       type: new FormControl('ALL'),

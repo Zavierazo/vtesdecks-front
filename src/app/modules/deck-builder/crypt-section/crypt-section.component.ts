@@ -33,7 +33,6 @@ import {
   CardShopAvailabilityService,
   MediaService,
   SearchFeaturesService,
-  SeoService,
   ToastService,
 } from '@services'
 import { AdSenseComponent } from '@shared/components/ad-sense/ad-sense.component'
@@ -119,7 +118,6 @@ export class CryptSectionComponent implements OnInit {
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
   private route = inject(ActivatedRoute)
-  private readonly seoService = inject(SeoService)
   private readonly translocoService = inject(TranslocoService)
   private router = inject(Router)
   private readonly searchFeatures = inject(SearchFeaturesService)
@@ -181,12 +179,6 @@ export class CryptSectionComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.seoService.update({
-      title: 'Crypt',
-      description:
-        'Browse and search the complete VTES Crypt card database. Find vampire cards by clan, discipline, capacity, and more.',
-      canonicalUrl: 'https://vtesdecks.com/cards/crypt',
-    })
     this.listenScroll()
     this.onChangeNameFilter()
     this.listenShopAvailability()

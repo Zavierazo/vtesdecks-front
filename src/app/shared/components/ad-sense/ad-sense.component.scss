@@ -1,5 +1,6 @@
 :host {
   display: block;
+  isolation: isolate;
 }
 
 .ad-free-patreon-message {

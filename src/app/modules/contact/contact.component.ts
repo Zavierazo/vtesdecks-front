@@ -13,7 +13,7 @@ import {
 } from '@angular/forms'
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
 import { ApiContact } from '@models'
-import { ApiDataService, SeoService } from '@services'
+import { ApiDataService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 
 @Component({
@@ -27,7 +27,6 @@ export class ContactComponent implements OnInit {
   private readonly authQuery = inject(AuthQuery)
   private readonly apiDataService = inject(ApiDataService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
-  private readonly seoService = inject(SeoService)
 
   form!: FormGroup
 
@@ -36,12 +35,6 @@ export class ContactComponent implements OnInit {
   successful = false
 
   ngOnInit() {
-    this.seoService.update({
-      title: 'Contact',
-      description:
-        'Contact the VTES Decks team. Send us your questions, suggestions, or feedback.',
-      canonicalUrl: 'https://vtesdecks.com/contact',
-    })
     this.form = new FormGroup({
       name: new FormControl(
         this.authQuery.getDisplayName(),

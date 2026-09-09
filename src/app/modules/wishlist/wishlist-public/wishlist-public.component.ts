@@ -8,7 +8,17 @@ import {
 import { ActivatedRoute } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs'
+import { SeoService } from '@services'
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs'
 import { WishlistCardsListComponent } from '../wishlist-cards-list/wishlist-cards-list.component'
 import { WishlistPublicService } from '../state/wishlist-public.service'
 import { WishlistQuery } from '../state/wishlist.query'
@@ -25,6 +35,7 @@ export class WishlistPublicComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private wishlistService = inject(WishlistPublicService)
   private wishlistQuery = inject(WishlistQuery)
+  private readonly seo = inject(SeoService)
 
   username = signal<string>('')
   loading = signal<boolean>(true)
@@ -48,11 +59,28 @@ export class WishlistPublicComponent implements OnInit {
         switchMap(() =>
           this.wishlistQuery.selectQuery().pipe(distinctUntilChanged()),
         ),
-        switchMap(() => this.wishlistService.fetchCards()),
+        switchMap(() =>
+          this.wishlistService
+            .fetchCards()
+            .pipe(
+              catchError((error: { status?: number }) =>
+                error.status === 404 ? of(null) : throwError(() => error),
+              ),
+            ),
+        ),
         tap((page) => {
           // null => user missing or wishlist private; a page (even empty) => public
           this.available.set(!!page)
           this.loading.set(false)
+          const username = this.username()
+          const path = `/collections/users/${encodeURIComponent(username)}/wishlist`
+          this.seo.update({
+            page: page ? 'publicWishlist' : 'notFound',
+            params: { username },
+            canonicalUrl: path,
+            index: !!page,
+            schemaType: 'CollectionPage',
+          })
         }),
       )
       .subscribe()

@@ -39,7 +39,7 @@ Features: card browser, TWD deck browser, deck builder, collection manager, prox
 ```bash
 npm start              # Dev server → http://localhost:4200
 npm run build          # Production build
-npm test               # Unit tests (Karma)
+npm test               # Unit tests (Vitest)
 npm run lint           # ESLint
 npm run pretty         # Prettier format
 npm run wrangler:dev   # Local Cloudflare Workers
@@ -118,6 +118,12 @@ src/assets/
 src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 ```
 
+SEO must not introduce a visible breadcrumb bar. The centralized structured data describes the site and public pages; it does not emit BreadcrumbList markup without corresponding visible navigation.
+
+Do not add SEO-only headings to the Deck, Crypt, or Library browsers, including visually hidden headings. Keep their existing layout and provide page titles and descriptions through centralized metadata.
+
+SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page titles must omit repeated VTES branding and use ` - ` for any additional separator. Preserve entity names and distinct product names such as VTESDLE verbatim.
+
 ### Path Aliases (tsconfig)
 
 ```
@@ -142,7 +148,7 @@ src/environments/  # environment.ts (dev) / environment.prod.ts (prod)
 - **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code.
 - **Images**: lazy-loaded via `ng-lazyload-image`; URLs built by `card-image.pipe`.
 - **Auth tokens**: stored in LocalStorage (remember me) or SessionStorage (session only).
-- **SEO**: `SeoService` sets canonical URL and meta tags per route.
+- **SEO**: `SeoTitleStrategy` and `SeoService` own route metadata, canonical URLs, robots directives, active-language metadata, and JSON-LD. Route defaults and resolver data are centralized in `seo-route.config.ts`; asynchronously loaded public binders and wishlists supply visibility-aware overrides tied to their canonical path. Metadata translations live under `seo` in all four locale files. Components must not write independent title or robots tags. The app remains client-rendered with unchanged URLs; filter parameters are excluded from canonicals, and there are no hreflang variants or pagination URLs. Public resources may be indexed only after their availability is established.
 - **Resolvers**: data pre-fetched via route `resolve` before component render. Detail routes for decks, public users, and archetypes render the shared not-found page for HTTP 404 responses while preserving the requested URL; other request failures propagate normally.
 
 ---

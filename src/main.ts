@@ -20,6 +20,7 @@ import {
   provideRouter,
   Router,
   Routes,
+  TitleStrategy,
   withInMemoryScrolling,
 } from '@angular/router'
 import { ServiceWorkerModule } from '@angular/service-worker'
@@ -37,6 +38,7 @@ import {
 } from 'ngx-google-analytics'
 import { AppComponent } from './app/app.component'
 import { HttpMonitorInterceptor } from './app/http-monitor.interceptor'
+import { SeoService, SeoTitleStrategy } from './app/services/seo.service'
 
 import { AuthQuery } from '@state/auth/auth.query'
 import { FeatureFlagService } from '@state/feature-flag/feature-flag.service'
@@ -313,6 +315,8 @@ bootstrapApplication(AppComponent, {
     provideAppInitializer(() => {
       inject(FeatureFlagService).load()
     }),
+    provideAppInitializer(() => inject(SeoService).start(inject(Router))),
+    { provide: TitleStrategy, useClass: SeoTitleStrategy },
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: environment.recaptcha.siteKey,

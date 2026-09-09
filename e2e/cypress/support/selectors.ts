@@ -76,7 +76,7 @@ export const SEL = {
   // ---- Deck detail (/deck/:id) ----------------------------------------
   deckDetail: {
     root: 'main[role="main"]',
-    title: 'main h3',
+    title: 'main h1.deck-title',
     bookmarkToggle:
       'main a[placement="top"] i.bi-bookmark-star, main a i[class*="bookmark"]',
     cardImage: 'app-card-image, img.lazyloaded',
