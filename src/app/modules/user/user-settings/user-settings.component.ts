@@ -21,7 +21,7 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import {
-  ApiResponse,
+  ApiUserSettingsResponse,
   ApiUserSettings,
   CARD_PRINTING_PREFERENCES,
 } from '@models'
@@ -132,9 +132,14 @@ export class UserSettingsComponent implements OnInit {
       .updateSettings(settings)
       .pipe(
         untilDestroyed(this),
-        tap((response: ApiResponse) => {
+        tap((response: ApiUserSettingsResponse) => {
           this.successful = response.successful
           this.message = response.message
+          if (response.successful && settings.newPassword) {
+            this.password?.reset()
+            this.newPassword?.reset()
+            this.confirmNewPassword?.reset()
+          }
         }),
       )
       .subscribe({

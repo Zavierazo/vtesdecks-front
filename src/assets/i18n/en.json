@@ -422,6 +422,7 @@
     "play_library": "Play card"
   },
   "print_proxy": {
+    "pdf_too_large": "The PDF exceeds the 20 MiB size limit. Reduce the number of cards or copies and try again.",
     "title": "Create Card Proxy PDF",
     "loading": "Loading cards...",
     "crypt": "Crypt",
@@ -1777,5 +1778,12 @@
       "title": "{{name}} - Embedded deck",
       "description": "Embedded view of the VTES deck {{name}}."
     }
+  },
+  "email_action": {
+    "verify_title": "Verify your email",
+    "verifying": "Verifying your email…",
+    "invalid": "This link is invalid, expired, or already used. Request a new email if you cannot continue.",
+    "verify_resend": "Open Sign in on this page and enter your username and password to request a new verification email.",
+    "reset_resend": "Open Sign in on this page and choose Forgot Password to request a new reset link."
   }
 }

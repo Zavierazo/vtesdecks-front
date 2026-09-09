@@ -1,2 +1,20 @@
-<app-loading />
-<div style="height: 100vw"></div>
+<main class="container py-5" *transloco="let t">
+  <h1>{{ t('email_action.verify_title') }}</h1>
+  @if (complete()) {
+    <p class="alert alert-success" role="status">
+      {{ t('verify_account.success') }}
+    </p>
+  } @else if (!hasToken() || failed()) {
+    <div class="alert alert-danger" role="alert">
+      <p>{{ t('email_action.invalid') }}</p>
+      <p class="mb-0">{{ t('email_action.verify_resend') }}</p>
+    </div>
+  } @else {
+    <p role="status">{{ t('email_action.verifying') }}</p>
+  }
+  @if (complete()) {
+    <button type="button" class="btn btn-primary" (click)="openLogin()">
+      {{ t('header.login') }}
+    </button>
+  }
+</main>

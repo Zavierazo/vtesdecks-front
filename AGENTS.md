@@ -24,7 +24,7 @@ Features: card browser, TWD deck browser, deck builder, collection manager, prox
 | Auth       | JWT via `@auth0/angular-jwt`, Google OAuth           |
 | State      | Custom Signal-based store (no NgRx)                  |
 | Charts     | `ng2-charts` + `chart.js`                            |
-| Markdown   | `ngx-markdown` + `marked`                            |
+| Markdown   | `marked` + DOMPurify                                 |
 | Errors     | Sentry 10                                            |
 | Analytics  | `ngx-google-analytics`                               |
 | Testing    | Vitest                                               |
@@ -93,7 +93,7 @@ The backend owns the achievement catalog and permanently records earned tiers. R
 
 ### Admin User Management
 
-The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set and take effect for the affected user after their authentication token is refreshed. Admin email changes are trusted immediately by the backend and do not require verification. Impersonation replaces the current browser authentication with the target user's token and navigates away from the admin area; there is no retained admin session to restore.
+The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set. Current database privileges are enforced on every authenticated request; role and admin-status changes preserve login sessions. Admin email changes are trusted immediately by the backend and do not require verification. Impersonation replaces the current browser authentication with the target user's token and navigates away from the admin area; there is no retained admin session to restore.
 
 ---
 
@@ -142,12 +142,13 @@ SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page
 
 ## Key Conventions
 
+- **Markdown**: `MarkdownService` parses first and sanitizes generated HTML with an explicit DOMPurify tag, attribute, and URL allowlist. Only this service may mark sanitized Markdown as trusted for Angular, preserving the card custom element and validated YouTube embeds. Custom renderers must HTML-encode interpolated values and accept only validated YouTube video IDs.
 - **Change detection**: `OnPush` everywhere.
 - **Subscriptions**: cleaned up with `@ngneat/until-destroy`.
 - **API calls**: go through `ApiDataService` only.
 - **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code.
 - **Images**: lazy-loaded via `ng-lazyload-image`; URLs built by `card-image.pipe`.
-- **Auth tokens**: stored in LocalStorage (remember me) or SessionStorage (session only).
+- **Auth tokens**: login JWTs are stored in LocalStorage (remember me) or SessionStorage (session only). The backend checks account versions and current privileges on every authenticated request. Password changes return replacement credentials for the initiating browser and revoke older tokens. Email verification and recovery use single-use opaque tokens, kept only in component memory and submitted in request bodies to `/auth/verify` and `/auth/reset-password`. The verification page submits its token automatically on initialization and offers the existing sign-in modal. The forms remove tokens from the URL after reading them; analytics and JavaScript libraries remain unchanged. Never persist email-action tokens or send them as authorization headers.
 - **SEO**: `SeoTitleStrategy` and `SeoService` own route metadata, canonical URLs, robots directives, active-language metadata, and JSON-LD. Route defaults and resolver data are centralized in `seo-route.config.ts`; asynchronously loaded public binders and wishlists supply visibility-aware overrides tied to their canonical path. Metadata translations live under `seo` in all four locale files. Components must not write independent title or robots tags. The app remains client-rendered with unchanged URLs; filter parameters are excluded from canonicals, and there are no hreflang variants or pagination URLs. Public resources may be indexed only after their availability is established.
 - **Resolvers**: data pre-fetched via route `resolve` before component render. Detail routes for decks, public users, and archetypes render the shared not-found page for HTTP 404 responses while preserving the requested URL; other request failures propagate normally.
 

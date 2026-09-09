@@ -6,6 +6,15 @@ import { Discipline, getDisciplineMarkdown } from './utils/disciplines'
 import { normalizeText } from './utils/vtes-utils'
 import { trigramSimilarity } from './utils/trigram-similarity'
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 export function bracketsExtension(
   cryptQuery: CryptQuery,
   libraryQuery: LibraryQuery,
@@ -67,9 +76,9 @@ export function bracketsExtension(
         )[0]
 
       if (card) {
-        return `<app-markdown-card name="${card.name}" image="${card.image}"></app-markdown-card>`
+        return `<app-markdown-card name="${escapeHtml(card.name)}" image="${escapeHtml(card.image ?? '')}"></app-markdown-card>`
       } else {
-        return `<span class="fw-semibold">${cardName}</span>`
+        return `<span class="fw-semibold">${escapeHtml(cardName)}</span>`
       }
     },
   }
@@ -96,9 +105,9 @@ export function bracketsExtension(
     renderer(token) {
       const clan = token['clan'] as Clan
       if (clan) {
-        return `<i class="vtes ${clan.icon}" title="${clan.name}"></i>`
+        return `<i class="vtes ${escapeHtml(clan.icon)}" title="${escapeHtml(clan.name)}"></i>`
       } else {
-        return token['raw']
+        return escapeHtml(token['raw'])
       }
     },
   }
@@ -125,9 +134,9 @@ export function bracketsExtension(
     renderer(token) {
       const discipline = token['discipline'] as Discipline
       if (discipline) {
-        return `<i class="vtes ${discipline.icon}" title="${discipline.name}"></i>`
+        return `<i class="vtes ${escapeHtml(discipline.icon)}" title="${escapeHtml(discipline.name)}"></i>`
       } else {
-        return token['raw']
+        return escapeHtml(token['raw'])
       }
     },
   }
@@ -152,7 +161,9 @@ export function bracketsExtension(
       return undefined
     },
     renderer(token) {
-      return `<iframe width="560" loading="lazy" height="315" src="https://www.youtube.com/embed/${token['link']}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="max-width: 100%;"></iframe>`
+      const videoId = token['link'] as string
+      if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return escapeHtml(token['raw'])
+      return `<iframe width="560" loading="lazy" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen="" class="mw-100"></iframe>`
     },
   }
 
