@@ -422,6 +422,7 @@
     "play_library": "Play card"
   },
   "print_proxy": {
+    "pdf_too_large": "The PDF exceeds the 20 MiB size limit. Reduce the number of cards or copies and try again.",
     "title": "Create Card Proxy PDF",
     "loading": "Loading cards...",
     "crypt": "Crypt",

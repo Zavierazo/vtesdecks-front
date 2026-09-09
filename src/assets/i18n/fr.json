@@ -422,6 +422,7 @@
     "play_library": "Jouer la carte"
   },
   "print_proxy": {
+    "pdf_too_large": "Le PDF dépasse la limite de 20 Mio. Réduisez le nombre de cartes ou d’exemplaires et réessayez.",
     "title": "Créer un PDF de Proxies",
     "loading": "Chargement des cartes...",
     "crypt": "Crypte",

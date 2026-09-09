@@ -39,6 +39,7 @@ import {
 import {
   BehaviorSubject,
   catchError,
+  EMPTY,
   filter,
   finalize,
   map,
@@ -279,10 +280,14 @@ export class PrintProxyComponent implements OnInit {
         untilDestroyed(this),
         catchError((err) => {
           this.toastService.show(
-            this.translocoService.translate('shared.unexpected_error'),
+            this.translocoService.translate(
+              err.status === 413
+                ? 'print_proxy.pdf_too_large'
+                : 'shared.unexpected_error',
+            ),
             { classname: 'bg-danger text-light', delay: 10000 },
           )
-          return throwError(() => err)
+          return err.status === 413 ? EMPTY : throwError(() => err)
         }),
         finalize(() => this.loading$.next(false)),
       )

@@ -422,6 +422,7 @@
     "play_library": "Jogar carta"
   },
   "print_proxy": {
+    "pdf_too_large": "O PDF excede o limite de 20 MiB. Reduza o número de cartas ou cópias e tente novamente.",
     "title": "Criar PDF de Proxy",
     "loading": "Carregando cartas...",
     "crypt": "Cripta",
