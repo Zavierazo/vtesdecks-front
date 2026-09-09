@@ -1,6 +1,11 @@
 import { Injectable, inject } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
-import { ApiResponse, ApiUser, ApiUserSettings } from '@models'
+import {
+  ApiResponse,
+  ApiUser,
+  ApiUserSettings,
+  ApiUserSettingsResponse,
+} from '@models'
 import { ApiDataService } from '@services'
 import { Observable, catchError, map, of, switchMap, tap } from 'rxjs'
 import { AuthStore } from './auth.store'
@@ -143,14 +148,20 @@ export class AuthService {
     }
   }
 
-  updateSettings(settings: ApiUserSettings): Observable<ApiResponse> {
-    return this.apiDataService
-      .updateSettings(settings)
-      .pipe(
-        switchMap((response: ApiResponse) =>
-          this.refreshToken().pipe(switchMap(() => of(response))),
-        ),
-      )
+  updateSettings(
+    settings: ApiUserSettings,
+  ): Observable<ApiUserSettingsResponse> {
+    return this.apiDataService.updateSettings(settings).pipe(
+      switchMap((response: ApiUserSettingsResponse) => {
+        if (response.successful && response.authenticatedUser) {
+          this.authStore.refreshToken(response.authenticatedUser)
+          return of(response)
+        }
+        return response.successful
+          ? this.refreshToken().pipe(map(() => response))
+          : of(response)
+      }),
+    )
   }
 
   updateBuilderDisplayMode(displayMode: 'list' | 'grid'): void {

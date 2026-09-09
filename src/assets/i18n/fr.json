@@ -1778,5 +1778,12 @@
       "title": "{{name}} - Deck intégré",
       "description": "Vue intégrée du deck VTES {{name}}."
     }
+  },
+  "email_action": {
+    "verify_title": "Vérifiez votre adresse e-mail",
+    "verifying": "Vérification de votre adresse e-mail…",
+    "invalid": "Ce lien est invalide, expiré ou déjà utilisé. Demandez un nouvel e-mail si vous ne pouvez pas continuer.",
+    "verify_resend": "Ouvrez Connexion sur cette page et saisissez votre identifiant et votre mot de passe pour demander un nouvel e-mail de vérification.",
+    "reset_resend": "Ouvrez Connexion sur cette page et choisissez Mot de passe oublié pour demander un nouveau lien."
   }
 }

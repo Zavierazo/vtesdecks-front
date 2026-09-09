@@ -1,4 +1,4 @@
 export interface ApiResetPassword {
-  email: string
+  token: string
   password: string
 }

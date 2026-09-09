@@ -1,9 +1,4 @@
-import {
-  HttpClient,
-  HttpContext,
-  HttpHeaders,
-  HttpParams,
-} from '@angular/common/http'
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
 import { RETRY_REPEATABLE_POST } from '../http-retry.context'
@@ -49,6 +44,7 @@ import {
   ApiUserCountry,
   ApiUserNotification,
   ApiUserSettings,
+  ApiUserSettingsResponse,
   ApiUserTopMonth,
   ApiYearStatistic,
   FeatureFlagValue,
@@ -74,14 +70,12 @@ export class ApiDataService {
   private readonly publicUserPath = '/public/user'
   private readonly publicUserTopMonthPath = '/public/user/top-month'
   private readonly userValidatePath = '/user/validate'
-  private readonly userVerifyPath = '/user/verify'
   private readonly userRateDeckPath = '/user/decks/rating'
   private readonly userBookmarkDeckPath = '/user/decks/bookmark'
   private readonly userDeckReactionPath = '/user/decks/reaction'
   private readonly userCommentsPath = '/user/comments'
   private readonly userSettingsPath = '/user/settings'
   private readonly userRefreshPath = '/user/refresh'
-  private readonly userResetPasswordPath = '/user/reset-password'
   private readonly userDeckBuilderPath = '/user/decks/builder'
   private readonly userFollowPath = '/user/follow'
   private readonly decksPath = '/decks'
@@ -237,28 +231,17 @@ export class ApiDataService {
     )
   }
 
-  verifyAccount(token: string): Observable<boolean> {
-    const headers = new HttpHeaders({
-      Authorization: token,
-    })
-    return this.httpClient.post<boolean>(
-      `${environment.api.baseUrl}${this.userVerifyPath}`,
-      {},
-      { headers, context: this.repeatablePostContext() },
+  verifyAccount(token: string): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(
+      `${environment.api.baseUrl}/auth/verify`,
+      { token },
     )
   }
 
-  resetPassword(
-    request: ApiResetPassword,
-    token: string,
-  ): Observable<ApiResponse> {
-    const headers = new HttpHeaders({
-      Authorization: token,
-    })
+  resetPassword(request: ApiResetPassword): Observable<ApiResponse> {
     return this.httpClient.put<ApiResponse>(
-      `${environment.api.baseUrl}${this.userResetPasswordPath}`,
+      `${environment.api.baseUrl}/auth/reset-password`,
       request,
-      { headers },
     )
   }
 
@@ -443,8 +426,10 @@ export class ApiDataService {
     )
   }
 
-  updateSettings(settings: ApiUserSettings): Observable<ApiResponse> {
-    return this.httpClient.put<ApiResponse>(
+  updateSettings(
+    settings: ApiUserSettings,
+  ): Observable<ApiUserSettingsResponse> {
+    return this.httpClient.put<ApiUserSettingsResponse>(
       `${environment.api.baseUrl}${this.userSettingsPath}`,
       settings,
     )

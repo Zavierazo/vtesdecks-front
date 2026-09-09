@@ -1,8 +1,8 @@
 import {
   Component,
-  OnInit,
   inject,
   ChangeDetectionStrategy,
+  signal,
 } from '@angular/core'
 import {
   AbstractControl,
@@ -13,7 +13,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
 import {
   TranslocoDirective,
   TranslocoPipe,
@@ -21,23 +20,27 @@ import {
 } from '@jsverse/transloco'
 import { ApiResponse } from '@models'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { ApiDataService, ToastService } from '@services'
-import { switchMap, take } from 'rxjs'
+import { ApiDataService } from '@services'
+import { takeEmailActionToken } from '../../utils/email-action-security'
 
 @UntilDestroy()
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, ReactiveFormsModule, TranslocoPipe],
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent {
   private apiDataService = inject(ApiDataService)
-  private router = inject(Router)
-  private route = inject(ActivatedRoute)
-  private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
+  private token = takeEmailActionToken('/reset-password')
+  readonly hasToken = signal(
+    Boolean(this.token && /^[A-Za-z0-9_-]{43}$/.test(this.token)),
+  )
+  readonly loading = signal(false)
+  readonly complete = signal(false)
+  readonly errorMessage = signal<string | undefined>(undefined)
 
   resetPasswordForm = new FormGroup(
     {
@@ -55,8 +58,6 @@ export class ResetPasswordComponent implements OnInit {
     { validators: this.passwordMatchValidator },
   )
 
-  ngOnInit() {}
-
   get password() {
     return this.resetPasswordForm.get('password')
   }
@@ -66,41 +67,42 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   onResetPasswordSubmit(): void {
-    this.route.queryParams
-      .pipe(
-        untilDestroyed(this),
-        take(1),
-        switchMap((params) =>
-          this.apiDataService.resetPassword(
-            {
-              email: params['email'],
-              password: this.resetPasswordForm.value.password ?? '',
-            },
-            params['token'],
-          ),
-        ),
-      )
+    if (
+      !this.token ||
+      !this.hasToken() ||
+      this.loading() ||
+      this.complete() ||
+      this.resetPasswordForm.invalid
+    ) {
+      return
+    }
+    this.errorMessage.set(undefined)
+    this.loading.set(true)
+    this.apiDataService
+      .resetPassword({
+        token: this.token,
+        password: this.resetPasswordForm.value.password ?? '',
+      })
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: (user: ApiResponse) => {
+          this.loading.set(false)
           if (user.successful) {
-            this.toastService.show(
-              this.translocoService.translate('reset_password.success'),
-              { classname: 'bg-success text-light', delay: 10000 },
-            )
-            this.router.navigate(['/'])
+            this.token = undefined
+            this.complete.set(true)
+            this.hasToken.set(false)
+            this.resetPasswordForm.reset()
           } else {
-            this.toastService.show(
+            this.errorMessage.set(
               user.message ??
                 this.translocoService.translate('reset_password.error'),
-              { classname: 'bg-danger text-light', delay: 10000 },
             )
           }
         },
-        error: (error) => {
-          console.error(error.message)
-          this.toastService.show(
+        error: () => {
+          this.loading.set(false)
+          this.errorMessage.set(
             this.translocoService.translate('reset_password.error'),
-            { classname: 'bg-danger text-light', delay: 10000 },
           )
         },
       })
@@ -121,7 +123,7 @@ export class ResetPasswordComponent implements OnInit {
     regex: RegExp,
     error: ValidationErrors,
   ): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
+    return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
         return {}
       }

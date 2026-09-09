@@ -1778,5 +1778,12 @@
       "title": "{{name}} - Deck incorporado",
       "description": "Vista incorporada do deck de VTES {{name}}."
     }
+  },
+  "email_action": {
+    "verify_title": "Verifique o seu e-mail",
+    "verifying": "A verificar o seu e-mail…",
+    "invalid": "Este link é inválido, expirou ou já foi utilizado. Solicite outro e-mail se não conseguir continuar.",
+    "verify_resend": "Abra Iniciar sessão nesta página e introduza o seu utilizador e palavra-passe para solicitar outro e-mail de verificação.",
+    "reset_resend": "Abra Iniciar sessão nesta página e escolha Esqueci a palavra-passe para solicitar outro link."
   }
 }

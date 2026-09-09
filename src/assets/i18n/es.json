@@ -1778,5 +1778,12 @@
       "title": "{{name}} - Mazo incrustado",
       "description": "Vista incrustada del mazo de VTES {{name}}."
     }
+  },
+  "email_action": {
+    "verify_title": "Verifica tu correo",
+    "verifying": "Verificando tu correo…",
+    "invalid": "Este enlace no es válido, ha caducado o ya se ha utilizado. Solicita otro correo si no puedes continuar.",
+    "verify_resend": "Abre Iniciar sesión en esta página e introduce tu usuario y contraseña para solicitar otro correo de verificación.",
+    "reset_resend": "Abre Iniciar sesión en esta página y elige Olvidé mi contraseña para solicitar otro enlace."
   }
 }
