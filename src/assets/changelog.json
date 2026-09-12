@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.80.0",
+    "date": "12th September, 2026",
+    "changes": [
+      "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.79.0",
     "date": "5th September, 2026",
     "changes": [
