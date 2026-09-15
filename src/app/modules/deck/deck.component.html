@@ -4,6 +4,16 @@
   <div style="height: 100vw"></div>
 </div>
 }
+@if (snapshotError(); as errorKey) {
+<div class="container alert alert-warning mt-4" role="alert">
+  <h1 class="h4">{{ 'snapshot.title' | transloco }}</h1>
+  <p>{{ 'snapshot.' + errorKey | transloco }}</p>
+  @if (errorKey === 'catalog_error') {
+  <button type="button" class="btn btn-primary me-2" (click)="retrySnapshot()">{{ 'snapshot.retry' | transloco }}</button>
+  }
+  <a routerLink="/decks" class="btn btn-outline-primary">{{ 'snapshot.browse' | transloco }}</a>
+</div>
+}
 <ng-container *transloco="let t; prefix: 'deck'">
   @if ((deck$ | async)!; as deck) {
   <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main">
@@ -18,7 +28,11 @@
                 (error)="deckCover.hidden = true" />
               }
               <div class="col-12 col-md text-center text-md-start">
+                @if (isSnapshot) {
+                <span class="badge text-bg-secondary mb-3">{{ 'snapshot.readonly' | transloco }}</span>
+                }
                 <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
+                  @if (!isSnapshot) {
                   <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
                     (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked"
                     [attr.aria-label]="t('add_to_bookmarks')" aria-describedby="bookmark-count-description">
@@ -29,9 +43,13 @@
                     <span class="bookmark-count" aria-hidden="true">{{ bookmarkCount }}</span>
                     <span id="bookmark-count-description" class="visually-hidden">{{ t('bookmark_count', { count: bookmarkCount }) }}</span>
                   </a>
-                  <h1 class="deck-title fw-bold mb-0">{{ deck.name }}</h1>
+                  }
+                  <h1 class="deck-title fw-bold mb-0">{{ deck.name || ('snapshot.untitled' | transloco) }}</h1>
                 </div>
                 <div class="deck-meta">
+                  @if (isSnapshot) {
+                  <p class="mb-1">{{ t('created_by') }}: <strong>{{ deck.author }}</strong></p>
+                  } @else {
                   <p class="mb-1">
                     @if(deck.user){
                     <span class="deck-author-details d-inline-flex flex-column align-items-center align-items-md-start">
@@ -156,8 +174,10 @@
                       t('twda') }}</a>
                   </p>
                   }
+                  }
                 </div>
               </div>
+              @if (!isSnapshot) {
               <div class="col-12 col-md-4 col-xl-3 mt-3 mt-md-0">
                 <div class="deck-stats-panel">
                   <div class="deck-stat">
@@ -195,6 +215,7 @@
                   </div>
                 </div>
               </div>
+              }
             </div>
             <div class="row mt-3">
               <div class="col-12">
@@ -204,10 +225,11 @@
                     <i class="bi bi-pencil-square me-2"></i>{{ t('edit') }}
                   </a>
                   }@else {
-                  <button class="btn btn-primary" (click)="onOpenInBuilder()" *isLogged="true">
+                  <button class="btn btn-primary" (click)="onOpenInBuilder()" [disabled]="unknownSnapshotCards().length > 0" *isLogged="true">
                     <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
                   </button>
                   }
+                  @if (!isSnapshot) {
                   @if(!deck.owner && (isAdmin$ | async)!){
                   <a class="btn btn-danger" [routerLink]="'/decks/builder'" [queryParams]="{id:deck.id }">
                     <i class="bi bi-pencil-square me-2"></i>{{ t('edit_as_admin') }}
@@ -232,15 +254,21 @@
                     <i class="bi bi-collection me-2"></i>{{ t('add_to_collection') }}
                   </button>
                   }
+                  }
+                  @if (isSnapshot) {
                   <button class="btn btn-outline-primary" (click)="onShare()">
                     <i class="bi bi-share me-2"></i>{{ t('share') }}
                   </button>
-                  <button class="btn btn-outline-primary" (click)="onDraw()">
+                  } @else {
+                  <app-share-deck class="deck-share" [snapshot]="snapshot" (shareDeck)="onShare()" />
+                  }
+                  <button class="btn btn-outline-primary" (click)="onDraw()" [disabled]="unknownSnapshotCards().length > 0">
                     <i class="bi bi-shuffle me-2"></i>{{ t('draw') }}
                   </button>
-                  <button class="btn btn-outline-primary" (click)="onPrint()">
+                  <button class="btn btn-outline-primary" (click)="onPrint()" [disabled]="unknownSnapshotCards().length > 0">
                     <i class="bi bi-printer me-2"></i>{{ 'deck_shared.print' | transloco }}
                   </button>
+                  @if (!isSnapshot) {
                   <button class="btn btn-outline-primary" (click)="onHowToBuy()">
                     <i class="bi bi-cart me-2"></i>{{ 'shopping_optimizer.button' | transloco }}
                   </button>
@@ -292,10 +320,11 @@
                     </button>
                     }
                   </div>
+                  }
                 </div>
               </div>
             </div>
-            @if (deck.reactions) {
+            @if (!isSnapshot && deck.reactions) {
             <div class="row mt-3">
               <div class="col-12 d-flex justify-content-center">
                 <app-quick-reactions targetType="deck" [targetId]="deck.id" [reactions]="deck.reactions"
@@ -303,7 +332,7 @@
               </div>
             </div>
             }
-            @if (deck.tags) {
+            @if (!isSnapshot && deck.tags) {
             <div class="row mt-3">
               <div class="col-12">
                 <div class="d-flex flex-wrap justify-content-center gap-2">
@@ -318,6 +347,16 @@
             }
           </div>
         </div>
+        @if (unknownSnapshotCards().length) {
+        <div class="alert alert-warning" role="alert">
+          <p>{{ 'snapshot.unknown_cards' | transloco }}</p>
+          <ul class="mb-0">
+            @for (card of unknownSnapshotCards(); track card.id) {
+            <li>{{ card.number }} × #{{ card.id }}</li>
+            }
+          </ul>
+        </div>
+        }
         @if (deck.description) {
         <app-markdown-text class="mt-3" [data]="deck.description" />
         }
@@ -353,7 +392,7 @@
           }
         </div>
         }
-        @if (comparisonDeckId) {
+        @if (!isSnapshot && comparisonDeckId) {
         <div class="position-relative">
           <button type="button" class="btn btn-sm btn-close position-absolute end-0 top-0 mt-3 me-3"
             (click)="compare(null)" [attr.aria-label]="'deck_comparison.close_comparison' | transloco">
@@ -543,6 +582,7 @@
       <app-library-list [libraryList]="deck.library" [sortBy]="sortByLibrary" [displayMode]="(displayMode$ |async)!" />
       }
     </div>
+    @if (!isSnapshot) {
     <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
     @if(similarDecks$ | async; as similarDecks) {
     <div class="col-12 d-flex justify-content-center mt-5">
@@ -566,6 +606,7 @@
     <div class="col-12">
       <app-comments [deckId]="id" />
     </div>
+    }
   </main>
   }
 </ng-container>

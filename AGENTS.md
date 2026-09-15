@@ -87,6 +87,10 @@ Crypt, Library, and Deck browser URLs are normalized through `search-query.utils
 
 Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`, support per-shop include/exclude selection, and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`. Multiple included shops use union semantics and excluded shops are subtracted; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.
 
+### Deck Snapshots
+
+`/deck/snapshot#v1=...` opens a public, read-only deck snapshot encoded as bounded UTF-8 JSON, gzip and URL-safe Base64 in the fragment. Snapshots contain only name, author, description and card ID/quantity pairs (including zero quantities). They reuse `DeckComponent`, its HTML and styles through snapshot route data, with local state instead of the normal deck resolver/store. Social/view-tracking endpoints, exports and original-deck actions are disabled in snapshot mode. Card details and derived statistics come from the current catalogs. Sharing from the builder captures unsaved form values and all cards without saving the draft. Cloning creates a new private draft without an original deck ID. Snapshot metadata is centrally defined as noindex. Links are self-contained, not authenticated statements of authorship. Encoding and decoding use browser APIs without additional dependencies.
+
 ### Achievements
 
 The backend owns the achievement catalog and permanently records earned tiers. Repeatable families store one occurrence and expose a multiplier; milestone families expose their highest earned tier. Public profiles load earned achievement families from `/public/user/{username}/achievements`; owners load the full catalog and progress from `/user/achievements`. `ApiPublicUser.achievementBadges` is the compact, server-prioritized top-three list used on the full deck view, not on deck cards. Frontend components must use stable family IDs for translations and presentation and must not independently decide whether an achievement has been earned.
@@ -144,6 +148,7 @@ SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page
 
 - **Markdown**: `MarkdownService` parses first and sanitizes generated HTML with an explicit DOMPurify tag, attribute, and URL allowlist. Only this service may mark sanitized Markdown as trusted for Angular, preserving the card custom element and validated YouTube embeds. Custom renderers must HTML-encode interpolated values and accept only validated YouTube video IDs.
 - **Change detection**: `OnPush` everywhere.
+- **Component templates**: Always keep HTML in a separate `.html` file referenced with `templateUrl`; never use inline component templates.
 - **Subscriptions**: cleaned up with `@ngneat/until-destroy`.
 - **API calls**: go through `ApiDataService` only.
 - **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code.

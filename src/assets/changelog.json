@@ -3,6 +3,7 @@
     "version": "2.80.0",
     "date": "12th September, 2026",
     "changes": [
+      "Share <strong>deck snapshots</strong> from the deck page or Deck Builder, including unsaved changes. Each link preserves the shared deck and opens it in the familiar deck view, read-only.",
       "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second.",
       "Minor bug fixes and performance improvements."
     ]

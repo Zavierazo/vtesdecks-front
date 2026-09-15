@@ -1,4 +1,22 @@
 {
+  "snapshot": {
+    "title": "Deck snapshot",
+    "readonly": "Snapshot · Read only",
+    "share": "Share snapshot",
+    "share_options": "Sharing options",
+    "preparing": "Preparing snapshot…",
+    "about": "About sharing snapshots",
+    "public_link": "A snapshot is a read-only copy that keeps the deck as it is now, even if the original changes or is deleted. Anyone with the link can view it, including snapshots of private decks.",
+    "copied": "Copied to clipboard",
+    "copy_error": "Could not copy. Check clipboard permissions and try again.",
+    "encode_error": "Could not prepare this snapshot. The deck may be too large or contain invalid quantities.",
+    "invalid": "This snapshot link is incomplete, damaged, too large or uses an unsupported version.",
+    "catalog_error": "Could not load the card catalog. Please try again.",
+    "retry": "Try again",
+    "browse": "Browse decks",
+    "untitled": "Untitled deck",
+    "unknown_cards": "Some cards are missing from the current catalog. Their IDs and quantities are preserved below. Statistics are incomplete; cloning, printing and drawing are unavailable until these cards can be loaded."
+  },
   "admin": {
     "feature_flags_title": "Feature Flags",
     "feature_flags_hint": "Flags are defined in the backend. Only their values can be changed here.",
@@ -1654,6 +1672,10 @@
     "size_hint": "Any CSS size works: 400px, 30rem, 100%…"
   },
   "seo": {
+    "snapshot": {
+      "title": "Deck snapshot",
+      "description": "View a shared, read-only deck snapshot."
+    },
     "home": {
       "title": "Home",
       "description": "Browse tournament-winning and community Vampire: The Eternal Struggle decks, explore cards, and build your own VTES deck."

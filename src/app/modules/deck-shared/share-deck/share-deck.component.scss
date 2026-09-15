@@ -1,0 +1,82 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.btn-group {
+  width: 100%;
+}
+
+.btn-group > .btn {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.dropdown-toggle-split {
+  flex: 0 0 auto;
+  padding-inline: 0.65rem;
+}
+
+.snapshot-menu-row {
+  display: flex;
+  align-items: center;
+
+  .dropdown-item {
+    flex: 1;
+    width: auto;
+  }
+}
+
+.snapshot-info {
+  padding: 0.5rem 0.75rem;
+  flex: 0 0 auto;
+}
+
+// The overlay is appended to body; target only this component's popover.
+::ng-deep .popover.snapshot-info-popover {
+  --bs-popover-bg: var(--bs-body-bg);
+  --bs-popover-border-color: var(--bs-border-color);
+  --bs-popover-header-bg: var(--bs-body-bg);
+  --bs-popover-header-color: var(--bs-body-color);
+  --bs-popover-body-color: var(--bs-body-color);
+  max-width: min(22rem, calc(100vw - 2rem));
+  background-color: var(--bs-popover-bg);
+  border: 1px solid var(--bs-popover-border-color);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.16);
+  text-align: left;
+
+  .popover-header {
+    padding: 1rem 1rem 0;
+    border-bottom: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .popover-body {
+    padding: 0.5rem 1rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  &.bs-popover-bottom > .popover-arrow::after {
+    border-bottom-color: var(--bs-popover-bg);
+  }
+
+  &.bs-popover-top > .popover-arrow::after {
+    border-top-color: var(--bs-popover-bg);
+  }
+
+  &.bs-popover-start > .popover-arrow::after {
+    border-left-color: var(--bs-popover-bg);
+  }
+
+  &.bs-popover-end > .popover-arrow::after {
+    border-right-color: var(--bs-popover-bg);
+  }
+}

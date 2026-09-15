@@ -1,0 +1,63 @@
+<div
+  ngbDropdown
+  #shareDropdown="ngbDropdown"
+  class="btn-group"
+  container="body"
+  placement="bottom-end"
+  autoClose="outside"
+>
+  <button
+    type="button"
+    class="btn btn-outline-primary"
+    [disabled]="disabled"
+    (click)="shareDeck.emit()"
+  >
+    <i class="bi bi-share me-2" aria-hidden="true"></i
+    >{{ 'deck.share' | transloco }}
+  </button>
+  <button
+    type="button"
+    class="btn btn-outline-primary dropdown-toggle-split"
+    ngbDropdownToggle
+    [attr.aria-label]="'snapshot.share_options' | transloco"
+  ></button>
+  <div ngbDropdownMenu>
+    <button
+      type="button"
+      ngbDropdownItem
+      [disabled]="disabled"
+      (click)="shareDeck.emit(); shareDropdown.close()"
+    >
+      <i class="bi bi-share me-2" aria-hidden="true"></i
+      >{{ 'deck.share' | transloco }}
+    </button>
+    <div class="snapshot-menu-row">
+      <button
+        type="button"
+        ngbDropdownItem
+        [disabled]="!url()"
+        (click)="shareSnapshot(); shareDropdown.close()"
+      >
+        <i class="bi bi-camera me-2" aria-hidden="true"></i
+        >{{ 'snapshot.share' | transloco }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-link snapshot-info"
+        [ngbPopover]="'snapshot.public_link' | transloco"
+        [popoverTitle]="'snapshot.share' | transloco"
+        popoverClass="snapshot-info-popover"
+        container="body"
+        placement="auto"
+        [attr.aria-label]="'snapshot.about' | transloco"
+      >
+        <i class="bi bi-info-circle" aria-hidden="true"></i>
+      </button>
+    </div>
+    @if (!url()) {
+      <span class="dropdown-item-text small text-muted" role="status">{{
+        (failed() ? 'snapshot.encode_error' : 'snapshot.preparing') | transloco
+      }}</span>
+    }
+  </div>
+</div>

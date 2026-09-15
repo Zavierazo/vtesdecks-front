@@ -1,4 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard'
+import { DeckSnapshotV1 } from '../../models/deck-snapshot'
+import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
+import { DeckShareService } from '../../services/deck-share.service'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -87,6 +90,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
   styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ShareDeckComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgbDropdown,
@@ -109,6 +113,19 @@ import { fromUrl } from './limited-format/limited-format-utils'
   ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
+  private readonly deckShare = inject(DeckShareService)
+
+  get snapshot(): DeckSnapshotV1 {
+    const deck = this.deckBuilderQuery.getValue()
+    return {
+      // The form can be ahead of the debounced builder store.
+      name: this.form?.get('name')?.value ?? deck.name ?? '',
+      author: this.authQuery.getDisplayName() ?? this.authQuery.getUser() ?? '',
+      description:
+        this.form?.get('description')?.value ?? deck.description ?? '',
+      cards: deck.cards.map((card) => [card.id, card.number]),
+    }
+  }
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
   private readonly authQuery = inject(AuthQuery)
@@ -313,17 +330,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
       const url = `https://${environment.domain}/deck/${deckId}`
-      if (window.navigator.share) {
-        window.navigator.share({
-          url: url,
-        })
-      } else {
-        this.clipboard.copy(url)
-        this.toastService.show(
-          this.translocoService.translate('deck_builder.link_copied'),
-          { classname: 'bg-success text-light', delay: 5000 },
-        )
-      }
+      void this.deckShare.share(url)
     }
   }
 

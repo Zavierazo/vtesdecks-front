@@ -1,4 +1,22 @@
 {
+  "snapshot": {
+    "title": "Snapshot du deck",
+    "readonly": "Snapshot · Lecture seule",
+    "share": "Partager une snapshot",
+    "share_options": "Options de partage",
+    "preparing": "Préparation de la snapshot…",
+    "about": "À propos du partage de snapshots",
+    "public_link": "Une snapshot est une copie en lecture seule qui conserve le deck tel qu’il est maintenant, même si l’original change ou est supprimé. Toute personne disposant du lien peut la consulter, même si le deck est privé.",
+    "copied": "Copié dans le presse-papiers",
+    "copy_error": "Impossible de copier. Vérifiez les autorisations du presse-papiers et réessayez.",
+    "encode_error": "Impossible de préparer la snapshot. Le deck est peut-être trop volumineux ou contient des quantités incorrectes.",
+    "invalid": "Ce lien de snapshot est incomplet, endommagé, trop volumineux ou utilise une version non prise en charge.",
+    "catalog_error": "Impossible de charger le catalogue de cartes. Veuillez réessayer.",
+    "retry": "Réessayer",
+    "browse": "Parcourir les decks",
+    "untitled": "Deck sans nom",
+    "unknown_cards": "Certaines cartes sont absentes du catalogue actuel. Leurs identifiants et quantités sont conservés ci-dessous. Les statistiques sont incomplètes ; le clonage, l’impression et la pioche restent indisponibles jusqu’au chargement de ces cartes."
+  },
   "admin": {
     "feature_flags_title": "Feature Flags",
     "feature_flags_hint": "Les flags sont définis dans le backend. Seules leurs valeurs peuvent être modifiées ici.",
@@ -1654,6 +1672,10 @@
     "size_hint": "Toute taille CSS est valable : 400px, 30rem, 100%…"
   },
   "seo": {
+    "snapshot": {
+      "title": "Snapshot du deck",
+      "description": "Consultez une snapshot de deck partagée en lecture seule."
+    },
     "home": {
       "title": "Accueil",
       "description": "Explorez les decks gagnants et communautaires de Vampire: The Eternal Struggle, consultez les cartes et créez votre deck VTES."

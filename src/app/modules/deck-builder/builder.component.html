@@ -79,15 +79,14 @@
                 >{{ 'wishlist.add_missing_to_wishlist' | transloco }}
               </button>
             }
-            <button
-              type="button"
-              class="btn btn-outline-primary m-2"
-              [disabled]="!(deckId$ | async)!"
-              (click)="shareDeck()"
-            >
-              <i class="bi bi-share"></i>
-              {{ t('share') }}
-            </button>
+            <app-share-deck
+              class="d-inline-block m-2"
+              [snapshot]="snapshot"
+              [disabled]="
+                (deckId$ | async) === undefined || (deckId$ | async) === null
+              "
+              (shareDeck)="shareDeck()"
+            />
             <button
               type="button"
               class="btn btn-outline-primary m-2"
