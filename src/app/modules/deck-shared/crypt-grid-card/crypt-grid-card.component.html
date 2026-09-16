@@ -24,7 +24,10 @@
     <img class="grid-img rounded mx-auto d-block img-fluid" [style.box-shadow]="stackedShadow"
       [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
       [defaultImage]="'/assets/img/cardbackcrypt.jpg'" [lazyLoad]="crypt | cardImage"
-      [errorImage]="cdnDomain + crypt.image" [alt]="crypt.i18n?.name ?? crypt.name" [offset]="100" />
+      [errorImage]="'/assets/img/cardbackcrypt.jpg'" [alt]="crypt.i18n?.name ?? crypt.name" [offset]="100" />
+          @if (connection.offline() && (crypt | cardImage) === '/assets/img/cardbackcrypt.jpg') {
+            <span class="d-block text-center small text-muted">{{ 'offline.missing_image' | transloco }}</span>
+          }
     @if (crypt.unreleased) {
     <div class="spoiler-grid-badge">
       <app-spoiler-badge [compact]="true" [stacked]="true" [lastUpdate]="crypt.lastUpdate" />

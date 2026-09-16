@@ -160,7 +160,7 @@
       [formControl]="convictionCostSliderControl"
     />
   </div>
-  @if (filter.limitedFormat === undefined) {
+  @if (!connection.offline() && filter.limitedFormat === undefined) {
     <div class="row g-1 form-floating mt-2">
       <select
         class="form-select"
@@ -210,7 +210,7 @@
       (selectionChange)="onChangeSectSelection($event)"
     />
   </div>
-  @if (filter.shops !== undefined || filter.notShops !== undefined) {
+  @if (!connection.offline() && (filter.shops !== undefined || filter.notShops !== undefined)) {
     <div class="mt-2">
       <app-multi-select
         [options]="shopOptions"

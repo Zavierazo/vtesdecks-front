@@ -1,3 +1,5 @@
+import { CryptStore } from '@state/crypt/crypt.store'
+import { ConnectivityService } from '../../../services/connectivity.service'
 import {
   AsyncPipe,
   NgClass,
@@ -9,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   DOCUMENT,
+  DestroyRef,
   inject,
   OnInit,
   TemplateRef,
@@ -64,8 +67,8 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
-  distinctUntilChanged,
   filter,
+  take,
   fromEvent,
   map,
   merge,
@@ -109,6 +112,9 @@ import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
   ],
 })
 export class CryptSectionComponent implements OnInit {
+  private readonly catalog = inject(CryptStore)
+  private readonly destroyRef = inject(DestroyRef)
+  readonly connection = inject(ConnectivityService)
   private readonly document = inject<Document>(DOCUMENT)
   private readonly viewportService = inject(ViewportScroller)
   private readonly changeDetector = inject(ChangeDetectorRef)
@@ -178,10 +184,22 @@ export class CryptSectionComponent implements OnInit {
     },
   ]
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.catalog.ready
+    if (this.destroyRef.destroyed) {
+      return
+    }
     this.listenScroll()
     this.onChangeNameFilter()
     this.listenShopAvailability()
+    this.connection.changed.pipe(untilDestroyed(this)).subscribe(() => {
+      this.availabilityByShop.clear()
+      this.shopSelection$.next({
+        shops: this.cryptFilter.shops ?? [],
+        notShops: this.cryptFilter.notShops ?? [],
+      })
+      this.initQuery()
+    })
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -215,9 +233,20 @@ export class CryptSectionComponent implements OnInit {
     }
   }
 
+  get effectiveFilter(): CryptFilter {
+    return this.connection.offline()
+      ? {
+          ...this.cryptFilter,
+          shops: [],
+          notShops: [],
+          predefinedLimitedFormat: undefined,
+        }
+      : this.cryptFilter
+  }
+
   private updateFilterChips() {
     this.filterChips = buildCryptFilterChips(
-      this.cryptFilter,
+      this.effectiveFilter,
       this.defaultCryptFilter,
       (key, params) => this.translocoService.translate(key, params),
       getCardShopName,
@@ -431,12 +460,14 @@ export class CryptSectionComponent implements OnInit {
       this.cryptFilter.artist = queryParams['artist']
     }
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
-      setTimeout(() => {
-        const card = this.cryptQuery.getEntity(Number(queryParams['cardId']))
-        if (card) {
-          this.openCryptCard(card)
-        }
-      }, 300)
+      this.cryptQuery
+        .selectEntity(Number(queryParams['cardId']))
+        .pipe(
+          filter((card): card is ApiCrypt => !!card),
+          take(1),
+          untilDestroyed(this),
+        )
+        .subscribe((card) => this.openCryptCard(card))
     }
     if (queryParams['predefinedLimitedFormat']) {
       this.cryptFilter.predefinedLimitedFormat =
@@ -607,7 +638,7 @@ export class CryptSectionComponent implements OnInit {
   private updateQuery() {
     this.crypt$ = this.cryptQuery
       .selectAll({
-        filter: this.cryptFilter,
+        filter: this.effectiveFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
@@ -615,12 +646,14 @@ export class CryptSectionComponent implements OnInit {
       })
       .pipe(
         map((results) =>
-          filterCardsByShopAvailability(
-            results,
-            this.cryptFilter.shops,
-            this.cryptFilter.notShops,
-            this.availabilityByShop,
-          ),
+          this.remoteFiltersUnavailable
+            ? []
+            : filterCardsByShopAvailability(
+                results,
+                this.effectiveFilter.shops,
+                this.effectiveFilter.notShops,
+                this.availabilityByShop,
+              ),
         ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
@@ -632,14 +665,21 @@ export class CryptSectionComponent implements OnInit {
     this.changeDetector.markForCheck()
   }
 
+  get remoteFiltersUnavailable(): boolean {
+    const shops = [
+      ...(this.cryptFilter.shops ?? []),
+      ...(this.cryptFilter.notShops ?? []),
+    ]
+    return (
+      !this.connection.offline() &&
+      shops.length > 0 &&
+      shops.some((shop) => !this.availabilityByShop.has(shop))
+    )
+  }
+
   private listenShopAvailability(): void {
     this.shopSelection$
       .pipe(
-        distinctUntilChanged(
-          (a, b) =>
-            a.shops.join(',') === b.shops.join(',') &&
-            a.notShops.join(',') === b.notShops.join(','),
-        ),
         switchMap((selection) => {
           const missing = [
             ...new Set([...selection.shops, ...selection.notShops]),
@@ -650,27 +690,10 @@ export class CryptSectionComponent implements OnInit {
         }),
         untilDestroyed(this),
       )
-      .subscribe(({ selection, batch }) => {
+      .subscribe(({ batch }) => {
         batch.availabilityByShop.forEach((ids, shop) =>
           this.availabilityByShop.set(shop, ids),
         )
-        if (batch.failedShops.length > 0) {
-          const failed = new Set(batch.failedShops)
-          this.cryptFilter = {
-            ...this.cryptFilter,
-            shops: selection.shops.filter((shop) => !failed.has(shop)),
-            notShops: selection.notShops.filter((shop) => !failed.has(shop)),
-          }
-          this.toastService.show(
-            this.translocoService.translate('shared.shop_availability_error'),
-            { classname: 'bg-danger text-light' },
-          )
-          this.updateQueryParams({
-            shop: undefined,
-            shops: this.cryptFilter.shops?.join(',') || undefined,
-            notShops: this.cryptFilter.notShops?.join(',') || undefined,
-          })
-        }
         this.updateFilterChips()
         this.initQuery()
       })
@@ -690,14 +713,14 @@ export class CryptSectionComponent implements OnInit {
     })
     const cryptList = filterCardsByShopAvailability(
       this.cryptQuery.getAll({
-        filter: this.cryptFilter,
+        filter: this.effectiveFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       }),
-      this.cryptFilter.shops,
-      this.cryptFilter.notShops,
+      this.effectiveFilter.shops,
+      this.effectiveFilter.notShops,
       this.availabilityByShop,
     )
     modalRef.componentInstance.cardList = cryptList

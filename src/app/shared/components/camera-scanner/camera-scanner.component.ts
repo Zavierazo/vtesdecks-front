@@ -323,7 +323,7 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   }
 
   getCardImageUrl(cardId: number, set?: string): string {
-    return this.cardImagePipe.transform({ id: cardId }, set)
+    return this.cardImagePipe.resolveUrl({ id: cardId }, set)
   }
 
   /** Resolve a raw set abbrev (possibly lowercase) to the canonical uppercase abbrev. */

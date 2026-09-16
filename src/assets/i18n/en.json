@@ -926,6 +926,10 @@
     "player": "Player"
   },
   "user_profile": {
+    "save_profile": "Save profile",
+    "change_password": "Change password",
+    "profile_saved": "Profile saved.",
+    "password_saved": "Password changed.",
     "profile_settings": "Profile Settings",
     "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
     "display_name": "Display Name",
@@ -1807,5 +1811,33 @@
     "invalid": "This link is invalid, expired, or already used. Request a new email if you cannot continue.",
     "verify_resend": "Open Sign in on this page and enter your username and password to request a new verification email.",
     "reset_resend": "Open Sign in on this page and choose Forgot Password to request a new reset link."
+  },
+  "offline": {
+    "settings_intro": "Browse Crypt and Library offline. Card data is saved automatically; download the images to have them available without a connection.",
+    "short_help": "Keep this page open while downloading. Images are stored on this device.",
+    "banner_offline": "You are offline",
+    "banner_online": "You are back online",
+    "loading": "Loading…",
+    "title": "Offline",
+    "saved_images": "{{count}} images saved",
+    "estimate": "Estimate size",
+    "download": "Download all images",
+    "update_images": "Update downloaded images",
+    "delete_images": "Delete downloaded images",
+    "estimated_size": "Estimated total size",
+    "confirm_delete": "Delete all downloaded images? Catalogs will be kept.",
+    "cancel": "Cancel",
+    "errors": "Errors",
+    "complete": "Complete",
+    "incomplete": "Incomplete. Keep the app open and continue manually when online.",
+    "storage_error": "Unable to save on this device. Check available storage and browser permissions.",
+    "offline": "No connection",
+    "server_unavailable": "Server unavailable",
+    "details_online": "Additional information, rulings, shops and collection require a connection.",
+    "missing_image": "Image not downloaded",
+    "device_images": "Card images on this device",
+    "pending_images": "{{count}} default images still to download",
+    "ready": "All default images are downloaded",
+    "continue_download": "Continue download"
   }
 }

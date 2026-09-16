@@ -1,3 +1,4 @@
+import { ConnectivityService } from '../../../services/connectivity.service'
 import { Clipboard } from '@angular/cdk/clipboard'
 import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common'
 import {
@@ -28,7 +29,7 @@ import { CardTextPipe } from '@shared/pipes/card-text.pipe'
 import { SpoilerBadgeComponent } from '@shared/components/spoiler-badge/spoiler-badge.component'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { catchError, Observable } from 'rxjs'
+import { catchError, Observable, of } from 'rxjs'
 import VanillaTilt from 'vanilla-tilt'
 import { environment } from '@environments/environment'
 import { CardInfoComponent } from '../card-info/card-info.component'
@@ -55,6 +56,7 @@ import { CardInfoComponent } from '../card-info/card-info.component'
   ],
 })
 export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
+  readonly connection = inject(ConnectivityService)
   modal = inject(NgbActiveModal)
   private readonly apiDataService = inject(ApiDataService)
   private readonly mediaService = inject(MediaService)
@@ -68,7 +70,7 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() index!: number
   @ViewChild('cardImage') cardImage?: ElementRef
   isMobile$!: Observable<boolean>
-  cardInfo$!: Observable<ApiCardInfo>
+  cardInfo$!: Observable<ApiCardInfo | null>
   defaultTouch = { x: 0, y: 0, time: 0 }
   activeSet?: string
   setImageError = false
@@ -78,6 +80,9 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.isMobile$ = this.mediaService.observeMobile()
     this.fetchCardInfo()
+    this.connection.changed
+      .pipe(untilDestroyed(this))
+      .subscribe(() => this.fetchCardInfo())
     // Push fake state to capture dismiss modal on back button
     history.pushState(
       {
@@ -169,17 +174,15 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchCardInfo(): void {
+    if (this.connection.offline()) {
+      this.cardInfo$ = of(null)
+      return
+    }
     this.cardInfo$ = this.apiDataService
       .getCardInfo(this.cardList[this.index].id)
       .pipe(
         untilDestroyed(this),
-        catchError((error) => {
-          this.toastService.show(
-            this.translocoService.translate('shared.unexpected_error'),
-            { classname: 'bg-danger text-light', delay: 5000 },
-          )
-          throw error
-        }),
+        catchError(() => of(null)),
       )
   }
 
@@ -196,7 +199,10 @@ export class LibraryCardComponent implements OnInit, AfterViewInit, OnDestroy {
   onLazyLoadEvent(event: StateChange) {
     if (event.reason === 'loading-failed') {
       this.setImageError = true
+    } else if (event.reason === 'loading-succeeded') {
+      this.setImageError = false
     }
+    this.changeDetectorRef.markForCheck()
   }
 
   hasPlayableBy(card: ApiLibrary): boolean {

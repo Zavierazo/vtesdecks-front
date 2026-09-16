@@ -1,3 +1,4 @@
+import { ConnectivityService } from '../../../services/connectivity.service'
 import {
   AsyncPipe,
   CurrencyPipe,
@@ -56,6 +57,7 @@ import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card
   ],
 })
 export class CardInfoComponent {
+  readonly connection = inject(ConnectivityService)
   private apiDataService = inject(ApiDataService)
   private mediaService = inject(MediaService)
 
@@ -88,7 +90,7 @@ export class CardInfoComponent {
     const cardInfo = this.cardInfo()
     const cardShops = this.cardShops()
 
-    if (!cardInfo) {
+    if (this.connection.offline() || !cardInfo) {
       return null
     }
 

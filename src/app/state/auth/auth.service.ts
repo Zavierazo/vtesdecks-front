@@ -137,8 +137,10 @@ export class AuthService {
       return this.apiDataService.userRefresh().pipe(
         tap((response: ApiUser) => this.authStore.refreshToken(response)),
         switchMap(() => of(true)),
-        catchError(() => {
-          this.logout()
+        catchError((error) => {
+          if (error.status === 401 || error.status === 403) {
+            this.logout()
+          }
           return of(false)
         }),
       )

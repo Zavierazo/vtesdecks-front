@@ -926,6 +926,10 @@
     "player": "Jogador"
   },
   "user_profile": {
+    "save_profile": "Guardar perfil",
+    "change_password": "Alterar palavra-passe",
+    "profile_saved": "Perfil guardado.",
+    "password_saved": "Palavra-passe alterada.",
     "profile_settings": "Configurações de perfil",
     "profile_image_alert": " Para a imagem de perfil usamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Seu Gravatar é uma imagem e um perfil público que segue você de um lugar para outro quando faz coisas como comentário ou publica em uma página de blog.",
     "display_name": "Nome de exibição",
@@ -1807,5 +1811,33 @@
     "invalid": "Este link é inválido, expirou ou já foi utilizado. Solicite outro e-mail se não conseguir continuar.",
     "verify_resend": "Abra Iniciar sessão nesta página e introduza o seu utilizador e palavra-passe para solicitar outro e-mail de verificação.",
     "reset_resend": "Abra Iniciar sessão nesta página e escolha Esqueci a palavra-passe para solicitar outro link."
+  },
+  "offline": {
+    "settings_intro": "Explore a Cripta e a Biblioteca offline. Os dados das cartas são guardados automaticamente; transfira as imagens para as consultar sem ligação.",
+    "short_help": "Mantenha esta página aberta durante a transferência. As imagens ficam guardadas neste dispositivo.",
+    "banner_offline": "Está sem ligação",
+    "banner_online": "A ligação foi restabelecida",
+    "loading": "A carregar…",
+    "title": "Sem conexão",
+    "saved_images": "{{count}} imagens guardadas",
+    "estimate": "Estimar tamanho",
+    "download": "Transferir todas as imagens",
+    "update_images": "Atualizar imagens descarregadas",
+    "delete_images": "Eliminar imagens descarregadas",
+    "estimated_size": "Tamanho total estimado",
+    "confirm_delete": "Eliminar todas as imagens descarregadas? Os catálogos serão mantidos.",
+    "cancel": "Cancelar",
+    "errors": "Erros",
+    "complete": "Concluído",
+    "incomplete": "Incompleto. Mantenha a aplicação aberta e continue manualmente quando estiver online.",
+    "storage_error": "Não foi possível guardar neste dispositivo. Verifique o espaço disponível e as permissões do navegador.",
+    "offline": "Sem conexão",
+    "server_unavailable": "Servidor indisponível",
+    "details_online": "Informações adicionais, regras, lojas e coleção precisam de conexão.",
+    "missing_image": "Imagem não descarregada",
+    "device_images": "Imagens de cartas neste dispositivo",
+    "pending_images": "Faltam {{count}} imagens predefinidas para transferir",
+    "ready": "Todas as imagens predefinidas foram transferidas",
+    "continue_download": "Continuar transferência"
   }
 }

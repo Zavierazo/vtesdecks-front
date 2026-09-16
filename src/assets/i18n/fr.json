@@ -926,6 +926,10 @@
     "player": "Joueur"
   },
   "user_profile": {
+    "save_profile": "Enregistrer le profil",
+    "change_password": "Changer le mot de passe",
+    "profile_saved": "Profil enregistré.",
+    "password_saved": "Mot de passe modifié.",
     "profile_settings": "Paramètres de profil",
     "profile_image_alert": " Pour l'image de profil, nous utilisons <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Votre Gravatar est une image et un profil public qui vous suit partout sur le web.",
     "display_name": "Nom d'affichage",
@@ -1807,5 +1811,33 @@
     "invalid": "Ce lien est invalide, expiré ou déjà utilisé. Demandez un nouvel e-mail si vous ne pouvez pas continuer.",
     "verify_resend": "Ouvrez Connexion sur cette page et saisissez votre identifiant et votre mot de passe pour demander un nouvel e-mail de vérification.",
     "reset_resend": "Ouvrez Connexion sur cette page et choisissez Mot de passe oublié pour demander un nouveau lien."
+  },
+  "offline": {
+    "settings_intro": "Parcourez la Crypte et la Bibliothèque hors connexion. Les données des cartes sont enregistrées automatiquement ; téléchargez les images pour les consulter sans connexion.",
+    "short_help": "Gardez cette page ouverte pendant le téléchargement. Les images sont stockées sur cet appareil.",
+    "banner_offline": "Vous êtes hors connexion",
+    "banner_online": "La connexion est rétablie",
+    "loading": "Chargement…",
+    "title": "Hors connexion",
+    "saved_images": "{{count}} images enregistrées",
+    "estimate": "Estimer la taille",
+    "download": "Télécharger toutes les images",
+    "update_images": "Actualiser les images téléchargées",
+    "delete_images": "Supprimer les images téléchargées",
+    "estimated_size": "Taille totale estimée",
+    "confirm_delete": "Supprimer toutes les images téléchargées ? Les catalogues seront conservés.",
+    "cancel": "Annuler",
+    "errors": "Erreurs",
+    "complete": "Terminé",
+    "incomplete": "Incomplet. Gardez l’application ouverte et reprenez manuellement une fois en ligne.",
+    "storage_error": "Impossible d’enregistrer sur cet appareil. Vérifiez l’espace disponible et les autorisations du navigateur.",
+    "offline": "Sans connexion",
+    "server_unavailable": "Serveur indisponible",
+    "details_online": "Les informations supplémentaires, règles, boutiques et collection nécessitent une connexion.",
+    "missing_image": "Image non téléchargée",
+    "device_images": "Images des cartes sur cet appareil",
+    "pending_images": "Il reste {{count}} images par défaut à télécharger",
+    "ready": "Toutes les images par défaut sont téléchargées",
+    "continue_download": "Reprendre le téléchargement"
   }
 }

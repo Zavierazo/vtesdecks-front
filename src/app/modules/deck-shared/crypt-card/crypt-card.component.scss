@@ -68,3 +68,11 @@
 .card-button-next {
   right: 0;
 }
+
+.card-text-overlay.card-text-unavailable {
+  opacity: 1;
+  visibility: visible;
+  max-height: 100%;
+  overflow-y: auto;
+  pointer-events: auto;
+}

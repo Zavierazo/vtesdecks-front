@@ -73,6 +73,34 @@ export class LibraryStore {
     }
   }
 
+  readonly storageError = signal(false)
+
+  async replaceCatalog(
+    entities: ApiLibrary[],
+    locale: string,
+    lastUpdate: Date,
+  ): Promise<void> {
+    const state = {
+      ...this.getValue(),
+      locale,
+      lastUpdate,
+      downloadedAt: Date.now(),
+    }
+    try {
+      await this.db.replaceCatalog(
+        LibraryStore.dbStoreName,
+        entities,
+        LibraryStore.dbStateName,
+        state,
+      )
+      this.storageError.set(false)
+    } catch {
+      this.storageError.set(true)
+    }
+    this.entities.set(entities)
+    this.state.set(state)
+  }
+
   updateLastUpdate(locale: string, lastUpdate: Date) {
     this.update((state) => ({
       ...state,

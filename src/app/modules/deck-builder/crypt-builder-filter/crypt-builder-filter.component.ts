@@ -1,3 +1,4 @@
+import { ConnectivityService } from '../../../services/connectivity.service'
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
@@ -57,6 +58,7 @@ import { combineLatest, map, tap } from 'rxjs'
 })
 export class CryptBuilderFilterComponent implements OnInit, OnChanges {
   private cryptQuery = inject(CryptQuery)
+  readonly connection = inject(ConnectivityService)
   private apiDataService = inject(ApiDataService)
   private translocoService = inject(TranslocoService)
   private titleCasePipe = new TitleCasePipe()

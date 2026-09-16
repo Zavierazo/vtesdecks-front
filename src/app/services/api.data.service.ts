@@ -1,3 +1,4 @@
+import { BACKGROUND_REFRESH } from '../http-retry.context'
 import { HttpClient, HttpContext, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
@@ -358,12 +359,14 @@ export class ApiDataService {
   getAllCrypt(): Observable<ApiCrypt[]> {
     return this.httpClient.get<ApiCrypt[]>(
       `${environment.api.baseUrl}${this.cardCryptPath}`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
   getCryptLastUpdate(): Observable<ApiCrypt> {
     return this.httpClient.get<ApiCrypt>(
       `${environment.api.baseUrl}${this.cardCryptLastUpdatePath}`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
@@ -376,12 +379,14 @@ export class ApiDataService {
   getAllLibrary(): Observable<ApiLibrary[]> {
     return this.httpClient.get<ApiLibrary[]>(
       `${environment.api.baseUrl}${this.cardLibraryPath}`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
   getLibraryLastUpdate(): Observable<ApiLibrary> {
     return this.httpClient.get<ApiLibrary>(
       `${environment.api.baseUrl}${this.cardLibraryLastUpdatePath}`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
@@ -532,18 +537,21 @@ export class ApiDataService {
   getSets(): Observable<ApiSet[]> {
     return this.httpClient.get<ApiSet[]>(
       `${environment.api.baseUrl}${this.setsPath}`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
   getSetLastUpdate(): Observable<ApiSet> {
     return this.httpClient.get<ApiSet>(
       `${environment.api.baseUrl}${this.setsPath}/lastUpdate`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
   getCardInfo(cardId: number): Observable<ApiCardInfo> {
     return this.httpClient.get<ApiCardInfo>(
       `${environment.api.baseUrl}/cards/${cardId}/info`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, true) },
     )
   }
 
