@@ -4,7 +4,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { CryptService } from '@state/crypt/crypt.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { LibraryService } from '@state/library/library.service'
-import { catchError, forkJoin, from, map, of, switchMap } from 'rxjs'
+import { catchError, forkJoin, defer, map, of, switchMap } from 'rxjs'
 import { decodeSnapshot } from '../utils/deck-snapshot'
 import { snapshotView } from '../modules/deck-snapshot/snapshot-view'
 
@@ -15,8 +15,8 @@ export class DeckSnapshotService {
   private readonly cryptService = inject(CryptService)
   private readonly libraryService = inject(LibraryService)
 
-  load(fragment: string) {
-    return from(decodeSnapshot(fragment)).pipe(
+  load(link: string) {
+    return defer(() => of(decodeSnapshot(link))).pipe(
       switchMap((snapshot) =>
         forkJoin([
           this.cryptService.getCryptCards(),
@@ -95,7 +95,7 @@ export class DeckSnapshotService {
                   .reduce((sum, card) => sum + card.number, 0),
               },
             }
-            return { deck, unknown: view.unknown }
+            return { deck, unknown: view.unknown, snapshot }
           }),
         ),
       ),

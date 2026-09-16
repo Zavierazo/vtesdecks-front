@@ -1,5 +1,6 @@
+import { encodeSnapshot } from '../../utils/deck-snapshot'
 import { deckSeo } from '../../services/seo-route.config'
-import { DeckSnapshotV1 } from '../../models/deck-snapshot'
+import { DeckSnapshot } from '../../models/deck-snapshot'
 import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
 import { DeckShareService } from '../../services/deck-share.service'
 import { DeckSnapshotService } from '../../services/deck-snapshot.service'
@@ -21,7 +22,12 @@ import {
   signal,
   ViewChild,
 } from '@angular/core'
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router'
 import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -151,7 +157,10 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
 export class DeckComponent implements OnInit, AfterViewInit {
   private readonly deckShare = inject(DeckShareService)
 
-  get snapshot(): DeckSnapshotV1 {
+  get snapshot(): DeckSnapshot {
+    if (this.isSnapshot && this.snapshotData) {
+      return this.snapshotData
+    }
     const deck = this.currentDeck
     return {
       name: deck?.name ?? '',
@@ -192,6 +201,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly snapshotRetry = new Subject<void>()
   private snapshotDeck?: ApiDeck
   private snapshotUrl = ''
+  private snapshotData?: DeckSnapshot
 
   private get currentDeck(): ApiDeck | undefined {
     return this.isSnapshot ? this.snapshotDeck : this.deckQuery.getDeck()
@@ -291,21 +301,26 @@ export class DeckComponent implements OnInit, AfterViewInit {
     const service = this.injector.get(DeckSnapshotService)
     // Local state only: never replace the saved deck in DeckStore.
     this.deck$ = combineLatest([
-      this.route.fragment,
+      this.router.events.pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(null),
+      ),
       this.snapshotRetry.pipe(startWith(undefined)),
     ]).pipe(
-      switchMap(([fragment]) => {
+      switchMap(() => {
         this.snapshotDeck = undefined
+        this.snapshotData = undefined
         this.snapshotUrl = ''
         this.unknownSnapshotCards.set([])
         this.snapshotError.set(undefined)
         this.snapshotLoading.next(true)
-        return service.load(fragment ?? '').pipe(
-          map(({ deck, unknown }) => {
+        return service.load(this.router.url).pipe(
+          map(({ deck, unknown, snapshot }) => {
+            this.snapshotData = snapshot
             this.snapshotDeck = deck
             this.unknownSnapshotCards.set(unknown)
             this.snapshotUrl = new URL(
-              `/deck/snapshot#${fragment}`,
+              encodeSnapshot(snapshot),
               window.location.origin,
             ).href
             return deck

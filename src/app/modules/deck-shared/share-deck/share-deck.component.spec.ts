@@ -1,4 +1,3 @@
-import { Blob as NodeBlob } from 'node:buffer'
 import { TestBed } from '@angular/core/testing'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { DeckShareService } from '../../../services/deck-share.service'
@@ -11,7 +10,6 @@ describe('ShareDeckComponent', () => {
     TestBed.resetTestingModule()
   })
   it('prepares the latest snapshot even when sharing a saved deck is disabled', async () => {
-    vi.stubGlobal('Blob', NodeBlob)
     const share = vi.fn()
     TestBed.configureTestingModule({
       providers: [{ provide: DeckShareService, useValue: { share } }],
@@ -35,9 +33,8 @@ describe('ShareDeckComponent', () => {
         [100001, 0],
       ],
     }
-    expect(component.url()).toBe('')
-    await vi.waitFor(() => expect(component.url()).not.toBe(''))
-    const decoded = await decodeSnapshot(new URL(component.url()).hash.slice(1))
+    expect(component.url()).not.toBe('')
+    const decoded = await decodeSnapshot(component.url())
     expect(decoded).toEqual({
       name: 'Unsaved',
       author: 'Author',
@@ -49,6 +46,5 @@ describe('ShareDeckComponent', () => {
     })
     component.shareSnapshot()
     expect(share).toHaveBeenCalledWith(component.url())
-    component.ngOnDestroy()
   })
 })

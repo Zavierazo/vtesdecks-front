@@ -1,4 +1,3 @@
-import { Blob as NodeBlob } from 'node:buffer'
 import { TestBed } from '@angular/core/testing'
 import { ApiCrypt, ApiLibrary } from '@models'
 import { CryptQuery } from '@state/crypt/crypt.query'
@@ -16,7 +15,6 @@ describe('DeckSnapshotService', () => {
     TestBed.resetTestingModule()
   })
   function setup(fail = false) {
-    vi.stubGlobal('Blob', NodeBlob)
     const crypt = [{ id: 200001, capacity: 5, type: 'Vampire' }] as ApiCrypt[]
     const library = [
       { id: 100001, type: 'Master', trifle: true },
@@ -100,7 +98,7 @@ describe('DeckSnapshotService', () => {
       'catalog_error',
     )
     await expect(
-      firstValueFrom(service.load('v2=unsupported')),
+      firstValueFrom(service.load('/deck/snapshot#v1=AAAA')),
     ).rejects.toThrow('Invalid snapshot link')
   })
 })

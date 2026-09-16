@@ -1,7 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard'
 import { ChangeDetectorRef } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
 import { ApiDeck } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -20,9 +20,11 @@ import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs'
+import { Subject, Observable, of, throwError } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { DeckComponent } from './deck.component'
+import { DeckShareService } from '../../services/deck-share.service'
+import { decodeSnapshot } from '../../utils/deck-snapshot'
 import { DeckSnapshotService } from '../../services/deck-snapshot.service'
 
 describe('DeckComponent view tracking', () => {
@@ -43,7 +45,23 @@ describe('DeckComponent view tracking', () => {
     const navigateByUrl = vi.fn()
     const addVisitedDeck = vi.fn()
     const seoUpdate = vi.fn()
-    const fragments = new BehaviorSubject<string>('first')
+    const events = new Subject<NavigationEnd>()
+    const router = {
+      events,
+      url: '/deck/snapshot?name=first#200001=3',
+      navigateByUrl,
+    }
+    const fragments = {
+      next: (name: string) => {
+        router.url = `/deck/snapshot?name=${name}#200001=3`
+        events.next(new NavigationEnd(1, router.url, router.url))
+      },
+    }
+    const share = vi.fn()
+    const navigate = (url: string) => {
+      router.url = url
+      events.next(new NavigationEnd(1, url, url))
+    }
     const snapshotDeck = {
       ...deck,
       id: '',
@@ -52,17 +70,21 @@ describe('DeckComponent view tracking', () => {
       crypt: [{ id: 200001, number: 3 }],
       library: [],
     } as ApiDeck
-    const loadSnapshot = vi.fn((fragment: string) =>
-      fragment === 'invalid'
+    const loadSnapshot = vi.fn((link: string) =>
+      decodeSnapshot(link).name === 'invalid'
         ? throwError(() => new Error('invalid'))
-        : of({ deck: { ...snapshotDeck, name: fragment }, unknown: [] }),
+        : of({
+            deck: { ...snapshotDeck, name: decodeSnapshot(link).name },
+            unknown: [],
+            snapshot: decodeSnapshot(link),
+          }),
     )
 
     TestBed.configureTestingModule({
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { data: { snapshot } }, fragment: fragments },
+          useValue: { snapshot: { data: { snapshot } } },
         },
         { provide: SeoService, useValue: { update: seoUpdate } },
         { provide: DeckSnapshotService, useValue: { load: loadSnapshot } },
@@ -96,7 +118,8 @@ describe('DeckComponent view tracking', () => {
         },
         { provide: NgbModal, useValue: {} },
         { provide: CryptQuery, useValue: {} },
-        { provide: Router, useValue: { navigateByUrl } },
+        { provide: Router, useValue: router },
+        { provide: DeckShareService, useValue: { share } },
         { provide: Clipboard, useValue: {} },
         { provide: TranslocoService, useValue: { translate: vi.fn() } },
         { provide: DeckHistoryService, useValue: { addVisitedDeck } },
@@ -113,6 +136,8 @@ describe('DeckComponent view tracking', () => {
       detectChanges,
       navigateByUrl,
       fragments,
+      navigate,
+      share,
       loadSnapshot,
       seoUpdate,
       addVisitedDeck,
@@ -168,6 +193,40 @@ describe('DeckComponent view tracking', () => {
     fragments.next('first')
     expect(component.snapshotError()).toBeUndefined()
     expect(names.at(-1)).toBe('first')
+    subscription.unsubscribe()
+  })
+
+  it('reloads query and fragment navigation, retries and shares all original cards', () => {
+    const { component, navigate, share, loadSnapshot } = setup(
+      { id: 'original' } as ApiDeck,
+      of(true),
+      true,
+    )
+    component.ngOnInit()
+    const subscription = component.deck$.subscribe()
+    navigate(
+      '/deck/snapshot?name=Edited&author=A&description=Text%0ALine#200001=3;299999=0',
+    )
+    expect(component.snapshot).toEqual({
+      name: 'Edited',
+      author: 'A',
+      description: 'Text\nLine',
+      cards: [
+        [200001, 3],
+        [299999, 0],
+      ],
+    })
+    component.onShare()
+    expect(decodeSnapshot(share.mock.calls[0][0])).toEqual(component.snapshot)
+    navigate('/deck/snapshot?name=Metadata#200001=3;299999=0')
+    expect(component.snapshot.name).toBe('Metadata')
+    navigate('/deck/snapshot?name=Metadata#200001=4')
+    expect(component.snapshot.cards).toEqual([[200001, 4]])
+    const calls = loadSnapshot.mock.calls.length
+    component.retrySnapshot()
+    expect(loadSnapshot).toHaveBeenCalledTimes(calls + 1)
+    navigate('/deck/snapshot?name=first#200001=3')
+    expect(component.snapshot.name).toBe('first')
     subscription.unsubscribe()
   })
 

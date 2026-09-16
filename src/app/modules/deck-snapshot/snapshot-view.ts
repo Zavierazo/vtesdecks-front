@@ -1,9 +1,9 @@
 import { ApiCard, ApiCrypt, ApiLibrary } from '@models'
 import { isCrypt } from '@utils'
-import { DeckSnapshotV1 } from '../../models/deck-snapshot'
+import { DeckSnapshot } from '../../models/deck-snapshot'
 
 export function snapshotView(
-  snapshot: DeckSnapshotV1,
+  snapshot: DeckSnapshot,
   cryptCatalog: ApiCrypt[],
   libraryCatalog: ApiLibrary[],
 ) {

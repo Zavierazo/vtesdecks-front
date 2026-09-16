@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard'
-import { DeckSnapshotV1 } from '../../models/deck-snapshot'
+import { DeckSnapshot } from '../../models/deck-snapshot'
 import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
 import { DeckShareService } from '../../services/deck-share.service'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
@@ -115,7 +115,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly deckShare = inject(DeckShareService)
 
-  get snapshot(): DeckSnapshotV1 {
+  get snapshot(): DeckSnapshot {
     const deck = this.deckBuilderQuery.getValue()
     return {
       // The form can be ahead of the debounced builder store.

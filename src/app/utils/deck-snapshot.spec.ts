@@ -1,17 +1,15 @@
-import { Blob as NodeBlob } from 'node:buffer'
-import { gzipSync } from 'node:zlib'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { DeckSnapshotV1 } from '../models/deck-snapshot'
+import { describe, expect, it } from 'vitest'
+import { DeckSnapshot } from '../models/deck-snapshot'
 import {
   decodeSnapshot,
   encodeSnapshot,
   SNAPSHOT_MAX_BYTES,
-  SNAPSHOT_MAX_FRAGMENT,
+  SNAPSHOT_MAX_URL,
   validateSnapshot,
 } from './deck-snapshot'
 
 describe('deck snapshot codec', () => {
-  const snapshot: DeckSnapshotV1 = {
+  const snapshot: DeckSnapshot = {
     name: 'Séraph 🦇',
     author: '作者',
     description: '**Hola**\n\nDescripción & #?=\n'.repeat(500),
@@ -21,13 +19,10 @@ describe('deck snapshot codec', () => {
       [201062, 0],
     ],
   }
-  beforeEach(() => vi.stubGlobal('Blob', NodeBlob))
-  afterEach(() => vi.unstubAllGlobals())
 
-  it('round-trips Unicode, Markdown, long descriptions and zero quantities through gzip', async () => {
+  it('round-trips Unicode, Markdown, long descriptions and zero quantities through a readable URL', async () => {
     const encoded = await encodeSnapshot(snapshot)
-    expect(encoded).toMatch(/^v1=[A-Za-z0-9_-]+$/)
-    expect(encoded.length).toBeLessThan(JSON.stringify(snapshot).length)
+    expect(encoded).toContain('#200348=3;100006=4;201062=0')
     expect(await decodeSnapshot(encoded)).toEqual(snapshot)
   })
 
@@ -68,38 +63,64 @@ describe('deck snapshot codec', () => {
     expect(() => validateSnapshot({ ...snapshot, cards })).toThrow()
   })
 
-  it.each(['', 'v2=AAAA', 'v1=!', 'v1=AAAA', 'v1=abc&name=other'])(
-    'rejects malformed links: %s',
-    async (fragment) => {
-      await expect(decodeSnapshot(fragment)).rejects.toThrow()
-    },
-  )
-
-  it('rejects oversized input and output without truncating', async () => {
-    await expect(
+  it.each([
+    'v1=AAAA',
+    'v2=AAAA',
+    '1=-1',
+    '1=1.5',
+    '1=2;1=3',
+    '0=1',
+    '1=1001',
+    '1=2;',
+    '1=2=3',
+    '1=NaN',
+    '9007199254740992=1',
+  ])('rejects malformed card fragments: %s', (fragment) => {
+    expect(() => decodeSnapshot(`/deck/snapshot#${fragment}`)).toThrow()
+  })
+  it('supports empty decks and missing metadata', () => {
+    const empty = { name: '', author: '', description: '', cards: [] }
+    expect(decodeSnapshot('/deck/snapshot')).toEqual(empty)
+    expect(encodeSnapshot(empty)).toBe(
+      '/deck/snapshot?name=&author=&description=#',
+    )
+    expect(decodeSnapshot(encodeSnapshot(empty))).toEqual(empty)
+  })
+  it('preserves reserved characters without double decoding', () => {
+    const data = { ...snapshot, description: '& # + % = %20\n\n' }
+    expect(decodeSnapshot(encodeSnapshot(data))).toEqual(data)
+  })
+  it('rejects oversized URLs and decoded payloads without truncation', () => {
+    expect(() =>
       encodeSnapshot({
         ...snapshot,
         description: 'x'.repeat(SNAPSHOT_MAX_BYTES),
       }),
-    ).rejects.toThrow()
-    await expect(
-      decodeSnapshot('v1=' + 'A'.repeat(SNAPSHOT_MAX_FRAGMENT)),
-    ).rejects.toThrow()
-    const bomb = gzipSync(
-      JSON.stringify({
-        ...snapshot,
-        description: 'x'.repeat(SNAPSHOT_MAX_BYTES + 1),
-      }),
-    ).toString('base64url')
-    await expect(decodeSnapshot('v1=' + bomb)).rejects.toThrow()
+    ).toThrow()
+    expect(() =>
+      encodeSnapshot({ ...snapshot, description: '%'.repeat(45000) }),
+    ).toThrow()
+    expect(() =>
+      decodeSnapshot(
+        '/deck/snapshot?description=' + 'x'.repeat(SNAPSHOT_MAX_URL),
+      ),
+    ).toThrow()
+    expect(() =>
+      decodeSnapshot('/deck/snapshot?description=' + '%00'.repeat(43700)),
+    ).toThrow()
   })
-
-  it('checks schema after decompression too', async () => {
-    const fragment =
-      'v1=' +
-      gzipSync(JSON.stringify({ ...snapshot, cards: [[1, -1]] })).toString(
-        'base64url',
-      )
-    await expect(decodeSnapshot(fragment)).rejects.toThrow()
+  it('retains card-count and total-quantity bounds', () => {
+    expect(() =>
+      encodeSnapshot({
+        ...snapshot,
+        cards: Array.from({ length: 2001 }, (_, i) => [i + 1, 0]),
+      }),
+    ).toThrow()
+    expect(() =>
+      encodeSnapshot({
+        ...snapshot,
+        cards: Array.from({ length: 11 }, (_, i) => [i + 1, 1000]),
+      }),
+    ).toThrow()
   })
 })

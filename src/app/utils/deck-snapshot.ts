@@ -1,9 +1,9 @@
-import { DeckSnapshotV1 } from '../models/deck-snapshot'
+import { DeckSnapshot } from '../models/deck-snapshot'
 
-export const SNAPSHOT_MAX_FRAGMENT = 128 * 1024
+export const SNAPSHOT_MAX_URL = 128 * 1024
 export const SNAPSHOT_MAX_BYTES = 256 * 1024
 
-export function validateSnapshot(value: unknown): DeckSnapshotV1 {
+export function validateSnapshot(value: unknown): DeckSnapshot {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error('Invalid snapshot')
   }
@@ -19,7 +19,7 @@ export function validateSnapshot(value: unknown): DeckSnapshotV1 {
   }
   const seen = new Set<number>()
   let total = 0
-  const cards: DeckSnapshotV1['cards'] = data['cards'].map((pair: unknown) => {
+  const cards: DeckSnapshot['cards'] = data['cards'].map((pair: unknown) => {
     if (
       !Array.isArray(pair) ||
       pair.length !== 2 ||
@@ -47,82 +47,60 @@ export function validateSnapshot(value: unknown): DeckSnapshotV1 {
   }
 }
 
-async function readBounded(
-  stream: ReadableStream<Uint8Array>,
-  limit: number,
-): Promise<Uint8Array<ArrayBuffer>> {
-  const reader = stream.getReader()
-  const chunks: Uint8Array[] = []
-  let size = 0
-  try {
-    while (true) {
-      const { value, done } = await reader.read()
-      if (done) {
-        break
-      }
-      size += value.byteLength
-      if (size > limit) {
-        await reader.cancel()
-        throw new Error('Snapshot too large')
-      }
-      chunks.push(value)
-    }
-  } finally {
-    reader.releaseLock()
-  }
-  const bytes = new Uint8Array(size)
-  let offset = 0
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset)
-    offset += chunk.byteLength
-  }
-  return bytes
-}
-
-export async function encodeSnapshot(
-  snapshot: DeckSnapshotV1,
-): Promise<string> {
-  const bytes = new TextEncoder().encode(
-    JSON.stringify(validateSnapshot(snapshot)),
-  )
-  if (bytes.length > SNAPSHOT_MAX_BYTES) {
-    throw new Error('Snapshot too large')
-  }
-  const compressed = await readBounded(
-    new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip')),
-    SNAPSHOT_MAX_FRAGMENT,
-  )
-  let binary = ''
-  for (const byte of compressed) {
-    binary += String.fromCharCode(byte)
-  }
-  const fragment =
-    'v1=' +
-    btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-  if (fragment.length > SNAPSHOT_MAX_FRAGMENT) {
-    throw new Error('Snapshot too large')
-  }
-  return fragment
-}
-
-export async function decodeSnapshot(
-  fragment: string,
-): Promise<DeckSnapshotV1> {
+function checkPayloadSize(snapshot: DeckSnapshot): DeckSnapshot {
   if (
-    fragment.length > SNAPSHOT_MAX_FRAGMENT ||
-    !/^v1=[A-Za-z0-9_-]+$/.test(fragment)
+    new TextEncoder().encode(JSON.stringify(snapshot)).length >
+    SNAPSHOT_MAX_BYTES
+  ) {
+    throw new Error('Snapshot too large')
+  }
+  return snapshot
+}
+
+/** Returns a relative URL, including the metadata query and card fragment. */
+export function encodeSnapshot(snapshot: DeckSnapshot): string {
+  const data = checkPayloadSize(validateSnapshot(snapshot))
+  const query = ['name', 'author', 'description']
+    .map(
+      (key) =>
+        `${key}=${encodeURIComponent(data[key as 'name' | 'author' | 'description'])}`,
+    )
+    .join('&')
+  const fragment = data.cards
+    .map(([id, quantity]) => `${id}=${quantity}`)
+    .join(';')
+  const suffix = `?${query}#${fragment}`
+  if (suffix.length > SNAPSHOT_MAX_URL) {
+    throw new Error('Snapshot too large')
+  }
+  return `/deck/snapshot${suffix}`
+}
+
+/** Reads an absolute or relative snapshot URL without fetching it. */
+export function decodeSnapshot(link: string): DeckSnapshot {
+  const url = new URL(link, 'https://snapshot.invalid')
+  if (
+    url.pathname !== '/deck/snapshot' ||
+    url.search.length + url.hash.length > SNAPSHOT_MAX_URL
   ) {
     throw new Error('Invalid snapshot link')
   }
-  const binary = atob(fragment.slice(3).replace(/-/g, '+').replace(/_/g, '/'))
-  const compressed = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-  const bytes = await readBounded(
-    new Blob([compressed])
-      .stream()
-      .pipeThrough(new DecompressionStream('gzip')),
-    SNAPSHOT_MAX_BYTES,
-  )
-  return validateSnapshot(
-    JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)),
+  const fragment = url.hash.slice(1)
+  const cards =
+    fragment === ''
+      ? []
+      : fragment.split(';').map((pair) => {
+          if (!/^[0-9]+=[0-9]+$/.test(pair)) {
+            throw new Error('Invalid snapshot link')
+          }
+          return pair.split('=').map(Number)
+        })
+  return checkPayloadSize(
+    validateSnapshot({
+      name: url.searchParams.get('name') ?? '',
+      author: url.searchParams.get('author') ?? '',
+      description: url.searchParams.get('description') ?? '',
+      cards,
+    }),
   )
 }

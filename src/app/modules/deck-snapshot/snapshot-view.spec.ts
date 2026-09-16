@@ -1,10 +1,10 @@
 import { ApiCrypt, ApiLibrary } from '@models'
 import { describe, expect, it } from 'vitest'
-import { DeckSnapshotV1 } from '../../models/deck-snapshot'
+import { DeckSnapshot } from '../../models/deck-snapshot'
 import { snapshotView } from './snapshot-view'
 
 describe('snapshot cards and statistics', () => {
-  const snapshot: DeckSnapshotV1 = {
+  const snapshot: DeckSnapshot = {
     name: 'Example',
     author: 'Author',
     description: 'Original\n\n**Description**',
