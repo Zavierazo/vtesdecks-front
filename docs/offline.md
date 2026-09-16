@@ -29,3 +29,5 @@ After a production build, `node scripts/offline-smoke.mjs` runs an isolated head
 Physical Android, Safari/iOS and installed-PWA checks remain release checks. The desktop smoke does not establish compatibility on those devices.
 
 Card details show the existing text overlay automatically when no image is available; downloaded images retain the usual text-icon interaction. Remote deck search is hidden offline. Profile saving is enabled only when values differ from the last successful save. Image settings prioritize downloading missing default images, with download, update and delete controls always visible. A compact shell banner shows offline status and briefly confirms reconnection. Offline notices and the automatic card-text fallback are restricted to actual offline mode.
+
+Image revalidation updates the cache without replacing a valid image already on screen. Each new view reads the latest cached copy, independently of existing views; a missing image is displayed as soon as it loads.

@@ -23,8 +23,9 @@ export class OfflineImagesService {
   readonly estimateBytes = signal<number | null>(null)
   readonly ready = this.loadMetadata()
   private readonly active = new Map<
-    string,
+    string | symbol,
     {
+      url: string
       refs: number
       display: string
       placeholder: string
@@ -39,7 +40,9 @@ export class OfflineImagesService {
 
   constructor() {
     this.connection.resumed.subscribe(() => {
-      for (const url of this.active.keys()) {
+      for (const url of new Set(
+        [...this.active.values()].map((entry) => entry.url),
+      )) {
         void this.revalidate(url).catch(() => undefined)
       }
     })
@@ -53,51 +56,64 @@ export class OfflineImagesService {
     url: string,
     fallback?: string,
     placeholder = MISSING_CARD_IMAGE,
+    consumer: string | symbol = url,
   ): string {
-    let entry = this.active.get(url)
+    let entry = this.active.get(consumer)
     if (!entry) {
-      entry = { refs: 0, display: placeholder, placeholder, fallback }
-      this.active.set(url, entry)
-      void this.load(url)
+      entry = { url, refs: 0, display: placeholder, placeholder, fallback }
+      this.active.set(consumer, entry)
+      void this.load(url, consumer)
     }
     entry.refs++
     return entry.display
   }
 
-  display(url: string): string {
-    return this.active.get(url)?.display ?? MISSING_CARD_IMAGE
+  display(url: string, consumer: string | symbol = url): string {
+    return this.active.get(consumer)?.display ?? MISSING_CARD_IMAGE
   }
 
-  release(url: string) {
-    const entry = this.active.get(url)
+  release(url: string, consumer: string | symbol = url) {
+    const entry = this.active.get(consumer)
     if (entry && --entry.refs <= 0) {
       if (entry.blob) {
         URL.revokeObjectURL(entry.blob)
       }
-      this.active.delete(url)
+      this.active.delete(consumer)
     }
   }
 
-  private show(url: string, blob: Blob) {
-    const entry = this.active.get(url)
-    if (!entry) {
-      return
+  private show(url: string, blob: Blob, consumer?: string | symbol) {
+    let changed = false
+    for (const [key, entry] of this.active) {
+      // Each view keeps its first valid image until released. Revalidation
+      // updates persistence, but never replaces an image already on screen.
+      if (
+        entry.url !== url ||
+        entry.blob ||
+        (consumer !== undefined && key !== consumer)
+      ) {
+        continue
+      }
+      entry.blob = URL.createObjectURL(blob)
+      entry.display = entry.blob
+      changed = true
     }
-    const previous = entry.blob
-    entry.blob = URL.createObjectURL(blob)
-    entry.display = entry.blob
-    this.changed.next(url)
-    if (previous) {
-      URL.revokeObjectURL(previous)
+    if (changed) {
+      this.changed.next(url)
     }
   }
 
-  private async load(url: string) {
+  private async load(url: string, consumer: string | symbol) {
+    const originalEntry = this.active.get(consumer)
     const generation = this.generation
     try {
       const cached = await (await caches.open(CACHE)).match(url)
-      if (cached && generation === this.generation) {
-        this.show(url, await cached.blob())
+      if (
+        cached &&
+        generation === this.generation &&
+        this.active.get(consumer) === originalEntry
+      ) {
+        this.show(url, await cached.blob(), consumer)
       }
     } catch {
       this.storageError.set(true)
@@ -110,14 +126,17 @@ export class OfflineImagesService {
         /* Retain the cached image or try the original. */
       }
     }
-    const entry = this.active.get(url)
+    const entry = this.active.get(consumer)
+    if (entry !== originalEntry || generation !== this.generation) {
+      return
+    }
     if (entry?.fallback && entry.display === entry.placeholder) {
       try {
         const cached = await (await caches.open(CACHE)).match(entry.fallback)
         if (cached) {
-          this.show(url, await cached.blob())
+          this.show(url, await cached.blob(), consumer)
         } else if (!this.connection.offline()) {
-          this.show(url, await this.revalidate(entry.fallback))
+          this.show(url, await this.revalidate(entry.fallback), consumer)
         }
       } catch {
         /* Keep the explicit missing-image placeholder. */
@@ -151,7 +170,7 @@ export class OfflineImagesService {
       if (generation !== this.generation) {
         return blob
       }
-      // Update the screen even if the browser cannot persist the new image.
+      // Fill missing images immediately; existing views keep their current copy.
       this.show(url, blob)
       try {
         const cache = await caches.open(CACHE)
@@ -286,13 +305,13 @@ export class OfflineImagesService {
       this.records.set([])
       this.progress.set({ done: 0, total: 0, errors: 0 })
       this.storageError.set(false)
-      for (const [url, entry] of this.active) {
+      for (const entry of this.active.values()) {
         if (entry.blob) {
           URL.revokeObjectURL(entry.blob)
         }
         entry.blob = undefined
         entry.display = entry.placeholder
-        this.changed.next(url)
+        this.changed.next(entry.url)
       }
     } catch {
       this.storageError.set(true)

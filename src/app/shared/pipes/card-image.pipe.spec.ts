@@ -37,7 +37,10 @@ describe('CardImagePipe shared offline images', () => {
     changed.next(environment.cdnDomain + card.image)
     expect(markForCheck).toHaveBeenCalledOnce()
     pipe.transform({ id: 100001 })
-    expect(release).toHaveBeenCalledWith(environment.cdnDomain + card.image)
+    expect(release).toHaveBeenCalledWith(
+      environment.cdnDomain + card.image,
+      expect.any(Symbol),
+    )
     pipe.ngOnDestroy()
     expect(release).toHaveBeenCalledTimes(2)
   })
@@ -48,12 +51,14 @@ describe('CardImagePipe shared offline images', () => {
       environment.cdnDomain + '/img/cards/sets/jyhad/200001.jpg',
       expect.any(String),
       '/assets/img/cardbackcrypt.jpg',
+      expect.any(Symbol),
     )
     pipe.transform({ id: 100001 })
     expect(acquire).toHaveBeenLastCalledWith(
       expect.any(String),
       expect.any(String),
       '/assets/img/cardbacklibrary.jpg',
+      expect.any(Symbol),
     )
     pipe.ngOnDestroy()
   })

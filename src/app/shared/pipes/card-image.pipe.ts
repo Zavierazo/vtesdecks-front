@@ -17,6 +17,7 @@ export class CardImagePipe implements PipeTransform, OnDestroy {
 
   private readonly images = inject(OfflineImagesService)
   private readonly detector = inject(ChangeDetectorRef)
+  private readonly consumer = Symbol('card-image-view')
   private url?: string
   private readonly subscription = this.images.changed.subscribe((url) => {
     if (url === this.url) {
@@ -31,7 +32,7 @@ export class CardImagePipe implements PipeTransform, OnDestroy {
     const url = this.resolveUrl(card, set)
     if (this.url !== url) {
       if (this.url) {
-        this.images.release(this.url)
+        this.images.release(this.url, this.consumer)
       }
       this.url = url
       return this.images.acquire(
@@ -41,15 +42,16 @@ export class CardImagePipe implements PipeTransform, OnDestroy {
         isCryptId(card.id)
           ? '/assets/img/cardbackcrypt.jpg'
           : '/assets/img/cardbacklibrary.jpg',
+        this.consumer,
       )
     }
-    return this.images.display(url)
+    return this.images.display(url, this.consumer)
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe()
     if (this.url) {
-      this.images.release(this.url)
+      this.images.release(this.url, this.consumer)
     }
   }
 

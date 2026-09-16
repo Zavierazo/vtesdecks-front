@@ -96,7 +96,7 @@ describe('OfflineImagesService', () => {
     vi.restoreAllMocks()
   })
 
-  it('shows the local image before revalidation completes, then replaces the same URL', async () => {
+  it('shows the local image before revalidation completes, keeps it stable until the next opening', async () => {
     cache.set(url, { blob: async () => blob() })
     const network = deferred<ReturnType<typeof response>>()
     fetchMock.mockReturnValue(network.promise)
@@ -105,11 +105,50 @@ describe('OfflineImagesService', () => {
     const old = service.display(url)
     network.resolve(response())
     await vi.waitFor(() => expect(write).toHaveBeenCalledOnce())
+    expect(service.display(url)).toBe(old)
+    expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(old)
+    service.release(url)
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith(old)
+    connection.offline.set(true)
+    service.acquire(url)
+    await vi.waitFor(() => expect(service.display(url)).toMatch(/^blob:/))
     expect(service.display(url)).not.toBe(old)
     expect(fetchMock).toHaveBeenCalledWith(
       url,
       expect.objectContaining({ cache: 'no-cache', mode: 'cors' }),
     )
+  })
+
+  it('lets a new view use the updated cache while an existing view stays unchanged', async () => {
+    const original = blob()
+    cache.set(url, { blob: async () => original })
+    connection.offline.set(true)
+    const grid = Symbol('grid')
+    const modal = Symbol('modal')
+    service.acquire(url, undefined, MISSING_CARD_IMAGE, grid)
+    await vi.waitFor(() => expect(service.display(url, grid)).toMatch(/^blob:/))
+    const old = service.display(url, grid)
+    connection.offline.set(false)
+    const updated = await service.revalidate(url)
+    expect(await cache.get(url)!.blob()).toBe(updated)
+    expect(service.display(url, grid)).toBe(old)
+    connection.offline.set(true)
+    service.acquire(url, undefined, MISSING_CARD_IMAGE, modal)
+    await vi.waitFor(() =>
+      expect(service.display(url, modal)).toMatch(/^blob:/),
+    )
+    expect(URL.createObjectURL).toHaveBeenLastCalledWith(updated)
+    expect(service.display(url, grid)).toBe(old)
+    service.release(url, modal)
+    expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(old)
+    service.release(url, grid)
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith(old)
+  })
+
+  it('shows a first download immediately when no local image exists', async () => {
+    service.acquire(url)
+    await vi.waitFor(() => expect(service.display(url)).toMatch(/^blob:/))
+    expect(cache.has(url)).toBe(true)
   })
 
   it('groups concurrent requests and keeps the last image if decoding fails', async () => {
