@@ -363,6 +363,7 @@
     "import_recent_empty": "No se encontraron mazos visitados recientemente"
   },
   "deck_builder_service": {
+    "missing_cards": "No se han podido cargar algunas cartas. Recarga la página para volver a intentarlo. Las cartas de tu mazo se conservan.",
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",
     "max_crypt_cards": "La cripta debe tener como máximo {{ maxCrypt }} cartas.",
     "banned_card": "La carta {{ name }} está prohibida",

@@ -82,7 +82,7 @@ export class UserSettingsComponent implements OnInit {
         Validators.required,
       ),
       profileImage: new FormControl(
-        profileImage?.includes('gravatar.com') ? '' : profileImage,
+        this.isGravatarUrl(profileImage) ? '' : profileImage,
       ),
       cardPrintingPreference: new FormControl(
         this.authQuery.getCardPrintingPreference(),
@@ -162,11 +162,27 @@ export class UserSettingsComponent implements OnInit {
     const profileImage = this.authQuery.getProfileImage()
     this.save('password', {
       displayName: this.authQuery.getDisplayName() ?? '',
-      profileImage: profileImage?.includes('gravatar.com') ? '' : profileImage,
+      profileImage: this.isGravatarUrl(profileImage) ? '' : profileImage,
       cardPrintingPreference: this.authQuery.getCardPrintingPreference(),
       password: this.password?.value,
       newPassword: this.newPassword?.value,
     })
+  }
+
+  private isGravatarUrl(value: string | undefined): boolean {
+    if (!value) {
+      return false
+    }
+    try {
+      const url = new URL(value)
+      return (
+        (url.protocol === 'https:' || url.protocol === 'http:') &&
+        (url.hostname === 'gravatar.com' ||
+          url.hostname.endsWith('.gravatar.com'))
+      )
+    } catch {
+      return false
+    }
   }
 
   private save(section: 'profile' | 'password', settings: ApiUserSettings) {

@@ -49,6 +49,36 @@ describe('Independent settings saves', () => {
     newPassword: 'newPassword2',
     confirmNewPassword: 'newPassword2',
   }
+  it.each([
+    ['https://gravatar.com/avatar/hash', true],
+    ['https://www.gravatar.com/avatar/hash', true],
+    ['https://secure.gravatar.com/avatar/hash', true],
+    ['https://GRAVATAR.COM/avatar/hash', true],
+    ['http://gravatar.com/avatar/hash', true],
+    ['https://notgravatar.com/avatar/hash', false],
+    ['https://gravatar.com.example.org/avatar/hash', false],
+    ['https://example.org/gravatar.com/avatar/hash', false],
+    ['https://example.org/?image=gravatar.com', false],
+    ['https://gravatar.com@example.org/avatar/hash', false],
+    ['ftp://gravatar.com/avatar/hash', false],
+    ['avatar.jpg', false],
+    ['not a URL gravatar.com', false],
+    ['', false],
+    [undefined, false],
+  ])('recognizes the actual Gravatar hostname for %s', (image, gravatar) => {
+    vi.spyOn(TestBed.inject(AuthQuery), 'getProfileImage').mockReturnValue(
+      image,
+    )
+    component.ngOnInit()
+    const expected = gravatar ? '' : image
+    expect(component.profileImage?.value).toBe(expected ?? null)
+    component.passwordForm.setValue(passwords)
+    component.changePassword()
+    expect(updateSettings).toHaveBeenCalledWith(
+      expect.objectContaining({ profileImage: expected }),
+    )
+  })
+
   it('saves the profile without submitting an incomplete password change', () => {
     component.passwordForm.patchValue({ password: 'old' })
     component.profileForm.patchValue({ displayName: 'Edited name' })

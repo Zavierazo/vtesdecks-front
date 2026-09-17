@@ -363,6 +363,7 @@
     "import_recent_empty": "No recently visited decks found"
   },
   "deck_builder_service": {
+    "missing_cards": "Some cards could not be loaded. Reload the page to retry. Your deck cards are preserved.",
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
     "max_crypt_cards": "Crypt must have at most {{ maxCrypt }} cards",
     "banned_card": "{{ name }} is banned card",

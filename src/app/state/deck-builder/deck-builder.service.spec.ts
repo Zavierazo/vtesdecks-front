@@ -73,6 +73,33 @@ describe('Deck builder draft recovery', () => {
     return { service, state: () => state, api, collectionApi }
   }
 
+  it.each(['crypt', 'library'])(
+    'reports missing %s metadata without losing deck entries',
+    (kind) => {
+      const cards = [
+        { id: 200001, number: 12 },
+        { id: 100001, number: 60 },
+      ]
+      const { service, state } = setup({ cards })
+      vi.mocked(service.validateDeck).mockRestore()
+      const query = TestBed.inject(DeckBuilderQuery)
+      Object.assign(query, {
+        getCrypt: () => (kind === 'crypt' ? [undefined] : []),
+        getLibrary: () => (kind === 'library' ? [undefined] : []),
+      })
+      const store = TestBed.inject(DeckBuilderStore)
+      Object.assign(store, {
+        setCryptErrors: vi.fn(),
+        setLibraryErrors: vi.fn(),
+      })
+      expect(service.validateDeck()).toBe(false)
+      expect(
+        kind === 'crypt' ? store.setCryptErrors : store.setLibraryErrors,
+      ).toHaveBeenCalledWith(['deck_builder_service.missing_cards'])
+      expect(state().cards).toEqual(cards)
+    },
+  )
+
   it('recovers text-only drafts even before any cards have been added', () => {
     const { service } = setup({ cards: [] })
     expect(service.hasDraftChanges({ name: 'Offline draft', cards: [] })).toBe(

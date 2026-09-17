@@ -363,6 +363,7 @@
     "import_recent_empty": "Nenhum baralho visitado recentemente"
   },
   "deck_builder_service": {
+    "missing_cards": "Não foi possível carregar algumas cartas. Recarrega a página para tentar novamente. As cartas do teu baralho são mantidas.",
     "min_crypt_cards": "Cripta deve ter pelo menos {{ minCrypt }} cartões",
     "max_crypt_cards": "Cripta deve ter no máximo {{ maxCrypt }} cartões",
     "banned_card": "{{ name }} é uma carta proibida",

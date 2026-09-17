@@ -57,7 +57,7 @@ import { getClanIcon, getDisciplineIcon } from '@utils'
 import {
   catchError,
   concat,
-  combineLatest,
+  forkJoin,
   debounceTime,
   distinctUntilChanged,
   EMPTY,
@@ -70,7 +70,6 @@ import {
   skip,
   switchMap,
   tap,
-  take,
   timer,
 } from 'rxjs'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -276,13 +275,12 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         this.form.disable({ emitEvent: false })
         const clone = history.state?.deck
         const advent = history.state?.advent
-        return combineLatest([
+        return forkJoin([
           this.cryptService.getCryptCards(),
           this.libraryService.getLibraryCards(),
         ]).pipe(
-          // Validation needs card metadata on direct entry too. Background
-          // catalog refreshes must not reinitialize an edited deck.
-          take(1),
+          // Wait for refresh completion, not the initial cached emission.
+          // Initialize once so updates never overwrite an edited deck.
           switchMap(() => this.deckBuilderService.init(id, clone)),
           tap(() => {
             if (!id && !clone && !advent) {

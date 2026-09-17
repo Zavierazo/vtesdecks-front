@@ -363,6 +363,7 @@
     "import_recent_empty": "Aucun deck récemment visité"
   },
   "deck_builder_service": {
+    "missing_cards": "Certaines cartes n’ont pas pu être chargées. Rechargez la page pour réessayer. Les cartes de votre deck sont conservées.",
     "min_crypt_cards": "La Crypte doit contenir au moins {{ minCrypt }} cartes",
     "max_crypt_cards": "La Crypte doit contenir au plus {{ maxCrypt }} cartes",
     "banned_card": "{{ name }} est une carte bannie",

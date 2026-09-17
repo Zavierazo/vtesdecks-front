@@ -326,6 +326,18 @@ export class DeckBuilderService {
   }
 
   validateDeck(): boolean {
+    const cryptCards = this.query.getCrypt()
+    const libraryCards = this.query.getLibrary()
+    const missingCrypt = cryptCards.some((card) => !card)
+    const missingLibrary = libraryCards.some((card) => !card)
+    if (missingCrypt || missingLibrary) {
+      const message = this.translocoService.translate(
+        'deck_builder_service.missing_cards',
+      )
+      this.store.setCryptErrors(missingCrypt ? [message] : [])
+      this.store.setLibraryErrors(missingLibrary ? [message] : [])
+      return false
+    }
     let isValid = true
     const limitedFormat = this.query.getLimitedFormat()
     const cryptErrors = []
@@ -353,7 +365,7 @@ export class DeckBuilderService {
     }
 
     const groups = new Set<number>()
-    for (const crypt of this.query.getCrypt()) {
+    for (const crypt of cryptCards) {
       if (crypt.banned) {
         cryptErrors.push(
           this.translocoService.translate('deck_builder_service.banned_card', {
@@ -424,7 +436,7 @@ export class DeckBuilderService {
       )
       isValid = false
     }
-    for (const library of this.query.getLibrary()) {
+    for (const library of libraryCards) {
       if (library.banned) {
         libraryErrors.push(
           this.translocoService.translate('deck_builder_service.banned_card', {
