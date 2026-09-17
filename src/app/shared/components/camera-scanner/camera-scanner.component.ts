@@ -63,12 +63,17 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   cameraErrorDetail = signal<string | null>(null)
 
   private stream: MediaStream | null = null
+  private destroyed = false
+  private startingCamera = false
 
   async ngAfterViewInit() {
     try {
       const status = await navigator.permissions.query({
         name: 'camera' as PermissionName,
       })
+      if (this.destroyed) {
+        return
+      }
       if (status.state === 'granted') {
         this.startCamera()
       } else if (status.state === 'denied') {
@@ -83,10 +88,15 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroyed = true
     this.releaseCamera()
   }
 
   async startCamera() {
+    if (this.destroyed || this.startingCamera || this.stream) {
+      return
+    }
+    this.startingCamera = true
     this.cameraError.set(null)
     this.cameraErrorDetail.set(null)
     try {
@@ -99,6 +109,9 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
           },
         })
       } catch (e) {
+        if (this.destroyed) {
+          return
+        }
         // OverconstrainedError: no rear camera (desktop) — retry without facing mode constraint
         if (
           e instanceof DOMException &&
@@ -112,6 +125,10 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
           throw e
         }
       }
+      if (this.destroyed) {
+        this.releaseCamera()
+        return
+      }
       this.video.nativeElement.srcObject = this.stream
       this.freeze.nativeElement.style.display = 'none'
       this.freeze.nativeElement.src = ''
@@ -119,6 +136,10 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
       this.appState.set('camera')
       this.changeDetectorRef.markForCheck()
     } catch (e) {
+      if (this.destroyed) {
+        return
+      }
+      this.releaseCamera()
       let errorKey = 'camera_error'
       if (e instanceof DOMException) {
         if (
@@ -145,6 +166,8 @@ export class CameraScannerComponent implements AfterViewInit, OnDestroy {
       )
       this.appState.set('idle')
       this.changeDetectorRef.markForCheck()
+    } finally {
+      this.startingCamera = false
     }
   }
 

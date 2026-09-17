@@ -40,10 +40,8 @@ export class OfflineImagesService {
 
   constructor() {
     this.connection.resumed.subscribe(() => {
-      for (const url of new Set(
-        [...this.active.values()].map((entry) => entry.url),
-      )) {
-        void this.revalidate(url).catch(() => undefined)
+      for (const [consumer, entry] of this.active) {
+        void this.load(entry.url, consumer)
       }
     })
   }

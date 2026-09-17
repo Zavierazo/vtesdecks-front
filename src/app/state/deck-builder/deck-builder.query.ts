@@ -155,10 +155,12 @@ export class DeckBuilderQuery {
   selectAvgCrypt(): Observable<number> {
     return this.selectCryptCapacity().pipe(
       map((cards) =>
-        roundNumber(
-          cards.reduce((acc, card) => acc + card, 0) / cards.length,
-          2,
-        ),
+        cards.length
+          ? roundNumber(
+              cards.reduce((acc, card) => acc + card, 0) / cards.length,
+              2,
+            )
+          : 0,
       ),
     )
   }
@@ -166,9 +168,12 @@ export class DeckBuilderQuery {
   selectCryptCapacity(): Observable<number[]> {
     return this.selectCrypt().pipe(
       map((cards) =>
-        cards.map((c) => {
-          return this.cryptQuery.getEntity(c.id)?.capacity ?? 0
-        }),
+        cards.flatMap((card) =>
+          Array.from(
+            { length: Math.max(0, card.number) },
+            () => this.cryptQuery.getEntity(card.id)?.capacity ?? 0,
+          ),
+        ),
       ),
     )
   }

@@ -469,7 +469,7 @@ try {
   assert.equal(await evaluate(`document.body.textContent.includes('Image not downloaded')`), false)
   assert.deepEqual(errors, [], 'browser runtime exceptions')
   console.log(
-    `PASS: settings integration, UTF-8, cached images, service worker cold offline routes/details, filter preservation and reconnect refresh. Screenshot: ${join(profile, 'settings.png')}`,
+    `PASS: settings integration, UTF-8, cached images, service worker cold offline routes/details, filter preservation and reconnect refresh. Screenshots: ${join(profile, 'settings.png')}`,
   )
 } finally {
   socket?.close()

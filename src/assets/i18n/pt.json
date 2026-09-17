@@ -1,4 +1,23 @@
 {
+  "local_drafts": {
+    "restore_title": "Restaurar um rascunho",
+    "restore_description": "Os seus baralhos são guardados automaticamente neste dispositivo. Restaure um rascunho, elimine os que já não precisa ou comece um novo baralho. Não são sincronizados e são eliminados ao limpar os dados do site.",
+    "restore": "Restaurar",
+    "start_new": "Começar um novo baralho",
+    "leave_title": "Sair do construtor de baralhos?",
+    "leave_message": "O seu baralho foi guardado como rascunho neste dispositivo. Mantenha-o para continuar mais tarde ou descarte este rascunho ao sair.",
+    "continue_editing": "Continuar a editar",
+    "keep_leave": "Manter rascunho e sair",
+    "discard_leave": "Descartar rascunho e sair",
+    "autosaved": "Rascunho guardado neste dispositivo",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "empty": "Não existem rascunhos guardados neste dispositivo.",
+    "delete_confirm": "Não pode ser desfeito.",
+    "untitled": "Baralho sem título",
+    "storage_error": "Não foi possível guardar este rascunho no dispositivo. Mantenha esta página aberta e verifique o espaço disponível e as permissões do navegador."
+  },
   "snapshot": {
     "title": "Snapshot do deck",
     "readonly": "Snapshot · Só leitura",

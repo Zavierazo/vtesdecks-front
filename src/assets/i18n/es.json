@@ -1,4 +1,23 @@
 {
+  "local_drafts": {
+    "restore_title": "Restaurar un borrador",
+    "restore_description": "Tus mazos se guardan automáticamente en este dispositivo. Restaura un borrador, elimina los que ya no necesites o empieza un mazo nuevo. No se sincronizan y se eliminan al borrar los datos del sitio.",
+    "restore": "Restaurar",
+    "start_new": "Empezar un mazo nuevo",
+    "leave_title": "¿Salir del constructor de mazos?",
+    "leave_message": "Tu mazo se ha guardado como borrador en este dispositivo. Consérvalo para continuar más tarde o descarta el borrador al salir.",
+    "continue_editing": "Seguir editando",
+    "keep_leave": "Conservar borrador y salir",
+    "discard_leave": "Descartar borrador y salir",
+    "autosaved": "Borrador guardado en este dispositivo",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "empty": "No hay borradores guardados en este dispositivo.",
+    "delete_confirm": "No se puede deshacer.",
+    "untitled": "Mazo sin título",
+    "storage_error": "No se ha podido guardar este borrador en el dispositivo. Mantén esta página abierta y comprueba el espacio disponible y los permisos del navegador."
+  },
   "snapshot": {
     "title": "Snapshot del deck",
     "readonly": "Snapshot · Solo lectura",

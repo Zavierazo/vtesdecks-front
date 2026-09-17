@@ -4,6 +4,8 @@
     "date": "12th September, 2026",
     "changes": [
       "Browse <strong>Crypt and Library offline</strong>, manage downloaded images in <strong>Settings > Offline</strong>, and build <strong>new decks offline</strong> with drafts saved on this device to restore after closing the app and save to your account once online.",
+      "The <strong>Deck Builder</strong> now automatically keeps multiple local drafts. When returning, choose a draft to restore, delete drafts you no longer need, or start a new deck. When leaving, choose whether to keep your draft for later or discard it. Drafts of existing decks are offered only when reopening the same deck.",
+      "Fixed opening existing decks directly in the Deck Builder before card catalogs have finished loading.",
       "Share <strong>deck snapshots</strong> from the deck page or Deck Builder, including unsaved changes. Each link preserves the shared deck and opens it in the familiar deck view, read-only.",
       "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second.",
       "Minor bug fixes and performance improvements."

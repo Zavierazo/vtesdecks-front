@@ -1,5 +1,5 @@
 import { ADVENT_DATA, AdventData } from '@advent/advent.data'
-import { inject, Injectable } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   ApiCard,
@@ -23,6 +23,7 @@ import {
   map,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
   throwError,
@@ -32,6 +33,7 @@ import { CollectionQueryState } from '../../modules/collection/state/collection.
 import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
+import { LocalDeckDraftsService } from '../../services/local-deck-drafts.service'
 @Injectable({ providedIn: 'root' })
 export class DeckBuilderService {
   private readonly store = inject(DeckBuilderStore)
@@ -40,9 +42,24 @@ export class DeckBuilderService {
   private readonly apiDataService = inject(ApiDataService)
   private readonly collectionApiDataService = inject(CollectionApiDataService)
   private readonly translocoService = inject(TranslocoService)
+  readonly localDrafts = inject(LocalDeckDraftsService)
+  readonly activeLocalDraftId = signal<string | undefined>(undefined)
+  readonly draftStorageError = signal(false)
+  readonly draftSaved = new Subject<void>()
 
-  init(id: string, cloneDeck: ApiDeck): Observable<ApiDeckBuilder> {
+  init(
+    id: string | undefined,
+    cloneDeck: ApiDeck,
+    localDraftId?: string,
+  ): Observable<ApiDeckBuilder> {
     this.store.reset()
+    this.activeLocalDraftId.set(undefined)
+    if (localDraftId) {
+      if (!this.openLocalDraft(localDraftId)) {
+        return throwError(() => new Error('Local draft not found'))
+      }
+      return of(this.store.getValue())
+    }
     if (id) {
       return this.apiDataService.getDeckBuilder(id).pipe(
         tap((deck) => {
@@ -124,6 +141,7 @@ export class DeckBuilderService {
   clone(): void {
     const { name, description, extra, cards } = this.store.getValue()
     this.store.reset()
+    this.activeLocalDraftId.set(undefined)
     this.store.update((state) => ({
       ...state,
       name: '[COPY] ' + name,
@@ -139,6 +157,7 @@ export class DeckBuilderService {
 
   cloneFrom(deck: ApiDeckBuilder): void {
     this.store.reset()
+    this.activeLocalDraftId.set(undefined)
     this.store.update((state) => ({
       ...state,
       name: '[COPY] ' + (deck.name ?? ''),
@@ -164,6 +183,7 @@ export class DeckBuilderService {
           saved: false,
         }))
         this.validateDeck()
+        this.saveDraft()
       }),
     )
   }
@@ -198,7 +218,15 @@ export class DeckBuilderService {
             collection: saved.collection ?? false,
             saved: true,
           }))
-          this.clearDraft(deck.id)
+          if (deck.id && this.activeLocalDraftId()) {
+            this.draftStorageError.set(
+              !this.localDrafts.remove(this.activeLocalDraftId()!),
+            )
+          }
+          if (!this.activeLocalDraftId()) {
+            this.clearDraft(deck.id)
+          }
+          this.activeLocalDraftId.set(undefined)
           this.validateDeck()
         }),
         finalize(() => this.store.setLoading(false)),
@@ -230,11 +258,13 @@ export class DeckBuilderService {
   updatePublished(published: boolean) {
     this.store.updatePublished(published)
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   updateCollection(collection: boolean): Observable<ApiCollectionPage> {
     this.store.updateCollection(collection)
     this.store.setSaved(false)
+    this.saveDraft()
     if (collection && !this.query.hasCollectionCards()) {
       return this.fetchCollection()
     } else {
@@ -262,6 +292,7 @@ export class DeckBuilderService {
     this.store.setLimitedFormat(format)
     this.validateDeck()
     this.store.setSaved(false)
+    this.saveDraft()
   }
 
   resetCryptFilter() {
@@ -468,25 +499,59 @@ export class DeckBuilderService {
   }
 
   saveDraft(): void {
-    const { id, name, description, published, collection, cards, extra } =
-      this.store.getValue()
-    const key = `deckBuilderDraft_${id ?? 'new'}`
+    const deck = this.store.getValue()
+    const localId = this.activeLocalDraftId()
+    const saved = this.localDrafts.save(
+      deck.name?.trim() ||
+        this.translocoService.translate('local_drafts.untitled'),
+      deck,
+      localId,
+    )
+    this.draftStorageError.set(!saved)
+    if (saved) {
+      this.activeLocalDraftId.set(saved.id)
+      this.draftSaved.next()
+    }
+  }
+
+  discardCurrentDraft(): boolean {
+    const id = this.activeLocalDraftId()
+    if (id && !this.localDrafts.remove(id)) {
+      this.draftStorageError.set(true)
+      return false
+    }
+    this.activeLocalDraftId.set(undefined)
+    this.draftStorageError.set(false)
+    return true
+  }
+
+  migrateLegacyDrafts(): void {
     try {
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          id,
-          name,
-          description,
-          published,
-          collection,
-          cards,
-          extra,
-          savedAt: Date.now(),
-        }),
+      const keys = Array.from({ length: localStorage.length }, (_, index) =>
+        localStorage.key(index),
       )
+      for (const key of keys) {
+        if (!key?.startsWith('deckBuilderDraft_')) {
+          continue
+        }
+        const suffix = key.slice('deckBuilderDraft_'.length)
+        const draft = this.loadDraft(suffix === 'new' ? undefined : suffix)
+        if (!draft || !Array.isArray(draft.cards)) {
+          continue
+        }
+        const saved = this.localDrafts.save(
+          draft.name?.trim() ||
+            this.translocoService.translate('local_drafts.untitled'),
+          { ...draft, id: suffix === 'new' ? undefined : suffix },
+        )
+        if (!saved) {
+          this.draftStorageError.set(true)
+          return
+        }
+        localStorage.removeItem(key)
+      }
     } catch {
-      // localStorage unavailable or full — silently skip
+      this.draftStorageError.set(true)
     }
   }
 
@@ -523,16 +588,76 @@ export class DeckBuilderService {
       ...state,
       name: draft.name ?? state.name,
       description: draft.description ?? state.description,
+      published: draft.published ?? state.published,
+      collection: draft.collection ?? state.collection,
       cards: draft.cards ?? state.cards,
-      extra: draft.extra ?? state.extra,
+      extra: draft.extra,
       saved: false,
     }))
     this.validateDeck()
+    this.saveDraft()
+    this.restoreCollection()
+    if (!this.draftStorageError()) {
+      this.clearDraft(this.store.getValue().id)
+    }
+  }
+
+  hasDraftChanges(draft: ApiDeckBuilder): boolean {
+    const current = this.store.getValue()
+    const fingerprint = (deck: ApiDeckBuilder) =>
+      JSON.stringify({
+        name: deck.name ?? '',
+        description: deck.description ?? '',
+        published: deck.published ?? false,
+        collection: deck.collection ?? false,
+        extra: deck.extra ?? null,
+        cards: (deck.cards ?? [])
+          .map((card) => `${card.id}:${card.number}`)
+          .sort(),
+      })
+    return fingerprint(draft) !== fingerprint(current)
   }
 
   restoreFromHistory(cards: ApiCard[]): void {
     this.store.update((state) => ({ ...state, cards, saved: false }))
     this.validateDeck()
+    this.saveDraft()
+  }
+
+  openLocalDraft(id: string): boolean {
+    if (!this.localDrafts.reload()) {
+      return false
+    }
+    const draft = this.localDrafts.get(id)
+    if (!draft || draft.sourceDeckId) {
+      return false
+    }
+    this.store.reset()
+    this.activeLocalDraftId.set(id)
+    this.store.update((state) => ({
+      ...state,
+      name: draft.deck.name,
+      description: draft.deck.description,
+      cards: (draft.deck.cards ?? []).map((card) => ({ ...card })),
+      extra: draft.deck.extra,
+      saved: false,
+      published: draft.deck.published ?? false,
+      collection: draft.deck.collection ?? false,
+    }))
+    this.draftStorageError.set(false)
+    this.validateDeck()
+    this.restoreCollection()
+    return true
+  }
+
+  private restoreCollection(): void {
+    if (this.store.getValue().collection && navigator.onLine) {
+      this.fetchCollection()
+        .pipe(catchError(() => EMPTY))
+        .subscribe()
+    } else {
+      this.store.updateCollectionCards()
+    }
   }
 
   fetchSuggestedCards(): void {

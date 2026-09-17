@@ -225,4 +225,21 @@ describe('OfflineImagesService', () => {
     connection.resumed.next()
     expect(fetchMock).toHaveBeenCalledOnce()
   })
+
+  it('tries the original image after reconnect when the selected printing is unavailable', async () => {
+    const fallback = 'https://cdn.test/original.jpg'
+    connection.offline.set(true)
+    service.acquire(url, fallback)
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    fetchMock.mockImplementation(async (requested: string) => {
+      if (requested === url) {
+        throw new Error('Printing not found')
+      }
+      return response()
+    })
+    connection.offline.set(false)
+    connection.resumed.next()
+    await vi.waitFor(() => expect(service.display(url)).toMatch(/^blob:/))
+    expect(fetchMock).toHaveBeenCalledWith(fallback, expect.anything())
+  })
 })

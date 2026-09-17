@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core'
 import {
   FormBuilder,
@@ -71,6 +72,7 @@ import { toUrl } from './limited-format-utils'
 })
 export class LimitedFormatModalComponent implements OnInit {
   private readonly fb = inject(FormBuilder)
+  private readonly changeDetector = inject(ChangeDetectorRef)
   readonly activeModal = inject(NgbActiveModal)
   private readonly apiDataService = inject(ApiDataService)
   private readonly setQuery = inject(SetQuery)
@@ -147,6 +149,7 @@ export class LimitedFormatModalComponent implements OnInit {
             this.predefinedFormats.push(format)
           })
           this.initializeWithFormat()
+          this.changeDetector.markForCheck()
         }),
       )
       .subscribe()

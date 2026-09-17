@@ -1,4 +1,23 @@
 {
+  "local_drafts": {
+    "restore_title": "Restore a draft",
+    "restore_description": "Your decks are saved automatically on this device. Restore a draft, delete those you no longer need, or start a new deck. Drafts are not synced and are removed if you clear site data.",
+    "restore": "Restore",
+    "start_new": "Start a new deck",
+    "leave_title": "Leave the Deck Builder?",
+    "leave_message": "Your deck has been stored as a draft on this device. Keep it to continue later, or discard this draft when leaving.",
+    "continue_editing": "Continue editing",
+    "keep_leave": "Keep draft and leave",
+    "discard_leave": "Discard draft and leave",
+    "autosaved": "Draft saved on this device",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "close": "Close",
+    "empty": "No drafts saved on this device.",
+    "delete_confirm": "Cannot be undone.",
+    "untitled": "Untitled deck",
+    "storage_error": "Unable to save this draft on your device. Keep this page open and check available storage and browser permissions."
+  },
   "snapshot": {
     "title": "Deck snapshot",
     "readonly": "Snapshot · Read only",

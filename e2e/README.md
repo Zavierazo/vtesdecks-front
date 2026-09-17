@@ -1,7 +1,7 @@
 # VTESDecks — Cypress E2E Suite
 
 End-to-end tests for the VTESDecks Angular PWA. The suite is **data-agnostic**:
-it never asserts on specific records, ids, counts or backend text. Every test
+the live-backend specs do not assert on specific records, ids, counts or backend text. Those tests
 discovers whatever the API currently returns and validates *behaviour, state
 changes and workflows* relative to that data. It is safe to run against any
 environment whose dataset changes between runs.
@@ -194,3 +194,15 @@ inline `# add data-cy` notes in `support/selectors.ts`):
 Also worth adding for testability: a documented empty-state container element,
 and a way to disable reCAPTCHA in a non-production profile so the login UI does
 not depend on the third-party widget at all.
+
+## Isolated builder regressions
+
+Specs 31 and 32 use deterministic intercepted API responses and fake local authentication, without contacting an account. They cover direct editor entry with delayed catalogs, reloads, automatic multiple drafts, public/private restoration, keep/discard decisions, deletion, and the save indicator. The drafts spec simulates offline application state and blocks API requests after preparing catalogs.
+
+Run against the dev server:
+
+```bash
+npx cypress run --project e2e --spec "e2e/cypress/e2e/3{1,2}-*.cy.ts" --browser chrome
+```
+
+The production service-worker smoke in scripts/offline-smoke.mjs verifies cold offline app startup, which the dev-server tests do not establish.

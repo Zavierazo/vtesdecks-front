@@ -4,7 +4,7 @@ import { CryptQuery } from '@state/crypt/crypt.query'
 import { CryptService } from '@state/crypt/crypt.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { LibraryService } from '@state/library/library.service'
-import { catchError, forkJoin, defer, map, of, switchMap } from 'rxjs'
+import { catchError, combineLatest, defer, map, of, switchMap } from 'rxjs'
 import { decodeSnapshot } from '../utils/deck-snapshot'
 import { snapshotView } from '../modules/deck-snapshot/snapshot-view'
 
@@ -18,7 +18,7 @@ export class DeckSnapshotService {
   load(link: string) {
     return defer(() => of(decodeSnapshot(link))).pipe(
       switchMap((snapshot) =>
-        forkJoin([
+        combineLatest([
           this.cryptService.getCryptCards(),
           this.libraryService.getLibraryCards(),
         ]).pipe(
@@ -32,6 +32,12 @@ export class DeckSnapshotService {
             throw new Error('catalog_error')
           }),
           map(() => {
+            if (
+              !this.cryptQuery.getAll({}).length ||
+              !this.libraryQuery.getAll({}).length
+            ) {
+              throw new Error('catalog_error')
+            }
             const view = snapshotView(
               snapshot,
               this.cryptQuery.getAll({}),

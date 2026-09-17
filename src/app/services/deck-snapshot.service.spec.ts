@@ -14,7 +14,7 @@ describe('DeckSnapshotService', () => {
     vi.unstubAllGlobals()
     TestBed.resetTestingModule()
   })
-  function setup(fail = false) {
+  function setup(fail = false, empty = false) {
     const crypt = [{ id: 200001, capacity: 5, type: 'Vampire' }] as ApiCrypt[]
     const library = [
       { id: 100001, type: 'Master', trifle: true },
@@ -25,7 +25,7 @@ describe('DeckSnapshotService', () => {
         {
           provide: CryptQuery,
           useValue: {
-            getAll: () => (fail ? [] : crypt),
+            getAll: () => (fail || empty ? [] : crypt),
             getDisciplines: () => [],
           },
         },
@@ -41,7 +41,11 @@ describe('DeckSnapshotService', () => {
           provide: CryptService,
           useValue: {
             getCryptCards: () =>
-              fail ? throwError(() => new Error('offline')) : ready,
+              fail
+                ? throwError(() => new Error('offline'))
+                : empty
+                  ? of([])
+                  : ready,
           },
         },
         {
@@ -73,7 +77,6 @@ describe('DeckSnapshotService', () => {
     await new Promise((resolve) => setTimeout(resolve, 30))
     expect(completed).toBe(false)
     ready.next(crypt)
-    ready.complete()
     const { deck, unknown } = await result
     expect(deck).toMatchObject({
       id: '',
@@ -84,6 +87,13 @@ describe('DeckSnapshotService', () => {
     })
     expect(deck.library).toEqual([{ id: 100001, number: 0, type: 'Master' }])
     expect(unknown).toEqual([{ id: 299999, number: 2, type: undefined }])
+  })
+
+  it('reports an unavailable catalog when offline services return an empty array', async () => {
+    const { service } = setup(false, true)
+    await expect(
+      firstValueFrom(service.load('/deck/snapshot#200001=1')),
+    ).rejects.toThrow('catalog_error')
   })
 
   it('distinguishes catalog failures from invalid links', async () => {

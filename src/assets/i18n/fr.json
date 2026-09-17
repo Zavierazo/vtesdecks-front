@@ -1,4 +1,23 @@
 {
+  "local_drafts": {
+    "restore_title": "Restaurer un brouillon",
+    "restore_description": "Vos decks sont enregistrés automatiquement sur cet appareil. Restaurez un brouillon, supprimez ceux dont vous n’avez plus besoin ou commencez un nouveau deck. Ils ne sont pas synchronisés et sont supprimés si vous effacez les données du site.",
+    "restore": "Restaurer",
+    "start_new": "Commencer un nouveau deck",
+    "leave_title": "Quitter le constructeur de decks ?",
+    "leave_message": "Votre deck a été enregistré comme brouillon sur cet appareil. Conservez-le pour continuer plus tard ou supprimez ce brouillon en quittant.",
+    "continue_editing": "Continuer à modifier",
+    "keep_leave": "Conserver et quitter",
+    "discard_leave": "Supprimer et quitter",
+    "autosaved": "Brouillon enregistré sur cet appareil",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "empty": "Aucun brouillon enregistré sur cet appareil.",
+    "delete_confirm": "Cette action est irréversible.",
+    "untitled": "Deck sans titre",
+    "storage_error": "Impossible d’enregistrer ce brouillon sur cet appareil. Gardez cette page ouverte et vérifiez l’espace disponible et les autorisations du navigateur."
+  },
   "snapshot": {
     "title": "Snapshot du deck",
     "readonly": "Snapshot · Lecture seule",

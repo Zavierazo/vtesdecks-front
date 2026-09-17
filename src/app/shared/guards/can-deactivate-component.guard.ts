@@ -18,7 +18,11 @@ export class CanDeactivateComponent {
   canDeactivate(
     component: ComponentCanDeactivate,
   ): boolean | Observable<boolean> {
-    return component.canDeactivate() ? true : this.confirmDialog()
+    const result = component.canDeactivate()
+    if (typeof result === 'boolean') {
+      return result ? true : this.confirmDialog()
+    }
+    return result
   }
 
   confirmDialog(): Observable<boolean> {

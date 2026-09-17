@@ -1,11 +1,18 @@
 <main
   class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100"
   role="main"
+  [attr.inert]="initializing() ? '' : null"
+  [attr.aria-busy]="initializing()"
   *transloco="let t; read: 'deck_builder'"
 >
   <div class="row">
     <section class="dark-grey-text col-12">
       <div class="deck-hero mb-3">
+        @if (draftStorageError()) {
+          <div class="alert alert-danger m-3" role="alert">
+            {{ 'local_drafts.storage_error' | transloco }}
+          </div>
+        }
         <form class="container-fluid py-3 text-center" [formGroup]="form">
           <div class="justify-content-center align-self-center text-start p-2">
             <div class="form-floating">
@@ -121,7 +128,9 @@
               class="btn btn-outline-primary m-2"
               [ngClass]="{
                 'btn-primary': limitedFormat$ | async,
-                'btn-outline-primary': !(limitedFormat$ | async),
+                'btn-outline-primary':
+                  (limitedFormat$ | async) === null ||
+                  (limitedFormat$ | async) === undefined,
               }"
               (click)="openLimitedFormatModal()"
             >
@@ -251,6 +260,21 @@
                 <i class="bi bi-save-fill"></i>
                 {{ t('save') }}
               </button>
+            }
+            @if (activeLocalDraftId() && !draftStorageError()) {
+              <small
+                class="text-body-secondary d-inline-block mx-2"
+                role="status"
+              >
+                <i
+                  class="bi draft-sync-icon me-1"
+                  [class.bi-arrow-repeat]="draftSyncing()"
+                  [class.bi-check2]="!draftSyncing()"
+                  [class.is-syncing]="draftSyncing()"
+                  aria-hidden="true"
+                ></i>
+                {{ 'local_drafts.autosaved' | transloco }}
+              </small>
             }
             @if ((deckId$ | async)!!) {
               <button

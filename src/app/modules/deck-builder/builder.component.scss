@@ -51,3 +51,25 @@
 .considering-card {
   opacity: 0.5;
 }
+
+.draft-sync-icon {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+
+  &.is-syncing {
+    animation: draft-sync-spin 650ms linear infinite;
+  }
+}
+
+@keyframes draft-sync-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draft-sync-icon.is-syncing {
+    animation: none;
+  }
+}
