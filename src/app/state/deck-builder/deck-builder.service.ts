@@ -218,7 +218,7 @@ export class DeckBuilderService {
             collection: saved.collection ?? false,
             saved: true,
           }))
-          if (deck.id && this.activeLocalDraftId()) {
+          if (this.activeLocalDraftId()) {
             this.draftStorageError.set(
               !this.localDrafts.remove(this.activeLocalDraftId()!),
             )

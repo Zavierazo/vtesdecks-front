@@ -8,7 +8,7 @@ import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderService } from './deck-builder.service'
 import { DeckBuilderStore } from './deck-builder.store'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { firstValueFrom, of } from 'rxjs'
+import { firstValueFrom, of, throwError } from 'rxjs'
 
 describe('Deck builder draft recovery', () => {
   afterEach(() => {
@@ -170,7 +170,7 @@ describe('Deck builder draft recovery', () => {
     expect(service.draftStorageError()).toBe(true)
   })
 
-  it('saves a named draft as a new account deck and keeps the local copy', async () => {
+  it('removes a new deck draft after saving and links further edits to the saved deck', async () => {
     const { service, state, api } = setup({
       id: 'original-account-deck',
       cards: [],
@@ -190,7 +190,38 @@ describe('Deck builder draft recovery', () => {
     )
     expect(state().id).toBe('saved-account-deck')
     expect(service.activeLocalDraftId()).toBeUndefined()
-    expect(service.localDrafts.get(draft.id)?.deck.name).toBe('Local deck')
+    expect(service.localDrafts.get(draft.id)).toBeUndefined()
+    expect(service.localDrafts.reload()).toBe(true)
+    expect(service.localDrafts.drafts()).toHaveLength(0)
+
+    service.updateName('Further edits')
+    const recoveryId = service.activeLocalDraftId()!
+    expect(service.localDrafts.get(recoveryId)).toMatchObject({
+      sourceDeckId: 'saved-account-deck',
+      deck: { name: 'Further edits', cards: [{ id: 100001, number: 2 }] },
+    })
+    expect(service.localDrafts.newDeckDrafts()).toHaveLength(0)
+    service.updateName('More edits')
+    expect(service.activeLocalDraftId()).toBe(recoveryId)
+    expect(service.localDrafts.drafts()).toHaveLength(1)
+
+    await firstValueFrom(service.saveDeck())
+    expect(service.localDrafts.drafts()).toHaveLength(0)
+  })
+
+  it('preserves the active draft when the account save fails', async () => {
+    const { service, api } = setup({ name: 'Unsaved', cards: [] })
+    service.saveDraft()
+    const draftId = service.activeLocalDraftId()!
+    api.saveDeckBuilder.mockReturnValueOnce(
+      throwError(() => new Error('Save failed')),
+    )
+
+    await expect(firstValueFrom(service.saveDeck())).rejects.toThrow(
+      'Save failed',
+    )
+    expect(service.activeLocalDraftId()).toBe(draftId)
+    expect(service.localDrafts.get(draftId)?.deck.name).toBe('Unsaved')
   })
 
   it('keeps saved-deck identity and removes its draft after saving', async () => {
