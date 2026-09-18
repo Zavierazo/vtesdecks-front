@@ -1,0 +1,24 @@
+<div
+  class="connection-banner"
+  [class.is-visible]="connection.offline() || reconnected()"
+  [class.is-online]="!connection.offline()"
+  [attr.aria-hidden]="!(connection.offline() || reconnected())"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  <div class="connection-content">
+    <i
+      class="bi me-2"
+      [class.bi-wifi-off]="connection.offline()"
+      [class.bi-wifi]="!connection.offline()"
+      aria-hidden="true"
+    ></i>
+    {{
+      (connection.offline()
+        ? 'offline.banner_offline'
+        : 'offline.banner_online'
+      ) | transloco
+    }}
+  </div>
+</div>

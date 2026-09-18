@@ -83,9 +83,27 @@ The production service worker prefetches all JavaScript bundles and core media d
 
 ### Reusable Browser Searches
 
+Client-side Crypt and Library name searches share `matchesCardName` and `compareCardNames` in `card-name-search.utils.ts`, covering canonical names, translated names, and aliases with the same normalization, fuzzy, and regex matching. Autocomplete queries rank the complete matching catalog before limiting results; callers must use the same comparator when combining catalogs. Backend searches retain their own contracts.
+
 Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
 
 Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`, support per-shop include/exclude selection, and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`. Multiple included shops use union semantics and excluded shops are subtracted; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.
+
+### Offline card browsing
+
+Crypt, Library and sets restore from IndexedDB before background refresh. Catalog data and locale/version metadata are committed atomically. Card catalog refreshes retain the current catalog while loading, then atomically replace it with the complete backend response, removing IDs no longer returned. Deck Builder initialization waits for both catalog refreshes to complete before validation; unavailable card metadata produces a validation error without discarding deck entries. Catalog updates are automatic, without settings controls. An offline section in authenticated `/user/settings` manages optional card-image downloads on this device; images use dedicated Cache Storage and IndexedDB metadata, with HTTP revalidation and decoded-image validation before replacement. CardImagePipe resolves URLs and owns a per-view image subscription. Each view keeps its first valid image until released; revalidation updates Cache Storage for the next opening, while views without an image fill immediately. Blob URLs are released with their view; do not add a separate offline image pipe. Angular's service worker owns app assets only. The shell shows a red connectivity banner while offline and a brief green confirmation only after reconnecting. Offline-only card notices must not appear during online loading. Connectivity distinguishes missing network from server failures; network-dependent filters are hidden and inactive offline while retaining their URL values for reconnection. Account data and server-saved deck loading remain online-only; new decks use automatic local drafts. Business API calls remain in ApiDataService; CDN requests belong to OfflineImagesService. Storage failures must be visible.
+
+### Local drafts
+
+The Deck Builder automatically saves each editing session to `LocalDeckDraftsService`, using the deck name as its draft label. Returning to the new-deck builder offers a picker to restore a draft with its selected public/private status, delete unwanted drafts, or start fresh; there is no dedicated draft-save menu. Drafts are device-local and do not expire automatically. Legacy recovery slots are migrated without deleting them until the new write succeeds. Leaving unsaved work offers keep draft, discard draft, or continue editing; the stored-draft message requires a successful write. `CanDeactivateComponent` must return a component's Observable decision rather than treating it as a truthy boolean. Successfully saving to the account removes the active local draft for both new and existing decks. Further edits automatically create a recovery draft linked to the saved deck ID. Storage failures are visible and must not replace the editor or remove a draft.
+
+### Local builder drafts
+
+Drafts of existing decks are linked to their saved deck ID and offered only when reopening that deck; the new-deck picker lists only drafts without a saved deck ID. Saving an existing deck clears its linked recovery draft. Restoring an existing-deck draft preserves its server identity and selected visibility.
+
+### Deck Snapshots
+
+`/deck/snapshot?name=...&author=...&description=...#id=quantity;id=quantity` opens a public, read-only deck snapshot with URL-encoded metadata in query parameters and ordered card pairs in the fragment. Legacy compressed `#v1=...` links are rejected. The query and fragment are bounded to 128 KiB, and decoded content to 256 KiB. Metadata is included in the HTTP request; card pairs remain in the fragment. Snapshots contain only name, author, description and card ID/quantity pairs (including zero quantities). They reuse `DeckComponent`, its HTML and styles through snapshot route data, with local state instead of the normal deck resolver/store. Social/view-tracking endpoints, exports and original-deck actions are disabled in snapshot mode. Card details and derived statistics come from the current catalogs. Sharing from the builder captures unsaved form values and all cards without saving the draft. Cloning creates a new private draft without an original deck ID. Snapshot metadata is centrally defined as noindex. Links are self-contained, not authenticated statements of authorship. Encoding and decoding use browser APIs without additional dependencies.
 
 ### Achievements
 
@@ -144,6 +162,7 @@ SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page
 
 - **Markdown**: `MarkdownService` parses first and sanitizes generated HTML with an explicit DOMPurify tag, attribute, and URL allowlist. Only this service may mark sanitized Markdown as trusted for Angular, preserving the card custom element and validated YouTube embeds. Custom renderers must HTML-encode interpolated values and accept only validated YouTube video IDs.
 - **Change detection**: `OnPush` everywhere.
+- **Component templates**: Always keep HTML in a separate `.html` file referenced with `templateUrl`; never use inline component templates.
 - **Subscriptions**: cleaned up with `@ngneat/until-destroy`.
 - **API calls**: go through `ApiDataService` only.
 - **Translations**: `transloco` pipe in templates; `TranslocoService.translate()` in code.

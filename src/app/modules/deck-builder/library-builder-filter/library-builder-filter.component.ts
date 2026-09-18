@@ -1,3 +1,4 @@
+import { ConnectivityService } from '../../../services/connectivity.service'
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { AsyncPipe, TitleCasePipe } from '@angular/common'
 import {
@@ -59,6 +60,7 @@ import { LibraryTypeFilterComponent } from '../library-type-filter/library-type-
 })
 export class LibraryBuilderFilterComponent implements OnInit, OnChanges {
   private libraryQuery = inject(LibraryQuery)
+  readonly connection = inject(ConnectivityService)
   private apiDataService = inject(ApiDataService)
   private translocoService = inject(TranslocoService)
   private titleCasePipe = new TitleCasePipe()

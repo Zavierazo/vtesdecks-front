@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core'
 
-export type IndexedDbStore = 'crypt' | 'library' | 'set'
+export type IndexedDbStore = 'crypt' | 'library' | 'set' | 'images'
 
 const DB_NAME = 'vtesdecks'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const META_STORE = 'meta'
-const ENTITY_STORES: IndexedDbStore[] = ['crypt', 'library', 'set']
+const ENTITY_STORES: IndexedDbStore[] = ['crypt', 'library', 'set', 'images']
 
 /**
  * Thin IndexedDB wrapper used to persist the card catalogs (crypt, library and
- * sets), which are too big for localStorage. Every method degrades to a no-op
- * when IndexedDB is unavailable (private mode, blocked storage, jsdom in unit
- * tests): the stores simply stay in memory and the data is fetched again.
+ * sets), which are too big for localStorage. Legacy reads/writes degrade to
+ * memory-only operation when storage is unavailable. Offline preparation uses
+ * strict replaceCatalog/write/clear operations so failures remain visible.
  */
 @Injectable({
   providedIn: 'root',
@@ -98,6 +98,52 @@ export class IndexedDbService {
     }
   }
 
+  async replaceCatalog<T>(
+    store: IndexedDbStore,
+    entities: T[],
+    key: string,
+    metadata: unknown,
+  ): Promise<void> {
+    const db = await this.open()
+    if (!db) {
+      throw new Error('Storage unavailable')
+    }
+    const tx = db.transaction([store, META_STORE], 'readwrite')
+    const done = this.complete(tx)
+    try {
+      tx.objectStore(store).clear()
+      entities.forEach((entity) => tx.objectStore(store).put(entity))
+      tx.objectStore(META_STORE).put(metadata, key)
+    } catch (error) {
+      tx.abort()
+      await done.catch(() => undefined)
+      throw error
+    }
+    await done
+  }
+
+  async write<T>(store: IndexedDbStore, value: T): Promise<void> {
+    const db = await this.open()
+    if (!db) {
+      throw new Error('Storage unavailable')
+    }
+    const tx = db.transaction(store, 'readwrite')
+    const done = this.complete(tx)
+    tx.objectStore(store).put(value)
+    await done
+  }
+
+  async clear(store: IndexedDbStore): Promise<void> {
+    const db = await this.open()
+    if (!db) {
+      throw new Error('Storage unavailable')
+    }
+    const tx = db.transaction(store, 'readwrite')
+    const done = this.complete(tx)
+    tx.objectStore(store).clear()
+    await done
+  }
+
   private open(): Promise<IDBDatabase | null> {
     if (!this.db) {
       this.db = this.openDatabase()
@@ -123,7 +169,14 @@ export class IndexedDbService {
             db.createObjectStore(META_STORE)
           }
         }
-        request.onsuccess = () => resolve(request.result)
+        request.onsuccess = () => {
+          const db = request.result
+          db.onversionchange = () => {
+            db.close()
+            this.db = undefined
+          }
+          resolve(db)
+        }
         request.onerror = () => {
           console.trace(request.error)
           resolve(null)

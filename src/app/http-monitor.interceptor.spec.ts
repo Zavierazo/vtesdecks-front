@@ -1,3 +1,4 @@
+import { ConnectivityService } from './services/connectivity.service'
 import {
   HTTP_INTERCEPTORS,
   HttpClient,
@@ -20,7 +21,7 @@ import {
   HttpMonitorInterceptor,
   isRetryableRequest,
 } from './http-monitor.interceptor'
-import { RETRY_REPEATABLE_POST } from './http-retry.context'
+import { BACKGROUND_REFRESH, RETRY_REPEATABLE_POST } from './http-retry.context'
 
 describe('HttpMonitorInterceptor retry policy', () => {
   it('retries GET and HEAD requests', () => {
@@ -86,6 +87,32 @@ describe('HttpMonitorInterceptor retry policy', () => {
     }
 
     afterEach(() => TestBed.inject(HttpTestingController).verify())
+
+    it('rejects offline API requests immediately without a toast or retry', () => {
+      const { httpClient, controller } = setup()
+      TestBed.inject(ConnectivityService).offline.set(true)
+      const error = vi.fn()
+      httpClient.get(`${environment.api.baseUrl}/cards`).subscribe({ error })
+      controller.expectNone((request) => request.url.includes('/cards'))
+      expect(error).toHaveBeenCalledOnce()
+      expect(TestBed.inject(ToastService).show).not.toHaveBeenCalled()
+    })
+
+    it('does not delay background catalog refreshes when the server is unavailable', () => {
+      const { httpClient, controller } = setup()
+      const error = vi.fn()
+      const context = new HttpContext().set(BACKGROUND_REFRESH, true)
+      httpClient
+        .get(`${environment.api.baseUrl}/cards`, { context })
+        .subscribe({ error })
+      controller
+        .expectOne((request) => request.url.includes('/cards'))
+        .flush(null, { status: 503, statusText: 'Unavailable' })
+      expect(error).toHaveBeenCalledOnce()
+      expect(TestBed.inject(ConnectivityService).serverUnavailable()).toBe(true)
+      expect(TestBed.inject(ConnectivityService).offline()).toBe(false)
+      expect(TestBed.inject(ToastService).show).not.toHaveBeenCalled()
+    })
 
     it('issues a mutation only once when its response is lost', () => {
       const { httpClient, controller } = setup()

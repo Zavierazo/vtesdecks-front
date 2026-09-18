@@ -1,3 +1,5 @@
+import { LibraryStore } from '@state/library/library.store'
+import { ConnectivityService } from '../../../services/connectivity.service'
 import {
   AsyncPipe,
   NgClass,
@@ -9,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   DOCUMENT,
+  DestroyRef,
   inject,
   OnInit,
   TemplateRef,
@@ -58,8 +61,8 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import {
   BehaviorSubject,
   debounceTime,
-  distinctUntilChanged,
   filter,
+  take,
   fromEvent,
   map,
   merge,
@@ -103,6 +106,9 @@ import { scrollContainerIntoView } from '../../../shared/utils/scroll.util'
   ],
 })
 export class LibrarySectionComponent implements OnInit {
+  private readonly catalog = inject(LibraryStore)
+  private readonly destroyRef = inject(DestroyRef)
+  readonly connection = inject(ConnectivityService)
   private readonly document = inject<Document>(DOCUMENT)
   private readonly viewportService = inject(ViewportScroller)
   private readonly changeDetector = inject(ChangeDetectorRef)
@@ -171,10 +177,22 @@ export class LibrarySectionComponent implements OnInit {
     },
   ]
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.catalog.ready
+    if (this.destroyRef.destroyed) {
+      return
+    }
     this.listenScroll()
     this.onChangeNameFilter()
     this.listenShopAvailability()
+    this.connection.changed.pipe(untilDestroyed(this)).subscribe(() => {
+      this.availabilityByShop.clear()
+      this.shopSelection$.next({
+        shops: this.libraryFilter.shops ?? [],
+        notShops: this.libraryFilter.notShops ?? [],
+      })
+      this.initQuery()
+    })
     this.route.queryParams
       .pipe(
         untilDestroyed(this),
@@ -208,9 +226,20 @@ export class LibrarySectionComponent implements OnInit {
     }
   }
 
+  get effectiveFilter(): LibraryFilter {
+    return this.connection.offline()
+      ? {
+          ...this.libraryFilter,
+          shops: [],
+          notShops: [],
+          predefinedLimitedFormat: undefined,
+        }
+      : this.libraryFilter
+  }
+
   private updateFilterChips() {
     this.filterChips = buildLibraryFilterChips(
-      this.libraryFilter,
+      this.effectiveFilter,
       this.defaultLibraryFilter,
       (key, params) => this.translocoService.translate(key, params),
       getCardShopName,
@@ -433,12 +462,14 @@ export class LibrarySectionComponent implements OnInit {
       this.libraryFilter.trifle = queryParams['trifle']
     }
     if (queryParams['cardId'] && Object.keys(queryParams).length === 1) {
-      setTimeout(() => {
-        const card = this.libraryQuery.getEntity(Number(queryParams['cardId']))
-        if (card) {
-          this.openLibraryCard(card)
-        }
-      }, 300)
+      this.libraryQuery
+        .selectEntity(Number(queryParams['cardId']))
+        .pipe(
+          filter((card): card is ApiLibrary => !!card),
+          take(1),
+          untilDestroyed(this),
+        )
+        .subscribe((card) => this.openLibraryCard(card))
     }
     if (queryParams['predefinedLimitedFormat']) {
       this.libraryFilter.predefinedLimitedFormat =
@@ -617,7 +648,7 @@ export class LibrarySectionComponent implements OnInit {
   private updateQuery() {
     this.library$ = this.libraryQuery
       .selectAll({
-        filter: this.libraryFilter,
+        filter: this.effectiveFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
@@ -625,12 +656,14 @@ export class LibrarySectionComponent implements OnInit {
       })
       .pipe(
         map((results) =>
-          filterCardsByShopAvailability(
-            results,
-            this.libraryFilter.shops,
-            this.libraryFilter.notShops,
-            this.availabilityByShop,
-          ),
+          this.remoteFiltersUnavailable
+            ? []
+            : filterCardsByShopAvailability(
+                results,
+                this.effectiveFilter.shops,
+                this.effectiveFilter.notShops,
+                this.availabilityByShop,
+              ),
         ),
         tap((results) => this.resultsCount$.next(results.length)),
         switchMap((results) => {
@@ -642,14 +675,21 @@ export class LibrarySectionComponent implements OnInit {
     this.changeDetector.markForCheck()
   }
 
+  get remoteFiltersUnavailable(): boolean {
+    const shops = [
+      ...(this.libraryFilter.shops ?? []),
+      ...(this.libraryFilter.notShops ?? []),
+    ]
+    return (
+      !this.connection.offline() &&
+      shops.length > 0 &&
+      shops.some((shop) => !this.availabilityByShop.has(shop))
+    )
+  }
+
   private listenShopAvailability(): void {
     this.shopSelection$
       .pipe(
-        distinctUntilChanged(
-          (a, b) =>
-            a.shops.join(',') === b.shops.join(',') &&
-            a.notShops.join(',') === b.notShops.join(','),
-        ),
         switchMap((selection) => {
           const missing = [
             ...new Set([...selection.shops, ...selection.notShops]),
@@ -660,27 +700,10 @@ export class LibrarySectionComponent implements OnInit {
         }),
         untilDestroyed(this),
       )
-      .subscribe(({ selection, batch }) => {
+      .subscribe(({ batch }) => {
         batch.availabilityByShop.forEach((ids, shop) =>
           this.availabilityByShop.set(shop, ids),
         )
-        if (batch.failedShops.length > 0) {
-          const failed = new Set(batch.failedShops)
-          this.libraryFilter = {
-            ...this.libraryFilter,
-            shops: selection.shops.filter((shop) => !failed.has(shop)),
-            notShops: selection.notShops.filter((shop) => !failed.has(shop)),
-          }
-          this.toastService.show(
-            this.translocoService.translate('shared.shop_availability_error'),
-            { classname: 'bg-danger text-light' },
-          )
-          this.updateQueryParams({
-            shop: undefined,
-            shops: this.libraryFilter.shops?.join(',') || undefined,
-            notShops: this.libraryFilter.notShops?.join(',') || undefined,
-          })
-        }
         this.updateFilterChips()
         this.initQuery()
       })
@@ -711,14 +734,14 @@ export class LibrarySectionComponent implements OnInit {
     })
     const libraryList = filterCardsByShopAvailability(
       this.libraryQuery.getAll({
-        filter: this.libraryFilter,
+        filter: this.effectiveFilter,
         sortBy: this.sortByTrigramSimilarity
           ? 'trigramSimilarity'
           : this.sortBy,
         sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
       }),
-      this.libraryFilter.shops,
-      this.libraryFilter.notShops,
+      this.effectiveFilter.shops,
+      this.effectiveFilter.notShops,
       this.availabilityByShop,
     )
     modalRef.componentInstance.cardList = libraryList

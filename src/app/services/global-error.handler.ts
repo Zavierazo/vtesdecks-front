@@ -14,6 +14,12 @@ export class GlobalErrorHandler implements ErrorHandler {
   })
 
   handleError(error: Error | HttpErrorResponse) {
+    if (
+      error instanceof HttpErrorResponse &&
+      (error.status === 0 || !navigator.onLine)
+    ) {
+      return
+    }
     this.sentryErrorHandler.handleError(error)
     console.warn(error)
     const apiService = this.injector.get(ApiDataService)
@@ -29,6 +35,10 @@ export class GlobalErrorHandler implements ErrorHandler {
       .sendError(
         `User: ${authQuery.getUser()} \nError: ${message} \nStack: ${stackTrace}`,
       )
-      .subscribe()
+      .subscribe({
+        error: () => {
+          /* Error reporting must not report itself. */
+        },
+      })
   }
 }

@@ -34,7 +34,7 @@ import {
   isCryptId,
   isLibrary,
   isLibraryId,
-  sortTrigramSimilarity,
+  compareCardNames,
 } from '@utils'
 import {
   BehaviorSubject,
@@ -348,7 +348,7 @@ export class PrintProxyComponent implements OnInit {
             map((cards) =>
               cards
                 .map((card) => card)
-                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+                .sort((a, b) => compareCardNames(a, b, term)),
             ),
           ),
       ),
@@ -365,7 +365,7 @@ export class PrintProxyComponent implements OnInit {
             map((cards) =>
               cards
                 .map((card) => card)
-                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+                .sort((a, b) => compareCardNames(a, b, term)),
             ),
           ),
       ),

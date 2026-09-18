@@ -1,3 +1,4 @@
+import { ConnectivityService } from './services/connectivity.service'
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -8,11 +9,11 @@ import {
 } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { TranslocoService } from '@jsverse/transloco'
-import { Observable, retry, tap, timer } from 'rxjs'
+import { Observable, retry, tap, timer, throwError } from 'rxjs'
 import { environment } from '@environments/environment'
 import { ToastService } from './services/toast.service'
 import { AuthStore } from './state/auth/auth.store'
-import { RETRY_REPEATABLE_POST } from './http-retry.context'
+import { BACKGROUND_REFRESH, RETRY_REPEATABLE_POST } from './http-retry.context'
 
 export const retryCount = 10
 export const retryWaitMilliSeconds = 5000
@@ -30,6 +31,7 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   private toastService = inject(ToastService)
   private translocoService = inject(TranslocoService)
   private authStore = inject(AuthStore)
+  private readonly connection = inject(ConnectivityService)
   private errorToastShown = false
 
   intercept(
@@ -41,6 +43,16 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
       return next.handle(request)
     }
 
+    if (this.connection.offline()) {
+      return throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 0,
+            statusText: 'Offline',
+            url: request.url,
+          }),
+      )
+    }
     const httpRequest = request.clone({
       // Workarround to avoid 504 errors
       headers: request.headers
@@ -52,9 +64,20 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
         .set('locale', this.translocoService.getActiveLang())
         .set('version', environment.appVersion),
     })
-    const retryable = isRetryableRequest(httpRequest)
+    const retryable =
+      !httpRequest.context.get(BACKGROUND_REFRESH) &&
+      isRetryableRequest(httpRequest)
     return next.handle(httpRequest).pipe(
-      tap((event) => this.updateServerDate(event)),
+      tap({
+        next: (event) => {
+          this.updateServerDate(event)
+          if (event instanceof HttpResponse) {
+            this.connection.success()
+          }
+        },
+        error: (error: HttpErrorResponse) =>
+          this.connection.failure(error.status),
+      }),
       retry({
         count: retryable ? retryCount : 0,
         delay: (error) => this.shouldRetry(error),
@@ -63,6 +86,9 @@ export class HttpMonitorInterceptor implements HttpInterceptor {
   }
 
   shouldRetry(error: HttpErrorResponse) {
+    if (this.connection.offline()) {
+      throw error
+    }
     if (error.status === 503 || error.status === 504 || error.status === 0) {
       console.warn('Error ' + error.status + ' retrying...')
       if (!this.errorToastShown) {

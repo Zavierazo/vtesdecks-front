@@ -34,9 +34,33 @@ export class SetStore {
 
   private async hydrate(): Promise<void> {
     const entities = await this.db.getAll<ApiSet>(SetStore.dbStoreName)
+    this.metadata.set(await this.db.getMeta('setState'))
     if (entities.length) {
       this.entities.set(entities)
     }
+  }
+
+  readonly storageError = signal(false)
+  readonly metadata = signal<{
+    locale: string
+    lastUpdate: Date
+    downloadedAt: number
+  } | null>(null)
+
+  async replaceCatalog(
+    entities: ApiSet[],
+    locale: string,
+    lastUpdate: Date,
+  ): Promise<void> {
+    const metadata = { locale, lastUpdate, downloadedAt: Date.now() }
+    try {
+      await this.db.replaceCatalog('set', entities, 'setState', metadata)
+      this.storageError.set(false)
+    } catch {
+      this.storageError.set(true)
+    }
+    this.entities.set(entities)
+    this.metadata.set(metadata)
   }
 
   selectLoading(): Observable<boolean> {

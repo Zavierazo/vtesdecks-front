@@ -1,0 +1,74 @@
+<div *transloco="let t; read: 'local_drafts'">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ t('restore_title') }}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="t('close')"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p class="small text-muted">{{ t('restore_description') }}</p>
+    @if (drafts.storageError()) {
+      <div class="alert alert-danger" role="alert">
+        {{ t('storage_error') }}
+      </div>
+    }
+    @for (draft of drafts.newDeckDrafts(); track draft.id) {
+      <div class="border rounded p-3 mb-2">
+        <div class="fw-semibold text-break">{{ draft.name }}</div>
+        <div class="small text-muted mb-2">
+          {{ draft.updatedAt | date: 'short' }}
+        </div>
+        @if (deletingId === draft.id) {
+          <p class="small text-danger mb-2">{{ t('delete_confirm') }}</p>
+        }
+        <div class="d-flex align-items-center gap-2">
+          @if (deletingId === draft.id) {
+            <button
+              class="btn btn-danger btn-sm"
+              type="button"
+              (click)="remove(draft.id)"
+            >
+              {{ t('delete') }}
+            </button>
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+              (click)="deletingId = undefined"
+            >
+              {{ t('cancel') }}
+            </button>
+          } @else {
+            <button
+              class="btn btn-primary btn-sm"
+              type="button"
+              (click)="modal.close(draft.id)"
+            >
+              {{ t('restore') }}
+            </button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+              (click)="deletingId = draft.id"
+            >
+              {{ t('delete') }}
+            </button>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted mb-0">{{ t('empty') }}</p>
+    }
+  </div>
+  <div class="modal-footer">
+    <button
+      class="btn btn-outline-secondary"
+      type="button"
+      (click)="modal.close()"
+    >
+      {{ t('start_new') }}
+    </button>
+  </div>
+</div>

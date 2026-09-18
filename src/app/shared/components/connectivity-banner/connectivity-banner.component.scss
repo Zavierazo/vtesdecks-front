@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+.connection-banner {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  background: #b42318;
+  color: #fff;
+  text-align: center;
+  font-size: 0.875rem;
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.3s ease,
+    background-color 0.25s ease;
+  &.is-visible {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  &.is-online {
+    background: #18713c;
+  }
+}
+.connection-content {
+  overflow: hidden;
+  min-height: 0;
+  line-height: 2rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .connection-banner {
+    transition: none;
+  }
+}

@@ -85,6 +85,13 @@ const shellRoutes: Routes = [
       import('./app/modules/decks/decks.routes').then((m) => m.DECKS_ROUTES),
   },
   {
+    path: 'deck/snapshot',
+    loadChildren: () =>
+      import('./app/modules/deck-snapshot/deck-snapshot.routes').then(
+        (m) => m.DECK_SNAPSHOT_ROUTES,
+      ),
+  },
+  {
     path: 'deck/:id',
     loadChildren: () =>
       import('./app/modules/deck/deck.routes').then((m) => m.DECK_ROUTES),

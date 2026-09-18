@@ -1,4 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard'
+import { DeckSnapshot } from '../../models/deck-snapshot'
+import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
+import { DeckShareService } from '../../services/deck-share.service'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -8,7 +11,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core'
-import { toObservable } from '@angular/core/rxjs-interop'
+import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import {
   FormControl,
   FormGroup,
@@ -48,18 +51,26 @@ import { AuthService } from '@state/auth/auth.service'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { DecksService } from '@state/decks/decks.service'
+import { CryptService } from '@state/crypt/crypt.service'
+import { LibraryService } from '@state/library/library.service'
 import { getClanIcon, getDisciplineIcon } from '@utils'
 import {
   catchError,
+  concat,
+  forkJoin,
   debounceTime,
   distinctUntilChanged,
   EMPTY,
   filter,
+  finalize,
+  from,
   map,
   Observable,
+  of,
   skip,
   switchMap,
   tap,
+  timer,
 } from 'rxjs'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
@@ -71,6 +82,8 @@ import { BuilderSuggestionsComponent } from './builder-suggestions/builder-sugge
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
 import { DeckHistoryModalComponent } from './deck-history-modal/deck-history-modal.component'
 import { DraftRecoveryModalComponent } from './draft-recovery-modal/draft-recovery-modal.component'
+import { LocalDraftsModalComponent } from './local-drafts-modal/local-drafts-modal.component'
+import { LeaveBuilderModalComponent } from './leave-builder-modal/leave-builder-modal.component'
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
 import { ImportRecentDecksModalComponent } from './import-recent-decks/import-recent-decks-modal.component'
@@ -87,6 +100,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
   styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ShareDeckComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgbDropdown,
@@ -109,12 +123,35 @@ import { fromUrl } from './limited-format/limited-format-utils'
   ],
 })
 export class BuilderComponent implements OnInit, ComponentCanDeactivate {
+  private readonly deckShare = inject(DeckShareService)
+
+  get snapshot(): DeckSnapshot {
+    const deck = this.deckBuilderQuery.getValue()
+    return {
+      // The form can be ahead of the debounced builder store.
+      name: this.form?.get('name')?.value ?? deck.name ?? '',
+      author: this.authQuery.getDisplayName() ?? this.authQuery.getUser() ?? '',
+      description:
+        this.form?.get('description')?.value ?? deck.description ?? '',
+      cards: deck.cards.map((card) => [card.id, card.number]),
+    }
+  }
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
   private readonly authQuery = inject(AuthQuery)
   private readonly authService = inject(AuthService)
   private readonly deckBuilderQuery = inject(DeckBuilderQuery)
   private readonly deckBuilderService = inject(DeckBuilderService)
+  private readonly cryptService = inject(CryptService)
+  private readonly libraryService = inject(LibraryService)
+  readonly draftStorageError = this.deckBuilderService.draftStorageError
+  readonly activeLocalDraftId = this.deckBuilderService.activeLocalDraftId
+  readonly draftSyncing = toSignal(
+    this.deckBuilderService.draftSaved.pipe(
+      switchMap(() => concat(of(true), timer(650).pipe(map(() => false)))),
+    ),
+    { initialValue: false },
+  )
   private readonly decksService = inject(DecksService)
   private readonly toastService = inject(ToastService)
   private readonly modalService = inject(NgbModal)
@@ -124,6 +161,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly apiDataService = inject(ApiDataService)
 
   form!: FormGroup
+  readonly initializing = signal(true)
   tagLabelControl = new FormControl<string>('')
   cryptSearch = signal<string>('')
   librarySearch = signal<string>('')
@@ -224,11 +262,55 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   initDeck(): Observable<ApiDeckBuilder> {
-    const id = this.route.snapshot.queryParams['id']
-    const cloneDeck = history.state?.deck
-    return this.deckBuilderService
-      .init(id, cloneDeck)
-      .pipe(tap(() => this.onDeckLoaded()))
+    let initialized = false
+    return this.route.queryParamMap.pipe(
+      map((params) => params.get('id') || undefined),
+      distinctUntilChanged(),
+      switchMap((id) => {
+        if (initialized && id === this.deckBuilderQuery.getDeckId()) {
+          return EMPTY
+        }
+        initialized = true
+        this.initializing.set(true)
+        this.form.disable({ emitEvent: false })
+        const clone = history.state?.deck
+        const advent = history.state?.advent
+        return forkJoin([
+          this.cryptService.getCryptCards(),
+          this.libraryService.getLibraryCards(),
+        ]).pipe(
+          // Wait for refresh completion, not the initial cached emission.
+          // Initialize once so updates never overwrite an edited deck.
+          switchMap(() => this.deckBuilderService.init(id, clone)),
+          tap(() => {
+            if (!id && !clone && !advent) {
+              this.deckBuilderService.migrateLegacyDrafts()
+              this.onDeckLoaded(false)
+              this.openLocalDrafts()
+            } else {
+              this.onDeckLoaded()
+              if (!this.deckBuilderQuery.getSaved()) {
+                this.deckBuilderService.saveDraft()
+              }
+            }
+            const navigationState = { ...history.state }
+            delete navigationState.deck
+            delete navigationState.advent
+            delete navigationState.day
+            history.replaceState(navigationState, '')
+          }),
+          catchError(() => {
+            this.toastService.show(
+              this.translocoService.translate('deck_builder.deck_not_exists'),
+              { classname: 'bg-danger text-light', delay: 10000 },
+            )
+            this.changeDetector.markForCheck()
+            return EMPTY
+          }),
+          finalize(() => this.initializing.set(false)),
+        )
+      }),
+    )
   }
 
   saveDeck() {
@@ -286,7 +368,13 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
             { classname: 'bg-success text-light', delay: 5000 },
           )
           this.decksService.reset()
-          this.onDeckLoaded()
+          void this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { id: this.deckBuilderQuery.getDeckId(), draft: null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+          })
+          this.onDeckLoaded(false)
         }),
       )
       .subscribe({
@@ -313,17 +401,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     const deckId = this.deckBuilderQuery.getDeckId()
     if (deckId) {
       const url = `https://${environment.domain}/deck/${deckId}`
-      if (window.navigator.share) {
-        window.navigator.share({
-          url: url,
-        })
-      } else {
-        this.clipboard.copy(url)
-        this.toastService.show(
-          this.translocoService.translate('deck_builder.link_copied'),
-          { classname: 'bg-success text-light', delay: 5000 },
-        )
-      }
+      void this.deckShare.share(url)
     }
   }
 
@@ -372,8 +450,48 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  canDeactivate(): boolean {
-    return this.deckBuilderQuery.getSaved()
+  canDeactivate(): boolean | Observable<boolean> {
+    if (this.deckBuilderQuery.getSaved()) {
+      return true
+    }
+    this.deckBuilderService.saveDraft()
+    const modal = this.modalService.open(LeaveBuilderModalComponent, {
+      centered: true,
+      size: 'lg',
+    })
+    return from(modal.result).pipe(
+      map((leave) => leave === true),
+      catchError(() => of(false)),
+    )
+  }
+
+  private openLocalDrafts(): void {
+    const drafts = this.deckBuilderService.localDrafts
+    drafts.reload()
+    if (!drafts.newDeckDrafts().length && !drafts.storageError()) {
+      return
+    }
+    const modal = this.modalService.open(LocalDraftsModalComponent, {
+      size: 'lg',
+      centered: true,
+      scrollable: true,
+    })
+    modal.closed.pipe(untilDestroyed(this)).subscribe((id?: string) => {
+      if (!id || !this.deckBuilderService.openLocalDraft(id)) {
+        return
+      }
+      this.form.patchValue(
+        {
+          name: this.deckBuilderQuery.getName(),
+          description: this.deckBuilderQuery.getDescription(),
+          published: this.deckBuilderQuery.getPublished(),
+        },
+        { emitEvent: false },
+      )
+      this.tagLabelControl.reset('')
+      this.deckBuilderService.fetchSuggestedCards()
+      this.changeDetector.markForCheck()
+    })
   }
 
   addCard(id: number) {
@@ -523,6 +641,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   onOpenInBuilder(): void {
     this.deckBuilderService.clone()
     this.onDeckLoaded()
+    this.deckBuilderService.saveDraft()
   }
 
   onDraw(): void {
@@ -643,10 +762,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .get('name')
       ?.valueChanges.pipe(
         untilDestroyed(this),
-        filter((value) => value.length > 0),
-        debounceTime(100),
         tap((value) => {
-          this.deckBuilderService.updateName(value)
+          this.deckBuilderService.updateName(value ?? '')
         }),
       )
       .subscribe()
@@ -654,7 +771,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .get('description')
       ?.valueChanges.pipe(
         untilDestroyed(this),
-        debounceTime(100),
         tap((value) => {
           this.deckBuilderService.updateDescription(value ?? '')
         }),
@@ -671,9 +787,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .subscribe()
   }
 
-  private onDeckLoaded() {
-    const { advent, day } = history.state
-    if (advent && day) {
+  private onDeckLoaded(checkRecovery = true) {
+    this.form.enable({ emitEvent: false })
+    const { advent, day } = history.state ?? {}
+    if (advent && day && !this.activeLocalDraftId()) {
       this.deckBuilderService.initAdventRules(advent.toString(), day.toString())
       this.deckBuilderService.validateDeck()
     }
@@ -687,24 +804,27 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .get('published')
       ?.patchValue(this.deckBuilderQuery.getPublished(), { emitEvent: false })
     const limitedFormat = this.route.snapshot.queryParams['limitedFormat']
-    if (limitedFormat) {
+    if (limitedFormat && !this.activeLocalDraftId()) {
       this.deckBuilderService.setLimitedFormat(fromUrl(limitedFormat))
       this.deckBuilderService.validateDeck()
     }
     this.changeDetector.markForCheck()
     this.deckBuilderService.fetchSuggestedCards()
 
+    if (this.activeLocalDraftId() || !checkRecovery) {
+      return
+    }
+
     // Draft recovery check
     const deckId = this.deckBuilderQuery.getDeckId()
-    const draft = this.deckBuilderService.loadDraft(deckId)
-    if (draft?.cards && draft.cards.length > 0) {
-      const currentCards = this.deckBuilderQuery.getValue().cards
-      const toFingerprint = (cards: { id: number; number: number }[]) =>
-        cards
-          .map((c) => `${c.id}:${c.number}`)
-          .sort()
-          .join(',')
-      if (toFingerprint(draft.cards) !== toFingerprint(currentCards)) {
+    const localDrafts = this.deckBuilderService.localDrafts
+    localDrafts.reload()
+    const linkedDraft = deckId
+      ? localDrafts.drafts().find((draft) => draft.sourceDeckId === deckId)
+      : undefined
+    const draft = linkedDraft?.deck ?? this.deckBuilderService.loadDraft(deckId)
+    if (draft) {
+      if (this.deckBuilderService.hasDraftChanges(draft)) {
         const modalRef = this.modalService.open(DraftRecoveryModalComponent, {
           centered: true,
         })
@@ -722,7 +842,15 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
                 draft.description ?? this.deckBuilderQuery.getDescription(),
                 { emitEvent: false },
               )
+            this.form
+              .get('published')
+              ?.patchValue(this.deckBuilderQuery.getPublished(), {
+                emitEvent: false,
+              })
           } else {
+            if (linkedDraft) {
+              localDrafts.remove(linkedDraft.id)
+            }
             this.deckBuilderService.clearDraft(deckId)
           }
           this.changeDetector.markForCheck()

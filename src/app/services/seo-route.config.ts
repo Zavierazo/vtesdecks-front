@@ -82,6 +82,9 @@ export function routeSeo(state: RouterStateSnapshot): SeoConfig {
   let path = canonicalPath(state.url)
   path = path.replace(/^\/decks\/builder\/(crypt|library)$/, '/cards/$1')
   const base: SeoConfig = { canonicalUrl: path, index: false, page: 'account' }
+  if (path === '/deck/snapshot') {
+    return { ...base, page: 'snapshot', canonicalUrl: null }
+  }
   if (/^\/deck\/[^/]+\/embed$/.test(path)) {
     return {
       ...base,

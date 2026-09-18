@@ -1,4 +1,9 @@
+import { encodeSnapshot } from '../../utils/deck-snapshot'
 import { deckSeo } from '../../services/seo-route.config'
+import { DeckSnapshot } from '../../models/deck-snapshot'
+import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
+import { DeckShareService } from '../../services/deck-share.service'
+import { DeckSnapshotService } from '../../services/deck-snapshot.service'
 import { Clipboard } from '@angular/cdk/clipboard'
 import {
   AsyncPipe,
@@ -12,10 +17,17 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  Injector,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core'
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router'
 import { ClanTranslocoPipe } from '@deck-shared/clan-transloco/clan-transloco.pipe'
 import { CryptCardComponent } from '@deck-shared/crypt-card/crypt-card.component'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
@@ -79,7 +91,20 @@ import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
-import { filter, Observable, of, switchMap, tap, timer } from 'rxjs'
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  filter,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs'
 import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-collection-modal/add-deck-to-collection-modal.component'
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
@@ -92,6 +117,7 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ShareDeckComponent,
     AchievementBadgesComponent,
     LoadingComponent,
     TranslocoDirective,
@@ -129,6 +155,23 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
+  private readonly deckShare = inject(DeckShareService)
+
+  get snapshot(): DeckSnapshot {
+    if (this.isSnapshot && this.snapshotData) {
+      return this.snapshotData
+    }
+    const deck = this.currentDeck
+    return {
+      name: deck?.name ?? '',
+      author: deck?.author ?? '',
+      description: deck?.description ?? '',
+      cards: [...(deck?.crypt ?? []), ...(deck?.library ?? [])].map((card) => [
+        card.id,
+        card.number,
+      ]),
+    }
+  }
   private static readonly similarDecksLimit = 4
   private readonly route = inject(ActivatedRoute)
   private readonly seoService = inject(SeoService)
@@ -149,6 +192,20 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
+  private readonly injector = inject(Injector)
+
+  isSnapshot = false
+  readonly snapshotError = signal<string | undefined>(undefined)
+  readonly unknownSnapshotCards = signal<ApiCard[]>([])
+  private readonly snapshotLoading = new BehaviorSubject(true)
+  private readonly snapshotRetry = new Subject<void>()
+  private snapshotDeck?: ApiDeck
+  private snapshotUrl = ''
+  private snapshotData?: DeckSnapshot
+
+  private get currentDeck(): ApiDeck | undefined {
+    return this.isSnapshot ? this.snapshotDeck : this.deckQuery.getDeck()
+  }
 
   id!: string
 
@@ -201,12 +258,19 @@ export class DeckComponent implements OnInit, AfterViewInit {
   ]
 
   ngOnInit() {
-    this.isLoading$ = this.deckQuery.selectLoading()
+    this.isSnapshot = this.route.snapshot.data['snapshot'] === true
+    this.isLoading$ = this.isSnapshot
+      ? this.snapshotLoading.asObservable()
+      : this.deckQuery.selectLoading()
     this.isAuthenticated$ = this.authQuery.selectAuthenticated()
     this.userDisplayName$ = this.authQuery.selectDisplayName()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.isAdmin$ = this.authQuery.selectAdmin()
+    if (this.isSnapshot) {
+      this.initSnapshot()
+      return
+    }
     this.deck$ = this.deckQuery.selectDeck().pipe(
       untilDestroyed(this),
       tap((deck) => {
@@ -233,19 +297,73 @@ export class DeckComponent implements OnInit, AfterViewInit {
     })
   }
 
+  private initSnapshot(): void {
+    const service = this.injector.get(DeckSnapshotService)
+    // Local state only: never replace the saved deck in DeckStore.
+    this.deck$ = combineLatest([
+      this.router.events.pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(null),
+      ),
+      this.snapshotRetry.pipe(startWith(undefined)),
+    ]).pipe(
+      switchMap(() => {
+        this.snapshotDeck = undefined
+        this.snapshotData = undefined
+        this.snapshotUrl = ''
+        this.unknownSnapshotCards.set([])
+        this.snapshotError.set(undefined)
+        this.snapshotLoading.next(true)
+        return service.load(this.router.url).pipe(
+          map(({ deck, unknown, snapshot }) => {
+            this.snapshotData = snapshot
+            this.snapshotDeck = deck
+            this.unknownSnapshotCards.set(unknown)
+            this.snapshotUrl = new URL(
+              encodeSnapshot(snapshot),
+              window.location.origin,
+            ).href
+            return deck
+          }),
+          catchError((error: unknown) => {
+            this.snapshotError.set(
+              error instanceof Error && error.message === 'catalog_error'
+                ? 'catalog_error'
+                : 'invalid',
+            )
+            return of(undefined)
+          }),
+          tap(() => this.snapshotLoading.next(false)),
+          startWith(undefined),
+        )
+      }),
+      untilDestroyed(this),
+    )
+  }
+
+  retrySnapshot(): void {
+    this.snapshotRetry.next()
+  }
+
   onChangeDisplayMode(displayMode: string) {
     const displayModeValue = displayMode as 'list' | 'grid'
     this.authService.updateDeckDisplayMode(displayModeValue)
   }
 
   fetchSimilarDecks() {
+    if (this.isSnapshot) {
+      return
+    }
     this.similarDecks$ = this.deckService.getSimilarDecks(
       DeckComponent.similarDecksLimit,
     )
   }
 
   ngAfterViewInit(): void {
-    const deck = this.deckQuery.getDeck()
+    if (this.isSnapshot) {
+      return
+    }
+    const deck = this.currentDeck
     const isSpoilerPreconstructed =
       deck?.type === 'PRECONSTRUCTED' && deck.tags?.includes('spoiler')
     const viewTrigger$: Observable<unknown> = isSpoilerPreconstructed
@@ -283,6 +401,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   rateDeck(rating: number) {
+    if (this.isSnapshot) {
+      return
+    }
     this.apiDataService
       .rateDeck(this.id, rating)
       .pipe(untilDestroyed(this))
@@ -301,6 +422,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   toggleBookmark() {
+    if (this.isSnapshot) {
+      return
+    }
     const bookmark = !this.isBookmarked
     this.apiDataService
       .bookmarkDeck(this.id, bookmark)
@@ -353,29 +477,25 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onOpenInBuilder(): void {
+    if (this.unknownSnapshotCards().length) {
+      return
+    }
     this.router.navigateByUrl('/decks/builder', {
-      state: { deck: this.deckQuery.getDeck() },
+      state: { deck: structuredClone(this.currentDeck) },
     })
   }
 
   onShare(): void {
-    const url = `https://${environment.domain}/deck/${this.id}`
-    if (window.navigator.share) {
-      ;(async () => {
-        await window.navigator.share({
-          url: url,
-        })
-      })()
-    } else {
-      this.clipboard.copy(url)
-      this.toastService.show(
-        this.translocoService.translate('deck.link_copied'),
-        { classname: 'bg-success text-light', delay: 5000 },
-      )
-    }
+    const url = this.isSnapshot
+      ? this.snapshotUrl
+      : `https://${environment.domain}/deck/${this.id}`
+    void this.deckShare.share(url)
   }
 
   async onEmbed(): Promise<void> {
+    if (this.isSnapshot) {
+      return
+    }
     // Lazy import to keep the embed modal out of the deck chunk
     const { EmbedSnippetModalComponent } =
       await import('@deck-shared/embed-snippet-modal/embed-snippet-modal.component')
@@ -385,7 +505,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
       scrollable: true,
     })
     modalRef.componentInstance.deckId = this.id
-    modalRef.componentInstance.deckName = this.deckQuery.getDeck()?.name
+    modalRef.componentInstance.deckName = this.currentDeck?.name
   }
 
   onTag(tag: string): void {
@@ -393,6 +513,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onCopyToClipboard(type: string): void {
+    if (this.isSnapshot) {
+      return
+    }
     this.apiDataService.getExportDeck(this.id, type).subscribe((data) => {
       this.clipboard.copy(data)
       this.toastService.show(
@@ -403,32 +526,38 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onDraw(): void {
+    if (this.unknownSnapshotCards().length) {
+      return
+    }
     const modalRef = this.modalService.open(DrawCardsComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,
     })
     modalRef.componentInstance.cards = [
-      ...(this.deckQuery.getDeck()?.crypt ?? []),
-      ...(this.deckQuery.getDeck()?.library ?? []),
+      ...(this.currentDeck?.crypt ?? []),
+      ...(this.currentDeck?.library ?? []),
     ]
   }
 
   onPrint(): void {
+    if (this.unknownSnapshotCards().length) {
+      return
+    }
     const modalRef = this.modalService.open(PrintProxyModalComponent, {
       size: 'xl',
       centered: true,
       scrollable: true,
     })
-    modalRef.componentInstance.title = this.deckQuery.getDeck()?.name
+    modalRef.componentInstance.title = this.currentDeck?.name
     modalRef.componentInstance.cards = [
-      ...(this.deckQuery.getDeck()?.crypt ?? []),
-      ...(this.deckQuery.getDeck()?.library ?? []),
+      ...(this.currentDeck?.crypt ?? []),
+      ...(this.currentDeck?.library ?? []),
     ]
   }
 
   onHowToBuy(): void {
-    const deck = this.deckQuery.getDeck()
+    const deck = this.currentDeck
     const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
     if (cards.length === 0) {
       return
@@ -451,7 +580,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   async onAddMissingToWishlist(): Promise<void> {
-    const deck = this.deckQuery.getDeck()
+    const deck = this.currentDeck
     const cards = [...(deck?.crypt ?? []), ...(deck?.library ?? [])]
     if (cards.length === 0) {
       return
@@ -473,8 +602,11 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onCollectionTracker(): void {
+    if (this.isSnapshot) {
+      return
+    }
     this.collectionTracker = !this.collectionTracker
-    const deck = this.deckQuery.getDeck()
+    const deck = this.currentDeck
     if (deck) {
       const { owner } = deck
       if (owner) {
@@ -505,7 +637,10 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   deleteDeck(): void {
-    const deckId = this.deckQuery.getDeck()?.id
+    if (this.isSnapshot) {
+      return
+    }
+    const deckId = this.currentDeck?.id
     if (deckId) {
       const modalRef = this.modalService.open(DeleteDialogComponent, {
         size: 'md',
@@ -549,6 +684,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   onCompare(): void {
+    if (this.isSnapshot) {
+      return
+    }
     const modalRef = this.modalService.open(DeckComparisonModalComponent, {
       size: 'md',
       centered: true,
@@ -570,7 +708,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   get cryptCards(): ApiCard[] | undefined {
-    return this.deckQuery.getDeck()?.crypt?.sort((a, b) => {
+    return this.currentDeck?.crypt?.slice().sort((a, b) => {
       if (this.sortByCrypt === 'quantity') {
         return this.sort(b.number, a.number)
       } else {

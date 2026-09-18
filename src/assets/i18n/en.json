@@ -1,4 +1,41 @@
 {
+  "local_drafts": {
+    "restore_title": "Restore a draft",
+    "restore_description": "Your decks are saved automatically on this device. Restore a draft, delete those you no longer need, or start a new deck. Drafts are not synced and are removed if you clear site data.",
+    "restore": "Restore",
+    "start_new": "Start a new deck",
+    "leave_title": "Leave the Deck Builder?",
+    "leave_message": "Your deck has been stored as a draft on this device. Keep it to continue later, or discard this draft when leaving.",
+    "continue_editing": "Continue editing",
+    "keep_leave": "Keep draft and leave",
+    "discard_leave": "Discard draft and leave",
+    "autosaved": "Draft saved on this device",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "close": "Close",
+    "empty": "No drafts saved on this device.",
+    "delete_confirm": "Cannot be undone.",
+    "untitled": "Untitled deck",
+    "storage_error": "Unable to save this draft on your device. Keep this page open and check available storage and browser permissions."
+  },
+  "snapshot": {
+    "title": "Deck snapshot",
+    "readonly": "Snapshot · Read only",
+    "share": "Share snapshot",
+    "share_options": "Sharing options",
+    "preparing": "Preparing snapshot…",
+    "about": "About sharing snapshots",
+    "public_link": "A snapshot is a read-only copy that keeps the deck as it is now, even if the original changes or is deleted. Anyone with the link can view it, including snapshots of private decks.",
+    "copied": "Copied to clipboard",
+    "copy_error": "Could not copy. Check clipboard permissions and try again.",
+    "encode_error": "Could not prepare this snapshot. The deck may be too large or contain invalid quantities.",
+    "invalid": "This snapshot link is incomplete, damaged, too large or uses an unsupported version.",
+    "catalog_error": "Could not load the card catalog. Please try again.",
+    "retry": "Try again",
+    "browse": "Browse decks",
+    "untitled": "Untitled deck",
+    "unknown_cards": "Some cards are missing from the current catalog. Their IDs and quantities are preserved below. Statistics are incomplete; cloning, printing and drawing are unavailable until these cards can be loaded."
+  },
   "admin": {
     "feature_flags_title": "Feature Flags",
     "feature_flags_hint": "Flags are defined in the backend. Only their values can be changed here.",
@@ -326,6 +363,7 @@
     "import_recent_empty": "No recently visited decks found"
   },
   "deck_builder_service": {
+    "missing_cards": "Some cards could not be loaded. Reload the page to retry. Your deck cards are preserved.",
     "min_crypt_cards": "Crypt must have at least {{ minCrypt }} cards",
     "max_crypt_cards": "Crypt must have at most {{ maxCrypt }} cards",
     "banned_card": "{{ name }} is banned card",
@@ -908,6 +946,10 @@
     "player": "Player"
   },
   "user_profile": {
+    "save_profile": "Save profile",
+    "change_password": "Change password",
+    "profile_saved": "Profile saved.",
+    "password_saved": "Password changed.",
     "profile_settings": "Profile Settings",
     "profile_image_alert": " For profile image we use <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Your Gravatar is a picture and public profile that follows you from place to place when you do things like comment or post on a blog.",
     "display_name": "Display Name",
@@ -1654,6 +1696,10 @@
     "size_hint": "Any CSS size works: 400px, 30rem, 100%…"
   },
   "seo": {
+    "snapshot": {
+      "title": "Deck snapshot",
+      "description": "View a shared, read-only deck snapshot."
+    },
     "home": {
       "title": "Home",
       "description": "Browse tournament-winning and community Vampire: The Eternal Struggle decks, explore cards, and build your own VTES deck."
@@ -1785,5 +1831,33 @@
     "invalid": "This link is invalid, expired, or already used. Request a new email if you cannot continue.",
     "verify_resend": "Open Sign in on this page and enter your username and password to request a new verification email.",
     "reset_resend": "Open Sign in on this page and choose Forgot Password to request a new reset link."
+  },
+  "offline": {
+    "settings_intro": "Browse Crypt and Library offline. Card data is saved automatically; download the images to have them available without a connection.",
+    "short_help": "Keep this page open while downloading. Images are stored on this device.",
+    "banner_offline": "You are offline",
+    "banner_online": "You are back online",
+    "loading": "Loading…",
+    "title": "Offline",
+    "saved_images": "{{count}} images saved",
+    "estimate": "Estimate size",
+    "download": "Download all images",
+    "update_images": "Update downloaded images",
+    "delete_images": "Delete downloaded images",
+    "estimated_size": "Estimated total size",
+    "confirm_delete": "Delete all downloaded images? Catalogs will be kept.",
+    "cancel": "Cancel",
+    "errors": "Errors",
+    "complete": "Complete",
+    "incomplete": "Incomplete. Keep the app open and continue manually when online.",
+    "storage_error": "Unable to save on this device. Check available storage and browser permissions.",
+    "offline": "No connection",
+    "server_unavailable": "Server unavailable",
+    "details_online": "Additional information, rulings, shops and collection require a connection.",
+    "missing_image": "Image not downloaded",
+    "device_images": "Card images on this device",
+    "pending_images": "{{count}} default images still to download",
+    "ready": "All default images are downloaded",
+    "continue_download": "Continue download"
   }
 }

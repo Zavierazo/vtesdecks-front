@@ -1,3 +1,4 @@
+import { ConnectivityService } from '../../../services/connectivity.service'
 import { AsyncPipe } from '@angular/common'
 import {
   Component,
@@ -43,6 +44,8 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   ],
 })
 export class CryptGridCardComponent implements OnInit {
+  readonly connection = inject(ConnectivityService)
+
   private cryptQuery = inject(CryptQuery)
 
   card = input.required<ApiCard>()

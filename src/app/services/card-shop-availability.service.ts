@@ -1,3 +1,4 @@
+import { ConnectivityService } from './connectivity.service'
 import { inject, Injectable } from '@angular/core'
 import { CARD_SHOPS, CardShopOption } from '@utils'
 import { catchError, forkJoin, map, Observable, of } from 'rxjs'
@@ -15,11 +16,12 @@ export interface CardShopAvailabilityBatch {
 
 @Injectable({ providedIn: 'root' })
 export class CardShopAvailabilityService {
+  private readonly connection = inject(ConnectivityService)
   private readonly apiDataService = inject(ApiDataService)
 
   getInStock(platform: string): Observable<CardShopAvailability | undefined> {
     const shop = CARD_SHOPS.find((item) => item.name === platform)
-    if (!shop) {
+    if (!shop || this.connection.offline()) {
       return of(undefined)
     }
     return this.apiDataService

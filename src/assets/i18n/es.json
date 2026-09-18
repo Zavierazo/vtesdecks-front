@@ -1,4 +1,41 @@
 {
+  "local_drafts": {
+    "restore_title": "Restaurar un borrador",
+    "restore_description": "Tus mazos se guardan automáticamente en este dispositivo. Restaura un borrador, elimina los que ya no necesites o empieza un mazo nuevo. No se sincronizan y se eliminan al borrar los datos del sitio.",
+    "restore": "Restaurar",
+    "start_new": "Empezar un mazo nuevo",
+    "leave_title": "¿Salir del constructor de mazos?",
+    "leave_message": "Tu mazo se ha guardado como borrador en este dispositivo. Consérvalo para continuar más tarde o descarta el borrador al salir.",
+    "continue_editing": "Seguir editando",
+    "keep_leave": "Conservar borrador y salir",
+    "discard_leave": "Descartar borrador y salir",
+    "autosaved": "Borrador guardado en este dispositivo",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "empty": "No hay borradores guardados en este dispositivo.",
+    "delete_confirm": "No se puede deshacer.",
+    "untitled": "Mazo sin título",
+    "storage_error": "No se ha podido guardar este borrador en el dispositivo. Mantén esta página abierta y comprueba el espacio disponible y los permisos del navegador."
+  },
+  "snapshot": {
+    "title": "Snapshot del deck",
+    "readonly": "Snapshot · Solo lectura",
+    "share": "Compartir snapshot",
+    "share_options": "Opciones para compartir",
+    "preparing": "Preparando snapshot…",
+    "about": "Acerca de compartir snapshots",
+    "public_link": "Una snapshot es una copia de solo lectura que conserva el deck tal como está ahora, aunque el original cambie o se elimine. Cualquier persona con el enlace puede verla, incluso si el deck es privado.",
+    "copied": "Copiado al portapapeles",
+    "copy_error": "No se ha podido copiar. Comprueba los permisos del portapapeles e inténtalo de nuevo.",
+    "encode_error": "No se ha podido preparar la snapshot. El deck puede ser demasiado grande o contener cantidades no válidas.",
+    "invalid": "El enlace de la snapshot está incompleto, dañado, es demasiado grande o utiliza una versión no compatible.",
+    "catalog_error": "No se ha podido cargar el catálogo de cartas. Inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "browse": "Explorar decks",
+    "untitled": "Deck sin nombre",
+    "unknown_cards": "Algunas cartas no están en el catálogo actual. Sus IDs y cantidades se conservan a continuación. Las estadísticas están incompletas; clonar, imprimir y robar cartas no estarán disponibles hasta que se puedan cargar estas cartas."
+  },
   "admin": {
     "feature_flags_title": "Feature Flags",
     "feature_flags_hint": "Los flags se definen en el backend. Aquí solo se pueden cambiar sus valores.",
@@ -326,6 +363,7 @@
     "import_recent_empty": "No se encontraron mazos visitados recientemente"
   },
   "deck_builder_service": {
+    "missing_cards": "No se han podido cargar algunas cartas. Recarga la página para volver a intentarlo. Las cartas de tu mazo se conservan.",
     "min_crypt_cards": "La cripta debe tener al menos {{ minCrypt }} cartas.",
     "max_crypt_cards": "La cripta debe tener como máximo {{ maxCrypt }} cartas.",
     "banned_card": "La carta {{ name }} está prohibida",
@@ -908,6 +946,10 @@
     "player": "Jugador"
   },
   "user_profile": {
+    "save_profile": "Guardar perfil",
+    "change_password": "Cambiar contraseña",
+    "profile_saved": "Perfil guardado.",
+    "password_saved": "Contraseña cambiada.",
     "profile_settings": "Configuración de perfil",
     "profile_image_alert": " Para la imagen de perfil utilizamos <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Tu Gravatar es una imagen y un perfil público que te sigue de un lugar a otro cuando haces cosas como comentar o publicar en un blog.",
     "display_name": "Nombre para mostrar",
@@ -1654,6 +1696,10 @@
     "size_hint": "Vale cualquier tamaño CSS: 400px, 30rem, 100%…"
   },
   "seo": {
+    "snapshot": {
+      "title": "Snapshot del deck",
+      "description": "Consulta una snapshot compartida de un deck en modo de solo lectura."
+    },
     "home": {
       "title": "Inicio",
       "description": "Explora mazos ganadores y de la comunidad de Vampire: The Eternal Struggle, consulta cartas y construye tu propio mazo de VTES."
@@ -1785,5 +1831,33 @@
     "invalid": "Este enlace no es válido, ha caducado o ya se ha utilizado. Solicita otro correo si no puedes continuar.",
     "verify_resend": "Abre Iniciar sesión en esta página e introduce tu usuario y contraseña para solicitar otro correo de verificación.",
     "reset_resend": "Abre Iniciar sesión en esta página y elige Olvidé mi contraseña para solicitar otro enlace."
+  },
+  "offline": {
+    "settings_intro": "Explora Cripta y Biblioteca sin conexión. Los datos de las cartas se guardan automáticamente; descarga las imágenes para tenerlas disponibles sin conexión.",
+    "short_help": "Mantén esta página abierta durante la descarga. Las imágenes se guardan en este dispositivo.",
+    "banner_offline": "Estás sin conexión",
+    "banner_online": "Vuelves a tener conexión",
+    "loading": "Cargando…",
+    "title": "Sin conexión",
+    "saved_images": "{{count}} imágenes guardadas",
+    "estimate": "Estimar tamaño",
+    "download": "Descargar todas las imágenes",
+    "update_images": "Actualizar imágenes descargadas",
+    "delete_images": "Eliminar imágenes descargadas",
+    "estimated_size": "Tamaño total estimado",
+    "confirm_delete": "¿Eliminar todas las imágenes descargadas? Se conservarán los catálogos.",
+    "cancel": "Cancelar",
+    "errors": "Errores",
+    "complete": "Completo",
+    "incomplete": "Incompleto. Mantén la aplicación abierta y continúa manualmente cuando tengas conexión.",
+    "storage_error": "No se puede guardar en este dispositivo. Revisa el espacio disponible y los permisos del navegador.",
+    "offline": "Sin conexión",
+    "server_unavailable": "Servidor no disponible",
+    "details_online": "La información adicional, reglas, tiendas y colección requieren conexión.",
+    "missing_image": "Imagen sin descargar",
+    "device_images": "Imágenes de cartas en este dispositivo",
+    "pending_images": "Quedan {{count}} imágenes predeterminadas por descargar",
+    "ready": "Todas las imágenes predeterminadas están descargadas",
+    "continue_download": "Continuar descarga"
   }
 }

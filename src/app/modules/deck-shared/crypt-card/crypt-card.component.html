@@ -1,17 +1,20 @@
 <ng-container *transloco="let t; prefix: 'deck_shared'">
   @if (cardList[index]; as card) {
-  @let cardInfo = cardInfo$ | async;
+  @let imageUrl = card | cardImage:activeSet;
+  @let imageMissing = imageUrl === '/assets/img/cardbackcrypt.jpg' || setImageError;
+  @let cardInfo = connection.offline() ? null : (cardInfo$ | async);
   <div class="crypt-card">
     <div class="row">
       <div class="col-sm-12 col-md-5 pe-0 bg-black">
         <div class="position-relative card-image-container">
           <img #cardImage class="rounded mx-auto d-block img-fluid" [defaultImage]="'/assets/img/cardbackcrypt.jpg'"
-            [lazyLoad]="card | cardImage:activeSet" [errorImage]="cdnDomain + card.image"
+            [lazyLoad]="imageUrl" [errorImage]="'/assets/img/cardbackcrypt.jpg'"
             (onStateChange)="onLazyLoadEvent($event)" [alt]="card?.i18n?.name ?? card.name" />
           <div class="card-text-icon position-absolute">
             <i class="bi bi-file-text-fill"></i>
           </div>
           <div
+            [class.card-text-unavailable]="connection.offline() && imageMissing"
             class="card-text-overlay position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center small p-2"
             [innerHTML]="card.i18n?.text || card.text | cardText">
           </div>
@@ -87,10 +90,12 @@
             <button type="button" class="btn btn-primary col-auto me-1" (click)="onShare()">
               <i class="bi bi-share me-2"></i>{{ t('share') }}
             </button>
+            @if (!connection.offline()) {
             <button type="button" class="btn btn-primary col-auto me-2" [title]="t('search_title')" routerLink="/decks"
               [queryParams]="{ cards: card.id+'=1' }" (click)="modal.dismiss('Link click')">
               <i class="bi bi-stack"></i> {{ t('search') }}
             </button>
+            }
             @if (!card.unreleased) {
             @for (shop of cardInfo?.shopList; track shop.link) {
             @if(shop.inStock && shop.shopInfo.showButton){

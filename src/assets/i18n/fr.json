@@ -1,4 +1,41 @@
 {
+  "local_drafts": {
+    "restore_title": "Restaurer un brouillon",
+    "restore_description": "Vos decks sont enregistrés automatiquement sur cet appareil. Restaurez un brouillon, supprimez ceux dont vous n’avez plus besoin ou commencez un nouveau deck. Ils ne sont pas synchronisés et sont supprimés si vous effacez les données du site.",
+    "restore": "Restaurer",
+    "start_new": "Commencer un nouveau deck",
+    "leave_title": "Quitter le constructeur de decks ?",
+    "leave_message": "Votre deck a été enregistré comme brouillon sur cet appareil. Conservez-le pour continuer plus tard ou supprimez ce brouillon en quittant.",
+    "continue_editing": "Continuer à modifier",
+    "keep_leave": "Conserver et quitter",
+    "discard_leave": "Supprimer et quitter",
+    "autosaved": "Brouillon enregistré sur cet appareil",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "empty": "Aucun brouillon enregistré sur cet appareil.",
+    "delete_confirm": "Cette action est irréversible.",
+    "untitled": "Deck sans titre",
+    "storage_error": "Impossible d’enregistrer ce brouillon sur cet appareil. Gardez cette page ouverte et vérifiez l’espace disponible et les autorisations du navigateur."
+  },
+  "snapshot": {
+    "title": "Snapshot du deck",
+    "readonly": "Snapshot · Lecture seule",
+    "share": "Partager une snapshot",
+    "share_options": "Options de partage",
+    "preparing": "Préparation de la snapshot…",
+    "about": "À propos du partage de snapshots",
+    "public_link": "Une snapshot est une copie en lecture seule qui conserve le deck tel qu’il est maintenant, même si l’original change ou est supprimé. Toute personne disposant du lien peut la consulter, même si le deck est privé.",
+    "copied": "Copié dans le presse-papiers",
+    "copy_error": "Impossible de copier. Vérifiez les autorisations du presse-papiers et réessayez.",
+    "encode_error": "Impossible de préparer la snapshot. Le deck est peut-être trop volumineux ou contient des quantités incorrectes.",
+    "invalid": "Ce lien de snapshot est incomplet, endommagé, trop volumineux ou utilise une version non prise en charge.",
+    "catalog_error": "Impossible de charger le catalogue de cartes. Veuillez réessayer.",
+    "retry": "Réessayer",
+    "browse": "Parcourir les decks",
+    "untitled": "Deck sans nom",
+    "unknown_cards": "Certaines cartes sont absentes du catalogue actuel. Leurs identifiants et quantités sont conservés ci-dessous. Les statistiques sont incomplètes ; le clonage, l’impression et la pioche restent indisponibles jusqu’au chargement de ces cartes."
+  },
   "admin": {
     "feature_flags_title": "Feature Flags",
     "feature_flags_hint": "Les flags sont définis dans le backend. Seules leurs valeurs peuvent être modifiées ici.",
@@ -326,6 +363,7 @@
     "import_recent_empty": "Aucun deck récemment visité"
   },
   "deck_builder_service": {
+    "missing_cards": "Certaines cartes n’ont pas pu être chargées. Rechargez la page pour réessayer. Les cartes de votre deck sont conservées.",
     "min_crypt_cards": "La Crypte doit contenir au moins {{ minCrypt }} cartes",
     "max_crypt_cards": "La Crypte doit contenir au plus {{ maxCrypt }} cartes",
     "banned_card": "{{ name }} est une carte bannie",
@@ -908,6 +946,10 @@
     "player": "Joueur"
   },
   "user_profile": {
+    "save_profile": "Enregistrer le profil",
+    "change_password": "Changer le mot de passe",
+    "profile_saved": "Profil enregistré.",
+    "password_saved": "Mot de passe modifié.",
     "profile_settings": "Paramètres de profil",
     "profile_image_alert": " Pour l'image de profil, nous utilisons <a class='fw-bold' href='https://gravatar.com/profiles/edit' target='_blank'>Gravatar</a>. Votre Gravatar est une image et un profil public qui vous suit partout sur le web.",
     "display_name": "Nom d'affichage",
@@ -1654,6 +1696,10 @@
     "size_hint": "Toute taille CSS est valable : 400px, 30rem, 100%…"
   },
   "seo": {
+    "snapshot": {
+      "title": "Snapshot du deck",
+      "description": "Consultez une snapshot de deck partagée en lecture seule."
+    },
     "home": {
       "title": "Accueil",
       "description": "Explorez les decks gagnants et communautaires de Vampire: The Eternal Struggle, consultez les cartes et créez votre deck VTES."
@@ -1785,5 +1831,33 @@
     "invalid": "Ce lien est invalide, expiré ou déjà utilisé. Demandez un nouvel e-mail si vous ne pouvez pas continuer.",
     "verify_resend": "Ouvrez Connexion sur cette page et saisissez votre identifiant et votre mot de passe pour demander un nouvel e-mail de vérification.",
     "reset_resend": "Ouvrez Connexion sur cette page et choisissez Mot de passe oublié pour demander un nouveau lien."
+  },
+  "offline": {
+    "settings_intro": "Parcourez la Crypte et la Bibliothèque hors connexion. Les données des cartes sont enregistrées automatiquement ; téléchargez les images pour les consulter sans connexion.",
+    "short_help": "Gardez cette page ouverte pendant le téléchargement. Les images sont stockées sur cet appareil.",
+    "banner_offline": "Vous êtes hors connexion",
+    "banner_online": "La connexion est rétablie",
+    "loading": "Chargement…",
+    "title": "Hors connexion",
+    "saved_images": "{{count}} images enregistrées",
+    "estimate": "Estimer la taille",
+    "download": "Télécharger toutes les images",
+    "update_images": "Actualiser les images téléchargées",
+    "delete_images": "Supprimer les images téléchargées",
+    "estimated_size": "Taille totale estimée",
+    "confirm_delete": "Supprimer toutes les images téléchargées ? Les catalogues seront conservés.",
+    "cancel": "Annuler",
+    "errors": "Erreurs",
+    "complete": "Terminé",
+    "incomplete": "Incomplet. Gardez l’application ouverte et reprenez manuellement une fois en ligne.",
+    "storage_error": "Impossible d’enregistrer sur cet appareil. Vérifiez l’espace disponible et les autorisations du navigateur.",
+    "offline": "Sans connexion",
+    "server_unavailable": "Serveur indisponible",
+    "details_online": "Les informations supplémentaires, règles, boutiques et collection nécessitent une connexion.",
+    "missing_image": "Image non téléchargée",
+    "device_images": "Images des cartes sur cet appareil",
+    "pending_images": "Il reste {{count}} images par défaut à télécharger",
+    "ready": "Toutes les images par défaut sont téléchargées",
+    "continue_download": "Reprendre le téléchargement"
   }
 }

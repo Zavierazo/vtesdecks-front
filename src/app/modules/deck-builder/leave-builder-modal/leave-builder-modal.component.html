@@ -1,0 +1,43 @@
+<div *transloco="let t; read: 'local_drafts'">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ t('leave_title') }}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="t('continue_editing')"
+      (click)="modal.close(false)"
+    ></button>
+  </div>
+  <div class="modal-body">
+    @if (builder.draftStorageError()) {
+      <p class="text-danger" role="alert">{{ t('storage_error') }}</p>
+    } @else {
+      <p>{{ t('leave_message') }}</p>
+    }
+  </div>
+  <div
+    class="modal-footer flex-column flex-lg-row flex-nowrap align-items-stretch gap-2"
+  >
+    <button
+      type="button"
+      class="btn btn-outline-secondary flex-fill m-0"
+      (click)="modal.close(false)"
+    >
+      {{ t('continue_editing') }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-danger flex-fill m-0"
+      (click)="discard()"
+    >
+      {{ t('discard_leave') }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary flex-fill m-0"
+      (click)="keep()"
+    >
+      {{ t('keep_leave') }}
+    </button>
+  </div>
+</div>

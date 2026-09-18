@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core'
 import {
   FormBuilder,
@@ -35,7 +36,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { sortTrigramSimilarity } from '@utils'
+import { compareCardNames } from '@utils'
 import {
   combineLatest,
   debounceTime,
@@ -71,6 +72,7 @@ import { toUrl } from './limited-format-utils'
 })
 export class LimitedFormatModalComponent implements OnInit {
   private readonly fb = inject(FormBuilder)
+  private readonly changeDetector = inject(ChangeDetectorRef)
   readonly activeModal = inject(NgbActiveModal)
   private readonly apiDataService = inject(ApiDataService)
   private readonly setQuery = inject(SetQuery)
@@ -147,6 +149,7 @@ export class LimitedFormatModalComponent implements OnInit {
             this.predefinedFormats.push(format)
           })
           this.initializeWithFormat()
+          this.changeDetector.markForCheck()
         }),
       )
       .subscribe()
@@ -268,9 +271,7 @@ export class LimitedFormatModalComponent implements OnInit {
         this.cryptQuery
           .selectByName(term, 10)
           .pipe(
-            map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
-            ),
+            map((cards) => cards.sort((a, b) => compareCardNames(a, b, term))),
           ),
       ),
     )
@@ -285,9 +286,7 @@ export class LimitedFormatModalComponent implements OnInit {
         this.libraryQuery
           .selectByName(term, 10)
           .pipe(
-            map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
-            ),
+            map((cards) => cards.sort((a, b) => compareCardNames(a, b, term))),
           ),
       ),
     )

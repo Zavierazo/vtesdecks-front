@@ -18,7 +18,7 @@
 
     <!-- Settings form -->
     <div class="col-lg-8 col-xl-9">
-      <form [formGroup]="form" (ngSubmit)="submit()">
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
         <!-- Profile settings -->
         <div class="card mb-4">
           <div class="card-header">
@@ -57,8 +57,19 @@
               <div class="form-text">{{ t('card_printing_help') }}</div>
             </div>
           </div>
+          <div class="card-footer bg-transparent p-3">
+            @if (feedback.profile.message) {
+            <p role="status" [ngClass]="{'text-success': feedback.profile.successful, 'text-danger': !feedback.profile.successful}">{{ feedback.profile.message }}</p>
+            }
+            <button class="btn btn-primary" type="submit" [disabled]="!profileChanged || profileForm.invalid || saving !== null || connectivity.offline()">
+              @if (saving === 'profile') { <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span> }
+              {{ t('save_profile') }}
+            </button>
+          </div>
         </div>
 
+      </form>
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
         <!-- Security settings -->
         <div class="card mb-4">
           <div class="card-header">
@@ -69,12 +80,12 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label" for="inputPassword4">{{ t('old_password') }}</label>
-                  <input type="password" class="form-control" id="inputPassword4" formControlName="password"
-                    autocomplete="current-password" [placeholder]="t('old_password_placeholder')">
+                  <input type="password" class="form-control" id="inputPassword4" formControlName="password" [readonly]="saving !== null"
+                    autocomplete="current-password">
                 </div>
                 <div class="mb-3">
                   <label class="form-label" for="inputPassword5">{{ t('new_password') }}</label>
-                  <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword"
+                  <input type="password" class="form-control" id="inputPassword5" formControlName="newPassword" [readonly]="saving !== null"
                     autocomplete="new-password">
                   @if (newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)) {
                   <div>
@@ -93,9 +104,9 @@
                 </div>
                 <div class="mb-0">
                   <label class="form-label" for="inputPassword6">{{ t('confirm_password') }}</label>
-                  <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword"
+                  <input type="password" class="form-control" id="inputPassword6" formControlName="confirmNewPassword" [readonly]="saving !== null"
                     autocomplete="new-password">
-                  @if (confirmNewPassword?.invalid && (confirmNewPassword?.dirty || confirmNewPassword?.touched)) {
+                  @if ((confirmNewPassword?.invalid || passwordForm.hasError('noPasswordMatch')) && (confirmNewPassword?.dirty || confirmNewPassword?.touched)) {
                   <div>
                     @if (confirmNewPassword?.hasError('hasNumber')) {
                     <div class="invalid-feedback d-block">
@@ -107,7 +118,7 @@
                       <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_8_characters' | transloco}}
                     </div>
                     }
-                    @if (confirmNewPassword?.hasError('noPasswordMatch')) {
+                    @if (passwordForm.hasError('noPasswordMatch')) {
                     <div class="invalid-feedback d-block">
                       <i class="bi bi-x-circle-fill"></i> {{ 'login_modal.must_match' | transloco}}
                     </div>
@@ -131,20 +142,31 @@
               </div>
             </div>
           </div>
+          <div class="card-footer bg-transparent p-3">
+            @if (feedback.password.message) {
+            <p role="status" [ngClass]="{'text-success': feedback.password.successful, 'text-danger': !feedback.password.successful}">{{ feedback.password.message }}</p>
+            }
+            <button class="btn btn-primary" type="submit" [disabled]="passwordForm.invalid || saving !== null || connectivity.offline()">
+              @if (saving === 'password') { <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span> }
+              {{ t('change_password') }}
+            </button>
+          </div>
         </div>
 
-        <!-- Actions -->
-        <div class="text-center">
-          @if (message) {
-          <div class="mb-3" [ngClass]="{'text-success': successful,'text-danger': !successful}">
-            {{ message }}
-          </div>
-          }
-          <button class="btn btn-primary btn-lg px-5" type="submit" [disabled]="form.invalid">
-            {{ t('save') }}
-          </button>
-        </div>
       </form>
+
+        @if (authenticated$ | async) {
+        <section id="offline" class="card mb-4">
+          <div class="card-header">
+            <h2 class="h5 mb-0"><i class="bi bi-cloud-download me-2"></i>{{ 'offline.title' | transloco }}</h2>
+          </div>
+          <div class="card-body">
+            <app-offline />
+          </div>
+        </section>
+        }
+
+
     </div>
   </div>
 </div>

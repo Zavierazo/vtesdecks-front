@@ -1,0 +1,147 @@
+<p class="text-secondary mb-3">{{ 'offline.settings_intro' | transloco }}</p>
+@if (connection.offline() || connection.serverUnavailable()) {
+  <p class="alert alert-info py-2" role="status">
+    {{
+      (connection.offline() ? 'offline.offline' : 'offline.server_unavailable')
+        | transloco
+    }}
+  </p>
+}
+<div class="rounded border p-3 mb-3">
+  <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+    <h3 class="h6 mb-0">{{ 'offline.device_images' | transloco }}</h3>
+    <span class="text-secondary small"
+      >{{ bytes() / 1048576 | number: '1.1-1' }} MB</span
+    >
+  </div>
+  <p class="mb-1 fw-semibold">
+    {{ 'offline.saved_images' | transloco: { count: images.records().length } }}
+  </p>
+  @if (urls().length) {
+    <p class="small text-secondary mb-3" role="status">
+      {{
+        (pending() ? 'offline.pending_images' : 'offline.ready')
+          | transloco: { count: pending() }
+      }}
+    </p>
+  }
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="
+        connection.offline() || images.busy() || estimating() || !pending()
+      "
+      (click)="download()"
+    >
+      <i class="bi bi-download me-2" aria-hidden="true"></i
+      >{{ downloadLabel() | transloco }}
+    </button>
+    @if (pending()) {
+      <button
+        type="button"
+        class="btn btn-link btn-sm"
+        [disabled]="connection.offline() || images.busy() || estimating()"
+        (click)="estimate()"
+      >
+        @if (estimating()) {
+          <span
+            class="spinner-border spinner-border-sm me-1"
+            aria-hidden="true"
+          ></span>
+        }
+        {{ 'offline.estimate' | transloco }}
+      </button>
+    }
+  </div>
+  @if (images.estimateBytes(); as estimate) {
+    <p class="small text-secondary mt-2 mb-0">
+      {{ 'offline.estimated_size' | transloco }}:
+      {{ estimate / 1048576 | number: '1.1-1' }} MB
+    </p>
+  }
+  @if (
+    images.progress().total &&
+    (images.busy() ||
+      images.progress().errors ||
+      images.progress().done < images.progress().total)
+  ) {
+    <div role="status" aria-live="polite">
+      <p class="mt-3 mb-1">
+        {{ images.progress().done }} / {{ images.progress().total }}
+        @if (images.progress().errors) {
+          &middot;
+          {{ 'offline.errors' | transloco }}: {{ images.progress().errors }}
+        }
+      </p>
+      <progress
+        class="w-100"
+        [value]="images.progress().done"
+        [max]="images.progress().total"
+      ></progress>
+      @if (images.busy()) {
+        <button
+          type="button"
+          class="btn btn-secondary my-2"
+          (click)="images.cancel()"
+        >
+          {{ 'offline.cancel' | transloco }}
+        </button>
+      } @else {
+        <p>
+          {{
+            (images.progress().done === images.progress().total &&
+            !images.progress().errors
+              ? 'offline.complete'
+              : 'offline.incomplete'
+            ) | transloco
+          }}
+        </p>
+      }
+    </div>
+  }
+</div>
+@if (images.storageError()) {
+  <p class="alert alert-warning" role="alert">
+    {{ 'offline.storage_error' | transloco }}
+  </p>
+}
+<div class="d-flex flex-wrap gap-2 mb-2">
+  <button
+    type="button"
+    class="btn btn-outline-primary btn-sm"
+    [disabled]="
+      connection.offline() ||
+      images.busy() ||
+      estimating() ||
+      !images.records().length
+    "
+    (click)="updateImages()"
+  >
+    {{ 'offline.update_images' | transloco }}
+  </button>
+  <button
+    type="button"
+    class="btn btn-outline-danger btn-sm"
+    [disabled]="images.busy() || estimating() || !images.records().length"
+    (click)="confirmingDelete.set(true)"
+  >
+    {{ 'offline.delete_images' | transloco }}
+  </button>
+</div>
+@if (confirmingDelete()) {
+  <div class="alert alert-warning">
+    <p>{{ 'offline.confirm_delete' | transloco }}</p>
+    <button type="button" class="btn btn-danger me-2" (click)="deleteImages()">
+      {{ 'offline.delete_images' | transloco }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="confirmingDelete.set(false)"
+    >
+      {{ 'offline.cancel' | transloco }}
+    </button>
+  </div>
+}
+<p class="text-muted small mb-0">{{ 'offline.short_help' | transloco }}</p>

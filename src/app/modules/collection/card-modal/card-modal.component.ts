@@ -43,7 +43,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { getSetAbbrev, sortTrigramSimilarity } from '@utils'
+import { getSetAbbrev, compareCardNames } from '@utils'
 import { LazyLoadImageModule, StateChange } from 'ng-lazyload-image'
 import {
   BehaviorSubject,
@@ -208,7 +208,7 @@ export class CardModalComponent implements OnInit {
           map(([libraryCards, cryptCards]) =>
             [...libraryCards, ...cryptCards]
               .map((card) => this.getSearchCard(card))
-              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+              .sort((a, b) => compareCardNames(a, b, term)),
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import { SetService } from '@state/set/set.service'
 import { AsyncPipe, NgClass } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco'
@@ -35,6 +36,7 @@ export class LangSelectorComponent {
   private translocoService = inject(TranslocoService)
   private mediaService = inject(MediaService)
   private libraryService = inject(LibraryService)
+  private setService = inject(SetService)
   private cryptService = inject(CryptService)
 
   isMobile$ = this.mediaService.observeMobileOrTablet()
@@ -47,6 +49,7 @@ export class LangSelectorComponent {
 
   switchLanguage(code: string) {
     this.translocoService.setActiveLang(code)
+    this.setService.getSets().pipe(untilDestroyed(this)).subscribe()
     this.libraryService.getLibraryCards().pipe(untilDestroyed(this)).subscribe()
     this.cryptService.getCryptCards().pipe(untilDestroyed(this)).subscribe()
   }

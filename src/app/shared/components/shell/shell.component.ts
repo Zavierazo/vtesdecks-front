@@ -1,3 +1,4 @@
+import { ConnectivityBannerComponent } from '../connectivity-banner/connectivity-banner.component'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -52,6 +53,7 @@ import { HeaderComponent } from '../header/header.component'
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     HeaderComponent,
+    ConnectivityBannerComponent,
     AnnouncementBannerComponent,
     RouterOutlet,
     FooterComponent,

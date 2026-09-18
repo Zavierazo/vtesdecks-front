@@ -12,7 +12,8 @@ import {
   getSetAbbrev,
   matchesSetSelection,
   searchIncludes,
-  trigramSimilarity,
+  compareCardNames,
+  matchesCardName,
 } from '@utils'
 import { map, Observable, shareReplay } from 'rxjs'
 
@@ -71,6 +72,34 @@ export class LibraryStore {
         this.state.set(state)
       }
     }
+  }
+
+  readonly storageError = signal(false)
+
+  async replaceCatalog(
+    entities: ApiLibrary[],
+    locale: string,
+    lastUpdate: Date,
+  ): Promise<void> {
+    const state = {
+      ...this.getValue(),
+      locale,
+      lastUpdate,
+      downloadedAt: Date.now(),
+    }
+    try {
+      await this.db.replaceCatalog(
+        LibraryStore.dbStoreName,
+        entities,
+        LibraryStore.dbStateName,
+        state,
+      )
+      this.storageError.set(false)
+    } catch {
+      this.storageError.set(true)
+    }
+    this.entities.set(entities)
+    this.state.set(state)
   }
 
   updateLastUpdate(locale: string, lastUpdate: Date) {
@@ -317,16 +346,7 @@ export class LibraryStore {
     nameFilter?: string,
     sortByOrder?: 'asc' | 'desc',
   ): number {
-    const aNameWeight = trigramSimilarity(a.name, nameFilter)
-    const aAkaWeight = a.aka ? trigramSimilarity(a.aka, nameFilter) : 0
-    const bNameWeight = trigramSimilarity(b.name, nameFilter)
-    const bAkaWeight = b.aka ? trigramSimilarity(b.aka, nameFilter) : 0
-    const aWeight = Math.max(aNameWeight, aAkaWeight)
-    const bWeight = Math.max(bNameWeight, bAkaWeight)
-    if (aWeight === bWeight) {
-      return this.sort(a['name'], b['name'], 'asc')
-    }
-    return this.sort(aWeight, bWeight, sortByOrder)
+    return compareCardNames(a, b, nameFilter, sortByOrder)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -346,14 +366,8 @@ export class LibraryStore {
   }
   private filterEntity(entity: ApiLibrary, filter: LibraryFilter): boolean {
     const name = filter.name
-    if (name && !searchIncludes(entity.name, name)) {
-      if (entity.i18n?.name) {
-        return searchIncludes(entity.i18n.name, name)
-      } else if (entity.aka) {
-        return searchIncludes(entity.aka, name)
-      } else {
-        return false
-      }
+    if (name && !matchesCardName(entity, name)) {
+      return false
     }
     if (filter.printOnDemand && !entity.printOnDemand) {
       return false
