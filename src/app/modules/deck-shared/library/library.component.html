@@ -13,7 +13,7 @@
       <img #i18nImage [ngClass]="{
             'img-popover': !(isMobile$ | async)!,
             'img-popover-mobile': (isMobile$ | async)!
-          }" [src]="overrideImage ? overrideImage :  library | cardImage:setAbbrev" [alt]="library.name"
+          }" [src]="overrideImage || (library | cardImage:setAbbrev)" [alt]="library.name"
         (error)="i18nImage.src=cdnDomain + library.image" />
       <h6 class="text-white">
         @if (librarySize && card.number > 0) {

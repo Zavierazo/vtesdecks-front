@@ -13,7 +13,7 @@
     <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
         'img-popover-mobile': (isMobile$ | async)!
-      }" [src]="overrideImage ? overrideImage : crypt | cardImage:setAbbrev" [alt]="crypt.name"
+      }" [src]="overrideImage || (crypt | cardImage:setAbbrev)" [alt]="crypt.name"
       (error)="image.src = cdnDomain + crypt.image" />
     <h6 class="text-white">
       @if(cryptSize && card.number > 0){

@@ -6,6 +6,7 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core'
+import { Subscription } from 'rxjs'
 import { ApiI18n } from '@models'
 import { getSetAbbrev, isCryptId } from '@utils'
 import { environment } from '@environments/environment'
@@ -17,42 +18,37 @@ export class CardImagePipe implements PipeTransform, OnDestroy {
 
   private readonly images = inject(OfflineImagesService)
   private readonly detector = inject(ChangeDetectorRef)
-  private readonly consumer = Symbol('card-image-view')
+  private subscription?: Subscription
   private url?: string
-  private readonly subscription = this.images.changed.subscribe((url) => {
-    if (url === this.url) {
-      this.detector.markForCheck()
-    }
-  })
+  private image = ''
 
   transform(
     card: { id: number; i18n?: ApiI18n; image?: string; sets?: string[] },
     set?: string,
   ): string {
     const url = this.resolveUrl(card, set)
-    if (this.url !== url) {
-      if (this.url) {
-        this.images.release(this.url, this.consumer)
-      }
+    if (url !== this.url) {
+      this.subscription?.unsubscribe()
       this.url = url
-      return this.images.acquire(
-        url,
-        environment.cdnDomain +
-          (card.i18n?.image || card.image || `/img/cards/${card.id}.jpg`),
-        isCryptId(card.id)
-          ? '/assets/img/cardbackcrypt.jpg'
-          : '/assets/img/cardbacklibrary.jpg',
-        this.consumer,
-      )
+      this.subscription = this.images
+        .observe(
+          url,
+          environment.cdnDomain +
+            (card.i18n?.image || card.image || `/img/cards/${card.id}.jpg`),
+          isCryptId(card.id)
+            ? '/assets/img/cardbackcrypt.jpg'
+            : '/assets/img/cardbacklibrary.jpg',
+        )
+        .subscribe((image) => {
+          this.image = image
+          this.detector.markForCheck()
+        })
     }
-    return this.images.display(url, this.consumer)
+    return this.image
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
-    if (this.url) {
-      this.images.release(this.url, this.consumer)
-    }
+    this.subscription?.unsubscribe()
   }
 
   resolveUrl(

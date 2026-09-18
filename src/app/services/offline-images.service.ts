@@ -1,5 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { Subject } from 'rxjs'
+import {
+  catchError,
+  firstValueFrom,
+  from,
+  Observable,
+  of,
+  Subject,
+  timeout,
+} from 'rxjs'
 import { ConnectivityService } from './connectivity.service'
 import { IndexedDbService } from './indexed-db.service'
 
@@ -19,127 +27,112 @@ export class OfflineImagesService {
   readonly busy = signal(false)
   readonly progress = signal({ done: 0, total: 0, errors: 0 })
   readonly storageError = signal(false)
-  readonly changed = new Subject<string>()
+  private readonly cleared = new Subject<void>()
   readonly estimateBytes = signal<number | null>(null)
   readonly ready = this.loadMetadata()
-  private readonly active = new Map<
-    string | symbol,
-    {
-      url: string
-      refs: number
-      display: string
-      placeholder: string
-      blob?: string
-      fallback?: string
-    }
-  >()
   private readonly requests = new Map<string, Promise<Blob>>()
   private cancelled = false
   private generation = 0
   private clearing = false
 
-  constructor() {
-    this.connection.resumed.subscribe(() => {
-      for (const [consumer, entry] of this.active) {
-        void this.load(entry.url, consumer)
-      }
-    })
-  }
-
   private async loadMetadata() {
     this.records.set(await this.db.getAll<OfflineImage>('images'))
   }
 
-  acquire(
+  observe(
     url: string,
     fallback?: string,
     placeholder = MISSING_CARD_IMAGE,
-    consumer: string | symbol = url,
-  ): string {
-    let entry = this.active.get(consumer)
-    if (!entry) {
-      entry = { url, refs: 0, display: placeholder, placeholder, fallback }
-      this.active.set(consumer, entry)
-      void this.load(url, consumer)
-    }
-    entry.refs++
-    return entry.display
-  }
-
-  display(url: string, consumer: string | symbol = url): string {
-    return this.active.get(consumer)?.display ?? MISSING_CARD_IMAGE
-  }
-
-  release(url: string, consumer: string | symbol = url) {
-    const entry = this.active.get(consumer)
-    if (entry && --entry.refs <= 0) {
-      if (entry.blob) {
-        URL.revokeObjectURL(entry.blob)
-      }
-      this.active.delete(consumer)
-    }
-  }
-
-  private show(url: string, blob: Blob, consumer?: string | symbol) {
-    let changed = false
-    for (const [key, entry] of this.active) {
-      // Each view keeps its first valid image until released. Revalidation
-      // updates persistence, but never replaces an image already on screen.
-      if (
-        entry.url !== url ||
-        entry.blob ||
-        (consumer !== undefined && key !== consumer)
-      ) {
-        continue
-      }
-      entry.blob = URL.createObjectURL(blob)
-      entry.display = entry.blob
-      changed = true
-    }
-    if (changed) {
-      this.changed.next(url)
-    }
-  }
-
-  private async load(url: string, consumer: string | symbol) {
-    const originalEntry = this.active.get(consumer)
-    const generation = this.generation
-    try {
-      const cached = await (await caches.open(CACHE)).match(url)
-      if (
-        cached &&
-        generation === this.generation &&
-        this.active.get(consumer) === originalEntry
-      ) {
-        this.show(url, await cached.blob(), consumer)
-      }
-    } catch {
-      this.storageError.set(true)
-    }
-    if (!this.connection.offline()) {
-      try {
-        await this.revalidate(url)
-        return
-      } catch {
-        /* Retain the cached image or try the original. */
-      }
-    }
-    const entry = this.active.get(consumer)
-    if (entry !== originalEntry || generation !== this.generation) {
-      return
-    }
-    if (entry?.fallback && entry.display === entry.placeholder) {
-      try {
-        const cached = await (await caches.open(CACHE)).match(entry.fallback)
-        if (cached) {
-          this.show(url, await cached.blob(), consumer)
-        } else if (!this.connection.offline()) {
-          this.show(url, await this.revalidate(entry.fallback), consumer)
+  ): Observable<string> {
+    return new Observable<string>((subscriber) => {
+      let objectUrl: string | undefined
+      let revision = 0
+      let offline = this.connection.offline()
+      const release = () => {
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl)
+          objectUrl = undefined
         }
-      } catch {
-        /* Keep the explicit missing-image placeholder. */
+      }
+      const load = async () => {
+        const current = ++revision
+        const blob = await firstValueFrom(
+          from(this.readCached(url, offline ? fallback : undefined)).pipe(
+            timeout(1500),
+            catchError(() => {
+              this.storageError.set(true)
+              return of(undefined)
+            }),
+          ),
+        )
+        if (subscriber.closed || current !== revision) {
+          return
+        }
+        if (blob) {
+          objectUrl = URL.createObjectURL(blob)
+          subscriber.next(objectUrl)
+        } else if (!this.connection.offline()) {
+          subscriber.next(url)
+          void this.revalidate(url)
+            .then(() => {
+              if (
+                !subscriber.closed &&
+                this.connection.offline() &&
+                !objectUrl
+              ) {
+                void load()
+              }
+            })
+            .catch(() => undefined)
+        } else {
+          subscriber.next(placeholder)
+        }
+      }
+      subscriber.next(placeholder)
+      void load()
+      const connectivity = this.connection.changed.subscribe(() => {
+        const nextOffline = this.connection.offline()
+        if (offline === nextOffline) {
+          return
+        }
+        offline = nextOffline
+        if (!objectUrl) {
+          void load()
+        }
+      })
+      const cleared = this.cleared.subscribe(() => {
+        revision++
+        release()
+        subscriber.next(this.connection.offline() ? placeholder : url)
+      })
+      return () => {
+        connectivity.unsubscribe()
+        cleared.unsubscribe()
+        release()
+      }
+    })
+  }
+
+  private async readCached(
+    url: string,
+    fallback?: string,
+  ): Promise<Blob | undefined> {
+    const cache = await caches.open(CACHE)
+    for (const candidate of new Set(
+      [url, fallback].filter((value): value is string => !!value),
+    )) {
+      const response = await cache.match(candidate)
+      if (response) {
+        const blob = await response.blob()
+        try {
+          await this.validate(blob)
+          return blob
+        } catch {
+          // Treat corrupt cached images as missing, allowing the CDN or fallback.
+        }
       }
     }
+    return undefined
   }
 
   revalidate(url: string): Promise<Blob> {
@@ -168,8 +161,6 @@ export class OfflineImagesService {
       if (generation !== this.generation) {
         return blob
       }
-      // Fill missing images immediately; existing views keep their current copy.
-      this.show(url, blob)
       try {
         const cache = await caches.open(CACHE)
         await cache.put(
@@ -202,7 +193,7 @@ export class OfflineImagesService {
     try {
       const image = new Image()
       image.src = url
-      await image.decode()
+      await firstValueFrom(from(image.decode()).pipe(timeout(1500)))
       if (!image.naturalWidth || !image.naturalHeight) {
         throw new Error('Empty image')
       }
@@ -303,14 +294,7 @@ export class OfflineImagesService {
       this.records.set([])
       this.progress.set({ done: 0, total: 0, errors: 0 })
       this.storageError.set(false)
-      for (const entry of this.active.values()) {
-        if (entry.blob) {
-          URL.revokeObjectURL(entry.blob)
-        }
-        entry.blob = undefined
-        entry.display = entry.placeholder
-        this.changed.next(entry.url)
-      }
+      this.cleared.next()
     } catch {
       this.storageError.set(true)
     } finally {
