@@ -5,16 +5,12 @@ import {
   CLAN_LIST,
   DISCIPLINE_LIST,
   normalizeText,
-  sortTrigramSimilarity,
+  compareCardNames,
 } from '@utils'
 import { Observable, combineLatest, map } from 'rxjs'
 
 export type MarkdownSuggestionKind =
-  | 'card'
-  | 'clan'
-  | 'discipline'
-  | 'prefix'
-  | 'paste-youtube'
+  'card' | 'clan' | 'discipline' | 'prefix' | 'paste-youtube'
 
 export interface MarkdownSuggestion {
   kind: MarkdownSuggestionKind
@@ -69,23 +65,20 @@ export class MarkdownSuggestionService {
       this.libraryQuery.selectByName(term, limit),
     ]).pipe(
       map(([crypt, library]) => {
-        const suggestions: MarkdownSuggestion[] = [
-          ...crypt.map((card) => ({
-            kind: 'card' as const,
-            label: card.name,
-            insert: `card:${card.name}`,
-            icons: card.adv ? [card.clanIcon, 'advanced'] : [card.clanIcon],
-          })),
-          ...library.map((card) => ({
-            kind: 'card' as const,
-            label: card.name,
-            insert: `card:${card.name}`,
-            icons: card.typeIcons ?? [],
-          })),
-        ]
-        return suggestions
-          .sort((a, b) => sortTrigramSimilarity(a.label, b.label, term))
+        return [...crypt, ...library]
+          .sort((a, b) => compareCardNames(a, b, term))
           .slice(0, limit)
+          .map((card) => ({
+            kind: 'card' as const,
+            label: card.name,
+            insert: `card:${card.name}`,
+            icons:
+              'adv' in card
+                ? card.adv
+                  ? [card.clanIcon, 'advanced']
+                  : [card.clanIcon]
+                : (card.typeIcons ?? []),
+          }))
       }),
     )
   }

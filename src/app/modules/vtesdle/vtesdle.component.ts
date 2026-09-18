@@ -29,7 +29,7 @@ import { environment } from '@environments/environment'
 
 import { ApiDataService, LocalStorageService } from '@services'
 import { LoadingComponent } from '@shared/components/loading/loading.component'
-import { sortTrigramSimilarity } from '@utils'
+import { compareCardNames } from '@utils'
 
 @UntilDestroy()
 @Component({
@@ -88,9 +88,7 @@ export class VtesdleComponent implements OnInit {
         this.cryptQuery
           .selectByName(term, 10)
           .pipe(
-            map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
-            ),
+            map((cards) => cards.sort((a, b) => compareCardNames(a, b, term))),
           ),
       ),
     )

@@ -55,7 +55,7 @@ import { AutofocusDirective } from '@shared/directives/auto-focus.directive'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { isCryptId, sortTrigramSimilarity } from '@utils'
+import { isCryptId, compareCardNames } from '@utils'
 import { CardAdvancedFiltersComponent } from '@deck-shared/card-advanced-filters/card-advanced-filters.component'
 import {
   catchError,
@@ -282,7 +282,7 @@ export class CollectionCardsListComponent implements OnInit, AfterViewInit {
         ]).pipe(
           map(([libraryCards, cryptCards]) =>
             [...libraryCards, ...cryptCards]
-              .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term))
+              .sort((a, b) => compareCardNames(a, b, term))
               .map((card) => card.id),
           ),
         ),

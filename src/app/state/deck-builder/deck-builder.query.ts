@@ -18,8 +18,8 @@ import {
   isCrypt,
   isLibrary,
   roundNumber,
-  searchIncludes,
-  sortTrigramSimilarity,
+  matchesCardName,
+  compareCardNames,
 } from '@utils'
 import { combineLatest, distinctUntilChanged, map, Observable } from 'rxjs'
 import { CryptQuery } from '../crypt/crypt.query'
@@ -320,19 +320,19 @@ export class DeckBuilderQuery {
   selectCryptFiltered(search$: Observable<string>): Observable<ApiCard[]> {
     return combineLatest([this.selectCrypt(), search$]).pipe(
       map(([cards, search]) => {
-        if (!search) return cards
-        const filtered = cards.filter((card) =>
-          searchIncludes(this.cryptQuery.getEntity(card.id)?.name, search),
-        )
-        if (search.length >= 3) {
-          filtered.sort((a, b) =>
-            sortTrigramSimilarity(
-              this.cryptQuery.getEntity(a.id)?.name ?? '',
-              this.cryptQuery.getEntity(b.id)?.name ?? '',
-              search,
-            ),
-          )
+        if (!search) {
+          return cards
         }
+        const filtered = cards.filter((card) =>
+          matchesCardName(this.cryptQuery.getEntity(card.id), search),
+        )
+        filtered.sort((a, b) =>
+          compareCardNames(
+            this.cryptQuery.getEntity(a.id),
+            this.cryptQuery.getEntity(b.id),
+            search,
+          ),
+        )
         return filtered
       }),
     )
@@ -341,19 +341,19 @@ export class DeckBuilderQuery {
   selectLibraryFiltered(search$: Observable<string>): Observable<ApiCard[]> {
     return combineLatest([this.selectLibrary(), search$]).pipe(
       map(([cards, search]) => {
-        if (!search) return cards
-        const filtered = cards.filter((card) =>
-          searchIncludes(this.libraryQuery.getEntity(card.id)?.name, search),
-        )
-        if (search.length >= 3) {
-          filtered.sort((a, b) =>
-            sortTrigramSimilarity(
-              this.libraryQuery.getEntity(a.id)?.name ?? '',
-              this.libraryQuery.getEntity(b.id)?.name ?? '',
-              search,
-            ),
-          )
+        if (!search) {
+          return cards
         }
+        const filtered = cards.filter((card) =>
+          matchesCardName(this.libraryQuery.getEntity(card.id), search),
+        )
+        filtered.sort((a, b) =>
+          compareCardNames(
+            this.libraryQuery.getEntity(a.id),
+            this.libraryQuery.getEntity(b.id),
+            search,
+          ),
+        )
         return filtered
       }),
     )

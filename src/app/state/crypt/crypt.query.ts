@@ -126,9 +126,12 @@ export class CryptQuery {
   }
 
   selectByName(name: string, limit = 5): Observable<ApiCrypt[]> {
-    return this.store.selectEntities(limit, {
-      name,
-    })
+    return this.store.selectEntities(
+      limit,
+      { name },
+      'trigramSimilarity',
+      'desc',
+    )
   }
 
   selectTitles(): Observable<string[]> {

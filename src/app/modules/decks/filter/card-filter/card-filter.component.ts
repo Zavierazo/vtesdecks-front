@@ -23,7 +23,6 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { DecksQuery } from '@state/decks/decks.query'
 import { LibraryQuery } from '@state/library/library.query'
-import { sortTrigramSimilarity } from '@utils'
 import {
   debounceTime,
   map,
@@ -106,12 +105,12 @@ export class CardFilterComponent implements OnInit {
     text$.pipe(
       switchMap((term) =>
         this.cryptQuery
-          .selectByName(term, 10)
+          .selectByName(term, 0)
           .pipe(
             map((cards) =>
               cards
                 .filter((card) => !this.excludedCards.includes(card.id))
-                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+                .slice(0, 10),
             ),
           ),
       ),
@@ -124,12 +123,12 @@ export class CardFilterComponent implements OnInit {
       debounceTime(200),
       switchMap((term) =>
         this.libraryQuery
-          .selectByName(term, 10)
+          .selectByName(term, 0)
           .pipe(
             map((cards) =>
               cards
                 .filter((card) => !this.excludedCards.includes(card.id))
-                .sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
+                .slice(0, 10),
             ),
           ),
       ),

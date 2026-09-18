@@ -83,6 +83,8 @@ The production service worker prefetches all JavaScript bundles and core media d
 
 ### Reusable Browser Searches
 
+Client-side Crypt and Library name searches share `matchesCardName` and `compareCardNames` in `card-name-search.utils.ts`, covering canonical names, translated names, and aliases with the same normalization, fuzzy, and regex matching. Autocomplete queries rank the complete matching catalog before limiting results; callers must use the same comparator when combining catalogs. Backend searches retain their own contracts.
+
 Crypt, Library, and Deck browser URLs are normalized through `search-query.utils.ts`, which owns the supported query-parameter allowlists, defaults, and canonical ordering. `SearchFeaturesService` keeps recent filtered searches on-device, synchronizes named presets for authenticated users through `/user/search-presets`, and falls back to local persistence when that API is unavailable; browser components must keep Angular query parameters as their source of truth so copied links and restored searches remain interchangeable.
 
 Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`, support per-shop include/exclude selection, and load current in-stock card IDs on demand through `/cards/shops/{platform}/in-stock-card-ids`. Multiple included shops use union semantics and excluded shops are subtracted; this volatile availability must stay in memory and must not be added to the IndexedDB-backed card catalogs.

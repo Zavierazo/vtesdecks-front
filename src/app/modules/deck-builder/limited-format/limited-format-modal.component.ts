@@ -36,7 +36,7 @@ import { CardImagePipe } from '@shared/pipes/card-image.pipe'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { SetQuery } from '@state/set/set.query'
-import { sortTrigramSimilarity } from '@utils'
+import { compareCardNames } from '@utils'
 import {
   combineLatest,
   debounceTime,
@@ -271,9 +271,7 @@ export class LimitedFormatModalComponent implements OnInit {
         this.cryptQuery
           .selectByName(term, 10)
           .pipe(
-            map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
-            ),
+            map((cards) => cards.sort((a, b) => compareCardNames(a, b, term))),
           ),
       ),
     )
@@ -288,9 +286,7 @@ export class LimitedFormatModalComponent implements OnInit {
         this.libraryQuery
           .selectByName(term, 10)
           .pipe(
-            map((cards) =>
-              cards.sort((a, b) => sortTrigramSimilarity(a.name, b.name, term)),
-            ),
+            map((cards) => cards.sort((a, b) => compareCardNames(a, b, term))),
           ),
       ),
     )

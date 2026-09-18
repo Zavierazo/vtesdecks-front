@@ -120,9 +120,12 @@ export class LibraryQuery {
   }
 
   selectByName(name: string, limit = 5): Observable<ApiLibrary[]> {
-    return this.store.selectEntities(limit, {
-      name,
-    })
+    return this.store.selectEntities(
+      limit,
+      { name },
+      'trigramSimilarity',
+      'desc',
+    )
   }
 
   selectSects(): Observable<string[]> {
