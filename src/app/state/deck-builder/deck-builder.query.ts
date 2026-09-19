@@ -180,7 +180,9 @@ export class DeckBuilderQuery {
 
   selectCryptDisciplines(): Observable<ApiDisciplineStat[]> {
     return this.selectCrypt().pipe(
-      map((cards) => this.cryptQuery.getDisciplines(cards)),
+      map((cards) =>
+        this.cryptQuery.getDisciplines(cards.filter((c) => c.number > 0)),
+      ),
     )
   }
 
@@ -468,7 +470,10 @@ export class DeckBuilderQuery {
 
   getCryptDisciplines(): ApiDisciplineStat[] {
     return this.cryptQuery.getDisciplines(
-      this.store.getValue().cards.filter(isCrypt),
+      this.store
+        .getValue()
+        .cards.filter(isCrypt)
+        .filter((card) => card.number > 0),
     )
   }
 
