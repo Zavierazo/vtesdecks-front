@@ -62,7 +62,8 @@ describe('Full-card artwork backgrounds', { retries: 0 }, () => {
           cy.get(selector)
             .first()
             .then(($row) => {
-              const win = $row[0].ownerDocument.defaultView! as Window & {
+              const win = $row[0].ownerDocument
+                .defaultView! as unknown as Window & {
                 ng: {
                   getComponent(element: Element): {
                     compact: boolean
@@ -125,6 +126,8 @@ describe('Full-card artwork backgrounds', { retries: 0 }, () => {
                 `width="${cropWidth}" height="${cropHeight}" viewBox="75 ${cropY} ${cropWidth} ${cropHeight}"`,
               )
               reference.style.background = `url("data:image/svg+xml,${encodeURIComponent(cropped)}") right 33% / 50% no-repeat scroll`
+              reference.style.borderTopWidth =
+                getComputedStyle(row).borderTopWidth
               row.after(reference)
               expect(reference.getBoundingClientRect().height).to.eq(
                 row.getBoundingClientRect().height,
@@ -154,7 +157,7 @@ describe('Full-card artwork backgrounds', { retries: 0 }, () => {
     cy.get('app-builder app-crypt')
       .first()
       .then(($row) => {
-        const win = $row[0].ownerDocument.defaultView! as Window & {
+        const win = $row[0].ownerDocument.defaultView! as unknown as Window & {
           ng: {
             getComponent(element: Element): { background: boolean }
             applyChanges(component: unknown): void
