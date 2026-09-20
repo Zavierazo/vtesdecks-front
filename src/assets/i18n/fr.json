@@ -285,6 +285,15 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "composition": {
+      "title": "Composition du deck",
+      "show_deck": "Afficher le deck",
+      "hide_deck": "Masquer le deck",
+      "empty": "Aucune carte pour le moment",
+      "unknown_type": "Type inconnu",
+      "add": "Ajouter un exemplaire de {{name}}",
+      "remove": "Retirer un exemplaire de {{name}}"
+    },
     "deck_not_exists": "Le deck n'existe pas. Veuillez réessayer plus tard.",
     "already_saved": "Deck déjà enregistré !",
     "name_required": "Le nom du deck est requis",

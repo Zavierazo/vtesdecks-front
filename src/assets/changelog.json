@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.81.0",
+    "date": "xxth September, 2026",
+    "changes": [
+      "Keep your <strong>deck composition visible while adding cards</strong>: on wide screens, the Crypt and Library pickers now include a collapsible deck panel. Use <strong>Show deck / Hide deck</strong> beside the search field to choose your layout.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.80.0",
     "date": "18th September, 2026",
     "changes": [
@@ -7,8 +15,7 @@
       "The <strong>Deck Builder automatically saves local drafts</strong>, even offline, and keeps them on this device after you close the app. Restore a draft to pick up where you left off, keep several decks in progress, or delete drafts you no longer need. When you are back online, save your deck to your account. Drafts of existing decks are offered when reopening that same deck.",
       "Take card artwork offline too: download and manage <strong>card images</strong> in <strong>Settings > Offline</strong> before disconnecting.",
       "Share <strong>deck snapshots</strong> from the deck page or Deck Builder, including unsaved changes. Each link preserves the shared deck and opens it in the familiar deck view, read-only.",
-      "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second.",
-      "Minor bug fixes and performance improvements."
+      "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second."
     ]
   },
   {

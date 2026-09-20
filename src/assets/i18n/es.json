@@ -285,6 +285,15 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "composition": {
+      "title": "Composición del mazo",
+      "show_deck": "Mostrar mazo",
+      "hide_deck": "Ocultar mazo",
+      "empty": "Todavía no hay cartas",
+      "unknown_type": "Tipo desconocido",
+      "add": "Añadir una copia de {{name}}",
+      "remove": "Quitar una copia de {{name}}"
+    },
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
     "already_saved": "¡Mazo ya guardado!",
     "name_required": "El nombre del mazo es obligatorio",

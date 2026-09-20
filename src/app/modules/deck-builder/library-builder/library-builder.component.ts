@@ -1,3 +1,6 @@
+import { toSignal } from '@angular/core/rxjs-interop'
+import { BuilderSplitDirective } from '../deck-composition-panel/builder-split.directive'
+import { DeckCompositionPanelComponent } from '../deck-composition-panel/deck-composition-panel.component'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -29,7 +32,7 @@ import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { LibraryQuery } from '@state/library/library.query'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { debounceTime, Observable, tap } from 'rxjs'
+import { debounceTime, map, Observable, tap } from 'rxjs'
 import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
@@ -41,6 +44,8 @@ import { LibraryBuilderFilterComponent } from '../library-builder-filter/library
   styleUrls: ['./library-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    BuilderSplitDirective,
+    DeckCompositionPanelComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
@@ -83,6 +88,21 @@ export class LibraryBuilderComponent implements OnInit {
   sortBy!: LibrarySortBy
   sortByOrder!: 'asc' | 'desc'
   suggestedCardIds: number[] = []
+  readonly recommendations = toSignal(
+    this.deckBuilderQuery
+      .selectSuggestedCards()
+      .pipe(
+        map(
+          (suggested) =>
+            new Map(
+              (suggested?.keyLibrary ?? []).map(
+                (card) => [card.id, card] as const,
+              ),
+            ),
+        ),
+      ),
+    { initialValue: new Map() },
+  )
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [

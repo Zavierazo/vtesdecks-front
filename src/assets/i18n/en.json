@@ -285,6 +285,15 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "composition": {
+      "title": "Deck composition",
+      "show_deck": "Show deck",
+      "hide_deck": "Hide deck",
+      "empty": "No cards yet",
+      "unknown_type": "Unknown type",
+      "add": "Add one {{name}}",
+      "remove": "Remove one {{name}}"
+    },
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
     "already_saved": "Deck already saved!",
     "name_required": "Deck name is required",

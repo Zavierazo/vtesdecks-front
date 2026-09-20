@@ -2,7 +2,8 @@
   @if (library$ | async; as library) {
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
-    [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)" [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
+    [class.compact-card]="compact"
+  [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)" [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
     (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="background && {
       background: 'url('+ cdnDomain + library.cropImage + ') scroll',
       'background-repeat': 'no-repeat',
@@ -33,7 +34,39 @@
       <app-collection-card-mini-stats [card]="card" />
       }
     </ng-template>
-    <div class="row">
+    @if (compact) {
+  <div class="compact-row">
+    @if (withControls) {
+    <button type="button" class="btn btn-icon compact-control" (mouseup)="$event.stopPropagation()" [attr.aria-label]="'deck_builder.composition.remove' | transloco: { name: library.name }"
+      (click)="$event.stopPropagation(); removeCard($event)">
+      <i class="bi" [ngClass]="card.number > 0 ? 'bi-dash-square' : 'bi-x-square'" aria-hidden="true"></i>
+    </button>
+    }
+    <span class="deck_number">{{ card.number }}</span>
+    @if (withControls) {
+    <button type="button" class="btn btn-icon compact-control" (mouseup)="$event.stopPropagation()" [attr.aria-label]="'deck_builder.composition.add' | transloco: { name: library.name }"
+      (click)="$event.stopPropagation(); addCard($event)">
+      <i class="bi bi-plus-square" aria-hidden="true"></i>
+    </button>
+    }
+    @if (library.typeIcons?.length) {
+    <i class="vtes compact-icon" [ngClass]="library.typeIcons[0]" aria-hidden="true"></i>
+    }
+    <button type="button" class="btn compact-name" (mouseup)="$event.stopPropagation()" [title]="library.i18n?.name || library.name"
+      (click)="$event.stopPropagation(); popover.open()">
+      {{ library.i18n?.name || library.name }}
+    </button>
+    @if (recommended) {
+      <app-recommended-badge [recommended]="recommended" [current]="card.number" />
+    }
+    <span class="compact-disciplines">
+      @for (discipline of library.disciplineIcons; track discipline) {
+      <i class="vtes" [ngClass]="discipline" role="img" [attr.aria-label]="discipline" [title]="discipline"></i>
+      }
+    </span>
+  </div>
+  } @else {
+  <div class="row">
       @if(withControls && (card.number || maxNumber || withDelete)){
       <div class="col-auto">
         <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
@@ -147,7 +180,8 @@
         }
       </div>
     </div>
-  </a>
+  }
+</a>
   } @else {
   <div class="list-group-item list-group-item-action">
     <ngx-skeleton-loader count="1" animation="progress" [theme]="{

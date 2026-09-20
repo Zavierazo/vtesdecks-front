@@ -56,6 +56,8 @@ export class LibraryComponent implements OnInit {
 
   @Input() withDrawProbability = false
 
+  @Input() compact = false
+
   @Input() withControls = false
 
   @Input() withDelete = false

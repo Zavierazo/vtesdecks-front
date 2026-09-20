@@ -1,3 +1,6 @@
+import { toSignal } from '@angular/core/rxjs-interop'
+import { BuilderSplitDirective } from '../deck-composition-panel/builder-split.directive'
+import { DeckCompositionPanelComponent } from '../deck-composition-panel/deck-composition-panel.component'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -29,7 +32,7 @@ import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { debounceTime, Observable, tap } from 'rxjs'
+import { debounceTime, map, Observable, tap } from 'rxjs'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
@@ -41,6 +44,8 @@ import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-build
   styleUrls: ['./crypt-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    BuilderSplitDirective,
+    DeckCompositionPanelComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
@@ -81,6 +86,21 @@ export class CryptBuilderComponent implements OnInit {
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
   suggestedCardIds: number[] = []
+  readonly recommendations = toSignal(
+    this.deckBuilderQuery
+      .selectSuggestedCards()
+      .pipe(
+        map(
+          (suggested) =>
+            new Map(
+              (suggested?.keyCrypt ?? []).map(
+                (card) => [card.id, card] as const,
+              ),
+            ),
+        ),
+      ),
+    { initialValue: new Map() },
+  )
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
