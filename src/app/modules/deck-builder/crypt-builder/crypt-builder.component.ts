@@ -28,6 +28,7 @@ import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { CryptStats } from '@state/crypt/crypt.store'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { isRegexSearch } from '@utils'
@@ -85,7 +86,8 @@ export class CryptBuilderComponent implements OnInit {
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
-  suggestedCardIds: number[] = []
+  private suggestedCardIds: number[] = []
+  private rankingStats!: CryptStats
   readonly recommendations = toSignal(
     this.deckBuilderQuery
       .selectSuggestedCards()
@@ -232,6 +234,17 @@ export class CryptBuilderComponent implements OnInit {
   }
 
   initQuery() {
+    // Only deliberate view changes adopt new ranking inputs; scrolling reuses them.
+    this.suggestedCardIds = (
+      this.deckBuilderQuery.getValue().suggestedCards?.keyCrypt ?? []
+    ).map((card) => card.id)
+    this.rankingStats = {
+      total: this.deckBuilderQuery.getCryptSize(),
+      minGroup: this.deckBuilderQuery.getMinGroupCrypt(),
+      maxGroup: this.deckBuilderQuery.getMaxGroupCrypt(),
+      clans: this.deckBuilderQuery.getCryptClans(),
+      disciplines: this.deckBuilderQuery.getCryptDisciplines(),
+    }
     this.limitTo = CryptBuilderComponent.PAGE_SIZE
     this.updateQuery()
   }
@@ -242,13 +255,7 @@ export class CryptBuilderComponent implements OnInit {
       filter: this.deckBuilderQuery.getCryptFilter(),
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      crypt: {
-        total: this.deckBuilderQuery.getCryptSize(),
-        minGroup: this.deckBuilderQuery.getMinGroupCrypt(),
-        maxGroup: this.deckBuilderQuery.getMaxGroupCrypt(),
-        clans: this.deckBuilderQuery.getCryptClans(),
-        disciplines: this.deckBuilderQuery.getCryptDisciplines(),
-      },
+      crypt: this.rankingStats,
       priorityIds: this.suggestedCardIds,
     })
     this.changeDetector.markForCheck()

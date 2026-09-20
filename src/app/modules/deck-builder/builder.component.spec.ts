@@ -1,9 +1,38 @@
 import { signal } from '@angular/core'
 import { convertToParamMap } from '@angular/router'
 import { ApiCrypt, ApiLibrary } from '@models'
+import { ApiCard } from '@models'
 import { of, Subject } from 'rxjs'
 import { describe, expect, it, vi } from 'vitest'
 import { BuilderComponent } from './builder.component'
+
+describe('Builder recommendation refresh', () => {
+  it('immediately forwards each distinct edit to the cancellable refresh pipeline', () => {
+    const cards = new Subject<ApiCard[]>()
+    const fetchSuggestedCards = vi.fn()
+    const context = Object.assign(Object.create(BuilderComponent.prototype), {
+      initForm: vi.fn(),
+      initDeck: () => of({}),
+      deckBuilderQuery: {
+        selectCards: () => cards,
+        getValue: () => ({ cards: [] }),
+      },
+      deckBuilderService: { fetchSuggestedCards },
+    }) as BuilderComponent
+
+    context.ngOnInit()
+    // The first observable emission can already contain an edit.
+    cards.next([{ id: 200001, number: 1 }])
+    expect(fetchSuggestedCards).toHaveBeenCalledExactlyOnceWith()
+
+    cards.next([{ id: 200001, number: 2 }])
+    cards.next([{ id: 200001, number: 3 }])
+    // Unrelated store emissions must not restart the timer.
+    cards.next([{ id: 200001, number: 3 }])
+    expect(fetchSuggestedCards).toHaveBeenCalledTimes(3)
+    cards.complete()
+  })
+})
 
 describe('Builder catalog initialization', () => {
   it('does not initialize from cached emissions and initializes once after both refreshes', () => {

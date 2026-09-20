@@ -30,6 +30,7 @@ import { AuthService } from '@state/auth/auth.service'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { LibraryQuery } from '@state/library/library.query'
+import { LibraryStats } from '@state/library/library.store'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
 import { debounceTime, map, Observable, tap } from 'rxjs'
@@ -87,7 +88,8 @@ export class LibraryBuilderComponent implements OnInit {
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
   sortBy!: LibrarySortBy
   sortByOrder!: 'asc' | 'desc'
-  suggestedCardIds: number[] = []
+  private suggestedCardIds: number[] = []
+  private rankingStats!: LibraryStats
   readonly recommendations = toSignal(
     this.deckBuilderQuery
       .selectSuggestedCards()
@@ -212,6 +214,18 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   initQuery() {
+    // Only deliberate view changes adopt new ranking inputs; scrolling reuses them.
+    this.suggestedCardIds = (
+      this.deckBuilderQuery.getValue().suggestedCards?.keyLibrary ?? []
+    ).map((card) => card.id)
+    this.rankingStats = {
+      total: this.deckBuilderQuery.getLibrarySize(),
+      disciplines: this.deckBuilderQuery.getLibraryDisciplines(),
+      cryptClans: this.deckBuilderQuery.getCryptClans(),
+      cryptSects: this.deckBuilderQuery.getCryptSects(),
+      cryptDisciplines: this.deckBuilderQuery.getCryptDisciplines(),
+      cryptTotal: this.deckBuilderQuery.getCryptSize(),
+    }
     this.limitTo = LibraryBuilderComponent.PAGE_SIZE
     this.updateQuery()
   }
@@ -222,14 +236,7 @@ export class LibraryBuilderComponent implements OnInit {
       filter: this.deckBuilderQuery.getLibraryFilter(),
       sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
       sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      stats: {
-        total: this.deckBuilderQuery.getLibrarySize(),
-        disciplines: this.deckBuilderQuery.getLibraryDisciplines(),
-        cryptClans: this.deckBuilderQuery.getCryptClans(),
-        cryptSects: this.deckBuilderQuery.getCryptSects(),
-        cryptDisciplines: this.deckBuilderQuery.getCryptDisciplines(),
-        cryptTotal: this.deckBuilderQuery.getCryptSize(),
-      },
+      stats: this.rankingStats,
       priorityIds: this.suggestedCardIds,
     })
     this.changeDetector.markForCheck()

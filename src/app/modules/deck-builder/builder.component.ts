@@ -58,7 +58,6 @@ import {
   catchError,
   concat,
   forkJoin,
-  debounceTime,
   distinctUntilChanged,
   EMPTY,
   filter,
@@ -68,6 +67,7 @@ import {
   Observable,
   of,
   skip,
+  startWith,
   switchMap,
   tap,
   timer,
@@ -248,8 +248,13 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .pipe(
         untilDestroyed(this),
         map((cards) => cards.map((c) => `${c.id}:${c.number}`).join(',')),
+        startWith(
+          this.deckBuilderQuery
+            .getValue()
+            .cards.map((c) => `${c.id}:${c.number}`)
+            .join(','),
+        ),
         distinctUntilChanged(),
-        debounceTime(5000),
         skip(1),
         tap(() => this.deckBuilderService.fetchSuggestedCards()),
       )
@@ -547,31 +552,19 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   openCryptBuilder() {
-    const modalRef = this.modalService.open(CryptBuilderComponent, {
+    this.modalService.open(CryptBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
-    const suggested = this.deckBuilderQuery.getValue().suggestedCards
-    if (suggested?.keyCrypt) {
-      modalRef.componentInstance.suggestedCardIds = [...suggested.keyCrypt].map(
-        (c) => c.id,
-      )
-    }
   }
 
   openLibraryBuilder() {
-    const modalRef = this.modalService.open(LibraryBuilderComponent, {
+    this.modalService.open(LibraryBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
-    const suggested = this.deckBuilderQuery.getValue().suggestedCards
-    if (suggested?.keyLibrary) {
-      modalRef.componentInstance.suggestedCardIds = [
-        ...suggested.keyLibrary,
-      ].map((c) => c.id)
-    }
   }
 
   openImportRecentDecks(): void {

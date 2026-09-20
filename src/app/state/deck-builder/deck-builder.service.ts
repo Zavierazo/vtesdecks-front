@@ -1,5 +1,6 @@
 import { ADVENT_DATA, AdventData } from '@advent/advent.data'
 import { inject, Injectable, signal } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { TranslocoService } from '@jsverse/transloco'
 import {
   ApiCard,
@@ -18,6 +19,7 @@ import { getSetAbbrev } from '@utils'
 import {
   catchError,
   combineLatest,
+  debounceTime,
   EMPTY,
   finalize,
   map,
@@ -30,10 +32,10 @@ import {
 } from 'rxjs'
 import { CollectionApiDataService } from '../../modules/collection/services/collection-api.data.service'
 import { CollectionQueryState } from '../../modules/collection/state/collection.store'
+import { LocalDeckDraftsService } from '../../services/local-deck-drafts.service'
 import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
-import { LocalDeckDraftsService } from '../../services/local-deck-drafts.service'
 @Injectable({ providedIn: 'root' })
 export class DeckBuilderService {
   private readonly store = inject(DeckBuilderStore)
@@ -46,12 +48,31 @@ export class DeckBuilderService {
   readonly activeLocalDraftId = signal<string | undefined>(undefined)
   readonly draftStorageError = signal(false)
   readonly draftSaved = new Subject<void>()
+  private readonly suggestionRefresh = new Subject<void>()
+
+  constructor() {
+    this.suggestionRefresh
+      .pipe(
+        debounceTime(3000),
+        switchMap(() => {
+          if (this.query.isBelowThreshold()) {
+            return of(null)
+          }
+          return this.apiDataService
+            .getSuggestedCards(this.store.getValue().cards)
+            .pipe(catchError(() => of(null)))
+        }),
+        takeUntilDestroyed(),
+      )
+      .subscribe((result) => this.store.setSuggestedCards(result))
+  }
 
   init(
     id: string | undefined,
     cloneDeck: ApiDeck,
     localDraftId?: string,
   ): Observable<ApiDeckBuilder> {
+    this.fetchSuggestedCards()
     this.store.reset()
     this.activeLocalDraftId.set(undefined)
     if (localDraftId) {
@@ -140,6 +161,7 @@ export class DeckBuilderService {
 
   clone(): void {
     const { name, description, extra, cards } = this.store.getValue()
+    this.fetchSuggestedCards()
     this.store.reset()
     this.activeLocalDraftId.set(undefined)
     this.store.update((state) => ({
@@ -156,6 +178,7 @@ export class DeckBuilderService {
   }
 
   cloneFrom(deck: ApiDeckBuilder): void {
+    this.fetchSuggestedCards()
     this.store.reset()
     this.activeLocalDraftId.set(undefined)
     this.store.update((state) => ({
@@ -237,6 +260,7 @@ export class DeckBuilderService {
     return this.apiDataService.deleteDeckBuilder(deckId, permanent).pipe(
       tap((result) => {
         if (result) {
+          this.fetchSuggestedCards()
           this.store.reset()
         }
       }),
@@ -644,6 +668,7 @@ export class DeckBuilderService {
     if (!draft || draft.sourceDeckId) {
       return false
     }
+    this.fetchSuggestedCards()
     this.store.reset()
     this.activeLocalDraftId.set(id)
     this.store.update((state) => ({
@@ -673,14 +698,7 @@ export class DeckBuilderService {
   }
 
   fetchSuggestedCards(): void {
-    if (this.query.isBelowThreshold()) {
-      this.store.setSuggestedCards(null)
-      return
-    }
-    this.apiDataService
-      .getSuggestedCards(this.store.getValue().cards)
-      .pipe(catchError(() => of(null)))
-      .subscribe((result) => this.store.setSuggestedCards(result))
+    this.suggestionRefresh.next()
   }
 
   private fetchCollection(): Observable<ApiCollectionPage> {
