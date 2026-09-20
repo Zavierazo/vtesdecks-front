@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,6 +23,7 @@ import { environment } from '@environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badge.component'
+import { CardArtBackgroundComponent } from '../card-art-background/card-art-background.component'
 
 @UntilDestroy()
 @Component({
@@ -32,7 +33,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgbPopover,
-    NgStyle,
+    CardArtBackgroundComponent,
     NgClass,
     NgxSkeletonLoaderComponent,
     AsyncPipe,

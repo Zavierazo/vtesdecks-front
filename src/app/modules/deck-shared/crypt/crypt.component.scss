@@ -1,5 +1,10 @@
 @use '../compact-card';
 
+.card-art-row {
+  isolation: isolate;
+  background-color: transparent;
+}
+
 .img-popover {
   width: 300px;
   height: auto;

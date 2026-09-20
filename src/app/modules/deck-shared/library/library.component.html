@@ -3,13 +3,12 @@
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [class.compact-card]="compact"
+    [class.card-art-row]="background"
   [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)" [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-    (click)="disableClickPopover ? popover.close() :popover.open()" [ngStyle]="background && {
-      background: 'url('+ cdnDomain + library.cropImage + ') scroll',
-      'background-repeat': 'no-repeat',
-      'background-position': 'right 33%',
-      'background-size': '50%'
-    } || null" [autoClose]="withControls && (isMobile$ | async)!">
+    (click)="disableClickPopover ? popover.close() :popover.open()" [autoClose]="withControls && (isMobile$ | async)!">
+    @if (background) {
+      <app-card-art-background [cardId]="library.id" type="library" />
+    }
     <ng-template #imgPopover>
       <img #i18nImage [ngClass]="{
             'img-popover': !(isMobile$ | async)!,

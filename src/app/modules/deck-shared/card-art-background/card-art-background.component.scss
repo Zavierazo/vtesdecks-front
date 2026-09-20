@@ -1,0 +1,23 @@
+:host {
+  position: absolute;
+  inset: 0 0 0 50%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.art-crop {
+  position: absolute;
+  width: 100%;
+  // Match background-position: right 33% after sizing the cropped art to 50%.
+  top: 33%;
+  transform: translateY(-33%);
+  overflow: hidden;
+}
+
+img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}

@@ -2,14 +2,13 @@
 <!-- eslint-disable-next-line -->
 <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
   [class.compact-card]="compact"
+  [class.card-art-row]="background"
   [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
   [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-  (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="background && {
-    background: 'url('+ cdnDomain + crypt.cropImage + ') scroll',
-    'background-repeat': 'no-repeat',
-    'background-position': 'right 33%',
-    'background-size': '50%'
-  } || null" [autoClose]="withControls && (isMobile$ | async)!">
+  (click)="disableClickPopover ? popover.close() : popover.open()" [autoClose]="withControls && (isMobile$ | async)!">
+  @if (background) {
+    <app-card-art-background [cardId]="crypt.id" type="crypt" />
+  }
   <ng-template #imgPopover>
     <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
