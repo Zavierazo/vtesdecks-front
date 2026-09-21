@@ -45,16 +45,6 @@ export class DeckCompositionPanelComponent {
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
   readonly builder = inject(DeckBuilderService)
-  private readonly suggestions = toSignal(this.query.selectSuggestedCards())
-  readonly recommendations = computed(
-    () =>
-      new Map(
-        [
-          ...(this.suggestions()?.keyCrypt ?? []),
-          ...(this.suggestions()?.keyLibrary ?? []),
-        ].map((card) => [card.id, card] as const),
-      ),
-  )
 
   readonly primarySection = input.required<SectionType>()
   readonly expandedSections = linkedSignal<

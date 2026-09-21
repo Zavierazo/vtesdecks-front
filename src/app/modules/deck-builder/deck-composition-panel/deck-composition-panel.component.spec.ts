@@ -175,9 +175,9 @@ describe('Live deck composition panel', () => {
     row.querySelector<HTMLButtonElement>('button:has(.bi-plus-square)')!.click()
     await fixture.whenStable()
     expect(addCard).toHaveBeenCalledWith(100001)
-    expect(row.querySelector('app-recommended-badge')?.textContent).toContain(
-      '2\u20134',
-    )
+    expect(
+      fixture.nativeElement.querySelector('app-recommended-badge'),
+    ).toBeNull()
     expect(component.sections()[1].total).toBe(6)
     expect(row.isConnected).toBe(true)
     expect(row.querySelector('.deck_number')?.textContent).toContain('4')

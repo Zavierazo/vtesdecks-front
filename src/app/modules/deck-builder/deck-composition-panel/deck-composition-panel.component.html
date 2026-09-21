@@ -104,7 +104,6 @@
                 @if (section.type === 'crypt') {
                   <app-crypt
                     [card]="card"
-                    [recommended]="recommendations().get(card.id)"
                     [cryptSize]="section.total"
                     [compact]="true"
                     [background]="false"
@@ -117,7 +116,6 @@
                 } @else {
                   <app-library
                     [card]="card"
-                    [recommended]="recommendations().get(card.id)"
                     [librarySize]="section.total"
                     [compact]="true"
                     [background]="false"
