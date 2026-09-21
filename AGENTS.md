@@ -75,6 +75,10 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 - `CanActivateUser` — redirects unauthenticated users, opens login modal
 - `CanDeactivateComponent` — unsaved-changes confirmation
 
+### Advertising
+
+The home sponsor slot resolves feature flags from one snapshot and waits for country lookup completion when targeting requires it before rendering custom advertising or its AdSense fallback. Pending decisions render no ad. Country readiness is session-only. This selection is local to the main home slot; the shared AdSense script loading and initialization remain independent of it.
+
 ### Push Notifications
 
 `PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.

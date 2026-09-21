@@ -1,4 +1,4 @@
-@if (ad$ | async; as ad) {
+@if ((featuresLoaded$ | async) && (ad$ | async); as ad) {
   @if (ad.show) {
     <div class="container my-3 text-center" data-cy="home-custom-ad">
       <a
@@ -28,16 +28,11 @@
       </a>
     </div>
   } @else {
-    <ng-container [ngTemplateOutlet]="adSense" />
+    <app-ad-sense
+      [adClient]="adClient"
+      [adSlot]="adSlot"
+      [adFormat]="adFormat"
+      [fullWidthResponsive]="fullWidthResponsive"
+    />
   }
-} @else {
-  <ng-container [ngTemplateOutlet]="adSense" />
 }
-<ng-template #adSense>
-  <app-ad-sense
-    [adClient]="adClient"
-    [adSlot]="adSlot"
-    [adFormat]="adFormat"
-    [fullWidthResponsive]="fullWidthResponsive"
-  />
-</ng-template>

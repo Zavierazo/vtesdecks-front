@@ -19,10 +19,14 @@ export class AuthService {
   private readonly jwtHelper = inject(JwtHelperService)
 
   loadCountry(): Observable<string | undefined> {
+    this.authStore.setCountryLoaded(false)
     return this.apiDataService.getUserCountry().pipe(
       map((response) => response?.countryCode?.toUpperCase()),
       catchError(() => of(undefined)),
-      tap((countryCode) => this.authStore.updateCountryCode(countryCode)),
+      tap((countryCode) => {
+        this.authStore.updateCountryCode(countryCode)
+        this.authStore.setCountryLoaded(true)
+      }),
     )
   }
 

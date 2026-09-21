@@ -67,3 +67,32 @@ describe('offline session refresh', () => {
     },
   )
 })
+
+describe('country lookup readiness', () => {
+  it.each([false, true])(
+    'marks lookup complete on success or failure (failure: %s)',
+    (failed) => {
+      const store = { setCountryLoaded: vi.fn(), updateCountryCode: vi.fn() }
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: AuthStore, useValue: store },
+          { provide: JwtHelperService, useValue: {} },
+          {
+            provide: ApiDataService,
+            useValue: {
+              getUserCountry: () =>
+                failed
+                  ? throwError(() => new Error('offline'))
+                  : of({ countryCode: 'es' }),
+            },
+          },
+        ],
+      })
+      TestBed.inject(AuthService).loadCountry().subscribe()
+      expect(store.setCountryLoaded.mock.calls).toEqual([[false], [true]])
+      expect(store.updateCountryCode).toHaveBeenCalledWith(
+        failed ? undefined : 'ES',
+      )
+    },
+  )
+})

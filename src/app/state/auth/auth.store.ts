@@ -28,6 +28,8 @@ export class AuthStore {
   private readonly serverDate = signal<Date | undefined>(undefined)
   private readonly state = signal<AuthState>(initialState)
   private readonly state$ = toObservable(this.state)
+  private readonly countryLoaded = signal(false)
+  private readonly countryLoaded$ = toObservable(this.countryLoaded)
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
   private readonly error = signal<string | null | undefined>(null)
@@ -84,6 +86,14 @@ export class AuthStore {
   updateCountryCode(countryCode?: string) {
     this.update({ ...this.getValue(), countryCode })
     this.updateStorage()
+  }
+
+  selectCountryLoaded(): Observable<boolean> {
+    return this.countryLoaded$
+  }
+
+  setCountryLoaded(loaded: boolean) {
+    this.countryLoaded.set(loaded)
   }
 
   updateBuilderDisplayMode(builderDisplayMode: 'list' | 'grid') {
