@@ -305,6 +305,28 @@ export class DeckBuilderService {
     this.saveDraft()
   }
 
+  setCardQuantity(id: number, quantity: number): void {
+    if (!Number.isSafeInteger(quantity) || quantity < 0) {
+      return
+    }
+    const existing = this.store.getValue().cards.find((card) => card.id === id)
+    if ((existing?.number ?? 0) === quantity) {
+      return
+    }
+    const type = this.libraryQuery.getEntity(id)?.type
+    this.store.update((state) => ({
+      ...state,
+      cards: existing
+        ? state.cards.map((card) =>
+            card.id === id ? { ...card, number: quantity } : card,
+          )
+        : [...state.cards, { id, type, number: quantity }],
+    }))
+    this.validateDeck()
+    this.store.setSaved(false)
+    this.saveDraft()
+  }
+
   removeCard(id: number) {
     this.store.removeCard(id)
     this.validateDeck()

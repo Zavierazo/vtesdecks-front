@@ -20,3 +20,13 @@
     var(--app-spoiler-new, #f6d365);
   outline-offset: -2px;
 }
+
+.editable-quantity {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+}
+
+.quantity-edit-row {
+  --bs-gutter-x: 1rem;
+}

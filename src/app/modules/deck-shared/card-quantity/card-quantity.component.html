@@ -1,0 +1,27 @@
+@if (editing()) {
+  <input
+    #field
+    type="text"
+    inputmode="numeric"
+    pattern="[0-9]*"
+    class="form-control form-control-sm"
+    [value]="quantity()"
+    [attr.aria-label]="
+      'deck_builder.quantity_label' | transloco: { name: name() }
+    "
+    (blur)="commit(field)"
+    (keydown)="onKeydown($event, field)"
+  />
+} @else {
+  <button
+    type="button"
+    class="quantity-value"
+    [attr.aria-label]="
+      'deck_builder.quantity_label' | transloco: { name: name() }
+    "
+    [title]="'deck_builder.quantity_hint' | transloco"
+    (click)="editing.set(true)"
+  >
+    {{ prefix() }}{{ quantity() }}
+  </button>
+}

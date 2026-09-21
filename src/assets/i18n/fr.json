@@ -285,6 +285,8 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "quantity_label": "Quantité de {{name}}",
+    "quantity_hint": "Saisissez un nombre entier. Entrée pour appliquer ; Échap pour annuler.",
     "composition": {
       "title": "Composition du deck",
       "show_deck": "Afficher le deck",

@@ -285,6 +285,8 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "quantity_label": "Cantidad de {{name}}",
+    "quantity_hint": "Introduce un número entero. Intro para aplicar; Escape para cancelar.",
     "composition": {
       "title": "Composición del mazo",
       "show_deck": "Mostrar mazo",

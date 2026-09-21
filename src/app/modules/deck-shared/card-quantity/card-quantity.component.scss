@@ -1,0 +1,29 @@
+:host {
+  display: inline-block;
+}
+.quantity-value {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: text;
+  border-radius: 0.2rem;
+  font-variant-numeric: tabular-nums;
+
+  &:hover {
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 3px;
+  }
+}
+.form-control {
+  width: 3rem;
+  padding: 0 0.2rem;
+  text-align: center;
+}

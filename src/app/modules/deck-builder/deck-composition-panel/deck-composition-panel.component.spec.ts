@@ -38,6 +38,13 @@ describe('Live deck composition panel', () => {
         ),
       ),
     )
+    const setCardQuantity = vi.fn((id: number, quantity: number) =>
+      cards.next(
+        cards.value.map((card) =>
+          card.id === id ? { ...card, number: quantity } : card,
+        ),
+      ),
+    )
     TestBed.configureTestingModule({
       imports: [
         DeckCompositionPanelComponent,
@@ -83,7 +90,10 @@ describe('Live deck composition panel', () => {
               ),
           },
         },
-        { provide: DeckBuilderService, useValue: { addCard, removeCard } },
+        {
+          provide: DeckBuilderService,
+          useValue: { addCard, removeCard, setCardQuantity },
+        },
         { provide: MediaService, useValue: { observeMobile: () => of(false) } },
         { provide: SpoilerVisitService, useValue: { isNewCard: () => false } },
       ],
@@ -98,6 +108,7 @@ describe('Live deck composition panel', () => {
       library,
       addCard,
       removeCard,
+      setCardQuantity,
     }
   }
 
@@ -148,7 +159,14 @@ describe('Live deck composition panel', () => {
   })
 
   it('updates through the builder service without replacing existing rows and reacts to catalog refresh', async () => {
-    const { fixture, component, library, addCard, removeCard } = await setup()
+    const {
+      fixture,
+      component,
+      library,
+      addCard,
+      removeCard,
+      setCardQuantity,
+    } = await setup()
     const row = [
       ...fixture.nativeElement.querySelectorAll('.composition-row'),
     ].find((r: unknown) =>
@@ -166,6 +184,15 @@ describe('Live deck composition panel', () => {
     row.querySelector<HTMLButtonElement>('button:has(.bi-dash-square)')!.click()
     await fixture.whenStable()
     expect(removeCard).toHaveBeenCalledWith(100001)
+    row.querySelector<HTMLButtonElement>('app-card-quantity button')!.click()
+    await fixture.whenStable()
+    const field = row.querySelector('input')!
+    field.value = '8'
+    field.dispatchEvent(new FocusEvent('blur'))
+    await fixture.whenStable()
+    expect(setCardQuantity).toHaveBeenCalledExactlyOnceWith(100001, 8)
+    expect(component.sections()[1].total).toBe(10)
+    expect(row.isConnected).toBe(true)
     library.next([
       ...library.value,
       { id: 100003, name: 'Restored card', type: 'Reaction' } as ApiLibrary,

@@ -73,6 +73,50 @@ describe('Deck builder draft recovery', () => {
     return { service, state: () => state, api, collectionApi }
   }
 
+  it('sets quantities atomically, preserves metadata and considering cards, and saves once', () => {
+    const { service, state } = setup({
+      cards: [{ id: 100001, number: 3, type: 'Action' }],
+    })
+    Object.assign(TestBed.inject(LibraryQuery), {
+      getEntity: () => ({ type: 'Action' }),
+    })
+    const save = vi.spyOn(service, 'saveDraft').mockImplementation(() => undefined)
+    const store = TestBed.inject(DeckBuilderStore)
+    service.setCardQuantity(100001, 8)
+    expect(state().cards).toEqual([{ id: 100001, number: 8, type: 'Action' }])
+    expect(service.validateDeck).toHaveBeenCalledTimes(1)
+    expect(store.setSaved).toHaveBeenCalledExactlyOnceWith(false)
+    expect(save).toHaveBeenCalledTimes(1)
+    service.setCardQuantity(100001, 0)
+    expect(state().cards).toEqual([{ id: 100001, number: 0, type: 'Action' }])
+    service.setCardQuantity(100002, 5)
+    expect(state().cards).toContainEqual({
+      id: 100002,
+      number: 5,
+      type: 'Action',
+    })
+    expect(save).toHaveBeenCalledTimes(3)
+  })
+
+  it('does not dirty drafts for invalid or unchanged quantities', () => {
+    const { service, state } = setup({ cards: [{ id: 100001, number: 3 }] })
+    const save = vi.spyOn(service, 'saveDraft').mockImplementation(() => undefined)
+    for (const quantity of [
+      -1,
+      1.5,
+      NaN,
+      Infinity,
+      Number.MAX_SAFE_INTEGER + 1,
+      3,
+    ]) {
+      service.setCardQuantity(100001, quantity)
+    }
+    service.setCardQuantity(100002, 0)
+    expect(state().cards).toEqual([{ id: 100001, number: 3 }])
+    expect(save).not.toHaveBeenCalled()
+    expect(service.validateDeck).not.toHaveBeenCalled()
+  })
+
   it.each(['crypt', 'library'])(
     'reports missing %s metadata without losing deck entries',
     (kind) => {

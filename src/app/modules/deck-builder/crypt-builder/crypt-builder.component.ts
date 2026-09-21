@@ -273,6 +273,10 @@ export class CryptBuilderComponent implements OnInit {
     } as ApiCard
   }
 
+  setCardQuantity(change: { id: number; quantity: number }): void {
+    this.deckBuilderService.setCardQuantity(change.id, change.quantity)
+  }
+
   addCard(id: number) {
     this.deckBuilderService.addCard(id)
   }

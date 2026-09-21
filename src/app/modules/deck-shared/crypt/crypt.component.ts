@@ -1,3 +1,4 @@
+import { CardQuantityComponent } from '../card-quantity/card-quantity.component'
 import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -32,6 +33,7 @@ import { CardArtBackgroundComponent } from '../card-art-background/card-art-back
   styleUrls: ['./crypt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CardQuantityComponent,
     NgbPopover,
     CardArtBackgroundComponent,
     NgClass,
@@ -75,6 +77,9 @@ export class CryptComponent implements OnInit {
   @Input() setAbbrev?: string
 
   @Input() recommended?: ApiArchetypeKeyCard
+
+  @Input() editableQuantity = false
+  readonly cardQuantityChanged = output<{ id: number; quantity: number }>()
 
   readonly cardAdded = output<number>()
 

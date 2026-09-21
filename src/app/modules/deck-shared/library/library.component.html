@@ -41,7 +41,10 @@
       <i class="bi" [ngClass]="card.number > 0 ? 'bi-dash-square' : 'bi-x-square'" aria-hidden="true"></i>
     </button>
     }
-    <span class="deck_number">{{ card.number }}</span>
+    <span class="deck_number">@if (withControls && editableQuantity) {
+          <app-card-quantity [quantity]="card.number" [name]="library.i18n?.name || library.name"
+            (quantityChanged)="cardQuantityChanged.emit({ id: card.id, quantity: $event })" />
+          } @else { {{ card.number }} }</span>
     @if (withControls) {
     <button type="button" class="btn btn-icon compact-control" (mouseup)="$event.stopPropagation()" [attr.aria-label]="'deck_builder.composition.add' | transloco: { name: library.name }"
       (click)="$event.stopPropagation(); addCard($event)">
@@ -65,7 +68,7 @@
     </span>
   </div>
   } @else {
-  <div class="row">
+  <div class="row" [class.quantity-edit-row]="withControls && editableQuantity">
       @if(withControls && (card.number || maxNumber || withDelete)){
       <div class="col-auto">
         <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
@@ -75,11 +78,14 @@
       </div>
       }
       @if (!withDrawProbability && (card.number || maxNumber || withDelete)) {
-      <div class="col-auto bg-primary-subtle deck_number h-100" [ngClass]="{
-            'mt-2': withControls
+      <div class="col-auto deck_number" [class.h-100]="!editableQuantity" [class.editable-quantity]="editableQuantity" [ngClass]="{
+            'mt-2': withControls && !editableQuantity
           }">
         @if(card.number || maxNumber){
-        {{ card.number }}
+        @if (withControls && editableQuantity) {
+          <app-card-quantity [quantity]="card.number" [name]="library.i18n?.name || library.name"
+            (quantityChanged)="cardQuantityChanged.emit({ id: card.id, quantity: $event })" />
+          } @else { {{ card.number }} }
         }
         @if(maxNumber){
         /

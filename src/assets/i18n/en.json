@@ -285,6 +285,8 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "quantity_label": "Quantity of {{name}}",
+    "quantity_hint": "Enter a whole number. Enter to apply; Escape to cancel.",
     "composition": {
       "title": "Deck composition",
       "show_deck": "Show deck",

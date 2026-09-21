@@ -482,7 +482,8 @@
               <app-crypt-grid-card
                 [card]="crypt"
                 [cryptSize]="(cryptSize$ | async)!"
-                [withControls]="true"
+                [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
                 [withDelete]="true"
                 [recommended]="
                   $safeNavigationMigration(cryptRec?.get(crypt.id))
@@ -501,7 +502,8 @@
               <app-crypt
                 [card]="crypt"
                 [cryptSize]="(cryptSize$ | async)!"
-                [withControls]="true"
+                [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
                 [withDelete]="true"
                 [recommended]="
                   $safeNavigationMigration(cryptRec?.get(crypt.id))
@@ -679,7 +681,8 @@
         [libraryList]="libraryList"
         [sortBy]="(librarySortBy$ | async)!"
         [displayMode]="(displayMode$ | async)!"
-        [withControls]="true"
+        [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
         [recommendations]="(libraryRecommendations$ | async) ?? undefined"
         (cardAdded)="addCard($event)"
         (cardRemoved)="removeCard($event)"

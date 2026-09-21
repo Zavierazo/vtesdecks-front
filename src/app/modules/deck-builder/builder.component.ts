@@ -499,6 +499,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     })
   }
 
+  setCardQuantity(change: { id: number; quantity: number }): void {
+    this.deckBuilderService.setCardQuantity(change.id, change.quantity)
+  }
+
   addCard(id: number) {
     this.deckBuilderService.addCard(id)
     this.changeDetector.markForCheck()

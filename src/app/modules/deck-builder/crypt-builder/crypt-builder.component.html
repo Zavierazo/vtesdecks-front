@@ -105,7 +105,8 @@
         <div class="row mx-2 mb-2 g-1 justify-content-center">
           @for (crypt of crypt$ | async; track crypt.id) {
           <div class="col-6 col-md-auto">
-            <app-crypt-grid-card [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+            <app-crypt-grid-card [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
               (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
           </div>
           }
@@ -113,7 +114,8 @@
         }@else{
         @for (crypt of crypt$ | async; track crypt.id) {
         <ul class="col list-group">
-          <app-crypt [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+          <app-crypt [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
             (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
         </ul>
         }
