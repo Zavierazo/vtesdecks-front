@@ -285,6 +285,10 @@
     "close_comparison": "Fechar comparação"
   },
   "deck_builder": {
+    "header": {
+      "deck": "Opções do deck",
+      "test_output": "Ferramentas e exportação"
+    },
     "quantity_label": "Quantidade de {{name}}",
     "quantity_hint": "Introduza um número inteiro. Enter para aplicar; Escape para cancelar.",
     "composition": {
@@ -313,7 +317,7 @@
     "description": "Descrição",
     "description_placeholder": "Explique em poucas linhas como funciona o baralho e o que é o sinergia entre os cartões. Formato de Markdown suportado.",
     "import": "Importar",
-    "view": "Visualizar",
+    "view": "Ver",
     "share": "Compartilhar",
     "save": "Salvar",
     "delete": "Eliminar",
@@ -332,7 +336,7 @@
     "export": "Exportar",
     "clipboard": "Área de transferência",
     "file": "Arquivo",
-    "limited_format": "Formato Limitado",
+    "limited_format": "Limitado",
     "deck_copied": "Baralho copiado para a área de transferência",
     "collection_tracker": "Rastreador de Coleção",
     "validation_errors": "{{errors}}",
@@ -346,7 +350,7 @@
     "show_more_suggestions": "Mostrar {{ count }} mais",
     "show_less_suggestions": "Mostrar menos",
     "history": "Histórico",
-    "tag_version_placeholder": "Etiquetar esta versão…",
+    "tag_version_placeholder": "Versão (opcional)",
     "search_in_crypt": "Pesquisar na cripta…",
     "search_in_library": "Pesquisar na biblioteca…",
     "export_error": "Falha na exportação. Tente novamente.",
@@ -1535,7 +1539,7 @@
     "view_wishlist": "Ver lista de desejos",
     "add_card": "Adicionar carta",
     "add_to_wishlist": "Adicionar à lista de desejos",
-    "add_missing_to_wishlist": "Adicionar faltantes aos desejos",
+    "add_missing_to_wishlist": "Adicionar faltantes",
     "missing_modal_title": "Adicionar cartas faltantes à lista de desejos",
     "missing_modal_description": "Faltam {{ count }} cartas da sua coleção para completar este baralho. Elas serão adicionadas à sua lista de desejos.",
     "missing_quantity": "Faltam",
@@ -1623,7 +1627,7 @@
     "camera_error": "Não foi possível iniciar a câmera. Verifique o seu dispositivo e tente novamente."
   },
   "shopping_optimizer": {
-    "button": "Como comprar",
+    "button": "Comprar cartas",
     "title": "A melhor forma de comprar estas cartas",
     "error": "Não foi possível calcular os preços. Tente novamente.",
     "retry": "Tentar novamente",

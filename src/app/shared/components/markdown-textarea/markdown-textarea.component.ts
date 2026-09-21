@@ -116,7 +116,9 @@ export class MarkdownTextareaComponent
   cardResults = signal<MarkdownSuggestion[]>([])
   cardActiveIndex = signal(0)
   cardEmptyKey = computed(() =>
-    this.cardTerm().length < MIN_SEARCH_LENGTH ? 'type_to_search' : 'no_results',
+    this.cardTerm().length < MIN_SEARCH_LENGTH
+      ? 'type_to_search'
+      : 'no_results',
   )
 
   // Inline [[ autocomplete
@@ -230,7 +232,9 @@ export class MarkdownTextareaComponent
       return
     }
     textArea.style.height = 'auto'
-    textArea.style.height = textArea.scrollHeight + 'px'
+    if (textArea.value) {
+      textArea.style.height = textArea.scrollHeight + 'px'
+    }
   }
 
   onPreviewDescription(): void {

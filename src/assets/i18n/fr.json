@@ -285,6 +285,10 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "header": {
+      "deck": "Options du deck",
+      "test_output": "Outils et export"
+    },
     "quantity_label": "Quantité de {{name}}",
     "quantity_hint": "Saisissez un nombre entier. Entrée pour appliquer ; Échap pour annuler.",
     "composition": {
@@ -332,7 +336,7 @@
     "export": "Exporter",
     "clipboard": "Presse-papiers",
     "file": "Fichier",
-    "limited_format": "Format Limité",
+    "limited_format": "Limité",
     "deck_copied": "Deck copié dans le presse-papiers",
     "collection_tracker": "Suivi de collection",
     "validation_errors": "{{errors}}",
@@ -346,7 +350,7 @@
     "show_more_suggestions": "Afficher {{ count }} de plus",
     "show_less_suggestions": "Afficher moins",
     "history": "Historique",
-    "tag_version_placeholder": "Étiqueter cette version…",
+    "tag_version_placeholder": "Version (facultative)",
     "search_in_crypt": "Rechercher dans la crypte…",
     "search_in_library": "Rechercher dans la bibliothèque…",
     "export_error": "Échec de l'export. Veuillez réessayer.",
@@ -1535,7 +1539,7 @@
     "view_wishlist": "Voir la liste de souhaits",
     "add_card": "Ajouter une carte",
     "add_to_wishlist": "Ajouter à la liste de souhaits",
-    "add_missing_to_wishlist": "Ajouter les manquantes aux souhaits",
+    "add_missing_to_wishlist": "Ajouter manquantes",
     "missing_modal_title": "Ajouter les cartes manquantes à la liste de souhaits",
     "missing_modal_description": "Il vous manque {{ count }} cartes de votre collection pour compléter ce deck. Elles seront ajoutées à votre liste de souhaits.",
     "missing_quantity": "Manquantes",
@@ -1623,7 +1627,7 @@
     "camera_error": "Impossible de démarrer la caméra. Vérifiez votre appareil et réessayez."
   },
   "shopping_optimizer": {
-    "button": "Comment acheter",
+    "button": "Acheter",
     "title": "La meilleure façon d'acheter ces cartes",
     "error": "Impossible de calculer les prix. Veuillez réessayer.",
     "retry": "Réessayer",

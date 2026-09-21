@@ -22,6 +22,7 @@ import { encodeSnapshot } from '../../../utils/deck-snapshot'
 export class ShareDeckComponent {
   private readonly shareService = inject(DeckShareService)
   readonly shareDeck = output<void>()
+  @Input() compact = false
   @Input() disabled = false
   readonly url = signal('')
   readonly failed = signal(false)

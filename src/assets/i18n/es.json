@@ -285,6 +285,10 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "header": {
+      "deck": "Opciones del mazo",
+      "test_output": "Herramientas y exportación"
+    },
     "quantity_label": "Cantidad de {{name}}",
     "quantity_hint": "Introduce un número entero. Intro para aplicar; Escape para cancelar.",
     "composition": {
@@ -313,7 +317,7 @@
     "description": "Descripción",
     "description_placeholder": "Explica en pocas líneas cómo funciona el mazo y cuál es la sinergia entre las cartas. Formato de Markdown soportado.",
     "import": "Importar",
-    "view": "Visitas",
+    "view": "Ver",
     "share": "Compartir",
     "save": "Guardar",
     "delete": "Borrar",
@@ -332,7 +336,7 @@
     "export": "Exportar",
     "clipboard": "Portapapeles",
     "file": "Archivo",
-    "limited_format": "Formato Limitado",
+    "limited_format": "Limitado",
     "deck_copied": "Lista copiada al portapapeles",
     "collection_tracker": "Rastreador de Colección",
     "validation_errors": "{{errors}}",
@@ -346,7 +350,7 @@
     "show_more_suggestions": "Mostrar {{ count }} más",
     "show_less_suggestions": "Mostrar menos",
     "history": "Historial",
-    "tag_version_placeholder": "Etiquetar esta versión…",
+    "tag_version_placeholder": "Versión (opcional)",
     "search_in_crypt": "Buscar en la cripta…",
     "search_in_library": "Buscar en la biblioteca…",
     "export_error": "Exportación fallida. Por favor, inténtalo de nuevo.",
@@ -1535,7 +1539,7 @@
     "view_wishlist": "Ver lista de deseos",
     "add_card": "Añadir carta",
     "add_to_wishlist": "Añadir a la lista de deseos",
-    "add_missing_to_wishlist": "Añadir faltantes a deseos",
+    "add_missing_to_wishlist": "Añadir faltantes",
     "missing_modal_title": "Añadir cartas faltantes a la lista de deseos",
     "missing_modal_description": "Te faltan {{ count }} cartas de tu colección para completar este mazo. Se añadirán a tu lista de deseos.",
     "missing_quantity": "Faltan",
@@ -1623,7 +1627,7 @@
     "camera_error": "No se pudo iniciar la cámara. Comprueba tu dispositivo e inténtalo de nuevo."
   },
   "shopping_optimizer": {
-    "button": "Cómo comprar",
+    "button": "Comprar cartas",
     "title": "La mejor manera de comprar estas cartas",
     "error": "No se pudieron calcular los precios. Inténtalo de nuevo.",
     "retry": "Reintentar",

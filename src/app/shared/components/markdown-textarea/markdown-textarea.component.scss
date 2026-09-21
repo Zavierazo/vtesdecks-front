@@ -3,13 +3,18 @@
 }
 
 .markdown-textarea {
-  min-height: 12rem;
+  min-height: var(--markdown-editor-min-height, 12rem);
   resize: none;
   overflow: hidden;
+
+  &:focus,
+  &:not(:placeholder-shown) {
+    min-height: 12rem;
+  }
 }
 
 .markdown-preview {
-  min-height: 12rem;
+  min-height: var(--markdown-editor-min-height, 12rem);
 }
 
 .editor-split {
