@@ -128,23 +128,63 @@ describe('OfflineImagesService', () => {
     vi.restoreAllMocks()
   })
 
-  it('uses a cached image online without making a network request', async () => {
+  it('shows the cached image immediately and refreshes it once per visit for subsequent views', async () => {
     const cached = blob()
+    const updated = blob()
+    const network = deferred<ReturnType<typeof response>>()
+    fetchMock.mockReturnValue(network.promise)
     cache.set(url, { blob: async () => cached })
     expect(acquire(url)).toBe(MISSING_CARD_IMAGE)
     await vi.waitFor(() => expect(display(url)).toMatch(/^blob:/))
     expect(URL.createObjectURL).toHaveBeenLastCalledWith(cached)
     const displayed = display(url)
+    const modal = Symbol('modal')
+    acquire(url, undefined, MISSING_CARD_IMAGE, modal)
+    await vi.waitFor(() => expect(display(url, modal)).toMatch(/^blob:/))
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+      url,
+      expect.objectContaining({ cache: 'default', mode: 'cors' }),
+    )
+    expect(write).not.toHaveBeenCalled()
+    network.resolve({ ...response(), blob: async () => updated })
+    await vi.waitFor(() => expect(write).toHaveBeenCalledOnce())
+    expect(await cache.get(url)!.blob()).toBe(updated)
     connection.offline.set(true)
     connection.changed.next()
     connection.offline.set(false)
     connection.changed.next()
     expect(display(url)).toBe(displayed)
     expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(displayed)
-    expect(fetchMock).not.toHaveBeenCalled()
-    expect(write).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledOnce()
     release(url)
     expect(URL.revokeObjectURL).toHaveBeenCalledWith(displayed)
+    acquire(url)
+    await vi.waitFor(() => expect(display(url)).toMatch(/^blob:/))
+    expect(URL.createObjectURL).toHaveBeenLastCalledWith(updated)
+    expect(fetchMock).toHaveBeenCalledOnce()
+
+    // A new application visit must check again, even with persisted metadata.
+    release(url)
+    service = TestBed.runInInjectionContext(() => new OfflineImagesService())
+    await service.ready
+    acquire(url)
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
+    await vi.waitFor(() => expect(write).toHaveBeenCalledTimes(2))
+  })
+
+  it('retains a cached image after a failed background refresh and retries on a later view', async () => {
+    const cached = blob()
+    cache.set(url, { blob: async () => cached })
+    fetchMock.mockRejectedValueOnce(new Error('Network unavailable'))
+    acquire(url)
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce())
+    expect(display(url)).toMatch(/^blob:/)
+    expect(await cache.get(url)!.blob()).toBe(cached)
+    expect(write).not.toHaveBeenCalled()
+    release(url)
+    acquire(url)
+    await vi.waitFor(() => expect(write).toHaveBeenCalledOnce())
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 
   it('keeps separate offline views stable and releases their blobs independently', async () => {
@@ -263,7 +303,7 @@ describe('OfflineImagesService', () => {
     expect(fetchMock).toHaveBeenCalledOnce()
   })
 
-  it('retains a cached original printing across reconnect without downloading', async () => {
+  it('retains a cached original printing while checking the requested image after reconnect', async () => {
     const fallback = 'https://cdn.test/original.jpg'
     cache.set(fallback, { blob: async () => blob() })
     connection.offline.set(true)
@@ -277,7 +317,7 @@ describe('OfflineImagesService', () => {
     expect(display(url)).toBe(offlineImage)
     expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(offlineImage)
     await new Promise((resolve) => setTimeout(resolve, 0))
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledOnce()
   })
 
   it('switches an online view to its cached copy on disconnect', async () => {
@@ -311,7 +351,8 @@ describe('OfflineImagesService', () => {
     connection.changed.next()
     pending.resolve(blob())
     await vi.waitFor(() => expect(display(url)).toMatch(/^blob:/))
-    expect(fetchMock).not.toHaveBeenCalled()
+    await vi.waitFor(() => expect(write).toHaveBeenCalledOnce())
+    expect(fetchMock).toHaveBeenCalledOnce()
   })
 
   it('keeps the CDN URL when background caching fails or storage is unavailable', async () => {

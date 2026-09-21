@@ -31,6 +31,7 @@ export class OfflineImagesService {
   readonly estimateBytes = signal<number | null>(null)
   readonly ready = this.loadMetadata()
   private readonly requests = new Map<string, Promise<Blob>>()
+  private readonly refreshed = new Set<string>()
   private cancelled = false
   private generation = 0
   private clearing = false
@@ -71,6 +72,7 @@ export class OfflineImagesService {
         if (blob) {
           objectUrl = URL.createObjectURL(blob)
           subscriber.next(objectUrl)
+          this.refreshCached(url)
         } else if (!this.connection.offline()) {
           subscriber.next(url)
           void this.revalidate(url)
@@ -98,6 +100,8 @@ export class OfflineImagesService {
         offline = nextOffline
         if (!objectUrl) {
           void load()
+        } else {
+          this.refreshCached(url)
         }
       })
       const cleared = this.cleared.subscribe(() => {
@@ -111,6 +115,12 @@ export class OfflineImagesService {
         release()
       }
     })
+  }
+
+  private refreshCached(url: string) {
+    if (!this.connection.offline() && !this.refreshed.has(url)) {
+      void this.revalidate(url).catch(() => undefined)
+    }
   }
 
   private async readCached(
@@ -146,7 +156,7 @@ export class OfflineImagesService {
     const generation = this.generation
     const request = (async () => {
       const response = await fetch(url, {
-        cache: 'no-cache',
+        cache: 'default',
         mode: 'cors',
         signal: AbortSignal.timeout(30000),
       })
@@ -173,6 +183,7 @@ export class OfflineImagesService {
           ...items.filter((item) => item.id !== url),
           record,
         ])
+        this.refreshed.add(url)
       } catch (error) {
         this.storageError.set(true)
         throw error
@@ -292,6 +303,7 @@ export class OfflineImagesService {
       await caches.delete(CACHE)
       await this.db.clear('images')
       this.records.set([])
+      this.refreshed.clear()
       this.progress.set({ done: 0, total: 0, errors: 0 })
       this.storageError.set(false)
       this.cleared.next()
