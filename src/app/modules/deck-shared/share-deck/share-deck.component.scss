@@ -88,3 +88,12 @@
     font-size: 1rem;
   }
 }
+
+// Keep the split button's outer corners aligned with compact header actions.
+.btn-group.compact > .btn:first-child {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.btn-group.compact > .dropdown-toggle-split {
+  border-radius: 0 0.375rem 0.375rem 0;
+}

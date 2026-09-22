@@ -11,6 +11,8 @@
 }
 
 .draw-probability-badge {
+  max-width: var(--draw-probability-max-width, none);
+  white-space: var(--draw-probability-white-space, nowrap);
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s linear;

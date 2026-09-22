@@ -1,612 +1,1028 @@
 @if (isLoading$ | async) {
-<div class="alert alert-light">
-  <app-loading [size]="10" />
-  <div style="height: 100vw"></div>
-</div>
+  <div class="alert alert-light">
+    <app-loading [size]="10" />
+    <div style="height: 100vw"></div>
+  </div>
 }
 @if (snapshotError(); as errorKey) {
-<div class="container alert alert-warning mt-4" role="alert">
-  <h1 class="h4">{{ 'snapshot.title' | transloco }}</h1>
-  <p>{{ 'snapshot.' + errorKey | transloco }}</p>
-  @if (errorKey === 'catalog_error') {
-  <button type="button" class="btn btn-primary me-2" (click)="retrySnapshot()">{{ 'snapshot.retry' | transloco }}</button>
-  }
-  <a routerLink="/decks" class="btn btn-outline-primary">{{ 'snapshot.browse' | transloco }}</a>
-</div>
+  <div class="container alert alert-warning mt-4" role="alert">
+    <h1 class="h4">{{ 'snapshot.title' | transloco }}</h1>
+    <p>{{ 'snapshot.' + errorKey | transloco }}</p>
+    @if (errorKey === 'catalog_error') {
+      <button
+        type="button"
+        class="btn btn-primary me-2"
+        (click)="retrySnapshot()"
+      >
+        {{ 'snapshot.retry' | transloco }}
+      </button>
+    }
+    <a routerLink="/decks" class="btn btn-outline-primary">{{
+      'snapshot.browse' | transloco
+    }}</a>
+  </div>
 }
 <ng-container *transloco="let t; prefix: 'deck'">
   @if ((deck$ | async)!; as deck) {
-  <main class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11" role="main">
-    <div class="row">
-      <section class="dark-grey-text col-12">
-        <div class="deck-hero mb-3">
-          <div class="container-fluid py-4">
-            <div class="row align-items-center g-4">
-              @if (deck.type === 'PRECONSTRUCTED') {
-              <img #deckCover class="deck-cover col-12 col-sm-auto"
-                [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'" [alt]="deck.name" loading="eager"
-                (error)="deckCover.hidden = true" />
-              }
-              <div class="col-12 col-md text-center text-md-start">
-                @if (isSnapshot) {
-                <span class="badge text-bg-secondary mb-3">{{ 'snapshot.readonly' | transloco }}</span>
+    <main
+      class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11"
+      role="main"
+    >
+      <div class="row">
+        <section class="dark-grey-text col-12">
+          <div class="deck-header mb-4">
+            <div class="deck-header__content">
+              <div class="deck-header__primary">
+                @if (deck.type === 'PRECONSTRUCTED') {
+                  <img
+                    #deckCover
+                    class="deck-cover"
+                    [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'"
+                    [alt]="deck.name"
+                    loading="eager"
+                    (error)="deckCover.hidden = true"
+                  />
                 }
-                <div class="d-flex justify-content-center justify-content-md-start align-items-center mb-2">
-                  @if (!isSnapshot) {
-                  <a [ngbTooltip]="t('add_to_bookmarks')" placement="top" #bookmarkTooltip="ngbTooltip"
-                    (click)="toggleBookmark()" class="bookmark-toggle me-3" [class.is-active]="isBookmarked"
-                    [attr.aria-label]="t('add_to_bookmarks')" aria-describedby="bookmark-count-description">
-                    <i class="bi bi-fs-1_5x" aria-hidden="true" [ngClass]="{
-                      'bi-bookmark-star': !isBookmarked,
-                      'bi-bookmark-star-fill': isBookmarked
-                    }"></i>
-                    <span class="bookmark-count" aria-hidden="true">{{ bookmarkCount }}</span>
-                    <span id="bookmark-count-description" class="visually-hidden">{{ t('bookmark_count', { count: bookmarkCount }) }}</span>
-                  </a>
-                  }
-                  <h1 class="deck-title fw-bold mb-0">{{ deck.name || ('snapshot.untitled' | transloco) }}</h1>
-                </div>
-                <div class="deck-meta">
+                <div class="deck-header__identity">
                   @if (isSnapshot) {
-                  <p class="mb-1">{{ t('created_by') }}: <strong>{{ deck.author }}</strong></p>
-                  } @else {
-                  <p class="mb-1">
-                    @if(deck.user){
-                    <span class="deck-author-details d-inline-flex flex-column align-items-center align-items-md-start">
-                      <span class="d-inline-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
-                        <a class="text-decoration-none d-inline-flex align-items-center"
-                          [routerLink]="'/user/' + deck.user.user">
-                          @if(deck.user.profileImage) {
-                          <img [src]="deck.user.profileImage" [alt]="deck.user.displayName"
-                            class="rounded-circle me-2" width="32" height="32">
-                          }
-                          <strong>{{ deck.author }}</strong>
-                          @if(isSupporter){
-                          <i class="bi bi-patch-check-fill text-primary ms-1"
-                            [title]="'shared.supporter' | transloco"></i>
-                          }
-                        </a>
-                        @if(deck.user.user) {
-                        <app-user-follow-button [username]="deck.user.user" />
-                        }
-                        <ng-container *ngTemplateOutlet="deckDatePrice" />
-                      </span>
-                      @if (deck.user.achievementBadges?.length) {
-                      <app-achievement-badges [class.deck-author-badges-with-avatar]="deck.user.profileImage"
-                        [featured]="true" [badges]="deck.user.achievementBadges!" />
-                      }
-                    </span>
-                    }@else {
-                    <span class="d-inline-flex align-items-center flex-wrap justify-content-center justify-content-md-start">
-                      <b>{{ t('created_by') }}: </b>
-                      <a class="text-decoration-none ms-1" routerLink="/decks" [queryParams]="{
-                        author: deck.author,
-                        type: deck.type
-                      }">
-                        <strong>
-                          {{ deck.author }}
-                          @if(isSupporter){
-                          <i class="bi bi-patch-check-fill" [title]="'shared.supporter' | transloco"></i>
-                          }
-                        </strong>
-                      </a>
-                      <ng-container *ngTemplateOutlet="deckDatePrice" />
-                    </span>
+                    <span class="badge text-bg-secondary mb-3">{{
+                      'snapshot.readonly' | transloco
+                    }}</span>
+                  }
+                  <div class="deck-header__title-row mb-2">
+                    @if (!isSnapshot) {
+                      <button
+                        type="button"
+                        [ngbTooltip]="t('add_to_bookmarks')"
+                        placement="top"
+                        #bookmarkTooltip="ngbTooltip"
+                        (click)="toggleBookmark()"
+                        class="bookmark-toggle"
+                        [class.is-active]="isBookmarked"
+                        [attr.aria-label]="t('add_to_bookmarks')"
+                        aria-describedby="bookmark-count-description"
+                        [attr.aria-pressed]="isBookmarked"
+                      >
+                        <i
+                          class="bi bi-fs-1_5x"
+                          aria-hidden="true"
+                          [ngClass]="{
+                            'bi-bookmark-star': !isBookmarked,
+                            'bi-bookmark-star-fill': isBookmarked,
+                          }"
+                        ></i>
+                        <span class="bookmark-count" aria-hidden="true">{{
+                          bookmarkCount
+                        }}</span>
+                        <span
+                          id="bookmark-count-description"
+                          class="visually-hidden"
+                          >{{
+                            t('bookmark_count', { count: bookmarkCount })
+                          }}</span
+                        >
+                      </button>
                     }
-                    <ng-template #deckDatePrice>
-                      <span class="text-dark mx-1">•</span>
-                      <span class="text-muted d-none d-md-inline">
-                        {{ deck.creationDate | translocoDate: { dateStyle: 'long' } }}
-                      </span>
-                      <span class="text-muted d-md-none">
-                        {{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}
-                      </span>
-                      @if(deck.stats.price || deck.stats.msrp) {
-                      <span class="text-dark mx-1">•</span>
-                      <span class="text-muted" [title]="t('price')">
-                        {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency }}
-                        @if(deck.stats.msrp && deck.stats.price){
-                        ({{ t('estimated_value') }} {{ deck.stats.price | currency:deck.stats.currency }})
+                    <h1 class="deck-title mb-0">
+                      {{ deck.name || ('snapshot.untitled' | transloco) }}
+                    </h1>
+                  </div>
+                  <div class="deck-meta">
+                    @if (isSnapshot) {
+                      <p class="mb-1">
+                        {{ t('created_by') }}:
+                        <strong>{{ deck.author }}</strong>
+                      </p>
+                    } @else {
+                      <p class="mb-1">
+                        @if (deck.user) {
+                          <span
+                            class="deck-author-details d-inline-flex flex-column align-items-start"
+                          >
+                            <span
+                              class="d-inline-flex align-items-center flex-wrap justify-content-start"
+                            >
+                              <a
+                                class="text-decoration-none d-inline-flex align-items-center"
+                                [routerLink]="'/user/' + deck.user.user"
+                              >
+                                @if (deck.user.profileImage) {
+                                  <img
+                                    [src]="deck.user.profileImage"
+                                    [alt]="deck.user.displayName"
+                                    class="rounded-circle me-2"
+                                    width="32"
+                                    height="32"
+                                  />
+                                }
+                                <strong>{{ deck.author }}</strong>
+                                @if (isSupporter) {
+                                  <i
+                                    class="bi bi-patch-check-fill text-primary ms-1"
+                                    [title]="'shared.supporter' | transloco"
+                                  ></i>
+                                }
+                              </a>
+                              @if (deck.user.user) {
+                                <app-user-follow-button
+                                  [username]="deck.user.user"
+                                />
+                              }
+                              <ng-container *ngTemplateOutlet="deckDatePrice" />
+                            </span>
+                            @if (deck.user.achievementBadges?.length) {
+                              <app-achievement-badges
+                                [class.deck-author-badges-with-avatar]="
+                                  deck.user.profileImage
+                                "
+                                [featured]="true"
+                                [badges]="deck.user.achievementBadges!"
+                              />
+                            }
+                          </span>
+                        } @else {
+                          <span
+                            class="d-inline-flex align-items-center flex-wrap justify-content-start"
+                          >
+                            <b>{{ t('created_by') }}: </b>
+                            <a
+                              class="text-decoration-none ms-1"
+                              routerLink="/decks"
+                              [queryParams]="{
+                                author: deck.author,
+                                type: deck.type,
+                              }"
+                            >
+                              <strong>
+                                {{ deck.author }}
+                                @if (isSupporter) {
+                                  <i
+                                    class="bi bi-patch-check-fill"
+                                    [title]="'shared.supporter' | transloco"
+                                  ></i>
+                                }
+                              </strong>
+                            </a>
+                            <ng-container *ngTemplateOutlet="deckDatePrice" />
+                          </span>
                         }
-                      </span>
+                        <ng-template #deckDatePrice>
+                          <span class="text-dark mx-1">•</span>
+                          <span class="text-muted d-none d-md-inline">
+                            {{
+                              deck.creationDate
+                                | translocoDate: { dateStyle: 'long' }
+                            }}
+                          </span>
+                          <span class="text-muted d-md-none">
+                            {{
+                              deck.creationDate
+                                | translocoDate: { dateStyle: 'medium' }
+                            }}
+                          </span>
+                          @if (deck.stats.price || deck.stats.msrp) {
+                            <span class="text-dark mx-1">•</span>
+                            <span class="text-muted" [title]="t('price')">
+                              {{
+                                deck.stats.msrp ?? deck.stats.price
+                                  | currency: deck.stats.currency
+                              }}
+                              @if (deck.stats.msrp && deck.stats.price) {
+                                ({{ t('estimated_value') }}
+                                {{
+                                  deck.stats.price
+                                    | currency: deck.stats.currency
+                                }})
+                              }
+                            </span>
+                          }
+                        </ng-template>
+                      </p>
+                      @if (deck.tournament) {
+                        <p class="mb-1">
+                          <b>{{ t('tournament') }}: </b>
+                          @if (deck.url) {
+                            <a
+                              class="text-decoration-none"
+                              [href]="deck.url"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {{ deck.tournament }}
+                            </a>
+                          } @else {
+                            {{ deck.tournament }}
+                          }
+                          @if (deck.players) {
+                            <span class="text-muted ms-2"
+                              >({{
+                                t('players', { count: deck.players })
+                              }})</span
+                            >
+                          }
+                          @if (deck.rounds) {
+                            <span class="text-muted ms-1" [title]="t('rounds')"
+                              >{{ deck.rounds }}R+F</span
+                            >
+                          }
+                        </p>
                       }
+                      @if (deck.place || deck.country) {
+                        <p class="mb-1">
+                          <b>{{ t('place') }}: </b>
+                          <i class="bi bi-geo-alt me-1"></i>
+                          <!-- The place usually already ends with the country, fall back to it when missing -->
+                          {{ deck.place ?? deck.country }}
+                        </p>
+                      }
+                      @if (deck.limitedFormat) {
+                        <p class="mb-1">
+                          <b>{{ t('limited_format') }}: </b>
+                          <span class="tournament-info text-center">
+                            <span
+                              class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center"
+                            >
+                              <i class="bi bi-funnel-fill me-1"></i
+                              >{{ deck.limitedFormat }}
+                            </span>
+                          </span>
+                        </p>
+                      }
+                      @if (deck.archetype) {
+                        <p class="mb-1">
+                          <b>{{ t('archetype') }}: </b>
+                          @if (deck.archetype.icon) {
+                            <i class="vtes" [ngClass]="deck.archetype.icon"></i>
+                          }
+                          <a
+                            class="text-decoration-none ms-1"
+                            [routerLink]="['/metagame', deck.archetype.id]"
+                            >{{ deck.archetype.name }}</a
+                          >
+                          <span class="text-muted ms-1"
+                            >({{ deck.archetype.type }})</span
+                          >
+                        </p>
+                      }
+                      @if (deck.type === 'PRECONSTRUCTED' && deck.url) {
+                        <p class="mb-1">
+                          <a
+                            class="text-decoration-none"
+                            [href]="deck.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            [ngbTooltip]="t('buy_dtc')"
+                            gaEvent="purchase"
+                            gaCategory="DTC-BANNER"
+                            [gaLabel]="deck.name"
+                          >
+                            <img
+                              width="320"
+                              height="67"
+                              src="/assets/img/drive_thru_cards.png"
+                              [alt]="t('buy_dtc')"
+                            />
+                          </a>
+                        </p>
+                      }
+                      @if (deck.source) {
+                        <p class="mb-1">
+                          <b>{{ t('source') }}: </b>
+                          <a
+                            class="text-decoration-none"
+                            [href]="deck.source"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >{{ t('twda') }}</a
+                          >
+                        </p>
+                      }
+                    }
+                  </div>
+                </div>
+                @if (!isSnapshot) {
+                  <div class="deck-header__social">
+                    <div class="deck-stats-panel">
+                      <div class="deck-stat">
+                        <span class="deck-stat__icon">
+                          <i class="bi bi-eye-fill"></i>
+                        </span>
+                        <div class="deck-stat__body">
+                          <span class="deck-stat__value">
+                            <animated-digit
+                              [digit]="deck.views"
+                              [duration]="2000"
+                            />
+                          </span>
+                          <span class="deck-stat__label">{{ t('views') }}</span>
+                        </div>
+                      </div>
+                      <div class="deck-stat">
+                        <div class="deck-stat__body">
+                          <div class="rating">
+                            <ng-template #starTemplate let-fill="fill">
+                              <span class="star" [class.full]="fill === 100">
+                                <span class="half" [style.width.%]="fill"
+                                  >&hearts;</span
+                                >&hearts;
+                              </span>
+                            </ng-template>
+                            <ngb-rating
+                              [ngbTooltip]="t('rate_deck')"
+                              placement="bottom"
+                              #ratingTooltip="ngbTooltip"
+                              [rate]="deck.rate ?? 0"
+                              [starTemplate]="starTemplate"
+                              [readonly]="
+                                !(isAuthenticated$ | async)! ||
+                                (userDisplayName$ | async) === deck.author
+                              "
+                              [max]="5"
+                              (rateChange)="rateDeck($event)"
+                            />
+                          </div>
+                          <span class="deck-stat__label">
+                            <i class="bi bi-people-fill me-1"></i
+                            >{{ t('votes', { count: deck.votes }) }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+              <section
+                class="deck-header__tools deck-actions"
+                [attr.aria-label]="'header.tools' | transloco"
+              >
+                <div class="deck-tool-group">
+                  <h2>{{ 'deck_builder.header.deck' | transloco }}</h2>
+                  <div class="deck-tool-actions">
+                    @if (deck.owner) {
+                      <a
+                        class="btn btn-primary"
+                        [routerLink]="'/decks/builder'"
+                        [queryParams]="{ id: deck.id }"
+                      >
+                        <i class="bi bi-pencil-square me-2"></i>{{ t('edit') }}
+                      </a>
+                    } @else {
+                      <button
+                        class="btn btn-primary"
+                        (click)="onOpenInBuilder()"
+                        [disabled]="unknownSnapshotCards().length > 0"
+                        *isLogged="true"
+                      >
+                        <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
+                      </button>
+                    }
+                    @if (!isSnapshot) {
+                      @if (!deck.owner && (isAdmin$ | async)!) {
+                        <a
+                          class="btn btn-danger"
+                          [routerLink]="'/decks/builder'"
+                          [queryParams]="{ id: deck.id }"
+                        >
+                          <i class="bi bi-pencil-square me-2"></i
+                          >{{ t('edit_as_admin') }}
+                        </a>
+                      }
+                    }
+                    @if (isSnapshot) {
+                      <button
+                        class="btn btn-outline-primary"
+                        (click)="onShare()"
+                      >
+                        <i class="bi bi-share me-2"></i>{{ t('share') }}
+                      </button>
+                    } @else {
+                      <app-share-deck
+                        [compact]="true"
+                        class="deck-share"
+                        [snapshot]="snapshot"
+                        (shareDeck)="onShare()"
+                      />
+                    }
+                    @if (!isSnapshot) {
+                      @if (deck.owner) {
+                        <button
+                          class="btn btn-outline-danger"
+                          (click)="deleteDeck()"
+                        >
+                          <i class="bi bi-trash-fill"></i>
+                          {{ t('delete') }}
+                        </button>
+                      }
+                    }
+                  </div>
+                </div>
+                <div class="deck-tool-group">
+                  <h2>{{ 'deck_builder.header.test_output' | transloco }}</h2>
+                  <div class="deck-tool-actions">
+                    <button
+                      class="btn btn-outline-primary"
+                      (click)="onDraw()"
+                      [disabled]="unknownSnapshotCards().length > 0"
+                    >
+                      <i class="bi bi-shuffle me-2"></i>{{ t('draw') }}
+                    </button>
+                    <button
+                      class="btn btn-outline-primary"
+                      (click)="onPrint()"
+                      [disabled]="unknownSnapshotCards().length > 0"
+                    >
+                      <i class="bi bi-printer me-2"></i
+                      >{{ 'deck_shared.print' | transloco }}
+                    </button>
+                    @if (!isSnapshot) {
+                      <button
+                        class="btn btn-outline-primary"
+                        (click)="onCompare()"
+                      >
+                        <i class="bi bi-arrows-collapse me-2"></i
+                        >{{ t('compare') }}
+                      </button>
+                      <div ngbDropdown container="body" class="d-inline-block">
+                        <button
+                          class="btn btn-outline-primary"
+                          ngbDropdownToggle
+                        >
+                          <i class="bi bi-download me-2"></i>{{ t('export') }}
+                        </button>
+                        <div ngbDropdownMenu class="dropdown-menu">
+                          <div class="dropdown-header">{{ t('file') }}</div>
+                          <a
+                            ngbDropdownItem
+                            class="text-black"
+                            [href]="exportUrl + '?type=LACKEY'"
+                            target="_blank"
+                            rel="noopener"
+                            gaEvent="export"
+                            gaCategory="file_lackey"
+                          >
+                            <i class="bi bi-file-earmark me-2"></i>Lackey
+                          </a>
+                          <a
+                            ngbDropdownItem
+                            class="text-black"
+                            [href]="exportUrl + '?type=JOL'"
+                            target="_blank"
+                            rel="noopener"
+                            gaEvent="export"
+                            gaCategory="file_jol"
+                          >
+                            <i class="bi bi-file-earmark me-2"></i>JOL
+                          </a>
+                          <a
+                            ngbDropdownItem
+                            class="text-black"
+                            [href]="exportUrl + '?type=TWD'"
+                            target="_blank"
+                            rel="noopener"
+                            gaEvent="export"
+                            gaCategory="file_twd"
+                          >
+                            <i class="bi bi-file-earmark me-2"></i>TWD
+                          </a>
+                          <div class="dropdown-divider"></div>
+                          <div class="dropdown-header">
+                            {{ t('clipboard') }}
+                          </div>
+                          <button
+                            ngbDropdownItem
+                            class="text-black"
+                            (click)="onCopyToClipboard('LACKEY')"
+                            gaEvent="export"
+                            gaCategory="clipboard_lackey"
+                          >
+                            <i class="bi bi-clipboard me-2"></i>Lackey
+                          </button>
+                          <button
+                            ngbDropdownItem
+                            class="text-black"
+                            (click)="onCopyToClipboard('JOL')"
+                            gaEvent="export"
+                            gaCategory="clipboard_jol"
+                          >
+                            <i class="bi bi-clipboard me-2"></i>JOL
+                          </button>
+                          <button
+                            ngbDropdownItem
+                            class="text-black"
+                            (click)="onCopyToClipboard('TWD')"
+                            gaEvent="export"
+                            gaCategory="clipboard_twd"
+                          >
+                            <i class="bi bi-clipboard me-2"></i>TWD
+                          </button>
+                          <div class="dropdown-divider"></div>
+                          <button
+                            ngbDropdownItem
+                            class="text-black"
+                            (click)="onEmbed()"
+                            gaEvent="export"
+                            gaCategory="embed"
+                          >
+                            <i class="bi bi-code-square me-2"></i
+                            >{{ t('embed') }}
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+                @if (!isSnapshot) {
+                  <div class="deck-tool-group">
+                    <h2>{{ 'header.collection' | transloco }}</h2>
+                    <div class="deck-tool-actions">
+                      <button
+                        class="btn"
+                        [ngClass]="{
+                          'btn-outline-primary': !collectionTracker,
+                          'btn-primary': collectionTracker,
+                        }"
+                        (click)="onCollectionTracker()"
+                        *isLogged="true"
+                      >
+                        <i
+                          class="bi me-2"
+                          [ngClass]="{
+                            'bi-square': !collectionTracker,
+                            'bi-check-square-fill': collectionTracker,
+                          }"
+                        ></i
+                        >{{ t('collection_tracker') }}
+                      </button>
+                      @if (collectionTracker) {
+                        <button
+                          class="btn btn-outline-primary"
+                          (click)="onAddMissingToWishlist()"
+                          *isLogged="true"
+                        >
+                          <i class="bi bi-heart me-2"></i
+                          >{{ 'wishlist.add_missing_to_wishlist' | transloco }}
+                        </button>
+                      }
+                      @if (deck.type === 'PRECONSTRUCTED') {
+                        <button
+                          class="btn btn-outline-primary"
+                          (click)="onAddToCollection(deck)"
+                          *isLogged="true"
+                        >
+                          <i class="bi bi-collection me-2"></i
+                          >{{ t('add_to_collection') }}
+                        </button>
+                      }
+                      <button
+                        class="btn btn-outline-primary"
+                        (click)="onHowToBuy()"
+                      >
+                        <i class="bi bi-cart me-2"></i
+                        >{{ 'shopping_optimizer.button' | transloco }}
+                      </button>
+                    </div>
+                  </div>
+                }
+              </section>
+              @if (!isSnapshot && deck.reactions) {
+                <div class="row mt-3">
+                  <div class="col-12 d-flex flex-wrap">
+                    <app-quick-reactions
+                      targetType="deck"
+                      [targetId]="deck.id"
+                      [reactions]="deck.reactions"
+                      display="full"
+                    />
+                  </div>
+                </div>
+              }
+              @if (!isSnapshot && deck.tags) {
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (tag of deck.tags; track tag) {
+                        <button
+                          type="button"
+                          class="badge text-bg-primary btn-badge"
+                          (click)="onTag(tag)"
+                        >
+                          #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="deck-details">
+            @if (unknownSnapshotCards().length) {
+              <div class="alert alert-warning" role="alert">
+                <p>{{ 'snapshot.unknown_cards' | transloco }}</p>
+                <ul class="mb-0">
+                  @for (card of unknownSnapshotCards(); track card.id) {
+                    <li>{{ card.number }} × #{{ card.id }}</li>
+                  }
+                </ul>
+              </div>
+            }
+            @if (deck.description) {
+              <app-markdown-text class="mt-3" [data]="deck.description" />
+            }
+            @if (deck.erratas && deck.erratas.length > 0) {
+              <section class="deck-notice my-3" role="alert">
+                <h2 class="deck-notice__title">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i
+                  >{{ t('errata') }}
+                </h2>
+                @for (errata of deck.erratas; track errata) {
+                  <p>
+                    <button
+                      type="button"
+                      class="btn btn-link p-0 fw-bold text-reset align-baseline"
+                      #popover="ngbPopover"
+                      [ngbPopover]="imgPopover"
+                      triggers="mouseenter:mouseleave focus:blur"
+                      container="body"
+                      (click)="popover.open()"
+                    >
+                      {{ errata.name }}
+                    </button>
+                    {{ t('errata_modified') }}
+                    {{
+                      errata.effectiveDate
+                        | translocoDate: { dateStyle: 'long' }
+                    }}.
+                    {{ errata.description }}
+                    <ng-template #imgPopover>
+                      <img
+                        [ngClass]="{
+                          'img-popover': !(isMobile$ | async)!,
+                          'img-popover-mobile': (isMobile$ | async)!,
+                        }"
+                        [src]="
+                          cdnDomain + '/img/cards/' + errata.cardId + '.jpg'
+                        "
+                        [alt]="errata.name"
+                      />
                     </ng-template>
                   </p>
-                  @if (deck.tournament) {
-                  <p class="mb-1">
-                    <b>{{ t('tournament') }}: </b>
-                    @if (deck.url) {
-                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer">
-                      {{ deck.tournament }}
-                    </a>
-                    } @else {
-                    {{ deck.tournament }}
-                    }
-                    @if (deck.players) {
-                    <span class="text-muted ms-2">({{ t('players', { count: deck.players })}})</span>
-                    }
-                    @if (deck.rounds) {
-                    <span class="text-muted ms-1" [title]="t('rounds')">{{ deck.rounds }}R+F</span>
-                    }
-                  </p>
+                }
+              </section>
+            }
+            @if (deck.warnings && deck.warnings.length > 0) {
+              <section class="deck-notice my-3" role="alert">
+                <h2 class="deck-notice__title">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i
+                  >{{ t('warnings') }}
+                </h2>
+                <ul class="deck-notice__list">
+                  @for (warning of deck.warnings; track warning) {
+                    <li>
+                      {{ warning.label | transloco: { date: warning.date } }}
+                    </li>
                   }
-                  @if (deck.place || deck.country) {
-                  <p class="mb-1">
-                    <b>{{ t('place') }}: </b>
-                    <i class="bi bi-geo-alt me-1"></i>
-                    <!-- The place usually already ends with the country, fall back to it when missing -->
-                    {{ deck.place ?? deck.country }}
-                  </p>
-                  }
-                  @if (deck.limitedFormat) {
-                  <p class="mb-1">
-                    <b>{{ t('limited_format') }}: </b>
-                    <span class="tournament-info text-center">
-                      <span class="badge bg-primary text-white small shadow-sm d-inline-flex align-items-center">
-                        <i class="bi bi-funnel-fill me-1"></i>{{ deck.limitedFormat }}
-                      </span>
-                    </span>
-                  </p>
-                  }
-                  @if (deck.archetype) {
-                  <p class="mb-1">
-                    <b>{{ t('archetype') }}: </b>
-                    @if (deck.archetype.icon) {
-                    <i class="vtes" [ngClass]="deck.archetype.icon"></i>
-                    }
-                    <a class="text-decoration-none ms-1" [routerLink]="['/metagame', deck.archetype.id]">{{
-                      deck.archetype.name }}</a>
-                    <span class="text-muted ms-1">({{ deck.archetype.type }})</span>
-                  </p>
-                  }
-                  @if (deck.type==='PRECONSTRUCTED' && deck.url) {
-                  <p class="mb-1">
-                    <a class="text-decoration-none" [href]="deck.url" target="_blank" rel="noopener noreferrer"
-                      [ngbTooltip]="t('buy_dtc')" gaEvent="purchase" gaCategory="DTC-BANNER" [gaLabel]="deck.name">
-                      <img width="320" height="67" src="/assets/img/drive_thru_cards.png" [alt]="t('buy_dtc')" />
-                    </a>
-                  </p>
-                  }
-                  @if (deck.source) {
-                  <p class="mb-1">
-                    <b>{{ t('source') }}: </b>
-                    <a class="text-decoration-none" [href]="deck.source" target="_blank" rel="noopener noreferrer">{{
-                      t('twda') }}</a>
-                  </p>
-                  }
-                  }
-                </div>
+                </ul>
+              </section>
+            }
+            @if (!isSnapshot && comparisonDeckId) {
+              <div class="position-relative">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-close position-absolute end-0 top-0 mt-3 me-3"
+                  (click)="compare(null)"
+                  [attr.aria-label]="
+                    'deck_comparison.close_comparison' | transloco
+                  "
+                ></button>
+                <app-deck-comparison
+                  [currentDeck]="deck"
+                  [comparisonDeckId]="comparisonDeckId"
+                />
               </div>
-              @if (!isSnapshot) {
-              <div class="col-12 col-md-4 col-xl-3 mt-3 mt-md-0">
-                <div class="deck-stats-panel">
-                  <div class="deck-stat">
-                    <span class="deck-stat__icon">
-                      <i class="bi bi-eye-fill"></i>
-                    </span>
-                    <div class="deck-stat__body">
-                      <span class="deck-stat__value">
-                        <animated-digit [digit]="deck.views" [duration]="2000" />
-                      </span>
-                      <span class="deck-stat__label">{{ t('views') }}</span>
-                    </div>
-                  </div>
-                  <div class="deck-stats-panel__divider"></div>
-                  <div class="deck-stat">
-                    <span class="deck-stat__icon deck-stat__icon--rating">
-                      <i class="bi bi-heart-fill"></i>
-                    </span>
-                    <div class="deck-stat__body">
-                      <div class="rating">
-                        <ng-template #starTemplate let-fill="fill">
-                          <span class="star" [class.full]="fill === 100">
-                            <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
-                          </span>
-                        </ng-template>
-                        <ngb-rating [ngbTooltip]="t('rate_deck')" placement="bottom" #ratingTooltip="ngbTooltip"
-                          [rate]="deck.rate ?? 0" [starTemplate]="starTemplate"
-                          [readonly]="!(isAuthenticated$ | async)! || (userDisplayName$ | async) === deck.author"
-                          [max]="5" (rateChange)="rateDeck($event)" />
-                      </div>
-                      <span class="deck-stat__label">
-                        <i class="bi bi-people-fill me-1"></i>{{ t('votes', { count: deck.votes }) }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+            }
+          </div>
+        </section>
+      </div>
+      <div class="deck-sections">
+        <div class="col-12 mt-4">
+          <div class="deck-section-header">
+            <div class="deck-section-header__title">
+              <h2 class="h1 mb-0">{{ 'shared.crypt' | transloco }}</h2>
+              <span class="circle_number" [title]="t('total_crypt')">
+                {{ deck.stats.crypt }}
+              </span>
+            </div>
+            <div class="deck-section-header__actions d-none d-md-flex">
+              <ng-container *ngTemplateOutlet="cryptButtons" />
+            </div>
+          </div>
+          <div class="d-md-none mt-3 d-flex justify-content-center">
+            <ng-container *ngTemplateOutlet="cryptButtons" />
+          </div>
+        </div>
+
+        <ng-template #cryptButtons>
+          <app-toggle-icon
+            [active]="(displayMode$ | async)!"
+            (toggleChange)="onChangeDisplayMode($event)"
+            [options]="displayModeOptions"
+          />
+          <div ngbDropdown class="d-inline-block ms-3">
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="dropdownSortByCrypt"
+              ngbDropdownToggle
+            >
+              <i class="bi bi-sort-alpha-down"></i>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByCrypt('capacity')"
+                [ngClass]="{ active: sortByCrypt === 'capacity' }"
+              >
+                {{ t('sort_by_capacity') }}
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByCrypt('quantity')"
+                [ngClass]="{ active: sortByCrypt === 'quantity' }"
+              >
+                {{ t('sort_by_quantity') }}
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByCrypt('name')"
+                [ngClass]="{ active: sortByCrypt === 'name' }"
+              >
+                {{ t('sort_by_name') }}
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByCrypt('clan')"
+                [ngClass]="{ active: sortByCrypt === 'clan' }"
+              >
+                {{ t('sort_by_clan') }}
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByCrypt('group')"
+                [ngClass]="{ active: sortByCrypt === 'group' }"
+              >
+                {{ t('sort_by_group') }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <div class="col-12 mt-3">
+          <div class="row g-2 justify-content-center">
+            <div class="col-4 col-sm-3 col-md-2">
+              <div class="minmax-tile">
+                <span class="minmax-tile__value">{{
+                  deck.stats.minCrypt
+                }}</span>
+                <span class="minmax-tile__label">MIN</span>
               </div>
+            </div>
+            <div class="col-4 col-sm-3 col-md-2">
+              <div class="minmax-tile">
+                <span class="minmax-tile__value">{{
+                  deck.stats.maxCrypt
+                }}</span>
+                <span class="minmax-tile__label">MAX</span>
+              </div>
+            </div>
+            <div class="col-4 col-sm-3 col-md-2">
+              <div class="minmax-tile">
+                <span class="minmax-tile__value">{{
+                  deck.stats.avgCrypt
+                }}</span>
+                <span class="minmax-tile__label">AVG</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-center mt-3">
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            @for (
+              disciplineStat of deck.stats.cryptDisciplines;
+              track disciplineStat
+            ) {
+              <h5
+                class="disc-chip mb-0"
+                [title]="
+                  t('disciplines_sup_inf', {
+                    count: disciplineStat.disciplines[0] | disciplineTransloco,
+                  })
+                "
+              >
+                <i
+                  class="vtes vtes-big"
+                  [ngClass]="
+                    getDisciplineIcon(disciplineStat.disciplines[0], true)!
+                  "
+                ></i>
+                <span
+                  >{{ disciplineStat.superior }}&nbsp;|&nbsp;{{
+                    disciplineStat.inferior
+                  }}</span
+                >
+              </h5>
+            }
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          @if ((displayMode$ | async) === 'grid') {
+            <div class="row m-2 g-2 justify-content-center">
+              @for (crypt of cryptCards; track crypt) {
+                <div class="col-6 col-md-auto">
+                  <app-crypt-grid-card
+                    [card]="crypt"
+                    [cryptSize]="deck.stats.crypt"
+                    (click)="openCryptCard(crypt, cryptCards!)"
+                  />
+                </div>
               }
             </div>
-            <div class="row mt-3">
-              <div class="col-12">
-                <div class="deck-actions d-flex flex-wrap justify-content-center gap-2">
-                  @if(deck.owner){
-                  <a class="btn btn-primary" [routerLink]="'/decks/builder'" [queryParams]="{id:deck.id }">
-                    <i class="bi bi-pencil-square me-2"></i>{{ t('edit') }}
-                  </a>
-                  }@else {
-                  <button class="btn btn-primary" (click)="onOpenInBuilder()" [disabled]="unknownSnapshotCards().length > 0" *isLogged="true">
-                    <i class="bi bi-pencil-square me-2"></i>{{ t('clone') }}
-                  </button>
-                  }
-                  @if (!isSnapshot) {
-                  @if(!deck.owner && (isAdmin$ | async)!){
-                  <a class="btn btn-danger" [routerLink]="'/decks/builder'" [queryParams]="{id:deck.id }">
-                    <i class="bi bi-pencil-square me-2"></i>{{ t('edit_as_admin') }}
-                  </a>
-                  }
-                  <button class="btn" [ngClass]="{
-                      'btn-outline-primary': !collectionTracker,
-                      'btn-primary': collectionTracker
-                    }" (click)="onCollectionTracker()" *isLogged="true">
-                    <i class="bi me-2" [ngClass]="{
-                      'bi-square': !collectionTracker,
-                      'bi-check-square-fill': collectionTracker
-                    }"></i>{{ t('collection_tracker') }}
-                  </button>
-                  @if (collectionTracker) {
-                  <button class="btn btn-outline-primary" (click)="onAddMissingToWishlist()" *isLogged="true">
-                    <i class="bi bi-heart me-2"></i>{{ 'wishlist.add_missing_to_wishlist' | transloco }}
-                  </button>
-                  }
-                  @if (deck.type === 'PRECONSTRUCTED') {
-                  <button class="btn btn-outline-primary" (click)="onAddToCollection(deck)" *isLogged="true">
-                    <i class="bi bi-collection me-2"></i>{{ t('add_to_collection') }}
-                  </button>
-                  }
-                  }
-                  @if (isSnapshot) {
-                  <button class="btn btn-outline-primary" (click)="onShare()">
-                    <i class="bi bi-share me-2"></i>{{ t('share') }}
-                  </button>
-                  } @else {
-                  <app-share-deck class="deck-share" [snapshot]="snapshot" (shareDeck)="onShare()" />
-                  }
-                  <button class="btn btn-outline-primary" (click)="onDraw()" [disabled]="unknownSnapshotCards().length > 0">
-                    <i class="bi bi-shuffle me-2"></i>{{ t('draw') }}
-                  </button>
-                  <button class="btn btn-outline-primary" (click)="onPrint()" [disabled]="unknownSnapshotCards().length > 0">
-                    <i class="bi bi-printer me-2"></i>{{ 'deck_shared.print' | transloco }}
-                  </button>
-                  @if (!isSnapshot) {
-                  <button class="btn btn-outline-primary" (click)="onHowToBuy()">
-                    <i class="bi bi-cart me-2"></i>{{ 'shopping_optimizer.button' | transloco }}
-                  </button>
-                  <button class="btn btn-outline-primary" (click)="onCompare()">
-                    <i class="bi bi-arrows-collapse me-2"></i>{{ t('compare') }}
-                  </button>
-                  <div ngbDropdown container="body" class="d-inline-block">
-                    <button class="btn btn-outline-primary" ngbDropdownToggle>
-                      <i class="bi bi-download me-2"></i>{{ t('export') }}
-                    </button>
-                    <div ngbDropdownMenu class="dropdown-menu">
-                      <div class="dropdown-header">{{ t('file') }}</div>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=LACKEY'" target="_blank"
-                        rel="noopener" gaEvent="export" gaCategory="file_lackey">
-                        <i class="bi bi-file-earmark me-2"></i>Lackey
-                      </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=JOL'" target="_blank"
-                        rel="noopener" gaEvent="export" gaCategory="file_jol">
-                        <i class="bi bi-file-earmark me-2"></i>JOL
-                      </a>
-                      <a ngbDropdownItem class="text-black" [href]="exportUrl+'?type=TWD'" target="_blank"
-                        rel="noopener" gaEvent="export" gaCategory="file_twd">
-                        <i class="bi bi-file-earmark me-2"></i>TWD
-                      </a>
-                      <div class="dropdown-divider"></div>
-                      <div class="dropdown-header">{{ t('clipboard') }}</div>
-                      <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('LACKEY')" gaEvent="export"
-                        gaCategory="clipboard_lackey">
-                        <i class="bi bi-clipboard me-2"></i>Lackey
-                      </button>
-                      <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('JOL')" gaEvent="export"
-                        gaCategory="clipboard_jol">
-                        <i class="bi bi-clipboard me-2"></i>JOL
-                      </button>
-                      <button ngbDropdownItem class="text-black" (click)="onCopyToClipboard('TWD')" gaEvent="export"
-                        gaCategory="clipboard_twd">
-                        <i class="bi bi-clipboard me-2"></i>TWD
-                      </button>
-                      <div class="dropdown-divider"></div>
-                      <button ngbDropdownItem class="text-black" (click)="onEmbed()" gaEvent="export"
-                        gaCategory="embed">
-                        <i class="bi bi-code-square me-2"></i>{{ t('embed') }}
-                      </button>
-                    </div>
-                    @if(deck.owner){
-                    <button class="btn btn-outline-danger ms-2" (click)="deleteDeck()">
-                      <i class="bi bi-trash-fill"></i>
-                      {{ t('delete') }}
-                    </button>
-                    }
-                  </div>
-                  }
+          } @else {
+            <div
+              class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2"
+            >
+              @for (crypt of cryptCards; track crypt) {
+                <ul class="col list-group">
+                  <app-crypt
+                    [card]="crypt"
+                    [cryptSize]="deck.stats.crypt"
+                    (click)="openCryptCard(crypt, cryptCards!)"
+                    [disablePopover]="(isMobileOrTablet$ | async)!"
+                    [disableClickPopover]="true"
+                  />
+                </ul>
+              }
+            </div>
+          }
+        </div>
+        <div class="col-12 mt-5">
+          <div class="deck-section-header">
+            <div class="deck-section-header__title">
+              <h2 class="h1 mb-0">{{ 'shared.library' | transloco }}</h2>
+              <span class="circle_number" [title]="t('total_library')">
+                {{ deck.stats.library }}
+              </span>
+              <div class="d-flex align-items-center gap-2">
+                <div class="costx" [title]="t('total_pool_cost')">
+                  {{ deck.stats.poolCost }} <i class="vtes poolcost"></i>
+                </div>
+                <div class="costx" [title]="t('total_blood_cost')">
+                  {{ deck.stats.bloodCost }} <i class="vtes bloodcost"></i>
                 </div>
               </div>
             </div>
-            @if (!isSnapshot && deck.reactions) {
-            <div class="row mt-3">
-              <div class="col-12 d-flex justify-content-center">
-                <app-quick-reactions targetType="deck" [targetId]="deck.id" [reactions]="deck.reactions"
-                  display="full" />
-              </div>
+            <div class="deck-section-header__actions d-none d-md-flex">
+              <ng-container *ngTemplateOutlet="libraryButtons" />
             </div>
-            }
-            @if (!isSnapshot && deck.tags) {
-            <div class="row mt-3">
-              <div class="col-12">
-                <div class="d-flex flex-wrap justify-content-center gap-2">
-                  @for (tag of deck.tags; track tag) {
-                  <span class="badge rounded-pill text-bg-primary btn-badge" (click)="onTag(tag)">
-                    #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+          </div>
+          <div class="d-md-none mt-3 d-flex justify-content-center">
+            <ng-container *ngTemplateOutlet="libraryButtons" />
+          </div>
+        </div>
+        <ng-template #libraryButtons>
+          <app-toggle-icon
+            [active]="(displayMode$ | async)!"
+            (toggleChange)="onChangeDisplayMode($event)"
+            [options]="displayModeOptions"
+          />
+          <div ngbDropdown class="d-inline-block ms-3">
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="dropdownSortByLibrary"
+              ngbDropdownToggle
+            >
+              <i class="bi bi-sort-alpha-down"></i>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByLibrary('name')"
+                [ngClass]="{ active: sortByLibrary === 'name' }"
+              >
+                {{ t('sort_by_name') }}
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="onChangeSortByLibrary('quantity')"
+                [ngClass]="{ active: sortByLibrary === 'quantity' }"
+              >
+                {{ t('sort_by_quantity') }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="col-12 text-center mt-3">
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            @for (
+              disciplineStat of deck.stats.libraryDisciplines;
+              track disciplineStat
+            ) {
+              <h5 class="disc-chip mb-0">
+                @if (disciplineStat.disciplines.length === 0) {
+                  <span [title]="t('no_discipline')">
+                    <i class="bi bi-square"></i>
                   </span>
+                }
+                @for (
+                  discipline of disciplineStat.disciplines;
+                  track discipline;
+                  let isFirst = $first
+                ) {
+                  @if (!isFirst) {
+                    <span>+</span>
                   }
-                </div>
-              </div>
-            </div>
+                  <i
+                    class="vtes vtes-big"
+                    [ngClass]="getDisciplineIcon(discipline, false)!"
+                    [title]="discipline | disciplineTransloco"
+                  ></i>
+                }
+                <span>{{ disciplineStat.inferior }}</span>
+              </h5>
+            }
+            @for (clanStat of deck.stats.libraryClans; track clanStat) {
+              <h5 class="disc-chip mb-0">
+                @for (
+                  clan of clanStat.clans;
+                  track clan;
+                  let isFirst = $first
+                ) {
+                  @if (!isFirst) {
+                    <span>/</span>
+                  }
+                  <i
+                    class="vtes vtes-big"
+                    [ngClass]="getClanIcon(clan)!"
+                    [title]="clan | clanTransloco"
+                  ></i>
+                }
+                <span>{{ clanStat.number }}</span>
+              </h5>
             }
           </div>
         </div>
-        @if (unknownSnapshotCards().length) {
-        <div class="alert alert-warning" role="alert">
-          <p>{{ 'snapshot.unknown_cards' | transloco }}</p>
-          <ul class="mb-0">
-            @for (card of unknownSnapshotCards(); track card.id) {
-            <li>{{ card.number }} × #{{ card.id }}</li>
-            }
-          </ul>
-        </div>
-        }
-        @if (deck.description) {
-        <app-markdown-text class="mt-3" [data]="deck.description" />
-        }
-        @if (deck.erratas && deck.erratas.length > 0) {
-        <div class="alert alert-warning my-3" role="alert">
-          <h3><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ t('errata') }}</h3>
-          @for (errata of deck.erratas; track errata) {
-          <p>
-            <strong #popover="ngbPopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-              (click)="popover.open()">
-              {{ errata.name }}
-            </strong>
-            {{ t('errata_modified') }}
-            {{ errata.effectiveDate | translocoDate: { dateStyle: 'long' } }}.
-            {{ errata.description }}
-            <ng-template #imgPopover>
-              <img [ngClass]="{
-              'img-popover': !(isMobile$ | async)!,
-              'img-popover-mobile': (isMobile$ | async)!
-            }" [src]="cdnDomain + '/img/cards/' + errata.cardId + '.jpg'" [alt]="errata.name" />
-            </ng-template>
-          </p>
+        <div class="col-12 mt-3">
+          @if (deck.library) {
+            <app-library-list
+              [libraryList]="deck.library"
+              [sortBy]="sortByLibrary"
+              [displayMode]="(displayMode$ | async)!"
+            />
           }
         </div>
-        }
-        @if (deck.warnings && deck.warnings.length > 0) {
-        <div class="alert alert-warning my-3" role="alert">
-          <h3><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ t('warnings') }}</h3>
-          @for (warning of deck.warnings; track warning) {
-          <p>
-            {{ warning.label | transloco: { date: warning.date } }}
-          </p>
-          }
-        </div>
-        }
-        @if (!isSnapshot && comparisonDeckId) {
-        <div class="position-relative">
-          <button type="button" class="btn btn-sm btn-close position-absolute end-0 top-0 mt-3 me-3"
-            (click)="compare(null)" [attr.aria-label]="'deck_comparison.close_comparison' | transloco">
-          </button>
-          <app-deck-comparison [currentDeck]="deck" [comparisonDeckId]="comparisonDeckId" />
-        </div>
-        }
-      </section>
-    </div>
-    <div class="col-12 mt-4">
-      <div class="deck-section-header">
-        <div class="deck-section-header__title">
-          <h2 class="h1 mb-0">{{ 'shared.crypt' | transloco }}</h2>
-          <span class="circle_number" [title]="t('total_crypt')">
-            {{ deck.stats.crypt }}
-          </span>
-        </div>
-        <div class="deck-section-header__actions d-none d-md-flex">
-          <ng-container *ngTemplateOutlet="cryptButtons" />
-        </div>
       </div>
-      <div class="d-md-none mt-3 d-flex justify-content-center">
-        <ng-container *ngTemplateOutlet="cryptButtons" />
-      </div>
-    </div>
-
-    <ng-template #cryptButtons>
-      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions" />
-      <div ngbDropdown class="d-inline-block ms-3">
-        <button type="button" class="btn btn-primary" id="dropdownSortByCrypt" ngbDropdownToggle>
-          <i class="bi bi-sort-alpha-down"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownSortByCrypt">
-          <button ngbDropdownItem (click)="onChangeSortByCrypt('capacity')"
-            [ngClass]="{'active': sortByCrypt ==='capacity'}">
-            {{ t('sort_by_capacity') }}
-          </button>
-          <button ngbDropdownItem (click)="onChangeSortByCrypt('quantity')"
-            [ngClass]="{'active': sortByCrypt ==='quantity'}">
-            {{ t('sort_by_quantity') }}
-          </button>
-          <button ngbDropdownItem (click)="onChangeSortByCrypt('name')" [ngClass]="{'active': sortByCrypt ==='name'}">
-            {{ t('sort_by_name') }}
-          </button>
-          <button ngbDropdownItem (click)="onChangeSortByCrypt('clan')" [ngClass]="{'active': sortByCrypt ==='clan'}">
-            {{ t('sort_by_clan') }}
-          </button>
-          <button ngbDropdownItem (click)="onChangeSortByCrypt('group')" [ngClass]="{'active': sortByCrypt ==='group'}">
-            {{ t('sort_by_group') }}
-          </button>
-        </div>
-      </div>
-    </ng-template>
-    <div class="col-12 mt-3">
-      <div class="row g-2 justify-content-center">
-        <div class="col-4 col-sm-3 col-md-2">
-          <div class="minmax-tile">
-            <span class="minmax-tile__value">{{ deck.stats.minCrypt }}</span>
-            <span class="minmax-tile__label">MIN</span>
-          </div>
-        </div>
-        <div class="col-4 col-sm-3 col-md-2">
-          <div class="minmax-tile">
-            <span class="minmax-tile__value">{{ deck.stats.maxCrypt }}</span>
-            <span class="minmax-tile__label">MAX</span>
-          </div>
-        </div>
-        <div class="col-4 col-sm-3 col-md-2">
-          <div class="minmax-tile">
-            <span class="minmax-tile__value">{{ deck.stats.avgCrypt }}</span>
-            <span class="minmax-tile__label">AVG</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 text-center mt-3">
-      <div class="d-flex flex-wrap justify-content-center gap-2">
-        @for (disciplineStat of deck.stats.cryptDisciplines; track disciplineStat) {
-        <h5 class="disc-chip mb-0"
-          [title]="t('disciplines_sup_inf', { count: disciplineStat.disciplines[0] |disciplineTransloco })">
-          <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(disciplineStat.disciplines[0],true)!"></i>
-          <span>{{ disciplineStat.superior }}&nbsp;|&nbsp;{{ disciplineStat.inferior }}</span>
-        </h5>
-        }
-      </div>
-    </div>
-    <div class="col-12 mt-3">
-      @if((displayMode$ |async) === 'grid') {
-      <div class="row m-2 g-2 justify-content-center">
-        @for (crypt of cryptCards; track crypt) {
-        <div class="col-6 col-md-auto">
-          <app-crypt-grid-card [card]="crypt" [cryptSize]="deck.stats.crypt"
-            (click)="openCryptCard(crypt, cryptCards!)" />
-        </div>
-        }
-      </div>
-      }@else{
-      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
-        @for (crypt of cryptCards; track crypt) {
-        <ul class="col list-group">
-          <app-crypt [card]="crypt" [cryptSize]="deck.stats.crypt" (click)="openCryptCard(crypt, cryptCards!)"
-            [disablePopover]="(isMobileOrTablet$ | async)!" [disableClickPopover]="true" />
-        </ul>
-        }
-      </div>
-      }
-    </div>
-    <div class="col-12 mt-5">
-      <div class="deck-section-header">
-        <div class="deck-section-header__title">
-          <h2 class="h1 mb-0">{{ 'shared.library' | transloco }}</h2>
-          <span class="circle_number" [title]="t('total_library')">
-            {{ deck.stats.library }}
-          </span>
-          <div class="d-flex align-items-center gap-2">
-            <div class="costx" [title]="t('total_pool_cost')">
-              {{ deck.stats.poolCost }} <i class="vtes poolcost"></i>
+      @if (!isSnapshot) {
+        <app-ad-sense
+          adClient="ca-pub-7379021241824282"
+          adSlot="8573339569"
+          adFormat="auto"
+          fullWidthResponsive="true"
+        />
+        @if (similarDecks$ | async; as similarDecks) {
+          @if (similarDecks.decks.length > 0) {
+            <div class="col-12 d-flex justify-content-center mt-5">
+              <h2 class="deck-subsection-title">{{ t('similar_decks') }}</h2>
             </div>
-            <div class="costx" [title]="t('total_blood_cost')">
-              {{ deck.stats.bloodCost }} <i class="vtes bloodcost"></i>
+            <div class="row">
+              @for (deck of similarDecks.decks; track deck) {
+                <app-deck-card
+                  class="col-12 col-md-6"
+                  [deck]="deck"
+                  height="200px"
+                  (tagClick)="onTag($event)"
+                />
+              }
             </div>
-          </div>
-        </div>
-        <div class="deck-section-header__actions d-none d-md-flex">
-          <ng-container *ngTemplateOutlet="libraryButtons" />
-        </div>
-      </div>
-      <div class="d-md-none mt-3 d-flex justify-content-center">
-        <ng-container *ngTemplateOutlet="libraryButtons" />
-      </div>
-    </div>
-    <ng-template #libraryButtons>
-      <app-toggle-icon [active]="(displayMode$ |async)!" (toggleChange)="onChangeDisplayMode($event)"
-        [options]="displayModeOptions" />
-      <div ngbDropdown class="d-inline-block ms-3">
-        <button type="button" class="btn btn-primary" id="dropdownSortByLibrary" ngbDropdownToggle>
-          <i class="bi bi-sort-alpha-down"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownSortByLibrary">
-          <button ngbDropdownItem (click)="onChangeSortByLibrary('name')"
-            [ngClass]="{'active': sortByLibrary ==='name'}">
-            {{ t('sort_by_name') }}
-          </button>
-          <button ngbDropdownItem (click)="onChangeSortByLibrary('quantity')"
-            [ngClass]="{'active': sortByLibrary ==='quantity'}">
-            {{ t('sort_by_quantity') }}
-          </button>
-        </div>
-      </div>
-    </ng-template>
-
-    <div class="col-12 text-center mt-3">
-      <div class="d-flex flex-wrap justify-content-center gap-2">
-        @for (disciplineStat of deck.stats.libraryDisciplines; track disciplineStat) {
-        <h5 class="disc-chip mb-0">
-          @if (disciplineStat.disciplines.length === 0) {
-          <span [title]="t('no_discipline')">
-            <i class="bi bi-square" style="font-size: 32px;"></i>
-          </span>
+            <div class="col-12 d-flex justify-content-center mt-3">
+              <a
+                class="btn btn-outline-primary"
+                routerLink="/decks"
+                [queryParams]="{ bySimilarity: id }"
+                role="button"
+              >
+                {{ 'home.see_more' | transloco }}
+              </a>
+            </div>
           }
-          @for (discipline of disciplineStat.disciplines; track discipline; let isFirst = $first) {
-          @if (!isFirst) {
-          <span>+</span>
-          }
-          <i class="vtes vtes-big" [ngClass]="getDisciplineIcon(discipline,false)!"
-            [title]="discipline  |disciplineTransloco"></i>
-          }
-          <span>{{ disciplineStat.inferior }}</span>
-        </h5>
         }
-        @for (clanStat of deck.stats.libraryClans; track clanStat) {
-        <h5 class="disc-chip mb-0">
-          @for (clan of clanStat.clans; track clan; let isFirst = $first) {
-          @if (!isFirst) {
-          <span>/</span>
-          }
-          <i class="vtes vtes-big" [ngClass]="getClanIcon(clan)!" [title]="clan | clanTransloco"></i>
-          }
-          <span>{{ clanStat.number }}</span>
-        </h5>
-        }
-      </div>
-    </div>
-    <div class="col-12 mt-3">
-      @if (deck.library) {
-      <app-library-list [libraryList]="deck.library" [sortBy]="sortByLibrary" [displayMode]="(displayMode$ |async)!" />
+        <div class="col-12 d-flex justify-content-center mt-5">
+          <h2 class="deck-subsection-title">{{ t('comments') }}</h2>
+        </div>
+        <div class="col-12">
+          <app-comments [deckId]="id" />
+        </div>
       }
-    </div>
-    @if (!isSnapshot) {
-    <app-ad-sense adClient="ca-pub-7379021241824282" adSlot="8573339569" adFormat="auto" fullWidthResponsive="true" />
-    @if(similarDecks$ | async; as similarDecks) {
-    <div class="col-12 d-flex justify-content-center mt-5">
-      <h2 class="deck-subsection-title">{{ t('similar_decks') }}</h2>
-    </div>
-    <div class="row">
-      @for(deck of similarDecks.decks; track deck) {
-      <app-deck-card class="col-12 col-md-6" [deck]="deck" height="200px" (tagClick)="onTag($event)" />
-      }
-    </div>
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <a class="btn btn-success btn-rounded btn-lg text-white" routerLink="/decks" [queryParams]="{ bySimilarity: id }"
-        role="button">
-        {{ 'home.see_more' | transloco }}
-      </a>
-    </div>
-    }
-    <div class="col-12 d-flex justify-content-center mt-5">
-      <h2 class="deck-subsection-title">{{ t('comments') }}</h2>
-    </div>
-    <div class="col-12">
-      <app-comments [deckId]="id" />
-    </div>
-    }
-  </main>
+    </main>
   }
 </ng-container>
