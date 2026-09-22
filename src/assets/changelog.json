@@ -7,6 +7,7 @@
       "Edit <strong>card quantities directly in the Deck Builder</strong>: click a quantity in your deck or card picker, type the new number, and press Enter to apply or Escape to cancel. Grid controls and list spacing have also been refined for easier editing.",
       "The <strong>Deck Builder has a cleaner, more compact layout</strong>: saving, visibility and version controls sit together, deck actions are clearly grouped, and the description editor expands as you write. Crypt and Library headers, statistics and spacing now follow the same style.",
       "Review <strong>unsaved card changes in the Deck Builder</strong>: use <strong>Show changes</strong> beside Save to see quantity changes and before-and-after Crypt and Library totals compared with your last account save. Local draft status now appears beside the save controls.",
+      "Finding cards in the <strong>Deck Builder</strong> is now easier: Crypt and Library pickers show <strong>removable filter chips</strong>, active-filter counts on mobile, the selected sort and direction, and the total number of matching cards. Empty searches also offer clearer guidance.",
       "Minor bug fixes and performance improvements."
     ]
   },

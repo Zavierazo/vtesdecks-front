@@ -285,6 +285,7 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "picker_no_results": "Aucune carte ne correspond à votre recherche et aux filtres. Retirez un filtre ou essayez une autre recherche.",
     "unsaved_changes": {
       "show": "Voir les modifications",
       "hide": "Masquer les modifications",

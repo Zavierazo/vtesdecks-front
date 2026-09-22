@@ -1,3 +1,16 @@
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
+import {
+  buildLibraryFilterChips,
+  removeCardFilterChip,
+} from '../../../utils/card-filter-chips.utils'
+import { getCardShopName } from '../../../utils/card-shops'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { BuilderSplitDirective } from '../deck-composition-panel/builder-split.directive'
 import { DeckCompositionPanelComponent } from '../deck-composition-panel/deck-composition-panel.component'
@@ -11,17 +24,13 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
 import {
-  NgbActiveModal,
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiLibrary, LibraryFilter, LibrarySortBy } from '@models'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
@@ -33,7 +42,15 @@ import { LibraryQuery } from '@state/library/library.query'
 import { LibraryStats } from '@state/library/library.store'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { debounceTime, map, Observable, tap } from 'rxjs'
+import {
+  BehaviorSubject,
+  debounceTime,
+  filter,
+  map,
+  merge,
+  Observable,
+  tap,
+} from 'rxjs'
 import { LibraryGridCardComponent } from '@deck-shared/library-grid-card/library-grid-card.component'
 import { LibraryComponent } from '@deck-shared/library/library.component'
 import { LibraryBuilderFilterComponent } from '../library-builder-filter/library-builder-filter.component'
@@ -45,16 +62,13 @@ import { LibraryBuilderFilterComponent } from '../library-builder-filter/library
   styleUrls: ['./library-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FilterChipsComponent,
+    SortControlComponent,
     BuilderSplitDirective,
     DeckCompositionPanelComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     LibraryComponent,
@@ -75,6 +89,10 @@ export class LibraryBuilderComponent implements OnInit {
   private readonly mediaService = inject(MediaService)
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
+
+  private readonly translocoService = inject(TranslocoService)
+  filterChips: FilterChip[] = []
+  readonly resultsCount$ = new BehaviorSubject(0)
 
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl(
@@ -120,9 +138,56 @@ export class LibraryBuilderComponent implements OnInit {
     },
   ]
 
+  readonly sortOptions: SortOption[] = [
+    { value: 'relevance', labelKey: 'library_section.relevance' },
+    { value: 'name', labelKey: 'library_section.name' },
+    { value: 'type', labelKey: 'library_section.type' },
+    { value: 'deckPopularity', labelKey: 'library_section.deck_popularity' },
+    { value: 'cardPopularity', labelKey: 'library_section.card_popularity' },
+    { value: 'minPrice', labelKey: 'library_section.price' },
+  ]
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'relevance' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
+  private updateFilterChips(): void {
+    this.filterChips = buildLibraryFilterChips(
+      this.deckBuilderQuery.getLibraryFilter(),
+      this.libraryQuery.getDefaultLibraryFilter(),
+      (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip): void {
+    this.onChangeLibraryFilter(
+      removeCardFilterChip(
+        this.deckBuilderQuery.getLibraryFilter(),
+        this.libraryQuery.getDefaultLibraryFilter(),
+        chip,
+      ),
+    )
+  }
+
   ngOnInit() {
     this.initFilters()
     this.onChangeNameFilter()
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.updateFilterChips()
+        this.changeDetector.markForCheck()
+      })
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -173,9 +238,9 @@ export class LibraryBuilderComponent implements OnInit {
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: LibrarySortBy, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: string, event?: MouseEvent) {
+    event?.preventDefault()
+    event?.stopPropagation()
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -188,7 +253,7 @@ export class LibraryBuilderComponent implements OnInit {
     } else {
       this.sortByOrder = 'asc'
     }
-    this.sortBy = sortBy
+    this.sortBy = sortBy as LibrarySortBy
     this.initQuery()
   }
 
@@ -214,6 +279,7 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   initQuery() {
+    this.updateFilterChips()
     // Only deliberate view changes adopt new ranking inputs; scrolling reuses them.
     this.suggestedCardIds = (
       this.deckBuilderQuery.getValue().suggestedCards?.keyLibrary ?? []
@@ -231,14 +297,20 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   private updateQuery() {
-    this.library$ = this.libraryQuery.selectAll({
-      limitTo: this.limitTo,
-      filter: this.deckBuilderQuery.getLibraryFilter(),
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      stats: this.rankingStats,
-      priorityIds: this.suggestedCardIds,
-    })
+    this.library$ = this.libraryQuery
+      .selectAll({
+        filter: this.deckBuilderQuery.getLibraryFilter(),
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        stats: this.rankingStats,
+        priorityIds: this.suggestedCardIds,
+      })
+      .pipe(
+        tap((results) => this.resultsCount$.next(results.length)),
+        map((results) => results.slice(0, this.limitTo)),
+      )
     this.changeDetector.markForCheck()
   }
 

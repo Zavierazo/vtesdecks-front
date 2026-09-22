@@ -1,3 +1,4 @@
+import { TranslocoService } from '@jsverse/transloco'
 import { ChangeDetectorRef } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import {
@@ -86,6 +87,14 @@ describe.each(['crypt', 'library'] as const)(
       }
       TestBed.configureTestingModule({
         providers: [
+          {
+            provide: TranslocoService,
+            useValue: {
+              translate: (key: string) => key,
+              langChanges$: of('en'),
+              events$: of(),
+            },
+          },
           { provide: DeckBuilderQuery, useValue: query },
           { provide: DeckBuilderService, useValue: builder },
           {
@@ -159,6 +168,37 @@ describe.each(['crypt', 'library'] as const)(
         suggestions.next({ keyCrypt: [rec(59, 4)], keyLibrary: [rec(59, 4)] })
       return { component, create, results, latestTotal, changeRecommendations }
     }
+
+    it('counts all matches independently of the loaded page', async () => {
+      const { component, results } = await setup()
+      expect(await results()).toHaveLength(50)
+      expect(component.resultsCount$.value).toBe(60)
+      component.onScroll()
+      expect(await results()).toHaveLength(60)
+      expect(component.resultsCount$.value).toBe(60)
+    })
+
+    it('removes one filter value without changing the other filters', async () => {
+      const { component } = await setup()
+      const filter = { clans: ['Tremere', 'Ventrue'], cardText: 'bleed' }
+      if (component instanceof CryptBuilderComponent) {
+        component.onChangeCryptFilter(filter)
+      } else {
+        component.onChangeLibraryFilter(filter)
+      }
+      component.onRemoveFilterChip(
+        component.filterChips.find((chip) => chip.item === 'Tremere')!,
+      )
+      expect(
+        component.filterChips.some((chip) => chip.item === 'Tremere'),
+      ).toBe(false)
+      expect(
+        component.filterChips.some((chip) => chip.item === 'Ventrue'),
+      ).toBe(true)
+      expect(
+        component.filterChips.some((chip) => chip.key === 'cardText'),
+      ).toBe(true)
+    })
 
     it('updates recommendation quantities without moving results, including when scrolling', async () => {
       const { component, results, latestTotal, changeRecommendations } =

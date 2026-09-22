@@ -111,6 +111,9 @@ Deck and picker quantities use `CardQuantityComponent` to display a number until
 
 ### Card-picker deck panel
 
+Crypt and Library pickers reuse the browser filter-chip builders and sort control. Result counts cover all filtered matches before pagination; pagination must retain the captured recommendation ranking. Individual chip removal preserves other selections, and Reset retains the existing deck-derived initialization rules.
+
+
 Crypt and Library list-row artwork uses the shared `CardArtBackgroundComponent` to clip canonical full-card images with CSS. It loads through `OfflineImagesService`, preserves the source-pixel crop rectangles and responsive background alignment, and hides unavailable artwork. List rows must not request separate `cropImage` assets.
 
 Crypt and Library picker modals share a live deck panel using the existing Crypt and Library list components. A labeled show/hide button in the search toolbar controls its device-local split-view preference, independently of the Markdown editor. The panel is available only when the modal content is wide enough; the filters, catalog results and deck have separate scroll containers, and infinite scrolling must target the catalog container explicitly. The panel reads the builder state independently of catalog filters and changes quantities through the existing builder service.

@@ -29,10 +29,11 @@
     white-space: nowrap;
   }
 
-  &__close {
+  &__close.btn-close {
     --bs-btn-close-opacity: 0.6;
     flex-shrink: 0;
     font-size: 0.6rem;
+    margin: 0;
     padding: 0.25rem;
   }
 }
