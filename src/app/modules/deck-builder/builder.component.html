@@ -1,8 +1,13 @@
+@if (loading$ | async) {
+  <div class="alert alert-info text-center mb-0" role="status">
+    {{ 'deck_builder.unsaved_changes.saving' | transloco }}
+  </div>
+}
 <main
   class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100"
   role="main"
-  [attr.inert]="initializing() ? '' : null"
-  [attr.aria-busy]="initializing()"
+  [attr.inert]="initializing() || (loading$ | async) ? '' : null"
+  [attr.aria-busy]="initializing() || (loading$ | async)"
   *transloco="let t; read: 'deck_builder'"
 >
   <div class="builder-header mb-4">
@@ -78,9 +83,52 @@
                 >{{ t('save') }}
               </button>
             }
+            <div class="builder-header__save-status">
+              @if (activeLocalDraftId() && !draftStorageError()) {
+                <small class="text-body-secondary" role="status">
+                  <i
+                    class="bi draft-sync-icon me-1"
+                    [class.bi-arrow-repeat]="draftSyncing()"
+                    [class.bi-check2]="!draftSyncing()"
+                    [class.is-syncing]="draftSyncing()"
+                    aria-hidden="true"
+                  ></i>
+                  {{ 'local_drafts.autosaved' | transloco }}
+                </small>
+              }
+              @if (changes.baseline() && changes.changes().length > 0) {
+                <button
+                  type="button"
+                  class="btn btn-link p-0"
+                  [attr.aria-expanded]="changes.expanded()"
+                  aria-controls="unsaved-card-changes"
+                  (click)="changes.expanded.set(!changes.expanded())"
+                >
+                  {{
+                    t(
+                      changes.expanded()
+                        ? 'unsaved_changes.hide'
+                        : 'unsaved_changes.show'
+                    )
+                  }}
+                </button>
+              }
+            </div>
           </div>
         </div>
       </div>
+      <app-unsaved-changes
+        #changes
+        id="unsaved-card-changes"
+        [hidden]="
+          !changes.expanded() ||
+          !changes.baseline() ||
+          changes.changes().length === 0
+        "
+        class="mt-3"
+        [baseline]="baseline$ | async"
+        [cards]="(allCards$ | async) ?? []"
+      />
       <div id="builder-description-editor" class="builder-description-editor">
         <app-markdown-textarea
           [control]="descriptionControl"
@@ -315,18 +363,6 @@
           </div>
         </div>
       </section>
-      @if (activeLocalDraftId() && !draftStorageError()) {
-        <small class="text-body-secondary d-block mt-2" role="status">
-          <i
-            class="bi draft-sync-icon me-1"
-            [class.bi-arrow-repeat]="draftSyncing()"
-            [class.bi-check2]="!draftSyncing()"
-            [class.is-syncing]="draftSyncing()"
-            aria-hidden="true"
-          ></i>
-          {{ 'local_drafts.autosaved' | transloco }}
-        </small>
-      }
     </form>
   </div>
   @if (spoilerCardCount$ | async; as count) {

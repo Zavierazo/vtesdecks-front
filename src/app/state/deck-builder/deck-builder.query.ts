@@ -39,6 +39,10 @@ export class DeckBuilderQuery {
     return this.store.select((state) => state.id)
   }
 
+  selectBaseline(): Observable<ApiCard[] | undefined> {
+    return this.store.select((state) => state.baseline)
+  }
+
   selectCards(): Observable<ApiCard[]> {
     return this.store.select((state) => state.cards)
   }

@@ -99,7 +99,11 @@ Crypt, Library and sets restore from IndexedDB before background refresh. Catalo
 
 ### Builder editing header
 
-The builder has a non-sticky editing header with the name and compact save controls sharing a row when space permits, followed by an always-visible Markdown description editor and grouped actions. Draft status sits below the actions without separator lines. The builder sets --markdown-editor-min-height for a shorter empty, unfocused editor; focus or existing content restores the standard minimum height, and the shared Markdown editor continues to grow with content. Import, Export and Share retain their specific menus. The optional version-label input and Save button share an aligned input group; visibility sits beside it within one compact save area. Header action buttons use the blue primary palette, except Delete, which uses the danger palette. Existing save, draft, sharing and action eligibility contracts remain unchanged.
+The builder has a non-sticky editing header with the name and compact save controls sharing a row when space permits, followed by an always-visible Markdown description editor and grouped actions. Draft status and a small Show changes link sit beneath Save within the compact save area, aligned as a group with the name input. Comparison totals and details appear below the primary row only when expanded. The builder sets --markdown-editor-min-height for a shorter empty, unfocused editor; focus or existing content restores the standard minimum height, and the shared Markdown editor continues to grow with content. Import, Export and Share retain their specific menus. The optional version-label input and Save button share an aligned input group; visibility sits beside it within one compact save area. Header action buttons use the blue primary palette, except Delete, which uses the danger palette. Existing save, draft, sharing and action eligibility contracts remain unchanged.
+
+### Unsaved deck comparison
+
+The builder keeps an session-only `baseline` containing a copied list of cards from the account load or last successful save. Draft/history restoration and imports into an existing deck retain that baseline; new decks and clones reset it. The inline comparison ignores metadata and considering-only changes and uses the shared quantity-difference utility. Only card quantities are compared. Baselines are never persisted in local drafts. Builder editing is disabled while an account save is pending.
 
 ### Card quantities
 

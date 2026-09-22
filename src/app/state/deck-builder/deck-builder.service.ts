@@ -110,6 +110,7 @@ export class DeckBuilderService {
           ]),
         ),
         map(([deck]) => deck),
+        tap(() => this.store.captureBaseline()),
       )
     } else if (cloneDeck) {
       this.store.update((state) => ({
@@ -251,6 +252,7 @@ export class DeckBuilderService {
           }
           this.activeLocalDraftId.set(undefined)
           this.validateDeck()
+          this.store.captureBaseline()
         }),
         finalize(() => this.store.setLoading(false)),
       )

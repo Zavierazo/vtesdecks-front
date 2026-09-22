@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing'
 import { TranslocoService } from '@jsverse/transloco'
-import { ApiDeckBuilder } from '@models'
+import { ApiCard, ApiDeck, ApiDeckBuilder } from '@models'
 import { ApiDataService } from '@services'
 import { LibraryQuery } from '../library/library.query'
 import { CollectionApiDataService } from '../../modules/collection/services/collection-api.data.service'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderService } from './deck-builder.service'
-import { DeckBuilderStore } from './deck-builder.store'
+import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { firstValueFrom, of, throwError } from 'rxjs'
 
@@ -18,8 +18,9 @@ describe('Deck builder draft recovery', () => {
   })
 
   function setup(current: ApiDeckBuilder) {
-    let state = current
+    let state: ApiDeckBuilder & { baseline?: ApiCard[] } = current
     const api = {
+      getDeckBuilder: vi.fn(() => of(current)),
       saveDeckBuilder: vi.fn((deck: ApiDeckBuilder) =>
         of({ ...deck, id: 'saved-account-deck' }),
       ),
@@ -30,6 +31,11 @@ describe('Deck builder draft recovery', () => {
         {
           provide: DeckBuilderStore,
           useValue: {
+            captureBaseline() {
+              DeckBuilderStore.prototype.captureBaseline.call(
+                this as unknown as DeckBuilderStore,
+              )
+            },
             getValue: () => state,
             getLoading: () => false,
             setLoading: vi.fn(),
@@ -73,6 +79,81 @@ describe('Deck builder draft recovery', () => {
     return { service, state: () => state, api, collectionApi }
   }
 
+  it('copies cards without retaining mutable quantity references', () => {
+    let state = { cards: [{ id: 100001, number: 4 }] } as DeckBuilderState
+    const store = {
+      update: (update: (current: DeckBuilderState) => DeckBuilderState) => {
+        state = update(state)
+      },
+    } as DeckBuilderStore
+    DeckBuilderStore.prototype.captureBaseline.call(store)
+    const first = state.baseline!
+    expect(first).toEqual(state.cards)
+    expect(first).not.toBe(state.cards)
+    state.cards[0].number = 8
+    expect(first[0].number).toBe(4)
+    DeckBuilderStore.prototype.captureBaseline.call(store)
+    expect(state.baseline?.[0].number).toBe(8)
+  })
+
+  it('retains the account baseline across recovery, history and imports; advances only on success', async () => {
+    const original = {
+      id: 'saved-account-deck',
+      name: 'Deck',
+      cards: [{ id: 100001, number: 4 }],
+    }
+    const { service, state, api } = setup(original)
+    await firstValueFrom(
+      service.init(original.id, undefined as unknown as ApiDeck),
+    )
+    const baseline = state().baseline
+    expect(baseline).toEqual(original.cards)
+    service.restoreFromDraft({ cards: [{ id: 100001, number: 6 }] })
+    expect(state().baseline).toBe(baseline)
+    service.restoreFromHistory([{ id: 100001, number: 2 }])
+    expect(state().baseline).toBe(baseline)
+    await firstValueFrom(
+      service.applyImportedDeck({ cards: [{ id: 100001, number: 8 }] }),
+    )
+    expect(state().baseline).toBe(baseline)
+    api.saveDeckBuilder.mockReturnValueOnce(
+      throwError(() => new Error('offline')),
+    )
+    await expect(firstValueFrom(service.saveDeck('Candidate'))).rejects.toThrow(
+      'offline',
+    )
+    expect(state().baseline).toBe(baseline)
+    await firstValueFrom(service.saveDeck('Candidate'))
+    expect(state().baseline).toEqual([{ id: 100001, number: 8 }])
+    expect(api.saveDeckBuilder.mock.lastCall?.[0].tagLabel).toBe('Candidate')
+    const persisted = service.localDrafts.drafts()
+    expect(JSON.stringify(persisted)).not.toContain('baseline')
+    service.clone()
+    expect(state().baseline).toBeUndefined()
+  })
+
+  it('clears baselines for unsaved drafts and clones and replaces them when switching decks', async () => {
+    const { service, state, api } = setup({
+      id: 'a',
+      cards: [{ id: 100001, number: 4 }],
+    })
+    await firstValueFrom(service.init('a', undefined as unknown as ApiDeck))
+    service.cloneFrom({ cards: [{ id: 100001, number: 3 }] })
+    expect(state().baseline).toBeUndefined()
+    await firstValueFrom(service.saveDeck())
+    expect(state().baseline).toEqual([{ id: 100001, number: 3 }])
+    const draft = service.localDrafts.save('New', { cards: [] })!
+    service.openLocalDraft(draft.id)
+    expect(state().baseline).toBeUndefined()
+    api.getDeckBuilder.mockReturnValueOnce(of({ id: 'b', cards: [] }))
+    await firstValueFrom(service.init('b', undefined as unknown as ApiDeck))
+    expect(state().baseline).toEqual([])
+    await firstValueFrom(
+      service.init(undefined, undefined as unknown as ApiDeck),
+    )
+    expect(state().baseline).toBeUndefined()
+  })
+
   it('sets quantities atomically, preserves metadata and considering cards, and saves once', () => {
     const { service, state } = setup({
       cards: [{ id: 100001, number: 3, type: 'Action' }],
@@ -80,7 +161,9 @@ describe('Deck builder draft recovery', () => {
     Object.assign(TestBed.inject(LibraryQuery), {
       getEntity: () => ({ type: 'Action' }),
     })
-    const save = vi.spyOn(service, 'saveDraft').mockImplementation(() => undefined)
+    const save = vi
+      .spyOn(service, 'saveDraft')
+      .mockImplementation(() => undefined)
     const store = TestBed.inject(DeckBuilderStore)
     service.setCardQuantity(100001, 8)
     expect(state().cards).toEqual([{ id: 100001, number: 8, type: 'Action' }])
@@ -100,7 +183,9 @@ describe('Deck builder draft recovery', () => {
 
   it('does not dirty drafts for invalid or unchanged quantities', () => {
     const { service, state } = setup({ cards: [{ id: 100001, number: 3 }] })
-    const save = vi.spyOn(service, 'saveDraft').mockImplementation(() => undefined)
+    const save = vi
+      .spyOn(service, 'saveDraft')
+      .mockImplementation(() => undefined)
     for (const quantity of [
       -1,
       1.5,

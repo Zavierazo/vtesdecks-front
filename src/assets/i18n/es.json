@@ -285,6 +285,18 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "unsaved_changes": {
+      "show": "Ver cambios",
+      "hide": "Ocultar cambios",
+      "title": "Cambios desde el último guardado",
+      "count": "{{count}} cartas modificadas",
+      "crypt": "Cripta",
+      "library": "Biblioteca",
+      "no_changes": "Sin cambios en las cantidades de cartas",
+      "scope": "No se incluyen los detalles del mazo ni los cambios solo en cartas en consideración.",
+      "no_baseline": "Todavía no hay una versión guardada",
+      "saving": "Guardando mazo…"
+    },
     "header": {
       "deck": "Opciones del mazo",
       "test_output": "Herramientas y exportación"

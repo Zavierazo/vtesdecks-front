@@ -6,6 +6,7 @@
       "Keep your <strong>deck composition visible while adding cards</strong>: on wide screens, the Crypt and Library pickers now include a collapsible deck panel. Use <strong>Show deck / Hide deck</strong> beside the search field to choose your layout.",
       "Edit <strong>card quantities directly in the Deck Builder</strong>: click a quantity in your deck or card picker, type the new number, and press Enter to apply or Escape to cancel. Grid controls and list spacing have also been refined for easier editing.",
       "The <strong>Deck Builder has a cleaner, more compact layout</strong>: saving, visibility and version controls sit together, deck actions are clearly grouped, and the description editor expands as you write. Crypt and Library headers, statistics and spacing now follow the same style.",
+      "Review <strong>unsaved card changes in the Deck Builder</strong>: use <strong>Show changes</strong> beside Save to see quantity changes and before-and-after Crypt and Library totals compared with your last account save. Local draft status now appears beside the save controls.",
       "Minor bug fixes and performance improvements."
     ]
   },

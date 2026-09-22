@@ -1,3 +1,4 @@
+import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component'
 import { Clipboard } from '@angular/cdk/clipboard'
 import { DeckSnapshot } from '../../models/deck-snapshot'
 import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
@@ -100,6 +101,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
   styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    UnsavedChangesComponent,
     ShareDeckComponent,
     TranslocoDirective,
     ReactiveFormsModule,
@@ -165,6 +167,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   tagLabelControl = new FormControl<string>('')
   cryptSearch = signal<string>('')
   librarySearch = signal<string>('')
+  baseline$ = this.deckBuilderQuery.selectBaseline()
+  allCards$ = this.deckBuilderQuery.selectCards()
   deckId$ = this.deckBuilderQuery.selectDeckId()
   cryptList$ = this.deckBuilderQuery.selectCryptFiltered(
     toObservable(this.cryptSearch),

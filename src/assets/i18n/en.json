@@ -285,6 +285,18 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "unsaved_changes": {
+      "show": "Show changes",
+      "hide": "Hide changes",
+      "title": "Changes since last save",
+      "count": "{{count}} cards changed",
+      "crypt": "Crypt",
+      "library": "Library",
+      "no_changes": "No card quantity changes",
+      "scope": "Deck details and considering-only changes are not included.",
+      "no_baseline": "No saved version yet",
+      "saving": "Saving deck…"
+    },
     "header": {
       "deck": "Deck options",
       "test_output": "Tools & output"

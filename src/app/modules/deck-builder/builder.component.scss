@@ -140,6 +140,21 @@
     min-width: 0;
     max-width: 100%;
   }
+  &__save-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.25rem;
+
+    .btn {
+      font-size: 0.75rem;
+    }
+    small {
+      font-size: 0.75rem;
+    }
+  }
   &__version {
     width: 18rem;
     max-width: 100%;

@@ -2,7 +2,7 @@ import { signal } from '@angular/core'
 import { convertToParamMap } from '@angular/router'
 import { ApiCrypt, ApiLibrary } from '@models'
 import { ApiCard } from '@models'
-import { of, Subject } from 'rxjs'
+import { of, Subject, throwError } from 'rxjs'
 import { describe, expect, it, vi } from 'vitest'
 import { BuilderComponent } from './builder.component'
 
@@ -67,4 +67,35 @@ describe('Builder catalog initialization', () => {
     expect(context.initializing()).toBe(false)
     subscription.unsubscribe()
   })
+})
+
+describe('Builder named saves', () => {
+  it.each([true, false])(
+    'preserves the version name unless saving succeeds: %s',
+    (success) => {
+      const reset = vi.fn()
+      const saveDeck = vi.fn(() =>
+        success ? of({}) : throwError(() => new Error('offline')),
+      )
+      const context = Object.assign(Object.create(BuilderComponent.prototype), {
+        deckBuilderQuery: {
+          getSaved: () => false,
+          getName: () => 'Deck',
+          getValidation: () => undefined,
+          getPublished: () => false,
+          getDeckId: () => 'deck',
+        },
+        deckBuilderService: { validateDeck: vi.fn(), saveDeck },
+        tagLabelControl: { value: 'Tournament candidate', reset },
+        toastService: { show: vi.fn() },
+        translocoService: { translate: (key: string) => key },
+        decksService: { reset: vi.fn() },
+        router: { navigate: vi.fn() },
+        onDeckLoaded: vi.fn(),
+      }) as BuilderComponent
+      context.saveDeck()
+      expect(saveDeck).toHaveBeenCalledWith('Tournament candidate')
+      expect(reset).toHaveBeenCalledTimes(success ? 1 : 0)
+    },
+  )
 })

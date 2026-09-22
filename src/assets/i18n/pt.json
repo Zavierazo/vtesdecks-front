@@ -285,6 +285,18 @@
     "close_comparison": "Fechar comparação"
   },
   "deck_builder": {
+    "unsaved_changes": {
+      "show": "Ver alterações",
+      "hide": "Ocultar alterações",
+      "title": "Alterações desde a última gravação",
+      "count": "{{count}} cartas alteradas",
+      "crypt": "Cripta",
+      "library": "Biblioteca",
+      "no_changes": "Nenhuma quantidade de cartas alterada",
+      "scope": "Os detalhes do baralho e as alterações apenas em cartas em consideração não estão incluídos.",
+      "no_baseline": "Ainda não existe uma versão gravada",
+      "saving": "A guardar o baralho…"
+    },
     "header": {
       "deck": "Opções do deck",
       "test_output": "Ferramentas e exportação"

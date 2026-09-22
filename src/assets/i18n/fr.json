@@ -285,6 +285,18 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "unsaved_changes": {
+      "show": "Voir les modifications",
+      "hide": "Masquer les modifications",
+      "title": "Modifications depuis la dernière sauvegarde",
+      "count": "{{count}} cartes modifiées",
+      "crypt": "Crypte",
+      "library": "Bibliothèque",
+      "no_changes": "Aucune quantité de carte modifiée",
+      "scope": "Les détails du deck et les changements concernant uniquement les cartes envisagées ne sont pas inclus.",
+      "no_baseline": "Aucune version sauvegardée pour le moment",
+      "saving": "Sauvegarde du deck…"
+    },
     "header": {
       "deck": "Options du deck",
       "test_output": "Outils et export"
