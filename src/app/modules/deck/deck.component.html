@@ -51,37 +51,48 @@
                   }
                   <div class="deck-header__title-row mb-2">
                     @if (!isSnapshot) {
-                      <button
-                        type="button"
-                        [ngbTooltip]="t('add_to_bookmarks')"
-                        placement="top"
-                        #bookmarkTooltip="ngbTooltip"
-                        (click)="toggleBookmark()"
-                        class="bookmark-toggle"
-                        [class.is-active]="isBookmarked"
-                        [attr.aria-label]="t('add_to_bookmarks')"
-                        aria-describedby="bookmark-count-description"
-                        [attr.aria-pressed]="isBookmarked"
+                      <span
+                        class="d-inline-flex"
+                        [ngbTooltip]="t('cannot_bookmark_own_deck')"
+                        triggers="click"
+                        [disableTooltip]="!deck.owner"
+                        [attr.tabindex]="deck.owner ? 0 : null"
                       >
-                        <i
-                          class="bi bi-fs-1_5x"
-                          aria-hidden="true"
-                          [ngClass]="{
-                            'bi-bookmark-star': !isBookmarked,
-                            'bi-bookmark-star-fill': isBookmarked,
-                          }"
-                        ></i>
-                        <span class="bookmark-count" aria-hidden="true">{{
-                          bookmarkCount
-                        }}</span>
-                        <span
-                          id="bookmark-count-description"
-                          class="visually-hidden"
-                          >{{
-                            t('bookmark_count', { count: bookmarkCount })
-                          }}</span
+                        <button
+                          type="button"
+                          [ngbTooltip]="t('add_to_bookmarks')"
+                          placement="top"
+                          #bookmarkTooltip="ngbTooltip"
+                          (click)="toggleBookmark()"
+                          [disabled]="deck.owner ?? false"
+                          [class.pe-none]="deck.owner"
+                          [disableTooltip]="deck.owner ?? false"
+                          class="bookmark-toggle"
+                          [class.is-active]="isBookmarked"
+                          [attr.aria-label]="t('add_to_bookmarks')"
+                          aria-describedby="bookmark-count-description"
+                          [attr.aria-pressed]="isBookmarked"
                         >
-                      </button>
+                          <i
+                            class="bi bi-fs-1_5x"
+                            aria-hidden="true"
+                            [ngClass]="{
+                              'bi-bookmark-star': !isBookmarked,
+                              'bi-bookmark-star-fill': isBookmarked,
+                            }"
+                          ></i>
+                          <span class="bookmark-count" aria-hidden="true">{{
+                            bookmarkCount
+                          }}</span>
+                          <span
+                            id="bookmark-count-description"
+                            class="visually-hidden"
+                            >{{
+                              t('bookmark_count', { count: bookmarkCount })
+                            }}</span
+                          >
+                        </button>
+                      </span>
                     }
                     <h1 class="deck-title mb-0">
                       {{ deck.name || ('snapshot.untitled' | transloco) }}
@@ -329,13 +340,14 @@
                             </ng-template>
                             <ngb-rating
                               [ngbTooltip]="t('rate_deck')"
+                              [disableTooltip]="deck.owner ?? false"
                               placement="bottom"
                               #ratingTooltip="ngbTooltip"
                               [rate]="deck.rate ?? 0"
                               [starTemplate]="starTemplate"
                               [readonly]="
                                 !(isAuthenticated$ | async)! ||
-                                (userDisplayName$ | async) === deck.author
+                                (deck.owner ?? false)
                               "
                               [max]="5"
                               (rateChange)="rateDeck($event)"
@@ -591,6 +603,7 @@
                       targetType="deck"
                       [targetId]="deck.id"
                       [reactions]="deck.reactions"
+                      [readonly]="deck.owner ?? false"
                       display="full"
                     />
                   </div>

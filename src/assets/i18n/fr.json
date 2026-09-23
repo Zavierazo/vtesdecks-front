@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Ajouter aux favoris",
+    "cannot_bookmark_own_deck": "Vous ne pouvez pas ajouter vos propres decks aux favoris",
     "bookmark_count": "Personnes ayant ajouté ce deck aux favoris : {{ count }}",
     "created_by": "Créé par",
     "tournament": "Tournoi",
@@ -772,6 +773,7 @@
     "hundred": "Tout à fait",
     "add_reaction": "Ajouter une réaction",
     "login_required": "Connectez-vous pour réagir",
+    "cannot_react_own_deck": "Vous ne pouvez pas réagir à vos propres decks",
     "error": "Impossible d'enregistrer votre réaction. Veuillez réessayer."
   },
   "reset_password": {

@@ -40,6 +40,7 @@ describe('DeckComponent view tracking', () => {
   ) {
     const deckView = vi.fn(() => of(true))
     const bookmarkDeck = vi.fn(() => bookmarkResult)
+    const rateDeck = vi.fn(() => of(true))
     const markVisited = vi.fn()
     const detectChanges = vi.fn()
     const navigateByUrl = vi.fn()
@@ -103,7 +104,10 @@ describe('DeckComponent view tracking', () => {
         },
         { provide: AuthService, useValue: {} },
         { provide: ToastService, useValue: { show: vi.fn() } },
-        { provide: ApiDataService, useValue: { deckView, bookmarkDeck } },
+        {
+          provide: ApiDataService,
+          useValue: { deckView, bookmarkDeck, rateDeck },
+        },
         { provide: ChangeDetectorRef, useValue: { detectChanges } },
         {
           provide: PreviousRouteService,
@@ -132,6 +136,7 @@ describe('DeckComponent view tracking', () => {
       component,
       deckView,
       bookmarkDeck,
+      rateDeck,
       markVisited,
       detectChanges,
       navigateByUrl,
@@ -261,6 +266,31 @@ describe('DeckComponent view tracking', () => {
     vi.advanceTimersByTime(1)
     expect(deckView).toHaveBeenCalledWith('regular-deck', '/previous')
     expect(markVisited).toHaveBeenCalledWith('regular-deck')
+  })
+
+  it('blocks rating and bookmark changes for owned decks, including saved bookmarks', () => {
+    const { component, bookmarkDeck, rateDeck } = setup({
+      id: 'owned',
+      owner: true,
+    } as ApiDeck)
+    component.bookmarkCount = 3
+    component.rateDeck(5)
+    component.toggleBookmark()
+    component.isBookmarked = true
+    component.toggleBookmark()
+    expect(rateDeck).not.toHaveBeenCalled()
+    expect(bookmarkDeck).not.toHaveBeenCalled()
+    expect(component.isBookmarked).toBe(true)
+    expect(component.bookmarkCount).toBe(3)
+  })
+
+  it('allows rating another user’s deck', () => {
+    const { component, rateDeck } = setup({
+      id: 'other',
+      owner: false,
+    } as ApiDeck)
+    component.rateDeck(4)
+    expect(rateDeck).toHaveBeenCalledWith('other', 4)
   })
 
   it('increments the count after bookmarking succeeds', () => {

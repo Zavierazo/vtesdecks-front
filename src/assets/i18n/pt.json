@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Adicionar aos favoritos",
+    "cannot_bookmark_own_deck": "Não pode adicionar os seus próprios baralhos aos favoritos",
     "bookmark_count": "Pessoas que adicionaram este baralho aos favoritos: {{ count }}",
     "created_by": "Criado por",
     "tournament": "Torneio",
@@ -772,6 +773,7 @@
     "hundred": "Na mosca",
     "add_reaction": "Adicionar reação",
     "login_required": "Faça login para reagir",
+    "cannot_react_own_deck": "Não pode reagir aos seus próprios baralhos",
     "error": "Não foi possível salvar sua reação. Tente novamente."
   },
   "reset_password": {

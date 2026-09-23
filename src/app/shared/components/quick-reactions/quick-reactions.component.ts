@@ -62,6 +62,7 @@ export class QuickReactionsComponent {
   targetId = input.required<string | number>()
   reactions = input<ApiReactionSummary[]>()
   display = input<'full' | 'compact'>('compact')
+  readonly = input(false)
 
   isAuthenticated$ = this.authQuery.selectAuthenticated()
 
@@ -98,6 +99,9 @@ export class QuickReactionsComponent {
 
   toggle(reaction: ReactionKey, popover?: NgbPopover): void {
     popover?.close()
+    if (this.readonly()) {
+      return
+    }
     if (!this.authQuery.isAuthenticated()) {
       this.modalService.open(LoginComponent)
       return

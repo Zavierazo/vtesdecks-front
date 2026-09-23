@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Add to Bookmarks",
+    "cannot_bookmark_own_deck": "You can't bookmark your own decks",
     "bookmark_count": "People who bookmarked this deck: {{ count }}",
     "created_by": "Created by",
     "tournament": "Tournament",
@@ -772,6 +773,7 @@
     "hundred": "Spot on",
     "add_reaction": "Add reaction",
     "login_required": "Log in to react",
+    "cannot_react_own_deck": "You can't react to your own decks",
     "error": "Could not save your reaction. Please try again."
   },
   "reset_password": {

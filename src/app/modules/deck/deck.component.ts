@@ -215,8 +215,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isAuthenticated$!: Observable<boolean>
 
-  userDisplayName$!: Observable<string | undefined>
-
   deck$!: Observable<ApiDeck | undefined>
 
   similarDecks$!: Observable<ApiDecks>
@@ -263,7 +261,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ? this.snapshotLoading.asObservable()
       : this.deckQuery.selectLoading()
     this.isAuthenticated$ = this.authQuery.selectAuthenticated()
-    this.userDisplayName$ = this.authQuery.selectDisplayName()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.isAdmin$ = this.authQuery.selectAdmin()
@@ -385,7 +382,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('bookmarkTooltip') set favoriteTooltip(tooltip: NgbTooltip) {
-    if (this.isBookmarked || !tooltip || !this.authQuery.isAuthenticated()) {
+    if (
+      this.currentDeck?.owner ||
+      this.isBookmarked ||
+      !tooltip ||
+      !this.authQuery.isAuthenticated()
+    ) {
       return
     }
     tooltip.open()
@@ -393,7 +395,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('ratingTooltip') set ratingTooltip(tooltip: NgbTooltip) {
-    if (this.isRated || !tooltip || !this.authQuery.isAuthenticated()) {
+    if (
+      this.currentDeck?.owner ||
+      this.isRated ||
+      !tooltip ||
+      !this.authQuery.isAuthenticated()
+    ) {
       return
     }
     tooltip.open()
@@ -401,7 +408,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   rateDeck(rating: number) {
-    if (this.isSnapshot) {
+    if (this.isSnapshot || this.currentDeck?.owner) {
       return
     }
     this.apiDataService
@@ -422,7 +429,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   toggleBookmark() {
-    if (this.isSnapshot) {
+    if (this.isSnapshot || this.currentDeck?.owner) {
       return
     }
     const bookmark = !this.isBookmarked
