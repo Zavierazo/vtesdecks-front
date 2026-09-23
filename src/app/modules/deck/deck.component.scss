@@ -80,7 +80,7 @@
 .deck-stats-panel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: 26rem;
+  width: 22rem;
   max-width: 100%;
   align-items: stretch;
   gap: 0.75rem;
@@ -121,15 +121,19 @@
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
-  min-height: 6.5rem;
   justify-content: center;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--bs-border-color);
   border-radius: 0.5rem;
   background: var(--app-surface-2);
 
   &--views &__body {
     align-items: center;
+    text-align: center;
+  }
+
+  &--rating &__body {
+    width: 100%;
     text-align: center;
   }
 
@@ -141,7 +145,7 @@
   }
 
   &__value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
   }
 
@@ -161,6 +165,8 @@
 
   ngb-rating {
     display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
     gap: 0.1875rem;
   }
 
@@ -182,14 +188,33 @@
 @media (max-width: 575.98px) {
   .deck-stats-panel {
     width: 100%;
-    grid-template-columns: minmax(0, 1fr);
+    gap: 0.375rem;
+  }
+
+  .deck-stat {
+    min-height: 0;
+    padding: 0.5rem;
+
+    &__value {
+      font-size: 1.5rem;
+    }
+
+    &__heading {
+      font-size: 0.8125rem;
+    }
+
+    &__label {
+      font-size: 0.75rem;
+    }
   }
 }
 
 .star {
   position: relative;
   display: inline-block;
+  text-align: left;
   font-size: 2rem;
+  line-height: 1.375;
   color: var(--bs-secondary-color);
 }
 
@@ -283,6 +308,7 @@ app-deck-card {
 
 @media (max-width: 399.98px) {
   .deck-stats-panel {
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.375rem;
   }
 
