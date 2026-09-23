@@ -2,6 +2,7 @@
 <!-- eslint-disable-next-line -->
 <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
   [class.compact-card]="compact"
+    [class.mobile-editable-card]="withControls && editableQuantity && !compact"
   [class.card-art-row]="background"
   [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
   [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
@@ -67,8 +68,8 @@
     </span>
   </div>
   } @else {
-  <div class="row align-items-center">
-    <div class="col-6">
+  <div class="row align-items-center quantity-card-layout">
+    <div class="col-6 quantity-card-main">
       <div class="row" [class.quantity-edit-row]="withControls && editableQuantity">
         @if(withControls && (card.number || maxNumber || withDelete)){
         <div class="col-auto">
@@ -98,7 +99,7 @@
           <i class="btn-icon bi bi-plus-square bi-fs-1_5x" aria-hidden="true" (click)="addCard($event)"></i>
         </div>
         }
-        <div class="col-9 align-items-center">
+        <div class="col-9 align-items-center quantity-card-name">
           @if(card.collection){
           <div class="float-start me-1">
             <app-collection-card-tracker [card]="card" />
@@ -138,7 +139,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6 lh-1">
+    <div class="col-6 lh-1 quantity-card-details">
       <div class="row">
         <div class="col-12">
           @for(discipline of crypt.disciplineIcons; track discipline){

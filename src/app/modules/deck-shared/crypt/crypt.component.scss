@@ -30,3 +30,41 @@
 .quantity-edit-row {
   --bs-gutter-x: 1rem;
 }
+
+@media (max-width: 575.98px) {
+  .mobile-editable-card {
+    .quantity-card-layout {
+      display: grid;
+      grid-template-columns: auto auto auto minmax(0, 1fr);
+      gap: 0.125rem 0.25rem;
+      margin: 0;
+    }
+
+    .quantity-card-main,
+    .quantity-edit-row {
+      display: contents;
+    }
+
+    .quantity-edit-row > .col-auto {
+      grid-row: 1 / span 2;
+      padding: 0;
+    }
+
+    .quantity-card-name,
+    .quantity-card-details {
+      grid-column: 4;
+      width: auto;
+      min-width: 0;
+      padding: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .quantity-card-name {
+      grid-row: 1;
+    }
+
+    .quantity-card-details {
+      grid-row: 2;
+    }
+  }
+}

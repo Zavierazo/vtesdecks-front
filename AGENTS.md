@@ -111,7 +111,7 @@ The builder keeps an session-only `baseline` containing a copied list of cards f
 
 ### Card quantities
 
-Deck and picker quantities use `CardQuantityComponent` to display a number until clicked, then an inline editor. List quantities keep their existing placement without a colored background. Grid editing uses neutral minus and plus buttons around the clickable quantity. Direct edits commit on Enter or blur, cancel on Escape, and accept nonnegative safe integers. Updates go through `DeckBuilderService.setCardQuantity` for validation and draft saving. Zero retains an existing considering card. Shared card displays opt in explicitly.
+Deck and picker quantities use `CardQuantityComponent` to display a number until clicked, then an inline editor. List quantities keep their existing placement without a colored background. Grid editing uses neutral minus and plus buttons around the clickable quantity. Direct edits commit on Enter or blur, cancel on Escape, and accept nonnegative safe integers. Updates go through `DeckBuilderService.setCardQuantity` for validation and draft saving. Zero retains an existing considering card. Shared card displays opt in explicitly. On phones, editable Crypt and Library list rows use tighter gutters; Crypt places card details below the name alongside the quantity controls, preserving full names and metadata.
 
 ### Card-picker deck panel
 

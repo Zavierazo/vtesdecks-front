@@ -54,3 +54,30 @@
   height: 20px;
   background-size: contain;
 }
+
+// Editable phone lists opt in separately from the wide picker panel.
+@media (max-width: 575.98px) {
+  .mobile-editable-card {
+    padding: 0.375rem 0.5rem;
+
+    .quantity-edit-row {
+      --bs-gutter-x: 0.25rem;
+      align-items: center;
+    }
+
+    .quantity-edit-row > .col-auto {
+      min-width: 2rem;
+      text-align: center;
+    }
+
+    .editable-quantity {
+      justify-content: center;
+      min-height: 2rem;
+    }
+
+    .quantity-edit-row > .col {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+}

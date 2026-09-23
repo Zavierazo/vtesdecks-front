@@ -3,6 +3,7 @@
   <!-- eslint-disable-next-line -->
   <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover"
     [class.compact-card]="compact"
+    [class.mobile-editable-card]="withControls && editableQuantity && !compact"
     [class.card-art-row]="background"
   [class.spoiler-new-card]="library.unreleased && isNewSpoiler(library.lastUpdate)" [disablePopover]="disablePopover" [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
     (click)="disableClickPopover ? popover.close() :popover.open()" [autoClose]="withControls && (isMobile$ | async)!">
