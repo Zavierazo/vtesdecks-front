@@ -1,3 +1,4 @@
+import { compareCardQuantities } from '../../../utils/deck-card-diff'
 import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -84,60 +85,27 @@ export class DeckComparisonComponent {
 
   calculateDiffs(isCrypt: boolean): CardDiff[] {
     const compDeck = this.comparisonDeck()
-    if (!compDeck) return []
-
-    const currentCards = isCrypt
-      ? this.currentDeck().crypt || []
-      : this.currentDeck().library || []
-    const comparisonCards = isCrypt
-      ? compDeck.crypt || []
-      : compDeck.library || []
-
-    const diffs: CardDiff[] = []
-    const processedIds = new Set<number>()
-
-    // Check current deck cards
-    for (const card of currentCards) {
-      processedIds.add(card.id)
-
-      const compCard = comparisonCards.find((c) => c.id === card.id)
-      const compQuantity = compCard?.number ?? 0
-      const difference = card.number - compQuantity
-
-      if (difference !== 0) {
-        const cardInfo = isCrypt
-          ? this.cryptQuery.getEntity(card.id)
-          : this.libraryQuery.getEntity(card.id)
-
-        diffs.push({
-          id: card.id,
-          name: cardInfo?.name ?? '',
-          currentQuantity: card.number,
-          comparisonQuantity: compQuantity,
-          difference,
-        })
-      }
+    if (!compDeck) {
+      return []
     }
-
-    // Check for cards only in comparison deck
-    for (const card of comparisonCards) {
-      const cardId = card.id
-      if (!processedIds.has(cardId)) {
-        const cardInfo = isCrypt
-          ? this.cryptQuery.getEntity(card.id)
-          : this.libraryQuery.getEntity(card.id)
-
-        diffs.push({
-          id: cardId,
-          name: cardInfo?.name ?? '',
-          currentQuantity: 0,
-          comparisonQuantity: card.number,
-          difference: -card.number,
-        })
-      }
-    }
-
-    return diffs.sort((a, b) => Math.abs(b.difference) - Math.abs(a.difference))
+    const currentCards =
+      (isCrypt ? this.currentDeck().crypt : this.currentDeck().library) ?? []
+    const comparisonCards = (isCrypt ? compDeck.crypt : compDeck.library) ?? []
+    return compareCardQuantities(comparisonCards, currentCards)
+      .map((delta) => ({
+        ...delta,
+        comparisonQuantity: delta.previousQuantity,
+        name:
+          (isCrypt
+            ? this.cryptQuery.getEntity(delta.id)
+            : this.libraryQuery.getEntity(delta.id)
+          )?.name ?? String(delta.id),
+      }))
+      .sort(
+        (a, b) =>
+          Math.abs(b.difference) - Math.abs(a.difference) ||
+          a.name.localeCompare(b.name),
+      )
   }
 
   getCard(cardId: string, isCrypt: boolean) {

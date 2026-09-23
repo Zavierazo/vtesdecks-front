@@ -9,6 +9,10 @@ import { FeatureFlagState, FeatureFlagStore } from './feature-flag.store'
 export class FeatureFlagQuery {
   private readonly store = inject(FeatureFlagStore)
 
+  selectSnapshot(): Observable<FeatureFlagState> {
+    return this.store.select((state: FeatureFlagState) => state)
+  }
+
   selectAll(): Observable<ApiFeatureFlag[]> {
     return this.store.select((state: FeatureFlagState) =>
       Object.values(state.flags),

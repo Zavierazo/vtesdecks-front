@@ -1,3 +1,4 @@
+import { CardQuantityComponent } from '../card-quantity/card-quantity.component'
 import { ConnectivityService } from '../../../services/connectivity.service'
 import { AsyncPipe } from '@angular/common'
 import {
@@ -32,6 +33,7 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   styleUrls: ['./library-grid-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CardQuantityComponent,
     AsyncPipe,
     CardImagePipe,
     LazyLoadImageModule,
@@ -53,6 +55,9 @@ export class LibraryGridCardComponent implements OnInit {
   withControls = input<boolean>(false)
   withDelete = input<boolean>(false)
   recommended = input<ApiArchetypeKeyCard | undefined>(undefined)
+  readonly editableQuantity = input(false)
+  readonly cardQuantityChanged = output<{ id: number; quantity: number }>()
+
   readonly cardAdded = output<number>()
   readonly cardRemoved = output<number>()
 

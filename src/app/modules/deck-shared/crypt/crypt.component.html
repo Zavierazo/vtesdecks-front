@@ -1,14 +1,14 @@
 @if(crypt$ | async; as crypt){
 <!-- eslint-disable-next-line -->
 <a class="list-group-item list-group-item-action disable-select" #popover="ngbPopover" [disablePopover]="disablePopover"
+  [class.compact-card]="compact"
+  [class.card-art-row]="background"
   [class.spoiler-new-card]="crypt.unreleased && isNewSpoiler(crypt.lastUpdate)"
   [ngbPopover]="imgPopover" triggers="mouseenter:mouseleave" container="body"
-  (click)="disableClickPopover ? popover.close() : popover.open()" [ngStyle]="background && {
-    background: 'url('+ cdnDomain + crypt.cropImage + ') scroll',
-    'background-repeat': 'no-repeat',
-    'background-position': 'right 33%',
-    'background-size': '50%'
-  } || null" [autoClose]="withControls && (isMobile$ | async)!">
+  (click)="disableClickPopover ? popover.close() : popover.open()" [autoClose]="withControls && (isMobile$ | async)!">
+  @if (background) {
+    <app-card-art-background [cardId]="crypt.id" type="crypt" />
+  }
   <ng-template #imgPopover>
     <img #image [ngClass]="{
         'img-popover': !(isMobile$ | async)!,
@@ -33,9 +33,43 @@
     <app-collection-card-mini-stats [card]="card" />
     }
   </ng-template>
+  @if (compact) {
+  <div class="compact-row">
+    @if (withControls) {
+    <button type="button" class="btn btn-icon compact-control" (mouseup)="$event.stopPropagation()" [attr.aria-label]="'deck_builder.composition.remove' | transloco: { name: crypt.name }"
+      (click)="$event.stopPropagation(); removeCard($event)">
+      <i class="bi" [ngClass]="card.number > 0 ? 'bi-dash-square' : 'bi-x-square'" aria-hidden="true"></i>
+    </button>
+    }
+    <span class="deck_number">@if (withControls && editableQuantity) {
+          <app-card-quantity [quantity]="card.number" [name]="crypt.i18n?.name || crypt.name"
+            (quantityChanged)="cardQuantityChanged.emit({ id: card.id, quantity: $event })" />
+          } @else { {{ card.number }} }</span>
+    @if (withControls) {
+    <button type="button" class="btn btn-icon compact-control" (mouseup)="$event.stopPropagation()" [attr.aria-label]="'deck_builder.composition.add' | transloco: { name: crypt.name }"
+      (click)="$event.stopPropagation(); addCard($event)">
+      <i class="bi bi-plus-square" aria-hidden="true"></i>
+    </button>
+    }
+    <span class="badge rounded-pill bg-danger compact-capacity">{{ crypt.capacity }}</span>
+    <i class="vtes compact-icon" [ngClass]="crypt.clanIcon" aria-hidden="true"></i>
+    <button type="button" class="btn compact-name" (mouseup)="$event.stopPropagation()" [title]="crypt.i18n?.name || crypt.name"
+      (click)="$event.stopPropagation(); popover.open()">
+      {{ crypt.i18n?.name || crypt.name }}
+    </button>
+    @if (recommended) {
+      <app-recommended-badge [recommended]="recommended" [current]="card.number" />
+    }
+    <span class="compact-disciplines">
+      @for (discipline of crypt.disciplineIcons; track discipline) {
+      <i class="vtes" [ngClass]="discipline" role="img" [attr.aria-label]="discipline" [title]="discipline"></i>
+      }
+    </span>
+  </div>
+  } @else {
   <div class="row align-items-center">
     <div class="col-6">
-      <div class="row">
+      <div class="row" [class.quantity-edit-row]="withControls && editableQuantity">
         @if(withControls && (card.number || maxNumber || withDelete)){
         <div class="col-auto">
           <i class="btn-icon bi bi-fs-1_5x" [ngClass]="{
@@ -45,11 +79,14 @@
         </div>
         }
         @if(!withDrawProbability && (card.number || maxNumber || withDelete)){
-        <div class="col-auto bg-primary-subtle deck_number h-100" [ngClass]="{
-          'mt-2': withControls
+        <div class="col-auto deck_number" [class.h-100]="!editableQuantity" [class.editable-quantity]="editableQuantity" [ngClass]="{
+          'mt-2': withControls && !editableQuantity
         }">
           @if(card.number || maxNumber){
-          {{ card.number }}
+          @if (withControls && editableQuantity) {
+          <app-card-quantity [quantity]="card.number" [name]="crypt.i18n?.name || crypt.name"
+            (quantityChanged)="cardQuantityChanged.emit({ id: card.id, quantity: $event })" />
+          } @else { {{ card.number }} }
           }
           @if(maxNumber){
           /
@@ -133,6 +170,7 @@
       </div>
     </div>
   </div>
+}
 </a>
 } @else {
 <div class="list-group-item list-group-item-action">

@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Ajouter aux favoris",
+    "cannot_bookmark_own_deck": "Vous ne pouvez pas ajouter vos propres decks aux favoris",
     "bookmark_count": "Personnes ayant ajouté ce deck aux favoris : {{ count }}",
     "created_by": "Créé par",
     "tournament": "Tournoi",
@@ -233,6 +234,10 @@
     "twda": "Tournament Winning Deck Archive",
     "price": "Prix",
     "views": "Vues",
+    "your_rating": "Votre note : {{ score }} / 5",
+    "rating_average": "{{ score }} / 5",
+    "rating_action": "Notez ce deck",
+    "rating_label": "Note de la communauté",
     "rate_deck": "Prenez une seconde pour noter ce deck !",
     "votes": "{{ count }} votes",
     "comments": "Commentaires",
@@ -285,6 +290,34 @@
     "close_comparison": "Fermer la comparaison"
   },
   "deck_builder": {
+    "picker_no_results": "Aucune carte ne correspond à votre recherche et aux filtres. Retirez un filtre ou essayez une autre recherche.",
+    "unsaved_changes": {
+      "show": "Voir les modifications",
+      "hide": "Masquer les modifications",
+      "title": "Modifications depuis la dernière sauvegarde",
+      "count": "{{count}} cartes modifiées",
+      "crypt": "Crypte",
+      "library": "Bibliothèque",
+      "no_changes": "Aucune quantité de carte modifiée",
+      "scope": "Les détails du deck et les changements concernant uniquement les cartes envisagées ne sont pas inclus.",
+      "no_baseline": "Aucune version sauvegardée pour le moment",
+      "saving": "Sauvegarde du deck…"
+    },
+    "header": {
+      "deck": "Options du deck",
+      "test_output": "Outils et export"
+    },
+    "quantity_label": "Quantité de {{name}}",
+    "quantity_hint": "Saisissez un nombre entier. Entrée pour appliquer ; Échap pour annuler.",
+    "composition": {
+      "title": "Composition du deck",
+      "show_deck": "Afficher le deck",
+      "hide_deck": "Masquer le deck",
+      "empty": "Aucune carte pour le moment",
+      "unknown_type": "Type inconnu",
+      "add": "Ajouter un exemplaire de {{name}}",
+      "remove": "Retirer un exemplaire de {{name}}"
+    },
     "deck_not_exists": "Le deck n'existe pas. Veuillez réessayer plus tard.",
     "already_saved": "Deck déjà enregistré !",
     "name_required": "Le nom du deck est requis",
@@ -321,7 +354,7 @@
     "export": "Exporter",
     "clipboard": "Presse-papiers",
     "file": "Fichier",
-    "limited_format": "Format Limité",
+    "limited_format": "Limité",
     "deck_copied": "Deck copié dans le presse-papiers",
     "collection_tracker": "Suivi de collection",
     "validation_errors": "{{errors}}",
@@ -335,7 +368,7 @@
     "show_more_suggestions": "Afficher {{ count }} de plus",
     "show_less_suggestions": "Afficher moins",
     "history": "Historique",
-    "tag_version_placeholder": "Étiqueter cette version…",
+    "tag_version_placeholder": "Version (facultative)",
     "search_in_crypt": "Rechercher dans la crypte…",
     "search_in_library": "Rechercher dans la bibliothèque…",
     "export_error": "Échec de l'export. Veuillez réessayer.",
@@ -744,6 +777,7 @@
     "hundred": "Tout à fait",
     "add_reaction": "Ajouter une réaction",
     "login_required": "Connectez-vous pour réagir",
+    "cannot_react_own_deck": "Vous ne pouvez pas réagir à vos propres decks",
     "error": "Impossible d'enregistrer votre réaction. Veuillez réessayer."
   },
   "reset_password": {
@@ -1524,7 +1558,7 @@
     "view_wishlist": "Voir la liste de souhaits",
     "add_card": "Ajouter une carte",
     "add_to_wishlist": "Ajouter à la liste de souhaits",
-    "add_missing_to_wishlist": "Ajouter les manquantes aux souhaits",
+    "add_missing_to_wishlist": "Ajouter manquantes",
     "missing_modal_title": "Ajouter les cartes manquantes à la liste de souhaits",
     "missing_modal_description": "Il vous manque {{ count }} cartes de votre collection pour compléter ce deck. Elles seront ajoutées à votre liste de souhaits.",
     "missing_quantity": "Manquantes",
@@ -1612,7 +1646,7 @@
     "camera_error": "Impossible de démarrer la caméra. Vérifiez votre appareil et réessayez."
   },
   "shopping_optimizer": {
-    "button": "Comment acheter",
+    "button": "Acheter",
     "title": "La meilleure façon d'acheter ces cartes",
     "error": "Impossible de calculer les prix. Veuillez réessayer.",
     "retry": "Réessayer",

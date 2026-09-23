@@ -1,4 +1,5 @@
-import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
+import { CardQuantityComponent } from '../card-quantity/card-quantity.component'
+import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,6 +24,7 @@ import { environment } from '@environments/environment'
 import { CollectionCardMiniStatsComponent } from '../collection-card-mini-stats/collection-card-mini-stats.component'
 import { CollectionCardTrackerComponent } from '../collection-card-tracker/collection-card-tracker.component'
 import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badge.component'
+import { CardArtBackgroundComponent } from '../card-art-background/card-art-background.component'
 
 @UntilDestroy()
 @Component({
@@ -31,8 +33,9 @@ import { RecommendedBadgeComponent } from '../recommended-badge/recommended-badg
   styleUrls: ['./crypt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CardQuantityComponent,
     NgbPopover,
-    NgStyle,
+    CardArtBackgroundComponent,
     NgClass,
     NgxSkeletonLoaderComponent,
     AsyncPipe,
@@ -55,6 +58,8 @@ export class CryptComponent implements OnInit {
 
   @Input() withDrawProbability = false
 
+  @Input() compact = false
+
   @Input() withControls = false
 
   @Input() withDelete = false
@@ -72,6 +77,9 @@ export class CryptComponent implements OnInit {
   @Input() setAbbrev?: string
 
   @Input() recommended?: ApiArchetypeKeyCard
+
+  @Input() editableQuantity = false
+  readonly cardQuantityChanged = output<{ id: number; quantity: number }>()
 
   readonly cardAdded = output<number>()
 

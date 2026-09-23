@@ -11,6 +11,8 @@
 }
 
 .draw-probability-badge {
+  max-width: var(--draw-probability-max-width, none);
+  white-space: var(--draw-probability-white-space, nowrap);
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s linear;
@@ -38,4 +40,25 @@
   outline: var(--app-spoiler-new-width, 2px) solid
     var(--app-spoiler-new, #f6d365);
   outline-offset: 1px;
+}
+
+.grid-quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+
+  .btn {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  app-card-quantity {
+    min-width: 2.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
 }

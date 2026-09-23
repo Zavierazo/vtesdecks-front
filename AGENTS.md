@@ -75,6 +75,10 @@ State domains: `auth`, `crypt`, `library`, `deck`, `deck-builder`, `deck-view`, 
 - `CanActivateUser` — redirects unauthenticated users, opens login modal
 - `CanDeactivateComponent` — unsaved-changes confirmation
 
+### Advertising
+
+The home sponsor slot resolves feature flags from one snapshot and waits for country lookup completion when targeting requires it before rendering custom advertising or its AdSense fallback. Pending decisions render no ad. Country readiness is session-only. This selection is local to the main home slot; the shared AdSense script loading and initialization remain independent of it.
+
 ### Push Notifications
 
 `PushNotificationService` owns the browser subscription lifecycle, permission state, per-browser account ownership, and backend synchronization. Push is offered from the notification offcanvas and uses the Angular service worker; the authenticated API under `/user/notifications/push` stores one subscription per browser/device.
@@ -92,6 +96,33 @@ Crypt and Library shop filters use the fixed platform catalog in `card-shops.ts`
 ### Offline card browsing
 
 Crypt, Library and sets restore from IndexedDB before background refresh. Catalog data and locale/version metadata are committed atomically. Card catalog refreshes retain the current catalog while loading, then atomically replace it with the complete backend response, removing IDs no longer returned. Deck Builder initialization waits for both catalog refreshes to complete before validation; unavailable card metadata produces a validation error without discarding deck entries. Catalog updates are automatic, without settings controls. An offline section in authenticated `/user/settings` manages optional card-image downloads on this device; images use dedicated Cache Storage and IndexedDB metadata, with normal browser/CDN HTTP caching and decoded-image validation before replacement. Image fetches use the default cache mode so cache headers and CDN invalidation control freshness. CardImagePipe returns a URL string synchronously and owns one image subscription per view, replacing it only when the resolved card URL changes and releasing it on destruction. Views check Cache Storage first with a bounded read and image-decode validation. Cached copies stay stable on screen while viewed images are refreshed in the background once per application visit when online, including after reconnecting. Successful refreshes are reused for the rest of that visit; failures retain the cached copy and may retry on a later view. Updated images appear when a new view loads them. Cache misses, corrupt images, or unavailable storage fall back to the CDN URL online and save a validated copy in the background. Offline views may use the cached original printing or the card back. OfflineImagesService owns blob lifetimes through Observable teardown, without a global active-view registry. Explicit image updates remain available in offline settings. Angular's service worker owns app assets only. The shell shows a red connectivity banner while offline and a brief green confirmation only after reconnecting. Offline-only card notices must not appear during online loading. Connectivity distinguishes missing network from server failures; network-dependent filters are hidden and inactive offline while retaining their URL values for reconnection. Account data and server-saved deck loading remain online-only; new decks use automatic local drafts. Business API calls remain in ApiDataService; CDN requests belong to OfflineImagesService. Storage failures must be visible.
+
+### Builder editing header
+
+The builder has a non-sticky editing header with the name and compact save controls sharing a row when space permits, followed by an always-visible Markdown description editor and grouped actions. Draft status and a small Show changes link sit beneath Save within the compact save area, aligned as a group with the name input. Comparison totals and details appear below the primary row only when expanded. The builder sets --markdown-editor-min-height for a shorter empty, unfocused editor; focus or existing content restores the standard minimum height, and the shared Markdown editor continues to grow with content. Import, Export and Share retain their specific menus. The optional version-label input and Save button share an aligned input group; visibility sits beside it within one compact save area. Header action buttons use the blue primary palette, except Delete, which uses the danger palette. Existing save, draft, sharing and action eligibility contracts remain unchanged.
+
+### Shared deck presentation
+
+The builder and read-only deck page share compact header, grouped-action and Crypt/Library presentation rules through `deck-shared/_deck-presentation.scss`. Keep these rules scoped to the two components. The deck page uses Deck, Test & output and Collection action groups, with existing permission checks; its rendered Markdown description remains fully visible below the non-sticky header. The bookmark sits beside the title; views and ratings use equally sized statistic tiles with a prominent views count; mobile uses reduced padding and typography with no minimum height, keeping both tiles side by side from 400px and stacking them below 400px. Eligible voters see a persistent rating invitation above the directly editable hearts; read-only ratings use a community-rating label. After a successful vote, the hearts retain the selected personal score and its label appears alongside the server-refreshed community count and average. The API does not expose the prior individual score, so personal scores are only shown for successful votes in the current view. Featured author achievements use a quiet icon-and-value row, and deck warnings and errata use bordered notices with an amber accent. The Similar Decks section is omitted when no matching decks are returned. Compact Share buttons match the other header actions while retaining square inner split-button corners. Snapshots reuse this presentation while retaining their restricted actions.
+
+### Unsaved deck comparison
+
+The builder keeps an session-only `baseline` containing a copied list of cards from the account load or last successful save. Draft/history restoration and imports into an existing deck retain that baseline; new decks and clones reset it. The inline comparison ignores metadata and considering-only changes and uses the shared quantity-difference utility. Only card quantities are compared. Baselines are never persisted in local drafts. Builder editing is disabled while an account save is pending.
+
+### Card quantities
+
+Deck and picker quantities use `CardQuantityComponent` to display a number until clicked, then an inline editor. List quantities keep their existing placement without a colored background. Grid editing uses neutral minus and plus buttons around the clickable quantity. Direct edits commit on Enter or blur, cancel on Escape, and accept nonnegative safe integers. Updates go through `DeckBuilderService.setCardQuantity` for validation and draft saving. Zero retains an existing considering card. Shared card displays opt in explicitly.
+
+### Card-picker deck panel
+
+Crypt and Library pickers reuse the browser filter-chip builders and sort control. Result counts cover all filtered matches before pagination; pagination must retain the captured recommendation ranking. Individual chip removal preserves other selections, and Reset retains the existing deck-derived initialization rules.
+
+
+Crypt and Library list-row artwork uses the shared `CardArtBackgroundComponent` to clip canonical full-card images with CSS. It loads through `OfflineImagesService`, preserves the source-pixel crop rectangles and responsive background alignment, and hides unavailable artwork. List rows must not request separate `cropImage` assets.
+
+Crypt and Library picker modals share a live deck panel using the existing Crypt and Library list components. A labeled show/hide button in the search toolbar controls its device-local split-view preference, independently of the Markdown editor. The panel is available only when the modal content is wide enough; the filters, catalog results and deck have separate scroll containers, and infinite scrolling must target the catalog container explicitly. The panel reads the builder state independently of catalog filters and changes quantities through the existing builder service.
+
+Builder recommendation quantities refresh three seconds after deck edits. A single service-owned RxJS subscription debounces all refreshes by three seconds, then uses switchMap to replace the previous request. A previous response may update badges during the debounce pause. Crypt and Library pickers keep a snapshot of recommendation priority IDs and deck statistics for ranking, refreshed only on opening or search, filter, and sort changes. Infinite scrolling reuses that snapshot; live recommendation badges and quantity changes must not reorder results. Recommendation priority applies only to relevance sorting.
 
 ### Local drafts
 
@@ -140,7 +171,7 @@ SEO must not introduce a visible breadcrumb bar. The centralized structured data
 
 Do not add SEO-only headings to the Deck, Crypt, or Library browsers, including visually hidden headings. Keep their existing layout and provide page titles and descriptions through centralized metadata.
 
-SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page titles must omit repeated VTES branding and use ` - ` for any additional separator. Preserve entity names and distinct product names such as VTESDLE verbatim.
+SEO titles receive the `VTES Decks - ` prefix from `SeoService`. Translated page titles must omit repeated VTES branding and use `-` for any additional separator. Preserve entity names and distinct product names such as VTESDLE verbatim.
 
 ### Path Aliases (tsconfig)
 

@@ -1,0 +1,158 @@
+<div *transloco="let t; prefix: 'deck_builder.composition'">
+  @for (section of sections(); track section.type) {
+    <section [attr.aria-label]="'shared.' + section.type | transloco">
+      <h5 class="section-heading">
+        <button
+          type="button"
+          class="section-toggle"
+          [attr.aria-expanded]="expandedSections()[section.type]"
+          [attr.aria-controls]="
+            primarySection() + '-composition-' + section.type
+          "
+          (click)="toggleSection(section.type)"
+        >
+          <i
+            class="bi"
+            [ngClass]="
+              expandedSections()[section.type]
+                ? 'bi-chevron-down'
+                : 'bi-chevron-right'
+            "
+            aria-hidden="true"
+          ></i>
+          <span>{{ 'shared.' + section.type | transloco }}</span>
+          <span class="badge text-bg-secondary ms-auto">{{
+            section.total
+          }}</span>
+        </button>
+      </h5>
+      <div class="discipline-summary">
+        @if (section.type === 'crypt') {
+          @for (stat of cryptDisciplines(); track stat.disciplines.join(',')) {
+            <span
+              class="discipline-stat"
+              [title]="
+                'deck.disciplines_sup_inf'
+                  | transloco: { count: stat.disciplines[0] }
+              "
+            >
+              <i
+                class="vtes"
+                [ngClass]="getDisciplineIcon(stat.disciplines[0], true)!"
+                aria-hidden="true"
+              ></i>
+              <span>{{ stat.superior }} | {{ stat.inferior }}</span>
+            </span>
+          }
+        } @else {
+          @for (
+            stat of libraryDisciplines();
+            track stat.disciplines.join(',')
+          ) {
+            <span class="discipline-stat">
+              @if (stat.disciplines.length === 0) {
+                <i
+                  class="bi bi-square"
+                  [title]="'deck.no_discipline' | transloco"
+                ></i>
+              }
+              @for (
+                discipline of stat.disciplines;
+                track discipline;
+                let first = $first
+              ) {
+                @if (!first) {
+                  <span>+</span>
+                }
+                <i
+                  class="vtes"
+                  [ngClass]="getDisciplineIcon(discipline, false)!"
+                  [title]="discipline"
+                  role="img"
+                  [attr.aria-label]="discipline"
+                ></i>
+              }
+              <span>{{ stat.inferior }}</span>
+            </span>
+          }
+        }
+      </div>
+      <div
+        [id]="primarySection() + '-composition-' + section.type"
+        [hidden]="!expandedSections()[section.type]"
+      >
+        @if (section.empty) {
+          <p class="text-body-secondary">{{ t('empty') }}</p>
+        }
+        @for (group of section.groups; track group.type) {
+          @if (section.type === 'library') {
+            <h6 class="group-heading">
+              <span>{{
+                group.type
+                  ? (group.type | libraryTypeTransloco)
+                  : t('unknown_type')
+              }}</span>
+              <span>{{ group.total }}</span>
+            </h6>
+          }
+          @for (card of group.cards; track card.id) {
+            <div
+              class="composition-row list-group"
+              [class.considering-card]="card.number === 0"
+            >
+              @if (card.metadata) {
+                @if (section.type === 'crypt') {
+                  <app-crypt
+                    [card]="card"
+                    [cryptSize]="section.total"
+                    [compact]="true"
+                    [background]="false"
+                    [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="builder.setCardQuantity($event.id, $event.quantity)"
+                    [withDelete]="true"
+                    (cardAdded)="builder.addCard($event)"
+                    (cardRemoved)="builder.removeCard($event)"
+                  />
+                } @else {
+                  <app-library
+                    [card]="card"
+                    [librarySize]="section.total"
+                    [compact]="true"
+                    [background]="false"
+                    [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="builder.setCardQuantity($event.id, $event.quantity)"
+                    [withDelete]="true"
+                    (cardAdded)="builder.addCard($event)"
+                    (cardRemoved)="builder.removeCard($event)"
+                  />
+                }
+              } @else {
+                <div class="fallback-row list-group-item">
+                  <span>{{ card.number }}Ã—</span>
+                  <span>{{ card.name }}</span>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    [disabled]="card.number === 0"
+                    [attr.aria-label]="t('remove', { name: card.name })"
+                    (click)="builder.removeCard(card.id)"
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    [attr.aria-label]="t('add', { name: card.name })"
+                    (click)="builder.addCard(card.id)"
+                  >
+                    +
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </section>
+  }
+</div>

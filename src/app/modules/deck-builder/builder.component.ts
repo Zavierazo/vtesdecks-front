@@ -1,3 +1,4 @@
+import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component'
 import { Clipboard } from '@angular/cdk/clipboard'
 import { DeckSnapshot } from '../../models/deck-snapshot'
 import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
@@ -58,7 +59,6 @@ import {
   catchError,
   concat,
   forkJoin,
-  debounceTime,
   distinctUntilChanged,
   EMPTY,
   filter,
@@ -68,6 +68,7 @@ import {
   Observable,
   of,
   skip,
+  startWith,
   switchMap,
   tap,
   timer,
@@ -100,6 +101,7 @@ import { fromUrl } from './limited-format/limited-format-utils'
   styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    UnsavedChangesComponent,
     ShareDeckComponent,
     TranslocoDirective,
     ReactiveFormsModule,
@@ -165,6 +167,8 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   tagLabelControl = new FormControl<string>('')
   cryptSearch = signal<string>('')
   librarySearch = signal<string>('')
+  baseline$ = this.deckBuilderQuery.selectBaseline()
+  allCards$ = this.deckBuilderQuery.selectCards()
   deckId$ = this.deckBuilderQuery.selectDeckId()
   cryptList$ = this.deckBuilderQuery.selectCryptFiltered(
     toObservable(this.cryptSearch),
@@ -248,8 +252,13 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       .pipe(
         untilDestroyed(this),
         map((cards) => cards.map((c) => `${c.id}:${c.number}`).join(',')),
+        startWith(
+          this.deckBuilderQuery
+            .getValue()
+            .cards.map((c) => `${c.id}:${c.number}`)
+            .join(','),
+        ),
         distinctUntilChanged(),
-        debounceTime(5000),
         skip(1),
         tap(() => this.deckBuilderService.fetchSuggestedCards()),
       )
@@ -494,6 +503,10 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
     })
   }
 
+  setCardQuantity(change: { id: number; quantity: number }): void {
+    this.deckBuilderService.setCardQuantity(change.id, change.quantity)
+  }
+
   addCard(id: number) {
     this.deckBuilderService.addCard(id)
     this.changeDetector.markForCheck()
@@ -547,31 +560,19 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   openCryptBuilder() {
-    const modalRef = this.modalService.open(CryptBuilderComponent, {
+    this.modalService.open(CryptBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
-    const suggested = this.deckBuilderQuery.getValue().suggestedCards
-    if (suggested?.keyCrypt) {
-      modalRef.componentInstance.suggestedCardIds = [...suggested.keyCrypt].map(
-        (c) => c.id,
-      )
-    }
   }
 
   openLibraryBuilder() {
-    const modalRef = this.modalService.open(LibraryBuilderComponent, {
+    this.modalService.open(LibraryBuilderComponent, {
       fullscreen: true,
       centered: true,
       scrollable: true,
     })
-    const suggested = this.deckBuilderQuery.getValue().suggestedCards
-    if (suggested?.keyLibrary) {
-      modalRef.componentInstance.suggestedCardIds = [
-        ...suggested.keyLibrary,
-      ].map((c) => c.id)
-    }
   }
 
   openImportRecentDecks(): void {

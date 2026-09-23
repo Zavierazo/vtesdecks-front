@@ -80,3 +80,20 @@
     border-right-color: var(--bs-popover-bg);
   }
 }
+
+.btn-group.compact > .btn {
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Keep the split button's outer corners aligned with compact header actions.
+.btn-group.compact > .btn:first-child {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.btn-group.compact > .dropdown-toggle-split {
+  border-radius: 0 0.375rem 0.375rem 0;
+}

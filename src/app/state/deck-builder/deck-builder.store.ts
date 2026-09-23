@@ -17,6 +17,7 @@ import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
 
 export interface DeckBuilderState {
+  baseline?: ApiCard[]
   id?: string
   name?: string
   description?: string
@@ -50,6 +51,13 @@ export class DeckBuilderStore {
   private state$ = toObservable(this.state)
   private loading = signal<boolean>(false)
   private loading$ = toObservable(this.loading)
+
+  captureBaseline(): void {
+    this.update((state) => ({
+      ...state,
+      baseline: state.cards.map((card) => ({ ...card })),
+    }))
+  }
 
   updateName(name: string): void {
     this.update((state) => ({ ...state, name }))

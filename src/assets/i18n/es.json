@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Añadir a favoritos",
+    "cannot_bookmark_own_deck": "No puedes añadir tus propios mazos a favoritos",
     "bookmark_count": "Personas que han guardado este mazo: {{ count }}",
     "created_by": "Creado por",
     "tournament": "Torneo",
@@ -233,6 +234,10 @@
     "twda": "Archivo de mazos ganadores de torneos",
     "price": "Precio",
     "views": "Visitas",
+    "your_rating": "Tu puntuación: {{ score }} / 5",
+    "rating_average": "{{ score }} / 5",
+    "rating_action": "Puntúa este mazo",
+    "rating_label": "Valoración de la comunidad",
     "rate_deck": "¡Tómate un momento para puntuar este mazo!",
     "votes": "{{ count }} votos",
     "comments": "Comentarios",
@@ -285,6 +290,34 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "picker_no_results": "Ninguna carta coincide con tu búsqueda y filtros. Quita un filtro o prueba otra búsqueda.",
+    "unsaved_changes": {
+      "show": "Ver cambios",
+      "hide": "Ocultar cambios",
+      "title": "Cambios desde el último guardado",
+      "count": "{{count}} cartas modificadas",
+      "crypt": "Cripta",
+      "library": "Biblioteca",
+      "no_changes": "Sin cambios en las cantidades de cartas",
+      "scope": "No se incluyen los detalles del mazo ni los cambios solo en cartas en consideración.",
+      "no_baseline": "Todavía no hay una versión guardada",
+      "saving": "Guardando mazo…"
+    },
+    "header": {
+      "deck": "Opciones del mazo",
+      "test_output": "Herramientas y exportación"
+    },
+    "quantity_label": "Cantidad de {{name}}",
+    "quantity_hint": "Introduce un número entero. Intro para aplicar; Escape para cancelar.",
+    "composition": {
+      "title": "Composición del mazo",
+      "show_deck": "Mostrar mazo",
+      "hide_deck": "Ocultar mazo",
+      "empty": "Todavía no hay cartas",
+      "unknown_type": "Tipo desconocido",
+      "add": "Añadir una copia de {{name}}",
+      "remove": "Quitar una copia de {{name}}"
+    },
     "deck_not_exists": "El mazo no existe. Inténtalo de nuevo más tarde.",
     "already_saved": "¡Mazo ya guardado!",
     "name_required": "El nombre del mazo es obligatorio",
@@ -302,7 +335,7 @@
     "description": "Descripción",
     "description_placeholder": "Explica en pocas líneas cómo funciona el mazo y cuál es la sinergia entre las cartas. Formato de Markdown soportado.",
     "import": "Importar",
-    "view": "Visitas",
+    "view": "Ver",
     "share": "Compartir",
     "save": "Guardar",
     "delete": "Borrar",
@@ -321,7 +354,7 @@
     "export": "Exportar",
     "clipboard": "Portapapeles",
     "file": "Archivo",
-    "limited_format": "Formato Limitado",
+    "limited_format": "Limitado",
     "deck_copied": "Lista copiada al portapapeles",
     "collection_tracker": "Rastreador de Colección",
     "validation_errors": "{{errors}}",
@@ -335,7 +368,7 @@
     "show_more_suggestions": "Mostrar {{ count }} más",
     "show_less_suggestions": "Mostrar menos",
     "history": "Historial",
-    "tag_version_placeholder": "Etiquetar esta versión…",
+    "tag_version_placeholder": "Versión (opcional)",
     "search_in_crypt": "Buscar en la cripta…",
     "search_in_library": "Buscar en la biblioteca…",
     "export_error": "Exportación fallida. Por favor, inténtalo de nuevo.",
@@ -744,6 +777,7 @@
     "hundred": "Muy cierto",
     "add_reaction": "Añadir reacción",
     "login_required": "Inicia sesión para reaccionar",
+    "cannot_react_own_deck": "No puedes reaccionar a tus propios mazos",
     "error": "No se pudo guardar tu reacción. Inténtalo de nuevo."
   },
   "reset_password": {
@@ -1524,7 +1558,7 @@
     "view_wishlist": "Ver lista de deseos",
     "add_card": "Añadir carta",
     "add_to_wishlist": "Añadir a la lista de deseos",
-    "add_missing_to_wishlist": "Añadir faltantes a deseos",
+    "add_missing_to_wishlist": "Añadir faltantes",
     "missing_modal_title": "Añadir cartas faltantes a la lista de deseos",
     "missing_modal_description": "Te faltan {{ count }} cartas de tu colección para completar este mazo. Se añadirán a tu lista de deseos.",
     "missing_quantity": "Faltan",
@@ -1612,7 +1646,7 @@
     "camera_error": "No se pudo iniciar la cámara. Comprueba tu dispositivo e inténtalo de nuevo."
   },
   "shopping_optimizer": {
-    "button": "Cómo comprar",
+    "button": "Comprar cartas",
     "title": "La mejor manera de comprar estas cartas",
     "error": "No se pudieron calcular los precios. Inténtalo de nuevo.",
     "retry": "Reintentar",

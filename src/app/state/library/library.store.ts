@@ -169,7 +169,7 @@ export class LibraryStore {
             )
           }
         }
-        if (priorityIds?.length) {
+        if (sortBy === 'relevance' && priorityIds?.length) {
           const priorityMap = new Map(priorityIds.map((id, idx) => [id, idx]))
           entities = entities.sort((a, b) => {
             const aIdx = priorityMap.has(a.id)

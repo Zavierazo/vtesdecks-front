@@ -75,6 +75,9 @@ export class LibraryListComponent implements OnInit {
 
   @Input() recommendations?: Map<number, ApiArchetypeKeyCard>
 
+  @Input() editableQuantity = false
+  readonly cardQuantityChanged = output<{ id: number; quantity: number }>()
+
   readonly cardAdded = output<number>()
 
   readonly cardRemoved = output<number>()

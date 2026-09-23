@@ -1,5 +1,17 @@
 [
   {
+    "version": "2.81.0",
+    "date": "23rd September, 2026",
+    "changes": [
+      "The <strong>Deck Builder</strong> now keeps your deck visible while adding cards: on wide screens, the Crypt and Library pickers include a collapsible deck panel. Use <strong>Show deck / Hide deck</strong> beside the search field to open or close it.",
+      "Card quantities in the <strong>Deck Builder</strong> can now be edited directly in your deck or the card picker. Click a quantity, type the new number and press Enter to apply or Escape to cancel. Grid controls and list spacing have also been improved for easier editing.",
+      "The <strong>Deck Builder</strong> has a more compact layout, with saving, visibility and version controls together, grouped deck actions and a description editor that expands as you write. Crypt and Library headers, statistics and spacing have also been updated for a more consistent look.",
+      "The new <strong>Show changes</strong> link beside Save lets you review unsaved card changes against your last account save, including quantity differences and before-and-after Crypt and Library totals. Local draft status also appears beside the save controls.",
+      "The <strong>Crypt and Library pickers</strong> now show removable filter chips, an active-filter count on mobile, the selected sort field and direction, and the total number of matching cards. Searches with no results also offer clearer guidance.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.80.0",
     "date": "18th September, 2026",
     "changes": [
@@ -7,8 +19,7 @@
       "The <strong>Deck Builder automatically saves local drafts</strong>, even offline, and keeps them on this device after you close the app. Restore a draft to pick up where you left off, keep several decks in progress, or delete drafts you no longer need. When you are back online, save your deck to your account. Drafts of existing decks are offered when reopening that same deck.",
       "Take card artwork offline too: download and manage <strong>card images</strong> in <strong>Settings > Offline</strong> before disconnecting.",
       "Share <strong>deck snapshots</strong> from the deck page or Deck Builder, including unsaved changes. Each link preserves the shared deck and opens it in the familiar deck view, read-only.",
-      "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second.",
-      "Minor bug fixes and performance improvements."
+      "Improved the camera card scanner, with searches over 10x faster and typical matches in under a second."
     ]
   },
   {

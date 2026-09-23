@@ -1,3 +1,10 @@
+@use '../compact-card';
+
+.card-art-row {
+  isolation: isolate;
+  background-color: transparent;
+}
+
 .img-popover {
   width: 300px;
   height: auto;
@@ -12,4 +19,14 @@
   outline: var(--app-spoiler-new-width, 2px) solid
     var(--app-spoiler-new, #f6d365);
   outline-offset: -2px;
+}
+
+.editable-quantity {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+}
+
+.quantity-edit-row {
+  --bs-gutter-x: 1rem;
 }

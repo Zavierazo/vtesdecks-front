@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Add to Bookmarks",
+    "cannot_bookmark_own_deck": "You can't bookmark your own decks",
     "bookmark_count": "People who bookmarked this deck: {{ count }}",
     "created_by": "Created by",
     "tournament": "Tournament",
@@ -233,6 +234,10 @@
     "twda": "Tournament Winning Deck Archive",
     "price": "Price",
     "views": "Views",
+    "your_rating": "Your rating: {{ score }} / 5",
+    "rating_average": "{{ score }} / 5",
+    "rating_action": "Rate this deck",
+    "rating_label": "Community rating",
     "rate_deck": "Take a second to rate this deck!",
     "votes": "{{ count }} votes",
     "comments": "Comments",
@@ -285,6 +290,34 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "picker_no_results": "No cards match your search and filters. Remove a filter or try another search.",
+    "unsaved_changes": {
+      "show": "Show changes",
+      "hide": "Hide changes",
+      "title": "Changes since last save",
+      "count": "{{count}} cards changed",
+      "crypt": "Crypt",
+      "library": "Library",
+      "no_changes": "No card quantity changes",
+      "scope": "Deck details and considering-only changes are not included.",
+      "no_baseline": "No saved version yet",
+      "saving": "Saving deck…"
+    },
+    "header": {
+      "deck": "Deck options",
+      "test_output": "Tools & output"
+    },
+    "quantity_label": "Quantity of {{name}}",
+    "quantity_hint": "Enter a whole number. Enter to apply; Escape to cancel.",
+    "composition": {
+      "title": "Deck composition",
+      "show_deck": "Show deck",
+      "hide_deck": "Hide deck",
+      "empty": "No cards yet",
+      "unknown_type": "Unknown type",
+      "add": "Add one {{name}}",
+      "remove": "Remove one {{name}}"
+    },
     "deck_not_exists": "Deck doesn't exists. Please try again later.",
     "already_saved": "Deck already saved!",
     "name_required": "Deck name is required",
@@ -321,7 +354,7 @@
     "export": "Export",
     "clipboard": "Clipboard",
     "file": "File",
-    "limited_format": "Limited Format",
+    "limited_format": "Limited",
     "deck_copied": "Deck copied to clipboard",
     "collection_tracker": "Collection Tracker",
     "validation_errors": "{{errors}}",
@@ -335,7 +368,7 @@
     "show_more_suggestions": "Show {{ count }} more",
     "show_less_suggestions": "Show less",
     "history": "History",
-    "tag_version_placeholder": "Tag this version…",
+    "tag_version_placeholder": "Version (optional)",
     "search_in_crypt": "Search in crypt…",
     "search_in_library": "Search in library…",
     "export_error": "Export failed. Please try again.",
@@ -744,6 +777,7 @@
     "hundred": "Spot on",
     "add_reaction": "Add reaction",
     "login_required": "Log in to react",
+    "cannot_react_own_deck": "You can't react to your own decks",
     "error": "Could not save your reaction. Please try again."
   },
   "reset_password": {
@@ -1524,7 +1558,7 @@
     "view_wishlist": "View Wishlist",
     "add_card": "Add Card",
     "add_to_wishlist": "Add to Wishlist",
-    "add_missing_to_wishlist": "Add missing to Wishlist",
+    "add_missing_to_wishlist": "Wishlist missing",
     "missing_modal_title": "Add missing cards to Wishlist",
     "missing_modal_description": "You are missing {{ count }} cards from your collection to complete this deck. They will be added to your wishlist.",
     "missing_quantity": "Missing",
@@ -1612,7 +1646,7 @@
     "camera_error": "Could not start the camera. Please check your device and try again."
   },
   "shopping_optimizer": {
-    "button": "How to buy",
+    "button": "Buy cards",
     "title": "Best way to buy these cards",
     "error": "Could not calculate prices. Please try again.",
     "retry": "Retry",

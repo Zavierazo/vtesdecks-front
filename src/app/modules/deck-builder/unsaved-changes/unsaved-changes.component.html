@@ -1,0 +1,58 @@
+<section
+  class="changes border rounded-3 text-start"
+  *transloco="let t; prefix: 'deck_builder.unsaved_changes'"
+  [attr.aria-label]="t('title')"
+>
+  @if (baseline()) {
+    @if (changes().length > 0) {
+      <div>
+        <div class="changes-grid">
+          @for (group of groups(); track group.name) {
+            @if (group.changes.length > 0) {
+              <div class="changes-group">
+                <h6 class="d-flex flex-wrap align-items-baseline gap-2">
+                  <span
+                    >{{ t(group.name) }} {{ group.before }} →
+                    {{ group.after }}</span
+                  >
+                  <small class="text-body-secondary fw-normal">{{
+                    t('count', { count: group.changes.length })
+                  }}</small>
+                </h6>
+                <ul class="list-unstyled mb-0">
+                  @for (card of group.changes; track card.id) {
+                    <li
+                      class="change-row d-flex align-items-baseline gap-2 py-1"
+                    >
+                      <strong
+                        class="delta"
+                        [class.text-success]="card.difference > 0"
+                        [class.text-danger]="card.difference < 0"
+                        >{{ card.difference > 0 ? '+' : '−'
+                        }}{{
+                          card.difference > 0
+                            ? card.difference
+                            : -card.difference
+                        }}</strong
+                      >
+                      <span class="card-name">{{ card.name }}</span>
+                      <span class="text-body-secondary text-nowrap ms-auto"
+                        >{{ card.previousQuantity }} →
+                        {{ card.currentQuantity }}</span
+                      >
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <p class="mb-1">{{ t('no_changes') }}</p>
+    }
+    <small class="text-body-secondary d-block mt-1">{{ t('scope') }}</small>
+  } @else {
+    <p class="mb-0 text-body-secondary">{{ t('no_baseline') }}</p>
+  }
+</section>

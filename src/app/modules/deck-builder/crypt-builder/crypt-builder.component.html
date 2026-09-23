@@ -1,8 +1,10 @@
 <ng-container *transloco="let t; prefix: 'crypt_section'">
   <div class="modal-header">
     <h4 class="modal-title">{{ 'crypt_builder.title' | transloco }}</h4>
+    <div class="d-flex align-items-center gap-3 ms-auto">
     <button type="button" class="btn-close me-2" [attr.aria-label]="'shared.close' | transloco"
       (click)="modal.dismiss()"></button>
+    </div>
 
   </div>
   <div class="modal-header">
@@ -12,45 +14,20 @@
           <input type="text" class="form-control rounded-3" id="name" [placeholder]="t('card_name')"
             [formControl]="nameFormControl">
         </div>
+        @if (split.available()) {
+        <div class="col-auto">
+        <button type="button" class="btn deck-picker-toggle" [ngClass]="split.visible() ? 'btn-primary' : 'btn-outline-primary'"
+          [attr.aria-expanded]="split.visible()" aria-controls="crypt-deck-composition" (click)="split.toggle()">
+          <i class="bi bi-layout-split me-2" aria-hidden="true"></i>
+          {{ (split.visible() ? 'deck_builder.composition.hide_deck' : 'deck_builder.composition.show_deck') | transloco }}
+        </button>
+        </div>
+        }
         <app-toggle-icon class="col-auto d-inline-block" [active]="(displayMode$ |async)!"
           (toggleChange)="onChangeDisplayMode($event)" [options]="displayModeOptions" />
-        <div ngbDropdown class="col-auto d-inline-block">
-          <button type="button" class="btn btn-primary" id="dropdownSortBy" ngbDropdownToggle
-            [disabled]="sortByTrigramSimilarity">
-            <i class="bi bi-sort-alpha-down"></i>
-          </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownSortBy">
-            <button ngbDropdownItem (click)="onChangeSortBy('relevance',$event)"
-              [ngClass]="{'active': sortBy ==='relevance'}">
-              {{ t('relevance') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('name',$event)" [ngClass]="{'active': sortBy ==='name'}">
-              {{ t('name') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('capacity',$event)"
-              [ngClass]="{'active': sortBy ==='capacity'}">
-              {{ t('capacity') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('clan',$event)" [ngClass]="{'active': sortBy ==='clan'}">
-              {{ t('clan') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('group',$event)" [ngClass]="{'active': sortBy ==='group'}">
-              {{ t('group') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('deckPopularity',$event)"
-              [ngClass]="{'active': sortBy ==='deckPopularity'}" [title]="t('deck_popularity_title')">
-              {{ t('deck_popularity') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('cardPopularity',$event)"
-              [ngClass]="{'active': sortBy ==='cardPopularity'}" [title]="t('card_popularity_title')">
-              {{ t('card_popularity') }}
-            </button>
-            <button ngbDropdownItem (click)="onChangeSortBy('minPrice',$event)"
-              [ngClass]="{'active': sortBy ==='minPrice'}">
-              {{ t('price') }}
-            </button>
-          </div>
-        </div>
+        <app-sort-control class="col-auto" [options]="sortOptions" [active]="displayedSortBy"
+          [order]="displayedSortByOrder" [disabled]="sortByTrigramSimilarity"
+          (sortChange)="onChangeSortBy($event)" />
         @if (!(isMobileOrTablet$ | async)!) {
         <div class="col-auto d-inline-block">
           <button type="button" class="btn btn-danger" (click)="resetFilters()">
@@ -60,30 +37,39 @@
         }
         @if ((isMobileOrTablet$ | async)!) {
         <div class="col-auto">
-          <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)">
+          <button type="button" class="btn btn-secondary" (click)="openModal(filterModal)" [attr.aria-label]="t('filters')">
             <i class="bi bi-funnel-fill"></i>@if (!(isMobile$ | async)!) {
             <span>{{ t('filters') }}</span>
+            }
+            @if (filterChips.length) {
+              <span class="badge text-bg-light ms-1">{{ filterChips.length }}</span>
             }
           </button>
         </div>
         }
       </div>
+      <app-filter-chips [chips]="filterChips" (remove)="onRemoveFilterChip($event)" (clearAll)="resetFilters()" />
+      <div class="small text-body-secondary" role="status">
+        {{ t('results', { count: (resultsCount$ | async) ?? 0 }) }}
+      </div>
     </form>
   </div>
-  <div class="modal-body">
+  <div class="modal-body deck-picker-layout" [class.deck-visible]="split.visible()" appBuilderSplit #split="builderSplit">
+    <div class="deck-picker-browser">
     <div class="row">
       @if ((isMobileOrTablet$ | async) === false) {
-      <div class="col-4">
+      <div class="col-4 deck-picker-filters">
         <ng-container *ngTemplateOutlet="filter" />
       </div>
       }
-      <div [ngClass]="{
+      <div class="deck-picker-results" #catalogScroll [ngClass]="{
       'col-12': (isMobileOrTablet$ | async),
       'col-8': (isMobileOrTablet$ | async) === false
-    }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" infiniteScrollContainer=".modal-body"
-        [fromRoot]="true" [alwaysCallback]="true" (scrolled)="onScroll()">
+    }" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [infiniteScrollContainer]="catalogScroll"
+        [fromRoot]="false" [alwaysCallback]="true" (scrolled)="onScroll()">
         @if ((crypt$ | async)?.length === 0) {
-        <div class="d-flex justify-content-center mt-2">
+        <div class="text-center mt-2">
+          <p>{{ 'deck_builder.picker_no_results' | transloco }}</p>
           <button type="button" class="btn btn-danger btn-lg" (click)="resetFilters()">
             {{ t('reset_filters') }}
           </button>
@@ -93,7 +79,8 @@
         <div class="row mx-2 mb-2 g-1 justify-content-center">
           @for (crypt of crypt$ | async; track crypt.id) {
           <div class="col-6 col-md-auto">
-            <app-crypt-grid-card [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+            <app-crypt-grid-card [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
               (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
           </div>
           }
@@ -101,13 +88,19 @@
         }@else{
         @for (crypt of crypt$ | async; track crypt.id) {
         <ul class="col list-group">
-          <app-crypt [card]="getCard(crypt)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true"
+          <app-crypt [card]="getCard(crypt)" [recommended]="recommendations().get(crypt.id)" [cryptSize]="(cryptSize$ | async)!" [withControls]="true" [editableQuantity]="true"
+ (cardQuantityChanged)="setCardQuantity($event)"
             (cardAdded)="addCard($event)" (cardRemoved)="removeCard($event)" />
         </ul>
         }
         }
       </div>
     </div>
+    </div>
+    <aside class="deck-picker-panel" id="crypt-deck-composition" [hidden]="!split.visible()"
+      [attr.aria-label]="'deck_builder.composition.title' | transloco">
+      <app-deck-composition-panel primarySection="crypt" />
+    </aside>
   </div>
 
   <ng-template #filterModal let-modal>

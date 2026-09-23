@@ -1,0 +1,56 @@
+.deck_number {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.compact-card {
+  padding: 0.15rem 0.35rem;
+}
+.compact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+.compact-control {
+  flex: 0 0 24px;
+  padding: 0;
+  line-height: 24px;
+  font-size: 1rem;
+}
+.compact-row .deck_number {
+  min-width: 1.25rem;
+}
+.compact-row .compact-icon {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+}
+.compact-capacity {
+  flex: 0 0 auto;
+}
+.compact-name {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0;
+  text-align: left;
+  font-size: inherit;
+  line-height: 1.75rem;
+  border: 0;
+}
+
+.compact-disciplines {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 1px;
+}
+.compact-disciplines i.vtes {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}

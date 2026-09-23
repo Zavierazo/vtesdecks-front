@@ -1,51 +1,7 @@
+@use '../deck-shared/deck-presentation' as presentation;
+
 .section-add-btn {
-  font-size: 2rem;
-}
-
-.deck-actions {
-  .btn {
-    padding: 0.5rem 1rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-
-    i {
-      font-size: 1.1rem;
-    }
-  }
-
-  .dropdown-menu {
-    padding: 0.5rem 0;
-    margin: 0;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-
-    .dropdown-header {
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--bs-gray-600);
-    }
-
-    .dropdown-divider {
-      margin: 0.5rem 0;
-    }
-
-    a {
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      color: var(--bs-gray-700);
-
-      &:hover {
-        color: var(--bs-primary);
-      }
-
-      i {
-        font-size: 1rem;
-        opacity: 0.8;
-      }
-    }
-  }
+  font-size: 1.625rem;
 }
 
 .considering-card {
@@ -72,4 +28,104 @@
   .draft-sync-icon.is-syncing {
     animation: none;
   }
+}
+
+.builder-header {
+  @include presentation.header(builder);
+
+  &__primary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  &__name {
+    flex: 1 1 20rem;
+    min-width: 0;
+  }
+  &__commit {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 100%;
+    margin-left: auto;
+  }
+  &__save {
+    min-width: 0;
+    max-width: 100%;
+  }
+  &__save-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.25rem;
+
+    .btn {
+      font-size: 0.75rem;
+    }
+    small {
+      font-size: 0.75rem;
+    }
+  }
+  &__version {
+    width: 18rem;
+    max-width: 100%;
+  }
+  &__save .form-control,
+  &__save .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+  &__version .input-group {
+    flex-wrap: nowrap;
+  }
+  &__version .input-group .btn {
+    flex-shrink: 0;
+  }
+
+  .form-switch {
+    padding-left: 0;
+    align-items: center;
+    gap: 0.25rem;
+    .form-check-input {
+      float: none;
+      margin: 0;
+      flex-shrink: 0;
+    }
+  }
+  .builder-description-editor {
+    --markdown-editor-min-height: 8rem;
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 767.98px) {
+    &__name {
+      flex-basis: 100%;
+    }
+    &__save {
+      width: 100%;
+    }
+    &__version {
+      width: 100%;
+    }
+    &__commit {
+      width: 100%;
+      gap: 0.75rem;
+    }
+  }
+  @media (max-width: 399.98px) {
+    &__primary {
+      gap: 0.5rem;
+    }
+    .form-switch {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.builder-sections {
+  @include presentation.content-inset;
 }

@@ -59,6 +59,23 @@
 
   </div>
   @if(withControls()){
+  @if (editableQuantity()) {
+  <div class="grid-quantity-controls mt-2" (mouseup)="$event.stopPropagation()">
+    <button type="button" class="btn btn-outline-secondary"
+      [attr.aria-label]="'deck_builder.composition.remove' | transloco: { name: crypt.name }"
+      [disabled]="card().number === 0 && !withDelete()" (click)="removeCard($event)">
+      <i class="bi" [class.bi-dash-lg]="card().number > 0 || !withDelete()"
+        [class.bi-x-lg]="card().number === 0 && withDelete()" aria-hidden="true"></i>
+    </button>
+    <app-card-quantity [quantity]="card().number" [name]="crypt.i18n?.name || crypt.name"
+      (quantityChanged)="cardQuantityChanged.emit({ id: card().id, quantity: $event })" />
+    <button type="button" class="btn btn-outline-secondary"
+      [attr.aria-label]="'deck_builder.composition.add' | transloco: { name: crypt.name }"
+      (click)="addCard($event)">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i>
+    </button>
+  </div>
+  } @else {
   <div class="btn-group w-100 mt-1" role="group">
     <button type="button" class="btn btn-sm btn-success flex-fill fs-6" (click)="addCard($event)">
       <i class="bi bi-plus-lg"></i>
@@ -68,6 +85,7 @@
       <i class="bi bi-dash-lg"></i>
     </button>
   </div>
+  }
   }
 </div>
 }

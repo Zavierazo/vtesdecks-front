@@ -3,9 +3,19 @@
   *transloco="let t; prefix: 'reactions'"
 >
   @for (chip of visibleChips(); track chip.reaction) {
+  <span
+    class="d-inline-flex"
+    [ngbTooltip]="t('cannot_react_own_deck')"
+    triggers="click"
+    [disableTooltip]="!readonly()"
+    [attr.tabindex]="readonly() ? 0 : null"
+  >
   <button
     type="button"
     class="btn btn-sm rounded-pill reaction-chip"
+    [disabled]="readonly()"
+    [class.pe-none]="readonly()"
+    [disableTooltip]="readonly()"
     [ngClass]="chip.reacted ? 'btn-primary' : 'btn-outline-secondary'"
     [ngbTooltip]="
       (isAuthenticated$ | async) ? t(chip.reaction) : t('login_required')
@@ -17,8 +27,9 @@
     <span class="reaction-chip__count ms-1">{{ chip.count }}</span>
     }
   </button>
+  </span>
   }
-  @if (display() === 'compact') {
+  @if (display() === 'compact' && !readonly()) {
   <button
     type="button"
     class="btn btn-sm rounded-pill reaction-chip reaction-chip--add btn-outline-secondary"
@@ -39,6 +50,7 @@
       <button
         type="button"
         class="btn btn-sm text-start d-flex align-items-center gap-2 reaction-picker__option"
+        [disabled]="readonly()"
         [ngClass]="{ 'btn-primary': chip.reacted }"
         (click)="toggle(chip.reaction, picker)"
       >

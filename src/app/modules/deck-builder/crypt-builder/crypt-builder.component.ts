@@ -1,3 +1,19 @@
+import {
+  FilterChip,
+  FilterChipsComponent,
+} from '@shared/components/filter-chips/filter-chips.component'
+import {
+  SortControlComponent,
+  SortOption,
+} from '@shared/components/sort-control/sort-control.component'
+import {
+  buildCryptFilterChips,
+  removeCardFilterChip,
+} from '../../../utils/card-filter-chips.utils'
+import { getCardShopName } from '../../../utils/card-shops'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { BuilderSplitDirective } from '../deck-composition-panel/builder-split.directive'
+import { DeckCompositionPanelComponent } from '../deck-composition-panel/deck-composition-panel.component'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -8,28 +24,33 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
-import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
 import {
-  NgbActiveModal,
-  NgbDropdown,
-  NgbDropdownButtonItem,
-  NgbDropdownItem,
-  NgbDropdownMenu,
-  NgbDropdownToggle,
-  NgbModal,
-} from '@ng-bootstrap/ng-bootstrap'
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
+import { ApiCard, ApiCrypt, CryptFilter, CryptSortBy } from '@models'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { MediaService } from '@services'
 import { ToggleIconComponent } from '@shared/components/toggle-icon/toggle-icon.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { AuthService } from '@state/auth/auth.service'
 import { CryptQuery } from '@state/crypt/crypt.query'
+import { CryptStats } from '@state/crypt/crypt.store'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
 import { isRegexSearch } from '@utils'
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll'
-import { debounceTime, Observable, tap } from 'rxjs'
+import {
+  BehaviorSubject,
+  debounceTime,
+  filter,
+  map,
+  merge,
+  Observable,
+  tap,
+} from 'rxjs'
 import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-card.component'
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-builder-filter.component'
@@ -41,14 +62,13 @@ import { CryptBuilderFilterComponent } from '../crypt-builder-filter/crypt-build
   styleUrls: ['./crypt-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FilterChipsComponent,
+    SortControlComponent,
+    BuilderSplitDirective,
+    DeckCompositionPanelComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgClass,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownButtonItem,
-    NgbDropdownItem,
     NgTemplateOutlet,
     InfiniteScrollDirective,
     CryptComponent,
@@ -70,6 +90,10 @@ export class CryptBuilderComponent implements OnInit {
   private readonly modalService = inject(NgbModal)
   private readonly changeDetector = inject(ChangeDetectorRef)
 
+  private readonly translocoService = inject(TranslocoService)
+  filterChips: FilterChip[] = []
+  readonly resultsCount$ = new BehaviorSubject(0)
+
   private static readonly PAGE_SIZE = 50
   nameFormControl = new FormControl(this.deckBuilderQuery.getCryptFilter().name)
   crypt$!: Observable<ApiCrypt[]>
@@ -80,7 +104,23 @@ export class CryptBuilderComponent implements OnInit {
   private limitTo = CryptBuilderComponent.PAGE_SIZE
   sortBy!: CryptSortBy
   sortByOrder!: 'asc' | 'desc'
-  suggestedCardIds: number[] = []
+  private suggestedCardIds: number[] = []
+  private rankingStats!: CryptStats
+  readonly recommendations = toSignal(
+    this.deckBuilderQuery
+      .selectSuggestedCards()
+      .pipe(
+        map(
+          (suggested) =>
+            new Map(
+              (suggested?.keyCrypt ?? []).map(
+                (card) => [card.id, card] as const,
+              ),
+            ),
+        ),
+      ),
+    { initialValue: new Map() },
+  )
 
   displayMode$ = this.authQuery.selectBuilderDisplayMode()
   displayModeOptions = [
@@ -96,9 +136,58 @@ export class CryptBuilderComponent implements OnInit {
     },
   ]
 
+  readonly sortOptions: SortOption[] = [
+    { value: 'relevance', labelKey: 'crypt_section.relevance' },
+    { value: 'name', labelKey: 'crypt_section.name' },
+    { value: 'capacity', labelKey: 'crypt_section.capacity' },
+    { value: 'clan', labelKey: 'crypt_section.clan' },
+    { value: 'group', labelKey: 'crypt_section.group' },
+    { value: 'deckPopularity', labelKey: 'crypt_section.deck_popularity' },
+    { value: 'cardPopularity', labelKey: 'crypt_section.card_popularity' },
+    { value: 'minPrice', labelKey: 'crypt_section.price' },
+  ]
+
+  get displayedSortBy(): string {
+    return this.sortByTrigramSimilarity ? 'relevance' : this.sortBy
+  }
+
+  get displayedSortByOrder(): 'asc' | 'desc' {
+    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+  }
+
+  private updateFilterChips(): void {
+    this.filterChips = buildCryptFilterChips(
+      this.deckBuilderQuery.getCryptFilter(),
+      this.cryptQuery.getDefaultCryptFilter(),
+      (key, params) => this.translocoService.translate(key, params),
+      getCardShopName,
+    )
+  }
+
+  onRemoveFilterChip(chip: FilterChip): void {
+    this.onChangeCryptFilter(
+      removeCardFilterChip(
+        this.deckBuilderQuery.getCryptFilter(),
+        this.cryptQuery.getDefaultCryptFilter(),
+        chip,
+      ),
+    )
+  }
+
   ngOnInit() {
     this.initFilters()
     this.onChangeNameFilter()
+    merge(
+      this.translocoService.langChanges$,
+      this.translocoService.events$.pipe(
+        filter((event) => event.type === 'translationLoadSuccess'),
+      ),
+    )
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.updateFilterChips()
+        this.changeDetector.markForCheck()
+      })
   }
 
   onChangeDisplayMode(displayMode: string) {
@@ -171,9 +260,9 @@ export class CryptBuilderComponent implements OnInit {
     this.initQuery()
   }
 
-  onChangeSortBy(sortBy: CryptSortBy, event: MouseEvent) {
-    event.preventDefault()
-    event.stopPropagation()
+  onChangeSortBy(sortBy: string, event?: MouseEvent) {
+    event?.preventDefault()
+    event?.stopPropagation()
     if (this.sortBy === sortBy) {
       this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
     } else if (
@@ -186,7 +275,7 @@ export class CryptBuilderComponent implements OnInit {
     } else {
       this.sortByOrder = 'asc'
     }
-    this.sortBy = sortBy
+    this.sortBy = sortBy as CryptSortBy
     this.initQuery()
   }
 
@@ -212,25 +301,37 @@ export class CryptBuilderComponent implements OnInit {
   }
 
   initQuery() {
+    this.updateFilterChips()
+    // Only deliberate view changes adopt new ranking inputs; scrolling reuses them.
+    this.suggestedCardIds = (
+      this.deckBuilderQuery.getValue().suggestedCards?.keyCrypt ?? []
+    ).map((card) => card.id)
+    this.rankingStats = {
+      total: this.deckBuilderQuery.getCryptSize(),
+      minGroup: this.deckBuilderQuery.getMinGroupCrypt(),
+      maxGroup: this.deckBuilderQuery.getMaxGroupCrypt(),
+      clans: this.deckBuilderQuery.getCryptClans(),
+      disciplines: this.deckBuilderQuery.getCryptDisciplines(),
+    }
     this.limitTo = CryptBuilderComponent.PAGE_SIZE
     this.updateQuery()
   }
 
   private updateQuery() {
-    this.crypt$ = this.cryptQuery.selectAll({
-      limitTo: this.limitTo,
-      filter: this.deckBuilderQuery.getCryptFilter(),
-      sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : this.sortBy,
-      sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
-      crypt: {
-        total: this.deckBuilderQuery.getCryptSize(),
-        minGroup: this.deckBuilderQuery.getMinGroupCrypt(),
-        maxGroup: this.deckBuilderQuery.getMaxGroupCrypt(),
-        clans: this.deckBuilderQuery.getCryptClans(),
-        disciplines: this.deckBuilderQuery.getCryptDisciplines(),
-      },
-      priorityIds: this.suggestedCardIds,
-    })
+    this.crypt$ = this.cryptQuery
+      .selectAll({
+        filter: this.deckBuilderQuery.getCryptFilter(),
+        sortBy: this.sortByTrigramSimilarity
+          ? 'trigramSimilarity'
+          : this.sortBy,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        crypt: this.rankingStats,
+        priorityIds: this.suggestedCardIds,
+      })
+      .pipe(
+        tap((results) => this.resultsCount$.next(results.length)),
+        map((results) => results.slice(0, this.limitTo)),
+      )
     this.changeDetector.markForCheck()
   }
 
@@ -244,6 +345,10 @@ export class CryptBuilderComponent implements OnInit {
           ? this.deckBuilderQuery.getCardCollection(card.id, number)
           : undefined,
     } as ApiCard
+  }
+
+  setCardQuantity(change: { id: number; quantity: number }): void {
+    this.deckBuilderService.setCardQuantity(change.id, change.quantity)
   }
 
   addCard(id: number) {

@@ -8,6 +8,7 @@ import { Clipboard } from '@angular/cdk/clipboard'
 import {
   AsyncPipe,
   CurrencyPipe,
+  DecimalPipe,
   NgClass,
   NgTemplateOutlet,
 } from '@angular/common'
@@ -96,6 +97,7 @@ import {
   catchError,
   combineLatest,
   filter,
+  finalize,
   map,
   Observable,
   of,
@@ -139,6 +141,7 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
     QuickReactionsComponent,
     AsyncPipe,
     CurrencyPipe,
+    DecimalPipe,
     TranslocoFallbackPipe,
     DisciplineTranslocoPipe,
     ClanTranslocoPipe,
@@ -215,8 +218,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   isAuthenticated$!: Observable<boolean>
 
-  userDisplayName$!: Observable<string | undefined>
-
   deck$!: Observable<ApiDeck | undefined>
 
   similarDecks$!: Observable<ApiDecks>
@@ -231,7 +232,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   bookmarkCount = 0
 
-  isRated = false
+  readonly personalRating = signal<number | null>(null)
+  readonly displayedRating = signal<number | null>(null)
+  readonly ratingPending = signal(false)
+  readonly communityRating = signal<{ rate: number; votes: number } | null>(
+    null,
+  )
 
   isSupporter = false
 
@@ -263,7 +269,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
       ? this.snapshotLoading.asObservable()
       : this.deckQuery.selectLoading()
     this.isAuthenticated$ = this.authQuery.selectAuthenticated()
-    this.userDisplayName$ = this.authQuery.selectDisplayName()
     this.isMobile$ = this.mediaService.observeMobile()
     this.isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
     this.isAdmin$ = this.authQuery.selectAdmin()
@@ -276,7 +281,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
       tap((deck) => {
         this.isBookmarked = deck?.favorite ?? false
         this.bookmarkCount = deck?.bookmarks ?? 0
-        this.isRated = deck?.rated ?? false
         this.isSupporter = isSupporter(deck?.user?.roles)
         const collectionTrackerOwner = deck?.owner ? deck.collection : false
         this.collectionTracker =
@@ -293,6 +297,9 @@ export class DeckComponent implements OnInit, AfterViewInit {
     )
     this.route.paramMap.pipe(untilDestroyed(this)).subscribe((params) => {
       this.id = params.get('id')!
+      this.personalRating.set(null)
+      this.displayedRating.set(null)
+      this.communityRating.set(null)
       this.fetchSimilarDecks()
     })
   }
@@ -385,15 +392,12 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('bookmarkTooltip') set favoriteTooltip(tooltip: NgbTooltip) {
-    if (this.isBookmarked || !tooltip || !this.authQuery.isAuthenticated()) {
-      return
-    }
-    tooltip.open()
-    setTimeout(() => tooltip.close(), 2000)
-  }
-
-  @ViewChild('ratingTooltip') set ratingTooltip(tooltip: NgbTooltip) {
-    if (this.isRated || !tooltip || !this.authQuery.isAuthenticated()) {
+    if (
+      this.currentDeck?.owner ||
+      this.isBookmarked ||
+      !tooltip ||
+      !this.authQuery.isAuthenticated()
+    ) {
       return
     }
     tooltip.open()
@@ -401,28 +405,62 @@ export class DeckComponent implements OnInit, AfterViewInit {
   }
 
   rateDeck(rating: number) {
-    if (this.isSnapshot) {
+    if (
+      this.isSnapshot ||
+      this.currentDeck?.owner ||
+      this.ratingPending() ||
+      !Number.isInteger(rating) ||
+      rating < 1 ||
+      rating > 5
+    ) {
       return
     }
+    const deckId = this.id
+    const previousRating = this.displayedRating() ?? this.currentDeck?.rate ?? 0
+    this.displayedRating.set(rating)
+    this.ratingPending.set(true)
     this.apiDataService
-      .rateDeck(this.id, rating)
-      .pipe(untilDestroyed(this))
+      .rateDeck(deckId, rating)
+      .pipe(
+        tap(() => {
+          if (this.id === deckId) {
+            this.personalRating.set(rating)
+            this.toastService.show(
+              this.translocoService.translate('deck.rate_success'),
+              { classname: 'bg-success text-light', delay: 5000 },
+            )
+          }
+        }),
+        switchMap(() =>
+          this.apiDataService.getDeck(deckId).pipe(catchError(() => of(null))),
+        ),
+        finalize(() => this.ratingPending.set(false)),
+        untilDestroyed(this),
+      )
       .subscribe({
-        error: () =>
+        next: (deck) => {
+          if (deck && this.id === deckId) {
+            this.communityRating.set({
+              rate: deck.rate ?? 0,
+              votes: deck.votes,
+            })
+          }
+        },
+        error: () => {
+          if (this.id !== deckId) {
+            return
+          }
+          this.displayedRating.set(previousRating)
           this.toastService.show(
             this.translocoService.translate('deck.rate_failed'),
             { classname: 'bg-danger text-light', delay: 5000 },
-          ),
-        complete: () =>
-          this.toastService.show(
-            this.translocoService.translate('deck.rate_success'),
-            { classname: 'bg-success text-light', delay: 5000 },
-          ),
+          )
+        },
       })
   }
 
   toggleBookmark() {
-    if (this.isSnapshot) {
+    if (this.isSnapshot || this.currentDeck?.owner) {
       return
     }
     const bookmark = !this.isBookmarked

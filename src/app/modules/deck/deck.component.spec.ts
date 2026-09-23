@@ -40,6 +40,8 @@ describe('DeckComponent view tracking', () => {
   ) {
     const deckView = vi.fn(() => of(true))
     const bookmarkDeck = vi.fn(() => bookmarkResult)
+    const rateDeck = vi.fn(() => of(true))
+    const getDeck = vi.fn(() => of(deck))
     const markVisited = vi.fn()
     const detectChanges = vi.fn()
     const navigateByUrl = vi.fn()
@@ -103,7 +105,10 @@ describe('DeckComponent view tracking', () => {
         },
         { provide: AuthService, useValue: {} },
         { provide: ToastService, useValue: { show: vi.fn() } },
-        { provide: ApiDataService, useValue: { deckView, bookmarkDeck } },
+        {
+          provide: ApiDataService,
+          useValue: { deckView, bookmarkDeck, rateDeck, getDeck },
+        },
         { provide: ChangeDetectorRef, useValue: { detectChanges } },
         {
           provide: PreviousRouteService,
@@ -132,6 +137,8 @@ describe('DeckComponent view tracking', () => {
       component,
       deckView,
       bookmarkDeck,
+      rateDeck,
+      getDeck,
       markVisited,
       detectChanges,
       navigateByUrl,
@@ -143,6 +150,62 @@ describe('DeckComponent view tracking', () => {
       addVisitedDeck,
     }
   }
+
+  it('shows the saved personal rating and refreshes community totals without replacing the selected hearts', () => {
+    const { component, rateDeck, getDeck } = setup({
+      id: 'other',
+      rate: 3,
+      votes: 2,
+    } as ApiDeck)
+    const response = new Subject<boolean>()
+    rateDeck.mockReturnValue(response)
+    getDeck.mockReturnValue(of({ id: 'other', rate: 3.5, votes: 3 } as ApiDeck))
+    component.rateDeck(4)
+    component.rateDeck(5)
+    expect(rateDeck).toHaveBeenCalledTimes(1)
+    expect(component.personalRating()).toBeNull()
+    response.next(true)
+    response.complete()
+    expect(component.personalRating()).toBe(4)
+    expect(component.displayedRating()).toBe(4)
+    expect(component.communityRating()).toEqual({ rate: 3.5, votes: 3 })
+    expect(component.ratingPending()).toBe(false)
+  })
+
+  it('restores the previous rating on save failure and retains a successful vote if refreshing totals fails', () => {
+    const { component, rateDeck, getDeck } = setup({
+      id: 'other',
+      rate: 3,
+      votes: 2,
+    } as ApiDeck)
+    rateDeck.mockReturnValue(throwError(() => new Error('save failed')))
+    component.rateDeck(5)
+    expect(component.displayedRating()).toBe(3)
+    expect(component.personalRating()).toBeNull()
+    expect(getDeck).not.toHaveBeenCalled()
+    rateDeck.mockReturnValue(of(true))
+    getDeck.mockReturnValue(throwError(() => new Error('refresh failed')))
+    component.rateDeck(4)
+    expect(component.personalRating()).toBe(4)
+    expect(component.displayedRating()).toBe(4)
+    expect(component.ratingPending()).toBe(false)
+  })
+
+  it('does not apply a late rating response to another deck', () => {
+    const { component, rateDeck } = setup({
+      id: 'first',
+      rate: 3,
+      votes: 2,
+    } as ApiDeck)
+    const response = new Subject<boolean>()
+    rateDeck.mockReturnValue(response)
+    component.rateDeck(4)
+    component.id = 'second'
+    response.next(true)
+    response.complete()
+    expect(component.personalRating()).toBeNull()
+    expect(component.communityRating()).toBeNull()
+  })
 
   it('uses local snapshot data without normal deck queries, visits, history or social calls', () => {
     const {
@@ -261,6 +324,31 @@ describe('DeckComponent view tracking', () => {
     vi.advanceTimersByTime(1)
     expect(deckView).toHaveBeenCalledWith('regular-deck', '/previous')
     expect(markVisited).toHaveBeenCalledWith('regular-deck')
+  })
+
+  it('blocks rating and bookmark changes for owned decks, including saved bookmarks', () => {
+    const { component, bookmarkDeck, rateDeck } = setup({
+      id: 'owned',
+      owner: true,
+    } as ApiDeck)
+    component.bookmarkCount = 3
+    component.rateDeck(5)
+    component.toggleBookmark()
+    component.isBookmarked = true
+    component.toggleBookmark()
+    expect(rateDeck).not.toHaveBeenCalled()
+    expect(bookmarkDeck).not.toHaveBeenCalled()
+    expect(component.isBookmarked).toBe(true)
+    expect(component.bookmarkCount).toBe(3)
+  })
+
+  it('allows rating another user’s deck', () => {
+    const { component, rateDeck } = setup({
+      id: 'other',
+      owner: false,
+    } as ApiDeck)
+    component.rateDeck(4)
+    expect(rateDeck).toHaveBeenCalledWith('other', 4)
   })
 
   it('increments the count after bookmarking succeeds', () => {

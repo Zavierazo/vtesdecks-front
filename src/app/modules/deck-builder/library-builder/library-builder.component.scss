@@ -1,3 +1,57 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.deck-picker-layout {
+  display: flex;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.deck-picker-browser {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.deck-picker-browser > .row {
+  height: 100%;
+  margin: 0;
+  flex-wrap: nowrap;
+}
+.deck-picker-filters,
+.deck-picker-results {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-anchor: none;
+  overscroll-behavior-y: contain;
+  padding: var(--bs-modal-padding, 1rem);
+}
+.deck-picker-panel {
+  flex: 0 0 min(30%, 400px);
+  border-left: 1px solid var(--bs-border-color);
+  min-height: 0;
+  overflow-y: auto;
+  overflow-anchor: none;
+  padding: var(--bs-modal-padding, 1rem);
+}
+.deck-picker-panel[hidden] {
+  display: none;
+}
+
+// Retain the original 1:2 filter/results split. At the smallest split width,
+// protect filter controls from being squeezed while results use the remainder.
+.deck-visible .deck-picker-filters {
+  min-width: 300px;
+}
+.deck-visible .deck-picker-results {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 // Search toolbar: on phones the search field keeps the full width of its own
 // row and the controls below it (display mode, sort, filters) are compacted so
 // they all fit on a single line.

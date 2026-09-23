@@ -221,6 +221,7 @@
   },
   "deck": {
     "add_to_bookmarks": "Adicionar aos favoritos",
+    "cannot_bookmark_own_deck": "Não pode adicionar os seus próprios baralhos aos favoritos",
     "bookmark_count": "Pessoas que adicionaram este baralho aos favoritos: {{ count }}",
     "created_by": "Criado por",
     "tournament": "Torneio",
@@ -233,6 +234,10 @@
     "twda": "Arquivo de baralhos vencedores de torneios",
     "price": "Preço",
     "views": "Visualizações",
+    "your_rating": "Sua avaliação: {{ score }} / 5",
+    "rating_average": "{{ score }} / 5",
+    "rating_action": "Avalie este baralho",
+    "rating_label": "Avaliação da comunidade",
     "rate_deck": "Deixe uma avaliação para esse baralho!",
     "votes": "{{ count }} votos",
     "comments": "Comentários",
@@ -285,6 +290,34 @@
     "close_comparison": "Fechar comparação"
   },
   "deck_builder": {
+    "picker_no_results": "Nenhuma carta corresponde à pesquisa e aos filtros. Remova um filtro ou tente outra pesquisa.",
+    "unsaved_changes": {
+      "show": "Ver alterações",
+      "hide": "Ocultar alterações",
+      "title": "Alterações desde a última gravação",
+      "count": "{{count}} cartas alteradas",
+      "crypt": "Cripta",
+      "library": "Biblioteca",
+      "no_changes": "Nenhuma quantidade de cartas alterada",
+      "scope": "Os detalhes do baralho e as alterações apenas em cartas em consideração não estão incluídos.",
+      "no_baseline": "Ainda não existe uma versão gravada",
+      "saving": "A guardar o baralho…"
+    },
+    "header": {
+      "deck": "Opções do deck",
+      "test_output": "Ferramentas e exportação"
+    },
+    "quantity_label": "Quantidade de {{name}}",
+    "quantity_hint": "Introduza um número inteiro. Enter para aplicar; Escape para cancelar.",
+    "composition": {
+      "title": "Composição do baralho",
+      "show_deck": "Mostrar baralho",
+      "hide_deck": "Ocultar baralho",
+      "empty": "Ainda não há cartas",
+      "unknown_type": "Tipo desconhecido",
+      "add": "Adicionar uma cópia de {{name}}",
+      "remove": "Remover uma cópia de {{name}}"
+    },
     "deck_not_exists": "O baralho não existe. Tente novamente mais tarde.",
     "already_saved": "Baralho já salvo!",
     "name_required": "O nome do baralho é obrigatório",
@@ -302,7 +335,7 @@
     "description": "Descrição",
     "description_placeholder": "Explique em poucas linhas como funciona o baralho e o que é o sinergia entre os cartões. Formato de Markdown suportado.",
     "import": "Importar",
-    "view": "Visualizar",
+    "view": "Ver",
     "share": "Compartilhar",
     "save": "Salvar",
     "delete": "Eliminar",
@@ -321,7 +354,7 @@
     "export": "Exportar",
     "clipboard": "Área de transferência",
     "file": "Arquivo",
-    "limited_format": "Formato Limitado",
+    "limited_format": "Limitado",
     "deck_copied": "Baralho copiado para a área de transferência",
     "collection_tracker": "Rastreador de Coleção",
     "validation_errors": "{{errors}}",
@@ -335,7 +368,7 @@
     "show_more_suggestions": "Mostrar {{ count }} mais",
     "show_less_suggestions": "Mostrar menos",
     "history": "Histórico",
-    "tag_version_placeholder": "Etiquetar esta versão…",
+    "tag_version_placeholder": "Versão (opcional)",
     "search_in_crypt": "Pesquisar na cripta…",
     "search_in_library": "Pesquisar na biblioteca…",
     "export_error": "Falha na exportação. Tente novamente.",
@@ -744,6 +777,7 @@
     "hundred": "Na mosca",
     "add_reaction": "Adicionar reação",
     "login_required": "Faça login para reagir",
+    "cannot_react_own_deck": "Não pode reagir aos seus próprios baralhos",
     "error": "Não foi possível salvar sua reação. Tente novamente."
   },
   "reset_password": {
@@ -1524,7 +1558,7 @@
     "view_wishlist": "Ver lista de desejos",
     "add_card": "Adicionar carta",
     "add_to_wishlist": "Adicionar à lista de desejos",
-    "add_missing_to_wishlist": "Adicionar faltantes aos desejos",
+    "add_missing_to_wishlist": "Adicionar faltantes",
     "missing_modal_title": "Adicionar cartas faltantes à lista de desejos",
     "missing_modal_description": "Faltam {{ count }} cartas da sua coleção para completar este baralho. Elas serão adicionadas à sua lista de desejos.",
     "missing_quantity": "Faltam",
@@ -1612,7 +1646,7 @@
     "camera_error": "Não foi possível iniciar a câmera. Verifique o seu dispositivo e tente novamente."
   },
   "shopping_optimizer": {
-    "button": "Como comprar",
+    "button": "Comprar cartas",
     "title": "A melhor forma de comprar estas cartas",
     "error": "Não foi possível calcular os preços. Tente novamente.",
     "retry": "Tentar novamente",

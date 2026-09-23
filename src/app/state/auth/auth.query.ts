@@ -48,6 +48,10 @@ export class AuthQuery {
     return this.store.select((state) => state.countryCode)
   }
 
+  selectCountryLoaded(): Observable<boolean> {
+    return this.store.selectCountryLoaded()
+  }
+
   selectEmail(): Observable<string | undefined> {
     return this.store.select((user: ApiUser) => user.email)
   }
