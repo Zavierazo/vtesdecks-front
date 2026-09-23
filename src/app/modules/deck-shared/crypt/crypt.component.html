@@ -107,17 +107,17 @@
           }
           @if( crypt.i18n && crypt.i18n.name !== crypt.name ){
           <div class="float-start d-flex flex-column">
-            <span class="text-body">{{ crypt.i18n.name }}</span>
-            <span class="text-muted default-locale-name">
+            <span class="text-body text-name">{{ crypt.i18n.name }}</span>
+            <span class="text-muted default-locale-name text-name">
               {{ crypt.name }}
             </span>
           </div>
           }
           @else{
           <div class="float-start d-flex flex-column">
-            <span class="text-body">{{ crypt.name }}</span>
+            <span class="text-body text-name">{{ crypt.name }}</span>
             @if(crypt.aka && crypt.aka !== crypt.name){
-            <span class="text-muted default-locale-name">
+            <span class="text-muted default-locale-name text-name">
               {{ crypt.aka }}
             </span>
             }
