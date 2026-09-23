@@ -314,10 +314,7 @@
                 @if (!isSnapshot) {
                   <div class="deck-header__social">
                     <div class="deck-stats-panel">
-                      <div class="deck-stat">
-                        <span class="deck-stat__icon">
-                          <i class="bi bi-eye-fill"></i>
-                        </span>
+                      <div class="deck-stat deck-stat--views">
                         <div class="deck-stat__body">
                           <span class="deck-stat__value">
                             <animated-digit
@@ -325,11 +322,26 @@
                               [duration]="2000"
                             />
                           </span>
-                          <span class="deck-stat__label">{{ t('views') }}</span>
+                          <span class="deck-stat__label">
+                            <i
+                              class="bi bi-eye-fill me-1"
+                              aria-hidden="true"
+                            ></i>
+                            {{ t('views') }}
+                          </span>
                         </div>
                       </div>
                       <div class="deck-stat">
                         <div class="deck-stat__body">
+                          <span class="deck-stat__heading">
+                            {{
+                              t(
+                                (isAuthenticated$ | async) && !deck.owner
+                                  ? 'rating_action'
+                                  : 'rating_label'
+                              )
+                            }}
+                          </span>
                           <div class="rating">
                             <ng-template #starTemplate let-fill="fill">
                               <span class="star" [class.full]="fill === 100">
@@ -339,24 +351,40 @@
                               </span>
                             </ng-template>
                             <ngb-rating
-                              [ngbTooltip]="t('rate_deck')"
-                              [disableTooltip]="deck.owner ?? false"
-                              placement="bottom"
-                              #ratingTooltip="ngbTooltip"
-                              [rate]="deck.rate ?? 0"
+                              [rate]="displayedRating() ?? deck.rate ?? 0"
+                              [disabled]="ratingPending()"
+                              [resettable]="false"
                               [starTemplate]="starTemplate"
                               [readonly]="
                                 !(isAuthenticated$ | async)! ||
                                 (deck.owner ?? false)
                               "
                               [max]="5"
+                              [attr.aria-label]="t('rating_label')"
                               (rateChange)="rateDeck($event)"
                             />
                           </div>
                           <span class="deck-stat__label">
                             <i class="bi bi-people-fill me-1"></i
-                            >{{ t('votes', { count: deck.votes }) }}
+                            >{{
+                              t('votes', {
+                                count: communityRating()?.votes ?? deck.votes,
+                              })
+                            }}
+                            ·
+                            {{
+                              t('rating_average', {
+                                score:
+                                  communityRating()?.rate ?? deck.rate ?? 0
+                                  | number: '1.0-1',
+                              })
+                            }}
                           </span>
+                          @if (personalRating() !== null) {
+                            <span class="deck-stat__label" role="status">{{
+                              t('your_rating', { score: personalRating() })
+                            }}</span>
+                          }
                         </div>
                       </div>
                     </div>
