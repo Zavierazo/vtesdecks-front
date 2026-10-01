@@ -30,6 +30,24 @@ const libraryQuery = queryStub<ApiLibrary>({
 const ctx = { t, cryptQuery, libraryQuery }
 
 describe('buildDeckFilterChips', () => {
+  it('keeps the owner chip and removes only the selected custom tag', () => {
+    const params = {
+      username: 'owner',
+      tags: 'stealth,league',
+      clans: 'tremere',
+    }
+    const chips = buildDeckFilterChips(params, ctx)
+    expect(chips.find((chip) => chip.key === 'username')?.value).toBe('owner')
+    const chip = chips.find(
+      (chip) => chip.key === 'tags' && chip.item === 'league',
+    )!
+    expect({ ...params, ...removeDeckFilterChip(params, chip) }).toMatchObject({
+      username: 'owner',
+      tags: 'stealth',
+      clans: 'tremere',
+    })
+  })
+
   it('has no chips without query params', () => {
     expect(buildDeckFilterChips({}, ctx)).toEqual([])
   })

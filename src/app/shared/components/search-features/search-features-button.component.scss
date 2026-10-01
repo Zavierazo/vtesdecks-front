@@ -1,15 +1,11 @@
 :host {
   display: inline-block;
+  max-width: 100%;
 }
 
 .search-trigger-label {
-  // Hidden on phones so the whole search toolbar fits on a single line; a long
-  // preset name must not push the header buttons out of a tablet-sized row.
+  // Keep labels visible at every width while bounding long preset names.
   max-width: 6rem;
-
-  @media (max-width: 575.98px) {
-    display: none;
-  }
 
   @media (min-width: 992px) {
     max-width: 10rem;
@@ -24,4 +20,26 @@
   line-clamp: 3;
   overflow: hidden;
   overflow-wrap: anywhere;
+}
+
+.search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.search-primary-actions,
+.search-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 100%;
+
+  &:empty {
+    display: none;
+  }
 }

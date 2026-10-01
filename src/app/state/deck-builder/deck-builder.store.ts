@@ -21,6 +21,7 @@ export interface DeckBuilderState {
   id?: string
   name?: string
   description?: string
+  customTags?: string[]
   extra?: ApiDeckExtra
   collection: boolean
   published: boolean
@@ -196,6 +197,7 @@ export class DeckBuilderStore {
   private getInitialState(): DeckBuilderState {
     return {
       cards: [],
+      customTags: [],
       cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
       cryptErrors: [],
       cryptSortBy: 'capacity',

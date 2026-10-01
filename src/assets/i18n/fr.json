@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personnalisé",
+    "title": "Tags personnalisés",
+    "add": "Ajouter",
+    "remove": "Supprimer le tag",
+    "help": "Jusqu’à 3 tags uniques, de 1 à 10 lettres minuscules (a–z) ou chiffres (0–9).",
+    "invalid": "Utilisez jusqu’à 3 tags uniques de 1 à 10 lettres minuscules ou chiffres.",
+    "filter_invalid": "Saisissez le tag complet : 1 à 10 lettres minuscules ou chiffres.",
+    "owner": "Propriétaire",
+    "shared_omitted": "Les filtres de favoris et de collection sont exclus."
+  },
   "local_drafts": {
     "restore_title": "Restaurer un brouillon",
     "restore_description": "Vos decks sont enregistrés automatiquement sur cet appareil. Restaurez un brouillon, supprimez ceux dont vous n’avez plus besoin ou commencez un nouveau deck. Ils ne sont pas synchronisés et sont supprimés si vous effacez les données du site.",
@@ -788,6 +799,8 @@
     "error": "Désolé, nous n'avons pas pu réinitialiser votre mot de passe"
   },
   "search_features": {
+    "share_error": "Impossible de partager le lien de recherche.",
+    "share_search": "Partager",
     "searches": "Recherches",
     "current_search": "Recherche actuelle",
     "active_preset": "Préréglage actif : {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtre",
     "sort": "Tri",
     "params": {
+      "username": "Propriétaire",
+      "exactAuthor": "Auteur exact",
       "name": "Nom",
       "author": "Auteur",
       "tournament": "Tournoi",

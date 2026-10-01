@@ -79,6 +79,55 @@ describe('Deck builder draft recovery', () => {
     return { service, state: () => state, api, collectionApi }
   }
 
+  it('saves, restores and clears custom tags; all clone paths start empty', async () => {
+    const { service, state, api } = setup({
+      id: 'owned',
+      name: 'Deck',
+      cards: [],
+      customTags: ['league'],
+    })
+    service.updateCustomTags(['league', 'test2'])
+    const draft = service.localDrafts.get(service.activeLocalDraftId()!)!
+    expect(draft.deck.customTags).toEqual(['league', 'test2'])
+    expect(service.hasDraftChanges({ ...state(), customTags: [] })).toBe(true)
+    await firstValueFrom(service.saveDeck())
+    expect(api.saveDeckBuilder.mock.calls[0][0].customTags).toEqual([
+      'league',
+      'test2',
+    ])
+    service.restoreFromDraft(draft.deck)
+    expect(state().customTags).toEqual(['league', 'test2'])
+    service.updateCustomTags([])
+    await firstValueFrom(service.saveDeck())
+    expect(state().customTags).toEqual([])
+    service.cloneFrom({ cards: [], customTags: ['league'] })
+    expect(state().customTags ?? []).toEqual([])
+    service.updateCustomTags(['league'])
+    service.clone()
+    expect(state().customTags ?? []).toEqual([])
+    await firstValueFrom(
+      service.init(undefined, {
+        crypt: [],
+        library: [],
+        customTags: ['league'],
+      } as unknown as ApiDeck),
+    )
+    expect(state().customTags ?? []).toEqual([])
+  })
+
+  it('rejects invalid custom tag edits without overwriting the draft', () => {
+    const { service, state } = setup({
+      name: 'Deck',
+      cards: [],
+      customTags: ['league'],
+    })
+    service.updateCustomTags(['UPPER'])
+    service.updateCustomTags(['a', 'b', 'c', 'd'])
+    service.updateCustomTags(['a', 'a'])
+    expect(state().customTags).toEqual(['league'])
+    expect(service.activeLocalDraftId()).toBeUndefined()
+  })
+
   it('copies cards without retaining mutable quantity references', () => {
     let state = { cards: [{ id: 100001, number: 4 }] } as DeckBuilderState
     const store = {

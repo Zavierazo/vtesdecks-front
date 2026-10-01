@@ -35,6 +35,10 @@ export class DeckBuilderQuery {
   private cryptQuery = inject(CryptQuery)
   private readonly cardReleaseStatus = inject(CardReleaseStatusService)
 
+  selectCustomTags(): Observable<string[]> {
+    return this.store.select((state) => state.customTags ?? [])
+  }
+
   selectDeckId(): Observable<string | undefined> {
     return this.store.select((state) => state.id)
   }

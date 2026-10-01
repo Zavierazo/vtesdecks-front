@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "custom",
+    "title": "Custom tags",
+    "add": "Add",
+    "remove": "Remove tag",
+    "help": "Up to 3 unique tags, 1–10 lowercase letters (a–z) or digits (0–9).",
+    "invalid": "Use up to 3 unique tags with 1–10 lowercase letters or digits.",
+    "filter_invalid": "Enter a complete tag: 1–10 lowercase letters or digits.",
+    "owner": "Owner",
+    "shared_omitted": "Favorites and collection filters are not included."
+  },
   "local_drafts": {
     "restore_title": "Restore a draft",
     "restore_description": "Your decks are saved automatically on this device. Restore a draft, delete those you no longer need, or start a new deck. Drafts are not synced and are removed if you clear site data.",
@@ -788,6 +799,8 @@
     "error": "Sorry, we couldn't reset your password"
   },
   "search_features": {
+    "share_error": "Could not share the search link.",
+    "share_search": "Share",
     "searches": "Searches",
     "current_search": "Current search",
     "active_preset": "Active preset: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filter",
     "sort": "Sort",
     "params": {
+      "username": "Owner",
+      "exactAuthor": "Exact author",
       "name": "Name",
       "author": "Author",
       "tournament": "Tournament",

@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personalizado",
+    "title": "Tags personalizados",
+    "add": "Añadir",
+    "remove": "Eliminar tag",
+    "help": "Hasta 3 tags únicos, de 1 a 10 letras minúsculas (a–z) o dígitos (0–9).",
+    "invalid": "Usa hasta 3 tags únicos de 1 a 10 letras minúsculas o dígitos.",
+    "filter_invalid": "Escribe el tag completo: de 1 a 10 letras minúsculas o dígitos.",
+    "owner": "Propietario",
+    "shared_omitted": "No incluye los filtros de favoritos ni colección."
+  },
   "local_drafts": {
     "restore_title": "Restaurar un borrador",
     "restore_description": "Tus mazos se guardan automáticamente en este dispositivo. Restaura un borrador, elimina los que ya no necesites o empieza un mazo nuevo. No se sincronizan y se eliminan al borrar los datos del sitio.",
@@ -788,6 +799,8 @@
     "error": "Lo sentimos, no pudimos restablecer su contraseña."
   },
   "search_features": {
+    "share_error": "No se pudo compartir el enlace de búsqueda.",
+    "share_search": "Compartir",
     "searches": "Búsquedas",
     "current_search": "Búsqueda actual",
     "active_preset": "Preset activo: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtro",
     "sort": "Orden",
     "params": {
+      "username": "Propietario",
+      "exactAuthor": "Autor exacto",
       "name": "Nombre",
       "author": "Autor",
       "tournament": "Torneo",

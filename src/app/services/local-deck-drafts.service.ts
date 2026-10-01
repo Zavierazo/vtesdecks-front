@@ -70,6 +70,7 @@ export class LocalDeckDraftsService {
       deck: {
         name: deck.name ?? '',
         description: deck.description ?? '',
+        customTags: [...(deck.customTags ?? [])],
         cards: (deck.cards ?? []).map((card) => ({ ...card })),
         extra: deck.extra,
         published: deck.published ?? false,

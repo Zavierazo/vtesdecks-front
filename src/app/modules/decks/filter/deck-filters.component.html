@@ -35,11 +35,17 @@
     <div id="tags" class="mb-2">
       <ng-template #tagTemplate let-r="result" let-t="term">
         <ngb-highlight class="align-top ms-1" [result]="'#' + ('vtes.tags.' + r | translocoFallback: r)" [term]="t" />
+        @if (!availableTags.includes(r)) {
+          <span class="text-body-secondary ms-1">({{ 'custom_tags.custom' | transloco }})</span>
+        }
       </ng-template>
       <input #tagsInput #tagsTypeahead="ngbTypeahead" id="deckTags" type="text" class="form-control"
         [placeholder]="t('tags_placeholder')" [ngbTypeahead]="searchTag" [resultTemplate]="tagTemplate"
-        [editable]="false" (selectItem)="onSelectTagItem($event, tagsInput)"
+        [editable]="true" [focusFirst]="false" (keydown.enter)="addTypedTag(tagsInput, $event)" (selectItem)="onSelectTagItem($event, tagsInput)"
         (focus)="tagFocus$.next($any($event).target.value)" (click)="tagClick$.next($any($event).target.value)" />
+      @if (tagInputError) {
+        <div class="small text-danger" role="alert">{{ 'custom_tags.filter_invalid' | transloco }}</div>
+      }
       @if (tags) {
       <div class="d-flex flex-wrap justify-content-start gap-2 my-2">
         @for (tag of tags; track tag) {

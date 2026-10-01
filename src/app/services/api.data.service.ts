@@ -579,6 +579,12 @@ export class ApiDataService {
     )
   }
 
+  getUserDeckTags(): Observable<string[]> {
+    return this.httpClient.get<string[]>(
+      `${environment.api.baseUrl}/user/decks/tags`,
+    )
+  }
+
   getDeckTags(): Observable<string[]> {
     return this.httpClient.get<string[]>(
       `${environment.api.baseUrl}${this.deckTagsPath}`,

@@ -23,11 +23,26 @@ describe('LocalDeckDraftsService', () => {
     expect(reopened.get(first.id)?.deck).toEqual({
       name: 'Original',
       description: '',
+      customTags: [],
       published: true,
       collection: true,
       cards: [{ id: 200001, number: 0 }],
     })
     expect(reopened.get(second.id)?.deck.name).toBe('Other')
+  })
+
+  it('persists ordered custom tags and preserves legacy drafts without them', () => {
+    const service = new LocalDeckDraftsService()
+    const tags = ['league', 'test2']
+    const draft = service.save('Tagged', { cards: [], customTags: tags })!
+    tags.push('later')
+    expect(new LocalDeckDraftsService().get(draft.id)?.deck.customTags).toEqual(
+      ['league', 'test2'],
+    )
+    service.save('Tagged', { cards: [], customTags: [] }, draft.id)
+    expect(new LocalDeckDraftsService().get(draft.id)?.deck.customTags).toEqual(
+      [],
+    )
   })
 
   it('updates, renames and deletes only the selected draft', () => {

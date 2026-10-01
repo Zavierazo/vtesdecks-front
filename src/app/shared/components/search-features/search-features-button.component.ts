@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslocoDirective } from '@jsverse/transloco'
 import {
@@ -59,8 +60,12 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
   private readonly searchFeatures = inject(SearchFeaturesService)
   readonly ui = inject(SearchFeaturesUiService)
 
+  private readonly queryParams = toSignal(this.route.queryParams, {
+    initialValue: this.route.snapshot.queryParams,
+  })
+
   get currentParams(): SearchParams {
-    return normalizeSearchParams(this.scope(), this.route.snapshot.queryParams)
+    return normalizeSearchParams(this.scope(), this.queryParams())
   }
 
   get quickPresets(): SavedSearchPreset[] {
@@ -110,6 +115,10 @@ export class SearchFeaturesButtonComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Leaving the page closes the current search.
     this.searchFeatures.finalizeHistoryDraft(this.scope())
+  }
+
+  shareLink(): void {
+    void this.ui.shareLink(this.scope(), this.currentParams)
   }
 
   copyLink(): void {

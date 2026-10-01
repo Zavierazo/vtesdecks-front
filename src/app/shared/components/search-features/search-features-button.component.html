@@ -1,31 +1,43 @@
 <div
   ngbDropdown
+  class="search-actions"
   (openChange)="onOpenChange($event)"
   placement="bottom-end"
   container="body"
   *transloco="let t; read: 'search_features'"
 >
-  <button
-    type="button"
-    class="btn btn-secondary d-inline-flex align-items-center gap-1"
-    ngbDropdownToggle
-    [attr.aria-label]="
-      currentPreset
-        ? t('active_preset', { name: currentPreset.name })
-        : t('searches')
-    "
-  >
-    <i
-      class="bi"
-      [class.bi-bookmark-fill]="currentPreset"
-      [class.bi-bookmark]="!currentPreset"
-      aria-hidden="true"
-    ></i>
-    <span class="text-truncate search-trigger-label">{{
-      currentPreset?.name || t('searches')
-    }}</span>
-  </button>
+  <div class="search-primary-actions">
+    <ng-content select="[searchPrimaryAction]" />
+    @if (scope() === 'decks') {
+      <button type="button" class="btn btn-primary" (click)="shareLink()">
+        <i class="bi bi-share" aria-hidden="true"></i> {{ t('share_search') }}
+      </button>
+    }
+  </div>
+  <div class="search-secondary-actions">
+    <button
+      type="button"
+      class="btn btn-secondary d-inline-flex align-items-center gap-1"
+      ngbDropdownToggle
+      [attr.aria-label]="
+        currentPreset
+          ? t('active_preset', { name: currentPreset.name })
+          : t('searches')
+      "
+    >
+      <i
+        class="bi"
+        [class.bi-bookmark-fill]="currentPreset"
+        [class.bi-bookmark]="!currentPreset"
+        aria-hidden="true"
+      ></i>
+      <span class="text-truncate search-trigger-label">{{
+        currentPreset?.name || t('searches')
+      }}</span>
+    </button>
 
+    <ng-content select="[searchSecondaryAction]" />
+  </div>
   <div ngbDropdownMenu class="dropdown-menu search-features-menu shadow">
     <div class="px-3 pt-2 pb-1">
       <strong class="d-block">{{ t('current_search') }}</strong>

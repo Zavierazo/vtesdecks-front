@@ -88,6 +88,7 @@ import { LeaveBuilderModalComponent } from './leave-builder-modal/leave-builder-
 import { DrawCardsComponent } from './draw-cards/draw-cards.component'
 import { ImportAmaranthComponent } from './import-amaranth/import-amaranth.component'
 import { ImportRecentDecksModalComponent } from './import-recent-decks/import-recent-decks-modal.component'
+import { validCustomDeckTag } from '../../utils/custom-deck-tags'
 import { ImportTextComponent } from './import-text/import-text.component'
 import { ImportVdbComponent } from './import-vdb/import-vdb.component'
 import { LibraryBuilderComponent } from './library-builder/library-builder.component'
@@ -165,6 +166,32 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   form!: FormGroup
   readonly initializing = signal(true)
   tagLabelControl = new FormControl<string>('')
+  readonly customTags = toSignal(this.deckBuilderQuery.selectCustomTags(), {
+    initialValue: [],
+  })
+  customTagError = ''
+
+  addCustomTag(input: HTMLInputElement): void {
+    const tags = this.deckBuilderQuery.getValue().customTags ?? []
+    const tag = input.value
+    if (!validCustomDeckTag(tag) || tags.length >= 3 || tags.includes(tag)) {
+      this.customTagError = 'custom_tags.invalid'
+      return
+    }
+    this.deckBuilderService.updateCustomTags([...tags, tag])
+    input.value = ''
+    this.customTagError = ''
+  }
+
+  removeCustomTag(tag: string): void {
+    this.deckBuilderService.updateCustomTags(
+      (this.deckBuilderQuery.getValue().customTags ?? []).filter(
+        (value) => value !== tag,
+      ),
+    )
+    this.customTagError = ''
+  }
+
   cryptSearch = signal<string>('')
   librarySearch = signal<string>('')
   baseline$ = this.deckBuilderQuery.selectBaseline()

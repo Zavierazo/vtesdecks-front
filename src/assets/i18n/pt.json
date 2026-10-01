@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personalizada",
+    "title": "Tags personalizadas",
+    "add": "Adicionar",
+    "remove": "Remover tag",
+    "help": "Até 3 tags únicas, de 1 a 10 letras minúsculas (a–z) ou algarismos (0–9).",
+    "invalid": "Use até 3 tags únicas de 1 a 10 letras minúsculas ou algarismos.",
+    "filter_invalid": "Escreva a tag completa: 1 a 10 letras minúsculas ou algarismos.",
+    "owner": "Proprietário",
+    "shared_omitted": "Os filtros de favoritos e coleção não estão incluídos."
+  },
   "local_drafts": {
     "restore_title": "Restaurar um rascunho",
     "restore_description": "Os seus baralhos são guardados automaticamente neste dispositivo. Restaure um rascunho, elimine os que já não precisa ou comece um novo baralho. Não são sincronizados e são eliminados ao limpar os dados do site.",
@@ -788,6 +799,8 @@
     "error": "Desculpe, não foi possível redefinir sua senha."
   },
   "search_features": {
+    "share_error": "Não foi possível partilhar o link da pesquisa.",
+    "share_search": "Partilhar",
     "searches": "Pesquisas",
     "current_search": "Pesquisa atual",
     "active_preset": "Predefinição ativa: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtro",
     "sort": "Ordenação",
     "params": {
+      "username": "Proprietário",
+      "exactAuthor": "Autor exato",
       "name": "Nome",
       "author": "Autor",
       "tournament": "Torneio",
