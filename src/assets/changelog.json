@@ -4,6 +4,7 @@
     "date": "xxrd October, 2026",
     "changes": [
       "Organize your decks with <strong>custom tags</strong>: add up to three tags from the Deck Builder and use them alongside existing tags to filter decks. <strong>My decks</strong> suggests your own tags and now includes <strong>Share search</strong>.",
+      "Manage your decks faster from <strong>My decks</strong>: each deck now has quick actions to share, publish or unpublish, toggle collection tracking and delete, without opening it.",
       "Minor bug fixes and performance improvements."
     ]
   },

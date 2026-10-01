@@ -1908,5 +1908,12 @@
     "pending_images": "Quedan {{count}} imágenes predeterminadas por descargar",
     "ready": "Todas las imágenes predeterminadas están descargadas",
     "continue_download": "Continuar descarga"
+  },
+  "deck_management": {
+    "unpublish": "Dejar de publicar",
+    "publish": "Publicar",
+    "tracker_off": "Desactivar seguimiento de colección",
+    "tracker_on": "Activar seguimiento de colección",
+    "confirm_publish": "¿Publicar este mazo? Aparecerá en las búsquedas públicas de mazos."
   }
 }

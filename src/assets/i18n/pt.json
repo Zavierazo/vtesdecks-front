@@ -1908,5 +1908,12 @@
     "pending_images": "Faltam {{count}} imagens predefinidas para transferir",
     "ready": "Todas as imagens predefinidas foram transferidas",
     "continue_download": "Continuar transferência"
+  },
+  "deck_management": {
+    "unpublish": "Despublicar",
+    "publish": "Publicar",
+    "tracker_off": "Desativar acompanhamento da coleção",
+    "tracker_on": "Ativar acompanhamento da coleção",
+    "confirm_publish": "Publicar este deck? Aparecerá nas pesquisas públicas de decks."
   }
 }

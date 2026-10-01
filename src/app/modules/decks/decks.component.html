@@ -151,11 +151,14 @@
           (scrolled)="onScroll()"
         >
           @if ((decks$ | async)!; as decks) {
-            @for (deck of decks; track deck) {
+            @for (deck of decks; track deck.id) {
               <div class="col-12 px-2">
                 <app-deck-card
                   [deck]="deck"
                   [enablePreview]="true"
+                  [managementEnabled]="type === 'USER' && !!deck.owner"
+                  [managementDisabled]="management.pending().has(deck.id)"
+                  (quickAction)="management.quickAction(deck, $event)"
                   [selectedTags]="selectedTags()"
                   (tagClick)="onTagClick($event)"
                 />
@@ -177,7 +180,7 @@
         @if ((restorableDecks$ | async)!; as decks) {
           <div>
             <div class="col-12 px-2">
-              @for (deck of decks; track deck) {
+              @for (deck of decks; track deck.id) {
                 <app-deck-restorable-card [deck]="deck" />
               }
             </div>

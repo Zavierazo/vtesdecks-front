@@ -1,5 +1,6 @@
+import { DeckManagementService } from '../decks/deck-management.service'
 import { Clipboard } from '@angular/cdk/clipboard'
-import { ChangeDetectorRef } from '@angular/core'
+import { ChangeDetectorRef, signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { TranslocoService } from '@jsverse/transloco'
@@ -38,6 +39,7 @@ describe('DeckComponent view tracking', () => {
     bookmarkResult: Observable<boolean> = of(true),
     snapshot = false,
   ) {
+    const quickAction = vi.fn(async () => {})
     const deckView = vi.fn(() => of(true))
     const bookmarkDeck = vi.fn(() => bookmarkResult)
     const rateDeck = vi.fn(() => of(true))
@@ -84,6 +86,10 @@ describe('DeckComponent view tracking', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        {
+          provide: DeckManagementService,
+          useValue: { quickAction, pending: signal(new Set<string>()) },
+        },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { data: { snapshot } } },
@@ -135,6 +141,7 @@ describe('DeckComponent view tracking', () => {
     component.id = deck.id
     return {
       component,
+      quickAction,
       deckView,
       bookmarkDeck,
       rateDeck,
@@ -150,6 +157,23 @@ describe('DeckComponent view tracking', () => {
       addVisitedDeck,
     }
   }
+
+  it('delegates saved owner visibility and excludes snapshots and other decks', async () => {
+    const deck = { id: 'owned', owner: true, type: 'COMMUNITY' } as ApiDeck
+    const { component, quickAction } = setup(deck)
+    await component.toggleVisibility()
+    expect(quickAction).toHaveBeenCalledWith(deck, 'visibility')
+    quickAction.mockClear()
+    component.isSnapshot = true
+    await component.toggleVisibility()
+    component.isSnapshot = false
+    deck.owner = false
+    await component.toggleVisibility()
+    deck.owner = true
+    deck.type = 'PRECONSTRUCTED'
+    await component.toggleVisibility()
+    expect(quickAction).not.toHaveBeenCalled()
+  })
 
   it('shows the saved personal rating and refreshes community totals without replacing the selected hearts', () => {
     const { component, rateDeck, getDeck } = setup({

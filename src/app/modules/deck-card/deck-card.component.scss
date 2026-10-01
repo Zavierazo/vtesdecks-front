@@ -9,7 +9,7 @@
     0 1px 2px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.08);
 
-  &:has(> .deck-cover:not([hidden])) {
+  &:has(> .deck-card-link > .deck-cover:not([hidden])) {
     padding-left: 170px;
   }
 
@@ -281,7 +281,7 @@
 }
 
 @media (max-width: 767.98px) {
-  .deck-card:has(> .deck-cover:not([hidden])) {
+  .deck-card:has(> .deck-card-link > .deck-cover:not([hidden])) {
     padding-left: 0;
   }
 
@@ -297,4 +297,62 @@
   width: 80vw;
   max-width: 300px;
   height: auto;
+}
+
+.deck-card-link {
+  min-width: 0;
+}
+
+.deck-card-tools {
+  min-height: 44px;
+}
+// Management is opt-in; public and embedded cards retain their normal layout.
+.deck-card.deck-card-managed {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 54px;
+  grid-template-rows: 1fr auto;
+
+  > .deck-card-link {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  > .deck-card-tools {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  > .deck-preview {
+    grid-column: 1 / -1;
+  }
+}
+
+.deck-management-actions {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.1);
+  background: rgba(var(--bs-secondary-rgb), 0.04);
+
+  .deck-quick-action {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    padding: 0;
+    font-size: 1.25rem;
+    color: var(--bs-secondary-color);
+    border: 0;
+
+    &.active,
+    &:hover,
+    &:focus-visible {
+      color: var(--bs-primary);
+      background: rgba(var(--bs-primary-rgb), 0.1);
+    }
+  }
 }

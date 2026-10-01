@@ -1908,5 +1908,12 @@
     "pending_images": "{{count}} default images still to download",
     "ready": "All default images are downloaded",
     "continue_download": "Continue download"
+  },
+  "deck_management": {
+    "unpublish": "Unpublish",
+    "publish": "Publish",
+    "tracker_off": "Disable collection tracker",
+    "tracker_on": "Enable collection tracker",
+    "confirm_publish": "Publish this deck? It will appear in public deck searches."
   }
 }

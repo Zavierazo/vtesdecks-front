@@ -1,344 +1,584 @@
-@if(deck(); as deck){
-<a [routerLink]="'/deck/' + deck.id" (click)="onDeckClick()" class="text-decoration-none">
-  <div [id]="deck.id" class="deck-card rounded-3 my-2 position-relative d-flex flex-column overflow-hidden bg-body"
+@if (deck(); as deck) {
+  <div
+    [id]="deck.id"
+    class="deck-card rounded-3 my-2 position-relative d-flex flex-column overflow-hidden bg-body"
     [ngClass]="{
-    'deck-card-standard': !deck.owner,
-    'deck-card-owned': deck.owner
-  }" [ngStyle]="{'min-height':height()}">
-    @if (deck.type === 'PRECONSTRUCTED') {
-    <img #deckCover class="deck-cover" [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'" [alt]="deck.name"
-      loading="lazy" (error)="deckCover.hidden = true" />
+      'deck-card-standard': !deck.owner,
+      'deck-card-owned': deck.owner,
+      'deck-card-managed': managementEnabled() && deck.owner,
+    }"
+    [ngStyle]="{ 'min-height': height() }"
+  >
+    <a
+      [routerLink]="'/deck/' + deck.id"
+      (click)="onDeckClick()"
+      class="text-decoration-none deck-card-link d-flex flex-column flex-grow-1"
+    >
+      @if (deck.type === 'PRECONSTRUCTED') {
+        <img
+          #deckCover
+          class="deck-cover"
+          [src]="cdnDomain + '/img/decks/' + deck.id + '.jpg'"
+          [alt]="deck.name"
+          loading="lazy"
+          (error)="deckCover.hidden = true"
+        />
+      }
+      <!-- Top Section -->
+      <div class="deck-header px-3 pt-2 pb-1">
+        <div class="deck-header-grid mb-1">
+          <div class="deck-stats d-flex gap-2 text-start align-items-start">
+            <span
+              class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium text-body"
+            >
+              <i class="bi bi-person-badge"></i>
+              <span class="ms-1">{{ deck.stats.crypt }}</span>
+            </span>
+            <span
+              class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium text-body"
+            >
+              <i class="bi bi-stack"></i>
+              <span class="ms-1">{{ deck.stats.library }}</span>
+            </span>
+            @if (deck.stats.msrp || deck.stats.price) {
+              <span
+                class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
+              >
+                {{
+                  deck.stats.msrp ?? deck.stats.price
+                    | currency: deck.stats.currency : 'symbol' : '1.0-0'
+                }}
+              </span>
+            }
+          </div>
+          <h2 class="text-body fw-bold fs-5 fw-bold text-center mb-0 lh-sm">
+            <span class="deck-indicators me-2">
+              @if (deck.favorite) {
+                <i
+                  class="bi bi-bookmark-star-fill text-warning"
+                  title="Bookmarked"
+                ></i>
+              }
+              @if (!deck.published) {
+                <i
+                  class="bi bi-incognito text-muted"
+                  [title]="'deck_shared.private_deck' | transloco"
+                ></i>
+              }
+              @if (deck.hasVideo) {
+                <i
+                  class="bi bi-youtube text-danger"
+                  [title]="'filters.has_video' | transloco"
+                ></i>
+              }
+            </span>
+            {{ deck.name | titlecase | truncate: 40 : true }}
+          </h2>
+          <div
+            class="deck-engagement d-flex gap-2 justify-content-end align-items-end"
+          >
+            <span
+              class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
+              [class.opacity-50]="deck.comments === 0"
+            >
+              <span class="fw-medium">{{ deck.comments }}</span>
+              <i class="bi bi-chat ms-1"></i>
+            </span>
+            <span
+              class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
+              [class.opacity-50]="deck.views === 0"
+            >
+              <span class="fw-medium">{{ deck.views }}</span>
+              <i class="bi bi-eye-fill ms-1"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Section -->
+      <div
+        class="deck-meta d-flex align-items-center justify-content-center position-relative flex-grow-1 px-3 py-2"
+        style="z-index: 1"
+      >
+        <div class="d-flex align-items-center gap-2">
+          <div class="clan-badges d-flex gap-1">
+            @for (icon of deck.clanIcons; track icon) {
+              <div
+                class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
+              >
+                <i class="vtes" [ngClass]="icon"></i>
+              </div>
+            }
+          </div>
+          @if (deck.pathIcon) {
+            <div class="path-badges">
+              <div
+                class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
+              >
+                <i class="vtes path" [ngClass]="deck.pathIcon"></i>
+              </div>
+            </div>
+          }
+          <div class="discipline-badges d-flex gap-1">
+            @for (icon of deck.disciplineIcons; track icon) {
+              <div
+                class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
+              >
+                <i class="vtes" [ngClass]="icon"></i>
+              </div>
+            }
+          </div>
+        </div>
+        @if (deck.reaction; as reaction) {
+          <div class="deck-reaction position-absolute start-0 ms-3">
+            <div
+              class="reaction-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
+              [title]="'reactions.' + reaction | transloco"
+            >
+              {{ reactionEmojis[reaction] }}
+            </div>
+          </div>
+        }
+        @if (deck.rate; as rate) {
+          <div class="deck-rating position-absolute end-0 me-3">
+            <div
+              class="rating-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
+              [ngClass]="{
+                'rating-low': rate < 3,
+                'rating-medium': rate >= 3 && rate < 4,
+                'rating-high': rate >= 4,
+              }"
+            >
+              <span class="fw-bold me-1">{{ rate }}</span>
+              <i
+                class="bi"
+                [ngClass]="{
+                  'bi-star': rate < 3,
+                  'bi-star-half': rate >= 3 && rate < 4,
+                  'bi-star-fill': rate >= 4,
+                }"
+              ></i>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Bottom Section -->
+      <div class="deck-content px-3 pb-2 position-relative" style="z-index: 1">
+        @if (deck.limitedFormat; as limitedFormat) {
+          <div class="tournament-info text-center fs-7 mb-1">
+            <span
+              class="modern-badge badge-primary d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+            >
+              <i class="bi bi-funnel-fill me-1"></i>
+              <span>{{ limitedFormat }}</span>
+            </span>
+          </div>
+        }
+        @if (deck.tournament; as tournament) {
+          <div class="tournament-info text-center fs-7 mb-1">
+            <span
+              class="modern-badge badge-warning d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+            >
+              <i class="bi bi-award-fill me-1"></i>
+              <span>{{ tournament }}</span>
+            </span>
+          </div>
+        }
+        @if (deck.place || deck.country || deck.rounds) {
+          <div
+            class="tournament-info text-center fs-7 mb-1 small text-secondary"
+          >
+            <span
+              class="d-inline-flex align-items-center flex-wrap justify-content-center gap-2"
+            >
+              @if (deck.place ?? deck.country; as place) {
+                <span [title]="place">
+                  <i class="bi bi-geo-alt me-1"></i
+                  >{{ place | truncate: 30 : true }}
+                </span>
+              }
+              @if (deck.rounds) {
+                <span>
+                  <i class="bi bi-diagram-3 me-1"></i>{{ deck.rounds }}R+F
+                </span>
+              }
+            </span>
+          </div>
+        }
+
+        <div
+          class="deck-author-date text-center fs-7 mb-1 small text-secondary"
+        >
+          <div
+            class="d-flex align-items-center justify-content-center gap-2 flex-wrap"
+          >
+            <span class="author-name fw-medium">
+              {{ deck.author | truncate: 25 : true }}
+              @if (isSupporter) {
+                <i
+                  class="bi bi-patch-check-fill text-primary ms-1"
+                  [title]="'shared.supporter' | transloco"
+                ></i>
+              }
+            </span>
+            <span class="text-muted">•</span>
+            <span class="deck-date text-secondary">{{
+              deck.creationDate | translocoDate: { dateStyle: 'medium' }
+            }}</span>
+            @if (deck.visitStatus === 'VIEWED') {
+              <span
+                class="visit-indicator visit-indicator-viewed"
+                [attr.aria-label]="'decks.viewed' | transloco"
+                [title]="'decks.viewed' | transloco"
+              >
+                <i class="bi bi-check-circle" aria-hidden="true"></i>
+              </span>
+            }
+            @if (deck.visitStatus === 'UPDATED') {
+              <span
+                class="visit-indicator visit-indicator-updated"
+                [attr.aria-label]="'decks.updated_since_visit' | transloco"
+                [title]="'decks.updated_since_visit' | transloco"
+              >
+                <i class="bi bi-check-circle" aria-hidden="true"></i>
+                <span class="visit-update-dot" aria-hidden="true"></span>
+              </span>
+            }
+          </div>
+        </div>
+
+        @if (deck.tags?.length || deck.customTags?.length) {
+          <div class="deck-tags text-center mb-1">
+            @for (tag of displayedTags; track tag) {
+              <span
+                class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
+                [class.tag-pill-spoiler]="tag === 'spoiler'"
+                [class.tag-pill-filtered]="isTagSelected(tag)"
+                [attr.aria-label]="
+                  tag === 'spoiler'
+                    ? ('deck_shared.spoiler_accessible' | transloco)
+                    : null
+                "
+                [attr.title]="
+                  tag === 'spoiler'
+                    ? ('deck_shared.spoiler_accessible' | transloco)
+                    : null
+                "
+                [attr.aria-pressed]="isTagSelected(tag)"
+                (click)="onTagClick(tag, $event)"
+                (keydown.enter)="onTagClick(tag, $event)"
+                role="button"
+                tabindex="0"
+              >
+                #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
+              </span>
+            }
+            @for (tag of deck.customTags ?? []; track tag) {
+              <span
+                class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
+                [class.tag-pill-filtered]="isTagSelected(tag)"
+                [attr.aria-pressed]="isTagSelected(tag)"
+                (click)="onTagClick(tag, $event)"
+                (keydown.enter)="onTagClick(tag, $event)"
+                role="button"
+                tabindex="0"
+                >#{{ tag }}</span
+              >
+            }
+          </div>
+        }
+        @if (deck.filterCards; as filterCards) {
+          <div class="deck-tags text-center mb-1">
+            @for (card of filterCards; track card) {
+              @if (getCardName(card.id); as cardName) {
+                <span
+                  class="card-badge d-inline-flex align-items-center px-2 py-1 m-1 rounded-2 small"
+                >
+                  <span class="card-count fw-bold me-1"
+                    >{{ card.number }}x</span
+                  >
+                  <span class="card-name fw-medium">{{ cardName }}</span>
+                </span>
+              }
+            }
+          </div>
+        }
+      </div>
+    </a>
+    @if (enablePreview() || (managementEnabled() && deck.owner)) {
+      <div
+        class="deck-card-tools d-flex align-items-center px-2 border-top border-opacity-10"
+      >
+        @if (enablePreview()) {
+          <button
+            type="button"
+            class="btn btn-sm btn-link text-decoration-none text-body-secondary flex-grow-1"
+            (click)="togglePreview($event)"
+            [attr.aria-expanded]="showPreview()"
+          >
+            <span class="small">{{ 'decks.deck_preview' | transloco }}</span>
+            <i
+              class="bi ms-1"
+              [ngClass]="showPreview() ? 'bi-chevron-up' : 'bi-chevron-down'"
+              aria-hidden="true"
+            ></i>
+          </button>
+        }
+      </div>
     }
-    <!-- Top Section -->
-    <div class="deck-header px-3 pt-2 pb-1">
-      <div class="deck-header-grid mb-1">
-        <div class="deck-stats d-flex gap-2 text-start align-items-start">
-          <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium text-body">
-            <i class="bi bi-person-badge"></i>
-            <span class="ms-1">{{ deck.stats.crypt }}</span>
-          </span>
-          <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-medium text-body">
-            <i class="bi bi-stack"></i>
-            <span class="ms-1">{{ deck.stats.library }}</span>
-          </span>
-          @if(deck.stats.msrp || deck.stats.price) {
-          <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body">
-            {{ deck.stats.msrp ?? deck.stats.price | currency:deck.stats.currency:'symbol':'1.0-0' }}
-          </span>
-          }
-        </div>
-        <h2 class="text-body fw-bold fs-5 fw-bold text-center mb-0 lh-sm">
-          <span class="deck-indicators me-2">
-            @if (deck.favorite) {
-            <i class="bi bi-bookmark-star-fill text-warning" title="Bookmarked"></i>
-            }
-            @if (!deck.published) {
-            <i class="bi bi-incognito text-muted" [title]="'deck_shared.private_deck' | transloco"></i>
-            }
-            @if (deck.hasVideo) {
-            <i class="bi bi-youtube text-danger" [title]="'filters.has_video' | transloco"></i>
-            }
-          </span>
-          {{ deck.name | titlecase | truncate: 40:true }}
-        </h2>
-        <div class="deck-engagement d-flex gap-2 justify-content-end align-items-end">
-          <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
-            [class.opacity-50]="deck.comments === 0">
-            <span class="fw-medium">{{ deck.comments }}</span>
-            <i class="bi bi-chat ms-1"></i>
-          </span>
-          <span class="stat-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold text-body"
-            [class.opacity-50]="deck.views === 0">
-            <span class="fw-medium">{{ deck.views }}</span>
-            <i class="bi bi-eye-fill ms-1"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Center Section -->
-    <div class="deck-meta d-flex align-items-center justify-content-center position-relative flex-grow-1 px-3 py-2"
-      style="z-index: 1">
-      <div class="d-flex align-items-center gap-2">
-        <div class="clan-badges d-flex gap-1">
-          @for (icon of deck.clanIcons; track icon) {
-          <div class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2">
-            <i class="vtes" [ngClass]="icon"></i>
-          </div>
-          }
-        </div>
-        @if (deck.pathIcon) {
-        <div class="path-badges">
-          <div class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2">
-            <i class="vtes path" [ngClass]="deck.pathIcon"></i>
-          </div>
-        </div>
-        }
-        <div class="discipline-badges d-flex gap-1">
-          @for (icon of deck.disciplineIcons; track icon) {
-          <div class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2">
-            <i class="vtes" [ngClass]="icon"></i>
-          </div>
-          }
-        </div>
-      </div>
-      @if (deck.reaction; as reaction) {
-      <div class="deck-reaction position-absolute start-0 ms-3">
-        <div class="reaction-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
-          [title]="'reactions.' + reaction | transloco">
-          {{ reactionEmojis[reaction] }}
-        </div>
-      </div>
-      }
-      @if (deck.rate; as rate) {
-      <div class="deck-rating position-absolute end-0 me-3">
-        <div class="rating-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small" [ngClass]="{
-          'rating-low': rate < 3,
-          'rating-medium': rate >= 3 && rate < 4,
-          'rating-high': rate >= 4
-        }">
-          <span class="fw-bold me-1">{{ rate }}</span>
-          <i class="bi" [ngClass]="{
-              'bi-star': rate < 3,
-              'bi-star-half': rate >= 3 && rate < 4,
-              'bi-star-fill': rate >= 4
-            }"></i>
-        </div>
-      </div>
-      }
-    </div>
-
-    <!-- Bottom Section -->
-    <div class="deck-content px-3 pb-2 position-relative" style="z-index: 1">
-      @if (deck.limitedFormat; as limitedFormat) {
-      <div class="tournament-info text-center fs-7 mb-1">
-        <span class="modern-badge badge-primary d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
-          <i class="bi bi-funnel-fill me-1"></i>
-          <span>{{ limitedFormat }}</span>
-        </span>
-      </div>
-      }
-      @if (deck.tournament; as tournament) {
-      <div class="tournament-info text-center fs-7 mb-1">
-        <span class="modern-badge badge-warning d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold">
-          <i class="bi bi-award-fill me-1"></i>
-          <span>{{ tournament }}</span>
-        </span>
-      </div>
-      }
-      @if (deck.place || deck.country || deck.rounds) {
-      <div class="tournament-info text-center fs-7 mb-1 small text-secondary">
-        <span class="d-inline-flex align-items-center flex-wrap justify-content-center gap-2">
-          @if (deck.place ?? deck.country; as place) {
-          <span [title]="place">
-            <i class="bi bi-geo-alt me-1"></i>{{ place | truncate: 30:true }}
-          </span>
-          }
-          @if (deck.rounds) {
-          <span>
-            <i class="bi bi-diagram-3 me-1"></i>{{ deck.rounds }}R+F
-          </span>
-          }
-        </span>
-      </div>
-      }
-
-      <div class="deck-author-date text-center fs-7 mb-1 small text-secondary">
-        <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
-          <span class="author-name fw-medium">
-            {{ deck.author | truncate: 25:true }}
-            @if(isSupporter){
-            <i class="bi bi-patch-check-fill text-primary ms-1" [title]="'shared.supporter' | transloco"></i>
-            }
-          </span>
-          <span class="text-muted">•</span>
-          <span class="deck-date text-secondary">{{ deck.creationDate | translocoDate: { dateStyle: 'medium' } }}</span>
-          @if (deck.visitStatus === 'VIEWED') {
-          <span class="visit-indicator visit-indicator-viewed" [attr.aria-label]="'decks.viewed' | transloco"
-            [title]="'decks.viewed' | transloco">
-            <i class="bi bi-check-circle" aria-hidden="true"></i>
-          </span>
-          }
-          @if (deck.visitStatus === 'UPDATED') {
-          <span class="visit-indicator visit-indicator-updated"
-            [attr.aria-label]="'decks.updated_since_visit' | transloco"
-            [title]="'decks.updated_since_visit' | transloco">
-            <i class="bi bi-check-circle" aria-hidden="true"></i>
-            <span class="visit-update-dot" aria-hidden="true"></span>
-          </span>
-          }
-        </div>
-      </div>
-
-      @if (deck.tags?.length || deck.customTags?.length) {
-      <div class="deck-tags text-center mb-1">
-        @for (tag of displayedTags; track tag) {
-        <span
-          class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
-          [class.tag-pill-spoiler]="tag === 'spoiler'" [class.tag-pill-filtered]="isTagSelected(tag)"
-          [attr.aria-label]="tag === 'spoiler' ? ('deck_shared.spoiler_accessible' | transloco) : null"
-          [attr.title]="tag === 'spoiler' ? ('deck_shared.spoiler_accessible' | transloco) : null"
-          [attr.aria-pressed]="isTagSelected(tag)" (click)="onTagClick(tag, $event)"
-          (keydown.enter)="onTagClick(tag, $event)" role="button" tabindex="0">
-          #{{ 'vtes.tags.' + tag | translocoFallback: tag }}
-        </span>
-        }
-        @for (tag of deck.customTags ?? []; track tag) {
-          <span class="tag-pill d-inline-flex align-items-center px-2 py-1 m-1 rounded-pill small fw-medium text-body cursor-pointer"
-            [class.tag-pill-filtered]="isTagSelected(tag)" [attr.aria-pressed]="isTagSelected(tag)"
-            (click)="onTagClick(tag, $event)" (keydown.enter)="onTagClick(tag, $event)" role="button" tabindex="0">#{{ tag }}</span>
-        }
-      </div>
-      }
-      @if(deck.filterCards; as filterCards){
-      <div class="deck-tags text-center mb-1">
-        @for (card of filterCards; track card) {
-        @if(getCardName(card.id); as cardName){
-        <span class="card-badge d-inline-flex align-items-center px-2 py-1 m-1 rounded-2 small">
-          <span class="card-count fw-bold me-1">{{ card.number }}x</span>
-          <span class="card-name fw-medium">{{ cardName }}</span>
-        </span>
-        }
-        }
-      </div>
-      }
-    </div>
-
-    @if(enablePreview()){
-    <div (click)="togglePreview($event)" (keydown.enter)="togglePreview($event)" (keydown.space)="togglePreview($event)"
-      role="button" tabindex="0">
-      <!-- Preview Toggle Button -->
-      <div class="preview-toggle text-center border-top border-opacity-10">
+    @if (managementEnabled() && deck.owner) {
+      <div class="deck-management-actions">
         <button
-          class="btn btn-sm btn-link text-decoration-none d-inline-flex align-items-center gap-1 text-body-secondary">
-          <span class="small">{{ 'decks.deck_preview' | transloco }}</span>
-          <i class="bi transition-transform" [ngClass]="showPreview() ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+          type="button"
+          class="btn btn-sm deck-quick-action"
+          [class.active]="deck.published"
+          [attr.aria-pressed]="!!deck.published"
+          [disabled]="managementDisabled()"
+          (click)="quickAction.emit('visibility')"
+          [title]="
+            (deck.published
+              ? 'deck_management.unpublish'
+              : 'deck_management.publish'
+            ) | transloco
+          "
+          [attr.aria-label]="
+            (deck.published
+              ? 'deck_management.unpublish'
+              : 'deck_management.publish'
+            ) | transloco
+          "
+        >
+          <i
+            class="bi"
+            [class.bi-globe]="deck.published"
+            [class.bi-incognito]="!deck.published"
+            aria-hidden="true"
+          ></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm deck-quick-action"
+          [class.active]="deck.collection"
+          [attr.aria-pressed]="!!deck.collection"
+          [disabled]="managementDisabled()"
+          (click)="quickAction.emit('tracker')"
+          [title]="
+            (deck.collection
+              ? 'deck_management.tracker_off'
+              : 'deck_management.tracker_on'
+            ) | transloco
+          "
+          [attr.aria-label]="
+            (deck.collection
+              ? 'deck_management.tracker_off'
+              : 'deck_management.tracker_on'
+            ) | transloco
+          "
+        >
+          <i class="bi bi-layers" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm deck-quick-action"
+          [disabled]="managementDisabled()"
+          (click)="quickAction.emit('share')"
+          [title]="'deck.share' | transloco"
+          [attr.aria-label]="'deck.share' | transloco"
+        >
+          <i class="bi bi-share" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm deck-quick-action text-danger"
+          [disabled]="managementDisabled()"
+          (click)="quickAction.emit('delete')"
+          [title]="'shared.delete' | transloco"
+          [attr.aria-label]="'shared.delete' | transloco"
+        >
+          <i class="bi bi-trash" aria-hidden="true"></i>
         </button>
       </div>
-
+    }
+    @if (enablePreview()) {
       <!-- Deck Preview Section -->
-      @if(previewCrypt() || previewLibrary()) {
-
-      <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
-        <div class="d-flex gap-3 justify-content-center flex-wrap small">
-          @if(previewCrypt(); as cryptCards) {
-          <div class="preview-section">
-            <div class="text-muted fw-medium mb-1 text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.05em;">
-              <i class="bi bi-person-badge me-1"></i>
-              {{ 'shared.crypt' | transloco }}
-              [{{ deck.stats.crypt }}]
-
-            </div>
-            <div class="d-flex flex-wrap gap-1">
-              @for (card of cryptCards; track card.id) {
-              @if(getCardName(card.id); as cardName) {
-              <span class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2" [ngbPopover]="imgPopover"
-                [disablePopover]="isMobileOrTablet" triggers="mouseenter:mouseleave" container="body">
-                <span class="text-primary fw-bold me-1" style="font-size: 0.7rem;">{{ card.number }}x</span>
-                <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
-              </span>
-              <ng-template #imgPopover>
-                <img #image class="img-popover" [src]="card | cardImage" [alt]="cardName"
-                  (error)="image.src = cdnDomain + '/img/cards/' + card.id + '.jpg'" />
-              </ng-template>
-              }
-              }
-            </div>
+      @if (previewCrypt() || previewLibrary()) {
+        <div
+          class="deck-preview px-3 py-2 border-top border-opacity-10"
+          [class.show-preview]="showPreview()"
+        >
+          <div class="d-flex gap-3 justify-content-center flex-wrap small">
+            @if (previewCrypt(); as cryptCards) {
+              <div class="preview-section">
+                <div
+                  class="text-muted fw-medium mb-1 text-uppercase"
+                  style="font-size: 0.65rem; letter-spacing: 0.05em"
+                >
+                  <i class="bi bi-person-badge me-1"></i>
+                  {{ 'shared.crypt' | transloco }}
+                  [{{ deck.stats.crypt }}]
+                </div>
+                <div class="d-flex flex-wrap gap-1">
+                  @for (card of cryptCards; track card.id) {
+                    @if (getCardName(card.id); as cardName) {
+                      <span
+                        class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2"
+                        [ngbPopover]="imgPopover"
+                        [disablePopover]="isMobileOrTablet"
+                        triggers="mouseenter:mouseleave"
+                        container="body"
+                      >
+                        <span
+                          class="text-primary fw-bold me-1"
+                          style="font-size: 0.7rem"
+                          >{{ card.number }}x</span
+                        >
+                        <span
+                          class="text-body-secondary"
+                          style="font-size: 0.7rem"
+                          >{{ cardName | truncate: 25 : true }}</span
+                        >
+                      </span>
+                      <ng-template #imgPopover>
+                        <img
+                          #image
+                          class="img-popover"
+                          [src]="card | cardImage"
+                          [alt]="cardName"
+                          (error)="
+                            image.src =
+                              cdnDomain + '/img/cards/' + card.id + '.jpg'
+                          "
+                        />
+                      </ng-template>
+                    }
+                  }
+                </div>
+              </div>
+            }
+            @if (previewLibrary(); as libraryCards) {
+              <div class="preview-section">
+                <div
+                  class="text-muted fw-medium mb-1 text-uppercase d-flex flex-wrap align-items-center gap-1"
+                  style="font-size: 0.65rem; letter-spacing: 0.05em"
+                >
+                  <span class="d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-stack"></i>
+                    {{ 'shared.library' | transloco }}
+                    [{{ deck.stats.library }}]
+                  </span>
+                  @if (deck.stats.master) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes master"></i>
+                      {{ deck.stats.master }}
+                    </span>
+                  }
+                  @if (deck.stats.action) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes action"></i>{{ deck.stats.action }}
+                    </span>
+                  }
+                  @if (deck.stats.politicalAction) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes political"></i
+                      >{{ deck.stats.politicalAction }}
+                    </span>
+                  }
+                  @if (deck.stats.equipment) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes equipment"></i>{{ deck.stats.equipment }}
+                    </span>
+                  }
+                  @if (deck.stats.retainer) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes retainer"></i>{{ deck.stats.retainer }}
+                    </span>
+                  }
+                  @if (deck.stats.ally) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes ally"></i>{{ deck.stats.ally }}
+                    </span>
+                  }
+                  @if (deck.stats.actionModifier) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes modifier"></i
+                      >{{ deck.stats.actionModifier }}
+                    </span>
+                  }
+                  @if (deck.stats.combat) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes combat"></i>{{ deck.stats.combat }}
+                    </span>
+                  }
+                  @if (deck.stats.reaction) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes reaction"></i>{{ deck.stats.reaction }}
+                    </span>
+                  }
+                  @if (deck.stats.event) {
+                    <span class="d-inline-flex align-items-center gap-1">
+                      <i class="vtes event"></i>{{ deck.stats.event }}
+                    </span>
+                  }
+                </div>
+                <div class="d-flex flex-wrap gap-1">
+                  @for (card of libraryCards; track card.id) {
+                    @if (getCardName(card.id); as cardName) {
+                      <span
+                        class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2"
+                        [ngbPopover]="imgPopover"
+                        [disablePopover]="isMobileOrTablet"
+                        triggers="mouseenter:mouseleave"
+                        container="body"
+                      >
+                        <span
+                          class="text-primary fw-bold me-1"
+                          style="font-size: 0.7rem"
+                          >{{ card.number }}x</span
+                        >
+                        <span
+                          class="text-body-secondary"
+                          style="font-size: 0.7rem"
+                          >{{ cardName | truncate: 25 : true }}</span
+                        >
+                      </span>
+                      <ng-template #imgPopover>
+                        <img
+                          #image
+                          class="img-popover"
+                          [src]="card | cardImage"
+                          [alt]="cardName"
+                          (error)="
+                            image.src =
+                              cdnDomain + '/img/cards/' + card.id + '.jpg'
+                          "
+                        />
+                      </ng-template>
+                    }
+                  }
+                </div>
+              </div>
+            }
           </div>
-          }
-          @if(previewLibrary(); as libraryCards) {
-          <div class="preview-section">
-            <div class="text-muted fw-medium mb-1 text-uppercase d-flex flex-wrap align-items-center gap-1"
-              style="font-size: 0.65rem; letter-spacing: 0.05em;">
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="bi bi-stack"></i>
-                {{ 'shared.library' | transloco }}
-                [{{ deck.stats.library }}]
-              </span>
-              @if(deck.stats.master){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes master"></i>
-                {{ deck.stats.master }}
-              </span>
-              }
-              @if(deck.stats.action){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes action"></i>{{ deck.stats.action }}
-              </span>
-              }
-              @if(deck.stats.politicalAction){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes political"></i>{{ deck.stats.politicalAction }}
-              </span>
-              }
-              @if(deck.stats.equipment){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes equipment"></i>{{ deck.stats.equipment }}
-              </span>
-              }
-              @if(deck.stats.retainer){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes retainer"></i>{{ deck.stats.retainer }}
-              </span>
-              }
-              @if(deck.stats.ally){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes ally"></i>{{ deck.stats.ally }}
-              </span>
-              }
-              @if(deck.stats.actionModifier){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes modifier"></i>{{ deck.stats.actionModifier }}
-              </span>
-              }
-              @if(deck.stats.combat){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes combat"></i>{{ deck.stats.combat }}
-              </span>
-              }
-              @if(deck.stats.reaction){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes reaction"></i>{{ deck.stats.reaction }}
-              </span>
-              }
-              @if(deck.stats.event){
-              <span class="d-inline-flex align-items-center gap-1">
-                <i class="vtes event"></i>{{ deck.stats.event }}
-              </span>
-              }
-            </div>
-            <div class="d-flex flex-wrap gap-1">
-              @for (card of libraryCards; track card.id) {
-              @if(getCardName(card.id); as cardName) {
-              <span class="preview-card d-inline-flex align-items-center px-2 py-1 rounded-2" [ngbPopover]="imgPopover"
-                [disablePopover]="isMobileOrTablet" triggers="mouseenter:mouseleave" container="body">
-                <span class="text-primary fw-bold me-1" style="font-size: 0.7rem;">{{ card.number }}x</span>
-                <span class="text-body-secondary" style="font-size: 0.7rem;">{{ cardName | truncate: 25:true }}</span>
-              </span>
-              <ng-template #imgPopover>
-                <img #image class="img-popover" [src]="card | cardImage" [alt]="cardName"
-                  (error)="image.src = cdnDomain + '/img/cards/' + card.id + '.jpg'" />
-              </ng-template>
-              }
-
-              }
-            </div>
-          </div>
-          }
         </div>
-      </div>
       }
-      @if(previewLoading()) {
-      <div class="deck-preview px-3 py-2 border-top border-opacity-10" [class.show-preview]="showPreview()">
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border spinner-border-sm text-secondary" role="status">
-            <span class="visually-hidden">{{ 'shared.loading' | transloco }}...</span>
+      @if (previewLoading()) {
+        <div
+          class="deck-preview px-3 py-2 border-top border-opacity-10"
+          [class.show-preview]="showPreview()"
+        >
+          <div class="d-flex justify-content-center">
+            <div
+              class="spinner-border spinner-border-sm text-secondary"
+              role="status"
+            >
+              <span class="visually-hidden"
+                >{{ 'shared.loading' | transloco }}...</span
+              >
+            </div>
           </div>
         </div>
-      </div>
       }
-    </div>
     }
   </div>
-</a>
 }

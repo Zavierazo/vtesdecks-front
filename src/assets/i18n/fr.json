@@ -1908,5 +1908,12 @@
     "pending_images": "Il reste {{count}} images par défaut à télécharger",
     "ready": "Toutes les images par défaut sont téléchargées",
     "continue_download": "Reprendre le téléchargement"
+  },
+  "deck_management": {
+    "unpublish": "Dépublier",
+    "publish": "Publier",
+    "tracker_off": "Désactiver le suivi de collection",
+    "tracker_on": "Activer le suivi de collection",
+    "confirm_publish": "Publier ce deck ? Il apparaîtra dans les recherches publiques de decks."
   }
 }

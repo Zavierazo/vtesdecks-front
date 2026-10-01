@@ -1,3 +1,4 @@
+import { DeckManagementService } from '../decks/deck-management.service'
 import { encodeSnapshot } from '../../utils/deck-snapshot'
 import { deckSeo } from '../../services/seo-route.config'
 import { DeckSnapshot } from '../../models/deck-snapshot'
@@ -115,6 +116,7 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
 @UntilDestroy()
 @Component({
   selector: 'app-deck',
+  providers: [DeckManagementService],
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -158,7 +160,16 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
   ],
 })
 export class DeckComponent implements OnInit, AfterViewInit {
+  readonly management = inject(DeckManagementService)
   private readonly deckShare = inject(DeckShareService)
+
+  async toggleVisibility(): Promise<void> {
+    const deck = this.currentDeck
+    if (this.isSnapshot || !deck?.owner || deck.type !== 'COMMUNITY') {
+      return
+    }
+    await this.management.quickAction(deck, 'visibility')
+  }
 
   get snapshot(): DeckSnapshot {
     if (this.isSnapshot && this.snapshotData) {
