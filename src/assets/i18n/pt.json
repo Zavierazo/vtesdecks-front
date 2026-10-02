@@ -1484,6 +1484,9 @@
     "day_login": "Conectar para Iniciar"
   },
   "deck_metagame": {
+    "nearest_archetype": "Arquétipo mais próximo",
+    "nearest_similarity": "{{percentage}}% de similaridade",
+    "nearest_ignores_requirements": "A comparação ignora os requisitos de cartas.",
     "requirements_title": "Requisitos de cartas",
     "requirements_help": "Todos os requisitos devem ser cumpridos. A similaridade continua a ser aplicada. Deixe vazio para usar apenas a similaridade.",
     "requirements_card": "Carta",

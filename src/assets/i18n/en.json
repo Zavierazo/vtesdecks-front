@@ -1484,6 +1484,9 @@
     "day_login": "Login to Start"
   },
   "deck_metagame": {
+    "nearest_archetype": "Nearest archetype",
+    "nearest_similarity": "{{percentage}}% similarity",
+    "nearest_ignores_requirements": "Comparison ignores card requirements.",
     "requirements_title": "Card requirements",
     "requirements_help": "Every requirement must be met. Similarity matching still applies. Leave empty to match by similarity only.",
     "requirements_card": "Card",

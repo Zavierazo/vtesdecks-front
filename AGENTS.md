@@ -227,4 +227,6 @@ Main resource groups: `/auth`, `/user`, `/decks`, `/cards/crypt`, `/cards/librar
 
 ### Archetype requirements
 
+The create archetype modal shows the suggested deck's nearest existing archetype and its cosine similarity, using the best of both existing reference decks without applying card requirements or the classification threshold. This advisory comparison links to the existing archetype for review in a separate tab and does not appear on suggestion cards or change classification.
+
 Archetypes optionally require minimum copies of exact Crypt or Library card IDs. The admin metagame modal edits these AND conditions; an empty list preserves similarity-only matching. The backend validates and persists requirements and reclassifies decks on requirement or reference-deck changes using the same matcher as its scheduled job. Every condition must pass before the existing similarity threshold and ranking apply. Deploy the backend migration/API before the frontend. Deck synchronization and aggregate refresh retain their existing timing.

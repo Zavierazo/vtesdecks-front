@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common'
+import { DecimalPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -52,6 +52,7 @@ interface RequirementCard {
     MarkdownTextareaComponent,
     TranslocoPipe,
     NgClass,
+    DecimalPipe,
   ],
   templateUrl: './deck-metagame-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -135,6 +136,7 @@ export class DeckMetagameModalComponent {
   }
 
   form!: FormGroup
+  nearestArchetype?: ApiDeckArchetype['nearestArchetype']
   loading = signal(false)
 
   get descriptionControl(): FormControl {
@@ -149,6 +151,9 @@ export class DeckMetagameModalComponent {
   }
 
   init(archetype?: ApiDeckArchetype) {
+    this.nearestArchetype = archetype?.id
+      ? undefined
+      : archetype?.nearestArchetype
     this.form = this.fb.group({
       id: [archetype?.id ?? null],
       name: [archetype?.name ?? ''],

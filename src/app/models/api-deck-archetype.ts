@@ -9,6 +9,7 @@ export interface ApiDeckArchetype {
   deckId: string
   secondaryDeckId?: string | null
   cardRequirements?: { cardId: number; minimumQuantity: number }[]
+  nearestArchetype?: { id: number; name: string; similarity: number } | null
   enabled: boolean
   deckCount: number
   metaCount: number

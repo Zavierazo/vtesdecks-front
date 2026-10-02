@@ -23,6 +23,25 @@
     ></button>
   </div>
   <div class="modal-body">
+    @if (nearestArchetype; as nearest) {
+      <div class="border rounded p-2 mb-3 small">
+        <div class="text-secondary">{{ t('nearest_archetype') }}</div>
+        <a
+          [href]="'/metagame/' + nearest.id"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ nearest.name }}</a
+        >
+        <span class="ms-2">{{
+          t('nearest_similarity', {
+            percentage: (nearest.similarity * 100 | number: '1.0-2'),
+          })
+        }}</span>
+        <div class="text-secondary">
+          {{ t('nearest_ignores_requirements') }}
+        </div>
+      </div>
+    }
     <form [formGroup]="form">
       <fieldset [disabled]="loading()">
         <div class="mb-2">
