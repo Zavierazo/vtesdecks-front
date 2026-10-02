@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personnalisé",
+    "title": "Tags personnalisés",
+    "add": "Ajouter",
+    "remove": "Supprimer le tag",
+    "help": "Jusqu’à 3 tags uniques, de 1 à 10 lettres minuscules (a–z) ou chiffres (0–9).",
+    "invalid": "Utilisez jusqu’à 3 tags uniques de 1 à 10 lettres minuscules ou chiffres.",
+    "filter_invalid": "Saisissez le tag complet : 1 à 10 lettres minuscules ou chiffres.",
+    "owner": "Propriétaire",
+    "shared_omitted": "Les filtres de favoris et de collection sont exclus."
+  },
   "local_drafts": {
     "restore_title": "Restaurer un brouillon",
     "restore_description": "Vos decks sont enregistrés automatiquement sur cet appareil. Restaurez un brouillon, supprimez ceux dont vous n’avez plus besoin ou commencez un nouveau deck. Ils ne sont pas synchronisés et sont supprimés si vous effacez les données du site.",
@@ -788,6 +799,8 @@
     "error": "Désolé, nous n'avons pas pu réinitialiser votre mot de passe"
   },
   "search_features": {
+    "share_error": "Impossible de partager le lien de recherche.",
+    "share_search": "Partager",
     "searches": "Recherches",
     "current_search": "Recherche actuelle",
     "active_preset": "Préréglage actif : {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtre",
     "sort": "Tri",
     "params": {
+      "username": "Propriétaire",
+      "exactAuthor": "Auteur exact",
       "name": "Nom",
       "author": "Auteur",
       "tournament": "Tournoi",
@@ -1469,6 +1484,16 @@
     "day_login": "Connectez-vous pour commencer"
   },
   "deck_metagame": {
+    "requirements_title": "Conditions de cartes",
+    "requirements_help": "Toutes les conditions doivent être remplies. La similarité reste nécessaire. Laissez vide pour utiliser uniquement la similarité.",
+    "requirements_card": "Carte",
+    "requirements_search": "Rechercher une carte de Crypte ou de Bibliothèque",
+    "requirements_minimum": "Copies minimum",
+    "requirements_remove": "Retirer",
+    "requirements_invalid": "Sélectionnez une carte et saisissez un nombre entier positif.",
+    "requirements_duplicate": "Chaque carte ne peut apparaître qu’une fois.",
+    "requirements_add": "Ajouter une condition",
+
     "title": "Decks Metagame",
     "tooltip": "Les données du metagame sont basées sur les résultats des tournois de l'année écoulée (ajustable). Decks groupés par archétype. Seuls les archétypes avec au moins deux victoires dans des tournois de plus de 20 joueurs sont inclus, et ils doivent avoir soit une victoire dans un tournoi de plus de 50 joueurs, soit quatre victoires au total.",
     "create": "Créer",
@@ -1893,5 +1918,12 @@
     "pending_images": "Il reste {{count}} images par défaut à télécharger",
     "ready": "Toutes les images par défaut sont téléchargées",
     "continue_download": "Reprendre le téléchargement"
+  },
+  "deck_management": {
+    "unpublish": "Dépublier",
+    "publish": "Publier",
+    "tracker_off": "Désactiver le suivi de collection",
+    "tracker_on": "Activer le suivi de collection",
+    "confirm_publish": "Publier ce deck ? Il apparaîtra dans les recherches publiques de decks."
   }
 }

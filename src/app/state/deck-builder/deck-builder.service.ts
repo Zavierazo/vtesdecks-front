@@ -1,3 +1,4 @@
+import { validCustomDeckTags } from '../../utils/custom-deck-tags'
 import { ADVENT_DATA, AdventData } from '@advent/advent.data'
 import { inject, Injectable, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
@@ -89,6 +90,7 @@ export class DeckBuilderService {
             id: deck.id,
             name: deck.name,
             description: deck.description,
+            customTags: [...(deck.customTags ?? [])],
             cards: deck.cards ?? [],
             published: deck.published ?? false,
             collection: deck.collection ?? false,
@@ -186,6 +188,7 @@ export class DeckBuilderService {
       ...state,
       name: '[COPY] ' + (deck.name ?? ''),
       description: deck.description,
+      customTags: [],
       extra: deck.extra,
       cards: [...(deck.cards ?? [])],
       published: false,
@@ -223,6 +226,7 @@ export class DeckBuilderService {
         id: deck.id,
         name: deck.name,
         description: deck.description,
+        customTags: [...(deck.customTags ?? [])],
         cards: deck.cards,
         published: deck.published,
         collection: deck.collection,
@@ -236,6 +240,7 @@ export class DeckBuilderService {
             id: saved.id,
             name: saved.name,
             description: saved.description,
+            customTags: [...(saved.customTags ?? [])],
             cards: saved.cards ?? [],
             extra: saved.extra,
             published: saved.published ?? false,
@@ -272,6 +277,18 @@ export class DeckBuilderService {
   updateName(name: string) {
     this.store.updateName(name)
     this.store.setSaved(false)
+    this.saveDraft()
+  }
+
+  updateCustomTags(customTags: string[]): void {
+    if (this.store.getLoading() || !validCustomDeckTags(customTags)) {
+      return
+    }
+    this.store.update((state) => ({
+      ...state,
+      customTags: [...customTags],
+      saved: false,
+    }))
     this.saveDraft()
   }
 
@@ -648,6 +665,7 @@ export class DeckBuilderService {
       ...state,
       name: draft.name ?? state.name,
       description: draft.description ?? state.description,
+      customTags: [...(draft.customTags ?? [])],
       published: draft.published ?? state.published,
       collection: draft.collection ?? state.collection,
       cards: draft.cards ?? state.cards,
@@ -668,6 +686,7 @@ export class DeckBuilderService {
       JSON.stringify({
         name: deck.name ?? '',
         description: deck.description ?? '',
+        customTags: deck.customTags ?? [],
         published: deck.published ?? false,
         collection: deck.collection ?? false,
         extra: deck.extra ?? null,
@@ -699,6 +718,7 @@ export class DeckBuilderService {
       ...state,
       name: draft.deck.name,
       description: draft.deck.description,
+      customTags: [...(draft.deck.customTags ?? [])],
       cards: (draft.deck.cards ?? []).map((card) => ({ ...card })),
       extra: draft.deck.extra,
       saved: false,

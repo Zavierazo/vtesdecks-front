@@ -8,6 +8,7 @@ export interface ApiDeckArchetype {
   description?: string
   deckId: string
   secondaryDeckId?: string | null
+  cardRequirements?: { cardId: number; minimumQuantity: number }[]
   enabled: boolean
   deckCount: number
   metaCount: number

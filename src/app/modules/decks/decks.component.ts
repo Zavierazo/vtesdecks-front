@@ -1,3 +1,4 @@
+import { DeckManagementService } from './deck-management.service'
 import { AsyncPipe, NgClass, ViewportScroller } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -71,6 +72,7 @@ import { scrollContainerIntoView } from '../../shared/utils/scroll.util'
   templateUrl: './decks.component.html',
   styleUrls: ['./decks.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DeckManagementService],
   imports: [
     TranslocoDirective,
     TranslocoPipe,
@@ -92,6 +94,7 @@ import { scrollContainerIntoView } from '../../shared/utils/scroll.util'
   ],
 })
 export class DecksComponent implements OnInit {
+  readonly management = inject(DeckManagementService)
   private readonly document = inject<Document>(DOCUMENT)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
@@ -205,7 +208,7 @@ export class DecksComponent implements OnInit {
     }
   }
 
-  openFilters(content: TemplateRef<any>): void {
+  openFilters(content: TemplateRef<unknown>): void {
     this.offcanvasService.open(content, {
       ariaLabelledBy: 'offcanvas-basic-title',
     })

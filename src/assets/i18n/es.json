@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personalizado",
+    "title": "Tags personalizados",
+    "add": "Añadir",
+    "remove": "Eliminar tag",
+    "help": "Hasta 3 tags únicos, de 1 a 10 letras minúsculas (a–z) o dígitos (0–9).",
+    "invalid": "Usa hasta 3 tags únicos de 1 a 10 letras minúsculas o dígitos.",
+    "filter_invalid": "Escribe el tag completo: de 1 a 10 letras minúsculas o dígitos.",
+    "owner": "Propietario",
+    "shared_omitted": "No incluye los filtros de favoritos ni colección."
+  },
   "local_drafts": {
     "restore_title": "Restaurar un borrador",
     "restore_description": "Tus mazos se guardan automáticamente en este dispositivo. Restaura un borrador, elimina los que ya no necesites o empieza un mazo nuevo. No se sincronizan y se eliminan al borrar los datos del sitio.",
@@ -788,6 +799,8 @@
     "error": "Lo sentimos, no pudimos restablecer su contraseña."
   },
   "search_features": {
+    "share_error": "No se pudo compartir el enlace de búsqueda.",
+    "share_search": "Compartir",
     "searches": "Búsquedas",
     "current_search": "Búsqueda actual",
     "active_preset": "Preset activo: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtro",
     "sort": "Orden",
     "params": {
+      "username": "Propietario",
+      "exactAuthor": "Autor exacto",
       "name": "Nombre",
       "author": "Autor",
       "tournament": "Torneo",
@@ -1469,6 +1484,16 @@
     "day_login": "Iniciar sesión para comenzar"
   },
   "deck_metagame": {
+    "requirements_title": "Requisitos de cartas",
+    "requirements_help": "Deben cumplirse todos los requisitos. Se sigue aplicando la similitud. Déjalo vacío para usar solo la similitud.",
+    "requirements_card": "Carta",
+    "requirements_search": "Buscar cartas de Cripta o Biblioteca",
+    "requirements_minimum": "Copias mínimas",
+    "requirements_remove": "Quitar",
+    "requirements_invalid": "Selecciona una carta e introduce una cantidad entera positiva.",
+    "requirements_duplicate": "Cada carta solo puede aparecer una vez.",
+    "requirements_add": "Añadir requisito",
+
     "title": "Mazos Metajuego",
     "tooltip": "Los datos del metajuego se basan en torneos del último año (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
     "create": "Crear",
@@ -1893,5 +1918,12 @@
     "pending_images": "Quedan {{count}} imágenes predeterminadas por descargar",
     "ready": "Todas las imágenes predeterminadas están descargadas",
     "continue_download": "Continuar descarga"
+  },
+  "deck_management": {
+    "unpublish": "Dejar de publicar",
+    "publish": "Publicar",
+    "tracker_off": "Desactivar seguimiento de colección",
+    "tracker_on": "Activar seguimiento de colección",
+    "confirm_publish": "¿Publicar este mazo? Aparecerá en las búsquedas públicas de mazos."
   }
 }

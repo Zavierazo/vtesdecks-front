@@ -32,4 +32,20 @@ describe('DecksStore', () => {
 
     expect(store.getValue().restorableDecks[0].visitStatus).toBeUndefined()
   })
+  it('does not reintroduce deleted decks from stale pages and deduplicates overlap', () => {
+    store.add([{ id: 'a' }, { id: 'b' }] as ApiDeck[])
+    store.updateTotal(1000)
+    store.updatePage(true, 20)
+    store.removeDecks(['a', 'unloaded'])
+    expect(store.getValue().offset).toBe(19)
+    expect(store.getValue().total).toBe(998)
+    store.add([{ id: 'a' }, { id: 'b' }, { id: 'c' }] as ApiDeck[])
+    expect(store.getEntities().map((deck) => deck.id)).toEqual(['b', 'c'])
+    store.patchDeck('b', { published: true })
+    store.replaceDecks([
+      { id: 'a' },
+      { id: 'b', published: false },
+    ] as ApiDeck[])
+    expect(store.getEntities()).toEqual([{ id: 'b', published: true }])
+  })
 })

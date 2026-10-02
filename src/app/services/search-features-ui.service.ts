@@ -5,33 +5,78 @@ import { SearchPresetScope, SearchParams } from '@models'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { buildSearchPath, normalizeSearchParams } from '@utils'
+import { AuthQuery } from '@state/auth/auth.query'
+import { shareDeckSearch } from '../utils/share-deck-search'
 import { ToastService } from './toast.service'
 
 @Injectable({ providedIn: 'root' })
 export class SearchFeaturesUiService {
+  private readonly authQuery = inject(AuthQuery)
   private readonly toast = inject(ToastService)
   private readonly transloco = inject(TranslocoService)
   private readonly document = inject<Document>(DOCUMENT)
   private readonly cryptQuery = inject(CryptQuery)
   private readonly libraryQuery = inject(LibraryQuery)
 
-  async copyLink(
+  shareLink(scope: SearchPresetScope, params: SearchParams): Promise<boolean> {
+    return this.shareSearch(scope, params, true)
+  }
+
+  copyLink(scope: SearchPresetScope, params: SearchParams): Promise<boolean> {
+    return this.shareSearch(scope, params, false)
+  }
+
+  private async shareSearch(
     scope: SearchPresetScope,
     params: SearchParams,
+    preferNative: boolean,
   ): Promise<boolean> {
-    const url = `${this.document.location.origin}${buildSearchPath(scope, params)}`
     try {
-      const clipboard = this.document.defaultView?.navigator.clipboard
-      if (!clipboard) throw new Error('Clipboard API unavailable')
-      await clipboard.writeText(url)
-      this.toast.show(this.transloco.translate('search_features.copied'), {
-        classname: 'bg-success text-light',
-      })
+      const shared =
+        scope === 'decks'
+          ? shareDeckSearch(params, this.authQuery.getUser())
+          : { params, omittedPersonal: false }
+      const url = `${this.document.location.origin}${buildSearchPath(scope, shared.params)}`
+      const navigator = this.document.defaultView?.navigator
+      const nativeShare = preferNative && typeof navigator?.share === 'function'
+      if (nativeShare) {
+        await navigator.share({ url })
+      } else {
+        if (!navigator?.clipboard) {
+          throw new Error('Clipboard API unavailable')
+        }
+        await navigator.clipboard.writeText(url)
+      }
+      if (shared.omittedPersonal || !nativeShare) {
+        this.toast.show(
+          this.transloco.translate(
+            shared.omittedPersonal
+              ? 'custom_tags.shared_omitted'
+              : 'search_features.copied',
+          ),
+          { classname: 'bg-success text-light' },
+        )
+      }
       return true
-    } catch {
-      this.toast.show(this.transloco.translate('search_features.copy_error'), {
-        classname: 'bg-danger text-light',
-      })
+    } catch (error) {
+      if (
+        error &&
+        typeof error === 'object' &&
+        'name' in error &&
+        error.name === 'AbortError'
+      ) {
+        return false
+      }
+      this.toast.show(
+        this.transloco.translate(
+          preferNative
+            ? 'search_features.share_error'
+            : 'search_features.copy_error',
+        ),
+        {
+          classname: 'bg-danger text-light',
+        },
+      )
       return false
     }
   }

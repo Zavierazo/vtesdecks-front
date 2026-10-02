@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "custom",
+    "title": "Custom tags",
+    "add": "Add",
+    "remove": "Remove tag",
+    "help": "Up to 3 unique tags, 1–10 lowercase letters (a–z) or digits (0–9).",
+    "invalid": "Use up to 3 unique tags with 1–10 lowercase letters or digits.",
+    "filter_invalid": "Enter a complete tag: 1–10 lowercase letters or digits.",
+    "owner": "Owner",
+    "shared_omitted": "Favorites and collection filters are not included."
+  },
   "local_drafts": {
     "restore_title": "Restore a draft",
     "restore_description": "Your decks are saved automatically on this device. Restore a draft, delete those you no longer need, or start a new deck. Drafts are not synced and are removed if you clear site data.",
@@ -788,6 +799,8 @@
     "error": "Sorry, we couldn't reset your password"
   },
   "search_features": {
+    "share_error": "Could not share the search link.",
+    "share_search": "Share",
     "searches": "Searches",
     "current_search": "Current search",
     "active_preset": "Active preset: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filter",
     "sort": "Sort",
     "params": {
+      "username": "Owner",
+      "exactAuthor": "Exact author",
       "name": "Name",
       "author": "Author",
       "tournament": "Tournament",
@@ -1469,6 +1484,16 @@
     "day_login": "Login to Start"
   },
   "deck_metagame": {
+    "requirements_title": "Card requirements",
+    "requirements_help": "Every requirement must be met. Similarity matching still applies. Leave empty to match by similarity only.",
+    "requirements_card": "Card",
+    "requirements_search": "Search Crypt or Library cards",
+    "requirements_minimum": "Minimum copies",
+    "requirements_remove": "Remove",
+    "requirements_invalid": "Select a card and enter a positive whole-number quantity.",
+    "requirements_duplicate": "Each card can appear only once.",
+    "requirements_add": "Add requirement",
+
     "title": "Metagame Decks",
     "tooltip": "Metagame data is based on tournament results from the last year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
     "create": "Create",
@@ -1893,5 +1918,12 @@
     "pending_images": "{{count}} default images still to download",
     "ready": "All default images are downloaded",
     "continue_download": "Continue download"
+  },
+  "deck_management": {
+    "unpublish": "Unpublish",
+    "publish": "Publish",
+    "tracker_off": "Disable collection tracker",
+    "tracker_on": "Enable collection tracker",
+    "confirm_publish": "Publish this deck? It will appear in public deck searches."
   }
 }

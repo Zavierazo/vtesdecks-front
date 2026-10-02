@@ -1,8 +1,3 @@
-@if (loading$ | async) {
-  <div class="alert alert-info text-center mb-0" role="status">
-    {{ 'deck_builder.unsaved_changes.saving' | transloco }}
-  </div>
-}
 <main
   class="container-fluid bg-light1 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 min-vh-100"
   role="main"
@@ -67,8 +62,15 @@
                     [disabled]="(loading$ | async)! || (saved$ | async)!"
                     (click)="saveDeck()"
                   >
-                    <i class="bi bi-save-fill me-1" aria-hidden="true"></i
-                    >{{ t('save') }}
+                    @if (loading$ | async) {
+                      <span
+                        class="spinner-border spinner-border-sm me-1"
+                        aria-hidden="true"
+                      ></span>
+                    } @else {
+                      <i class="bi bi-save-fill me-1" aria-hidden="true"></i>
+                    }
+                    {{ t('save') }}
                   </button>
                 </div>
               </div>
@@ -79,8 +81,15 @@
                 [disabled]="(loading$ | async)! || (saved$ | async)!"
                 (click)="saveDeck()"
               >
-                <i class="bi bi-save-fill me-1" aria-hidden="true"></i
-                >{{ t('save') }}
+                @if (loading$ | async) {
+                  <span
+                    class="spinner-border spinner-border-sm me-1"
+                    aria-hidden="true"
+                  ></span>
+                } @else {
+                  <i class="bi bi-save-fill me-1" aria-hidden="true"></i>
+                }
+                {{ t('save') }}
               </button>
             }
             <div class="builder-header__save-status">
@@ -199,6 +208,89 @@
               <i class="bi bi-funnel"></i>
               {{ t('limited_format') }}
             </button>
+            <div
+              ngbDropdown
+              class="builder-custom-tags d-inline-block"
+              [autoClose]="'outside'"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                id="customTagsToggle"
+                ngbDropdownToggle
+              >
+                <i class="bi bi-tags me-1" aria-hidden="true"></i>
+                {{ 'custom_tags.title' | transloco }}
+                @if (customTags().length > 0) {
+                  <span class="badge text-bg-primary ms-1">{{
+                    customTags().length
+                  }}</span>
+                }
+              </button>
+              <div
+                ngbDropdownMenu
+                aria-labelledby="customTagsToggle"
+                class="builder-custom-tags__menu p-3"
+              >
+                <p class="small text-body-secondary mb-2">
+                  {{ 'custom_tags.help' | transloco }}
+                </p>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  @for (tag of customTags(); track tag) {
+                    <span
+                      class="badge text-bg-secondary d-inline-flex align-items-center gap-2"
+                    >
+                      #{{ tag }}
+                      <button
+                        type="button"
+                        class="btn-close btn-close-white"
+                        [attr.aria-label]="
+                          ('custom_tags.remove' | transloco) + ': ' + tag
+                        "
+                        (click)="removeCustomTag(tag)"
+                      ></button>
+                    </span>
+                  }
+                  @if (customTags().length < 3) {
+                    <div
+                      class="builder-custom-tags__input input-group input-group-sm"
+                    >
+                      <input
+                        #customTagInput
+                        id="customDeckTag"
+                        type="text"
+                        class="form-control"
+                        autocomplete="off"
+                        autocapitalize="none"
+                        spellcheck="false"
+                        [attr.aria-label]="'custom_tags.title' | transloco"
+                        aria-describedby="customTagError"
+                        [attr.aria-invalid]="!!customTagError"
+                        (keydown.enter)="
+                          $event.preventDefault(); addCustomTag(customTagInput)
+                        "
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary"
+                        [attr.aria-label]="'custom_tags.add' | transloco"
+                        (click)="addCustomTag(customTagInput)"
+                      >
+                        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  }
+                  <span
+                    id="customTagError"
+                    class="text-danger small"
+                    aria-live="polite"
+                    >{{
+                      customTagError ? (customTagError | transloco) : ''
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
             @if (deckId$ | async) {
               <button
                 type="button"

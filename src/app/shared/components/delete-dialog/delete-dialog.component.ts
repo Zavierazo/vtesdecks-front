@@ -11,7 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   selector: 'app-delete-dialog',
   templateUrl: './delete-dialog.component.html',
   styleUrls: ['./delete-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective],
 })
 export class DeleteDialogComponent {

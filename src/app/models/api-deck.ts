@@ -29,6 +29,7 @@ export interface ApiDeck {
   user?: ApiPublicUser
   url?: string
   source?: string
+  customTags?: string[]
   description?: string
   set?: string
   limitedFormat?: string

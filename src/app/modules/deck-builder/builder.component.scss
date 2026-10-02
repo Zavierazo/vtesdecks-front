@@ -129,3 +129,23 @@
 .builder-sections {
   @include presentation.content-inset;
 }
+
+.builder-header .builder-custom-tags {
+  &__menu {
+    width: 18rem;
+    max-width: calc(100vw - 2rem);
+  }
+
+  &__input {
+    width: 100%;
+  }
+
+  .input-group .btn {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .btn-close {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+}

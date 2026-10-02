@@ -19,122 +19,195 @@
       class="btn-close"
       aria-label="Close"
       (click)="cancel()"
+      [disabled]="loading()"
     ></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-      <div class="mb-2">
-        <div class="row g-2 align-items-center">
-          <div class="col-3">
-            <label class="form-label" for="icon">{{ t('icon') }}</label>
-            <div
-              class="d-flex align-items-center justify-content-between w-100"
-            >
-              <div class="d-flex align-items-center w-100">
-                <i class="vtes me-2" [ngClass]="iconValue"></i>
-                <select
-                  id="icon"
-                  class="form-select ms-2 me-3 flex-grow-1"
-                  formControlName="icon"
-                >
-                  <option value="">--</option>
-                  <optgroup label="Clans">
-                    @for (c of clans; track c) {
-                      <option [value]="c.icon">{{ c.name }}</option>
-                    }
-                  </optgroup>
-                  <optgroup label="Disciplines">
-                    @for (d of disciplines; track d) {
-                      <option [value]="d.icon">{{ d.name }}</option>
-                      @if (d.hasSuperior) {
-                        <option [value]="d.iconSuperior">
-                          {{ d.name }} (sup)
-                        </option>
+      <fieldset [disabled]="loading()">
+        <div class="mb-2">
+          <div class="row g-2 align-items-center">
+            <div class="col-3">
+              <label class="form-label" for="icon">{{ t('icon') }}</label>
+              <div
+                class="d-flex align-items-center justify-content-between w-100"
+              >
+                <div class="d-flex align-items-center w-100">
+                  <i class="vtes me-2" [ngClass]="iconValue"></i>
+                  <select
+                    id="icon"
+                    class="form-select ms-2 me-3 flex-grow-1"
+                    formControlName="icon"
+                  >
+                    <option value="">--</option>
+                    <optgroup label="Clans">
+                      @for (c of clans; track c) {
+                        <option [value]="c.icon">{{ c.name }}</option>
                       }
-                    }
-                  </optgroup>
-                </select>
+                    </optgroup>
+                    <optgroup label="Disciplines">
+                      @for (d of disciplines; track d) {
+                        <option [value]="d.icon">{{ d.name }}</option>
+                        @if (d.hasSuperior) {
+                          <option [value]="d.iconSuperior">
+                            {{ d.name }} (sup)
+                          </option>
+                        }
+                      }
+                    </optgroup>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <label class="form-label" for="name">{{ t('name') }}</label>
-            <input id="name" class="form-control" formControlName="name" />
+            <div class="col">
+              <label class="form-label" for="name">{{ t('name') }}</label>
+              <input id="name" class="form-control" formControlName="name" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mb-2">
-        <label class="form-label" for="type">{{ t('type') }}</label>
-        <select id="type" class="form-select" formControlName="type">
-          <option value="">--</option>
-          <option value="Allies">Allies</option>
-          <option value="Wall">Wall</option>
-          <option value="Toolbox">Toolbox</option>
-          <option value="Rush">Rush</option>
-          <option value="Vote">Vote</option>
-          <option value="Powerbleed">Powerbleed</option>
-          <option value="Swarm">Swarm</option>
-          <option value="Stealth &amp; Bleed">Stealth &amp; Bleed</option>
-          <option value="Vote &amp; Bleed">Vote &amp; Bleed</option>
-          <option value="Lock &amp; Bleed">Lock &amp; Bleed</option>
-          <option value="Allies Rush">Allies Rush</option>
-          <option value="Allies Swarm">Allies Swarm</option>
-          <option value="Vote Swarm">Vote Swarm</option>
-          <option value="Bleed Swarm">Bleed Swarm</option>
-          <option value="Special">Special</option>
-          <option value="Combo">Combo</option>
-        </select>
-      </div>
+        <div class="mb-2">
+          <label class="form-label" for="type">{{ t('type') }}</label>
+          <select id="type" class="form-select" formControlName="type">
+            <option value="">--</option>
+            <option value="Allies">Allies</option>
+            <option value="Wall">Wall</option>
+            <option value="Toolbox">Toolbox</option>
+            <option value="Rush">Rush</option>
+            <option value="Vote">Vote</option>
+            <option value="Powerbleed">Powerbleed</option>
+            <option value="Swarm">Swarm</option>
+            <option value="Stealth &amp; Bleed">Stealth &amp; Bleed</option>
+            <option value="Vote &amp; Bleed">Vote &amp; Bleed</option>
+            <option value="Lock &amp; Bleed">Lock &amp; Bleed</option>
+            <option value="Allies Rush">Allies Rush</option>
+            <option value="Allies Swarm">Allies Swarm</option>
+            <option value="Vote Swarm">Vote Swarm</option>
+            <option value="Bleed Swarm">Bleed Swarm</option>
+            <option value="Special">Special</option>
+            <option value="Combo">Combo</option>
+          </select>
+        </div>
 
-      <div class="mb-2">
-        <label class="form-label" for="deckId">{{ t('deckId') }}</label>
-        <input id="deckId" class="form-control" formControlName="deckId" />
-        <a
-          class="text-decoration-none"
-          [href]="'/deck/' + form.value.deckId"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ t('preview') }}
-        </a>
-      </div>
-
-      <div class="mb-2">
-        <label class="form-label" for="secondaryDeckId">{{
-          t('secondaryDeckId')
-        }}</label>
-        <input
-          id="secondaryDeckId"
-          class="form-control"
-          formControlName="secondaryDeckId"
-        />
-        @if (form.value.secondaryDeckId) {
+        <div class="mb-2">
+          <label class="form-label" for="deckId">{{ t('deckId') }}</label>
+          <input id="deckId" class="form-control" formControlName="deckId" />
           <a
             class="text-decoration-none"
-            [href]="'/deck/' + form.value.secondaryDeckId"
+            [href]="'/deck/' + form.value.deckId"
             target="_blank"
             rel="noopener noreferrer"
           >
             {{ t('preview') }}
           </a>
-        }
-      </div>
+        </div>
 
-      <div class="mb-2">
-        <app-markdown-textarea
-          [control]="descriptionControl"
-          [placeholder]="t('description_placeholder')"
-          [label]="t('description')"
-        ></app-markdown-textarea>
-      </div>
+        <div class="mb-2">
+          <label class="form-label" for="secondaryDeckId">{{
+            t('secondaryDeckId')
+          }}</label>
+          <input
+            id="secondaryDeckId"
+            class="form-control"
+            formControlName="secondaryDeckId"
+          />
+          @if (form.value.secondaryDeckId) {
+            <a
+              class="text-decoration-none"
+              [href]="'/deck/' + form.value.secondaryDeckId"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ t('preview') }}
+            </a>
+          }
+        </div>
+
+        <fieldset class="mb-3" [disabled]="loading()">
+          <legend class="fs-6">{{ t('requirements_title') }}</legend>
+          <p class="small text-muted">{{ t('requirements_help') }}</p>
+          <div formArrayName="cardRequirements">
+            @for (row of requirements.controls; track row; let i = $index) {
+              <div class="row g-2 mb-2" [formGroupName]="i">
+                <div class="col-12 col-sm-7">
+                  <label class="form-label" [for]="'requirement-card-' + i">{{
+                    t('requirements_card')
+                  }}</label>
+                  <input
+                    class="form-control"
+                    [id]="'requirement-card-' + i"
+                    formControlName="card"
+                    [ngbTypeahead]="searchCard"
+                    [inputFormatter]="formatCard"
+                    [resultFormatter]="formatCard"
+                    [editable]="false"
+                    [placeholder]="t('requirements_search')"
+                  />
+                </div>
+                <div class="col-8 col-sm-3">
+                  <label class="form-label" [for]="'requirement-min-' + i">{{
+                    t('requirements_minimum')
+                  }}</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    min="1"
+                    max="2147483647"
+                    step="1"
+                    [id]="'requirement-min-' + i"
+                    formControlName="minimumQuantity"
+                  />
+                </div>
+                <div class="col-4 col-sm-2 d-flex align-items-end">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    (click)="removeRequirement(i)"
+                  >
+                    {{ t('requirements_remove') }}
+                  </button>
+                </div>
+                @if (row.invalid && row.touched) {
+                  <div class="col-12 small text-danger" role="alert">
+                    {{ t('requirements_invalid') }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          @if (requirements.hasError('duplicate')) {
+            <p class="small text-danger" role="alert">
+              {{ t('requirements_duplicate') }}
+            </p>
+          }
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            (click)="addRequirement()"
+          >
+            {{ t('requirements_add') }}
+          </button>
+        </fieldset>
+
+        <div class="mb-2">
+          <app-markdown-textarea
+            [control]="descriptionControl"
+            [placeholder]="t('description_placeholder')"
+            [label]="t('description')"
+          ></app-markdown-textarea>
+        </div>
+      </fieldset>
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="cancel()">
+    <button class="btn btn-secondary" (click)="cancel()" [disabled]="loading()">
       {{ 'shared.cancel' | transloco }}
     </button>
-    <button class="btn btn-primary" (click)="save()" [disabled]="loading()">
+    <button
+      class="btn btn-primary"
+      (click)="save()"
+      [disabled]="loading() || form.invalid"
+    >
       @if (loading()) {
         <span
           class="spinner-border spinner-border-sm me-2"

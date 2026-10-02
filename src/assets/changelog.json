@@ -1,5 +1,15 @@
 [
   {
+    "version": "2.82.0",
+    "date": "2nd October, 2026",
+    "changes": [
+      "Organize your decks with <strong>custom tags</strong>: add up to three tags from the Deck Builder and use them alongside existing tags to filter decks. <strong>My decks</strong> suggests your own tags and now includes <strong>Share search</strong>.",
+      "Manage your decks faster from <strong>My decks</strong>: each deck now has quick actions to share, publish or unpublish, toggle collection tracking and delete, without opening it.",
+      "Enhanced <strong>Metagame archetype analysis</strong> with more accurate deck similarity matching.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.81.0",
     "date": "23rd September, 2026",
     "changes": [
@@ -7,8 +17,7 @@
       "Card quantities in the <strong>Deck Builder</strong> can now be edited directly in your deck or the card picker. Click a quantity, type the new number and press Enter to apply or Escape to cancel. Grid controls and list spacing have also been improved for easier editing.",
       "The <strong>Deck Builder</strong> has a more compact layout, with saving, visibility and version controls together, grouped deck actions and a description editor that expands as you write. Crypt and Library headers, statistics and spacing have also been updated for a more consistent look.",
       "The new <strong>Show changes</strong> link beside Save lets you review unsaved card changes against your last account save, including quantity differences and before-and-after Crypt and Library totals. Local draft status also appears beside the save controls.",
-      "The <strong>Crypt and Library pickers</strong> now show removable filter chips, an active-filter count on mobile, the selected sort field and direction, and the total number of matching cards. Searches with no results also offer clearer guidance.",
-      "Minor bug fixes and performance improvements."
+      "The <strong>Crypt and Library pickers</strong> now show removable filter chips, an active-filter count on mobile, the selected sort field and direction, and the total number of matching cards. Searches with no results also offer clearer guidance."
     ]
   },
   {

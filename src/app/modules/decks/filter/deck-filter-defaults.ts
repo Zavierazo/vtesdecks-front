@@ -44,6 +44,13 @@ export function deckFilterDefs(
 ): DeckFilterDef[] {
   return [
     {
+      name: 'username',
+      kind: 'string',
+      default: '',
+      labelKey: 'custom_tags.owner',
+      control: false,
+    },
+    {
       name: 'name',
       kind: 'string',
       default: '',
@@ -151,7 +158,7 @@ export function deckFilterDefs(
       default: 'any',
       labelKey: `vtes.type.${name}`,
     })),
-    { name: 'tags', kind: 'string', default: '', labelKey: 'filters.tags' },
+    { name: 'tags', kind: 'list', default: '', labelKey: 'filters.tags' },
     {
       name: 'minPrice',
       kind: 'decimal',

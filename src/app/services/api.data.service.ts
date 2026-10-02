@@ -508,6 +508,17 @@ export class ApiDataService {
     )
   }
 
+  canPublishDeck(id: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/publishable`)
+  }
+
+  setDeckVisibility(id: string, published: boolean): Observable<boolean> {
+    return this.httpClient.put<boolean>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/visibility`,
+      published,
+    )
+  }
+
   deleteDeckBuilder(id: string, permanent: boolean): Observable<boolean> {
     return this.httpClient.delete<boolean>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}`,
@@ -576,6 +587,12 @@ export class ApiDataService {
       `${environment.api.baseUrl}${this.shoppingOptimizePath}`,
       request,
       { context: this.repeatablePostContext() },
+    )
+  }
+
+  getUserDeckTags(): Observable<string[]> {
+    return this.httpClient.get<string[]>(
+      `${environment.api.baseUrl}/user/decks/tags`,
     )
   }
 

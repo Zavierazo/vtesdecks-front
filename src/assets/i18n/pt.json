@@ -1,4 +1,15 @@
 {
+  "custom_tags": {
+    "custom": "personalizada",
+    "title": "Tags personalizadas",
+    "add": "Adicionar",
+    "remove": "Remover tag",
+    "help": "Até 3 tags únicas, de 1 a 10 letras minúsculas (a–z) ou algarismos (0–9).",
+    "invalid": "Use até 3 tags únicas de 1 a 10 letras minúsculas ou algarismos.",
+    "filter_invalid": "Escreva a tag completa: 1 a 10 letras minúsculas ou algarismos.",
+    "owner": "Proprietário",
+    "shared_omitted": "Os filtros de favoritos e coleção não estão incluídos."
+  },
   "local_drafts": {
     "restore_title": "Restaurar um rascunho",
     "restore_description": "Os seus baralhos são guardados automaticamente neste dispositivo. Restaure um rascunho, elimine os que já não precisa ou comece um novo baralho. Não são sincronizados e são eliminados ao limpar os dados do site.",
@@ -788,6 +799,8 @@
     "error": "Desculpe, não foi possível redefinir sua senha."
   },
   "search_features": {
+    "share_error": "Não foi possível partilhar o link da pesquisa.",
+    "share_search": "Partilhar",
     "searches": "Pesquisas",
     "current_search": "Pesquisa atual",
     "active_preset": "Predefinição ativa: {{ name }}",
@@ -828,6 +841,8 @@
     "filter": "Filtro",
     "sort": "Ordenação",
     "params": {
+      "username": "Proprietário",
+      "exactAuthor": "Autor exato",
       "name": "Nome",
       "author": "Autor",
       "tournament": "Torneio",
@@ -1469,6 +1484,16 @@
     "day_login": "Conectar para Iniciar"
   },
   "deck_metagame": {
+    "requirements_title": "Requisitos de cartas",
+    "requirements_help": "Todos os requisitos devem ser cumpridos. A similaridade continua a ser aplicada. Deixe vazio para usar apenas a similaridade.",
+    "requirements_card": "Carta",
+    "requirements_search": "Pesquisar cartas de Cripta ou Biblioteca",
+    "requirements_minimum": "Cópias mínimas",
+    "requirements_remove": "Remover",
+    "requirements_invalid": "Selecione uma carta e introduza uma quantidade inteira positiva.",
+    "requirements_duplicate": "Cada carta só pode aparecer uma vez.",
+    "requirements_add": "Adicionar requisito",
+
     "title": "Metajogo Baralhos",
     "tooltip": "Os dados do metagame são baseados em torneios do último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
     "create": "Criar",
@@ -1893,5 +1918,12 @@
     "pending_images": "Faltam {{count}} imagens predefinidas para transferir",
     "ready": "Todas as imagens predefinidas foram transferidas",
     "continue_download": "Continuar transferência"
+  },
+  "deck_management": {
+    "unpublish": "Despublicar",
+    "publish": "Publicar",
+    "tracker_off": "Desativar acompanhamento da coleção",
+    "tracker_on": "Ativar acompanhamento da coleção",
+    "confirm_publish": "Publicar este deck? Aparecerá nas pesquisas públicas de decks."
   }
 }

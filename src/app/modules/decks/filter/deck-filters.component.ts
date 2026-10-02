@@ -32,9 +32,15 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
 import { ApiDeckArchetype } from '@models'
 import { IsLoggedDirective } from '@shared/directives/is-logged.directive'
+import { AuthQuery } from '@state/auth/auth.query'
+import { validCustomDeckTag } from '../../../utils/custom-deck-tags'
 import { DecksQuery } from '@state/decks/decks.query'
 import {
   BehaviorSubject,
+  catchError,
+  of,
+  switchMap,
+  startWith,
   combineLatest,
   Observable,
   OperatorFunction,
@@ -106,7 +112,10 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   clanMode: 'and' | 'or' = 'and'
   disciplineMode: 'and' | 'or' = 'and'
   paths!: string[]
+  private readonly authQuery = inject(AuthQuery)
+  private readonly availableTagsState = new BehaviorSubject<string[]>([])
   availableTags: string[] = []
+  tagInputError = false
   readonly availableRounds = DECK_ROUND_OPTIONS
   rounds: number[] = []
   archetypes: ApiDeckArchetype[] = []
@@ -131,12 +140,27 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
     this.disciplineMode = this.getCurrentMode('disciplineMode')
     this.paths = this.getCurrentPaths()
     this.rounds = this.getCurrentRounds()
-    this.apiDataService
-      .getDeckTags()
+    combineLatest([this.route.queryParamMap, this.authQuery.selectUser()])
       .pipe(
+        map(([params, user]) =>
+          params.get('type') === 'USER' ? (user ?? '') : '',
+        ),
+        distinctUntilChanged(),
+        switchMap((user) =>
+          (user
+            ? this.apiDataService.getUserDeckTags()
+            : this.apiDataService.getDeckTags()
+          ).pipe(
+            catchError(() =>
+              this.apiDataService.getDeckTags().pipe(catchError(() => of([]))),
+            ),
+            startWith([] as string[]),
+          ),
+        ),
         untilDestroyed(this),
         tap((tags) => {
           this.availableTags = tags
+          this.availableTagsState.next(tags)
           this.changeDetector.markForCheck()
         }),
       )
@@ -680,15 +704,40 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
       filter(() => !this.tagsTypeahead().isPopupOpen()),
     )
     const inputFocus$ = this.tagFocus$
-    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-      map((term) =>
-        term === ''
-          ? this.availableTags.slice(0, 100)
-          : this.availableTags
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 100),
-      ),
+    return combineLatest([
+      merge(debouncedText$, inputFocus$, clicksWithClosedPopup$),
+      this.availableTagsState,
+    ]).pipe(
+      map(([term, tags]) => {
+        const suggestions = tags
+          .filter((tag) => tag.toLowerCase().includes(term.toLowerCase()))
+          .slice(0, 100)
+        if (validCustomDeckTag(term) && !tags.includes(term)) {
+          return [term, ...suggestions].slice(0, 100)
+        }
+        return suggestions
+      }),
     )
+  }
+
+  addTypedTag(input: HTMLInputElement, event: Event): void {
+    // Let the typeahead commit a keyboard-highlighted suggestion first.
+    if (input.getAttribute('aria-activedescendant')) {
+      return
+    }
+    event.preventDefault()
+    const tag = input.value
+    if (!tag) {
+      return
+    }
+    if (!validCustomDeckTag(tag) && !this.availableTags.includes(tag)) {
+      this.tagInputError = true
+      return
+    }
+    this.onSelectTag(tag)
+    input.value = ''
+    this.tagInputError = false
+    this.tagsTypeahead().dismissPopup()
   }
 
   onSelectTagItem(
@@ -697,6 +746,7 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   ) {
     selectItemEvent.preventDefault()
     input.value = ''
+    this.tagInputError = false
     this.onSelectTag(selectItemEvent.item)
   }
 

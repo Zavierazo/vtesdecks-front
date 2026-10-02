@@ -33,6 +33,8 @@ export class DecksStore {
   private readonly state$ = toObservable(this.state)
   private readonly entities = signal<ApiDeck[]>([])
   private readonly entities$ = toObservable(this.entities)
+  private readonly removed = new Set<string>()
+  private readonly overrides = new Map<string, Partial<ApiDeck>>()
   private readonly loading = signal<boolean>(false)
   private readonly loading$ = toObservable(this.loading)
 
@@ -93,6 +95,8 @@ export class DecksStore {
   }
 
   reset(): void {
+    this.removed.clear()
+    this.overrides.clear()
     this.state.update(() => initialState)
     this.entities.update(() => [])
     this.loading.update(() => false)
@@ -107,7 +111,50 @@ export class DecksStore {
   }
 
   add(entities: ApiDeck[]) {
-    this.entities.update((current) => [...current, ...entities])
+    this.entities.update((current) => {
+      const existing = new Set(current.map((deck) => deck.id))
+      return [
+        ...current,
+        ...entities
+          .filter(
+            (deck) => !existing.has(deck.id) && !this.removed.has(deck.id),
+          )
+          .map((deck) => ({ ...deck, ...this.overrides.get(deck.id) })),
+      ]
+    })
+  }
+
+  getEntities(): ApiDeck[] {
+    return this.entities()
+  }
+
+  patchDeck(id: string, patch: Partial<ApiDeck>): void {
+    this.overrides.set(id, { ...this.overrides.get(id), ...patch })
+    this.entities.update((decks) =>
+      decks.map((deck) => (deck.id === id ? { ...deck, ...patch } : deck)),
+    )
+  }
+
+  removeDecks(ids: string[]): void {
+    const deleted = new Set(ids)
+    const loaded = this.entities().filter((deck) => deleted.has(deck.id)).length
+    ids.forEach((id) => this.removed.add(id))
+    this.entities.update((decks) =>
+      decks.filter((deck) => !deleted.has(deck.id)),
+    )
+    this.update((state) => ({
+      ...state,
+      total: Math.max(0, state.total - ids.length),
+      offset: Math.max(0, state.offset - loaded),
+    }))
+  }
+
+  replaceDecks(decks: ApiDeck[]): void {
+    this.entities.set(
+      decks
+        .filter((deck) => !this.removed.has(deck.id))
+        .map((deck) => ({ ...deck, ...this.overrides.get(deck.id) })),
+    )
   }
 
   markVisited(deckId: string) {

@@ -1,3 +1,4 @@
+import { DeckQuickAction } from '../decks/deck-management.service'
 import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -60,6 +61,10 @@ export class DeckCardComponent implements OnInit {
   height = input<string>('160px')
   enablePreview = input<boolean>(false)
   selectedTags = input<string[]>([])
+
+  managementEnabled = input(false)
+  managementDisabled = input(false)
+  readonly quickAction = output<DeckQuickAction>()
 
   readonly tagClick = output<string>()
 
