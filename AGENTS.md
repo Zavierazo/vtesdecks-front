@@ -224,3 +224,7 @@ English (en), Español (es), Français (fr), Português (pt).
 - Prod: `https://api.vtesdecks.com/1.0`
 
 Main resource groups: `/auth`, `/user`, `/decks`, `/cards/crypt`, `/cards/library`, `/comments`, `/proxy`, `/ai/ask/async`, `/sets`, `/deck-archetype`, `/vtesdle`.
+
+### Archetype requirements
+
+Archetypes optionally require minimum copies of exact Crypt or Library card IDs. The admin metagame modal edits these AND conditions; an empty list preserves similarity-only matching. The backend validates and persists requirements and reclassifies decks on requirement or reference-deck changes using the same matcher as its scheduled job. Every condition must pass before the existing similarity threshold and ranking apply. Deploy the backend migration/API before the frontend. Deck synchronization and aggregate refresh retain their existing timing.

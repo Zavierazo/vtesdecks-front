@@ -1484,6 +1484,16 @@
     "day_login": "Login to Start"
   },
   "deck_metagame": {
+    "requirements_title": "Card requirements",
+    "requirements_help": "Every requirement must be met. Similarity matching still applies. Leave empty to match by similarity only.",
+    "requirements_card": "Card",
+    "requirements_search": "Search Crypt or Library cards",
+    "requirements_minimum": "Minimum copies",
+    "requirements_remove": "Remove",
+    "requirements_invalid": "Select a card and enter a positive whole-number quantity.",
+    "requirements_duplicate": "Each card can appear only once.",
+    "requirements_add": "Add requirement",
+
     "title": "Metagame Decks",
     "tooltip": "Metagame data is based on tournament results from the last year (adjustable). Decks are grouped by archetype. Only archetypes with at least two wins in 20+ player tournaments are included, and they must either have one win in a 50+ player tournament or four total wins.",
     "create": "Create",

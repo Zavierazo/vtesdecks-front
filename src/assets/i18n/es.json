@@ -1484,6 +1484,16 @@
     "day_login": "Iniciar sesión para comenzar"
   },
   "deck_metagame": {
+    "requirements_title": "Requisitos de cartas",
+    "requirements_help": "Deben cumplirse todos los requisitos. Se sigue aplicando la similitud. Déjalo vacío para usar solo la similitud.",
+    "requirements_card": "Carta",
+    "requirements_search": "Buscar cartas de Cripta o Biblioteca",
+    "requirements_minimum": "Copias mínimas",
+    "requirements_remove": "Quitar",
+    "requirements_invalid": "Selecciona una carta e introduce una cantidad entera positiva.",
+    "requirements_duplicate": "Cada carta solo puede aparecer una vez.",
+    "requirements_add": "Añadir requisito",
+
     "title": "Mazos Metajuego",
     "tooltip": "Los datos del metajuego se basan en torneos del último año (ajustable). Los mazos se agrupan por arquetipo. Solo se incluyen arquetipos con al menos dos victorias en eventos de 20+ jugadores, y que tengan una victoria en torneo de 50+ jugadores o cuatro victorias en total.",
     "create": "Crear",

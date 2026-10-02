@@ -1484,6 +1484,16 @@
     "day_login": "Conectar para Iniciar"
   },
   "deck_metagame": {
+    "requirements_title": "Requisitos de cartas",
+    "requirements_help": "Todos os requisitos devem ser cumpridos. A similaridade continua a ser aplicada. Deixe vazio para usar apenas a similaridade.",
+    "requirements_card": "Carta",
+    "requirements_search": "Pesquisar cartas de Cripta ou Biblioteca",
+    "requirements_minimum": "Cópias mínimas",
+    "requirements_remove": "Remover",
+    "requirements_invalid": "Selecione uma carta e introduza uma quantidade inteira positiva.",
+    "requirements_duplicate": "Cada carta só pode aparecer uma vez.",
+    "requirements_add": "Adicionar requisito",
+
     "title": "Metajogo Baralhos",
     "tooltip": "Os dados do metagame são baseados em torneios do último ano (ajustável). Os decks são agrupados por arquetipo. Apenas arquetipos com pelo menos duas vitórias em eventos com 20+ jogadores são incluídos, e devem ter uma vitória em torneio com 50+ jogadores ou quatro vitórias no total.",
     "create": "Criar",

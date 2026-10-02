@@ -1484,6 +1484,16 @@
     "day_login": "Connectez-vous pour commencer"
   },
   "deck_metagame": {
+    "requirements_title": "Conditions de cartes",
+    "requirements_help": "Toutes les conditions doivent être remplies. La similarité reste nécessaire. Laissez vide pour utiliser uniquement la similarité.",
+    "requirements_card": "Carte",
+    "requirements_search": "Rechercher une carte de Crypte ou de Bibliothèque",
+    "requirements_minimum": "Copies minimum",
+    "requirements_remove": "Retirer",
+    "requirements_invalid": "Sélectionnez une carte et saisissez un nombre entier positif.",
+    "requirements_duplicate": "Chaque carte ne peut apparaître qu’une fois.",
+    "requirements_add": "Ajouter une condition",
+
     "title": "Decks Metagame",
     "tooltip": "Les données du metagame sont basées sur les résultats des tournois de l'année écoulée (ajustable). Decks groupés par archétype. Seuls les archétypes avec au moins deux victoires dans des tournois de plus de 20 joueurs sont inclus, et ils doivent avoir soit une victoire dans un tournoi de plus de 50 joueurs, soit quatre victoires au total.",
     "create": "Créer",

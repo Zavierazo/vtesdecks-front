@@ -6,6 +6,9 @@ import {
   signal,
 } from '@angular/core'
 import {
+  AbstractControl,
+  FormArray,
+  Validators,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -17,11 +20,26 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService, ToastService } from '@services'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
-import { CLAN_LIST, DISCIPLINE_LIST } from '@utils'
+import { CLAN_LIST, DISCIPLINE_LIST, compareCardNames } from '@utils'
+import { CryptQuery } from '@state/crypt/crypt.query'
+import { LibraryQuery } from '@state/library/library.query'
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  switchMap,
+} from 'rxjs'
+
+interface RequirementCard {
+  id: number
+  name: string
+}
 
 @UntilDestroy()
 @Component({
@@ -29,6 +47,7 @@ import { CLAN_LIST, DISCIPLINE_LIST } from '@utils'
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    NgbTypeahead,
     TranslocoDirective,
     MarkdownTextareaComponent,
     TranslocoPipe,
@@ -45,6 +64,75 @@ export class DeckMetagameModalComponent {
   private readonly toast = inject(ToastService)
   private readonly transloco = inject(TranslocoService)
   private readonly fb = inject(FormBuilder)
+
+  private readonly cryptQuery = inject(CryptQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
+
+  get requirements(): FormArray {
+    return this.form.get('cardRequirements') as FormArray
+  }
+
+  readonly formatCard = (card: RequirementCard) => card.name
+  readonly searchCard = (
+    text$: Observable<string>,
+  ): Observable<RequirementCard[]> =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap((term) =>
+        combineLatest([
+          this.cryptQuery.selectByName(term, 10),
+          this.libraryQuery.selectByName(term, 10),
+        ]).pipe(
+          map(([crypt, library]) =>
+            [...crypt, ...library]
+              .sort((a, b) => compareCardNames(a, b, term))
+              .slice(0, 10),
+          ),
+        ),
+      ),
+    )
+
+  addRequirement(requirement?: {
+    cardId: number
+    minimumQuantity: number
+  }): void {
+    if (this.loading()) {
+      return
+    }
+    const card = requirement
+      ? (this.cryptQuery.getEntity(requirement.cardId) ??
+        this.libraryQuery.getEntity(requirement.cardId) ?? {
+          id: requirement.cardId,
+          name: `#${requirement.cardId}`,
+        })
+      : null
+    this.requirements.push(
+      this.fb.group({
+        card: [
+          card,
+          (control: AbstractControl) =>
+            Number.isInteger(control.value?.id) ? null : { card: true },
+        ],
+        minimumQuantity: [
+          requirement?.minimumQuantity ?? 1,
+          [
+            Validators.required,
+            Validators.min(1),
+            Validators.max(2147483647),
+            (control: AbstractControl) =>
+              Number.isSafeInteger(control.value) ? null : { integer: true },
+          ],
+        ],
+      }),
+    )
+  }
+
+  removeRequirement(index: number): void {
+    if (!this.loading()) {
+      this.requirements.removeAt(index)
+    }
+  }
 
   form!: FormGroup
   loading = signal(false)
@@ -70,7 +158,18 @@ export class DeckMetagameModalComponent {
       icon: [archetype?.icon ?? ''],
       description: [archetype?.description ?? ''],
       enabled: [archetype?.enabled ?? true],
+      cardRequirements: this.fb.array([], {
+        validators: (control: AbstractControl) => {
+          const ids = (control.value as { card: RequirementCard | null }[])
+            .map((row) => row.card?.id)
+            .filter((id) => id !== undefined)
+          return new Set(ids).size === ids.length ? null : { duplicate: true }
+        },
+      }),
     })
+    for (const requirement of archetype?.cardRequirements ?? []) {
+      this.addRequirement(requirement)
+    }
   }
 
   save() {
@@ -78,8 +177,21 @@ export class DeckMetagameModalComponent {
       return
     }
 
+    this.form.markAllAsTouched()
+    if (this.form.invalid) {
+      return
+    }
+    const payload = {
+      ...this.form.getRawValue(),
+      cardRequirements: this.requirements
+        .getRawValue()
+        .map((row: { card: RequirementCard; minimumQuantity: number }) => ({
+          cardId: row.card.id,
+          minimumQuantity: row.minimumQuantity,
+        })),
+    } as ApiDeckArchetype
     this.loading.set(true)
-    const payload = this.form.value as ApiDeckArchetype
+    this.form.disable()
     if (!payload.secondaryDeckId) {
       payload.secondaryDeckId = null
     }
@@ -92,6 +204,7 @@ export class DeckMetagameModalComponent {
       next: (res) => this.modal.close(res),
       error: (err) => {
         this.loading.set(false)
+        this.form.enable()
         this.toast.show(
           err?.message || this.transloco.translate('shared.unexpected_error'),
           {
@@ -104,6 +217,8 @@ export class DeckMetagameModalComponent {
   }
 
   cancel() {
-    this.modal.dismiss()
+    if (!this.loading()) {
+      this.modal.dismiss()
+    }
   }
 }
