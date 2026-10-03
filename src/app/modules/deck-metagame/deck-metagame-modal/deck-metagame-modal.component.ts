@@ -20,11 +20,17 @@ import {
   TranslocoService,
 } from '@jsverse/transloco'
 import { ApiDeckArchetype } from '@models'
+import { ArchetypeAttributeRequirement } from '../../../models/api-deck-archetype'
 import { NgbActiveModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DeckArchetypeCrudService, ToastService } from '@services'
 import { MarkdownTextareaComponent } from '@shared/components/markdown-textarea/markdown-textarea.component'
-import { CLAN_LIST, DISCIPLINE_LIST, compareCardNames } from '@utils'
+import {
+  CLAN_LIST,
+  DISCIPLINE_LIST,
+  LIBRARY_TYPE_LIST,
+  compareCardNames,
+} from '@utils'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import {
@@ -71,6 +77,75 @@ export class DeckMetagameModalComponent {
 
   get requirements(): FormArray {
     return this.form.get('cardRequirements') as FormArray
+  }
+
+  readonly attributeTypes: ArchetypeAttributeRequirement['type'][] = [
+    'CRYPT_CLAN',
+    'LIBRARY_TYPE',
+    'CRYPT_DISCIPLINE',
+    'LIBRARY_DISCIPLINE',
+  ]
+
+  get attributeRequirements(): FormArray {
+    return this.form.get('attributeRequirements') as FormArray
+  }
+
+  attributeOptions(type: string): { name: string }[] {
+    switch (type) {
+      case 'CRYPT_CLAN':
+        return CLAN_LIST
+      case 'LIBRARY_TYPE':
+        return LIBRARY_TYPE_LIST
+      case 'CRYPT_DISCIPLINE':
+      case 'LIBRARY_DISCIPLINE':
+        return DISCIPLINE_LIST
+      default:
+        return []
+    }
+  }
+
+  addAttributeRequirement(requirement?: ArchetypeAttributeRequirement): void {
+    if (this.loading()) {
+      return
+    }
+    this.attributeRequirements.push(
+      this.fb.group(
+        {
+          type: [requirement?.type ?? 'CRYPT_CLAN', Validators.required],
+          value: [requirement?.value ?? '', Validators.required],
+          minimumQuantity: [
+            requirement?.minimumQuantity ?? 1,
+            [
+              Validators.required,
+              Validators.min(1),
+              Validators.max(2147483647),
+              (control: AbstractControl) =>
+                Number.isSafeInteger(control.value) ? null : { integer: true },
+            ],
+          ],
+        },
+        {
+          validators: (control: AbstractControl) =>
+            this.attributeOptions(control.value.type).some(
+              (option) => option.name === control.value.value,
+            )
+              ? null
+              : { attribute: true },
+        },
+      ),
+    )
+  }
+
+  changeAttributeType(index: number): void {
+    if (!this.loading()) {
+      this.attributeRequirements.at(index).get('value')?.setValue('')
+    }
+  }
+
+  removeAttributeRequirement(index: number): void {
+    if (!this.loading()) {
+      this.attributeRequirements.removeAt(index)
+    }
   }
 
   readonly formatCard = (card: RequirementCard) => card.name
@@ -163,6 +238,14 @@ export class DeckMetagameModalComponent {
       icon: [archetype?.icon ?? ''],
       description: [archetype?.description ?? ''],
       enabled: [archetype?.enabled ?? true],
+      attributeRequirements: this.fb.array([], {
+        validators: (control: AbstractControl) => {
+          const keys = (control.value as ArchetypeAttributeRequirement[]).map(
+            (row) => `${row.type}:${row.value}`,
+          )
+          return new Set(keys).size === keys.length ? null : { duplicate: true }
+        },
+      }),
       cardRequirements: this.fb.array([], {
         validators: (control: AbstractControl) => {
           const ids = (control.value as { card: RequirementCard | null }[])
@@ -172,6 +255,9 @@ export class DeckMetagameModalComponent {
         },
       }),
     })
+    for (const requirement of archetype?.attributeRequirements ?? []) {
+      this.addAttributeRequirement(requirement)
+    }
     for (const requirement of archetype?.cardRequirements ?? []) {
       this.addRequirement(requirement)
     }

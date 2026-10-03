@@ -1484,11 +1484,23 @@
     "day_login": "Login to Start"
   },
   "deck_metagame": {
+    "requirements_kind": "Requirement type",
+    "requirements_value": "Clan, type or discipline",
+    "requirements_add_attribute": "Add attribute requirement",
+    "requirements_attribute_invalid": "Select a valid attribute and a positive whole-number minimum.",
+    "requirements_attribute_duplicate": "Each attribute can appear only once per requirement type.",
+    "requirement_types": {
+      "CRYPT_CLAN": "Crypt clan",
+      "LIBRARY_TYPE": "Library card type",
+      "CRYPT_DISCIPLINE": "Crypt discipline (any level)",
+      "LIBRARY_DISCIPLINE": "Library discipline"
+    },
+
     "nearest_archetype": "Nearest archetype",
     "nearest_similarity": "{{percentage}}% similarity",
     "nearest_ignores_requirements": "Comparison ignores card requirements.",
     "requirements_title": "Card requirements",
-    "requirements_help": "Every requirement must be met. Similarity matching still applies. Leave empty to match by similarity only.",
+    "requirements_help": "All requirements must pass. Quantities count copies, not distinct cards. Library disciplines use catalog metadata.",
     "requirements_card": "Card",
     "requirements_search": "Search Crypt or Library cards",
     "requirements_minimum": "Minimum copies",

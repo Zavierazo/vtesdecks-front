@@ -1484,11 +1484,23 @@
     "day_login": "Iniciar sesión para comenzar"
   },
   "deck_metagame": {
+    "requirements_kind": "Tipo de requisito",
+    "requirements_value": "Clan, tipo o disciplina",
+    "requirements_add_attribute": "Añadir requisito de atributo",
+    "requirements_attribute_invalid": "Selecciona un atributo válido y un mínimo entero positivo.",
+    "requirements_attribute_duplicate": "Cada atributo solo puede aparecer una vez por tipo de requisito.",
+    "requirement_types": {
+      "CRYPT_CLAN": "Clan de cripta",
+      "LIBRARY_TYPE": "Tipo de carta de biblioteca",
+      "CRYPT_DISCIPLINE": "Disciplina de cripta (cualquier nivel)",
+      "LIBRARY_DISCIPLINE": "Disciplina de biblioteca"
+    },
+
     "nearest_archetype": "Arquetipo más cercano",
     "nearest_similarity": "{{percentage}}% de similitud",
     "nearest_ignores_requirements": "La comparación ignora los requisitos de cartas.",
     "requirements_title": "Requisitos de cartas",
-    "requirements_help": "Deben cumplirse todos los requisitos. Se sigue aplicando la similitud. Déjalo vacío para usar solo la similitud.",
+    "requirements_help": "Todos los requisitos deben cumplirse. Las cantidades cuentan copias, no cartas distintas. Las disciplinas de biblioteca usan los datos del catálogo.",
     "requirements_card": "Carta",
     "requirements_search": "Buscar cartas de Cripta o Biblioteca",
     "requirements_minimum": "Copias mínimas",

@@ -1484,11 +1484,23 @@
     "day_login": "Connectez-vous pour commencer"
   },
   "deck_metagame": {
+    "requirements_kind": "Type de condition",
+    "requirements_value": "Clan, type ou discipline",
+    "requirements_add_attribute": "Ajouter une condition d’attribut",
+    "requirements_attribute_invalid": "Sélectionnez un attribut valide et un minimum entier positif.",
+    "requirements_attribute_duplicate": "Chaque attribut ne peut apparaître qu’une fois par type de condition.",
+    "requirement_types": {
+      "CRYPT_CLAN": "Clan de crypte",
+      "LIBRARY_TYPE": "Type de carte de bibliothèque",
+      "CRYPT_DISCIPLINE": "Discipline de crypte (tout niveau)",
+      "LIBRARY_DISCIPLINE": "Discipline de bibliothèque"
+    },
+
     "nearest_archetype": "Archétype le plus proche",
     "nearest_similarity": "{{percentage}} % de similarité",
     "nearest_ignores_requirements": "La comparaison ignore les exigences de cartes.",
     "requirements_title": "Conditions de cartes",
-    "requirements_help": "Toutes les conditions doivent être remplies. La similarité reste nécessaire. Laissez vide pour utiliser uniquement la similarité.",
+    "requirements_help": "Toutes les conditions doivent être remplies. Les quantités comptent les exemplaires, pas les cartes distinctes. Les disciplines de bibliothèque utilisent les données du catalogue.",
     "requirements_card": "Carte",
     "requirements_search": "Rechercher une carte de Crypte ou de Bibliothèque",
     "requirements_minimum": "Copies minimum",

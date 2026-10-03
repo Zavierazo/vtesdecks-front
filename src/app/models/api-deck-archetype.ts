@@ -9,6 +9,7 @@ export interface ApiDeckArchetype {
   deckId: string
   secondaryDeckId?: string | null
   cardRequirements?: { cardId: number; minimumQuantity: number }[]
+  attributeRequirements?: ArchetypeAttributeRequirement[]
   nearestArchetype?: { id: number; name: string; similarity: number } | null
   enabled: boolean
   deckCount: number
@@ -26,4 +27,11 @@ export interface ApiDeckArchetype {
   clans?: string[]
   disciplines?: string[]
   trend?: 'TRENDING' | 'DECLINING' | 'STABLE'
+}
+
+export interface ArchetypeAttributeRequirement {
+  type:
+    'CRYPT_CLAN' | 'LIBRARY_TYPE' | 'CRYPT_DISCIPLINE' | 'LIBRARY_DISCIPLINE'
+  value: string
+  minimumQuantity: number
 }

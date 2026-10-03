@@ -64,6 +64,66 @@ describe('Archetype requirements editor', () => {
     component.init()
   })
 
+  it('round trips mixed rules and clears attributes explicitly', () => {
+    const attributes = [
+      { type: 'CRYPT_CLAN', value: 'Malkavian', minimumQuantity: 4 },
+      { type: 'LIBRARY_TYPE', value: 'Political Action', minimumQuantity: 1 },
+      { type: 'CRYPT_DISCIPLINE', value: 'Dominate', minimumQuantity: 2 },
+      { type: 'LIBRARY_DISCIPLINE', value: 'Dominate', minimumQuantity: 3 },
+    ]
+    component.init({
+      id: 7,
+      attributeRequirements: attributes,
+      cardRequirements: [{ cardId: vampire.id, minimumQuantity: 1 }],
+    } as ApiDeckArchetype)
+    expect(component.form.valid).toBe(true)
+    component.save()
+    expect(crud.update.mock.calls[0][0].attributeRequirements).toEqual(
+      attributes,
+    )
+    component.removeAttributeRequirement(0)
+    component.addAttributeRequirement()
+    expect(component.attributeRequirements.length).toBe(4)
+    response.error(new Error('Failed'))
+    expect(component.attributeRequirements.getRawValue()).toEqual(attributes)
+    while (component.attributeRequirements.length) {
+      component.removeAttributeRequirement(0)
+    }
+    component.save()
+    expect(crud.update.mock.calls[1][0].attributeRequirements).toEqual([])
+    expect(crud.update.mock.calls[1][0].cardRequirements).toEqual([
+      { cardId: vampire.id, minimumQuantity: 1 },
+    ])
+  })
+
+  it('validates attribute values, types, quantities and duplicates', () => {
+    component.addAttributeRequirement()
+    const row = component.attributeRequirements.at(0)
+    expect(row.invalid).toBe(true)
+    row.patchValue({ value: 'Malkavian' })
+    expect(row.valid).toBe(true)
+    for (const minimumQuantity of [0, -1, 1.5, null, 2147483648]) {
+      row.patchValue({ minimumQuantity })
+      expect(row.invalid).toBe(true)
+    }
+    row.patchValue({ minimumQuantity: 1, type: 'UNKNOWN' })
+    expect(row.invalid).toBe(true)
+    row.patchValue({ type: 'LIBRARY_TYPE' })
+    component.changeAttributeType(0)
+    expect(row.value.value).toBe('')
+    row.patchValue({ value: 'Political Action' })
+    component.addAttributeRequirement({
+      type: 'LIBRARY_TYPE',
+      value: 'Political Action',
+      minimumQuantity: 2,
+    })
+    expect(component.attributeRequirements.hasError('duplicate')).toBe(true)
+    component.save()
+    expect(crud.create).not.toHaveBeenCalled()
+    component.removeAttributeRequirement(1)
+    expect(component.form.valid).toBe(true)
+  })
+
   it('searches both catalogs and ranks the combined result', async () => {
     expect(await firstValueFrom(component.searchCard(of('Library Z')))).toEqual(
       [library, vampire],
@@ -180,6 +240,9 @@ describe('Archetype requirements template', () => {
     const fixture = TestBed.createComponent(DeckMetagameModalComponent)
     fixture.componentInstance.init({
       cardRequirements: [{ cardId: 200001, minimumQuantity: 4 }],
+      attributeRequirements: [
+        { type: 'CRYPT_CLAN', value: 'Malkavian', minimumQuantity: 4 },
+      ],
     } as ApiDeckArchetype)
     fixture.detectChanges()
     await fixture.whenStable()
@@ -198,6 +261,28 @@ describe('Archetype requirements template', () => {
     expect(
       root.querySelector<HTMLInputElement>('#requirement-min-1')?.value,
     ).toBe('1')
+    expect(
+      root.querySelector<HTMLSelectElement>('#attribute-value-0')?.value,
+    ).toBe('Malkavian')
+    const typeSelect =
+      root.querySelector<HTMLSelectElement>('#attribute-type-0')!
+    typeSelect.value = 'LIBRARY_TYPE'
+    typeSelect.dispatchEvent(new Event('change'))
+    await fixture.whenStable()
+    const valueSelect =
+      root.querySelector<HTMLSelectElement>('#attribute-value-0')!
+    expect(valueSelect.value).toBe('')
+    expect(
+      Array.from(valueSelect.options).some(
+        (option) => option.value === 'Political Action',
+      ),
+    ).toBe(true)
+    valueSelect.value = 'Political Action'
+    valueSelect.dispatchEvent(new Event('change'))
+    await fixture.whenStable()
+    expect(fixture.componentInstance.attributeRequirements.at(0).valid).toBe(
+      true,
+    )
     fixture.destroy()
   })
 })

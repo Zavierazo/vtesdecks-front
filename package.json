@@ -1,6 +1,6 @@
 {
   "name": "vtes-decks-front",
-  "version": "2.82.1",
+  "version": "2.82.2",
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
@@ -92,7 +92,7 @@
     "cypress@16.1.0": true,
     "esbuild@0.28.2": true,
     "esbuild@0.28.1": true,
-    "workerd@1.20260926.1": true,
+    "workerd@1.20261001.1": true,
     "@parcel/watcher": false,
     "lmdb": false,
     "msgpackr-extract": false

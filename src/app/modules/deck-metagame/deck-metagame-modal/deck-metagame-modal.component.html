@@ -194,6 +194,91 @@
               </div>
             }
           </div>
+          <div formArrayName="attributeRequirements">
+            @for (
+              row of attributeRequirements.controls;
+              track row;
+              let i = $index
+            ) {
+              <div class="row g-2 mb-3" [formGroupName]="i">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label" [for]="'attribute-type-' + i">{{
+                    t('requirements_kind')
+                  }}</label>
+                  <select
+                    class="form-select"
+                    [id]="'attribute-type-' + i"
+                    formControlName="type"
+                    (change)="changeAttributeType(i)"
+                  >
+                    @for (type of attributeTypes; track type) {
+                      <option [value]="type">
+                        {{ t('requirement_types.' + type) }}
+                      </option>
+                    }
+                  </select>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label" [for]="'attribute-value-' + i">{{
+                    t('requirements_value')
+                  }}</label>
+                  <select
+                    class="form-select"
+                    [id]="'attribute-value-' + i"
+                    formControlName="value"
+                  >
+                    <option value="">--</option>
+                    @for (
+                      option of attributeOptions(row.value.type);
+                      track option.name
+                    ) {
+                      <option [value]="option.name">{{ option.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-8">
+                  <label class="form-label" [for]="'attribute-min-' + i">{{
+                    t('requirements_minimum')
+                  }}</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    min="1"
+                    max="2147483647"
+                    step="1"
+                    [id]="'attribute-min-' + i"
+                    formControlName="minimumQuantity"
+                  />
+                </div>
+                <div class="col-4 d-flex align-items-end">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    (click)="removeAttributeRequirement(i)"
+                  >
+                    {{ t('requirements_remove') }}
+                  </button>
+                </div>
+                @if (row.invalid && row.touched) {
+                  <div class="col-12 small text-danger" role="alert">
+                    {{ t('requirements_attribute_invalid') }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          @if (attributeRequirements.hasError('duplicate')) {
+            <p class="small text-danger" role="alert">
+              {{ t('requirements_attribute_duplicate') }}
+            </p>
+          }
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm me-2"
+            (click)="addAttributeRequirement()"
+          >
+            {{ t('requirements_add_attribute') }}
+          </button>
           @if (requirements.hasError('duplicate')) {
             <p class="small text-danger" role="alert">
               {{ t('requirements_duplicate') }}
