@@ -238,6 +238,14 @@
                           }
                         </p>
                       }
+                      @if (
+                        deck.finalVp !== null && deck.finalVp !== undefined
+                      ) {
+                        <p class="mb-1">
+                          <b>{{ t('final_vp') }}: </b>
+                          {{ deck.finalVp | number: '1.0-1' }}
+                        </p>
+                      }
                       @if (deck.place || deck.country) {
                         <p class="mb-1">
                           <b>{{ t('place') }}: </b>

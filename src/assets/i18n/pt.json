@@ -236,6 +236,7 @@
     "bookmark_count": "Pessoas que adicionaram este baralho aos favoritos: {{ count }}",
     "created_by": "Criado por",
     "tournament": "Torneio",
+    "final_vp": "PV da final",
     "limited_format": "Formato Limitado",
     "players": "{{ count }} jogadores",
     "rounds": "Rondas preliminares",

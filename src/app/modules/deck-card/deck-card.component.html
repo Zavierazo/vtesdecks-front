@@ -178,10 +178,17 @@
         @if (deck.tournament; as tournament) {
           <div class="tournament-info text-center fs-7 mb-1">
             <span
-              class="modern-badge badge-warning d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+              class="modern-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+              [ngClass]="tournamentResultBadgeClass(deck.position)"
             >
-              <i class="bi bi-award-fill me-1"></i>
+              <i
+                class="bi me-1"
+                [ngClass]="tournamentResultIcon(deck.position)"
+              ></i>
               <span>{{ tournament }}</span>
+              @if (showsTournamentPosition(deck.position)) {
+                <span class="ms-1">#{{ deck.position }}</span>
+              }
             </span>
           </div>
         }

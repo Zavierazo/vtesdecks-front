@@ -123,6 +123,16 @@
       background: var(--bs-warning);
       color: var(--bs-dark);
     }
+
+    &.badge-secondary {
+      background: var(--bs-secondary);
+      color: #fff;
+    }
+
+    &.badge-bronze {
+      background: #8a4b08;
+      color: #fff;
+    }
   }
 
   .author-name {

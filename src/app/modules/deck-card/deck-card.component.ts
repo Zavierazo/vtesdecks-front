@@ -27,6 +27,34 @@ import { isCryptId, isSupporter } from '@utils'
 import { environment } from '@environments/environment'
 import { catchError, of, tap } from 'rxjs'
 
+export const tournamentResultIcon = (position?: number): string => {
+  switch (position) {
+    case 1:
+      return 'bi-trophy-fill'
+    case 2:
+    case 3:
+      return 'bi-award-fill'
+    default:
+      return position && position > 3 ? 'bi-flag-fill' : 'bi-award-fill'
+  }
+}
+
+export const tournamentResultBadgeClass = (position?: number): string => {
+  switch (position) {
+    case 1:
+      return 'badge-warning'
+    case 2:
+      return 'badge-secondary'
+    case 3:
+      return 'badge-bronze'
+    default:
+      return position && position > 3 ? 'badge-secondary' : 'badge-warning'
+  }
+}
+
+export const showsTournamentPosition = (position?: number): boolean =>
+  position !== undefined && position > 3
+
 @UntilDestroy()
 @Component({
   selector: 'app-deck-card',
@@ -56,6 +84,9 @@ export class DeckCardComponent implements OnInit {
 
   cdnDomain = environment.cdnDomain
   reactionEmojis = DECK_REACTION_EMOJIS
+  readonly tournamentResultIcon = tournamentResultIcon
+  readonly tournamentResultBadgeClass = tournamentResultBadgeClass
+  readonly showsTournamentPosition = showsTournamentPosition
 
   deck = input.required<ApiDeck>()
   height = input<string>('160px')

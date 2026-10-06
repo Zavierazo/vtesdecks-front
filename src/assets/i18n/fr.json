@@ -236,6 +236,7 @@
     "bookmark_count": "Personnes ayant ajouté ce deck aux favoris : {{ count }}",
     "created_by": "Créé par",
     "tournament": "Tournoi",
+    "final_vp": "PV de finale",
     "limited_format": "Format Limité",
     "players": "{{ count }} joueurs",
     "rounds": "Tours préliminaires",

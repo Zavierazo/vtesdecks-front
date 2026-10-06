@@ -236,6 +236,7 @@
     "bookmark_count": "People who bookmarked this deck: {{ count }}",
     "created_by": "Created by",
     "tournament": "Tournament",
+    "final_vp": "Final VP",
     "limited_format": "Limited Format",
     "players": "{{ count }} players",
     "rounds": "Preliminary rounds",

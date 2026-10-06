@@ -20,6 +20,9 @@ export interface ApiDeck {
   bookmarks?: number
   comments: number
   tournament: string
+  eventId?: string
+  finalVp?: number
+  position?: number
   players: number
   rounds?: number
   place?: string

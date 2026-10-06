@@ -236,6 +236,7 @@
     "bookmark_count": "Personas que han guardado este mazo: {{ count }}",
     "created_by": "Creado por",
     "tournament": "Torneo",
+    "final_vp": "PV de la final",
     "limited_format": "Formato Limitado",
     "players": "{{ count }} jugadores",
     "rounds": "Rondas preliminares",
