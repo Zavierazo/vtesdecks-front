@@ -116,12 +116,16 @@ describe('search query utilities', () => {
         order: 'POPULAR',
         cards: '100=2,200=1',
         archetype: '3',
+        minPosition: '1',
+        maxPosition: '5',
         customProportion: 'true',
         page: '2',
       }),
     ).toEqual({
       archetype: '3',
       cards: '100=2,200=1',
+      maxPosition: '5',
+      minPosition: '1',
       order: 'POPULAR',
       type: 'TOURNAMENT',
     })

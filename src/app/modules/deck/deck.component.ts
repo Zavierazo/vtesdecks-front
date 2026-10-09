@@ -102,6 +102,7 @@ import {
   map,
   Observable,
   of,
+  shareReplay,
   startWith,
   Subject,
   switchMap,
@@ -112,6 +113,7 @@ import { AddDeckToCollectionModalComponent } from '../collection/add-deck-to-col
 import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
+import { FinalTableComponent } from './final-table/final-table.component'
 
 @UntilDestroy()
 @Component({
@@ -122,6 +124,7 @@ import { DeckCardComponent } from '../deck-card/deck-card.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ShareDeckComponent,
+    FinalTableComponent,
     AchievementBadgesComponent,
     LoadingComponent,
     TranslocoDirective,
@@ -305,6 +308,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
           )
         }
       }),
+      shareReplay({ bufferSize: 1, refCount: true }),
     )
     this.route.paramMap.pipe(untilDestroyed(this)).subscribe((params) => {
       this.id = params.get('id')!

@@ -95,6 +95,25 @@ export function buildDeckFilterChips(
   const { t, cryptQuery, libraryQuery } = context
   const chips: FilterChip[] = []
   const absolute = !!params['absoluteProportion']
+  const minPosition = params['minPosition']
+  const maxPosition = params['maxPosition']
+  if (minPosition !== undefined || maxPosition !== undefined) {
+    const min = minPosition === undefined ? undefined : `${minPosition}`
+    const max = maxPosition === undefined ? undefined : `${maxPosition}`
+    chips.push({
+      id: 'position',
+      key: 'position',
+      label: t('filters.position'),
+      value:
+        min && max
+          ? min === max
+            ? min
+            : `${min}–${max}`
+          : min
+            ? `≥ ${min}`
+            : `≤ ${max}`,
+    })
+  }
   deckFilterDefs().forEach((def) => {
     if (def.navigate === false) {
       return
@@ -226,6 +245,9 @@ export function buildDeckFilterChips(
  * a joined list keeps the other values of a multi-value filter.
  */
 export function removeDeckFilterChip(params: Params, chip: FilterChip): Params {
+  if (chip.key === 'position') {
+    return { minPosition: undefined, maxPosition: undefined }
+  }
   if (chip.key === 'cards' && chip.item) {
     const remaining = parseCardFilterParam(params['cards']).filter(
       (card) => `${card.id}` !== chip.item,

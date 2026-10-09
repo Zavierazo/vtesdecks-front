@@ -80,6 +80,20 @@ describe('buildDeckFilterChips', () => {
     ).toHaveLength(1)
   })
 
+  it('represents both position bounds with one removable chip', () => {
+    const params = { minPosition: '1', maxPosition: '5' }
+    const [chip] = buildDeckFilterChips(params, ctx)
+    expect(chip).toMatchObject({
+      key: 'position',
+      label: 'filters.position',
+      value: '1–5',
+    })
+    expect(removeDeckFilterChip(params, chip)).toEqual({
+      minPosition: undefined,
+      maxPosition: undefined,
+    })
+  })
+
   it('names crypt cards with their count', async () => {
     const [chip] = buildDeckFilterChips({ cards: '200130=2' }, ctx)
     expect(chip.label).toBe('filters.crypt_cards')

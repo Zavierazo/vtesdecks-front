@@ -1,12 +1,21 @@
 [
   {
+    "version": "2.83.0",
+    "date": "9th October, 2026",
+    "changes": [
+      "The <strong>Tournament section</strong> now includes available <strong>finalist decks</strong> alongside winning decks, thanks to our new integration with the <strong>Archon API</strong>.",
+      "Filter tournament results by finishing position: choose any range from 1st to 5th, or quickly show only winners or finalists (2nd-5th).",
+      "Tournament deck pages now show the final result (seat and VP) and, when finalist decklists are available, a final-table view with every deck's author, archetype, VP, prey and predator.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.82.0",
     "date": "2nd October, 2026",
     "changes": [
       "Organize your decks with <strong>custom tags</strong>: add up to three tags from the Deck Builder and use them alongside existing tags to filter decks. <strong>My decks</strong> suggests your own tags and now includes <strong>Share search</strong>.",
       "Manage your decks faster from <strong>My decks</strong>: each deck now has quick actions to share, publish or unpublish, toggle collection tracking and delete, without opening it.",
-      "Enhanced <strong>Metagame archetype analysis</strong> with more accurate deck similarity matching.",
-      "Minor bug fixes and performance improvements."
+      "Enhanced <strong>Metagame archetype analysis</strong> with more accurate deck similarity matching."
     ]
   },
   {

@@ -27,6 +27,15 @@ import { isCryptId, isSupporter } from '@utils'
 import { environment } from '@environments/environment'
 import { catchError, of, tap } from 'rxjs'
 
+export const tournamentResultIcon = (position?: number): string => {
+  return position === 1 ? 'bi-trophy-fill' : 'bi-flag-fill'
+}
+
+export const hasTournamentResult = (position?: number): boolean =>
+  position !== undefined && position > 0
+
+export const isTournamentWinner = (position?: number): boolean => position === 1
+
 @UntilDestroy()
 @Component({
   selector: 'app-deck-card',
@@ -56,6 +65,9 @@ export class DeckCardComponent implements OnInit {
 
   cdnDomain = environment.cdnDomain
   reactionEmojis = DECK_REACTION_EMOJIS
+  readonly tournamentResultIcon = tournamentResultIcon
+  readonly hasTournamentResult = hasTournamentResult
+  readonly isTournamentWinner = isTournamentWinner
 
   deck = input.required<ApiDeck>()
   height = input<string>('160px')

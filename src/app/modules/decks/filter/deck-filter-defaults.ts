@@ -25,6 +25,24 @@ export interface DeckFilterDef {
 
 /** Tournaments are played as 2R+F or 3R+F, the final is never counted. */
 export const DECK_ROUND_OPTIONS = [2, 3]
+export const DECK_POSITION_MIN = 1
+export const DECK_POSITION_MAX = 5
+
+export function positionRangeFromParams(
+  minPosition: unknown,
+  maxPosition: unknown,
+): [number, number] {
+  const parsePosition = (value: unknown, fallback: number): number => {
+    const parsed = Number(value)
+    if (!Number.isInteger(parsed)) {
+      return fallback
+    }
+    return Math.min(DECK_POSITION_MAX, Math.max(DECK_POSITION_MIN, parsed))
+  }
+  const min = parsePosition(minPosition, DECK_POSITION_MIN)
+  const max = parsePosition(maxPosition, DECK_POSITION_MAX)
+  return min <= max ? [min, max] : [max, min]
+}
 
 const PROPORTION_NAMES = [
   'master',
