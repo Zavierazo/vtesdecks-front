@@ -1,25 +1,25 @@
 import {
-  showsTournamentPosition,
-  tournamentResultBadgeClass,
+  hasTournamentResult,
+  isTournamentWinner,
   tournamentResultIcon,
 } from './deck-card.component'
 import { describe, expect, it } from 'vitest'
 
 describe('tournament result presentation', () => {
-  it('renders the podium with distinct trophy treatments', () => {
+  it('distinguishes a winner from every other finalist', () => {
     expect(tournamentResultIcon(1)).toBe('bi-trophy-fill')
-    expect(tournamentResultBadgeClass(1)).toBe('badge-warning')
-    expect(tournamentResultIcon(2)).toBe('bi-award-fill')
-    expect(tournamentResultBadgeClass(2)).toBe('badge-secondary')
-    expect(tournamentResultIcon(3)).toBe('bi-award-fill')
-    expect(tournamentResultBadgeClass(3)).toBe('badge-bronze')
+    expect(isTournamentWinner(1)).toBe(true)
+    expect(tournamentResultIcon(2)).toBe('bi-flag-fill')
+    expect(isTournamentWinner(2)).toBe(false)
   })
 
-  it('labels lower places and retains the generic tournament style when absent', () => {
+  it('labels every recorded final-table position and leaves missing results unchanged', () => {
     expect(tournamentResultIcon(4)).toBe('bi-flag-fill')
-    expect(tournamentResultBadgeClass(4)).toBe('badge-secondary')
-    expect(showsTournamentPosition(4)).toBe(true)
-    expect(showsTournamentPosition()).toBe(false)
-    expect(tournamentResultBadgeClass()).toBe('badge-warning')
+    expect(hasTournamentResult(2)).toBe(true)
+    expect(hasTournamentResult(3)).toBe(true)
+    expect(hasTournamentResult(4)).toBe(true)
+    expect(hasTournamentResult(5)).toBe(true)
+    expect(hasTournamentResult()).toBe(false)
+    expect(hasTournamentResult(0)).toBe(false)
   })
 })

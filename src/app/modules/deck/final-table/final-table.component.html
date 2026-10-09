@@ -1,0 +1,147 @@
+<ng-container *transloco="let t; read: 'deck'">
+  @if (seats().length > 1) {
+    <section class="deck-final-table mt-4" aria-labelledby="final-table-title">
+      <h2 id="final-table-title" class="deck-subsection-title mb-0">
+        <button
+          type="button"
+          class="deck-final-table__toggle btn btn-link text-reset text-decoration-none p-0 w-100 d-flex align-items-center justify-content-between gap-3 fw-semibold text-start"
+          [attr.aria-expanded]="expanded()"
+          aria-controls="final-table-content"
+          (click)="expanded.set(!expanded())"
+        >
+          {{ t(expanded() ? 'final_table' : 'view_final_table') }}
+          <i
+            class="bi"
+            [class.bi-chevron-down]="!expanded()"
+            [class.bi-chevron-up]="expanded()"
+            aria-hidden="true"
+          ></i>
+        </button>
+      </h2>
+      <div
+        id="final-table-content"
+        [hidden]="!expanded()"
+        class="deck-final-table__viewport"
+        tabindex="0"
+        role="region"
+        aria-labelledby="final-table-title"
+      >
+        <p class="mt-2 mb-3 text-secondary small">
+          {{ t('final_table_description') }}
+        </p>
+        <div class="deck-final-table__seats">
+          <svg
+            class="deck-final-table__arrows"
+            viewBox="0 0 1000 578"
+            preserveAspectRatio="none"
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <marker
+                id="final-seat-arrow"
+                viewBox="0 0 10 10"
+                refX="8"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto-start-reverse"
+              >
+                <path
+                  d="M 1 1 L 9 5 L 1 9 Z"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </marker>
+            </defs>
+            <!-- Short direction markers centered between adjacent seats.
+             Coordinates match the 150px rows and 64px gaps. -->
+            <g marker-end="url(#final-seat-arrow)">
+              <path d="M 648 165 L 702 199" />
+              <path d="M 793 370 L 757 422" />
+              <path d="M 532 503 L 468 503" />
+              <path d="M 243 422 L 207 370" />
+              <path d="M 298 199 L 352 165" />
+            </g>
+          </svg>
+          @for (seat of seats(); track seat.number ?? seat.deck?.id) {
+            <article
+              class="deck-final-table__seat"
+              [attr.data-seat]="seat.number"
+              [class.border-primary]="seat.deck?.id === deck().id"
+              [class.deck-final-table__seat--empty]="!seat.deck"
+            >
+              <div
+                class="deck-final-table__seat-header d-flex align-items-center justify-content-between gap-2 mb-2"
+              >
+                @if (seat.number) {
+                  <span class="small text-secondary fw-semibold">
+                    {{ t('seat', { number: seat.number }) }}
+                  </span>
+                } @else {
+                  <span class="small text-secondary">{{
+                    t('seating_unknown')
+                  }}</span>
+                }
+                @if (
+                  seat.deck?.finalVp !== null &&
+                  seat.deck?.finalVp !== undefined
+                ) {
+                  <span class="small fw-semibold">
+                    @if (seat.deck?.position === 1) {
+                      <i class="bi bi-trophy me-1" aria-hidden="true"></i>
+                    }
+                    {{ seat.deck?.finalVp | number: '1.0-1' }} VP
+                  </span>
+                }
+              </div>
+              @if (seat.deck; as finalist) {
+                <a
+                  class="deck-final-table__deck-name text-primary text-decoration-none text-truncate fw-bold lh-sm"
+                  [routerLink]="'/deck/' + finalist.id"
+                  [attr.title]="finalist.name"
+                >
+                  {{ finalist.name }}
+                </a>
+                <p
+                  class="deck-final-table__author mt-2 mb-0 text-secondary small text-truncate"
+                >
+                  <i class="bi bi-person-fill me-1" aria-hidden="true"></i>
+                  {{ finalist.author }}
+                </p>
+                @if (finalist.archetype; as archetype) {
+                  <a
+                    class="deck-final-table__archetype mt-2 text-primary text-decoration-none small fw-semibold"
+                    [routerLink]="['/metagame', archetype.id]"
+                  >
+                    @if (archetype.icon) {
+                      <i
+                        class="vtes"
+                        [ngClass]="archetype.icon"
+                        aria-hidden="true"
+                      ></i>
+                    }
+                    <span class="text-truncate">{{ archetype.name }}</span>
+                  </a>
+                }
+              } @else {
+                <span class="text-secondary small">{{
+                  t('decklist_unavailable')
+                }}</span>
+              }
+            </article>
+            @if (seat.number === 5) {
+              <div class="deck-final-table__return" aria-hidden="true">
+                <i class="bi bi-arrow-return-left"></i>
+                <span
+                  >{{ t('seat', { number: 5 }) }} →
+                  {{ t('seat', { number: 1 }) }}</span
+                >
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </section>
+  }
+</ng-container>

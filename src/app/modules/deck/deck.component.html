@@ -239,11 +239,35 @@
                         </p>
                       }
                       @if (
-                        deck.finalVp !== null && deck.finalVp !== undefined
+                        (deck.finalSeat !== null &&
+                          deck.finalSeat !== undefined) ||
+                        (deck.finalVp !== null && deck.finalVp !== undefined)
                       ) {
                         <p class="mb-1">
-                          <b>{{ t('final_vp') }}: </b>
-                          {{ deck.finalVp | number: '1.0-1' }}
+                          <b>{{ t('final_result') }}: </b>
+                          @if (
+                            deck.finalSeat !== null &&
+                            deck.finalSeat !== undefined
+                          ) {
+                            <span>{{
+                              t('seat', { number: deck.finalSeat })
+                            }}</span>
+                          }
+                          @if (
+                            deck.finalSeat !== null &&
+                            deck.finalSeat !== undefined &&
+                            deck.finalVp !== null &&
+                            deck.finalVp !== undefined
+                          ) {
+                            <span class="text-muted mx-1" aria-hidden="true"
+                              >·</span
+                            >
+                          }
+                          @if (
+                            deck.finalVp !== null && deck.finalVp !== undefined
+                          ) {
+                            <span>{{ deck.finalVp | number: '1.0-1' }} VP</span>
+                          }
                         </p>
                       }
                       @if (deck.place || deck.country) {
@@ -698,6 +722,9 @@
               }
             </div>
           </div>
+          @if (!isSnapshot) {
+            <app-final-table [deck]="deck" />
+          }
           <div class="deck-details">
             @if (unknownSnapshotCards().length) {
               <div class="alert alert-warning" role="alert">

@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { DeckFiltersComponent } from './deck-filters.component'
+import { positionRangeFromParams } from './deck-filter-defaults'
 
 describe('Deck tag filters', () => {
   afterEach(() => TestBed.resetTestingModule())
@@ -138,5 +139,50 @@ describe('Deck tag filters', () => {
     user.complete()
     alice.complete()
     bob.complete()
+  })
+})
+
+describe('Deck position filters', () => {
+  afterEach(() => TestBed.resetTestingModule())
+
+  it('fills a missing position bound with the visible slider limit', () => {
+    expect(positionRangeFromParams('2', undefined)).toEqual([2, 5])
+    expect(positionRangeFromParams(undefined, '4')).toEqual([1, 4])
+  })
+
+  it('writes both bounds for shortcuts and clears both for any position', () => {
+    const navigate = vi.fn()
+    const context = Object.assign(
+      Object.create(DeckFiltersComponent.prototype),
+      {
+        filterForm: new FormGroup({ position: new FormControl([1, 5]) }),
+        positionMin: 1,
+        positionMax: 5,
+        router: { navigate },
+        route: {},
+      },
+    ) as DeckFiltersComponent
+
+    context.setPositionShortcut([1, 1])
+    expect(navigate).toHaveBeenLastCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { minPosition: 1, maxPosition: 1 },
+      }),
+    )
+    context.setPositionShortcut([2, 5])
+    expect(navigate).toHaveBeenLastCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { minPosition: 2, maxPosition: 5 },
+      }),
+    )
+    context.setPositionShortcut(null)
+    expect(navigate).toHaveBeenLastCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { minPosition: undefined, maxPosition: undefined },
+      }),
+    )
   })
 })

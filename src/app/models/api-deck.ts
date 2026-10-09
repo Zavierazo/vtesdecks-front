@@ -23,6 +23,7 @@ export interface ApiDeck {
   eventId?: string
   finalVp?: number
   position?: number
+  finalSeat?: number
   players: number
   rounds?: number
   place?: string

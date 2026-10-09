@@ -177,19 +177,40 @@
         }
         @if (deck.tournament; as tournament) {
           <div class="tournament-info text-center fs-7 mb-1">
-            <span
-              class="modern-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
-              [ngClass]="tournamentResultBadgeClass(deck.position)"
-            >
-              <i
-                class="bi me-1"
-                [ngClass]="tournamentResultIcon(deck.position)"
-              ></i>
-              <span>{{ tournament }}</span>
-              @if (showsTournamentPosition(deck.position)) {
-                <span class="ms-1">#{{ deck.position }}</span>
-              }
-            </span>
+            @if (hasTournamentResult(deck.position)) {
+              <span
+                class="modern-badge tournament-result-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold"
+                [class.tournament-result-winner]="
+                  isTournamentWinner(deck.position)
+                "
+              >
+                <i
+                  class="bi me-1"
+                  [ngClass]="tournamentResultIcon(deck.position)"
+                ></i>
+                <span>{{
+                  (isTournamentWinner(deck.position)
+                    ? 'deck.winner'
+                    : 'deck.finalist'
+                  ) | transloco
+                }}</span>
+                <span class="tournament-result-position ms-1"
+                  >#{{ deck.position }}</span
+                >
+                <span
+                  class="tournament-result-divider mx-2"
+                  aria-hidden="true"
+                ></span>
+                <span>{{ tournament }}</span>
+              </span>
+            } @else {
+              <span
+                class="modern-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small fw-semibold badge-warning"
+              >
+                <i class="bi bi-award-fill me-1"></i>
+                <span>{{ tournament }}</span>
+              </span>
+            }
           </div>
         }
         @if (deck.place || deck.country || deck.rounds) {

@@ -135,6 +135,23 @@
     }
   }
 
+  .tournament-result-badge {
+    color: #fff;
+    background: var(--bs-primary);
+
+    &.tournament-result-winner {
+      color: var(--bs-dark);
+      background: color.adjust(#ffc107, $lightness: -8%);
+    }
+  }
+
+  .tournament-result-divider {
+    width: 1px;
+    height: 1rem;
+    background: currentColor;
+    opacity: 0.35;
+  }
+
   .author-name {
     color: var(--bs-body-color);
   }

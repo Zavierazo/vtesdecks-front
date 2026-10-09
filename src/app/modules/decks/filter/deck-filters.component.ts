@@ -55,9 +55,12 @@ import {
 } from 'rxjs'
 import { CardFilterComponent } from './card-filter/card-filter.component'
 import {
+  DECK_POSITION_MAX,
+  DECK_POSITION_MIN,
   DECK_ROUND_OPTIONS,
   deckFilterControlDefs,
   isSameParamValue,
+  positionRangeFromParams,
   splitParamList,
 } from './deck-filter-defaults'
 
@@ -117,6 +120,8 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
   availableTags: string[] = []
   tagInputError = false
   readonly availableRounds = DECK_ROUND_OPTIONS
+  readonly positionMin = DECK_POSITION_MIN
+  readonly positionMax = DECK_POSITION_MAX
   rounds: number[] = []
   archetypes: ApiDeckArchetype[] = []
   selectedArchetype: ApiDeckArchetype | null = null
@@ -192,6 +197,11 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
     this.paths = []
     this.rounds = []
     this.selectedArchetype = null
+    this.filterForm
+      .get('position')
+      ?.patchValue([this.positionMin, this.positionMax], {
+        emitEvent: false,
+      })
     this.cardFilter().reset()
     this.resetFilters.emit()
   }
@@ -329,6 +339,21 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
 
   isRoundSelected(round: number): boolean {
     return this.rounds.includes(round)
+  }
+
+  isPositionShortcut(range: [number, number] | null): boolean {
+    const min = this.decksQuery.getParam('minPosition')
+    const max = this.decksQuery.getParam('maxPosition')
+    if (range === null) {
+      return min === undefined && max === undefined
+    }
+    return `${min}` === `${range[0]}` && `${max}` === `${range[1]}`
+  }
+
+  setPositionShortcut(range: [number, number] | null): void {
+    const position = range ?? [this.positionMin, this.positionMax]
+    this.filterForm.get('position')?.patchValue(position, { emitEvent: false })
+    this.navigatePosition(range)
   }
 
   toggleRound(round: number) {
@@ -486,6 +511,7 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
           )
       }
     })
+    this.listenAndNavigatePosition()
   }
 
   /**
@@ -516,6 +542,14 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
         control.patchValue(value, { emitEvent: false })
       }
     })
+    const position = this.filterForm.get('position')
+    const positionRange = positionRangeFromParams(
+      params['minPosition'],
+      params['maxPosition'],
+    )
+    if (position && !isSameParamValue(position.value, positionRange)) {
+      position.patchValue(positionRange, { emitEvent: false })
+    }
     const tracker = this.filterForm.get('collectionTracker')
     const trackerValue = params['collectionPercentage'] ?? false
     if (tracker && !isSameParamValue(tracker.value, trackerValue)) {
@@ -634,6 +668,38 @@ export class DeckFiltersComponent implements OnInit, AfterViewInit {
         .subscribe()
     }
     formGroup.addControl(name, formControl)
+  }
+
+  private listenAndNavigatePosition() {
+    const formControl = new FormControl(
+      positionRangeFromParams(
+        this.decksQuery.getParam('minPosition'),
+        this.decksQuery.getParam('maxPosition'),
+      ),
+    )
+    formControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(500),
+        tap((value) => {
+          if (Array.isArray(value) && value.length === 2) {
+            this.navigatePosition([Number(value[0]), Number(value[1])])
+          }
+        }),
+      )
+      .subscribe()
+    this.filterForm.addControl('position', formControl)
+  }
+
+  private navigatePosition(range: [number, number] | null): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        minPosition: range ? range[0] : undefined,
+        maxPosition: range ? range[1] : undefined,
+      },
+      queryParamsHandling: 'merge',
+    })
   }
 
   private listenAndNavigateSimpleSlider(
