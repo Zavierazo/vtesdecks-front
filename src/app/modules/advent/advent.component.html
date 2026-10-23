@@ -142,7 +142,7 @@
             [class.calendar-day--open]="day.isAvailable"
             [class.calendar-day--complete]="day.isCompleted"
             [class.calendar-day--christmas]="day.dayNumber === 24"
-            [class.calendar-day--illustrated]="day.data?.image"
+            [class.has-art]="day.data?.image"
           >
             @if (day.isAvailable && day.data) {
               <button
