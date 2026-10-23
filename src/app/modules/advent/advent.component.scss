@@ -254,7 +254,7 @@ h1 {
 .calendar-day--complete .day-mark {
   color: var(--bs-success-text-emphasis);
 }
-.day-button:hover .day-content {
+.calendar-day:not(.calendar-day--illustrated) .day-button:hover .day-content {
   background: var(--bs-tertiary-bg);
 }
 .day-button:hover h2 {
@@ -264,6 +264,59 @@ h1 {
 .day-button:focus-visible {
   outline: 3px solid var(--bs-primary);
   outline-offset: -3px;
+}
+.calendar-day--illustrated {
+  background: #101714;
+
+  .day-button,
+  .day-locked {
+    display: grid;
+    isolation: isolate;
+    min-height: 14rem;
+    aspect-ratio: 1;
+  }
+  .day-art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    aspect-ratio: auto;
+  }
+  .day-content {
+    align-self: end;
+    z-index: 1;
+    gap: 0.65rem;
+    padding: 4.5rem 0.85rem 0.85rem;
+    color: #fff9ef;
+    background: linear-gradient(
+      0deg,
+      rgba(10, 17, 14, 0.97) 0%,
+      rgba(10, 17, 14, 0.88) 45%,
+      rgba(10, 17, 14, 0.5) 75%,
+      transparent 100%
+    );
+  }
+  .day-button h2 {
+    flex: none;
+    min-height: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: inherit;
+    text-wrap: balance;
+  }
+  .day-action {
+    color: #f1d6a5;
+  }
+  .day-unlock {
+    color: #cbd7cf;
+  }
+  .day-locked .day-heading {
+    background: #3b4140;
+    color: #d3d7d4;
+  }
+  .day-button:focus-visible {
+    outline-color: #fff9ef;
+  }
 }
 .challenge-view {
   padding: 0;
