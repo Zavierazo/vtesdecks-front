@@ -1238,7 +1238,8 @@
       "v5": "v5",
       "2player": "2player",
       "spoiler": "spoiler",
-      "advent2025": "advent2025"
+      "advent2025": "advent2025",
+      "advent2026": "advent2026"
     },
     "taints": {
       "+Intercept": "+Intercept",

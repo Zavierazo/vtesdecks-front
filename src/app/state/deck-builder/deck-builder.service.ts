@@ -1,6 +1,9 @@
 import { validCustomDeckTags } from '../../utils/custom-deck-tags'
-import { ADVENT_DATA, AdventData } from '@advent/advent.data'
-import { inject, Injectable, signal } from '@angular/core'
+import type {
+  AdventBuilderService,
+  AdventValidationResult,
+} from '@advent/advent-builder.service'
+import { DestroyRef, inject, Injectable, Injector, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { TranslocoService } from '@jsverse/transloco'
 import {
@@ -50,6 +53,11 @@ export class DeckBuilderService {
   readonly draftStorageError = signal(false)
   readonly draftSaved = new Subject<void>()
   private readonly suggestionRefresh = new Subject<void>()
+  private readonly injector = inject(Injector)
+  private readonly destroyRef = inject(DestroyRef)
+  private adventService?: AdventBuilderService
+  private adventLoading?: Promise<AdventBuilderService>
+  private adventLoadFailed = false
 
   constructor() {
     this.suggestionRefresh
@@ -97,12 +105,6 @@ export class DeckBuilderService {
             extra: deck.extra,
             saved: true,
           }))
-          if (deck.extra?.advent) {
-            this.initAdventRules(
-              deck.extra.advent.year.toString(),
-              deck.extra.advent.day.toString(),
-            )
-          }
           this.validateDeck()
         }),
         switchMap((deck) =>
@@ -134,32 +136,73 @@ export class DeckBuilderService {
     return of({})
   }
 
-  initAdventRules(advent: string, day: string): void {
-    const adventItem = ADVENT_DATA.find(
-      (item: AdventData) => item.year.toString() === advent,
-    )
-    const adventDayItem = adventItem
-      ? Object.entries(adventItem.days).find(([key]) => key === day)?.[1]
-      : undefined
-    if (adventItem && adventDayItem) {
-      const adventContent = adventDayItem.content.replace(/<\/?strong>/g, '**')
-      const adventDescription = `**Advent ${adventItem.year} - Day ${day}**\n\n**Name**: ${adventDayItem.title}\n\n${adventContent}`
-      this.store.update((state) => ({
-        ...state,
-        name: state.name ? state.name : `Advent${adventItem.year}: `,
-        description: state.description ? state.description : adventDescription,
-        extra: {
-          advent: {
-            year: adventItem.year,
-            day: parseInt(day),
-            title: adventDayItem.title,
-            content: adventDayItem.content,
-          },
-        },
-        validation: adventItem.validation,
-        customValidation: adventDayItem.validation,
-      }))
+  async initAdventRules(year: string, day: string): Promise<void> {
+    const advent = {
+      year: Number(year),
+      day: Number(day),
+      title: '',
+      content: '',
     }
+    this.store.update((state) => ({
+      ...state,
+      extra: { ...state.extra, advent },
+    }))
+    this.validateDeck()
+    try {
+      const service = await this.loadAdventService()
+      // The user may have opened a different deck while the module was loading.
+      if (this.store.getValue().extra?.advent === advent) {
+        service.initialize(advent.year, advent.day)
+        this.validateDeck()
+      }
+    } catch {
+      this.validateDeck()
+    }
+  }
+
+  private loadAdventService(): Promise<AdventBuilderService> {
+    if (!this.adventLoading) {
+      this.adventLoadFailed = false
+      this.adventLoading = import('@advent/advent-builder.service')
+        .then(({ AdventBuilderService }) => {
+          const service = this.injector.get(AdventBuilderService)
+          this.adventService = service
+          service.changes
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => this.validateDeck())
+          return service
+        })
+        .catch((error: unknown) => {
+          this.adventLoadFailed = true
+          this.adventLoading = undefined
+          throw error
+        })
+    }
+    return this.adventLoading
+  }
+
+  private validateAdvent(retry: boolean): AdventValidationResult {
+    if (!this.store.getValue().extra?.advent) {
+      this.adventService?.reset()
+      return {}
+    }
+    if (this.adventService) {
+      return this.adventService.validate(retry)
+    }
+    if (this.adventLoadFailed && !retry) {
+      return {
+        libraryErrors: [
+          'The challenge could not be loaded. Check your connection and try Save again.',
+        ],
+      }
+    }
+    if (!this.adventLoading) {
+      void this.loadAdventService().then(
+        () => this.validateDeck(),
+        () => this.validateDeck(),
+      )
+    }
+    return { libraryErrors: ['Loading Advent challenge…'] }
   }
 
   clone(): void {
@@ -220,6 +263,12 @@ export class DeckBuilderService {
       return throwError(() => new Error('Another action in progress'))
     }
     const deck = this.query.getValue()
+    if (deck.extra?.advent && !this.validateDeck(true)) {
+      return throwError(
+        () =>
+          new Error('Resolve the Advent validation messages before saving.'),
+      )
+    }
     this.store.setLoading(true)
     return this.apiDataService
       .saveDeckBuilder({
@@ -276,6 +325,9 @@ export class DeckBuilderService {
 
   updateName(name: string) {
     this.store.updateName(name)
+    if (this.store.getValue().extra?.advent) {
+      this.validateDeck()
+    }
     this.store.setSaved(false)
     this.saveDraft()
   }
@@ -300,6 +352,9 @@ export class DeckBuilderService {
 
   updatePublished(published: boolean) {
     this.store.updatePublished(published)
+    if (this.store.getValue().extra?.advent) {
+      this.validateDeck()
+    }
     this.store.setSaved(false)
     this.saveDraft()
   }
@@ -390,7 +445,7 @@ export class DeckBuilderService {
     this.store.setLibrarySortBy(sortBy)
   }
 
-  validateDeck(): boolean {
+  validateDeck(retryAdvent = false): boolean {
     const cryptCards = this.query.getCrypt()
     const libraryCards = this.query.getLibrary()
     const missingCrypt = cryptCards.some((card) => !card)
@@ -529,7 +584,10 @@ export class DeckBuilderService {
       }
     }
 
-    const customValidation = this.query.getValue().customValidation
+    const advent = this.store.getValue().extra?.advent
+    const customValidation = advent
+      ? undefined
+      : this.query.getValue().customValidation
     if (customValidation) {
       const {
         cryptErrors: customCryptErrors,
@@ -545,10 +603,13 @@ export class DeckBuilderService {
       }
     }
 
+    const adventResult = this.validateAdvent(retryAdvent)
+    cryptErrors.push(...(adventResult.cryptErrors ?? []))
+    libraryErrors.push(...(adventResult.libraryErrors ?? []))
     this.store.setCryptErrors(cryptErrors)
     this.store.setLibraryErrors(libraryErrors)
 
-    return isValid
+    return isValid && cryptErrors.length === 0 && libraryErrors.length === 0
   }
 
   private static readonly DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days

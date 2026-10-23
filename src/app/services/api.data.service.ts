@@ -497,6 +497,14 @@ export class ApiDataService {
     )
   }
 
+  getDeckBuilderArchetype(deck: ApiDeckBuilder): Observable<Pick<ApiDeckArchetype, 'id' | 'name' | 'icon' | 'type'> | null> {
+    return this.httpClient.post<Pick<ApiDeckArchetype, 'id' | 'name' | 'icon' | 'type'> | null>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/archetype`,
+      deck,
+      { context: this.repeatablePostContext() },
+    )
+  }
+
   updateCollectionTracker(
     id: string,
     collectionTracker: boolean,

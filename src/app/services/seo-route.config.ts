@@ -33,6 +33,7 @@ const PUBLIC_PAGES: Record<string, string> = {
   '/statistics': 'statistics',
   '/vtesdle': 'vtesdle',
   '/advent': 'advent',
+  '/advent/2025': 'advent',
   '/proxy-generator': 'proxy',
   '/contact': 'contact',
   '/changelog': 'changelog',
@@ -116,6 +117,7 @@ export function routeSeo(state: RouterStateSnapshot): SeoConfig {
     return {
       ...base,
       page,
+      ...(path === '/advent/2025' ? { title: 'Advent Calendar 2025' } : {}),
       index: !(path === '/decks' && route.queryParamMap.get('type') === 'USER'),
       schemaType: ['decks', 'crypt', 'library', 'metagame'].includes(page)
         ? 'CollectionPage'
