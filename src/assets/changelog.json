@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.84.0",
+    "date": "XXth October, 2026",
+    "changes": [
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.83.0",
     "date": "9th October, 2026",
     "changes": [
