@@ -1,58 +1,69 @@
 <ng-container *transloco="let t; prefix: 'advent'">
   @if (adventData; as edition) {
     <main class="advent" [attr.lang]="transloco.getActiveLang()">
-      <header class="advent-header">
-        <div class="advent-title">
-          <img
-            class="advent-logo"
-            src="/assets/img/logo_christmas.png"
-            alt=""
-            width="50"
-            height="50"
-          />
-          <div>
-            <h1>{{ t('title', { year: edition.year }) }}</h1>
-            <p>{{ t('subtitle') }}</p>
+      <div class="advent-intro">
+        <header class="advent-header">
+          <div class="advent-title">
+            <img
+              class="advent-logo"
+              src="/assets/img/logo_christmas.png"
+              alt=""
+              width="48"
+              height="48"
+            />
+            <div>
+              <h1>{{ t('title', { year: edition.year }) }}</h1>
+              <p>{{ t('subtitle') }}</p>
+            </div>
           </div>
-        </div>
-        <nav class="advent-links" [attr.aria-label]="t('editions_label')">
-          @if (edition.year === 2025) {
-            <a routerLink="/advent"
-              ><i class="bi bi-arrow-left" aria-hidden="true"></i>
-              {{ t('title', { year: 2026 }) }}</a
+          <nav class="advent-links" [attr.aria-label]="t('editions_label')">
+            @if (edition.year === 2025) {
+              <a routerLink="/advent"
+                ><i class="bi bi-arrow-left" aria-hidden="true"></i>
+                {{ t('title', { year: 2026 }) }}</a
+              >
+            } @else {
+              <a routerLink="/advent/2025"
+                >{{ t('archive_link', { year: 2025 }) }}
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i
+              ></a>
+            }
+            <a
+              class="btn btn-outline-primary btn-sm"
+              routerLink="/decks"
+              [queryParams]="{
+                tags: 'advent' + edition.year,
+                order: 'POPULAR',
+              }"
+              >{{ t('community_decks') }}</a
             >
-          } @else {
-            <a routerLink="/advent/2025"
-              >{{ t('archive_link', { year: 2025 }) }}
-              <i class="bi bi-arrow-up-right" aria-hidden="true"></i
-            ></a>
-          }
-          <a
-            class="btn btn-outline-primary btn-sm"
-            routerLink="/decks"
-            [queryParams]="{ tags: 'advent' + edition.year, order: 'POPULAR' }"
-            >{{ t('community_decks') }}</a
-          >
-        </nav>
-      </header>
+          </nav>
+        </header>
 
-      <aside class="advent-rules" aria-labelledby="rules-title">
-        <div>
-          <h2 id="rules-title">
-            {{ t(isAdventFinished ? 'how_it_worked' : 'how_to') }}
-          </h2>
-          <p>
-            {{ t(isAdventFinished ? 'archive_instructions' : 'instructions') }}
-          </p>
-        </div>
-        <div>
-          <ul>
+        <aside class="advent-rules" aria-labelledby="rules-title">
+          <div class="rules-copy">
+            <h2 id="rules-title">
+              {{ t(isAdventFinished ? 'how_it_worked' : 'how_to') }}
+            </h2>
+            <p>
+              {{
+                t(isAdventFinished ? 'archive_instructions' : 'instructions')
+              }}
+            </p>
+          </div>
+          <ul class="list-unstyled mb-0" role="list">
             @for (rule of ['name', 'public', 'legal']; track rule) {
-              <li>{{ t('rules.' + rule, { year: edition.year }) }}</li>
+              <li class="d-flex gap-2">
+                <i
+                  class="bi bi-check2 text-body-secondary"
+                  aria-hidden="true"
+                ></i>
+                <span>{{ t('rules.' + rule, { year: edition.year }) }}</span>
+              </li>
             }
           </ul>
-        </div>
-      </aside>
+        </aside>
+      </div>
 
       @if (canPreview()) {
         <section class="advent-preview" [attr.aria-label]="t('preview.label')">
