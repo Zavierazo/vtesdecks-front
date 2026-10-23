@@ -1,345 +1,381 @@
-@if (adventData; as edition) {
-  <main class="advent" lang="en">
-    <header class="advent-header">
-      <div class="advent-title">
-        <img
-          class="advent-logo"
-          src="/assets/img/logo_christmas.png"
-          alt=""
-          width="50"
-          height="50"
-        />
-        <div>
-          <h1>Advent {{ edition.year }}</h1>
-          <p>24 deck-building challenges for December</p>
+<ng-container *transloco="let t; prefix: 'advent'">
+  @if (adventData; as edition) {
+    <main class="advent" [attr.lang]="transloco.getActiveLang()">
+      <header class="advent-header">
+        <div class="advent-title">
+          <img
+            class="advent-logo"
+            src="/assets/img/logo_christmas.png"
+            alt=""
+            width="50"
+            height="50"
+          />
+          <div>
+            <h1>{{ t('title', { year: edition.year }) }}</h1>
+            <p>{{ t('subtitle') }}</p>
+          </div>
         </div>
-      </div>
-      <nav class="advent-links" aria-label="Advent editions">
-        @if (edition.year === 2025) {
-          <a routerLink="/advent"
-            ><i class="bi bi-arrow-left" aria-hidden="true"></i> Advent 2026</a
-          >
-        } @else {
-          <a routerLink="/advent/2025"
-            >2025 calendar
-            <i class="bi bi-arrow-up-right" aria-hidden="true"></i
-          ></a>
-        }
-        <a
-          class="btn btn-outline-primary btn-sm"
-          routerLink="/decks"
-          [queryParams]="{ tags: 'advent' + edition.year, order: 'POPULAR' }"
-          >Community decks</a
-        >
-      </nav>
-    </header>
-
-    <aside class="advent-rules" aria-labelledby="rules-title">
-      <div>
-        <h2 id="rules-title">
-          {{ isAdventFinished ? 'How it worked' : 'How to take part' }}
-        </h2>
-        <p>
-          {{
-            isAdventFinished
-              ? 'One challenge a day, from December 1 to 24. Explore the challenges and the community’s decks below.'
-              : 'Open a day, build your deck and share it by December 31. Each challenge leaves room for your own strategy.'
-          }}
-        </p>
-      </div>
-      <div>
-        <ul>
-          @for (rule of edition.rules; track rule) {
-            <li>{{ rule }}</li>
-          }
-        </ul>
-      </div>
-    </aside>
-
-    @if (canPreview()) {
-      <section class="advent-preview" aria-label="Admin calendar preview">
-        <strong
-          ><i class="bi bi-tools" aria-hidden="true"></i> Admin preview</strong
-        >
-        <label for="advent-preview-date">Calendar date (UTC)</label>
-        <select
-          #previewDateSelect
-          id="advent-preview-date"
-          class="form-select form-select-sm"
-          [value]="previewDate() ?? ''"
-          (change)="setPreviewDate(previewDateSelect.value)"
-        >
-          <option value="">Real date</option>
-          <option [value]="edition.year + '-11-30'">
-            November 30 — before opening
-          </option>
-          @for (day of previewDays; track day.day) {
-            <option [value]="edition.year + '-' + day.date">
-              December {{ day.day }}, {{ edition.year }}
-            </option>
-          }
-          <option [value]="edition.year + 1 + '-01-01'">
-            January 1 — event ended
-          </option>
-        </select>
-        @if (previewDate()) {
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="resetPreview()"
-          >
-            Use real date
-          </button>
-        }
-        <p class="preview-status" role="status">
-          @if (previewDate(); as date) {
-            Previewing {{ date }} from 00:00 UTC. Only this calendar uses the
-            simulated date.
+        <nav class="advent-links" [attr.aria-label]="t('editions_label')">
+          @if (edition.year === 2025) {
+            <a routerLink="/advent"
+              ><i class="bi bi-arrow-left" aria-hidden="true"></i>
+              {{ t('title', { year: 2026 }) }}</a
+            >
           } @else {
-            Choose a date to preview the calendar. Only admins can see this
-            control.
+            <a routerLink="/advent/2025"
+              >{{ t('archive_link', { year: 2025 }) }}
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i
+            ></a>
           }
-        </p>
-      </section>
-    }
+          <a
+            class="btn btn-outline-primary btn-sm"
+            routerLink="/decks"
+            [queryParams]="{ tags: 'advent' + edition.year, order: 'POPULAR' }"
+            >{{ t('community_decks') }}</a
+          >
+        </nav>
+      </header>
 
-    <div class="calendar-status">
-      @if (isAdventFinished) {
-        <p>
-          <i class="bi bi-archive" aria-hidden="true"></i> The
-          {{ edition.year }} event has ended. All challenges are available to
-          revisit.
-        </p>
-      } @else if (!hasStarted) {
-        <p>
-          <i class="bi bi-calendar-event" aria-hidden="true"></i> The first
-          challenge opens on December 1.
-        </p>
-      } @else if (countdown()) {
-        <p>
-          <i class="bi bi-clock" aria-hidden="true"></i> Next challenge in
-          <strong>{{ countdown() }}</strong>
-        </p>
-      } @else {
-        <p>All 24 challenges are open. Share your decks by December 31.</p>
-      }
-      @if (completedDays().size) {
-        <span class="calendar-progress"
-          ><i class="bi bi-check2-circle" aria-hidden="true"></i>
-          {{ completedDays().size }} / 24 completed</span
-        >
-      } @else if (!isAdventFinished) {
-        <span class="calendar-timezone">New challenges at 00:00 UTC</span>
-      }
-    </div>
-    @if (progressUnavailable()) {
-      <p class="text-warning small" role="status">
-        Your completed challenges could not be loaded. Refresh to try again.
-      </p>
-    }
+      <aside class="advent-rules" aria-labelledby="rules-title">
+        <div>
+          <h2 id="rules-title">
+            {{ t(isAdventFinished ? 'how_it_worked' : 'how_to') }}
+          </h2>
+          <p>
+            {{ t(isAdventFinished ? 'archive_instructions' : 'instructions') }}
+          </p>
+        </div>
+        <div>
+          <ul>
+            @for (rule of ['name', 'public', 'legal']; track rule) {
+              <li>{{ t('rules.' + rule, { year: edition.year }) }}</li>
+            }
+          </ul>
+        </div>
+      </aside>
 
-    <section class="calendar-grid" aria-label="December challenges">
-      @for (day of getAvailableDays(); track day.dayNumber) {
-        <article
-          class="calendar-day"
-          [class.calendar-day--open]="day.isAvailable"
-          [class.calendar-day--complete]="day.isCompleted"
-          [class.calendar-day--christmas]="day.dayNumber === 24"
-          [class.calendar-day--illustrated]="day.data?.image"
-        >
-          @if (day.isAvailable && day.data) {
+      @if (canPreview()) {
+        <section class="advent-preview" [attr.aria-label]="t('preview.label')">
+          <strong
+            ><i class="bi bi-tools" aria-hidden="true"></i>
+            {{ t('preview.title') }}</strong
+          >
+          <label for="advent-preview-date">{{ t('preview.date_label') }}</label>
+          <select
+            #previewDateSelect
+            id="advent-preview-date"
+            class="form-select form-select-sm"
+            [value]="previewDate() ?? ''"
+            (change)="setPreviewDate(previewDateSelect.value)"
+          >
+            <option value="">{{ t('preview.real_date') }}</option>
+            <option [value]="edition.year + '-11-30'">
+              {{ t('preview.before_opening') }}
+            </option>
+            @for (day of previewDays; track day.day) {
+              <option [value]="edition.year + '-' + day.date">
+                {{ t('preview.day', { day: day.day, year: edition.year }) }}
+              </option>
+            }
+            <option [value]="edition.year + 1 + '-01-01'">
+              {{ t('preview.after_end') }}
+            </option>
+          </select>
+          @if (previewDate()) {
             <button
               type="button"
-              class="day-button"
-              (click)="openChallenge(day, challenge)"
-              [attr.aria-label]="
-                'December ' + day.dayNumber + ': ' + day.data.title
-              "
+              class="btn btn-outline-secondary btn-sm"
+              (click)="resetPreview()"
             >
-              @if (day.data.image) {
-                <span class="day-art">
-                  <img
-                    [src]="day.data.image"
-                    alt=""
-                    width="600"
-                    height="400"
-                    [attr.loading]="day.dayNumber <= 6 ? 'eager' : 'lazy'"
-                    decoding="async"
-                  />
-                </span>
-              }
-              <span class="day-content">
-                <span class="day-heading"
-                  ><span class="day-number">{{ day.dayNumber }}</span
-                  ><span class="day-month">DEC</span>
-                  @if (day.isCompleted) {
-                    <i
-                      class="bi bi-check-circle-fill day-mark"
-                      aria-hidden="true"
-                    ></i>
-                  } @else if (day.dayNumber === 24) {
-                    <i class="bi bi-gift day-mark" aria-hidden="true"></i>
-                  }
-                </span>
-                <h2>{{ day.data.title }}</h2>
-                <span class="day-action"
-                  >{{ day.isCompleted ? 'Deck submitted' : 'View challenge' }}
-                  <i class="bi bi-arrow-right" aria-hidden="true"></i
-                ></span>
-              </span>
+              {{ t('preview.reset') }}
             </button>
-          } @else {
-            <div
-              class="day-locked"
-              [attr.aria-label]="
-                'December ' +
-                day.dayNumber +
-                ', locked until December ' +
-                day.dayNumber
-              "
-            >
-              @if (day.data?.image; as illustration) {
-                <span class="day-art">
-                  <img
-                    [src]="illustration"
-                    alt=""
-                    width="600"
-                    height="400"
-                    [attr.loading]="day.dayNumber <= 6 ? 'eager' : 'lazy'"
-                    decoding="async"
-                  />
-                </span>
-              }
-              <span class="day-content">
-                <span class="day-heading"
-                  ><span class="day-number">{{ day.dayNumber }}</span
-                  ><span class="day-month">DEC</span>
-                  <i
-                    [class]="
-                      day.dayNumber === 24
-                        ? 'bi bi-gift day-mark'
-                        : 'bi bi-lock day-mark'
-                    "
-                    aria-hidden="true"
-                  ></i>
-                </span>
-                <span class="day-unlock"
-                  >Opens December {{ day.dayNumber }}</span
-                >
-              </span>
-            </div>
           }
-        </article>
-      }
-    </section>
-  </main>
-
-  <ng-template #challenge let-modal>
-    @if (selectedDay(); as day) {
-      <div
-        class="modal-body challenge-view"
-        [class.challenge-view--illustrated]="day.data?.image"
-        lang="en"
-      >
-        <div class="challenge-scene">
-          @if (day.data?.image; as illustration) {
-            <img
-              class="challenge-art"
-              [src]="illustration"
-              alt=""
-              width="1080"
-              height="720"
-              decoding="async"
-            />
-          }
-          <button
-            type="button"
-            class="challenge-close"
-            aria-label="Close challenge"
-            (click)="modal.dismiss()"
-          >
-            <i class="bi bi-x-lg" aria-hidden="true"></i>
-          </button>
-          <div class="challenge-copy">
-            <p class="challenge-date">
-              Advent {{ edition.year }} · December {{ day.dayNumber }}
-            </p>
-            <h2 class="challenge-title" id="advent-challenge-title">
-              {{ day.data?.title }}
-            </h2>
-            <div class="challenge-content" id="advent-challenge-description">
-              <span [innerHTML]="day.data?.content"></span>
-              @if (day.data?.releaseDeckId; as releaseDeckId) {
-                {{ ' '
-                }}<a
-                  class="challenge-reference"
-                  [routerLink]="['/deck', releaseDeckId]"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  View preconstructed deck
-                  <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
-                  <span class="visually-hidden">(opens in a new tab)</span>
-                </a>
-              }
-              @if (day.data?.archetypeId; as archetypeId) {
-                {{ ' '
-                }}<a
-                  class="challenge-reference"
-                  [routerLink]="['/metagame', archetypeId]"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Explore this archetype
-                  <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
-                  <span class="visually-hidden">(opens in a new tab)</span>
-                </a>
-              }
-            </div>
-            @if (isAdventFinished) {
-              <p class="challenge-ended">
-                Submissions for the {{ edition.year }} event are closed.
-              </p>
+          <p class="preview-status" role="status">
+            @if (previewDate(); as date) {
+              {{ t('preview.active', { date }) }}
+            } @else {
+              {{ t('preview.help') }}
             }
-            <div class="challenge-actions">
+          </p>
+        </section>
+      }
+
+      <div class="calendar-status">
+        @if (isAdventFinished) {
+          <p>
+            <i class="bi bi-archive" aria-hidden="true"></i>
+            {{ t('status.ended', { year: edition.year }) }}
+          </p>
+        } @else if (!hasStarted) {
+          <p>
+            <i class="bi bi-calendar-event" aria-hidden="true"></i>
+            {{ t('status.not_started') }}
+          </p>
+        } @else if (countdownTime(); as time) {
+          <p>
+            <i class="bi bi-clock" aria-hidden="true"></i>
+            {{ t('status.next') }}
+            <strong>{{ t('status.countdown', time) }}</strong>
+          </p>
+        } @else {
+          <p>{{ t('status.all_open') }}</p>
+        }
+        @if (completedDays().size) {
+          <span class="calendar-progress"
+            ><i class="bi bi-check2-circle" aria-hidden="true"></i>
+            {{ t('status.completed', { count: completedDays().size }) }}</span
+          >
+        } @else if (!isAdventFinished) {
+          <span class="calendar-timezone">{{ t('status.timezone') }}</span>
+        }
+      </div>
+      @if (progressUnavailable()) {
+        <p class="text-warning small" role="status">
+          {{ t('status.progress_error') }}
+        </p>
+      }
+
+      <section class="calendar-grid" [attr.aria-label]="t('calendar_label')">
+        @for (day of getAvailableDays(); track day.dayNumber) {
+          <article
+            class="calendar-day"
+            [class.calendar-day--open]="day.isAvailable"
+            [class.calendar-day--complete]="day.isCompleted"
+            [class.calendar-day--christmas]="day.dayNumber === 24"
+            [class.calendar-day--illustrated]="day.data?.image"
+          >
+            @if (day.isAvailable && day.data) {
               <button
                 type="button"
-                class="btn btn-outline-secondary challenge-back"
-                (click)="modal.close()"
+                class="day-button"
+                (click)="openChallenge(day, challenge)"
+                [attr.aria-label]="
+                  t('day_label', {
+                    day: day.dayNumber,
+                    title: t(
+                      'editions.' +
+                        edition.year +
+                        '.days.' +
+                        day.dayNumber +
+                        '.title'
+                    ),
+                  })
+                "
               >
-                Back to calendar
+                @if (day.data.image) {
+                  <span class="day-art">
+                    <img
+                      [src]="day.data.image"
+                      alt=""
+                      width="600"
+                      height="400"
+                      [attr.loading]="day.dayNumber <= 6 ? 'eager' : 'lazy'"
+                      decoding="async"
+                    />
+                  </span>
+                }
+                <span class="day-content">
+                  <span class="day-heading"
+                    ><span class="day-number">{{ day.dayNumber }}</span
+                    ><span class="day-month">{{ t('month') }}</span>
+                    @if (day.isCompleted) {
+                      <i
+                        class="bi bi-check-circle-fill day-mark"
+                        aria-hidden="true"
+                      ></i>
+                    } @else if (day.dayNumber === 24) {
+                      <i class="bi bi-gift day-mark" aria-hidden="true"></i>
+                    }
+                  </span>
+                  <h2>
+                    {{
+                      t(
+                        'editions.' +
+                          edition.year +
+                          '.days.' +
+                          day.dayNumber +
+                          '.title'
+                      )
+                    }}
+                  </h2>
+                  <span class="day-action"
+                    >{{ t(day.isCompleted ? 'submitted' : 'view_challenge') }}
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i
+                  ></span>
+                </span>
               </button>
-              @if (day.isCompleted && day.deckId) {
-                <a
-                  class="btn btn-primary"
-                  [routerLink]="['/deck', day.deckId]"
-                  (click)="modal.close()"
-                  >View your deck</a
-                >
-              } @else if (!isAdventFinished) {
-                <button
-                  *isLogged="true"
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="
-                    modal.close(); onOpenInBuilder(edition.year, day.dayNumber)
+            } @else {
+              <div
+                class="day-locked"
+                [attr.aria-label]="t('locked_label', { day: day.dayNumber })"
+              >
+                @if (day.data?.image; as illustration) {
+                  <span class="day-art">
+                    <img
+                      [src]="illustration"
+                      alt=""
+                      width="600"
+                      height="400"
+                      [attr.loading]="day.dayNumber <= 6 ? 'eager' : 'lazy'"
+                      decoding="async"
+                    />
+                  </span>
+                }
+                <span class="day-content">
+                  <span class="day-heading"
+                    ><span class="day-number">{{ day.dayNumber }}</span
+                    ><span class="day-month">{{ t('month') }}</span>
+                    <i
+                      [class]="
+                        day.dayNumber === 24
+                          ? 'bi bi-gift day-mark'
+                          : 'bi bi-lock day-mark'
+                      "
+                      aria-hidden="true"
+                    ></i>
+                  </span>
+                  <span class="day-unlock">{{
+                    t('opens', { day: day.dayNumber })
+                  }}</span>
+                </span>
+              </div>
+            }
+          </article>
+        }
+      </section>
+    </main>
+
+    <ng-template #challenge let-modal>
+      @if (selectedDay(); as day) {
+        <div
+          class="modal-body challenge-view"
+          [class.challenge-view--illustrated]="day.data?.image"
+          [attr.lang]="transloco.getActiveLang()"
+        >
+          <div class="challenge-scene">
+            @if (day.data?.image; as illustration) {
+              <img
+                class="challenge-art"
+                [src]="illustration"
+                alt=""
+                width="1080"
+                height="720"
+                decoding="async"
+              />
+            }
+            <button
+              type="button"
+              class="challenge-close"
+              [attr.aria-label]="t('close')"
+              (click)="modal.dismiss()"
+            >
+              <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+            <div class="challenge-copy">
+              <p class="challenge-date">
+                {{
+                  t('challenge_date', {
+                    year: edition.year,
+                    day: day.dayNumber,
+                  })
+                }}
+              </p>
+              <h2 class="challenge-title" id="advent-challenge-title">
+                {{
+                  t(
+                    'editions.' +
+                      edition.year +
+                      '.days.' +
+                      day.dayNumber +
+                      '.title'
+                  )
+                }}
+              </h2>
+              <div class="challenge-content" id="advent-challenge-description">
+                <span
+                  [innerHTML]="
+                    t(
+                      'editions.' +
+                        edition.year +
+                        '.days.' +
+                        day.dayNumber +
+                        '.content'
+                    )
                   "
-                >
-                  Build this challenge
-                </button>
-                <button
-                  *isLogged="false"
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="modal.close(); onPromptLogin()"
-                >
-                  Sign in to participate
-                </button>
+                ></span>
+                @if (day.data?.releaseDeckId; as releaseDeckId) {
+                  {{ ' '
+                  }}<a
+                    class="challenge-reference"
+                    [routerLink]="['/deck', releaseDeckId]"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {{ t('view_preconstructed') }}
+                    <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ t('new_tab') }}</span>
+                  </a>
+                }
+                @if (day.data?.archetypeId; as archetypeId) {
+                  {{ ' '
+                  }}<a
+                    class="challenge-reference"
+                    [routerLink]="['/metagame', archetypeId]"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {{ t('view_archetype') }}
+                    <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ t('new_tab') }}</span>
+                  </a>
+                }
+              </div>
+              @if (isAdventFinished) {
+                <p class="challenge-ended">
+                  {{ t('submissions_closed', { year: edition.year }) }}
+                </p>
               }
+              <div class="challenge-actions">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary challenge-back"
+                  (click)="modal.close()"
+                >
+                  {{ t('back') }}
+                </button>
+                @if (day.isCompleted && day.deckId) {
+                  <a
+                    class="btn btn-primary"
+                    [routerLink]="['/deck', day.deckId]"
+                    (click)="modal.close()"
+                    >{{ t('view_deck') }}</a
+                  >
+                } @else if (!isAdventFinished) {
+                  <button
+                    *isLogged="true"
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="
+                      modal.close();
+                      onOpenInBuilder(edition.year, day.dayNumber)
+                    "
+                  >
+                    {{ t('build') }}
+                  </button>
+                  <button
+                    *isLogged="false"
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="modal.close(); onPromptLogin()"
+                  >
+                    {{ t('sign_in') }}
+                  </button>
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    }
-  </ng-template>
-}
+      }
+    </ng-template>
+  }
+</ng-container>

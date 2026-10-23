@@ -1492,15 +1492,7 @@
   },
   "advent": {
     "home_title": "Calendrier de l'Avent VTES {{ year }}",
-    "home_subtitle": "24 jours de défis de construction de deck - Cliquez ici pour participer !",
-    "rules": "Règles",
-    "next_challenge_in": "Le prochain défi se débloque dans",
-    "advent_finished_title": "Le Calendrier de l'Avent VTES {{ year }} est terminé !",
-    "advent_finished_subtitle": "Merci à tous les participants ! À l'année prochaine ! Tous les défis restent consultables !",
-    "view_all_decks": "Voir tous les decks de l'Avent {{ year }}",
-    "day_completed": "Jour {{ day }} - Voir le deck",
-    "day_start": "Commencer le défi",
-    "day_login": "Connectez-vous pour commencer"
+    "home_subtitle": "24 jours de défis de construction de deck - Cliquez ici pour participer !"
   },
   "deck_metagame": {
     "requirements_kind": "Type de condition",

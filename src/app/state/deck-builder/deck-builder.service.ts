@@ -152,7 +152,7 @@ export class DeckBuilderService {
       const service = await this.loadAdventService()
       // The user may have opened a different deck while the module was loading.
       if (this.store.getValue().extra?.advent === advent) {
-        service.initialize(advent.year, advent.day)
+        await service.initialize(advent.year, advent.day)
         this.validateDeck()
       }
     } catch {
@@ -192,7 +192,7 @@ export class DeckBuilderService {
     if (this.adventLoadFailed && !retry) {
       return {
         libraryErrors: [
-          'The challenge could not be loaded. Check your connection and try Save again.',
+          this.translocoService.translate('shared.error_loading_data'),
         ],
       }
     }
@@ -202,7 +202,9 @@ export class DeckBuilderService {
         () => this.validateDeck(),
       )
     }
-    return { libraryErrors: ['Loading Advent challenge…'] }
+    return {
+      libraryErrors: [this.translocoService.translate('shared.loading')],
+    }
   }
 
   clone(): void {
@@ -266,7 +268,7 @@ export class DeckBuilderService {
     if (deck.extra?.advent && !this.validateDeck(true)) {
       return throwError(
         () =>
-          new Error('Resolve the Advent validation messages before saving.'),
+          new Error(this.translocoService.translate('shared.validation_error')),
       )
     }
     this.store.setLoading(true)

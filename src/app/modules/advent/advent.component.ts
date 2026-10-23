@@ -12,6 +12,11 @@ import {
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
+import {
+  provideTranslocoScope,
+  TranslocoDirective,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { NgbModal, type NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService } from '@services'
@@ -44,9 +49,11 @@ interface AdventDay {
   styleUrls: ['./advent.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IsLoggedDirective],
+  imports: [RouterLink, IsLoggedDirective, TranslocoDirective],
+  providers: [provideTranslocoScope('advent')],
 })
 export class AdventComponent implements OnInit, OnDestroy {
+  readonly transloco = inject(TranslocoService)
   apiDataService = inject(ApiDataService)
   modalService = inject(NgbModal)
   authQuery = inject(AuthQuery)

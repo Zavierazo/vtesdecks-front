@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 import { ADVENT_2026_ERRORS } from '@advent/advent-2026.data'
-import { TranslocoService } from '@jsverse/transloco'
+import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco'
 import {
   ApiCard,
   ApiDeck,
@@ -16,6 +16,8 @@ import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderService } from './deck-builder.service'
 import { DeckBuilderStore, DeckBuilderState } from './deck-builder.store'
+import adventEn from '../../../assets/i18n/advent/en.json'
+import adventEs from '../../../assets/i18n/advent/es.json'
 
 describe('Advent builder validation', () => {
   beforeEach(() => vi.useFakeTimers())
@@ -60,6 +62,22 @@ describe('Advent builder validation', () => {
       setLibraryErrors: (errors: string[]) => (state.libraryErrors = errors),
     }
     TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: {
+            en: {},
+            es: {},
+            'advent/en': adventEn,
+            'advent/es': adventEs,
+          },
+          translocoConfig: {
+            availableLangs: ['en', 'es'],
+            defaultLang: 'en',
+            reRenderOnLangChange: true,
+            failedRetries: 0,
+          },
+        }),
+      ],
       providers: [
         { provide: DeckBuilderStore, useValue: store },
         {
@@ -98,10 +116,6 @@ describe('Advent builder validation', () => {
         { provide: ApiDataService, useValue: api },
         { provide: LibraryQuery, useValue: {} },
         { provide: CollectionApiDataService, useValue: {} },
-        {
-          provide: TranslocoService,
-          useValue: { translate: (key: string) => key },
-        },
       ],
     })
     const service = TestBed.inject(DeckBuilderService)
@@ -111,7 +125,7 @@ describe('Advent builder validation', () => {
       service.validateDeck()
       await vi.dynamicImportSettled()
     }
-    return { service, state, api }
+    return { service, state, api, transloco: TestBed.inject(TranslocoService) }
   }
 
   it('blocks while pending, ignores stale responses, and accepts only the requested archetype', async () => {
@@ -137,6 +151,11 @@ describe('Advent builder validation', () => {
     expect(
       state.libraryErrors.some((error) => error.startsWith('Advent rule:')),
     ).toBe(true)
+    expect(state.libraryErrors.join(' ')).toContain('href="/metagame/1"')
+    expect(state.libraryErrors.join(' ')).toContain('Gangrel Thing</a>')
+    expect(state.libraryErrors.join(' ')).toContain('target="_blank"')
+    expect(state.libraryErrors.join(' ')).toContain('Gangrel Thing')
+    expect(state.libraryErrors.join(' ')).toContain('best-matching archetype')
     state.cards = [...state.cards, { id: 100003, number: 1 }]
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
@@ -167,7 +186,13 @@ describe('Advent builder validation', () => {
     expect(state).toMatchObject({
       name: 'Advent2026: ',
       description: expect.stringContaining('New Blood: Salubri'),
-      extra: { advent: { year: 2026, day: 2, title: 'New Blood: Salubri' } },
+      extra: {
+        advent: {
+          year: 2026,
+          day: 2,
+          title: adventEn.editions['2026'].days['2'].title,
+        },
+      },
     })
     expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['pending'])
   })
@@ -184,6 +209,19 @@ describe('Advent builder validation', () => {
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
   })
 
+  it('uses the English catalog for new deck metadata in another language', async () => {
+    const { service, state, transloco } = await setup(undefined, false)
+    transloco.setActiveLang('es')
+    state.name = ''
+    await service.initAdventRules('2026', '6')
+    expect(state.extra.advent).toMatchObject({
+      title: adventEn.editions['2026'].days['6'].title,
+      content: adventEn.editions['2026'].days['6'].content,
+    })
+    expect(transloco.getActiveLang()).toBe('es')
+    expect(state.extra.advent!.content).not.toContain('Round up')
+  })
+
   it('rejects no match and handles errors with an explicit retry', async () => {
     const { service, state, api } = await setup(3)
     api.getDeckBuilderArchetype
@@ -197,7 +235,10 @@ describe('Advent builder validation', () => {
     state.cards[1] = { id: 100001, number: 61 }
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['unavailable'])
+    expect(state.libraryErrors.join(' ')).toContain(
+      ADVENT_2026_ERRORS['unavailable'],
+    )
+    expect(state.libraryErrors.join(' ')).toContain('href="/metagame/1"')
     service.validateDeck(true)
     expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['pending'])
     await vi.advanceTimersByTimeAsync(350)
@@ -226,6 +267,15 @@ describe('Advent builder validation', () => {
     expect(api.getDeck).toHaveBeenLastCalledWith(
       'preconstructed-first_blood_salubri',
     )
+    expect(state.libraryErrors.join(' ')).toContain(
+      'At least 50% of all card copies in your deck must appear in',
+    )
+    expect(state.libraryErrors.join(' ')).toContain(
+      'href="/deck/preconstructed-first_blood_salubri"',
+    )
+    expect(state.libraryErrors.join(' ')).toContain(
+      'New Blood: Salubri</a>. Count crypt and library copies together.',
+    )
     state.cards[1].number = 24
     state.cards[2].number = 36
     service.validateDeck()
@@ -242,7 +292,12 @@ describe('Advent builder validation', () => {
     )
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['unavailable'])
+    expect(state.libraryErrors.join(' ')).toContain(
+      ADVENT_2026_ERRORS['unavailable'],
+    )
+    expect(state.libraryErrors.join(' ')).toContain(
+      'href="/deck/preconstructed-noites_brasileiras"',
+    )
     service.validateDeck(true)
     state.extra.advent!.day = 24
     expect(service.validateDeck()).toBe(true)
@@ -260,5 +315,66 @@ describe('Advent builder validation', () => {
     expect(service.validateDeck()).toBe(false)
     expect(api.getDeck).not.toHaveBeenCalled()
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
+  })
+
+  it('does not load Advent translations for an ordinary deck, including after leaving Advent', async () => {
+    const { service, state, transloco } = await setup(undefined, false)
+    const load = vi.spyOn(transloco, 'load')
+    service.validateDeck()
+    expect(load).not.toHaveBeenCalled()
+    state.extra.advent = { year: 2026, day: 24, title: '', content: '' }
+    service.validateDeck()
+    await vi.dynamicImportSettled()
+    expect(load).toHaveBeenCalledWith('advent/en')
+    delete state.extra.advent
+    service.validateDeck()
+    load.mockClear()
+    transloco.setActiveLang('es')
+    service.validateDeck()
+    expect(load).not.toHaveBeenCalled()
+  })
+
+  it('updates local and remote validation messages on language changes without editing saved text', async () => {
+    const { service, state, api, transloco } = await setup(3)
+    api.getDeckBuilderArchetype.mockReturnValue(of(null))
+    state.name = 'My deck'
+    service.validateDeck()
+    await vi.advanceTimersByTimeAsync(350)
+    const metadata = { ...state.extra.advent }
+    transloco.setActiveLang('es')
+    expect(state.libraryErrors).toContain(adventEs.validation.name)
+    expect(state.libraryErrors.join(' ')).toContain(
+      adventEs.validation.archetype.split('{{reference}}')[0],
+    )
+    expect(state.libraryErrors.join(' ')).toContain(
+      'Gangrel Thing</a> como el arquetipo',
+    )
+    expect(state.name).toBe('My deck')
+    expect(state.extra.advent).toEqual(metadata)
+    state.name = 'Advent2026: Test'
+    state.extra.advent!.day = 5
+    service.validateDeck()
+    expect(state.libraryErrors).toContain(
+      adventEs.validation.rule.replace(
+        '{{rule}}',
+        adventEs.editions['2026'].days['5'].content,
+      ),
+    )
+  })
+
+  it('blocks validation while translations load or fail, and retries on Save', async () => {
+    const { service, state, transloco } = await setup(24, false)
+    const pending = new Subject<Record<string, unknown>>()
+    const load = vi.spyOn(transloco, 'load').mockReturnValueOnce(pending)
+    service.validateDeck()
+    await vi.dynamicImportSettled()
+    expect(service.validateDeck()).toBe(false)
+    expect(state.libraryErrors).toContain('shared.loading')
+    pending.error(new Error('offline'))
+    expect(service.validateDeck()).toBe(false)
+    expect(state.libraryErrors).toContain('shared.error_loading_data')
+    expect(load).toHaveBeenCalledTimes(1)
+    expect(service.validateDeck(true)).toBe(true)
+    expect(load).toHaveBeenCalledTimes(2)
   })
 })

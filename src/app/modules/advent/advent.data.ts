@@ -1,15 +1,17 @@
 import type { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { ADVENT_2025 } from './advent-2025.data'
 import { ADVENT_2026 } from './advent-2026.data'
+import type { AdventTranslate } from './advent-translation'
 
 export interface AdventDayData {
-  title: string
   image?: string
-  content: string
   archetypeId?: number
   releaseDeckId?: string
   releasePercentage?: number
-  validation?: (query: DeckBuilderQuery) => {
+  validation?: (
+    query: DeckBuilderQuery,
+    translate?: AdventTranslate,
+  ) => {
     cryptErrors?: string[]
     libraryErrors?: string[]
   }
@@ -17,12 +19,12 @@ export interface AdventDayData {
 
 export interface AdventData {
   year: number
-  theme: string
-  description: string
-  rules: string[]
   startDate: Date
   endDate: Date
-  validation?: (query: DeckBuilderQuery) => string[]
+  validation?: (
+    query: DeckBuilderQuery,
+    translate?: AdventTranslate,
+  ) => string[]
   days: Record<number, AdventDayData>
 }
 

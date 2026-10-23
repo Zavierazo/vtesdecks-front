@@ -1,5 +1,6 @@
-import { inject, Injectable } from '@angular/core'
+import { DestroyRef, inject, Injectable } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { TranslocoService } from '@jsverse/transloco'
 import type { ApiDeckBuilder } from '@models'
 import { ApiDataService } from '@services'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
@@ -7,10 +8,13 @@ import { DeckBuilderStore } from '@state/deck-builder/deck-builder.store'
 import {
   catchError,
   EMPTY,
+  firstValueFrom,
+  forkJoin,
   map,
   Observable,
   of,
   Subject,
+  Subscription,
   switchMap,
   tap,
   timeout,
@@ -22,6 +26,7 @@ import {
   ADVENT_2026_ERRORS,
   matchesRelease,
 } from './advent-2026.data'
+import type { AdventTranslate } from './advent-translation'
 
 export interface AdventValidationResult {
   cryptErrors?: string[]
@@ -33,6 +38,14 @@ export class AdventBuilderService {
   private readonly store = inject(DeckBuilderStore)
   private readonly query = inject(DeckBuilderQuery)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly transloco = inject(TranslocoService)
+  private readonly destroyRef = inject(DestroyRef)
+  private translationLanguage?: string
+  private translationPending?: string
+  private translationFailed?: string
+  private translationRequest?: Subscription
+  private readonly translate: AdventTranslate = (key, _fallback, params) =>
+    this.transloco.translate('advent.' + key, params)
   readonly changes = new Subject<void>()
   private readonly adventRefresh = new Subject<{
     key: string
@@ -43,6 +56,11 @@ export class AdventBuilderService {
   private readonly releaseCards = new Map<string, Set<number>>()
 
   constructor() {
+    this.transloco.langChanges$.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (this.store.getValue().extra?.advent) {
+        this.changes.next()
+      }
+    })
     this.adventRefresh
       .pipe(
         switchMap((request) =>
@@ -72,6 +90,17 @@ export class AdventBuilderService {
   }
 
   validate(retry = false): AdventValidationResult {
+    if (!this.ensureTranslations(retry)) {
+      return {
+        libraryErrors: [
+          this.transloco.translate(
+            this.translationFailed
+              ? 'shared.error_loading_data'
+              : 'shared.loading',
+          ),
+        ],
+      }
+    }
     if (retry && this.adventErrors.includes('unavailable')) {
       this.adventKey = undefined
     }
@@ -81,32 +110,90 @@ export class AdventBuilderService {
     const day = advent ? edition?.days[advent.day] : undefined
     if (!edition || !day) {
       this.reset()
-      return { libraryErrors: [ADVENT_2026_ERRORS['challenge']] }
+      return {
+        libraryErrors: [
+          this.translate(
+            'validation.challenge',
+            ADVENT_2026_ERRORS['challenge'],
+          ),
+        ],
+      }
     }
+    const { title, content } = this.challengeText(edition.year, advent!.day)
     if (
       state.validation !== edition.validation ||
-      advent?.title !== day.title ||
-      advent?.content !== day.content
+      advent?.title !== title ||
+      advent?.content !== content
     ) {
-      this.initialize(edition.year, advent!.day)
+      this.applyChallenge(edition.year, advent!.day)
     }
     const remoteErrors = this.validateAdvent()
-    const local = day.validation?.(this.query) ?? {}
+    const local = day.validation?.(this.query, this.translate) ?? {}
     return {
       cryptErrors: local.cryptErrors,
       libraryErrors: [
         ...(local.libraryErrors ?? []),
-        ...(edition.validation?.(this.query) ?? []),
+        ...(edition.validation?.(this.query, this.translate) ?? []),
         ...remoteErrors,
       ],
     }
   }
 
-  initialize(advent: number, day: number): void {
+  private ensureTranslations(retry: boolean): boolean {
+    const language = this.transloco.getActiveLang()
+    if (this.translationLanguage === language) {
+      return true
+    }
+    if (
+      this.translationPending === language ||
+      (this.translationFailed === language && !retry)
+    ) {
+      return false
+    }
+    this.translationRequest?.unsubscribe()
+    this.translationPending = language
+    this.translationFailed = undefined
+    const languages = language === 'en' ? ['en'] : [language, 'en']
+    this.translationRequest = forkJoin(
+      languages.map((locale) => this.transloco.load(`advent/${locale}`)),
+    )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.translationLanguage = language
+          this.translationPending = undefined
+          this.changes.next()
+        },
+        error: () => {
+          this.translationPending = undefined
+          this.translationFailed = language
+          this.changes.next()
+        },
+      })
+    return this.translationLanguage === language
+  }
+
+  async initialize(advent: number, day: number): Promise<void> {
+    const expected = this.store.getValue().extra?.advent
+    await firstValueFrom(this.transloco.load('advent/en'))
+    if (this.store.getValue().extra?.advent === expected) {
+      this.applyChallenge(advent, day)
+    }
+  }
+
+  private challengeText(year: number, day: number) {
+    const key = `advent.editions.${year}.days.${day}`
+    return {
+      title: this.transloco.translate<string>(key + '.title', {}, 'en'),
+      content: this.transloco.translate<string>(key + '.content', {}, 'en'),
+    }
+  }
+
+  private applyChallenge(advent: number, day: number): void {
     const adventItem = ADVENT_DATA.find((item) => item.year === advent)
     const adventDayItem = adventItem?.days[day]
     if (adventItem && adventDayItem) {
-      const { title, content } = adventDayItem
+      const { title, content } = this.challengeText(advent, day)
       const adventContent = content.replace(/<\/?strong>/g, '**')
       const adventDescription = `**Advent ${adventItem.year} - Day ${day}**\n\n**Name**: ${title}\n\n${adventContent}`
       this.store.update((state) => ({
@@ -169,11 +256,26 @@ export class AdventBuilderService {
     }
     const advent = this.store.getValue().extra?.advent
     const day = advent?.day
-    const errors = this.adventErrors.map((error) =>
-      error === 'rule'
-        ? 'Advent rule: ' + ADVENT_2026.days[day!].content
-        : ADVENT_2026_ERRORS[error],
-    )
+    const errors = this.adventErrors.map((error) => {
+      if (error !== 'rule' && error !== 'unavailable') {
+        return this.translate('validation.' + error, ADVENT_2026_ERRORS[error])
+      }
+      const challenge = ADVENT_2026.days[day!]
+      const reference = this.translate('validation.reference', '', {
+        url: challenge.archetypeId
+          ? `/metagame/${challenge.archetypeId}`
+          : `/deck/${challenge.releaseDeckId}`,
+        label: this.translate(`editions.2026.days.${day}.reference`, ''),
+      })
+      if (error === 'unavailable') {
+        return `${this.translate('validation.unavailable', ADVENT_2026_ERRORS[error])} ${reference}`
+      }
+      return this.translate(
+        challenge.archetypeId ? 'validation.archetype' : 'validation.release',
+        '',
+        { reference, percentage: challenge.releasePercentage },
+      )
+    })
     return errors
   }
 

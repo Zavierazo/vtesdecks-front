@@ -1,0 +1,360 @@
+{
+  "title": "Calendario de Adviento {{year}}",
+  "subtitle": "24 retos de construcción de mazos para diciembre",
+  "editions_label": "Ediciones de Adviento",
+  "archive_link": "Calendario de {{year}}",
+  "community_decks": "Mazos de la comunidad",
+  "how_to": "Cómo participar",
+  "how_it_worked": "Cómo funcionaba",
+  "instructions": "Abre un día, construye tu mazo y compártelo antes de que termine el 31 de diciembre. Cada reto deja espacio para tu propia estrategia.",
+  "archive_instructions": "Un reto al día, del 1 al 24 de diciembre. Explora los retos y los mazos de la comunidad.",
+  "rules": {
+    "name": "El nombre del mazo debe empezar por 'Advent{{year}}:'",
+    "public": "El mazo debe ser público para participar",
+    "legal": "El mazo debe cumplir todas las reglas habituales de construcción de mazos de VTES"
+  },
+  "preview": {
+    "label": "Vista previa del calendario para administradores",
+    "title": "Vista previa de administrador",
+    "date_label": "Fecha del calendario (UTC)",
+    "real_date": "Fecha real",
+    "before_opening": "30 de noviembre — antes de la apertura",
+    "day": "{{day}} de diciembre de {{year}}",
+    "after_end": "1 de enero — evento finalizado",
+    "reset": "Usar fecha real",
+    "active": "Simulando el {{date}} desde las 00:00 UTC. Solo este calendario utiliza la fecha simulada.",
+    "help": "Elige una fecha para previsualizar el calendario. Solo los administradores pueden ver este control."
+  },
+  "status": {
+    "ended": "El evento de {{year}} ha terminado. Puedes volver a consultar todos los retos.",
+    "not_started": "El primer reto se abre el 1 de diciembre.",
+    "next": "Próximo reto en",
+    "countdown": "{{hours}} h {{minutes}} min {{seconds}} s",
+    "all_open": "Los 24 retos están abiertos. Comparte tus mazos antes de que termine el 31 de diciembre.",
+    "completed": "{{count}} / 24 completados",
+    "timezone": "Nuevos retos a las 00:00 UTC",
+    "progress_error": "No se han podido cargar tus retos completados. Actualiza la página para volver a intentarlo."
+  },
+  "calendar_label": "Retos de diciembre",
+  "day_label": "{{day}} de diciembre: {{title}}",
+  "locked_label": "{{day}} de diciembre, bloqueado hasta el {{day}} de diciembre",
+  "month": "DIC",
+  "submitted": "Mazo presentado",
+  "view_challenge": "Ver reto",
+  "opens": "Se abre el {{day}} de diciembre",
+  "close": "Cerrar reto",
+  "challenge_date": "Adviento {{year}} · {{day}} de diciembre",
+  "view_preconstructed": "Ver mazo preconstruido",
+  "view_archetype": "Explorar este arquetipo",
+  "new_tab": "(se abre en otra pestaña)",
+  "submissions_closed": "El plazo para presentar mazos al evento de {{year}} ha terminado.",
+  "back": "Volver al calendario",
+  "view_deck": "Ver tu mazo",
+  "build": "Construir para este reto",
+  "sign_in": "Inicia sesión para participar",
+  "validation": {
+    "pending": "Comprobando el reto de Adviento…",
+    "unavailable": "No se ha podido comprobar el reto. Revisa tu conexión y vuelve a pulsar Guardar.",
+    "save": "Resuelve los avisos de validación de Adviento antes de guardar.",
+    "name": "Empieza por Advent2026: y añade el nombre de tu mazo.",
+    "published": "Publica tu mazo para participar en Adviento 2026.",
+    "challenge": "Elige un reto válido de Adviento 2026.",
+    "rule": "Regla de Adviento: {{rule}}",
+    "release": "Regla de Adviento: Al menos el {{percentage}}% de todas las copias de cartas de tu mazo deben aparecer en {{reference}}. Cuenta juntas las copias de la cripta y la biblioteca.",
+    "reference": "<a href=\"{{url}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-decoration-underline\">{{label}}</a>",
+    "archetype": "Regla de Adviento: El constructor debe identificar {{reference}} como el arquetipo que mejor encaja con tu mazo."
+  },
+  "editions": {
+    "2025": {
+      "days": {
+        "1": {
+          "title": "El clan de la primera nieve",
+          "content": "<strong>Regla</strong>: Construye un mazo con un único clan en la cripta.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener vampiros de un solo clan."
+          }
+        },
+        "2": {
+          "title": "La ventisca de 60 cartas",
+          "content": "<strong>Regla</strong>: Tu biblioteca no puede superar las 60 cartas.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca no puede superar las 60 cartas."
+          }
+        },
+        "3": {
+          "title": "El pacifista",
+          "content": "<strong>Regla</strong>: No se permiten cartas de combate.",
+          "validation": {
+            "error_1": "Regla de Adviento: No se permiten cartas de combate."
+          }
+        },
+        "4": {
+          "title": "Los pequeños ayudantes",
+          "content": "<strong>Regla</strong>: Todos los vampiros deben tener capacidad 5 o inferior.",
+          "validation": {
+            "error_1": "Regla de Adviento: Todos los vampiros deben tener capacidad 5 o inferior."
+          }
+        },
+        "5": {
+          "title": "El árbol de Navidad de una sola estrella",
+          "content": "<strong>Regla</strong>: Construye un mazo alrededor de un único vampiro estrella, a tu elección.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener un vampiro estrella."
+          }
+        },
+        "6": {
+          "title": "Solitarios entre la nieve",
+          "content": "<strong>Regla</strong>: Solo puede haber una copia de cada vampiro en la cripta.",
+          "validation": {
+            "error_1": "Regla de Adviento: Solo puede haber una copia de cada vampiro."
+          }
+        },
+        "7": {
+          "title": "Locura de una sola disciplina",
+          "content": "<strong>Regla</strong>: Solo se permite una disciplina.",
+          "validation": {
+            "error_1": "Regla de Adviento: Solo se permite una disciplina en la biblioteca."
+          }
+        },
+        "8": {
+          "title": "Navidad roja",
+          "content": "<strong>Regla</strong>: Al menos el 50% de tu biblioteca debe estar formado por cartas rojas (combate).",
+          "validation": {
+            "error_1": "Regla de Adviento: Al menos el 50% de la biblioteca debe estar formado por cartas rojas (combate)."
+          }
+        },
+        "9": {
+          "title": "Diciembre sin maestros",
+          "content": "<strong>Regla</strong>: Tu mazo puede incluir un máximo de 5 cartas de maestro en total.",
+          "validation": {
+            "error_1": "Regla de Adviento: No se permiten más de 5 cartas de maestro en la biblioteca."
+          }
+        },
+        "10": {
+          "title": "Un solo grupo",
+          "content": "<strong>Regla</strong>: Tu cripta debe utilizar un solo grupo, a tu elección.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener vampiros de un solo grupo."
+          }
+        },
+        "11": {
+          "title": "El cónclave del consejo de invierno",
+          "content": "<strong>Regla</strong>: Debes incluir en la cripta al menos un vampiro de cada secta: Camarilla, Sabbat, Anarch e Independent.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe incluir al menos un vampiro de cada secta. Faltan: {{sects}}."
+          }
+        },
+        "12": {
+          "title": "Los doce rangos de Navidad",
+          "content": "<strong>Regla</strong>: Tu cripta debe contener exactamente 12 vampiros diferentes.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener exactamente 12 vampiros diferentes."
+          }
+        },
+        "13": {
+          "title": "Política glacial",
+          "content": "<strong>Regla</strong>: Tu mazo debe centrarse en los votos; incluye al menos 10 cartas de acción política.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 10 cartas de acción política."
+          }
+        },
+        "14": {
+          "title": "Los tres tronos helados",
+          "content": "<strong>Regla</strong>: La cripta debe contener solo tres vampiros, todos de capacidad 8 o superior.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener exactamente tres vampiros.",
+            "error_2": "Regla de Adviento: Todos los vampiros deben tener capacidad 8 o superior."
+          }
+        },
+        "15": {
+          "title": "Identidad dual",
+          "content": "<strong>Regla</strong>: Usa al menos un vampiro tanto en su versión normal como en su versión avanzada.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe incluir al menos un vampiro tanto en su versión normal como en su versión avanzada."
+          }
+        },
+        "16": {
+          "title": "Legiones de los condenados",
+          "content": "<strong>Regla</strong>: Incluye al menos 12 aliados o criados.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 12 aliados o criados."
+          }
+        },
+        "17": {
+          "title": "Trío de disciplinas",
+          "content": "<strong>Regla</strong>: Todos los vampiros deben compartir tres disciplinas.",
+          "validation": {
+            "error_1": "Regla de Adviento: Todos los vampiros deben compartir al menos tres disciplinas."
+          }
+        },
+        "18": {
+          "title": "24 horas, 24 acciones",
+          "content": "<strong>Regla</strong>: Tu biblioteca debe contener exactamente 24 cartas de acción.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe contener exactamente 24 cartas de acción."
+          }
+        },
+        "19": {
+          "title": "Susurros en la ventisca",
+          "content": "<strong>Regla</strong>: Tu mazo debe incluir al menos 15 cartas de reacción.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 15 cartas de reacción."
+          }
+        },
+        "20": {
+          "title": "El Sabbat en pleno invierno",
+          "content": "<strong>Regla</strong>: Tu cripta debe ser exclusivamente Sabbat y debes incluir al menos 6 cartas de la Mano Negra.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe contener solo vampiros del Sabbat.",
+            "error_2": "Regla de Adviento: La biblioteca debe incluir al menos 6 cartas de la Mano Negra."
+          }
+        },
+        "21": {
+          "title": "Regalos relucientes",
+          "content": "<strong>Regla</strong>: Debes incluir al menos 10 cartas de equipo.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 10 cartas de equipo."
+          }
+        },
+        "22": {
+          "title": "Velo de sombras",
+          "content": "<strong>Regla</strong>: Tu mazo debe incluir al menos 10 cartas de +Sigilo / -Intercepción.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 10 cartas de +Sigilo / -Intercepción."
+          }
+        },
+        "23": {
+          "title": "El hambre de la larga noche",
+          "content": "<strong>Regla</strong>: Incluye al menos 12 cartas que cuesten pool.",
+          "validation": {
+            "error_1": "Regla de Adviento: La biblioteca debe incluir al menos 12 cartas que cuesten pool."
+          }
+        },
+        "24": {
+          "title": "El gran final: el despertar de Barachiel",
+          "content": "<strong>Regla</strong>: Construye un mazo con Barachiel, un nuevo Salubri del próximo lanzamiento de New Blood.",
+          "validation": {
+            "error_1": "Regla de Adviento: La cripta debe incluir a Barachiel, el nuevo Salubri del próximo lanzamiento de New Blood."
+          }
+        }
+      },
+      "validation": {
+        "error_1": "El nombre del mazo es obligatorio",
+        "error_2": "El nombre del mazo debe empezar por \"Advent2025:\"",
+        "error_3": "Añade el nombre del mazo después de \"Advent2025:\"",
+        "error_4": "El mazo debe ser público para participar en el evento de Adviento 2025"
+      }
+    },
+    "2026": {
+      "days": {
+        "1": {
+          "title": "Un clan para Navidad",
+          "content": "Al menos el 75% de las copias de tu cripta deben pertenecer a un mismo clan. Los demás clanes pueden aportar apoyo."
+        },
+        "2": {
+          "title": "Una luz en la noche más larga",
+          "content": "Al menos el 50% de todas las copias de cartas de tu mazo deben aparecer en New Blood: Salubri.",
+          "reference": "New Blood: Salubri"
+        },
+        "3": {
+          "title": "Algo se mueve entre la nieve",
+          "content": "Construye un mazo clasificado como Gangrel Thing.",
+          "reference": "Gangrel Thing"
+        },
+        "4": {
+          "title": "La estrella de la larga noche",
+          "content": "Incluye al menos 3 copias de un mismo vampiro en tu cripta."
+        },
+        "5": {
+          "title": "El consejo de invierno",
+          "content": "Incluye al menos 8 cartas de acción política."
+        },
+        "6": {
+          "title": "Espejismos en Nochebuena",
+          "content": "Al menos el 50% de todas las copias de cartas de tu mazo deben aparecer en New Blood: Ravnos.",
+          "reference": "New Blood: Ravnos"
+        },
+        "7": {
+          "title": "Realeza al caer la noche",
+          "content": "Construye un mazo clasificado como Haqim Royalty.",
+          "reference": "Haqim Royalty"
+        },
+        "8": {
+          "title": "Invitados inesperados",
+          "content": "Incluye al menos 6 cartas de aliado."
+        },
+        "9": {
+          "title": "Una Navidad anarquista",
+          "content": "Al menos el 75% de las copias de tu cripta deben ser vampiros con la secta Anarch impresa en la carta."
+        },
+        "10": {
+          "title": "En casa durante la larga noche",
+          "content": "Al menos el 50% de todas las copias de cartas de tu mazo deben aparecer en New Blood: Tzimisce.",
+          "reference": "New Blood: Tzimisce"
+        },
+        "11": {
+          "title": "Rompe las cadenas del invierno",
+          "content": "Construye un mazo clasificado como Ravnos Break.",
+          "reference": "Ravnos Break"
+        },
+        "12": {
+          "title": "Se reúnen los antiguos",
+          "content": "Al menos la mitad de las copias de tu cripta deben ser vampiros de capacidad 8 o superior."
+        },
+        "13": {
+          "title": "Regalos por los que luchar",
+          "content": "Incluye al menos 4 cartas de equipo."
+        },
+        "14": {
+          "title": "Secrets of New York",
+          "content": "Al menos el 25% de todas las copias de cartas de tu mazo deben aparecer en Secrets of New York.",
+          "reference": "Secrets of New York"
+        },
+        "15": {
+          "title": "El discurso navideño de la tirana",
+          "content": "Construye un mazo clasificado como Aaradhya Vote.",
+          "reference": "Aaradhya Vote"
+        },
+        "16": {
+          "title": "Una alianza improbable",
+          "content": "Incluye vampiros de al menos dos clanes, sin una proporción obligatoria."
+        },
+        "17": {
+          "title": "Navidad roja",
+          "content": "Incluye al menos 18 cartas de combate."
+        },
+        "18": {
+          "title": "Noites Brasileiras",
+          "content": "Al menos el 25% de todas las copias de cartas de tu mazo deben aparecer en Noites Brasileiras.",
+          "reference": "Noites Brasileiras"
+        },
+        "19": {
+          "title": "Un lugar en el consejo",
+          "content": "Construye un mazo clasificado como Toreador Loup.",
+          "reference": "Toreador Loup"
+        },
+        "20": {
+          "title": "La próxima generación",
+          "content": "Al menos la mitad de las copias de tu cripta deben ser vampiros de capacidad 5 o inferior."
+        },
+        "21": {
+          "title": "Compañeros fieles",
+          "content": "Incluye al menos 3 cartas de criado."
+        },
+        "22": {
+          "title": "Invitados del más allá",
+          "content": "Construye un mazo clasificado como Oblivion Allies Swarm.",
+          "reference": "Oblivion Allies Swarm"
+        },
+        "23": {
+          "title": "Un regalo compartido",
+          "content": "Elige una disciplina que posea al menos el 75% de las copias de tu cripta, en cualquiera de sus niveles. Incluye al menos 10 cartas de biblioteca que indiquen esa misma disciplina. Puedes usar otras disciplinas."
+        },
+        "24": {
+          "title": "Tu regalo a la comunidad",
+          "content": "¡Regala tu mejor mazo a la comunidad de VTES! Comparte un mazo del que te sientas orgulloso y que llevarías a la mesa. Cualquier mazo legal, cualquier clan, cualquier estrategia, sin restricciones adicionales."
+        }
+      }
+    }
+  }
+}

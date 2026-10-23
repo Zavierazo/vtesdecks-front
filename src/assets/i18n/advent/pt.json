@@ -1,0 +1,360 @@
+{
+  "title": "Calendário do Advento {{year}}",
+  "subtitle": "24 desafios de construção de decks para dezembro",
+  "editions_label": "Edições do Advento",
+  "archive_link": "Calendário de {{year}}",
+  "community_decks": "Decks da comunidade",
+  "how_to": "Como participar",
+  "how_it_worked": "Como funcionava",
+  "instructions": "Abra um dia, monte seu deck e compartilhe-o até o fim de 31 de dezembro. Cada desafio deixa espaço para sua própria estratégia.",
+  "archive_instructions": "Um desafio por dia, de 1 a 24 de dezembro. Explore os desafios e os decks da comunidade abaixo.",
+  "rules": {
+    "name": "O nome do deck deve começar com 'Advent{{year}}:'",
+    "public": "O deck deve ser público para participar",
+    "legal": "O deck deve seguir todas as regras habituais de construção de decks de VTES"
+  },
+  "preview": {
+    "label": "Prévia do calendário para administradores",
+    "title": "Prévia de administrador",
+    "date_label": "Data do calendário (UTC)",
+    "real_date": "Data real",
+    "before_opening": "30 de novembro — antes da abertura",
+    "day": "{{day}} de dezembro de {{year}}",
+    "after_end": "1 de janeiro — evento encerrado",
+    "reset": "Usar data real",
+    "active": "Simulando {{date}} a partir das 00:00 UTC. Apenas este calendário usa a data simulada.",
+    "help": "Escolha uma data para visualizar o calendário. Apenas administradores podem ver este controle."
+  },
+  "status": {
+    "ended": "O evento de {{year}} terminou. Todos os desafios continuam disponíveis para consulta.",
+    "not_started": "O primeiro desafio abre em 1 de dezembro.",
+    "next": "Próximo desafio em",
+    "countdown": "{{hours}} h {{minutes}} min {{seconds}} s",
+    "all_open": "Os 24 desafios estão abertos. Compartilhe seus decks até o fim de 31 de dezembro.",
+    "completed": "{{count}} / 24 concluídos",
+    "timezone": "Novos desafios às 00:00 UTC",
+    "progress_error": "Não foi possível carregar seus desafios concluídos. Atualize a página para tentar novamente."
+  },
+  "calendar_label": "Desafios de dezembro",
+  "day_label": "{{day}} de dezembro: {{title}}",
+  "locked_label": "{{day}} de dezembro, bloqueado até {{day}} de dezembro",
+  "month": "DEZ",
+  "submitted": "Deck enviado",
+  "view_challenge": "Ver desafio",
+  "opens": "Abre em {{day}} de dezembro",
+  "close": "Fechar desafio",
+  "challenge_date": "Advento {{year}} · {{day}} de dezembro",
+  "view_preconstructed": "Ver deck pré-construído",
+  "view_archetype": "Explorar este arquétipo",
+  "new_tab": "(abre em outra aba)",
+  "submissions_closed": "O prazo para enviar decks para o evento de {{year}} terminou.",
+  "back": "Voltar ao calendário",
+  "view_deck": "Ver seu deck",
+  "build": "Montar deck para este desafio",
+  "sign_in": "Entre para participar",
+  "validation": {
+    "pending": "Verificando o desafio do Advento…",
+    "unavailable": "Não foi possível verificar o desafio. Confira sua conexão e clique em Salvar novamente.",
+    "save": "Resolva os avisos de validação do Advento antes de salvar.",
+    "name": "Comece com Advent2026: e acrescente o nome do seu deck.",
+    "published": "Publique seu deck para participar do Advento 2026.",
+    "challenge": "Escolha um desafio válido do Advento 2026.",
+    "rule": "Regra do Advento: {{rule}}",
+    "release": "Regra do Advento: Pelo menos {{percentage}}% de todas as cópias de cartas do seu deck devem aparecer em {{reference}}. Conte juntas as cópias da cripta e da biblioteca.",
+    "reference": "<a href=\"{{url}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-decoration-underline\">{{label}}</a>",
+    "archetype": "Regra do Advento: O construtor deve identificar {{reference}} como o arquétipo que melhor corresponde ao seu deck."
+  },
+  "editions": {
+    "2025": {
+      "days": {
+        "1": {
+          "title": "O clã da primeira neve",
+          "content": "<strong>Regra</strong>: Monte um deck usando apenas um clã na cripta.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter vampiros de apenas um clã."
+          }
+        },
+        "2": {
+          "title": "A nevasca de 60 cartas",
+          "content": "<strong>Regra</strong>: Sua biblioteca não pode ultrapassar 60 cartas.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca não pode ultrapassar 60 cartas."
+          }
+        },
+        "3": {
+          "title": "O pacifista",
+          "content": "<strong>Regra</strong>: Não são permitidas cartas de combate.",
+          "validation": {
+            "error_1": "Regra do Advento: Não são permitidas cartas de combate."
+          }
+        },
+        "4": {
+          "title": "Os pequenos ajudantes",
+          "content": "<strong>Regra</strong>: Todos os vampiros devem ter capacidade 5 ou inferior.",
+          "validation": {
+            "error_1": "Regra do Advento: Todos os vampiros devem ter capacidade 5 ou inferior."
+          }
+        },
+        "5": {
+          "title": "A árvore de Natal de uma única estrela",
+          "content": "<strong>Regra</strong>: Monte um deck em torno de um único vampiro estrela, à sua escolha.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter um vampiro estrela."
+          }
+        },
+        "6": {
+          "title": "Solitários na neve",
+          "content": "<strong>Regra</strong>: Cada vampiro da cripta deve ter apenas uma cópia.",
+          "validation": {
+            "error_1": "Regra do Advento: Cada vampiro deve ter apenas uma cópia."
+          }
+        },
+        "7": {
+          "title": "Loucura de uma só disciplina",
+          "content": "<strong>Regra</strong>: Apenas uma disciplina é permitida.",
+          "validation": {
+            "error_1": "Regra do Advento: Apenas uma disciplina é permitida na biblioteca."
+          }
+        },
+        "8": {
+          "title": "Natal vermelho",
+          "content": "<strong>Regra</strong>: Pelo menos 50% da sua biblioteca deve ser composto por cartas vermelhas (combate).",
+          "validation": {
+            "error_1": "Regra do Advento: Pelo menos 50% da biblioteca deve ser composto por cartas vermelhas (combate)."
+          }
+        },
+        "9": {
+          "title": "Dezembro sem mestres",
+          "content": "<strong>Regra</strong>: Seu deck pode incluir no máximo 5 cartas de mestre no total.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca não pode conter mais de 5 cartas de mestre."
+          }
+        },
+        "10": {
+          "title": "Um único grupo",
+          "content": "<strong>Regra</strong>: Sua cripta deve usar apenas um grupo, à sua escolha.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter vampiros de apenas um grupo."
+          }
+        },
+        "11": {
+          "title": "O conclave do conselho de inverno",
+          "content": "<strong>Regra</strong>: Você deve incluir na cripta pelo menos um vampiro de cada seita: Camarilla, Sabbat, Anarch e Independent.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve incluir pelo menos um vampiro de cada seita. Faltam: {{sects}}."
+          }
+        },
+        "12": {
+          "title": "As doze patentes do Natal",
+          "content": "<strong>Regra</strong>: Sua cripta deve conter exatamente 12 vampiros diferentes.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter exatamente 12 vampiros diferentes."
+          }
+        },
+        "13": {
+          "title": "Política glacial",
+          "content": "<strong>Regra</strong>: Seu deck deve focar em votos; inclua pelo menos 10 cartas de ação política.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 10 cartas de ação política."
+          }
+        },
+        "14": {
+          "title": "Os três tronos congelados",
+          "content": "<strong>Regra</strong>: A cripta deve conter apenas três vampiros, todos de capacidade 8 ou superior.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter exatamente três vampiros.",
+            "error_2": "Regra do Advento: Todos os vampiros devem ter capacidade 8 ou superior."
+          }
+        },
+        "15": {
+          "title": "Identidade dupla",
+          "content": "<strong>Regra</strong>: Use pelo menos um vampiro tanto em sua versão normal quanto em sua versão avançada.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve incluir pelo menos um vampiro tanto em sua versão normal quanto em sua versão avançada."
+          }
+        },
+        "16": {
+          "title": "Legiões dos condenados",
+          "content": "<strong>Regra</strong>: Inclua pelo menos 12 aliados ou lacaios.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 12 aliados ou lacaios."
+          }
+        },
+        "17": {
+          "title": "Trio de disciplinas",
+          "content": "<strong>Regra</strong>: Todos os vampiros devem compartilhar três disciplinas.",
+          "validation": {
+            "error_1": "Regra do Advento: Todos os vampiros devem compartilhar pelo menos três disciplinas."
+          }
+        },
+        "18": {
+          "title": "24 horas, 24 ações",
+          "content": "<strong>Regra</strong>: Sua biblioteca deve conter exatamente 24 cartas de ação.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve conter exatamente 24 cartas de ação."
+          }
+        },
+        "19": {
+          "title": "Sussurros na nevasca",
+          "content": "<strong>Regra</strong>: Seu deck deve incluir pelo menos 15 cartas de reação.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 15 cartas de reação."
+          }
+        },
+        "20": {
+          "title": "O Sabbat em pleno inverno",
+          "content": "<strong>Regra</strong>: Sua cripta deve ser exclusivamente Sabbat e você deve incluir pelo menos 6 cartas da Mão Negra.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve conter apenas vampiros do Sabbat.",
+            "error_2": "Regra do Advento: A biblioteca deve incluir pelo menos 6 cartas da Mão Negra."
+          }
+        },
+        "21": {
+          "title": "Presentes reluzentes",
+          "content": "<strong>Regra</strong>: Você deve incluir pelo menos 10 cartas de equipamento.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 10 cartas de equipamento."
+          }
+        },
+        "22": {
+          "title": "Véu de sombras",
+          "content": "<strong>Regra</strong>: Seu deck deve incluir pelo menos 10 cartas de +Furtividade / -Interceptação.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 10 cartas de +Furtividade / -Interceptação."
+          }
+        },
+        "23": {
+          "title": "A fome da longa noite",
+          "content": "<strong>Regra</strong>: Inclua pelo menos 12 cartas que custem pool.",
+          "validation": {
+            "error_1": "Regra do Advento: A biblioteca deve incluir pelo menos 12 cartas que custem pool."
+          }
+        },
+        "24": {
+          "title": "O grande final: o despertar de Barachiel",
+          "content": "<strong>Regra</strong>: Monte um deck com Barachiel, um novo Salubri do próximo lançamento de New Blood.",
+          "validation": {
+            "error_1": "Regra do Advento: A cripta deve incluir Barachiel, o novo Salubri do próximo lançamento de New Blood."
+          }
+        }
+      },
+      "validation": {
+        "error_1": "O nome do deck é obrigatório",
+        "error_2": "O nome do deck deve começar com \"Advent2025:\"",
+        "error_3": "Adicione o nome do deck após \"Advent2025:\"",
+        "error_4": "O deck deve ser público para participar do evento de Advento 2025"
+      }
+    },
+    "2026": {
+      "days": {
+        "1": {
+          "title": "Um clã para o Natal",
+          "content": "Pelo menos 75% das cópias da sua cripta devem pertencer ao mesmo clã. Outros clãs podem oferecer apoio."
+        },
+        "2": {
+          "title": "Uma luz na noite mais longa",
+          "content": "Pelo menos 50% de todas as cópias de cartas do seu deck devem aparecer em New Blood: Salubri.",
+          "reference": "New Blood: Salubri"
+        },
+        "3": {
+          "title": "Algo se move na neve",
+          "content": "Monte um deck classificado como Gangrel Thing.",
+          "reference": "Gangrel Thing"
+        },
+        "4": {
+          "title": "A estrela da longa noite",
+          "content": "Inclua pelo menos 3 cópias de um mesmo vampiro na sua cripta."
+        },
+        "5": {
+          "title": "O conselho de inverno",
+          "content": "Inclua pelo menos 8 cartas de ação política."
+        },
+        "6": {
+          "title": "Miragens na véspera de Natal",
+          "content": "Pelo menos 50% de todas as cópias de cartas do seu deck devem aparecer em New Blood: Ravnos.",
+          "reference": "New Blood: Ravnos"
+        },
+        "7": {
+          "title": "Realeza ao anoitecer",
+          "content": "Monte um deck classificado como Haqim Royalty.",
+          "reference": "Haqim Royalty"
+        },
+        "8": {
+          "title": "Convidados inesperados",
+          "content": "Inclua pelo menos 6 cartas de aliado."
+        },
+        "9": {
+          "title": "Um Natal anarquista",
+          "content": "Pelo menos 75% das cópias da sua cripta devem ser vampiros com a seita Anarch impressa na carta."
+        },
+        "10": {
+          "title": "Em casa durante a longa noite",
+          "content": "Pelo menos 50% de todas as cópias de cartas do seu deck devem aparecer em New Blood: Tzimisce.",
+          "reference": "New Blood: Tzimisce"
+        },
+        "11": {
+          "title": "Quebre as correntes do inverno",
+          "content": "Monte um deck classificado como Ravnos Break.",
+          "reference": "Ravnos Break"
+        },
+        "12": {
+          "title": "Os anciões se reúnem",
+          "content": "Pelo menos metade das cópias da sua cripta devem ser vampiros de capacidade 8 ou superior."
+        },
+        "13": {
+          "title": "Presentes pelos quais vale lutar",
+          "content": "Inclua pelo menos 4 cartas de equipamento."
+        },
+        "14": {
+          "title": "Secrets of New York",
+          "content": "Pelo menos 25% de todas as cópias de cartas do seu deck devem aparecer em Secrets of New York.",
+          "reference": "Secrets of New York"
+        },
+        "15": {
+          "title": "O discurso de Natal da tirana",
+          "content": "Monte um deck classificado como Aaradhya Vote.",
+          "reference": "Aaradhya Vote"
+        },
+        "16": {
+          "title": "Uma aliança improvável",
+          "content": "Inclua vampiros de pelo menos dois clãs, sem uma proporção obrigatória."
+        },
+        "17": {
+          "title": "Natal vermelho",
+          "content": "Inclua pelo menos 18 cartas de combate."
+        },
+        "18": {
+          "title": "Noites Brasileiras",
+          "content": "Pelo menos 25% de todas as cópias de cartas do seu deck devem aparecer em Noites Brasileiras.",
+          "reference": "Noites Brasileiras"
+        },
+        "19": {
+          "title": "Um lugar no conselho",
+          "content": "Monte um deck classificado como Toreador Loup.",
+          "reference": "Toreador Loup"
+        },
+        "20": {
+          "title": "A próxima geração",
+          "content": "Pelo menos metade das cópias da sua cripta devem ser vampiros de capacidade 5 ou inferior."
+        },
+        "21": {
+          "title": "Companheiros fiéis",
+          "content": "Inclua pelo menos 3 cartas de lacaio."
+        },
+        "22": {
+          "title": "Convidados do além",
+          "content": "Monte um deck classificado como Oblivion Allies Swarm.",
+          "reference": "Oblivion Allies Swarm"
+        },
+        "23": {
+          "title": "Um presente compartilhado",
+          "content": "Escolha uma disciplina que pelo menos 75% das cópias da sua cripta possuam, em qualquer nível. Inclua pelo menos 10 cartas de biblioteca que indiquem essa mesma disciplina. Outras disciplinas são bem-vindas."
+        },
+        "24": {
+          "title": "Seu presente para a comunidade",
+          "content": "Presenteie a comunidade de VTES com seu melhor deck! Compartilhe um deck do qual você se orgulha e que levaria à mesa. Qualquer deck válido, qualquer clã, qualquer estratégia, sem restrições adicionais."
+        }
+      }
+    }
+  }
+}

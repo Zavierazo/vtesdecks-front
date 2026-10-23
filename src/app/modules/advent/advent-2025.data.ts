@@ -1,46 +1,55 @@
+import { adventEnglish } from './advent-translation'
 import type { AdventData } from './advent.data'
-import type { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 
 export const ADVENT_2025: AdventData = {
   year: 2025,
-  theme: 'VTES Advent 2025',
-  description:
-    '<strong>24 days. 24 deck-building challenges. Endless creativity.</strong><br> From clan-restricted builds to meme decks, combat nightmares and discipline-themed experiments, every day brings a fresh way to explore the VTES through deck design.',
-  rules: [
-    "Deck name must start with 'Advent2025:'",
-    'Deck must be public to participate',
-    'Deck must follow all standard VTES Deck Building rules',
-  ],
   startDate: new Date('2025-12-01'),
   endDate: new Date('2025-12-31'),
-  validation: (query: DeckBuilderQuery) => {
+  validation: (query, translate = adventEnglish) => {
     const name = query.getName()
     if (!name) {
-      return ['Deck name is required']
+      return [
+        translate('editions.2025.validation.error_1', 'Deck name is required'),
+      ]
     }
     if (!name.trim().startsWith('Advent2025:')) {
-      return ['Deck name must start with "Advent2025:"']
+      return [
+        translate(
+          'editions.2025.validation.error_2',
+          'Deck name must start with "Advent2025:"',
+        ),
+      ]
     }
     if (name.trim().length < 15) {
-      return ['Add deck name after "Advent2025:"']
+      return [
+        translate(
+          'editions.2025.validation.error_3',
+          'Add deck name after "Advent2025:"',
+        ),
+      ]
     }
     const published = query.getPublished()
     if (!published) {
-      return ['Deck must be public to participate in the Advent 2025 event']
+      return [
+        translate(
+          'editions.2025.validation.error_4',
+          'Deck must be public to participate in the Advent 2025 event',
+        ),
+      ]
     }
     return []
   },
   days: {
     1: {
-      title: 'Clan of the First Snow',
-      content:
-        '<strong>Rule</strong>: Build a deck using only one clan in the crypt.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const clans = query.getCryptClans()
         if (clans.length > 1) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must contain vampires from only one clan.',
+              translate(
+                'editions.2025.days.1.validation.error_1',
+                'Advent Rule: Crypt must contain vampires from only one clan.',
+              ),
             ],
           }
         }
@@ -48,45 +57,51 @@ export const ADVENT_2025: AdventData = {
       },
     },
     2: {
-      title: 'The 60-Card Blizzard',
-      content: '<strong>Rule</strong>: Your library cannot exceed 60 cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const librarySize = query.getLibrarySize()
         if (librarySize > 60) {
           return {
-            libraryErrors: ['Advent Rule: Library cannot exceed 60 cards.'],
+            libraryErrors: [
+              translate(
+                'editions.2025.days.2.validation.error_1',
+                'Advent Rule: Library cannot exceed 60 cards.',
+              ),
+            ],
           }
         }
         return {}
       },
     },
     3: {
-      title: 'The Pacifist',
-      content: '<strong>Rule</strong>: No combat cards allowed.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const combatCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Combat'))
         if (combatCards.length > 0) {
           return {
-            libraryErrors: ['Advent Rule: No combat cards allowed.'],
+            libraryErrors: [
+              translate(
+                'editions.2025.days.3.validation.error_1',
+                'Advent Rule: No combat cards allowed.',
+              ),
+            ],
           }
         }
         return {}
       },
     },
     4: {
-      title: 'The Little Helpers',
-      content:
-        '<strong>Rule</strong>: All vampires must be capacity 5 or less.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const highCapacityVamps = query
           .getCrypt()
           .filter((vampire) => vampire.capacity > 5)
         if (highCapacityVamps.length > 0) {
           return {
             cryptErrors: [
-              'Advent Rule: All vampires must be capacity 5 or less.',
+              translate(
+                'editions.2025.days.4.validation.error_1',
+                'Advent Rule: All vampires must be capacity 5 or less.',
+              ),
             ],
           }
         }
@@ -94,41 +109,43 @@ export const ADVENT_2025: AdventData = {
       },
     },
     5: {
-      title: 'The One-Star Christmas Tree',
-      content:
-        '<strong>Rule</strong>: Build a deck around one single star vampire (your choice).',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const starVamps = query
           .getCrypt()
           .filter((crypt) => query.getCardNumber(crypt.id) >= 4)
         if (starVamps.length === 0) {
           return {
-            cryptErrors: ['Advent Rule: Crypt must contain one star-vampire.'],
+            cryptErrors: [
+              translate(
+                'editions.2025.days.5.validation.error_1',
+                'Advent Rule: Crypt must contain one star-vampire.',
+              ),
+            ],
           }
         }
         return {}
       },
     },
     6: {
-      title: 'Snowbound Solitaries',
-      content:
-        '<strong>Rule</strong>: All vampires in the crypt must have only one copy.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const multipleCopyVamps = query
           .getCrypt()
           .filter((vampire) => query.getCardNumber(vampire.id) > 1)
         if (multipleCopyVamps.length > 0) {
           return {
-            cryptErrors: ['Advent Rule: All vampires must have only one copy.'],
+            cryptErrors: [
+              translate(
+                'editions.2025.days.6.validation.error_1',
+                'Advent Rule: All vampires must have only one copy.',
+              ),
+            ],
           }
         }
         return {}
       },
     },
     7: {
-      title: 'Mono-Discipline Madness',
-      content: '<strong>Rule</strong>: Only one discipline allowed.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const library = query.getLibrary()
         const disciplineCount: Record<string, number> = {}
 
@@ -142,7 +159,10 @@ export const ADVENT_2025: AdventData = {
         if (disciplinesUsed.length > 1) {
           return {
             libraryErrors: [
-              'Advent Rule: Only one discipline allowed in the library.',
+              translate(
+                'editions.2025.days.7.validation.error_1',
+                'Advent Rule: Only one discipline allowed in the library.',
+              ),
             ],
           }
         }
@@ -150,10 +170,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     8: {
-      title: 'Red Christmas',
-      content:
-        '<strong>Rule</strong>: At least 50% of your library must be red cards (combat).',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const librarySize = query.getLibrarySize()
         const combatCards = query
           .getLibrary()
@@ -164,7 +181,10 @@ export const ADVENT_2025: AdventData = {
         if (redPercentage < 50) {
           return {
             libraryErrors: [
-              'Advent Rule: At least 50% of library must be red cards (combat).',
+              translate(
+                'editions.2025.days.8.validation.error_1',
+                'Advent Rule: At least 50% of library must be red cards (combat).',
+              ),
             ],
           }
         }
@@ -172,10 +192,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     9: {
-      title: 'Masterless December',
-      content:
-        '<strong>Rule</strong>: Your deck may include no more than 5 Master cards total.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const masterCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Master'))
@@ -184,7 +201,10 @@ export const ADVENT_2025: AdventData = {
         if (masterCards > 5) {
           return {
             libraryErrors: [
-              'Advent Rule: No more than 5 Master cards allowed in the library.',
+              translate(
+                'editions.2025.days.9.validation.error_1',
+                'Advent Rule: No more than 5 Master cards allowed in the library.',
+              ),
             ],
           }
         }
@@ -192,14 +212,14 @@ export const ADVENT_2025: AdventData = {
       },
     },
     10: {
-      title: 'Group Locked',
-      content:
-        '<strong>Rule</strong>: Your crypt must use only one group (you pick the group).',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         if (query.getMinGroupCrypt() !== query.getMaxGroupCrypt()) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must contain vampires from only one group.',
+              translate(
+                'editions.2025.days.10.validation.error_1',
+                'Advent Rule: Crypt must contain vampires from only one group.',
+              ),
             ],
           }
         }
@@ -207,10 +227,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     11: {
-      title: 'Winter Council Conclave',
-      content:
-        '<strong>Rule</strong>: You must include at least one vampire from each sect (Camarilla, Sabbat, Anarch, Independent) in the crypt.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const sects = {
           Camarilla: false,
           Sabbat: false,
@@ -229,9 +246,13 @@ export const ADVENT_2025: AdventData = {
         if (missingSects.length > 0) {
           return {
             cryptErrors: [
-              `Advent Rule: Crypt must include at least one vampire from each sect. Missing: ${missingSects.join(
-                ', ',
-              )}.`,
+              translate(
+                'editions.2025.days.11.validation.error_1',
+                `Advent Rule: Crypt must include at least one vampire from each sect. Missing: ${missingSects.join(
+                  ', ',
+                )}.`,
+                { sects: missingSects.join(', ') },
+              ),
             ],
           }
         }
@@ -239,16 +260,16 @@ export const ADVENT_2025: AdventData = {
       },
     },
     12: {
-      title: 'The Twelve Ranks of Christmas',
-      content:
-        '<strong>Rule</strong>: Your crypt must contain exactly 12 different vampires.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const uniqueCards = query.getCrypt().length
         const cryptSize = query.getCryptSize()
         if (uniqueCards !== 12 || cryptSize !== 12) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must contain exactly 12 different vampires.',
+              translate(
+                'editions.2025.days.12.validation.error_1',
+                'Advent Rule: Crypt must contain exactly 12 different vampires.',
+              ),
             ],
           }
         }
@@ -256,10 +277,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     13: {
-      title: 'Glacial Politics',
-      content:
-        '<strong>Rule</strong>: Your deck must focus on votes; include at least 10 Political Action cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const politicalCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Political Action'))
@@ -268,7 +286,10 @@ export const ADVENT_2025: AdventData = {
         if (politicalCards < 10) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 10 Political Action cards.',
+              translate(
+                'editions.2025.days.13.validation.error_1',
+                'Advent Rule: Library must include at least 10 Political Action cards.',
+              ),
             ],
           }
         }
@@ -276,15 +297,15 @@ export const ADVENT_2025: AdventData = {
       },
     },
     14: {
-      title: 'The Three Frozen Thrones',
-      content:
-        '<strong>Rule</strong>: Crypt must contain three vampires only, and all must be capacity 8+.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const crypt = query.getCrypt()
         if (crypt.length !== 3) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must contain exactly three vampires.',
+              translate(
+                'editions.2025.days.14.validation.error_1',
+                'Advent Rule: Crypt must contain exactly three vampires.',
+              ),
             ],
           }
         }
@@ -292,7 +313,10 @@ export const ADVENT_2025: AdventData = {
         if (lowCapacityVamps.length > 0) {
           return {
             cryptErrors: [
-              'Advent Rule: All vampires must be capacity 8 or higher.',
+              translate(
+                'editions.2025.days.14.validation.error_2',
+                'Advent Rule: All vampires must be capacity 8 or higher.',
+              ),
             ],
           }
         }
@@ -300,10 +324,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     15: {
-      title: 'Dual Identity',
-      content:
-        '<strong>Rule</strong>: Use at least one vampire, with both their normal and advanced versions',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const advancedVampire = query
           .getCrypt()
           .filter((vampire) => vampire.adv)
@@ -317,7 +338,10 @@ export const ADVENT_2025: AdventData = {
         if (!hasDualVersion) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must include at least one vampire in both normal and advanced versions.',
+              translate(
+                'editions.2025.days.15.validation.error_1',
+                'Advent Rule: Crypt must include at least one vampire in both normal and advanced versions.',
+              ),
             ],
           }
         }
@@ -325,10 +349,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     16: {
-      title: 'Legions of the Damned',
-      content:
-        '<strong>Rule</strong>: Include at least 12 allies or retainers.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const animalAllies = query
           .getLibrary()
           .filter(
@@ -340,7 +361,10 @@ export const ADVENT_2025: AdventData = {
         if (animalAllies < 12) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 12 allies or retainers.',
+              translate(
+                'editions.2025.days.16.validation.error_1',
+                'Advent Rule: Library must include at least 12 allies or retainers.',
+              ),
             ],
           }
         }
@@ -348,10 +372,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     17: {
-      title: 'Discipline Triplets',
-      content:
-        '<strong>Rule</strong>: All vampires must share three disciplines in common.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const crypt = query.getCrypt()
         if (crypt.length === 0) {
           return {}
@@ -364,7 +385,10 @@ export const ADVENT_2025: AdventData = {
         if (commonDisciplines.length < 3) {
           return {
             cryptErrors: [
-              'Advent Rule: All vampires must share at least three disciplines in common.',
+              translate(
+                'editions.2025.days.17.validation.error_1',
+                'Advent Rule: All vampires must share at least three disciplines in common.',
+              ),
             ],
           }
         }
@@ -372,10 +396,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     18: {
-      title: '24 Hours, 24 Actions',
-      content:
-        '<strong>Rule</strong>: Your library must contain exactly 24 action cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const actionCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Action'))
@@ -384,7 +405,10 @@ export const ADVENT_2025: AdventData = {
         if (actionCards !== 24) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must contain exactly 24 action cards.',
+              translate(
+                'editions.2025.days.18.validation.error_1',
+                'Advent Rule: Library must contain exactly 24 action cards.',
+              ),
             ],
           }
         }
@@ -392,10 +416,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     19: {
-      title: 'Whispers in the Blizzard',
-      content:
-        '<strong>Rule</strong>: Your deck must include at least 15 reaction cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const reactionCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Reaction'))
@@ -404,7 +425,10 @@ export const ADVENT_2025: AdventData = {
         if (reactionCards < 15) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 15 reaction cards.',
+              translate(
+                'editions.2025.days.19.validation.error_1',
+                'Advent Rule: Library must include at least 15 reaction cards.',
+              ),
             ],
           }
         }
@@ -412,10 +436,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     20: {
-      title: 'Deep Winter Sabbat',
-      content:
-        '<strong>Rule</strong>: Your crypt must be exclusively Sabbat, and you must include at least 6 Black Hand cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const crypt = query.getCrypt()
         const nonSabbatVamps = crypt.filter(
           (vampire) => vampire.sect !== 'Sabbat',
@@ -423,7 +444,10 @@ export const ADVENT_2025: AdventData = {
         if (nonSabbatVamps.length > 0) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must contain only Sabbat vampires.',
+              translate(
+                'editions.2025.days.20.validation.error_1',
+                'Advent Rule: Crypt must contain only Sabbat vampires.',
+              ),
             ],
           }
         }
@@ -435,7 +459,10 @@ export const ADVENT_2025: AdventData = {
         if (blackHandCards < 6) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 6 Black Hand cards.',
+              translate(
+                'editions.2025.days.20.validation.error_2',
+                'Advent Rule: Library must include at least 6 Black Hand cards.',
+              ),
             ],
           }
         }
@@ -443,10 +470,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     21: {
-      title: 'Glittering Gifts',
-      content:
-        '<strong>Rule</strong>:You must include at least 10 equipment cards.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const equipmentCards = query
           .getLibrary()
           .filter((card) => card.types.includes('Equipment'))
@@ -455,7 +479,10 @@ export const ADVENT_2025: AdventData = {
         if (equipmentCards < 10) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 10 equipment cards.',
+              translate(
+                'editions.2025.days.21.validation.error_1',
+                'Advent Rule: Library must include at least 10 equipment cards.',
+              ),
             ],
           }
         }
@@ -463,11 +490,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     22: {
-      title: 'Veil of Shadows',
-      content:
-        '<strong>Rule</strong>: Your deck must include at least 10 +Stealth / -Intercept cards.',
-
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const stealthCards = query
           .getLibrary()
           .filter(
@@ -479,7 +502,10 @@ export const ADVENT_2025: AdventData = {
         if (stealthCards < 10) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 10 +Stealth / -Intercept cards.',
+              translate(
+                'editions.2025.days.22.validation.error_1',
+                'Advent Rule: Library must include at least 10 +Stealth / -Intercept cards.',
+              ),
             ],
           }
         }
@@ -487,10 +513,7 @@ export const ADVENT_2025: AdventData = {
       },
     },
     23: {
-      title: 'Hunger of the Long Night',
-      content:
-        '<strong>Rule</strong>: Include at least 12 cards that cost pool.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         const poolCostCards = query
           .getLibrary()
           .filter((card) => card.poolCost && card.poolCost > 0)
@@ -499,7 +522,10 @@ export const ADVENT_2025: AdventData = {
         if (poolCostCards < 12) {
           return {
             libraryErrors: [
-              'Advent Rule: Library must include at least 12 cards that cost pool.',
+              translate(
+                'editions.2025.days.23.validation.error_1',
+                'Advent Rule: Library must include at least 12 cards that cost pool.',
+              ),
             ],
           }
         }
@@ -507,14 +533,14 @@ export const ADVENT_2025: AdventData = {
       },
     },
     24: {
-      title: 'The Grand Finale: Barachiel Rising',
-      content:
-        '<strong>Rule</strong>: Build a deck featuring Barachiel, a new Salubri from the upcoming New Blood release.',
-      validation: (query: DeckBuilderQuery) => {
+      validation: (query, translate = adventEnglish) => {
         if (!query.getCrypt().some((vampire) => vampire.id === 250001)) {
           return {
             cryptErrors: [
-              'Advent Rule: Crypt must include Barachiel, the new Salubri from the upcoming New Blood release.',
+              translate(
+                'editions.2025.days.24.validation.error_1',
+                'Advent Rule: Crypt must include Barachiel, the new Salubri from the upcoming New Blood release.',
+              ),
             ],
           }
         }

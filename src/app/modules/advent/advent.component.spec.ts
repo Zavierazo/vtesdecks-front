@@ -1,12 +1,36 @@
 import { signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { ActivatedRoute, provideRouter, Router } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco'
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService } from '@services'
 import { AuthQuery } from '@state/auth/auth.query'
 import { BehaviorSubject, of } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdventComponent } from './advent.component'
+import adventEn from '../../../assets/i18n/advent/en.json'
+import adventEs from '../../../assets/i18n/advent/es.json'
+import adventFr from '../../../assets/i18n/advent/fr.json'
+import adventPt from '../../../assets/i18n/advent/pt.json'
+
+const translations = () =>
+  TranslocoTestingModule.forRoot({
+    langs: {
+      en: {},
+      es: {},
+      fr: {},
+      pt: {},
+      'advent/en': adventEn,
+      'advent/es': adventEs,
+      'advent/fr': adventFr,
+      'advent/pt': adventPt,
+    },
+    translocoConfig: {
+      availableLangs: ['en', 'es', 'fr', 'pt'],
+      defaultLang: 'en',
+      reRenderOnLangChange: true,
+    },
+  })
 
 describe('Advent calendar dates', () => {
   let component: AdventComponent | undefined
@@ -31,6 +55,7 @@ describe('Advent calendar dates', () => {
     const closeModal = vi.fn()
     const getDecks = vi.fn(() => of({ decks: [] }))
     TestBed.configureTestingModule({
+      imports: [translations()],
       providers: [
         {
           provide: AuthQuery,
@@ -264,6 +289,7 @@ describe('Advent admin preview controls', () => {
     async (admin) => {
       const adminState = new BehaviorSubject(admin)
       TestBed.configureTestingModule({
+        imports: [translations()],
         providers: [
           provideRouter([]),
           {
@@ -302,4 +328,90 @@ describe('Advent admin preview controls', () => {
       }
     },
   )
+})
+
+describe('Advent translations', () => {
+  afterEach(() => TestBed.resetTestingModule())
+
+  async function setup(year?: number) {
+    TestBed.configureTestingModule({
+      imports: [translations()],
+      providers: [
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: { adventYear: year } } },
+        },
+        {
+          provide: AuthQuery,
+          useValue: {
+            serverDate: () => signal(new Date('2026-12-24T12:00:00Z')),
+            selectAuthenticated: () => of(false),
+            selectAdmin: () => of(false),
+          },
+        },
+        {
+          provide: ApiDataService,
+          useValue: { getDecks: () => of({ decks: [] }) },
+        },
+      ],
+    })
+    TestBed.inject(NgbModalConfig).animation = false
+    const fixture = TestBed.createComponent(AdventComponent)
+    await fixture.whenStable()
+    return { fixture, transloco: TestBed.inject(TranslocoService) }
+  }
+
+  it('updates the calendar and an open challenge in every language, retaining its inline reference', async () => {
+    const { fixture, transloco } = await setup()
+    const element: HTMLElement = fixture.nativeElement
+    element.querySelectorAll<HTMLButtonElement>('.day-button')[2].click()
+    await fixture.whenStable()
+    for (const [language, locale] of Object.entries({
+      es: adventEs,
+      fr: adventFr,
+      pt: adventPt,
+      en: adventEn,
+    })) {
+      transloco.setActiveLang(language)
+      await fixture.whenStable()
+      expect(element.querySelector('h1')?.textContent).toContain(
+        locale.title.replace('{{year}}', '2026'),
+      )
+      expect(
+        document.querySelector('#advent-challenge-title')?.textContent,
+      ).toContain(locale.editions['2026'].days['3'].title)
+      expect(
+        document.querySelector('#advent-challenge-description')?.textContent,
+      ).toContain(locale.editions['2026'].days['3'].content)
+      expect(
+        document
+          .querySelector('.challenge-content .challenge-reference')
+          ?.getAttribute('href'),
+      ).toBe('/metagame/1')
+      expect(
+        document.querySelector('.challenge-view')?.getAttribute('lang'),
+      ).toBe(language)
+    }
+    fixture.destroy()
+  })
+
+  it('translates the archive without exposing submission controls', async () => {
+    const { fixture, transloco } = await setup(2025)
+    transloco.setActiveLang('es')
+    await fixture.whenStable()
+    const element: HTMLElement = fixture.nativeElement
+    const days = element.querySelectorAll<HTMLButtonElement>('.day-button')
+    expect(days).toHaveLength(24)
+    expect(days[23].textContent).toContain(
+      adventEs.editions['2025'].days['24'].title,
+    )
+    days[23].click()
+    await fixture.whenStable()
+    expect(document.querySelector('.challenge-ended')?.textContent).toContain(
+      adventEs.submissions_closed.replace('{{year}}', '2025'),
+    )
+    expect(document.querySelector('.challenge-actions .btn-primary')).toBeNull()
+    fixture.destroy()
+  })
 })

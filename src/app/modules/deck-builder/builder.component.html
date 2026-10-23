@@ -576,7 +576,9 @@
       >
         @for (error of (cryptErrors$ | async)!; track error) {
           <li class="fw-bold">
-            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;<span
+              [innerHTML]="error"
+            ></span>
           </li>
         }
       </ul>
@@ -796,7 +798,9 @@
       >
         @for (error of (libraryErrors$ | async)!; track error) {
           <li class="fw-bold">
-            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;<span
+              [innerHTML]="error"
+            ></span>
           </li>
         }
       </ul>
