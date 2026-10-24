@@ -19,6 +19,7 @@ export interface AdventDayData {
 
 export interface AdventData {
   year: number
+  lockedImage?: string
   startDate: Date
   endDate: Date
   validation?: (

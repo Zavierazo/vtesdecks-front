@@ -153,7 +153,9 @@
             [class.calendar-day--open]="day.isAvailable"
             [class.calendar-day--complete]="day.isCompleted"
             [class.calendar-day--christmas]="day.dayNumber === 24"
-            [class.has-art]="day.data?.image"
+            [class.has-art]="
+              day.isAvailable ? day.data?.image : edition.lockedImage
+            "
           >
             @if (day.isAvailable && day.data) {
               <button
@@ -220,13 +222,13 @@
                 class="day-locked"
                 [attr.aria-label]="t('locked_label', { day: day.dayNumber })"
               >
-                @if (day.data?.image; as illustration) {
+                @if (edition.lockedImage; as illustration) {
                   <span class="day-art">
                     <img
                       [src]="illustration"
                       alt=""
                       width="600"
-                      height="400"
+                      height="600"
                       [attr.loading]="day.dayNumber <= 6 ? 'eager' : 'lazy'"
                       decoding="async"
                     />

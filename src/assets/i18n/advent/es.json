@@ -53,7 +53,6 @@
   "build": "Construir para este reto",
   "sign_in": "Inicia sesión para participar",
   "validation": {
-    "pending": "Comprobando el reto de Adviento…",
     "unavailable": "No se ha podido comprobar el reto. Revisa tu conexión y vuelve a pulsar Guardar.",
     "save": "Resuelve los avisos de validación de Adviento antes de guardar.",
     "name": "Empieza por Advent2026: y añade el nombre de tu mazo.",

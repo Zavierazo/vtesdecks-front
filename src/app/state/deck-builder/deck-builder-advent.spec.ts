@@ -138,6 +138,7 @@ describe('Advent builder validation', () => {
       .mockReturnValueOnce(first)
       .mockReturnValueOnce(second)
     expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors).toEqual([])
     expect(state.cryptErrors).toEqual([])
     expect(state.libraryErrors).toEqual([])
     await expect(firstValueFrom(service.saveDeck())).rejects.toThrow()
@@ -149,7 +150,8 @@ describe('Advent builder validation', () => {
     ]
     service.validateDeck()
     first.next({ id: 1 } as ApiDeckArchetype)
-    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors).toEqual([])
     await vi.advanceTimersByTimeAsync(350)
     second.next({ id: 3 } as ApiDeckArchetype)
     expect(
@@ -161,13 +163,66 @@ describe('Advent builder validation', () => {
     expect(state.deckErrors.join(' ')).toContain('Gangrel Thing')
     expect(state.deckErrors.join(' ')).toContain('best-matching archetype')
     expect(state.libraryErrors).toEqual([])
+    const previousErrors = [...state.deckErrors]
     state.cards = [...state.cards, { id: 100003, number: 1 }]
-    service.validateDeck()
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors).toEqual(previousErrors)
     await vi.advanceTimersByTimeAsync(350)
+    expect(service.validateDeck()).toBe(true)
     expect(state.deckErrors).toEqual([])
     expect(api.getDeckBuilderArchetype.mock.calls[2][0].cards).toEqual(
       state.cards,
     )
+  })
+
+  it.each([2, 3])(
+    'keeps errors empty during repeated quantity edits while blocking saves for day %s',
+    async (day) => {
+      const { service, state, api } = await setup(day)
+      await vi.advanceTimersByTimeAsync(350)
+      expect(service.validateDeck()).toBe(true)
+
+      for (const number of [61, 62, 63, 62, 61, 60]) {
+        state.cards[1] = { id: 100001, number }
+        expect(service.validateDeck()).toBe(false)
+        expect(state.deckErrors).toEqual([])
+        expect(state.cryptErrors).toEqual([])
+        expect(state.libraryErrors).toEqual([])
+        await expect(firstValueFrom(service.saveDeck())).rejects.toThrow()
+        await vi.advanceTimersByTimeAsync(100)
+      }
+      expect(api.saveDeckBuilder).not.toHaveBeenCalled()
+      await vi.advanceTimersByTimeAsync(350)
+      expect(service.validateDeck()).toBe(true)
+      expect(state.deckErrors).toEqual([])
+    },
+  )
+
+  it('keeps the release error visible during rechecks and clears it when changing challenges', async () => {
+    const { service, state, api } = await setup(2)
+    api.getDeck.mockReturnValueOnce(
+      of({
+        crypt: [{ id: 200001, number: 1 }],
+        library: [],
+      } as unknown as ApiDeck),
+    )
+    await vi.advanceTimersByTimeAsync(350)
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors.join(' ')).toContain('New Blood: Salubri</a>')
+    const previousErrors = [...state.deckErrors]
+    for (const number of [61, 62, 61, 60]) {
+      state.cards[1] = { id: 100001, number }
+      expect(service.validateDeck()).toBe(false)
+      expect(state.deckErrors).toEqual(previousErrors)
+      await vi.advanceTimersByTimeAsync(350)
+      expect(state.deckErrors).toEqual(previousErrors)
+    }
+
+    state.extra.advent!.day = 3
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors).toEqual([])
+    await vi.advanceTimersByTimeAsync(350)
+    expect(service.validateDeck()).toBe(true)
   })
 
   it('validates ordinary decks without any event requests', async () => {
@@ -199,7 +254,8 @@ describe('Advent builder validation', () => {
         },
       },
     })
-    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors.join(' ')).not.toContain('Checking')
   })
 
   it('restores the previous edition validators from saved metadata', async () => {
@@ -244,8 +300,9 @@ describe('Advent builder validation', () => {
       ADVENT_2026_ERRORS['unavailable'],
     )
     expect(state.deckErrors.join(' ')).toContain('href="/metagame/1"')
-    service.validateDeck(true)
-    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    const previousErrors = [...state.deckErrors]
+    expect(service.validateDeck(true)).toBe(false)
+    expect(state.deckErrors).toEqual(previousErrors)
     await vi.advanceTimersByTimeAsync(350)
     expect(state.deckErrors).toEqual([])
   })
@@ -433,7 +490,7 @@ describe('Advent builder validation', () => {
     service.validateDeck()
     await vi.dynamicImportSettled()
     expect(service.validateDeck()).toBe(false)
-    expect(state.deckErrors).toContain('shared.loading')
+    expect(state.deckErrors).toEqual([])
     pending.error(new Error('offline'))
     expect(service.validateDeck()).toBe(false)
     expect(state.deckErrors).toContain('shared.error_loading_data')

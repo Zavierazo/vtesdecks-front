@@ -53,7 +53,6 @@
   "build": "Montar deck para este desafio",
   "sign_in": "Entre para participar",
   "validation": {
-    "pending": "Verificando o desafio do Advento…",
     "unavailable": "Não foi possível verificar o desafio. Confira sua conexão e clique em Salvar novamente.",
     "save": "Resolva os avisos de validação do Advento antes de salvar.",
     "name": "Comece com Advent2026: e acrescente o nome do seu deck.",

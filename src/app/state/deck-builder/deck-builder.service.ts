@@ -203,7 +203,7 @@ export class DeckBuilderService {
       )
     }
     return {
-      deckErrors: [this.translocoService.translate('shared.loading')],
+      pending: true,
     }
   }
 
@@ -619,6 +619,7 @@ export class DeckBuilderService {
 
     return (
       isValid &&
+      !adventResult.pending &&
       deckErrors.length === 0 &&
       cryptErrors.length === 0 &&
       libraryErrors.length === 0

@@ -8,6 +8,7 @@ import { AuthQuery } from '@state/auth/auth.query'
 import { BehaviorSubject, of } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdventComponent } from './advent.component'
+import { ADVENT_2026 } from './advent-2026.data'
 import adventEn from '../../../assets/i18n/advent/en.json'
 import adventEs from '../../../assets/i18n/advent/es.json'
 import adventFr from '../../../assets/i18n/advent/fr.json'
@@ -333,7 +334,8 @@ describe('Advent admin preview controls', () => {
 describe('Advent translations', () => {
   afterEach(() => TestBed.resetTestingModule())
 
-  async function setup(year?: number) {
+  async function setup(year?: number, date = '2026-12-24T12:00:00Z') {
+    const serverDate = signal(new Date(date))
     TestBed.configureTestingModule({
       imports: [translations()],
       providers: [
@@ -345,7 +347,7 @@ describe('Advent translations', () => {
         {
           provide: AuthQuery,
           useValue: {
-            serverDate: () => signal(new Date('2026-12-24T12:00:00Z')),
+            serverDate: () => serverDate,
             selectAuthenticated: () => of(false),
             selectAdmin: () => of(false),
           },
@@ -359,8 +361,36 @@ describe('Advent translations', () => {
     TestBed.inject(NgbModalConfig).animation = false
     const fixture = TestBed.createComponent(AdventComponent)
     await fixture.whenStable()
-    return { fixture, transloco: TestBed.inject(TranslocoService) }
+    return { fixture, transloco: TestBed.inject(TranslocoService), serverDate }
   }
+
+  it('uses only the shared cover for future days and reveals each image when its day opens', async () => {
+    const { fixture, serverDate } = await setup(
+      undefined,
+      '2026-11-30T12:00:00Z',
+    )
+    const element: HTMLElement = fixture.nativeElement
+    const images = () =>
+      [...element.querySelectorAll<HTMLImageElement>('.calendar-grid img')].map(
+        (image) => image.getAttribute('src'),
+      )
+    expect(images()).toEqual(Array(24).fill(ADVENT_2026.lockedImage))
+    expect(element.querySelector('.day-button')).toBeNull()
+
+    for (const opened of [1, 2]) {
+      serverDate.set(new Date(`2026-12-0${opened}T00:00:00Z`))
+      await fixture.whenStable()
+      expect(images()).toEqual([
+        ...Array.from(
+          { length: opened },
+          (_, index) => ADVENT_2026.days[index + 1].image,
+        ),
+        ...Array(24 - opened).fill(ADVENT_2026.lockedImage),
+      ])
+      expect(element.querySelectorAll('.day-button')).toHaveLength(opened)
+    }
+    fixture.destroy()
+  })
 
   it('updates the calendar and an open challenge in every language, retaining its inline reference', async () => {
     const { fixture, transloco } = await setup()

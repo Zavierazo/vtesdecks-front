@@ -4,7 +4,6 @@ import type { AdventData } from './advent.data'
 import type { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 
 export const ADVENT_2026_ERRORS: Record<string, string> = {
-  pending: 'Checking the Advent challenge…',
   unavailable:
     'The challenge could not be checked. Check your connection and try Save again.',
   save: 'Resolve the Advent validation messages before saving.',
@@ -70,6 +69,7 @@ export function matchesRelease(
 
 export const ADVENT_2026: AdventData = {
   year: 2026,
+  lockedImage: `${environment.cdnDomain}/img/advent/2026/unrevealed.webp`,
   startDate: new Date('2026-12-01T00:00:00Z'),
   endDate: new Date('2026-12-31T23:59:59.999Z'),
   validation: (query, translate = adventEnglish) => {

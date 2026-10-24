@@ -29,6 +29,7 @@ import {
 import type { AdventTranslate } from './advent-translation'
 
 export interface AdventValidationResult {
+  pending?: boolean
   deckErrors?: string[]
   cryptErrors?: string[]
   libraryErrors?: string[]
@@ -53,6 +54,8 @@ export class AdventBuilderService {
     deck: ApiDeckBuilder
   } | null>()
   private adventKey?: string
+  private adventDay?: number
+  private adventPending = false
   private adventErrors: string[] = []
   private readonly releaseCards = new Map<string, Set<number>>()
 
@@ -78,6 +81,7 @@ export class AdventBuilderService {
       )
       .subscribe(({ key, errors }) => {
         if (key === this.adventFingerprint()) {
+          this.adventPending = false
           this.adventErrors = errors
           this.changes.next()
         }
@@ -86,6 +90,8 @@ export class AdventBuilderService {
 
   reset(): void {
     this.adventKey = undefined
+    this.adventDay = undefined
+    this.adventPending = false
     this.adventErrors = []
     this.adventRefresh.next(null)
   }
@@ -93,13 +99,10 @@ export class AdventBuilderService {
   validate(retry = false): AdventValidationResult {
     if (!this.ensureTranslations(retry)) {
       return {
-        deckErrors: [
-          this.transloco.translate(
-            this.translationFailed
-              ? 'shared.error_loading_data'
-              : 'shared.loading',
-          ),
-        ],
+        pending: !this.translationFailed,
+        deckErrors: this.translationFailed
+          ? [this.transloco.translate('shared.error_loading_data')]
+          : [],
       }
     }
     if (retry && this.adventErrors.includes('unavailable')) {
@@ -131,6 +134,7 @@ export class AdventBuilderService {
     const remoteErrors = this.validateAdvent()
     const local = day.validation?.(this.query, this.translate) ?? {}
     return {
+      pending: this.adventPending,
       cryptErrors: local.cryptErrors,
       libraryErrors: local.libraryErrors,
       deckErrors: [
@@ -237,10 +241,15 @@ export class AdventBuilderService {
 
   private validateAdvent(): string[] {
     const key = this.adventFingerprint()
+    const state = this.store.getValue()
+    const day = state.extra?.advent?.day
     if (key !== this.adventKey) {
       this.adventKey = key
-      this.adventErrors = key ? ['pending'] : []
-      const state = this.store.getValue()
+      this.adventPending = !!key
+      if (!key || this.adventDay !== day) {
+        this.adventErrors = []
+      }
+      this.adventDay = day
       this.adventRefresh.next(
         key
           ? {
@@ -255,8 +264,6 @@ export class AdventBuilderService {
           : null,
       )
     }
-    const advent = this.store.getValue().extra?.advent
-    const day = advent?.day
     const errors = this.adventErrors.map((error) => {
       if (error !== 'rule' && error !== 'unavailable') {
         return this.translate('validation.' + error, ADVENT_2026_ERRORS[error])

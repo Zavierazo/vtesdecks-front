@@ -53,7 +53,6 @@
   "build": "Construire pour ce défi",
   "sign_in": "Connectez-vous pour participer",
   "validation": {
-    "pending": "Vérification du défi de l’Avent…",
     "unavailable": "Impossible de vérifier le défi. Vérifiez votre connexion et cliquez à nouveau sur Enregistrer.",
     "save": "Corrigez les problèmes de validation de l’Avent avant d’enregistrer.",
     "name": "Commencez par Advent2026: et ajoutez le nom de votre deck.",
