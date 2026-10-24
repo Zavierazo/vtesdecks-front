@@ -99,6 +99,8 @@ Crypt, Library and sets restore from IndexedDB before background refresh. Catalo
 
 ### Builder editing header
 
+Deck Builder validation separates deck-wide errors from Crypt and Library errors. Deck-wide messages appear in a dedicated section immediately above Crypt; card-section messages stay with their section. Advent naming, publication, release-percentage, archetype and pending/unavailable checks use deck-wide errors, preserving their sanitized inline links and save blocking. These errors are transient builder state and must clear when resolved or leaving the challenge.
+
 The builder has a non-sticky editing header with the name and compact save controls sharing a row when space permits, followed by an always-visible Markdown description editor and grouped actions. Draft status and a small Show changes link sit beneath Save within the compact save area, aligned as a group with the name input. Comparison totals and details appear below the primary row only when expanded. The builder sets --markdown-editor-min-height for a shorter empty, unfocused editor; focus or existing content restores the standard minimum height, and the shared Markdown editor continues to grow with content. Import, Export and Share retain their specific menus. The optional version-label input and Save button share an aligned input group; visibility sits beside it within one compact save area. Header action buttons use the blue primary palette, except Delete, which uses the danger palette. Existing save, draft, sharing and action eligibility contracts remain unchanged.
 
 ### Shared deck presentation

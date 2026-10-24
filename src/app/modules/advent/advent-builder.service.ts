@@ -29,6 +29,7 @@ import {
 import type { AdventTranslate } from './advent-translation'
 
 export interface AdventValidationResult {
+  deckErrors?: string[]
   cryptErrors?: string[]
   libraryErrors?: string[]
 }
@@ -92,7 +93,7 @@ export class AdventBuilderService {
   validate(retry = false): AdventValidationResult {
     if (!this.ensureTranslations(retry)) {
       return {
-        libraryErrors: [
+        deckErrors: [
           this.transloco.translate(
             this.translationFailed
               ? 'shared.error_loading_data'
@@ -111,7 +112,7 @@ export class AdventBuilderService {
     if (!edition || !day) {
       this.reset()
       return {
-        libraryErrors: [
+        deckErrors: [
           this.translate(
             'validation.challenge',
             ADVENT_2026_ERRORS['challenge'],
@@ -131,8 +132,8 @@ export class AdventBuilderService {
     const local = day.validation?.(this.query, this.translate) ?? {}
     return {
       cryptErrors: local.cryptErrors,
-      libraryErrors: [
-        ...(local.libraryErrors ?? []),
+      libraryErrors: local.libraryErrors,
+      deckErrors: [
         ...(edition.validation?.(this.query, this.translate) ?? []),
         ...remoteErrors,
       ],

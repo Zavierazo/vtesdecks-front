@@ -191,7 +191,7 @@ export class DeckBuilderService {
     }
     if (this.adventLoadFailed && !retry) {
       return {
-        libraryErrors: [
+        deckErrors: [
           this.translocoService.translate('shared.error_loading_data'),
         ],
       }
@@ -203,7 +203,7 @@ export class DeckBuilderService {
       )
     }
     return {
-      libraryErrors: [this.translocoService.translate('shared.loading')],
+      deckErrors: [this.translocoService.translate('shared.loading')],
     }
   }
 
@@ -456,12 +456,14 @@ export class DeckBuilderService {
       const message = this.translocoService.translate(
         'deck_builder_service.missing_cards',
       )
+      this.store.setDeckErrors([])
       this.store.setCryptErrors(missingCrypt ? [message] : [])
       this.store.setLibraryErrors(missingLibrary ? [message] : [])
       return false
     }
     let isValid = true
     const limitedFormat = this.query.getLimitedFormat()
+    const deckErrors = []
     const cryptErrors = []
 
     const cryptSize = this.query.getCryptSize()
@@ -592,9 +594,11 @@ export class DeckBuilderService {
       : this.query.getValue().customValidation
     if (customValidation) {
       const {
+        deckErrors: customDeckErrors,
         cryptErrors: customCryptErrors,
         libraryErrors: customLibraryErrors,
       } = customValidation(this.query)
+      deckErrors.push(...(customDeckErrors ?? []))
       if (customCryptErrors && customCryptErrors.length > 0) {
         cryptErrors.push(...customCryptErrors)
         isValid = false
@@ -606,12 +610,19 @@ export class DeckBuilderService {
     }
 
     const adventResult = this.validateAdvent(retryAdvent)
+    deckErrors.push(...(adventResult.deckErrors ?? []))
     cryptErrors.push(...(adventResult.cryptErrors ?? []))
     libraryErrors.push(...(adventResult.libraryErrors ?? []))
+    this.store.setDeckErrors(deckErrors)
     this.store.setCryptErrors(cryptErrors)
     this.store.setLibraryErrors(libraryErrors)
 
-    return isValid && cryptErrors.length === 0 && libraryErrors.length === 0
+    return (
+      isValid &&
+      deckErrors.length === 0 &&
+      cryptErrors.length === 0 &&
+      libraryErrors.length === 0
+    )
   }
 
   private static readonly DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days

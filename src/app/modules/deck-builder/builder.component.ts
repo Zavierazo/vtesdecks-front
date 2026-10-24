@@ -215,6 +215,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
   libraryClans$ = this.deckBuilderQuery.selectLibraryClans()
   libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines()
+  deckErrors$ = this.deckBuilderQuery.selectDeckErrors()
   cryptErrors$ = this.deckBuilderQuery.selectCryptErrors()
   libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
   saved$ = this.deckBuilderQuery.selectSaved()

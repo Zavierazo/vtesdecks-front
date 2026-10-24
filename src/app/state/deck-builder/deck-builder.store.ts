@@ -26,6 +26,7 @@ export interface DeckBuilderState {
   collection: boolean
   published: boolean
   cards: ApiCard[]
+  deckErrors: string[]
   cryptFilter: CryptFilter
   cryptErrors: string[]
   cryptSortBy: DeckCryptSortBy
@@ -37,6 +38,7 @@ export interface DeckBuilderState {
   collectionCards?: ApiCollectionCard[]
   validation?: (query: DeckBuilderQuery) => string[]
   customValidation?: (query: DeckBuilderQuery) => {
+    deckErrors?: string[]
     cryptErrors?: string[]
     libraryErrors?: string[]
   }
@@ -100,6 +102,10 @@ export class DeckBuilderStore {
         .map((c) => (c.id === id ? { ...c, number: c.number - 1 } : c))
         .filter((c) => c.number >= 0),
     }))
+  }
+
+  setDeckErrors(errors: string[]): void {
+    this.update((state) => ({ ...state, deckErrors: errors }))
   }
 
   setCryptErrors(errors: string[]): void {
@@ -197,6 +203,7 @@ export class DeckBuilderStore {
   private getInitialState(): DeckBuilderState {
     return {
       cards: [],
+      deckErrors: [],
       customTags: [],
       cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
       cryptErrors: [],

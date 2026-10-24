@@ -65,6 +65,10 @@ export class DeckBuilderQuery {
     return this.store.select((state) => state.saved)
   }
 
+  selectDeckErrors(): Observable<string[]> {
+    return this.store.select((state) => state.deckErrors)
+  }
+
   selectCryptErrors(): Observable<string[]> {
     return this.store.select((state) => state.cryptErrors)
   }

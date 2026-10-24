@@ -313,6 +313,7 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "validation_title": "Deck validation",
     "picker_no_results": "No cards match your search and filters. Remove a filter or try another search.",
     "unsaved_changes": {
       "show": "Show changes",

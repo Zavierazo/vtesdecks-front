@@ -313,6 +313,7 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "validation_title": "Validación del mazo",
     "picker_no_results": "Ninguna carta coincide con tu búsqueda y filtros. Quita un filtro o prueba otra búsqueda.",
     "unsaved_changes": {
       "show": "Ver cambios",

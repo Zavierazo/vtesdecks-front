@@ -37,6 +37,7 @@ describe('Advent builder validation', () => {
         { id: 200001, number: 12 },
         { id: 100001, number: 60 },
       ] as ApiCard[],
+      deckErrors: [] as string[],
       cryptErrors: [] as string[],
       libraryErrors: [] as string[],
     }
@@ -58,6 +59,7 @@ describe('Advent builder validation', () => {
       getLoading: () => false,
       update: (fn: (value: DeckBuilderState) => Partial<DeckBuilderState>) =>
         Object.assign(state, fn(state as DeckBuilderState)),
+      setDeckErrors: (errors: string[]) => (state.deckErrors = errors),
       setCryptErrors: (errors: string[]) => (state.cryptErrors = errors),
       setLibraryErrors: (errors: string[]) => (state.libraryErrors = errors),
     }
@@ -136,6 +138,8 @@ describe('Advent builder validation', () => {
       .mockReturnValueOnce(first)
       .mockReturnValueOnce(second)
     expect(service.validateDeck()).toBe(false)
+    expect(state.cryptErrors).toEqual([])
+    expect(state.libraryErrors).toEqual([])
     await expect(firstValueFrom(service.saveDeck())).rejects.toThrow()
     expect(api.saveDeckBuilder).not.toHaveBeenCalled()
     await vi.advanceTimersByTimeAsync(350)
@@ -145,21 +149,22 @@ describe('Advent builder validation', () => {
     ]
     service.validateDeck()
     first.next({ id: 1 } as ApiDeckArchetype)
-    expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
     await vi.advanceTimersByTimeAsync(350)
     second.next({ id: 3 } as ApiDeckArchetype)
     expect(
-      state.libraryErrors.some((error) => error.startsWith('Advent rule:')),
+      state.deckErrors.some((error) => error.startsWith('Advent rule:')),
     ).toBe(true)
-    expect(state.libraryErrors.join(' ')).toContain('href="/metagame/1"')
-    expect(state.libraryErrors.join(' ')).toContain('Gangrel Thing</a>')
-    expect(state.libraryErrors.join(' ')).toContain('target="_blank"')
-    expect(state.libraryErrors.join(' ')).toContain('Gangrel Thing')
-    expect(state.libraryErrors.join(' ')).toContain('best-matching archetype')
+    expect(state.deckErrors.join(' ')).toContain('href="/metagame/1"')
+    expect(state.deckErrors.join(' ')).toContain('Gangrel Thing</a>')
+    expect(state.deckErrors.join(' ')).toContain('target="_blank"')
+    expect(state.deckErrors.join(' ')).toContain('Gangrel Thing')
+    expect(state.deckErrors.join(' ')).toContain('best-matching archetype')
+    expect(state.libraryErrors).toEqual([])
     state.cards = [...state.cards, { id: 100003, number: 1 }]
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toEqual([])
+    expect(state.deckErrors).toEqual([])
     expect(api.getDeckBuilderArchetype.mock.calls[2][0].cards).toEqual(
       state.cards,
     )
@@ -174,7 +179,7 @@ describe('Advent builder validation', () => {
     await vi.advanceTimersByTimeAsync(1000)
     expect(api.getDeck).not.toHaveBeenCalled()
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
-    expect(state.libraryErrors).not.toContain(ADVENT_2026_ERRORS['name'])
+    expect(state.deckErrors).not.toContain(ADVENT_2026_ERRORS['name'])
   })
 
   it('initializes challenge metadata after loading the event service', async () => {
@@ -194,7 +199,7 @@ describe('Advent builder validation', () => {
         },
       },
     })
-    expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
   })
 
   it('restores the previous edition validators from saved metadata', async () => {
@@ -230,19 +235,19 @@ describe('Advent builder validation', () => {
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
     expect(
-      state.libraryErrors.some((error) => error.startsWith('Advent rule:')),
+      state.deckErrors.some((error) => error.startsWith('Advent rule:')),
     ).toBe(true)
     state.cards[1] = { id: 100001, number: 61 }
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       ADVENT_2026_ERRORS['unavailable'],
     )
-    expect(state.libraryErrors.join(' ')).toContain('href="/metagame/1"')
+    expect(state.deckErrors.join(' ')).toContain('href="/metagame/1"')
     service.validateDeck(true)
-    expect(state.libraryErrors).toContain(ADVENT_2026_ERRORS['pending'])
+    expect(state.deckErrors).toContain(ADVENT_2026_ERRORS['pending'])
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toEqual([])
+    expect(state.deckErrors).toEqual([])
   })
 
   it('fetches each specific product and calculates release shares locally', async () => {
@@ -254,7 +259,7 @@ describe('Advent builder validation', () => {
     ]
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toEqual([])
+    expect(state.deckErrors).toEqual([])
     expect(api.getDeck).toHaveBeenLastCalledWith(
       'preconstructed-secrets_of_new_york',
     )
@@ -262,25 +267,27 @@ describe('Advent builder validation', () => {
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
     expect(
-      state.libraryErrors.some((error) => error.startsWith('Advent rule:')),
+      state.deckErrors.some((error) => error.startsWith('Advent rule:')),
     ).toBe(true)
     expect(api.getDeck).toHaveBeenLastCalledWith(
       'preconstructed-first_blood_salubri',
     )
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       'At least 50% of all card copies in your deck must appear in',
     )
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       'href="/deck/preconstructed-first_blood_salubri"',
     )
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       'New Blood: Salubri</a>. Count crypt and library copies together.',
     )
+    expect(state.cryptErrors).toEqual([])
+    expect(state.libraryErrors).toEqual([])
     state.cards[1].number = 24
     state.cards[2].number = 36
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors).toEqual([])
+    expect(state.deckErrors).toEqual([])
     expect(api.getDeck).toHaveBeenCalledTimes(2)
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
   })
@@ -292,10 +299,10 @@ describe('Advent builder validation', () => {
     )
     service.validateDeck()
     await vi.advanceTimersByTimeAsync(350)
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       ADVENT_2026_ERRORS['unavailable'],
     )
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       'href="/deck/preconstructed-noites_brasileiras"',
     )
     service.validateDeck(true)
@@ -304,6 +311,30 @@ describe('Advent builder validation', () => {
     await vi.advanceTimersByTimeAsync(350)
     expect(api.getDeck).toHaveBeenCalledTimes(1)
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
+  })
+
+  it('separates name and publication errors from card errors and clears them when resolved or leaving Advent', async () => {
+    const { service, state } = await setup(24)
+    state.name = 'My deck'
+    state.published = false
+    expect(service.validateDeck()).toBe(false)
+    expect(state.deckErrors).toEqual([
+      adventEn.validation.name,
+      adventEn.validation.published,
+    ])
+    expect(state.cryptErrors).toEqual([])
+    expect(state.libraryErrors).toEqual([])
+
+    state.name = 'Advent2026: Test'
+    state.published = true
+    expect(service.validateDeck()).toBe(true)
+    expect(state.deckErrors).toEqual([])
+
+    state.name = 'My deck'
+    expect(service.validateDeck()).toBe(false)
+    delete state.extra.advent
+    expect(service.validateDeck()).toBe(true)
+    expect(state.deckErrors).toEqual([])
   })
 
   it('puts the first challenge failure under Crypt and clears it when the crypt qualifies', async () => {
@@ -328,6 +359,7 @@ describe('Advent builder validation', () => {
         adventEn.editions['2026'].days['1'].content,
       ),
     ])
+    expect(state.deckErrors).toEqual([])
     expect(state.libraryErrors).toEqual([])
 
     state.cards[0].number = 9
@@ -373,11 +405,11 @@ describe('Advent builder validation', () => {
     await vi.advanceTimersByTimeAsync(350)
     const metadata = { ...state.extra.advent }
     transloco.setActiveLang('es')
-    expect(state.libraryErrors).toContain(adventEs.validation.name)
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors).toContain(adventEs.validation.name)
+    expect(state.deckErrors.join(' ')).toContain(
       adventEs.validation.archetype.split('{{reference}}')[0],
     )
-    expect(state.libraryErrors.join(' ')).toContain(
+    expect(state.deckErrors.join(' ')).toContain(
       'Gangrel Thing</a> como el arquetipo',
     )
     expect(state.name).toBe('My deck')
@@ -391,6 +423,7 @@ describe('Advent builder validation', () => {
         adventEs.editions['2026'].days['5'].content,
       ),
     )
+    expect(state.deckErrors).toEqual([])
   })
 
   it('blocks validation while translations load or fail, and retries on Save', async () => {
@@ -400,10 +433,10 @@ describe('Advent builder validation', () => {
     service.validateDeck()
     await vi.dynamicImportSettled()
     expect(service.validateDeck()).toBe(false)
-    expect(state.libraryErrors).toContain('shared.loading')
+    expect(state.deckErrors).toContain('shared.loading')
     pending.error(new Error('offline'))
     expect(service.validateDeck()).toBe(false)
-    expect(state.libraryErrors).toContain('shared.error_loading_data')
+    expect(state.deckErrors).toContain('shared.error_loading_data')
     expect(load).toHaveBeenCalledTimes(1)
     expect(service.validateDeck(true)).toBe(true)
     expect(load).toHaveBeenCalledTimes(2)
