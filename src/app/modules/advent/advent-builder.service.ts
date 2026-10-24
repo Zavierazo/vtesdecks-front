@@ -105,7 +105,11 @@ export class AdventBuilderService {
           : [],
       }
     }
-    if (retry && this.adventErrors.includes('unavailable')) {
+    if (
+      retry &&
+      !this.adventPending &&
+      this.adventErrors.includes('unavailable')
+    ) {
       this.adventKey = undefined
     }
     const state = this.store.getValue()
