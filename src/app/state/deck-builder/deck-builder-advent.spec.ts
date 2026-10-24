@@ -50,13 +50,13 @@ describe('Advent builder validation', () => {
           id,
           keyCrypt: [
             { id: 200001, appearanceRate: 1, number: 6, avg: 5.2 },
-            { id: 200002, appearanceRate: 0.9, number: 2, avg: 2.1 },
-            { id: 200003, appearanceRate: 0.8999, number: 4, avg: 3.8 },
+            { id: 200002, appearanceRate: 0.85, number: 2, avg: 2.1 },
+            { id: 200003, appearanceRate: 0.8499, number: 4, avg: 3.8 },
           ],
           keyLibrary: [
             { id: 100001, appearanceRate: 0.95, number: 8, avg: 9.6 },
-            { id: 100002, appearanceRate: 0.91, number: 6, avg: 5.4 },
-            { id: 100003, appearanceRate: 0.8, number: 20, avg: 20 },
+            { id: 100002, appearanceRate: 0.85, number: 6, avg: 5.4 },
+            { id: 100003, appearanceRate: 0.8499, number: 20, avg: 20 },
             { id: 100004, appearanceRate: 1, number: 0, avg: 0 },
           ],
         } as ApiDeckArchetype),
@@ -171,7 +171,7 @@ describe('Advent builder validation', () => {
   }
 
   it.each([3, 7, 11, 15, 19, 22])(
-    'starts day %s with cards used in at least 90% of the archetype, at their typical quantities',
+    'starts day %s with cards used in at least 85% of the archetype, at their typical quantities',
     async (day) => {
       const { service, state, api } = await setup(undefined, false)
       state.cards = []

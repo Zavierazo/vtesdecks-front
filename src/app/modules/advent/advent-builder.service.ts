@@ -220,7 +220,7 @@ export class AdventBuilderService {
             ...(archetype.keyCrypt ?? []),
             ...(archetype.keyLibrary ?? []),
           ]
-            .filter((card) => card.appearanceRate >= 0.9 && card.number > 0)
+            .filter((card) => card.appearanceRate >= 0.85 && card.number > 0)
             .map(({ id, number }) => ({
               id,
               number,
