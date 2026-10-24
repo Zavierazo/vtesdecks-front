@@ -97,11 +97,11 @@
 
       <!-- Center Section -->
       <div
-        class="deck-meta d-flex align-items-center justify-content-center position-relative flex-grow-1 px-3 py-2"
+        class="deck-meta position-relative flex-grow-1 px-3 py-2"
         style="z-index: 1"
       >
-        <div class="d-flex align-items-center gap-2">
-          <div class="clan-badges d-flex gap-1">
+        <div class="deck-icon-groups">
+          <div class="clan-badges deck-icon-group">
             @for (icon of deck.clanIcons; track icon) {
               <div
                 class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
@@ -111,7 +111,7 @@
             }
           </div>
           @if (deck.pathIcon) {
-            <div class="path-badges">
+            <div class="path-badges deck-icon-group">
               <div
                 class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
               >
@@ -119,7 +119,7 @@
               </div>
             </div>
           }
-          <div class="discipline-badges d-flex gap-1">
+          <div class="discipline-badges deck-icon-group">
             @for (icon of deck.disciplineIcons; track icon) {
               <div
                 class="icon-wrapper d-inline-flex align-items-center justify-content-center rounded-2"
@@ -130,7 +130,7 @@
           </div>
         </div>
         @if (deck.reaction; as reaction) {
-          <div class="deck-reaction position-absolute start-0 ms-3">
+          <div class="deck-reaction">
             <div
               class="reaction-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
               [title]="'reactions.' + reaction | transloco"
@@ -140,7 +140,7 @@
           </div>
         }
         @if (deck.rate; as rate) {
-          <div class="deck-rating position-absolute end-0 me-3">
+          <div class="deck-rating">
             <div
               class="rating-badge d-inline-flex align-items-center px-2 py-1 rounded-2 small"
               [ngClass]="{
