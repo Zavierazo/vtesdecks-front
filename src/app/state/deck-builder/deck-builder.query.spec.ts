@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing'
+import { ApiCard } from '@models'
 import { CardReleaseStatusService } from '@services'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
@@ -86,5 +87,61 @@ describe('Builder crypt discipline statistics', () => {
     const { query, getDisciplines } = setup()
     query.getCryptDisciplines()
     expect(getDisciplines).toHaveBeenCalledWith([{ id: 200001, number: 2 }])
+  })
+})
+
+describe('Builder library grouping', () => {
+  afterEach(() => TestBed.resetTestingModule())
+
+  it('resolves missing card types from the catalog without changing draft quantities or existing types', async () => {
+    const cards: ApiCard[] = [
+      { id: 200001, number: 2 },
+      { id: 100001, number: 3 },
+      { id: 100002, number: 6, type: '' },
+      { id: 100003, number: 0, type: 'Event' },
+      { id: 100004, number: 1 },
+    ]
+    const state = { cards }
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: DeckBuilderStore,
+          useValue: {
+            select: (selector: (value: typeof state) => unknown) =>
+              of(selector(state)),
+          },
+        },
+        {
+          provide: LibraryQuery,
+          useValue: {
+            getEntity: (id: number) => {
+              const type = (
+                { 100001: 'Master', 100002: 'Action/Reaction' } as Record<
+                  number,
+                  string
+                >
+              )[id]
+              return type ? { type } : undefined
+            },
+          },
+        },
+        { provide: CryptQuery, useValue: {} },
+        { provide: CardReleaseStatusService, useValue: {} },
+      ],
+    })
+
+    const library = await firstValueFrom(
+      TestBed.inject(DeckBuilderQuery).selectLibrary(),
+    )
+    expect(
+      library.map(({ id, number, type }) => ({ id, number, type })),
+    ).toEqual([
+      { id: 100001, number: 3, type: 'Master' },
+      { id: 100002, number: 6, type: 'Action/Reaction' },
+      { id: 100003, number: 0, type: 'Event' },
+      { id: 100004, number: 1, type: undefined },
+    ])
+    expect(cards[1].type).toBeUndefined()
+    expect(cards[2].type).toBe('')
   })
 })

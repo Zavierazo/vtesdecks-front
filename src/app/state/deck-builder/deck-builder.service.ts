@@ -137,6 +137,7 @@ export class DeckBuilderService {
   }
 
   async initAdventRules(year: string, day: string): Promise<void> {
+    const { id, cards } = this.store.getValue()
     const advent = {
       year: Number(year),
       day: Number(day),
@@ -151,7 +152,13 @@ export class DeckBuilderService {
     try {
       const service = await this.loadAdventService()
       // The user may have opened a different deck while the module was loading.
-      if (this.store.getValue().extra?.advent === advent) {
+      const current = this.store.getValue()
+      if (
+        current.id === id &&
+        current.cards === cards &&
+        current.extra?.advent?.year === advent.year &&
+        current.extra.advent.day === advent.day
+      ) {
         await service.initialize(advent.year, advent.day)
         this.validateDeck()
       }

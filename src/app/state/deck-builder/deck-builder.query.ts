@@ -208,6 +208,7 @@ export class DeckBuilderQuery {
           (card: ApiCard) =>
             ({
               ...card,
+              type: card.type || this.libraryQuery.getEntity(card.id)?.type,
               collection: this.getCollectionType(
                 card.id,
                 card.number,

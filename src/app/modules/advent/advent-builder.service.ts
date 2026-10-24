@@ -2,9 +2,10 @@ import { DestroyRef, inject, Injectable } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { TranslocoService } from '@jsverse/transloco'
 import type { ApiDeckBuilder } from '@models'
-import { ApiDataService } from '@services'
+import { ApiDataService, ToastService } from '@services'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderStore } from '@state/deck-builder/deck-builder.store'
+import { LibraryQuery } from '@state/library/library.query'
 import {
   catchError,
   EMPTY,
@@ -39,7 +40,9 @@ export interface AdventValidationResult {
 export class AdventBuilderService {
   private readonly store = inject(DeckBuilderStore)
   private readonly query = inject(DeckBuilderQuery)
+  private readonly libraryQuery = inject(LibraryQuery)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly toastService = inject(ToastService)
   private readonly transloco = inject(TranslocoService)
   private readonly destroyRef = inject(DestroyRef)
   private translationLanguage?: string
@@ -183,10 +186,56 @@ export class AdventBuilderService {
   }
 
   async initialize(advent: number, day: number): Promise<void> {
-    const expected = this.store.getValue().extra?.advent
+    const { id, cards } = this.store.getValue()
+    const isCurrent = () => {
+      const current = this.store.getValue()
+      return (
+        current.id === id &&
+        current.cards === cards &&
+        current.extra?.advent?.year === advent &&
+        current.extra.advent.day === day
+      )
+    }
     await firstValueFrom(this.transloco.load('advent/en'))
-    if (this.store.getValue().extra?.advent === expected) {
-      this.applyChallenge(advent, day)
+    if (!isCurrent()) {
+      return
+    }
+    this.applyChallenge(advent, day)
+    const archetypeId = ADVENT_DATA.find((item) => item.year === advent)?.days[
+      day
+    ]?.archetypeId
+    if (!archetypeId || id || cards.length > 0) {
+      return
+    }
+    try {
+      const archetype = await firstValueFrom(
+        this.apiDataService
+          .getDeckArchetype(archetypeId, 'TOURNAMENT_365')
+          .pipe(timeout(15000)),
+      )
+      if (isCurrent()) {
+        this.store.update((state) => ({
+          ...state,
+          cards: [
+            ...(archetype.keyCrypt ?? []),
+            ...(archetype.keyLibrary ?? []),
+          ]
+            .filter((card) => card.appearanceRate >= 0.9 && card.number > 0)
+            .map(({ id, number }) => ({
+              id,
+              number,
+              type: this.libraryQuery.getEntity(id)?.type,
+            })),
+          saved: false,
+        }))
+      }
+    } catch {
+      if (isCurrent()) {
+        this.toastService.show(
+          this.transloco.translate('shared.error_loading_data'),
+          { classname: 'bg-danger text-light', delay: 10000 },
+        )
+      }
     }
   }
 
@@ -203,7 +252,18 @@ export class AdventBuilderService {
     const adventDayItem = adventItem?.days[day]
     if (adventItem && adventDayItem) {
       const { title, content } = this.challengeText(advent, day)
-      const adventContent = content.replace(/<\/?strong>/g, '**')
+      let adventContent = content.replace(/<\/?strong>/g, '**')
+      if (adventDayItem.archetypeId) {
+        const reference = this.transloco.translate<string>(
+          `advent.editions.${advent}.days.${day}.reference`,
+          {},
+          'en',
+        )
+        adventContent = adventContent.replace(
+          reference,
+          `[${reference}](/metagame/${adventDayItem.archetypeId})`,
+        )
+      }
       const adventDescription = `**Advent ${adventItem.year} - Day ${day}**\n\n**Name**: ${title}\n\n${adventContent}`
       this.store.update((state) => ({
         ...state,

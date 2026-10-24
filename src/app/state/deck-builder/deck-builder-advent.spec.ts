@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing'
-import { ADVENT_2026_ERRORS } from '@advent/advent-2026.data'
+import { ADVENT_2026, ADVENT_2026_ERRORS } from '@advent/advent-2026.data'
 import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco'
 import {
   ApiCard,
@@ -7,8 +7,9 @@ import {
   ApiDeckBuilder,
   ApiDeckArchetype,
   ApiDeckExtra,
+  MetaType,
 } from '@models'
-import { ApiDataService } from '@services'
+import { ApiDataService, ToastService } from '@services'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { firstValueFrom, Observable, of, Subject, throwError } from 'rxjs'
 import { CollectionApiDataService } from '../../modules/collection/services/collection-api.data.service'
@@ -42,6 +43,24 @@ describe('Advent builder validation', () => {
       libraryErrors: [] as string[],
     }
     const api = {
+      getDeckArchetype: vi.fn<
+        (id: number, metaType?: MetaType) => Observable<ApiDeckArchetype>
+      >((id) =>
+        of({
+          id,
+          keyCrypt: [
+            { id: 200001, appearanceRate: 1, number: 6, avg: 5.2 },
+            { id: 200002, appearanceRate: 0.9, number: 2, avg: 2.1 },
+            { id: 200003, appearanceRate: 0.8999, number: 4, avg: 3.8 },
+          ],
+          keyLibrary: [
+            { id: 100001, appearanceRate: 0.95, number: 8, avg: 9.6 },
+            { id: 100002, appearanceRate: 0.91, number: 6, avg: 5.4 },
+            { id: 100003, appearanceRate: 0.8, number: 20, avg: 20 },
+            { id: 100004, appearanceRate: 1, number: 0, avg: 0 },
+          ],
+        } as ApiDeckArchetype),
+      ),
       getDeckBuilderArchetype: vi.fn<
         (deck: ApiDeckBuilder) => Observable<ApiDeckArchetype | null>
       >(() => of({ id: 1 } as ApiDeckArchetype | null)),
@@ -53,6 +72,7 @@ describe('Advent builder validation', () => {
       ),
       saveDeckBuilder: vi.fn(() => of({})),
     }
+    const toast = { show: vi.fn() }
     const active = () => state.cards.filter((card) => card.number > 0)
     const store = {
       getValue: () => state,
@@ -116,7 +136,21 @@ describe('Advent builder validation', () => {
           },
         },
         { provide: ApiDataService, useValue: api },
-        { provide: LibraryQuery, useValue: {} },
+        { provide: ToastService, useValue: toast },
+        {
+          provide: LibraryQuery,
+          useValue: {
+            getEntity: (id: number) => {
+              const type = (
+                { 100001: 'Master', 100002: 'Action/Combat' } as Record<
+                  number,
+                  string
+                >
+              )[id]
+              return type ? { type } : undefined
+            },
+          },
+        },
         { provide: CollectionApiDataService, useValue: {} },
       ],
     })
@@ -127,8 +161,153 @@ describe('Advent builder validation', () => {
       service.validateDeck()
       await vi.dynamicImportSettled()
     }
-    return { service, state, api, transloco: TestBed.inject(TranslocoService) }
+    return {
+      service,
+      state,
+      api,
+      toast,
+      transloco: TestBed.inject(TranslocoService),
+    }
   }
+
+  it.each([3, 7, 11, 15, 19, 22])(
+    'starts day %s with cards used in at least 90% of the archetype, at their typical quantities',
+    async (day) => {
+      const { service, state, api } = await setup(undefined, false)
+      state.cards = []
+      state.name = ''
+      await service.initAdventRules('2026', String(day))
+
+      expect(api.getDeckArchetype).toHaveBeenCalledExactlyOnceWith(
+        ADVENT_2026.days[day].archetypeId,
+        'TOURNAMENT_365',
+      )
+      expect(api.getDeck).not.toHaveBeenCalled()
+      expect(state.cards).toEqual([
+        { id: 200001, number: 6 },
+        { id: 200002, number: 2 },
+        { id: 100001, number: 8, type: 'Master' },
+        { id: 100002, number: 6, type: 'Action/Combat' },
+      ])
+      expect(state.name).toBe('Advent2026: ')
+      const reference =
+        adventEn.editions['2026'].days[
+          String(day) as '3' | '7' | '11' | '15' | '19' | '22'
+        ].reference
+      expect(state).toMatchObject({
+        description: expect.stringContaining(
+          `[${reference}](/metagame/${ADVENT_2026.days[day].archetypeId})`,
+        ),
+      })
+      expect(state.extra.advent).toMatchObject({
+        year: 2026,
+        day,
+        title:
+          adventEn.editions['2026'].days[
+            String(day) as keyof (typeof adventEn.editions)['2026']['days']
+          ].title,
+      })
+    },
+  )
+
+  it('seeds a new challenge when the Advent service has already loaded', async () => {
+    const { service, state, api } = await setup(24)
+    state.cards = []
+    await service.initAdventRules('2026', '3')
+    expect(api.getDeckArchetype).toHaveBeenCalledExactlyOnceWith(
+      1,
+      'TOURNAMENT_365',
+    )
+    expect(state.cards).toHaveLength(4)
+  })
+
+  it('keeps the starter editable without adding a submission rule', async () => {
+    const { service, state, api } = await setup(undefined, false)
+    state.cards = []
+    api.getDeckArchetype.mockReturnValueOnce(
+      of({
+        keyCrypt: [{ id: 200001, appearanceRate: 1, number: 12 }],
+        keyLibrary: [{ id: 100001, appearanceRate: 1, number: 60 }],
+      } as ApiDeckArchetype),
+    )
+    await service.initAdventRules('2026', '3')
+    await vi.advanceTimersByTimeAsync(350)
+    expect(service.validateDeck()).toBe(true)
+
+    state.cards[1] = { id: 100002, number: 60 }
+    service.validateDeck()
+    await vi.advanceTimersByTimeAsync(350)
+    expect(service.validateDeck()).toBe(true)
+    expect(state.deckErrors).toEqual([])
+  })
+
+  it.each(['existing cards', 'saved deck'])(
+    'does not seed over %s',
+    async (kind) => {
+      const { service, state, api } = await setup(undefined, false)
+      Object.assign(state, { description: 'My own strategy notes' })
+      if (kind === 'saved deck') {
+        Object.assign(state, { id: 'saved-deck', cards: [] })
+      }
+      const cards = state.cards
+      await service.initAdventRules('2026', '3')
+      expect(state.cards).toBe(cards)
+      expect(state).toMatchObject({ description: 'My own strategy notes' })
+      expect(api.getDeckArchetype).not.toHaveBeenCalled()
+    },
+  )
+
+  it.each([1, 2, 24])('does not seed non-archetype day %s', async (day) => {
+    const { service, state, api } = await setup(undefined, false)
+    state.cards = []
+    await service.initAdventRules('2026', String(day))
+    expect(state.cards).toEqual([])
+    expect(api.getDeckArchetype).not.toHaveBeenCalled()
+  })
+
+  it.each(['edit cards', 'open another deck'])(
+    'ignores a late starter after %s',
+    async (action) => {
+      const { service, state, api } = await setup(undefined, false)
+      state.cards = []
+      const response = new Subject<ApiDeckArchetype>()
+      api.getDeckArchetype.mockReturnValueOnce(response)
+      const initialized = service.initAdventRules('2026', '3')
+      await vi.dynamicImportSettled()
+      expect(api.getDeckArchetype).toHaveBeenCalledOnce()
+      const cards = [{ id: 200003, number: 4 }]
+      state.cards = cards
+      if (action === 'open another deck') {
+        state.extra = {}
+        state.name = 'Another deck'
+      }
+      response.next({
+        keyCrypt: [{ id: 200001, appearanceRate: 1, number: 12 }],
+      } as ApiDeckArchetype)
+      response.complete()
+      await initialized
+      expect(state.cards).toBe(cards)
+      if (action === 'open another deck') {
+        expect(state.extra.advent).toBeUndefined()
+        expect(state.name).toBe('Another deck')
+      }
+    },
+  )
+
+  it('reports an unavailable starter and leaves the challenge editable', async () => {
+    const { service, state, api, toast } = await setup(undefined, false)
+    state.cards = []
+    api.getDeckArchetype.mockReturnValueOnce(
+      throwError(() => new Error('offline')),
+    )
+    await service.initAdventRules('2026', '3')
+    expect(state.cards).toEqual([])
+    expect(state.extra.advent).toMatchObject({ year: 2026, day: 3 })
+    expect(toast.show).toHaveBeenCalledExactlyOnceWith(
+      'shared.error_loading_data',
+      expect.any(Object),
+    )
+  })
 
   it('blocks while pending, ignores stale responses, and accepts only the requested archetype', async () => {
     const { service, state, api } = await setup(3)
