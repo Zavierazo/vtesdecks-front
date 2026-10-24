@@ -1491,8 +1491,9 @@
     "add_deck_or_select_recent": "Ou sélectionnez parmi les decks récemment visités"
   },
   "advent": {
-    "home_title": "Calendrier de l'Avent VTES {{ year }}",
-    "home_subtitle": "24 jours de défis de construction de deck - Cliquez ici pour participer !"
+    "home_title": "Calendrier de l'Avent {{ year }}",
+    "home_subtitle": "24 défis de construction de decks pour décembre",
+    "home_link": "Ouvrir le calendrier"
   },
   "deck_metagame": {
     "requirements_kind": "Type de condition",

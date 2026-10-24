@@ -1491,8 +1491,9 @@
     "add_deck_or_select_recent": "Ou selecione entre os baralhos visitados recentemente"
   },
   "advent": {
-    "home_title": "Calendário do Advento VTES {{ year }}",
-    "home_subtitle": "24 Dias de Desafios de Construção de Baralhos - Clique aqui para Participar!"
+    "home_title": "Calendário do Advento {{ year }}",
+    "home_subtitle": "24 desafios de construção de baralhos para dezembro",
+    "home_link": "Abrir calendário"
   },
   "deck_metagame": {
     "requirements_kind": "Tipo de requisito",

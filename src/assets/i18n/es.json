@@ -1491,8 +1491,9 @@
     "add_deck_or_select_recent": "O selecciona un mazo visitado recientemente"
   },
   "advent": {
-    "home_title": "Calendario de Adviento VTES {{ year }}",
-    "home_subtitle": "24 días de Desafíos de Construcción de Mazos - ¡Haz clic aquí para unirte!"
+    "home_title": "Calendario de Adviento {{ year }}",
+    "home_subtitle": "24 retos de construcción de mazos para diciembre",
+    "home_link": "Abrir calendario"
   },
   "deck_metagame": {
     "requirements_kind": "Tipo de requisito",

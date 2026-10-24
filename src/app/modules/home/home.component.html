@@ -34,19 +34,26 @@
   <!-- Advent Calendar Banner -->
   @if (currentAdvent(); as advent) {
     <div class="container mb-4">
-      <a routerLink="/advent" class="text-decoration-none">
-        <div class="advent-banner-content">
-          <div class="advent-banner-icon d-none d-md-block">🎄</div>
-          <div class="advent-banner-text">
-            <h2 class="advent-banner-title mb-2">
-              🎅 {{ 'advent.home_title' | transloco: { year: advent.year } }}
-            </h2>
-            <p class="advent-banner-subtitle mb-0 d-none d-md-block">
-              ✨ {{ 'advent.home_subtitle' | transloco }} ✨
-            </p>
-          </div>
-          <div class="advent-banner-icon d-none d-md-block">⭐</div>
+      <a routerLink="/advent" class="advent-banner">
+        <img
+          class="advent-banner-logo"
+          src="/assets/img/logo_christmas.png"
+          alt=""
+          width="48"
+          height="48"
+        />
+        <div class="advent-banner-text">
+          <h2 class="advent-banner-title">
+            {{ 'advent.home_title' | transloco: { year: advent.year } }}
+          </h2>
+          <p class="advent-banner-subtitle">
+            {{ 'advent.home_subtitle' | transloco }}
+          </p>
         </div>
+        <span class="advent-banner-action">
+          {{ 'advent.home_link' | transloco }}
+          <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </span>
       </a>
     </div>
   }
