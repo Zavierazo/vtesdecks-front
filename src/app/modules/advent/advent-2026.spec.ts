@@ -67,8 +67,8 @@ describe('Advent 2026 challenge rules', () => {
     expect(validateAdvent2026Day(9, query(crypt))).toEqual({})
     crypt[0].number = 8
     crypt[1].number = 4
-    expect(validateAdvent2026Day(1, query(crypt)).libraryErrors).toBeDefined()
-    expect(validateAdvent2026Day(9, query(crypt)).libraryErrors).toBeDefined()
+    expect(validateAdvent2026Day(1, query(crypt)).cryptErrors).toBeDefined()
+    expect(validateAdvent2026Day(9, query(crypt)).cryptErrors).toBeDefined()
     expect(
       validateAdvent2026Day(
         16,
@@ -76,7 +76,7 @@ describe('Advent 2026 challenge rules', () => {
           { id: 1, number: 12, clan: 'Gangrel' },
           { id: 2, number: 0, clan: 'Toreador' },
         ]),
-      ).libraryErrors,
+      ).cryptErrors,
     ).toBeDefined()
     expect(
       validateAdvent2026Day(
@@ -85,10 +85,19 @@ describe('Advent 2026 challenge rules', () => {
           { id: 1, number: 12, clan: 'Gangrel' },
           { id: 2, number: 1, clan: 'Avenger', type: 'Imbued' },
         ]),
-      ).libraryErrors,
+      ).cryptErrors,
     ).toBeDefined()
     expect(validateAdvent2026Day(16, query(crypt))).toEqual({})
   })
+
+  it.each([1, 4, 9, 12, 16, 20, 23])(
+    'reports unmet crypt requirements only under Crypt for day %i',
+    (day) => {
+      expect(validateAdvent2026Day(day, query([]))).toEqual({
+        cryptErrors: [expect.any(String)],
+      })
+    },
+  )
 
   it.each([
     [5, 'Political Action', 8],
@@ -103,9 +112,9 @@ describe('Advent 2026 challenge rules', () => {
         { id: 1, number: minimum - 1, types: [type, 'Action'] },
         { id: 2, number: 0, types: [type] },
       ]
-      expect(
-        validateAdvent2026Day(day, query([], library)).libraryErrors,
-      ).toBeDefined()
+      expect(validateAdvent2026Day(day, query([], library))).toEqual({
+        libraryErrors: [expect.any(String)],
+      })
       library[0].number++
       expect(validateAdvent2026Day(day, query([], library))).toEqual({})
     },
@@ -119,19 +128,19 @@ describe('Advent 2026 challenge rules', () => {
           { id: 1, number: 2 },
           { id: 2, number: 2 },
         ]),
-      ).libraryErrors,
+      ).cryptErrors,
     ).toBeDefined()
     expect(validateAdvent2026Day(4, query([{ id: 1, number: 3 }]))).toEqual({})
     const crypt = [
       { id: 1, number: 6, capacity: 8 },
       { id: 2, number: 7, capacity: 5 },
     ]
-    expect(validateAdvent2026Day(12, query(crypt)).libraryErrors).toBeDefined()
+    expect(validateAdvent2026Day(12, query(crypt)).cryptErrors).toBeDefined()
     expect(validateAdvent2026Day(20, query(crypt))).toEqual({})
     crypt[0].number = 7
     crypt[1].number = 6
     expect(validateAdvent2026Day(12, query(crypt))).toEqual({})
-    expect(validateAdvent2026Day(20, query(crypt)).libraryErrors).toBeDefined()
+    expect(validateAdvent2026Day(20, query(crypt)).cryptErrors).toBeDefined()
   })
 
   it('requires the same discipline in both sections without double counting superior levels', () => {
@@ -152,16 +161,16 @@ describe('Advent 2026 challenge rules', () => {
         disciplines: ['Dominate', 'Obfuscate'],
       },
     ]
-    expect(
-      validateAdvent2026Day(23, query(crypt, library)).libraryErrors,
-    ).toBeDefined()
+    expect(validateAdvent2026Day(23, query(crypt, library))).toEqual({
+      cryptErrors: [expect.any(String)],
+    })
     crypt[0].number = 9
     crypt[1].number = 3
     expect(validateAdvent2026Day(23, query(crypt, library))).toEqual({})
     library[0].number = 9
-    expect(
-      validateAdvent2026Day(23, query(crypt, library)).libraryErrors,
-    ).toBeDefined()
+    expect(validateAdvent2026Day(23, query(crypt, library))).toEqual({
+      libraryErrors: [expect.any(String)],
+    })
   })
 
   it('leaves day 24 unrestricted and keeps the event open for all of December 31', () => {

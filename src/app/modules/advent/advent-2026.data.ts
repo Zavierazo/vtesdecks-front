@@ -34,11 +34,16 @@ function libraryTypeCopies(query: DeckBuilderQuery, type: string): number {
   )
 }
 
-function ruleResult(day: number, valid: boolean, translate = adventEnglish) {
+function ruleResult(
+  day: number,
+  valid: boolean,
+  section: 'cryptErrors' | 'libraryErrors',
+  translate = adventEnglish,
+) {
   return valid
     ? {}
     : {
-        libraryErrors: [
+        [section]: [
           translate(
             'validation.rule',
             'Advent challenge requirements are not met.',
@@ -100,6 +105,7 @@ export const ADVENT_2026: AdventData = {
           1,
           total > 0 &&
             [...clans.values()].some((count) => count * 100 >= total * 75),
+          'cryptErrors',
           translate,
         )
       },
@@ -119,6 +125,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           4,
           vampires(query).some((card) => query.getCardNumber(card.id) >= 3),
+          'cryptErrors',
           translate,
         )
       },
@@ -129,6 +136,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           5,
           libraryTypeCopies(query, 'Political Action') >= 8,
+          'libraryErrors',
           translate,
         )
       },
@@ -145,7 +153,12 @@ export const ADVENT_2026: AdventData = {
     8: {
       image: `${environment.cdnDomain}/img/advent/2026/day-08.webp`,
       validation: (query, translate = adventEnglish) => {
-        return ruleResult(8, libraryTypeCopies(query, 'Ally') >= 6, translate)
+        return ruleResult(
+          8,
+          libraryTypeCopies(query, 'Ally') >= 6,
+          'libraryErrors',
+          translate,
+        )
       },
     },
     9: {
@@ -159,6 +172,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           9,
           total > 0 && anarchs * 100 >= total * 75,
+          'cryptErrors',
           translate,
         )
       },
@@ -180,7 +194,12 @@ export const ADVENT_2026: AdventData = {
           query,
           vampires(query).filter((card) => card.capacity >= 8),
         )
-        return ruleResult(12, total > 0 && elders * 2 >= total, translate)
+        return ruleResult(
+          12,
+          total > 0 && elders * 2 >= total,
+          'cryptErrors',
+          translate,
+        )
       },
     },
     13: {
@@ -189,6 +208,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           13,
           libraryTypeCopies(query, 'Equipment') >= 4,
+          'libraryErrors',
           translate,
         )
       },
@@ -208,6 +228,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           16,
           new Set(vampires(query).map((card) => card.clan)).size >= 2,
+          'cryptErrors',
           translate,
         )
       },
@@ -218,6 +239,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           17,
           libraryTypeCopies(query, 'Combat') >= 18,
+          'libraryErrors',
           translate,
         )
       },
@@ -239,7 +261,12 @@ export const ADVENT_2026: AdventData = {
           query,
           vampires(query).filter((card) => card.capacity <= 5),
         )
-        return ruleResult(20, total > 0 && young * 2 >= total, translate)
+        return ruleResult(
+          20,
+          total > 0 && young * 2 >= total,
+          'cryptErrors',
+          translate,
+        )
       },
     },
     21: {
@@ -248,6 +275,7 @@ export const ADVENT_2026: AdventData = {
         return ruleResult(
           21,
           libraryTypeCopies(query, 'Retainer') >= 3,
+          'libraryErrors',
           translate,
         )
       },
@@ -275,23 +303,26 @@ export const ADVENT_2026: AdventData = {
           )
         })
         const total = query.getCryptSize()
-        const valid =
-          total > 0 &&
-          [...disciplines.entries()].some(
-            ([discipline, count]) =>
-              count * 100 >= total * 75 &&
-              copies(
-                query,
-                query
-                  .getLibrary()
-                  .filter((card) =>
-                    card?.disciplines?.some(
-                      (value) => value.toLowerCase() === discipline,
-                    ),
+        const sharedDisciplines = [...disciplines.entries()].filter(
+          ([, count]) => total > 0 && count * 100 >= total * 75,
+        )
+        if (sharedDisciplines.length === 0) {
+          return ruleResult(23, false, 'cryptErrors', translate)
+        }
+        const valid = sharedDisciplines.some(
+          ([discipline]) =>
+            copies(
+              query,
+              query
+                .getLibrary()
+                .filter((card) =>
+                  card?.disciplines?.some(
+                    (value) => value.toLowerCase() === discipline,
                   ),
-              ) >= 10,
-          )
-        return ruleResult(23, valid, translate)
+                ),
+            ) >= 10,
+        )
+        return ruleResult(23, valid, 'libraryErrors', translate)
       },
     },
     24: {

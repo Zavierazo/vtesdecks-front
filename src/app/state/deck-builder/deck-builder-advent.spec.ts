@@ -306,6 +306,37 @@ describe('Advent builder validation', () => {
     expect(api.getDeckBuilderArchetype).not.toHaveBeenCalled()
   })
 
+  it('puts the first challenge failure under Crypt and clears it when the crypt qualifies', async () => {
+    const { service, state } = await setup(1)
+    const query = TestBed.inject(DeckBuilderQuery)
+    const getCrypt = query.getCrypt.bind(query)
+    vi.spyOn(query, 'getCrypt').mockImplementation(() =>
+      getCrypt().map((card) => ({
+        ...card,
+        clan: card.id === 200001 ? 'Gangrel' : 'Toreador',
+      })),
+    )
+    state.cards = [
+      { id: 200001, number: 8 },
+      { id: 200002, number: 4 },
+      { id: 100001, number: 60 },
+    ]
+    expect(service.validateDeck()).toBe(false)
+    expect(state.cryptErrors).toEqual([
+      adventEn.validation.rule.replace(
+        '{{rule}}',
+        adventEn.editions['2026'].days['1'].content,
+      ),
+    ])
+    expect(state.libraryErrors).toEqual([])
+
+    state.cards[0].number = 9
+    state.cards[1].number = 3
+    expect(service.validateDeck()).toBe(true)
+    expect(state.cryptErrors).toEqual([])
+    expect(state.libraryErrors).toEqual([])
+  })
+
   it('keeps classic rules and day 24 fully local while enforcing normal legality', async () => {
     const { service, state, api } = await setup(1)
     expect(service.validateDeck()).toBe(true)
