@@ -34,7 +34,7 @@ describe('Advent 2026 challenge rules', () => {
     ).toEqual([50, 50, 50])
     expect(
       [14, 18].map((day) => ADVENT_2026.days[day].releasePercentage),
-    ).toEqual([25, 25])
+    ).toEqual([10, 10])
     expect(
       [3, 7, 11, 15, 19, 22].map((day) => ADVENT_2026.days[day].archetypeId),
     ).toEqual([1, 3, 12, 106, 128, 142])
@@ -43,13 +43,15 @@ describe('Advent 2026 challenge rules', () => {
   it.each([
     [50, 102, 51],
     [50, 103, 52],
-    [25, 102, 26],
-    [25, 103, 26],
+    [10, 72, 8],
+    [10, 100, 10],
+    [10, 102, 11],
+    [10, 103, 11],
   ])('rounds %i%% of %i copies up to %i', (percentage, total, required) => {
     const release = new Set([200001, 100001])
     const cards = (count: number) => [
-      { id: 200001, number: 12 },
-      { id: 100001, number: count - 12 },
+      { id: 200001, number: 6 },
+      { id: 100001, number: count - 6 },
       { id: 100002, number: total - count },
       { id: 100003, number: 0 },
     ]

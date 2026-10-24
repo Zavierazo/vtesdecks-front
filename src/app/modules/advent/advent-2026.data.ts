@@ -216,7 +216,7 @@ export const ADVENT_2026: AdventData = {
     14: {
       image: `${environment.cdnDomain}/img/advent/2026/day-14.webp`,
       releaseDeckId: 'preconstructed-secrets_of_new_york',
-      releasePercentage: 25,
+      releasePercentage: 10,
     },
     15: {
       image: `${environment.cdnDomain}/img/advent/2026/day-15.webp`,
@@ -247,7 +247,7 @@ export const ADVENT_2026: AdventData = {
     18: {
       image: `${environment.cdnDomain}/img/advent/2026/day-18.webp`,
       releaseDeckId: 'preconstructed-noites_brasileiras',
-      releasePercentage: 25,
+      releasePercentage: 10,
     },
     19: {
       image: `${environment.cdnDomain}/img/advent/2026/day-19.webp`,
