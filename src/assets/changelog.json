@@ -3,6 +3,7 @@
     "version": "2.84.0",
     "date": "XXth October, 2026",
     "changes": [
+      "Tournament decks now display the player's current <strong>Archon alias</strong>, or their registered name when no alias is set. Names update automatically when their Archon profile changes.",
       "Updated the <strong>Secrets of New York</strong> preconstructed decklists to match the official release.",
       "Updated the <strong>Noites Brasileiras</strong> preconstructed decklists to match the official release.",
       "Minor bug fixes and performance improvements."
