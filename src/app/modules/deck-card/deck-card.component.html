@@ -9,11 +9,7 @@
     }"
     [ngStyle]="{ 'min-height': height() }"
   >
-    <a
-      [routerLink]="'/deck/' + deck.id"
-      (click)="onDeckClick()"
-      class="text-decoration-none deck-card-link d-flex flex-column flex-grow-1"
-    >
+    <ng-template #cardContent>
       @if (deck.type === 'PRECONSTRUCTED') {
         <img
           #deckCover
@@ -241,15 +237,30 @@
           <div
             class="d-flex align-items-center justify-content-center gap-2 flex-wrap"
           >
-            <span class="author-name fw-medium">
-              {{ deck.author | truncate: 25 : true }}
-              @if (isSupporter) {
-                <i
-                  class="bi bi-patch-check-fill text-primary ms-1"
-                  [title]="'shared.supporter' | transloco"
-                ></i>
-              }
-            </span>
+            @if (deck.type === 'TOURNAMENT' && deck.user; as player) {
+              <a
+                class="author-name author-profile-link text-decoration-none fw-medium"
+                [routerLink]="'/user/' + player.user"
+              >
+                {{ deckAuthorName(deck) | truncate: 25 : true }}
+                @if (isSupporter) {
+                  <i
+                    class="bi bi-patch-check-fill text-primary ms-1"
+                    [title]="'shared.supporter' | transloco"
+                  ></i>
+                }
+              </a>
+            } @else {
+              <span class="author-name fw-medium">
+                {{ deck.author | truncate: 25 : true }}
+                @if (isSupporter) {
+                  <i
+                    class="bi bi-patch-check-fill text-primary ms-1"
+                    [title]="'shared.supporter' | transloco"
+                  ></i>
+                }
+              </span>
+            }
             <span class="text-muted">•</span>
             <span class="deck-date text-secondary">{{
               deck.creationDate | translocoDate: { dateStyle: 'medium' }
@@ -333,7 +344,28 @@
           </div>
         }
       </div>
-    </a>
+    </ng-template>
+    @if (deck.type === 'TOURNAMENT' && deck.user) {
+      <div
+        class="text-decoration-none deck-card-link deck-card-linked position-relative d-flex flex-column flex-grow-1"
+      >
+        <a
+          class="deck-primary-link"
+          [routerLink]="'/deck/' + deck.id"
+          (click)="onDeckClick()"
+          [attr.aria-label]="deck.name"
+        ></a>
+        <ng-container [ngTemplateOutlet]="cardContent" />
+      </div>
+    } @else {
+      <a
+        class="text-decoration-none deck-card-link d-flex flex-column flex-grow-1"
+        [routerLink]="'/deck/' + deck.id"
+        (click)="onDeckClick()"
+      >
+        <ng-container [ngTemplateOutlet]="cardContent" />
+      </a>
+    }
     @if (enablePreview() || (managementEnabled() && deck.owner)) {
       <div
         class="deck-card-tools d-flex align-items-center px-2 border-top border-opacity-10"

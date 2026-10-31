@@ -387,6 +387,31 @@
   min-width: 0;
 }
 
+.deck-card-linked {
+  isolation: isolate;
+
+  > .deck-primary-link {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    &:focus-visible {
+      outline: 3px solid var(--bs-primary);
+      outline-offset: -3px;
+    }
+  }
+
+  > :not(.deck-primary-link) {
+    pointer-events: none;
+  }
+
+  .author-profile-link,
+  .tag-pill {
+    position: relative;
+    pointer-events: auto;
+  }
+}
+
 .deck-card-tools {
   min-height: 44px;
 }

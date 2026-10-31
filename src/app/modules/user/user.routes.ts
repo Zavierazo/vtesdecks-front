@@ -4,6 +4,13 @@ import { userResolver } from './user.resolver'
 
 export const USER_ROUTES: Routes = [
   {
+    path: 'archon/callback',
+    loadComponent: () =>
+      import('./archon-callback/archon-callback.component').then(
+        (m) => m.ArchonCallbackComponent,
+      ),
+  },
+  {
     path: 'settings',
     loadComponent: () =>
       import('./user-settings/user-settings.component').then(

@@ -1,5 +1,11 @@
 import { DeckQuickAction } from '../decks/deck-management.service'
-import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common'
+import {
+  CurrencyPipe,
+  NgClass,
+  NgStyle,
+  NgTemplateOutlet,
+  TitleCasePipe,
+} from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +15,8 @@ import {
   output,
   signal,
 } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
+import { deckAuthorName } from '../../utils/deck-author'
 import { TranslocoPipe } from '@jsverse/transloco'
 import { TranslocoDatePipe } from '@jsverse/transloco-locale'
 import { ApiCard, ApiDeck } from '@models'
@@ -44,6 +51,7 @@ export const isTournamentWinner = (position?: number): boolean => position === 1
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    NgTemplateOutlet,
     NgClass,
     NgStyle,
     TitleCasePipe,
@@ -62,6 +70,8 @@ export class DeckCardComponent implements OnInit {
   private readonly libraryQuery = inject(LibraryQuery)
   private readonly decksService = inject(DecksService)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly router = inject(Router)
+  readonly deckAuthorName = deckAuthorName
 
   cdnDomain = environment.cdnDomain
   reactionEmojis = DECK_REACTION_EMOJIS
@@ -115,6 +125,9 @@ export class DeckCardComponent implements OnInit {
       event.preventDefault()
       event.stopPropagation()
       this.tagClick.emit(tag)
+    } else if (this.deck().type === 'TOURNAMENT' && this.deck().user) {
+      this.onDeckClick()
+      void this.router.navigate(['/deck', this.deck().id])
     }
   }
 

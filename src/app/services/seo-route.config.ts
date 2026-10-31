@@ -1,5 +1,6 @@
 import { RouterStateSnapshot } from '@angular/router'
 import { ApiDeck, ApiDeckArchetype, ApiPublicUser } from '@models'
+import { deckAuthorName } from '../utils/deck-author'
 
 export interface SeoConfig {
   page?: string
@@ -45,6 +46,7 @@ const PUBLIC_PAGES: Record<string, string> = {
 }
 
 const PRIVATE_PAGES: Record<string, string> = {
+  '/user/archon/callback': 'settings',
   '/user/settings': 'settings',
   '/admin': 'admin',
   '/verify': 'verify',
@@ -64,7 +66,8 @@ export function deckSeo(deck: ApiDeck): SeoConfig & { canonicalUrl: string } {
     page: 'deck',
     params: {
       name: deck.name,
-      author: deck.author || deck.user?.displayName || deck.user?.user || '',
+      author:
+        deckAuthorName(deck) || deck.user?.displayName || deck.user?.user || '',
       details: deck.tournament || '',
     },
     index: deck.published === true,

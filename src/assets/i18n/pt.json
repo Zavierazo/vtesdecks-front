@@ -1952,5 +1952,28 @@
     "tracker_off": "Desativar acompanhamento da coleção",
     "tracker_on": "Ativar acompanhamento da coleção",
     "confirm_publish": "Publicar este deck? Aparecerá nas pesquisas públicas de decks."
+  },
+  "archon": {
+    "title": "Conta Archon",
+    "profile_link": "Ver VEKN {{veknId}} no Archon",
+    "description": "Associe o Archon para mostrar a sua identidade VTESDecks nos seus decks de torneio e adicioná-los ao seu perfil público. A associação não concede permissões para modificar os decks de torneio.",
+    "linked": "Associada ao VEKN {{veknId}}",
+    "disconnect_help": "Ao desligar, a autoria original é restaurada e os decks de torneio deixam de aparecer no seu perfil. Os decks arquivados são preservados.",
+    "connect": "Associar Archon",
+    "disconnect": "Desligar Archon",
+    "unavailable": "A associação ao Archon ainda não está disponível.",
+    "loading": "A ligar ao Archon…",
+    "retry": "Tentar novamente",
+    "error": "Não foi possível contactar o Archon. Reinicie a associação nas suas definições.",
+    "invalid_attempt": "Esta autorização expirou ou já foi utilizada. Recomece nas suas definições.",
+    "session_changed": "Inicie sessão no VTESDecks e reinicie a associação nas suas definições.",
+    "identity_in_use": "Esta conta ou identidade Archon já está associada. Desligue a associação existente antes de tentar novamente.",
+    "vekn_missing": "A sua conta Archon precisa de um VEKN ID para poder ser associada.",
+    "success": "A sua conta Archon está agora associada.",
+    "cancelled": "A autorização do Archon foi cancelada. A sua conta não foi alterada.",
+    "back_settings": "Voltar às definições",
+    "tournament_decks": "Decks de torneio",
+    "load_more": "Carregar mais decks",
+    "decks_error": "Não foi possível carregar os decks de torneio. Tente novamente."
   }
 }

@@ -23,7 +23,7 @@ import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { AuthQuery } from '@state/auth/auth.query'
 import { isSupporter } from '@utils'
-import { catchError, Observable, of, tap } from 'rxjs'
+import { catchError, Observable, of, Subscription, tap } from 'rxjs'
 import { CollectionApiDataService } from '../../collection/services/collection-api.data.service'
 import { WishlistApiDataService } from '../../wishlist/services/wishlist-api.data.service'
 import { AdminUserSettingsComponent } from '../admin-user-settings/admin-user-settings.component'
@@ -71,6 +71,11 @@ export class UserPublicProfileComponent implements OnInit {
   achievements = signal<ApiAchievementFamily[]>([])
   achievementsLoading = signal(false)
   achievementsExpanded = signal(false)
+  readonly tournamentDecks = signal<ApiDeck[]>([])
+  readonly tournamentTotal = signal(0)
+  readonly tournamentLoading = signal(false)
+  readonly tournamentError = signal(false)
+  private tournamentRequest?: Subscription
   isOwner = computed(() => this.authQuery.getUser() === this.username())
   readonly isAdmin$ = this.authQuery.selectAdmin()
   displayedAchievements = computed(() => {
@@ -102,6 +107,7 @@ export class UserPublicProfileComponent implements OnInit {
         this.user.set(user)
         this.achievementsExpanded.set(false)
         this.loadUserDecks(username)
+        this.resetTournamentDecks()
         this.loadUserBinders(username)
         this.loadUserWishlist(username)
         this.loadAchievements(username)
@@ -164,6 +170,43 @@ export class UserPublicProfileComponent implements OnInit {
       order: 'POPULAR',
     })
     this.decksService.getMore(6).pipe(untilDestroyed(this)).subscribe()
+  }
+
+  private resetTournamentDecks(): void {
+    this.tournamentRequest?.unsubscribe()
+    this.tournamentDecks.set([])
+    this.tournamentTotal.set(0)
+    this.tournamentLoading.set(false)
+    this.loadMoreTournamentDecks()
+  }
+
+  loadMoreTournamentDecks(): void {
+    if (this.tournamentLoading()) {
+      return
+    }
+    const username = this.username()
+    this.tournamentLoading.set(true)
+    this.tournamentError.set(false)
+    this.tournamentRequest = this.apiDataService
+      .getUserTournamentDecks(username, this.tournamentDecks().length, 6)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (page) => {
+          if (username !== this.username()) {
+            return
+          }
+          this.tournamentDecks.update((decks) => [...decks, ...page.decks])
+          this.tournamentTotal.set(page.total)
+          this.tournamentLoading.set(false)
+        },
+        error: () => {
+          if (username !== this.username()) {
+            return
+          }
+          this.tournamentLoading.set(false)
+          this.tournamentError.set(true)
+        },
+      })
   }
 
   private loadUserBinders(username: string) {

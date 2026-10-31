@@ -1952,5 +1952,28 @@
     "tracker_off": "Désactiver le suivi de collection",
     "tracker_on": "Activer le suivi de collection",
     "confirm_publish": "Publier ce deck ? Il apparaîtra dans les recherches publiques de decks."
+  },
+  "archon": {
+    "title": "Compte Archon",
+    "profile_link": "Voir VEKN {{veknId}} sur Archon",
+    "description": "Associez Archon pour afficher votre identité VTESDecks sur vos decks de tournoi et les ajouter à votre profil public. Cette association ne permet pas de modifier les decks de tournoi.",
+    "linked": "Associé au numéro VEKN {{veknId}}",
+    "disconnect_help": "La dissociation rétablit l’auteur original et retire les decks de tournoi de votre profil. Les decks archivés sont conservés.",
+    "connect": "Associer Archon",
+    "disconnect": "Dissocier Archon",
+    "unavailable": "L’association à Archon n’est pas encore disponible.",
+    "loading": "Connexion à Archon…",
+    "retry": "Réessayer",
+    "error": "Impossible de joindre Archon. Relancez l’association depuis vos paramètres.",
+    "invalid_attempt": "Cette autorisation a expiré ou a déjà été utilisée. Recommencez depuis vos paramètres.",
+    "session_changed": "Connectez-vous à VTESDecks et relancez l’association depuis vos paramètres.",
+    "identity_in_use": "Ce compte ou cette identité Archon est déjà associé. Supprimez l’association existante avant de réessayer.",
+    "vekn_missing": "Votre compte Archon doit disposer d’un numéro VEKN pour être associé.",
+    "success": "Votre compte Archon est maintenant associé.",
+    "cancelled": "L’autorisation Archon a été annulée. Votre compte n’a pas été modifié.",
+    "back_settings": "Retour aux paramètres",
+    "tournament_decks": "Decks de tournoi",
+    "load_more": "Charger plus de decks",
+    "decks_error": "Impossible de charger les decks de tournoi. Veuillez réessayer."
   }
 }

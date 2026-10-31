@@ -1952,5 +1952,28 @@
     "tracker_off": "Disable collection tracker",
     "tracker_on": "Enable collection tracker",
     "confirm_publish": "Publish this deck? It will appear in public deck searches."
+  },
+  "archon": {
+    "title": "Archon account",
+    "profile_link": "View VEKN {{veknId}} on Archon",
+    "description": "Link Archon to display your VTESDecks identity on your tournament decks and add them to your public profile. Linking does not grant permission to change tournament decks.",
+    "linked": "Linked to VEKN {{veknId}}",
+    "disconnect_help": "Disconnecting restores the original author attribution and removes tournament decks from your profile. The archived decks are preserved.",
+    "connect": "Link Archon",
+    "disconnect": "Disconnect Archon",
+    "unavailable": "Archon linking is not available yet.",
+    "loading": "Connecting to Archon…",
+    "retry": "Try again",
+    "error": "Archon could not be reached. Please try linking again from your settings.",
+    "invalid_attempt": "This authorization has expired or has already been used. Start again from your settings.",
+    "session_changed": "Sign in to VTESDecks and start linking again from your settings.",
+    "identity_in_use": "This account or Archon identity is already linked. Disconnect the existing link before trying again.",
+    "vekn_missing": "Your Archon account needs a VEKN ID before it can be linked.",
+    "success": "Your Archon account is now linked.",
+    "cancelled": "Archon authorization was cancelled. Your account has not been changed.",
+    "back_settings": "Back to settings",
+    "tournament_decks": "Tournament decks",
+    "load_more": "Load more decks",
+    "decks_error": "Tournament decks could not be loaded. Please try again."
   }
 }

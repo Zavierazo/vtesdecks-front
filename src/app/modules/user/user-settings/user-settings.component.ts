@@ -1,4 +1,5 @@
 import { OfflineComponent } from '../../offline/offline.component'
+import { ArchonSettingsComponent } from '../archon-settings/archon-settings.component'
 import { AsyncPipe, NgClass } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -37,6 +38,7 @@ import { ConnectivityService } from '../../../services/connectivity.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     OfflineComponent,
+    ArchonSettingsComponent,
     TranslocoDirective,
     ReactiveFormsModule,
     NgbAlert,
