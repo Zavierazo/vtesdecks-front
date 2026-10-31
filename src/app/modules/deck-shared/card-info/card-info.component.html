@@ -264,16 +264,20 @@
                     [class.bg-success]="shop.inStock"
                     [class.bg-secondary]="!shop.inStock"
                   >
-                    @if (countryCode(shop.country); as country) {
+                    @if (offerLocation(shop); as location) {
                       <span
                         class="shop-country"
                         role="img"
                         [attr.aria-label]="
-                          country | displayCountry: activeLanguage()
+                          location.code
+                            | displayCountry: activeLanguage() : location.type
                         "
-                        [title]="country | displayCountry: activeLanguage()"
+                        [title]="
+                          location.code
+                            | displayCountry: activeLanguage() : location.type
+                        "
                       >
-                        @if (countryFlagUrl(country); as flagUrl) {
+                        @if (locationFlagUrl(location); as flagUrl) {
                           <img
                             [src]="flagUrl"
                             alt=""
@@ -282,10 +286,13 @@
                             loading="lazy"
                             decoding="async"
                             referrerpolicy="no-referrer"
-                            (error)="onCountryFlagError(country)"
+                            (error)="onLocationFlagError(location.code)"
                           />
                         } @else {
-                          {{ country }}
+                          @if (location.type === 'continent') {
+                            <i class="bi bi-globe2 me-1" aria-hidden="true"></i>
+                          }
+                          {{ location.code }}
                         }
                       </span>
                     }

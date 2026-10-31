@@ -137,7 +137,9 @@ describe('Card shop offers', () => {
   })
 
   it('shows the uppercase country code when a flag image is unavailable', async () => {
-    const { fixture } = await setup([offer(1, { country: 'mx' })])
+    const { fixture } = await setup([
+      offer(1, { country: 'mx', continent: 'NA' }),
+    ])
     const country: HTMLElement =
       fixture.nativeElement.querySelector('.shop-country')
     const image = country.querySelector('img')!
@@ -149,6 +151,63 @@ describe('Card shop offers', () => {
     expect(country.querySelector('img')).toBeNull()
     expect(country.textContent?.trim()).toBe('MX')
     expect(country.getAttribute('aria-label')).toBe('Mexico')
+  })
+
+  it('uses the European flag and localized continent name when country is missing', async () => {
+    const { fixture } = await setup([
+      offer(1, { country: ' ', continent: ' eu ' }),
+    ])
+    const location: HTMLElement =
+      fixture.nativeElement.querySelector('.shop-country')
+
+    expect(location.querySelector('img')?.getAttribute('src')).toBe(
+      'https://flagcdn.com/w40/eu.png',
+    )
+    expect(location.getAttribute('aria-label')).toBe('Europe')
+    expect(location.getAttribute('title')).toBe('Europe')
+
+    TestBed.inject(TranslocoService).setActiveLang('es')
+    await fixture.whenStable()
+
+    expect(location.getAttribute('aria-label')).toBe('Europa')
+    expect(location.getAttribute('title')).toBe('Europa')
+  })
+
+  it.each([
+    ['NA', 'North America'],
+    ['SA', 'South America'],
+    ['AF', 'Africa'],
+    ['AS', 'Asia'],
+    ['OC', 'Oceania'],
+    ['AN', 'Antarctica'],
+    ['ZZ', 'ZZ'],
+  ])(
+    'shows %s as a continent instead of requesting a country flag',
+    async (code, name) => {
+      const { fixture } = await setup([offer(1, { continent: code })])
+      const location: HTMLElement =
+        fixture.nativeElement.querySelector('.shop-country')
+
+      expect(location.querySelector('img')).toBeNull()
+      expect(location.querySelector('.bi-globe2')).not.toBeNull()
+      expect(location.textContent?.trim()).toBe(code)
+      expect(location.getAttribute('aria-label')).toBe(name)
+      expect(location.getAttribute('title')).toBe(name)
+    },
+  )
+
+  it('falls back to the continent code if the European flag fails to load', async () => {
+    const { fixture } = await setup([offer(1, { continent: 'EU' })])
+    const location: HTMLElement =
+      fixture.nativeElement.querySelector('.shop-country')
+
+    location.querySelector('img')!.dispatchEvent(new Event('error'))
+    await fixture.whenStable()
+
+    expect(location.querySelector('img')).toBeNull()
+    expect(location.querySelector('.bi-globe2')).not.toBeNull()
+    expect(location.textContent?.trim()).toBe('EU')
+    expect(location.getAttribute('aria-label')).toBe('Europe')
   })
 
   it('shows an invalid country code without requesting a flag image', async () => {

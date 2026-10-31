@@ -36,6 +36,11 @@ import { RulingTextComponent } from '../ruling-text/ruling-text/ruling-text.comp
 import { SetTooltipComponent } from '../set-tooltip/set-tooltip.component'
 import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card-stats.component'
 
+interface OfferLocation {
+  code: string
+  type: 'country' | 'continent'
+}
+
 @UntilDestroy()
 @Component({
   selector: 'app-card-info',
@@ -97,7 +102,7 @@ export class CardInfoComponent {
   shopsCollapsed = true
   loading = signal(false)
   cardShops = signal<ApiShop[] | null>(null)
-  private readonly failedCountryFlags = signal<ReadonlySet<string>>(new Set())
+  private readonly failedLocationFlags = signal<ReadonlySet<string>>(new Set())
 
   displayCardInfo = computed(() => {
     const cardInfo = this.cardInfo()
@@ -136,19 +141,31 @@ export class CardInfoComponent {
     this.changeActiveSet.emit(set)
   }
 
-  countryCode(country?: string): string {
-    return country?.trim().toUpperCase() ?? ''
+  offerLocation(shop: ApiShop): OfferLocation | undefined {
+    const country = shop.country?.trim()
+    if (country) {
+      return { code: country.toUpperCase(), type: 'country' }
+    }
+    const continent = shop.continent?.trim()
+    if (continent) {
+      return { code: continent.toUpperCase(), type: 'continent' }
+    }
+    return undefined
   }
 
-  countryFlagUrl(country: string): string | undefined {
-    if (!/^[A-Z]{2}$/.test(country) || this.failedCountryFlags().has(country)) {
+  locationFlagUrl(location: OfferLocation): string | undefined {
+    if (
+      (location.type === 'continent' && location.code !== 'EU') ||
+      !/^[A-Z]{2}$/.test(location.code) ||
+      this.failedLocationFlags().has(location.code)
+    ) {
       return undefined
     }
-    return `https://flagcdn.com/w40/${country.toLowerCase()}.png`
+    return `https://flagcdn.com/w40/${location.code.toLowerCase()}.png`
   }
 
-  onCountryFlagError(country: string): void {
-    this.failedCountryFlags.update((failed) => new Set([...failed, country]))
+  onLocationFlagError(code: string): void {
+    this.failedLocationFlags.update((failed) => new Set([...failed, code]))
   }
 
   onLoadMoreShops(): void {
