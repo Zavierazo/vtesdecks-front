@@ -1,0 +1,359 @@
+{
+  "title": "Advent Calendar {{year}}",
+  "subtitle": "24 deck-building challenges for December",
+  "editions_label": "Advent editions",
+  "archive_link": "{{year}} calendar",
+  "community_decks": "Community decks",
+  "how_to": "How to take part",
+  "how_it_worked": "How it worked",
+  "instructions": "Open a day, build your deck and share it by December 31. Each challenge leaves room for your own strategy.",
+  "archive_instructions": "One challenge a day, from December 1 to 24. Explore the challenges and the community’s decks below.",
+  "rules": {
+    "name": "Deck name must start with 'Advent{{year}}:'",
+    "public": "Deck must be public to participate",
+    "legal": "Deck must follow all standard VTES Deck Building rules"
+  },
+  "preview": {
+    "label": "Admin calendar preview",
+    "title": "Admin preview",
+    "date_label": "Calendar date (UTC)",
+    "real_date": "Real date",
+    "before_opening": "November 30 — before opening",
+    "day": "December {{day}}, {{year}}",
+    "after_end": "January 1 — event ended",
+    "reset": "Use real date",
+    "active": "Previewing {{date}} from 00:00 UTC. Only this calendar uses the simulated date.",
+    "help": "Choose a date to preview the calendar. Only admins can see this control."
+  },
+  "status": {
+    "ended": "The {{year}} event has ended. All challenges are available to revisit.",
+    "not_started": "The first challenge opens on December 1.",
+    "next": "Next challenge in",
+    "countdown": "{{hours}}h {{minutes}}min {{seconds}}sec",
+    "all_open": "All 24 challenges are open. Share your decks by December 31.",
+    "completed": "{{count}} / 24 completed",
+    "timezone": "New challenges at 00:00 UTC",
+    "progress_error": "Your completed challenges could not be loaded. Refresh to try again."
+  },
+  "calendar_label": "December challenges",
+  "day_label": "December {{day}}: {{title}}",
+  "locked_label": "December {{day}}, locked until December {{day}}",
+  "month": "DEC",
+  "submitted": "Deck submitted",
+  "view_challenge": "View challenge",
+  "opens": "Opens December {{day}}",
+  "close": "Close challenge",
+  "challenge_date": "Advent {{year}} · December {{day}}",
+  "view_preconstructed": "View preconstructed deck",
+  "view_archetype": "Explore this archetype",
+  "new_tab": "(opens in a new tab)",
+  "submissions_closed": "Submissions for the {{year}} event are closed.",
+  "back": "Back to calendar",
+  "view_deck": "View your deck",
+  "build": "Build this challenge",
+  "sign_in": "Sign in to participate",
+  "validation": {
+    "unavailable": "The challenge could not be checked. Check your connection and try Save again.",
+    "save": "Resolve the Advent validation messages before saving.",
+    "name": "Start with Advent2026: and add your deck name.",
+    "published": "Publish your deck to participate in Advent 2026.",
+    "challenge": "Choose a valid Advent 2026 challenge.",
+    "rule": "Advent rule: {{rule}}",
+    "release": "Advent rule: At least {{percentage}}% of all card copies in your deck must appear in {{reference}}. Count crypt and library copies together.",
+    "reference": "<a href=\"{{url}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-decoration-underline\">{{label}}</a>",
+    "archetype": "Advent rule: The builder must identify {{reference}} as your deck’s best-matching archetype."
+  },
+  "editions": {
+    "2025": {
+      "days": {
+        "1": {
+          "title": "Clan of the First Snow",
+          "content": "<strong>Rule</strong>: Build a deck using only one clan in the crypt.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain vampires from only one clan."
+          }
+        },
+        "2": {
+          "title": "The 60-Card Blizzard",
+          "content": "<strong>Rule</strong>: Your library cannot exceed 60 cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library cannot exceed 60 cards."
+          }
+        },
+        "3": {
+          "title": "The Pacifist",
+          "content": "<strong>Rule</strong>: No combat cards allowed.",
+          "validation": {
+            "error_1": "Advent Rule: No combat cards allowed."
+          }
+        },
+        "4": {
+          "title": "The Little Helpers",
+          "content": "<strong>Rule</strong>: All vampires must be capacity 5 or less.",
+          "validation": {
+            "error_1": "Advent Rule: All vampires must be capacity 5 or less."
+          }
+        },
+        "5": {
+          "title": "The One-Star Christmas Tree",
+          "content": "<strong>Rule</strong>: Build a deck around one single star vampire (your choice).",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain one star-vampire."
+          }
+        },
+        "6": {
+          "title": "Snowbound Solitaries",
+          "content": "<strong>Rule</strong>: All vampires in the crypt must have only one copy.",
+          "validation": {
+            "error_1": "Advent Rule: All vampires must have only one copy."
+          }
+        },
+        "7": {
+          "title": "Mono-Discipline Madness",
+          "content": "<strong>Rule</strong>: Only one discipline allowed.",
+          "validation": {
+            "error_1": "Advent Rule: Only one discipline allowed in the library."
+          }
+        },
+        "8": {
+          "title": "Red Christmas",
+          "content": "<strong>Rule</strong>: At least 50% of your library must be red cards (combat).",
+          "validation": {
+            "error_1": "Advent Rule: At least 50% of library must be red cards (combat)."
+          }
+        },
+        "9": {
+          "title": "Masterless December",
+          "content": "<strong>Rule</strong>: Your deck may include no more than 5 Master cards total.",
+          "validation": {
+            "error_1": "Advent Rule: No more than 5 Master cards allowed in the library."
+          }
+        },
+        "10": {
+          "title": "Group Locked",
+          "content": "<strong>Rule</strong>: Your crypt must use only one group (you pick the group).",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain vampires from only one group."
+          }
+        },
+        "11": {
+          "title": "Winter Council Conclave",
+          "content": "<strong>Rule</strong>: You must include at least one vampire from each sect (Camarilla, Sabbat, Anarch, Independent) in the crypt.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must include at least one vampire from each sect. Missing: {{sects}}."
+          }
+        },
+        "12": {
+          "title": "The Twelve Ranks of Christmas",
+          "content": "<strong>Rule</strong>: Your crypt must contain exactly 12 different vampires.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain exactly 12 different vampires."
+          }
+        },
+        "13": {
+          "title": "Glacial Politics",
+          "content": "<strong>Rule</strong>: Your deck must focus on votes; include at least 10 Political Action cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 10 Political Action cards."
+          }
+        },
+        "14": {
+          "title": "The Three Frozen Thrones",
+          "content": "<strong>Rule</strong>: Crypt must contain three vampires only, and all must be capacity 8+.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain exactly three vampires.",
+            "error_2": "Advent Rule: All vampires must be capacity 8 or higher."
+          }
+        },
+        "15": {
+          "title": "Dual Identity",
+          "content": "<strong>Rule</strong>: Use at least one vampire, with both their normal and advanced versions",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must include at least one vampire in both normal and advanced versions."
+          }
+        },
+        "16": {
+          "title": "Legions of the Damned",
+          "content": "<strong>Rule</strong>: Include at least 12 allies or retainers.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 12 allies or retainers."
+          }
+        },
+        "17": {
+          "title": "Discipline Triplets",
+          "content": "<strong>Rule</strong>: All vampires must share three disciplines in common.",
+          "validation": {
+            "error_1": "Advent Rule: All vampires must share at least three disciplines in common."
+          }
+        },
+        "18": {
+          "title": "24 Hours, 24 Actions",
+          "content": "<strong>Rule</strong>: Your library must contain exactly 24 action cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library must contain exactly 24 action cards."
+          }
+        },
+        "19": {
+          "title": "Whispers in the Blizzard",
+          "content": "<strong>Rule</strong>: Your deck must include at least 15 reaction cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 15 reaction cards."
+          }
+        },
+        "20": {
+          "title": "Deep Winter Sabbat",
+          "content": "<strong>Rule</strong>: Your crypt must be exclusively Sabbat, and you must include at least 6 Black Hand cards.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must contain only Sabbat vampires.",
+            "error_2": "Advent Rule: Library must include at least 6 Black Hand cards."
+          }
+        },
+        "21": {
+          "title": "Glittering Gifts",
+          "content": "<strong>Rule</strong>:You must include at least 10 equipment cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 10 equipment cards."
+          }
+        },
+        "22": {
+          "title": "Veil of Shadows",
+          "content": "<strong>Rule</strong>: Your deck must include at least 10 +Stealth / -Intercept cards.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 10 +Stealth / -Intercept cards."
+          }
+        },
+        "23": {
+          "title": "Hunger of the Long Night",
+          "content": "<strong>Rule</strong>: Include at least 12 cards that cost pool.",
+          "validation": {
+            "error_1": "Advent Rule: Library must include at least 12 cards that cost pool."
+          }
+        },
+        "24": {
+          "title": "The Grand Finale: Barachiel Rising",
+          "content": "<strong>Rule</strong>: Build a deck featuring Barachiel, a new Salubri from the upcoming New Blood release.",
+          "validation": {
+            "error_1": "Advent Rule: Crypt must include Barachiel, the new Salubri from the upcoming New Blood release."
+          }
+        }
+      },
+      "validation": {
+        "error_1": "Deck name is required",
+        "error_2": "Deck name must start with \"Advent2025:\"",
+        "error_3": "Add deck name after \"Advent2025:\"",
+        "error_4": "Deck must be public to participate in the Advent 2025 event"
+      }
+    },
+    "2026": {
+      "days": {
+        "1": {
+          "title": "A Clan for Christmas",
+          "content": "At least 75% of your crypt copies must belong to one clan. Other clans may provide support."
+        },
+        "2": {
+          "title": "A Light in the Longest Night",
+          "content": "At least 50% of all card copies in your deck must appear in New Blood: Salubri.",
+          "reference": "New Blood: Salubri"
+        },
+        "3": {
+          "title": "Something Stirs in the Snow",
+          "content": "Build a deck classified as Gangrel Thing.",
+          "reference": "Gangrel Thing"
+        },
+        "4": {
+          "title": "The Star of the Long Night",
+          "content": "Include at least 3 copies of one vampire in your crypt."
+        },
+        "5": {
+          "title": "The Winter Council",
+          "content": "Include at least 8 Political Action cards."
+        },
+        "6": {
+          "title": "Mirages on Christmas Eve",
+          "content": "At least 50% of all card copies in your deck must appear in New Blood: Ravnos.",
+          "reference": "New Blood: Ravnos"
+        },
+        "7": {
+          "title": "Royalty After Dark",
+          "content": "Build a deck classified as Haqim Royalty.",
+          "reference": "Haqim Royalty"
+        },
+        "8": {
+          "title": "Unexpected Guests",
+          "content": "Include at least 6 Ally cards."
+        },
+        "9": {
+          "title": "An Anarch Christmas",
+          "content": "At least 75% of your crypt copies must be vampires with the printed Anarch sect."
+        },
+        "10": {
+          "title": "Home for the Long Night",
+          "content": "At least 50% of all card copies in your deck must appear in New Blood: Tzimisce.",
+          "reference": "New Blood: Tzimisce"
+        },
+        "11": {
+          "title": "Break the Winter Bonds",
+          "content": "Build a deck classified as Ravnos Break.",
+          "reference": "Ravnos Break"
+        },
+        "12": {
+          "title": "The Elders Gather",
+          "content": "At least half of your crypt copies must be vampires with capacity 8 or higher."
+        },
+        "13": {
+          "title": "Gifts Worth Fighting For",
+          "content": "Include at least 4 Equipment cards."
+        },
+        "14": {
+          "title": "Secrets of New York",
+          "content": "At least 10% of all card copies in your deck must appear in Secrets of New York.",
+          "reference": "Secrets of New York"
+        },
+        "15": {
+          "title": "The Tyrant’s Christmas Speech",
+          "content": "Build a deck classified as Aaradhya Vote.",
+          "reference": "Aaradhya Vote"
+        },
+        "16": {
+          "title": "An Unlikely Alliance",
+          "content": "Include vampires from at least two clans, with no required split."
+        },
+        "17": {
+          "title": "Red Christmas",
+          "content": "Include at least 18 Combat cards."
+        },
+        "18": {
+          "title": "Noites Brasileiras",
+          "content": "At least 10% of all card copies in your deck must appear in Noites Brasileiras.",
+          "reference": "Noites Brasileiras"
+        },
+        "19": {
+          "title": "A Place at the Council",
+          "content": "Build a deck classified as Toreador Loup.",
+          "reference": "Toreador Loup"
+        },
+        "20": {
+          "title": "The Next Generation",
+          "content": "At least half of your crypt copies must be vampires with capacity 5 or lower."
+        },
+        "21": {
+          "title": "Faithful Companions",
+          "content": "Include at least 3 Retainer cards."
+        },
+        "22": {
+          "title": "Guests from Beyond",
+          "content": "Build a deck classified as Oblivion Servitors.",
+          "reference": "Oblivion Servitors"
+        },
+        "23": {
+          "title": "A Shared Gift",
+          "content": "Choose a discipline possessed by at least 75% of your crypt copies, at either level. Include at least 10 library cards listing that same discipline. Other disciplines are welcome."
+        },
+        "24": {
+          "title": "Your Gift to the Community",
+          "content": "Gift your best deck to the VTES community! Share a deck you are proud of and would bring to the table. Any legal deck, any clan, any strategy—no additional restrictions."
+        }
+      }
+    }
+  }
+}

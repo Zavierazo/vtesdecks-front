@@ -3,6 +3,18 @@
 
 <head>
   <meta charset="utf-8" />
+  <script>
+    // Consume OAuth parameters before analytics or other third-party scripts load.
+    if (window.location.pathname === '/user/archon/callback') {
+      const params = new URLSearchParams(window.location.search);
+      window.__archonCallback = {
+        state: params.get('state') || undefined,
+        code: params.get('code') || undefined,
+        error: params.get('error') || undefined
+      };
+      window.history.replaceState(window.history.state, '', '/user/archon/callback');
+    }
+  </script>
   <title>VTES Decks</title>
   <base href="/" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />

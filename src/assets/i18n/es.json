@@ -313,6 +313,7 @@
     "close_comparison": "Cerrar comparación"
   },
   "deck_builder": {
+    "validation_title": "Validación del mazo",
     "picker_no_results": "Ninguna carta coincide con tu búsqueda y filtros. Quita un filtro o prueba otra búsqueda.",
     "unsaved_changes": {
       "show": "Ver cambios",
@@ -436,7 +437,6 @@
     "spoiler": "Spoiler",
     "spoiler_accessible": "Spoiler: contenido de una carta todavía no publicada",
     "spoiler_new_accessible": "Carta spoiler nueva desde tu última visita",
-    "spoiler_unavailable": "Todavía no disponible",
     "rulings": "Reglas",
     "changes": "Historial de Cambios",
     "no_rulings": "No hay reglas disponibles",
@@ -462,6 +462,31 @@
     "share": "Compartir",
     "show_more": "Mostrar más",
     "ebay_affiliate_disclosure": "Este sitio contiene enlaces de afiliados por los que puedo recibir una compensación",
+    "shop_filters": {
+      "offers_title": "Ofertas de {{ name }}",
+      "retry": "Reintentar",
+      "price": "Precio",
+      "out_of_stock": "Agotado",
+      "shop": "Tienda",
+      "seller": "Vendedor",
+      "country": "País",
+      "continent": "Continente",
+      "continent_names": {
+        "AF": "África",
+        "AN": "Antártida",
+        "AS": "Asia",
+        "EU": "Europa",
+        "NA": "América del Norte",
+        "OC": "Oceanía",
+        "SA": "América del Sur"
+      },
+      "locale": "Idioma",
+      "set": "Edición",
+      "all": "Todos",
+      "count": "{{ shown }} de {{ total }} ofertas",
+      "empty": "No hay ofertas que coincidan con estos filtros.",
+      "load_error": "No se pudieron cargar las ofertas. Inténtalo de nuevo."
+    },
     "add_to_collection": "Añadir a la Colección",
     "edit": "Editar",
     "loading": "Cargando...",
@@ -1238,7 +1263,8 @@
       "v5": "v5",
       "2player": "2jugadores",
       "spoiler": "spoiler",
-      "advent2025": "adviento2025"
+      "advent2025": "adviento2025",
+      "advent2026": "adviento2026"
     },
     "taints": {
       "+Intercept": "+Intercepción",
@@ -1490,16 +1516,9 @@
     "add_deck_or_select_recent": "O selecciona un mazo visitado recientemente"
   },
   "advent": {
-    "home_title": "Calendario de Adviento VTES {{ year }}",
-    "home_subtitle": "24 días de Desafíos de Construcción de Mazos - ¡Haz clic aquí para unirte!",
-    "rules": "Reglas",
-    "next_challenge_in": "Próximo desafío se desbloquea en",
-    "advent_finished_title": "¡El Calendario de Adviento VTES {{ year }} ha terminado!",
-    "advent_finished_subtitle": "¡Gracias a todos los que participaron! ¡Nos vemos el próximo año para más diversión construyendo mazos! ¡Todos los desafíos están disponibles para explorar!",
-    "view_all_decks": "Ver Todos los Mazos de Adviento {{ year }}",
-    "day_completed": "Día {{ day }} - Ver Mazo",
-    "day_start": "Comenzar Desafío",
-    "day_login": "Iniciar sesión para comenzar"
+    "home_title": "Calendario de Adviento {{ year }}",
+    "home_subtitle": "24 retos de construcción de mazos para diciembre",
+    "home_link": "Abrir calendario"
   },
   "deck_metagame": {
     "requirements_kind": "Tipo de requisito",
@@ -1958,5 +1977,28 @@
     "tracker_off": "Desactivar seguimiento de colección",
     "tracker_on": "Activar seguimiento de colección",
     "confirm_publish": "¿Publicar este mazo? Aparecerá en las búsquedas públicas de mazos."
+  },
+  "archon": {
+    "title": "Cuenta de Archon",
+    "profile_link": "Ver VEKN {{veknId}} en Archon",
+    "description": "Vincula Archon para mostrar tu identidad de VTESDecks en tus decks de torneo y añadirlos a tu perfil público. La vinculación no concede permisos para modificar los decks de torneo.",
+    "linked": "Vinculada al VEKN {{veknId}}",
+    "disconnect_help": "Al desvincular se restaura el autor original y los decks de torneo dejan de aparecer en tu perfil. Los decks del archivo se conservan.",
+    "connect": "Vincular Archon",
+    "disconnect": "Desvincular Archon",
+    "unavailable": "La vinculación con Archon todavía no está disponible.",
+    "loading": "Conectando con Archon…",
+    "retry": "Reintentar",
+    "error": "No se ha podido conectar con Archon. Vuelve a iniciar la vinculación desde tus ajustes.",
+    "invalid_attempt": "Esta autorización ha caducado o ya se ha utilizado. Empieza de nuevo desde tus ajustes.",
+    "session_changed": "Inicia sesión en VTESDecks y vuelve a empezar la vinculación desde tus ajustes.",
+    "identity_in_use": "Esta cuenta o identidad de Archon ya está vinculada. Desvincula la conexión existente antes de intentarlo de nuevo.",
+    "vekn_missing": "Tu cuenta de Archon necesita un VEKN ID para poder vincularla.",
+    "success": "Tu cuenta de Archon ya está vinculada.",
+    "cancelled": "Se ha cancelado la autorización de Archon. Tu cuenta no ha cambiado.",
+    "back_settings": "Volver a ajustes",
+    "tournament_decks": "Decks de torneo",
+    "load_more": "Cargar más decks",
+    "decks_error": "No se han podido cargar los decks de torneo. Inténtalo de nuevo."
   }
 }

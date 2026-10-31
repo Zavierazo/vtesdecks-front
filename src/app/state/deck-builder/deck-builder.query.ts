@@ -65,6 +65,10 @@ export class DeckBuilderQuery {
     return this.store.select((state) => state.saved)
   }
 
+  selectDeckErrors(): Observable<string[]> {
+    return this.store.select((state) => state.deckErrors)
+  }
+
   selectCryptErrors(): Observable<string[]> {
     return this.store.select((state) => state.cryptErrors)
   }
@@ -198,12 +202,14 @@ export class DeckBuilderQuery {
     return combineLatest([
       this.selectLibraryCards(),
       this.selectCollectionCards(),
+      this.libraryQuery.selectAll({}),
     ]).pipe(
       map(([libraryCards, collectionCards]) => {
         return libraryCards.map(
           (card: ApiCard) =>
             ({
               ...card,
+              type: card.type || this.libraryQuery.getEntity(card.id)?.type,
               collection: this.getCollectionType(
                 card.id,
                 card.number,

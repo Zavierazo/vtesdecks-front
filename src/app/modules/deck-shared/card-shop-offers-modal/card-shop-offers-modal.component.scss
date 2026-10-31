@@ -1,0 +1,96 @@
+:host {
+  display: contents;
+}
+.shop-offers-body {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+.shop-offers-table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  table {
+    min-width: 38rem;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  th {
+    vertical-align: top;
+    background: var(--app-surface-2);
+  }
+  th,
+  td {
+    padding: 0.65rem 0.75rem;
+  }
+}
+.shop-offers-seller {
+  width: 40%;
+  min-width: 14rem;
+  overflow-wrap: anywhere;
+}
+.shop-offers-printing,
+.shop-offers-language {
+  min-width: 8rem;
+}
+.shop-filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+  font: inherit;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: normal;
+
+  &.dropdown-toggle::after {
+    display: none;
+  }
+}
+.shop-filter-menu {
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: min(28rem, calc(100dvh - 8rem));
+  overflow-y: auto;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: normal;
+
+  .dropdown-item {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+.shop-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: 0.25rem;
+  color: var(--bs-white);
+  line-height: 1;
+
+  &.is-checked {
+    border-color: var(--bs-primary);
+    background: var(--bs-primary);
+  }
+}
+.shop-country {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  img {
+    object-fit: contain;
+  }
+}
+.shop-printing {
+  font-size: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}

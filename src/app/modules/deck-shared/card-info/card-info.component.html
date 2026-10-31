@@ -175,9 +175,7 @@
       </div>
     }
     @if (
-      card().unreleased ||
-      (cardInfo &&
-        (cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0))
+      cardInfo.shopList.length > 0 || cardInfo.preconstructedDecks.length > 0
     ) {
       <div class="card border-0 shadow-sm mt-3">
         <div
@@ -193,7 +191,6 @@
           >
             <span>
               <i class="bi bi-currency-exchange me-2"></i>{{ t('where_find') }}
-              @if (!card().unreleased) {
               <span class="badge bg-dark ms-2">{{
                 cardInfo.preconstructedDecks.length + cardInfo.shopList.length
               }}</span>
@@ -206,7 +203,6 @@
                     {{ cardInfo.maxPrice | currency: cardInfo.currency }}
                   }
                 </span>
-              }
               }
             </span>
             <i
@@ -221,11 +217,8 @@
           [ngbCollapse]="shopsCollapsed"
           #shopsCollapse="ngbCollapse"
         >
-          @if (card().unreleased) {
-            <div class="text-muted text-center py-2">{{ t('spoiler_unavailable') }}</div>
-          }
           @for (
-            deck of (card().unreleased ? [] : cardInfo.preconstructedDecks);
+            deck of cardInfo.preconstructedDecks;
             track deck.id;
             let last = $last
           ) {
@@ -249,14 +242,18 @@
               </a>
             </div>
           }
-          @for (shop of (card().unreleased ? [] : cardInfo.shopList); track shop.link; let last = $last) {
+          @for (
+            shop of cardInfo.shopList;
+            track shopOfferKey(shop);
+            let last = $last
+          ) {
             <div
               class="d-flex align-items-center justify-content-between py-1 border-dark"
               [class.border-bottom]="!last"
               [class.opacity-50]="!shop.inStock"
             >
               <a
-                class="text-decoration-none flex-grow-1"
+                class="text-decoration-none flex-grow-1 shop-offer"
                 [href]="shop.link"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -265,45 +262,75 @@
                 [gaLabel]="card().name"
                 [class.text-decoration-line-through]="!shop.inStock"
               >
-                <span
-                  class="badge me-2"
-                  [class.bg-success]="shop.inStock"
-                  [class.bg-secondary]="!shop.inStock"
-                >
-                  {{ shop.shopInfo.fullName }}
-                  @if (shop.set) {
-                    - {{ shop.set }}
-                  }
-                  @if (shop.locale) {
-                    - {{ shop.locale | displayLocale | titlecase }}
-                  }
+                <span class="shop-offer-details">
+                  <span
+                    class="badge shop-offer-label"
+                    [class.bg-success]="shop.inStock"
+                    [class.bg-secondary]="!shop.inStock"
+                  >
+                    @if (offerLocation(shop); as location) {
+                      <span
+                        class="shop-country"
+                        role="img"
+                        [attr.aria-label]="
+                          location.code
+                            | displayCountry: activeLanguage() : location.type
+                        "
+                        [title]="
+                          location.code
+                            | displayCountry: activeLanguage() : location.type
+                        "
+                      >
+                        @if (locationFlagUrl(location); as flagUrl) {
+                          <img
+                            [src]="flagUrl"
+                            alt=""
+                            width="16"
+                            height="12"
+                            loading="lazy"
+                            decoding="async"
+                            referrerpolicy="no-referrer"
+                            (error)="onLocationFlagError(location.code)"
+                          />
+                        } @else {
+                          @if (location.type === 'continent') {
+                            <i class="bi bi-globe2 me-1" aria-hidden="true"></i>
+                          }
+                          {{ location.code }}
+                        }
+                      </span>
+                    }
+                    {{ shop.shopInfo.fullName }}
+                    @if (shop.seller) {
+                      - {{ shop.seller }}
+                    }
+                    @if (shop.set) {
+                      - {{ shop.set }}
+                    }
+                    @if (shop.locale) {
+                      - {{ shop.locale | displayLocale | titlecase }}
+                    }
+                  </span>
                 </span>
-                <span class="fw-medium">{{
+                <span class="fw-medium flex-shrink-0 text-nowrap">{{
                   shop.price | currency: shop.currency
                 }}</span>
               </a>
             </div>
           }
-          @if (!card().unreleased && cardInfo.hasMoreShops) {
+          @if (cardInfo.hasMoreShops) {
             <div class="text-center mt-2">
               <button
-                class="btn btn-sm btn-outline-primary"
+                type="button"
+                class="btn btn-sm btn-outline-primary shop-load-more"
                 (click)="onLoadMoreShops()"
-                [disabled]="loading()"
               >
-                @if (loading()) {
-                  <span
-                    class="spinner-border spinner-border-sm me-2"
-                    role="status"
-                  ></span>
-                } @else {
-                  <i class="bi bi-cart-plus me-2"></i>
-                }
+                <i class="bi bi-cart-plus me-2" aria-hidden="true"></i>
                 {{ t('show_more') }}
               </button>
             </div>
           }
-          @if (!card().unreleased && hasEbayShops()) {
+          @if (hasEbayShops()) {
             <p class="text-muted small mt-2 mb-0" style="font-size: 0.8rem">
               <i class="bi bi-info-circle me-1"></i
               >{{ t('ebay_affiliate_disclosure') }}
@@ -326,7 +353,9 @@
       (routerClick)="routerClick.emit(true)"
     />
   } @else if (connection.offline()) {
-    <p class="text-muted" role="status">{{ 'offline.details_online' | transloco }}</p>
+    <p class="text-muted" role="status">
+      {{ 'offline.details_online' | transloco }}
+    </p>
   } @else {
     <div class="d-flex justify-content-center p-3" role="status">
       <span class="spinner-border text-primary" aria-hidden="true"></span>

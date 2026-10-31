@@ -313,6 +313,7 @@
     "close_comparison": "Close comparison"
   },
   "deck_builder": {
+    "validation_title": "Deck validation",
     "picker_no_results": "No cards match your search and filters. Remove a filter or try another search.",
     "unsaved_changes": {
       "show": "Show changes",
@@ -436,7 +437,6 @@
     "spoiler": "Spoiler",
     "spoiler_accessible": "Spoiler: unreleased card content",
     "spoiler_new_accessible": "New spoiler card since your last visit",
-    "spoiler_unavailable": "Not available yet",
     "rulings": "Rulings",
     "changes": "Change History",
     "no_rulings": "No rulings available",
@@ -462,6 +462,31 @@
     "share": "Share",
     "show_more": "Show more",
     "ebay_affiliate_disclosure": "This site contains affiliate links for which I may be compensated",
+    "shop_filters": {
+      "offers_title": "Offers for {{ name }}",
+      "retry": "Try again",
+      "price": "Price",
+      "out_of_stock": "Out of stock",
+      "shop": "Shop",
+      "seller": "Seller",
+      "country": "Country",
+      "continent": "Continent",
+      "continent_names": {
+        "AF": "Africa",
+        "AN": "Antarctica",
+        "AS": "Asia",
+        "EU": "Europe",
+        "NA": "North America",
+        "OC": "Oceania",
+        "SA": "South America"
+      },
+      "locale": "Language",
+      "set": "Printing",
+      "all": "All",
+      "count": "{{ shown }} of {{ total }} offers",
+      "empty": "No offers match these filters.",
+      "load_error": "Offers could not be loaded. Please try again."
+    },
     "add_to_collection": "Add to Collection",
     "edit": "Edit",
     "loading": "Loading...",
@@ -1238,7 +1263,8 @@
       "v5": "v5",
       "2player": "2player",
       "spoiler": "spoiler",
-      "advent2025": "advent2025"
+      "advent2025": "advent2025",
+      "advent2026": "advent2026"
     },
     "taints": {
       "+Intercept": "+Intercept",
@@ -1490,16 +1516,9 @@
     "add_deck_or_select_recent": "Or select from recently visited decks"
   },
   "advent": {
-    "home_title": "VTES Advent Calendar {{ year }}",
-    "home_subtitle": "24 Days of Deck Building Challenges - Click here to Join!",
-    "rules": "Rules",
-    "next_challenge_in": "Next challenge unlocks in",
-    "advent_finished_title": "The VTES Advent Calendar {{ year }} has ended!",
-    "advent_finished_subtitle": "Thank you to everyone who participated! See you next year for more deck-building fun! All challenges are available to explore!",
-    "view_all_decks": "View All Advent {{ year }} Decks",
-    "day_completed": "Day {{ day }} - View Deck",
-    "day_start": "Start Challenge",
-    "day_login": "Login to Start"
+    "home_title": "Advent Calendar {{ year }}",
+    "home_subtitle": "24 deck-building challenges for December",
+    "home_link": "Open calendar"
   },
   "deck_metagame": {
     "requirements_kind": "Requirement type",
@@ -1958,5 +1977,28 @@
     "tracker_off": "Disable collection tracker",
     "tracker_on": "Enable collection tracker",
     "confirm_publish": "Publish this deck? It will appear in public deck searches."
+  },
+  "archon": {
+    "title": "Archon account",
+    "profile_link": "View VEKN {{veknId}} on Archon",
+    "description": "Link Archon to display your VTESDecks identity on your tournament decks and add them to your public profile. Linking does not grant permission to change tournament decks.",
+    "linked": "Linked to VEKN {{veknId}}",
+    "disconnect_help": "Disconnecting restores the original author attribution and removes tournament decks from your profile. The archived decks are preserved.",
+    "connect": "Link Archon",
+    "disconnect": "Disconnect Archon",
+    "unavailable": "Archon linking is not available yet.",
+    "loading": "Connecting to Archon…",
+    "retry": "Try again",
+    "error": "Archon could not be reached. Please try linking again from your settings.",
+    "invalid_attempt": "This authorization has expired or has already been used. Start again from your settings.",
+    "session_changed": "Sign in to VTESDecks and start linking again from your settings.",
+    "identity_in_use": "This account or Archon identity is already linked. Disconnect the existing link before trying again.",
+    "vekn_missing": "Your Archon account needs a VEKN ID before it can be linked.",
+    "success": "Your Archon account is now linked.",
+    "cancelled": "Archon authorization was cancelled. Your account has not been changed.",
+    "back_settings": "Back to settings",
+    "tournament_decks": "Tournament decks",
+    "load_more": "Load more decks",
+    "decks_error": "Tournament decks could not be loaded. Please try again."
   }
 }

@@ -5,6 +5,9 @@ export interface ApiShop {
   shopInfo: ApiShopInfo
   set?: string
   locale?: string
+  country?: string
+  continent?: string
+  seller?: string
   link: string
   price: number
   currency: string

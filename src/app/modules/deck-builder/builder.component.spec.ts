@@ -2,7 +2,7 @@ import { signal } from '@angular/core'
 import { convertToParamMap } from '@angular/router'
 import { ApiCrypt, ApiLibrary } from '@models'
 import { ApiCard } from '@models'
-import { of, Subject, throwError } from 'rxjs'
+import { firstValueFrom, of, Subject, throwError } from 'rxjs'
 import { describe, expect, it, vi } from 'vitest'
 import { BuilderComponent } from './builder.component'
 
@@ -35,6 +35,54 @@ describe('Builder recommendation refresh', () => {
 })
 
 describe('Builder catalog initialization', () => {
+  it('waits for Advent initialization before updating the form or saving the draft', async () => {
+    const previousState = history.state
+    history.replaceState({ advent: 2026, day: 2 }, '')
+    let completeAdvent!: () => void
+    const ready = new Promise<void>((resolve) => {
+      completeAdvent = resolve
+    })
+    const loaded = vi.fn()
+    const saveDraft = vi.fn()
+    const context = {
+      route: { queryParamMap: of(convertToParamMap({})) },
+      deckBuilderQuery: { getDeckId: () => undefined, getSaved: () => false },
+      deckBuilderService: {
+        init: () => of({}),
+        initAdventRules: vi.fn(() => ready),
+        saveDraft,
+      },
+      cryptService: { getCryptCards: () => of([]) },
+      libraryService: { getLibraryCards: () => of([]) },
+      initializing: signal(false),
+      activeLocalDraftId: () => undefined,
+      form: { disable: vi.fn() },
+      onDeckLoaded: loaded,
+    }
+    try {
+      const result = firstValueFrom(
+        BuilderComponent.prototype.initDeck.call(
+          context as unknown as BuilderComponent,
+        ),
+      )
+      expect(context.deckBuilderService.initAdventRules).toHaveBeenCalledWith(
+        '2026',
+        '2',
+      )
+      expect(loaded).not.toHaveBeenCalled()
+      expect(saveDraft).not.toHaveBeenCalled()
+      expect(context.initializing()).toBe(true)
+      completeAdvent()
+      await result
+      expect(loaded).toHaveBeenCalledOnce()
+      expect(saveDraft).toHaveBeenCalledOnce()
+      expect(context.initializing()).toBe(false)
+      expect(history.state.advent).toBeUndefined()
+    } finally {
+      history.replaceState(previousState, '')
+    }
+  })
+
   it('does not initialize from cached emissions and initializes once after both refreshes', () => {
     const crypt = new Subject<ApiCrypt[]>()
     const library = new Subject<ApiLibrary[]>()

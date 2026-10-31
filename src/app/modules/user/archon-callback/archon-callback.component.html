@@ -1,0 +1,21 @@
+<div class="container py-4" *transloco="let t; prefix: 'archon'">
+  <div class="card mx-auto" style="max-width: 42rem">
+    <div class="card-body p-4">
+      <h1 class="h4">{{ t('title') }}</h1>
+      <p
+        role="status"
+        [class.text-success]="successful()"
+        [class.text-danger]="!busy() && !successful()"
+      >
+        {{ t(message()) }}
+      </p>
+      @if (busy()) {
+        <span class="spinner-border text-primary" aria-hidden="true"></span>
+      } @else {
+        <a routerLink="/user/settings" class="btn btn-primary">{{
+          t('back_settings')
+        }}</a>
+      }
+    </div>
+  </div>
+</div>

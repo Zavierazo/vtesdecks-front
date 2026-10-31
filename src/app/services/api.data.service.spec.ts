@@ -37,6 +37,36 @@ describe('ApiDataService', () => {
 
   afterEach(() => http.verify())
 
+  it('never opts Archon authorization mutations into automatic retries', () => {
+    service.connectArchon().subscribe()
+    const connect = http.expectOne(
+      `${environment.api.baseUrl}/user/archon/connect`,
+    )
+    expect(connect.request.method).toBe('POST')
+    expect(connect.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    connect.flush({ authorizationUrl: 'https://archon.vekn.net/consent' })
+    service.completeArchon({ code: 'code', state: 'state' }).subscribe()
+    const complete = http.expectOne(
+      `${environment.api.baseUrl}/user/archon/complete`,
+    )
+    expect(complete.request.context.get(RETRY_REPEATABLE_POST)).toBe(false)
+    expect(complete.request.body).toEqual({ code: 'code', state: 'state' })
+    complete.flush({ linked: true, available: true, veknId: '003120065' })
+    service.disconnectArchon().subscribe()
+    const disconnect = http.expectOne(`${environment.api.baseUrl}/user/archon`)
+    expect(disconnect.request.method).toBe('DELETE')
+    disconnect.flush(null)
+  })
+
+  it('requests independent public tournament pages', () => {
+    service.getUserTournamentDecks('alice', 6).subscribe()
+    const request = http.expectOne(
+      `${environment.api.baseUrl}/public/user/alice/tournament-decks?offset=6&limit=6`,
+    )
+    expect(request.request.method).toBe('GET')
+    request.flush({ total: 0, decks: [] })
+  })
+
   it('requests a specific notification page with backward-compatible defaults', () => {
     service.getNotifications().subscribe()
     const firstPage = http.expectOne(

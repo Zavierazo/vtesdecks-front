@@ -1,5 +1,16 @@
 [
   {
+    "version": "2.84.0",
+    "date": "XXth October, 2026",
+    "changes": [
+      "Updated the <strong>Secrets of New York</strong> and <strong>Noites Brasileiras</strong> preconstructed decklists to match their official releases.",
+      "Link your <strong>Archon account</strong> in <strong>Settings</strong> to verify your VEKN ID and connect your tournament decks to your VTESDecks profile. These decks now show your VTESDecks name and link to your public profile, while remaining read-only.",
+      "Compare <strong>card purchase options</strong> more easily: <strong>Show more</strong> opens a comparison table with <strong>multi-select filters</strong> in the column headers. Shop / Seller includes country and continent.",
+      "Tournament decks now show each player's current <strong>Archon alias</strong>, or their registered name when no alias is set. Names update automatically when their Archon profile changes.",
+      "Minor bug fixes and performance improvements."
+    ]
+  },
+  {
     "version": "2.83.0",
     "date": "9th October, 2026",
     "changes": [

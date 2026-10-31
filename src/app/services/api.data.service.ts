@@ -1,4 +1,9 @@
 import { BACKGROUND_REFRESH } from '../http-retry.context'
+import {
+  ApiArchonAuthorization,
+  ApiArchonCallback,
+  ApiArchonStatus,
+} from '../models/api-archon'
 import { HttpClient, HttpContext, HttpParams } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { environment } from '@environments/environment'
@@ -497,6 +502,22 @@ export class ApiDataService {
     )
   }
 
+  getDeckBuilderArchetype(
+    deck: ApiDeckBuilder,
+  ): Observable<Pick<
+    ApiDeckArchetype,
+    'id' | 'name' | 'icon' | 'type'
+  > | null> {
+    return this.httpClient.post<Pick<
+      ApiDeckArchetype,
+      'id' | 'name' | 'icon' | 'type'
+    > | null>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/archetype`,
+      deck,
+      { context: this.repeatablePostContext() },
+    )
+  }
+
   updateCollectionTracker(
     id: string,
     collectionTracker: boolean,
@@ -509,7 +530,9 @@ export class ApiDataService {
   }
 
   canPublishDeck(id: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/publishable`)
+    return this.httpClient.get<boolean>(
+      `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/publishable`,
+    )
   }
 
   setDeckVisibility(id: string, published: boolean): Observable<boolean> {
@@ -842,6 +865,49 @@ export class ApiDataService {
   ): Observable<ApiAchievementFamily[]> {
     return this.httpClient.get<ApiAchievementFamily[]>(
       `${environment.api.baseUrl}${this.publicUserPath}/${username}/achievements`,
+    )
+  }
+
+  getArchonStatus(): Observable<ApiArchonStatus> {
+    return this.httpClient.get<ApiArchonStatus>(
+      `${environment.api.baseUrl}/user/archon`,
+      {
+        context: new HttpContext().set(BACKGROUND_REFRESH, true),
+      },
+    )
+  }
+
+  connectArchon(): Observable<ApiArchonAuthorization> {
+    return this.httpClient.post<ApiArchonAuthorization>(
+      `${environment.api.baseUrl}/user/archon/connect`,
+      {},
+    )
+  }
+
+  completeArchon(callback: ApiArchonCallback): Observable<ApiArchonStatus> {
+    return this.httpClient.post<ApiArchonStatus>(
+      `${environment.api.baseUrl}/user/archon/complete`,
+      callback,
+    )
+  }
+
+  disconnectArchon(): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.api.baseUrl}/user/archon`,
+    )
+  }
+
+  getUserTournamentDecks(
+    username: string,
+    offset = 0,
+    limit = 6,
+  ): Observable<ApiDecks> {
+    return this.httpClient.get<ApiDecks>(
+      `${environment.api.baseUrl}${this.publicUserPath}/${encodeURIComponent(username)}/tournament-decks`,
+      {
+        params: new HttpParams().set('offset', offset).set('limit', limit),
+        context: new HttpContext().set(BACKGROUND_REFRESH, true),
+      },
     )
   }
 

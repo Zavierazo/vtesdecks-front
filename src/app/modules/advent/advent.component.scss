@@ -1,617 +1,492 @@
-$perspective: 850px;
-$present-dimension: 15em;
-$present-dimension-mobile: 10rem;
-$date-dimension: calc($present-dimension / 5);
-$date-dimension-mobile: calc($present-dimension-mobile / 5);
-$bauble-dimension: calc($present-dimension / 4.5);
-$bauble-dimension-mobile: calc($present-dimension-mobile / 4.5);
-
-@keyframes shake {
-  0% {
-    transform: rotate(0deg);
-  }
-  20% {
-    transform: rotate(-20deg);
-  }
-  40% {
-    transform: rotate(20deg);
-  }
-  60% {
-    transform: rotate(-10deg);
-  }
-  80% {
-    transform: rotate(10deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-html,
-body {
-  height: 100%;
-}
-
 :host {
   display: block;
-  min-height: 100vh;
-  padding: 2rem 0;
-  overflow-x: hidden;
 }
-
-main {
-  text-align: center;
-  margin: 0 auto;
-  max-width: $present-dimension * 4;
-  overflow-x: hidden;
-  padding-bottom: 4rem;
-
-  @media (max-width: 767px) {
-    max-width: calc(
-      $present-dimension-mobile * 2 + 3rem
-    ); // 2 columns on mobile with extra space
-    padding: 0 0.5rem; // Add horizontal padding
-    width: 100%;
-    padding-bottom: 2rem;
-  }
-
-  @media (min-width: 768px) and (max-width: 1199px) {
-    max-width: $present-dimension * 3; // 3 columns on tablet
-  }
-
-  @media (min-width: 1200px) {
-    max-width: $present-dimension * 4; // 6 columns on desktop
-  }
-
-  @media (min-width: 1400px) {
-    max-width: $present-dimension * 8; // 8 columns on large desktop
-  }
+.advent {
+  max-width: 1320px;
+  margin: 1.5rem auto 2.5rem;
 }
-.present {
-  position: relative;
-  display: inline-block;
-  width: $present-dimension;
-  height: $present-dimension;
-  margin: 0.5em;
-  perspective: $perspective;
-  z-index: 666;
-
-  @media (max-width: 767px) {
-    width: $present-dimension-mobile;
-    height: $present-dimension-mobile;
-    margin: 0.25rem;
-  }
-}
-.present__pane,
-.present__content {
-  width: inherit;
-  height: inherit;
-}
-.present__pane {
-  position: relative;
-  background: linear-gradient(135deg, #c41e3a 50%, #8b0000 50%);
-  transform-style: preserve-3d;
-  transform-origin: 0;
-  perspective: $perspective;
-  text-align: center;
-  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-  transition: all 0.2s ease-out;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-}
-.present__date {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: $date-dimension;
-  height: $date-dimension;
-  margin: 0;
-  font-size: 2em;
-  line-height: $date-dimension;
-  background: #26a69a;
-  color: white;
-  border-radius: 50%;
-  box-shadow: inset 0 0 10px 5px rgba(black, 0.15);
-
-  @media (max-width: 767px) {
-    width: $date-dimension-mobile;
-    height: $date-dimension-mobile;
-    line-height: $date-dimension-mobile;
-    font-size: 1.5em;
-  }
-}
-// hover styles
-.present:hover {
-  z-index: 999;
-}
-.present:hover .present__pane {
-  background: linear-gradient(135deg, #ff8a65 50%, #ff7961 50%);
-  transform: rotateY(-97deg);
-  perspective-origin: 0;
-  transition: all 0.25s ease-in;
-}
-.present:hover .present__date {
-  backface-visibility: hidden; // hide date
-}
-.present:hover .present__bauble {
-  display: inline-block;
-  transform-origin: 50% 0;
-  animation: shake 0.7s;
-}
-.present__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, #7952b3 0%, #5a3d99 100%);
-  box-shadow:
-    0 8px 20px 0 rgba(0, 0, 0, 0.15),
-    inset 0 0 40px 10px rgba(0, 0, 0, 0.1);
-  z-index: -1;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-.present__bauble {
-  position: relative;
-  width: $bauble-dimension;
-  height: $bauble-dimension;
-  background: Violet;
-  margin: 25% auto 0 auto;
-  font-size: $bauble-dimension;
-  line-height: $bauble-dimension;
-  border-radius: 50%;
-
-  @media (max-width: 767px) {
-    width: $bauble-dimension-mobile;
-    height: $bauble-dimension-mobile;
-    font-size: $bauble-dimension-mobile;
-    line-height: $bauble-dimension-mobile;
-  }
-}
-// rectangle that has pin
-.present__bauble::after {
-  content: '';
-  position: absolute;
-  top: -5%;
-  left: 50%;
-  width: 30%;
-  height: 10%;
-  margin-left: -15%;
-  background: inherit;
-}
-// pin
-.present__bauble::before {
-  content: '';
-  position: absolute;
-  top: -15%;
-  left: 50%;
-  width: 12%;
-  height: 20%;
-  margin-left: -12%;
-  border: 0.35rem solid Violet;
-  border-radius: 50%;
-  z-index: 0;
-}
-
-// Christmas header styles
-.advent__header {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  overflow: hidden;
-}
-
-.advent__header-decoration {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  font-size: 2rem;
-  margin-bottom: 0.5rem !important;
-}
-
-.advent__ornament {
-  display: inline-block;
-  animation: ornamentFloat 3s ease-in-out infinite;
-
-  &--delayed {
-    animation-delay: 1s;
-  }
-
-  &--delayed-2 {
-    animation-delay: 2s;
-  }
-}
-
-.advent__title {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 50%, #bd2130 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: titleGlow 2s ease-in-out infinite alternate;
-  font-family: 'Georgia', serif;
-  letter-spacing: 2px;
-  font-weight: 800 !important;
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem !important;
-}
-
-.advent__snow {
-  position: absolute;
-  left: -15px;
-  top: -5px;
-  font-size: 1.8rem;
-  animation: snowFloat 3s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.advent__bell {
-  position: absolute;
-  right: -15px;
-  top: -5px;
-  font-size: 1.8rem;
-  animation: bellRing 2s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.advent__description {
-  font-family: 'Georgia', serif;
-  line-height: 1.5;
-  font-style: italic;
-  font-size: 0.95rem;
-  max-width: 700px;
-  margin: 0 auto;
-  opacity: 0.8;
-}
-
-@keyframes titleGlow {
-  0% {
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2)) brightness(1);
-  }
-  100% {
-    filter: drop-shadow(2px 2px 8px rgba(220, 53, 69, 0.3)) brightness(1.1);
-  }
-}
-
-@keyframes snowFloat {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(10deg);
-  }
-}
-
-@keyframes bellRing {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(12deg);
-  }
-  75% {
-    transform: rotate(-12deg);
-  }
-}
-
-@keyframes ornamentFloat {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-10px) scale(1.05);
-  }
-}
-
-// Challenge content styles
-.present__challenge {
-  padding: 1.2rem;
-  text-align: center;
-  color: white;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.2);
-
-  @media (max-width: 767px) {
-    padding: 0.6rem;
-  }
-}
-
-.present__challenge-header {
-  margin-bottom: 0.8rem;
-
-  @media (max-width: 767px) {
-    margin-bottom: 0.3rem;
-  }
-}
-
-.present__challenge-title {
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0;
-  color: #ffd700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  line-height: 1.3;
-
-  @media (max-width: 767px) {
-    font-size: 0.75rem;
-    line-height: 1.2;
-  }
-}
-
-.present__challenge-body {
-  flex: 1;
+.advent-header,
+.advent-title,
+.advent-links,
+.calendar-status,
+.day-heading {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
 }
-
-.present__challenge-content {
-  font-size: 0.85rem;
-  line-height: 1.4;
+.advent-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.advent-logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+h1 {
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
+}
+.advent-title p {
   margin: 0;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-  color: rgba(255, 255, 255, 0.95);
-
-  @media (max-width: 767px) {
-    font-size: 0.65rem;
-    line-height: 1.2;
-  }
+  color: var(--bs-secondary-color);
+  font-size: 0.9rem;
 }
-
-.present__challenge-action {
-  margin-top: 1rem;
-
-  @media (max-width: 767px) {
-    margin-top: 0.4rem;
-  }
-}
-
-.present__btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px;
-  font-weight: 600;
+.advent-links {
+  flex-wrap: wrap;
   font-size: 0.85rem;
-  text-decoration: none;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-
-  @media (max-width: 767px) {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.65rem;
-    border-radius: 15px;
-    border-width: 1px;
-  }
-
-  i {
-    margin-right: 0.4rem;
-
-    @media (max-width: 767px) {
-      margin-right: 0.2rem;
-    }
-  }
-
-  &--primary {
-    background: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);
-    color: white;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-      background: linear-gradient(135deg, #5179f1 0%, #2ea0ff 100%);
-    }
-  }
-
-  &--success {
-    background: linear-gradient(135deg, #228b22 0%, #32cd32 100%);
-    color: white;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-      background: linear-gradient(135deg, #2a9b2a 0%, #3add3a 100%);
-      color: white;
-    }
-  }
 }
-
-// Future days styling
-.present--future {
-  opacity: 0.4;
-  pointer-events: none;
-
-  .present__pane {
-    background: linear-gradient(135deg, #555 50%, #333 50%);
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
-  }
-
-  .present__content {
-    background: linear-gradient(135deg, #444 0%, #222 100%);
-  }
-
-  &:hover .present__pane {
-    background: linear-gradient(135deg, #555 50%, #333 50%);
-    transform: none;
-  }
+.advent-links a:not(.btn) {
+  color: var(--bs-secondary-color);
+  text-underline-offset: 3px;
 }
-
-// Available days with enhanced styling
-.present--available {
-  .present__pane {
-    background: linear-gradient(135deg, #228b22 50%, #006400 50%);
-    box-shadow: 0 8px 20px 0 rgba(34, 139, 34, 0.5);
-  }
-
-  &:hover .present__pane {
-    background: linear-gradient(135deg, #2a9b2a 50%, #007500 50%);
-    box-shadow: 0 10px 30px 0 rgba(34, 139, 34, 0.6);
-  }
+.advent-links i {
+  font-size: 0.75rem;
 }
-
-// Completed days styling
-.present--completed {
-  .present__pane {
-    background: linear-gradient(135deg, #ffd700 50%, #ffb347 50%);
-    box-shadow:
-      0 8px 20px 0 rgba(255, 215, 0, 0.5),
-      0 0 30px rgba(255, 215, 0, 0.4);
-    animation: completedGlow 2s ease-in-out infinite alternate;
-  }
-
-  &:hover .present__pane {
-    background: linear-gradient(135deg, #ffe55c 50%, #ffc857 50%);
-    box-shadow:
-      0 10px 30px 0 rgba(255, 215, 0, 0.6),
-      0 0 40px rgba(255, 215, 0, 0.5);
-  }
-
-  .present__date {
-    background: linear-gradient(135deg, #ff8c00 0%, #ff6347 100%);
-    box-shadow:
-      inset 0 0 10px 5px rgba(0, 0, 0, 0.2),
-      0 0 20px rgba(255, 140, 0, 0.6);
-  }
-
-  .present__content {
-    background: linear-gradient(135deg, #8b7ab8 0%, #6a5acd 100%);
-  }
+.advent-rules {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1rem 2rem;
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--bs-border-color);
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
-
-@keyframes completedGlow {
-  0% {
-    box-shadow:
-      0 8px 20px 0 rgba(255, 215, 0, 0.5),
-      0 0 30px rgba(255, 215, 0, 0.4);
-  }
-  100% {
-    box-shadow:
-      0 8px 20px 0 rgba(255, 215, 0, 0.7),
-      0 0 50px rgba(255, 215, 0, 0.6);
-  }
-}
-
-// Rules section styling
-.advent__rules {
-  background: rgba(40, 167, 69, 0.08);
-  border-radius: 10px;
-  padding: 1rem;
-  max-width: 700px;
-  border: 1px solid rgba(40, 167, 69, 0.3);
-}
-
-.advent__rules-title {
-  color: #28a745;
+.advent-rules h2 {
+  font: inherit;
   font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.35rem;
 }
-
-.advent__rules-list {
-  list-style: none;
+.advent-rules p {
+  margin: 0;
+  color: var(--bs-secondary-color);
+}
+.advent-rules ul {
+  display: grid;
+  gap: 0.35rem;
+}
+.calendar-status {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 1.1rem 0 0.8rem;
+  font-size: 0.85rem;
+}
+.advent-preview {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 4px;
+  background: var(--bs-tertiary-bg);
+  font-size: 0.8rem;
+}
+.advent-preview .form-select {
+  width: auto;
+  max-width: 100%;
+}
+.preview-status {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+}
+.calendar-status p {
+  margin: 0;
+}
+.calendar-status p > i {
+  margin-right: 0.4rem;
+  color: var(--bs-secondary-color);
+}
+.calendar-status strong {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.calendar-timezone {
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+}
+.calendar-progress {
+  color: var(--bs-success-text-emphasis);
+  font-size: 0.8rem;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.calendar-day {
+  min-width: 0;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 4px;
+  background: var(--bs-body-bg);
+  overflow: hidden;
+}
+.day-locked,
+.day-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.day-button {
   padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bs-body-color);
+  text-align: left;
+}
+.day-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.day-locked .day-art img {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+.day-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.55rem;
+  padding: 0.75rem;
+}
+.day-heading {
+  gap: 0.3rem;
+  align-items: baseline;
+}
+.day-number {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.day-month {
+  font-size: 0.6rem;
+  color: var(--bs-secondary-color);
+}
+.day-mark {
+  margin-left: auto;
+  color: var(--bs-secondary-color);
+  font-size: 0.8rem;
+}
+.has-art .day-heading {
+  position: absolute;
+  top: 0;
+  left: 0.6rem;
+  min-width: 2.4rem;
+  padding: 0.5rem 0.4rem 0.45rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  background: #294b3e;
+  color: #fff7e9;
+  border-radius: 0 0 2px 2px;
+}
+.has-art .day-number {
+  font-size: 1.45rem;
+}
+.has-art .day-month {
+  color: inherit;
+}
+.has-art .day-mark {
+  position: absolute;
+  top: 0.45rem;
+  left: calc(100% + 0.3rem);
   margin: 0;
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  background: var(--bs-body-bg);
+}
+.has-art .day-locked .day-mark {
+  display: none;
+}
+.day-unlock {
+  font-size: 0.73rem;
+  color: var(--bs-secondary-color);
+}
+.day-button h2 {
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.4;
+  min-height: 2.4em;
+  margin: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.day-action {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.73rem;
+  color: var(--bs-link-color);
+}
+.calendar-day--christmas {
+  border-color: #93434b;
+}
+.calendar-day--christmas.has-art .day-heading {
+  background: #823843;
+}
+.calendar-day--complete {
+  border-color: var(--bs-success-border-subtle);
+}
+.calendar-day--complete .day-mark {
+  color: var(--bs-success-text-emphasis);
+}
+.calendar-day:not(.has-art) .day-button:hover .day-content {
+  background: var(--bs-tertiary-bg);
+}
+.day-button:hover h2 {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.day-button:focus-visible {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: -3px;
+}
+.has-art {
+  background: #101714;
 
-  li {
-    padding: 0.25rem 0;
-    text-align: left;
-    font-size: 0.85rem;
-
-    i {
-      margin-right: 0.5rem;
-      font-size: 0.7rem;
-    }
+  .day-button,
+  .day-locked {
+    display: grid;
+    isolation: isolate;
+    min-height: 14rem;
+    aspect-ratio: 1;
+  }
+  .day-art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .day-content {
+    align-self: end;
+    z-index: 1;
+    gap: 0.65rem;
+    padding: 4.5rem 0.85rem 0.85rem;
+    color: #fff9ef;
+    background: linear-gradient(
+      0deg,
+      rgba(10, 17, 14, 0.97) 0%,
+      rgba(10, 17, 14, 0.88) 45%,
+      rgba(10, 17, 14, 0.5) 75%,
+      transparent 100%
+    );
+  }
+  .day-button h2 {
+    flex: none;
+    min-height: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: inherit;
+    text-wrap: balance;
+  }
+  .day-action {
+    color: #f1d6a5;
+  }
+  .day-unlock {
+    color: #cbd7cf;
+  }
+  .day-locked .day-heading {
+    background: #3b4140;
+    color: #d3d7d4;
   }
 }
-
-// Countdown styling
-.advent__countdown {
-  background: rgba(13, 110, 253, 0.08);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  max-width: 500px;
-  border: 1px solid rgba(13, 110, 253, 0.25);
-  font-size: 0.9rem;
-  color: #0d6efd;
-
-  i {
-    margin-right: 0.4rem;
-    font-size: 0.85rem;
-  }
-
-  strong {
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0.05em;
-    margin-left: 0.3rem;
-  }
-
-  @media (max-width: 767px) {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.8rem;
-  }
+.challenge-view {
+  padding: 0;
+  border-radius: var(--bs-modal-border-radius);
 }
-
-// Alert boxes styling
-.advent__alert {
-  max-width: 700px;
-  border-radius: 10px;
-  padding: 1rem;
-  border: 1px solid;
-
-  &--success {
-    background: rgba(40, 167, 69, 0.1);
-    border-color: rgba(40, 167, 69, 0.4);
-  }
-
-  &--info {
-    background: rgba(13, 110, 253, 0.1);
-    border-color: rgba(13, 110, 253, 0.4);
-  }
+.challenge-scene {
+  position: relative;
+  display: grid;
+  isolation: isolate;
 }
-
-.advent__alert-title {
+.challenge-art {
+  grid-area: 1 / 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.challenge-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 50%;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+.challenge-close:hover {
+  border-color: var(--bs-primary);
+  background: var(--bs-primary);
+  color: #fff;
+}
+.challenge-close:focus-visible {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 3px;
+}
+.challenge-copy {
+  grid-area: 1 / 1;
+  align-self: end;
+  z-index: 1;
+  padding: 3.5rem 2rem 2rem;
+}
+.challenge-date {
+  margin: 0 3rem 0.55rem 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.78rem;
+}
+.challenge-title {
+  max-width: 24ch;
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
   font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.challenge-content {
+  max-width: 65ch;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+.challenge-reference {
+  text-underline-offset: 3px;
+}
+.challenge-reference:hover {
+  text-decoration-thickness: 2px;
+}
+.challenge-reference:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+.challenge-ended {
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--bs-secondary-color);
+}
+.challenge-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.challenge-view--illustrated {
+  background: #101714;
+  color: #fff9ef;
 
-  i {
-    margin-right: 0.5rem;
+  .challenge-copy {
+    padding-top: 5rem;
+    background: linear-gradient(
+      0deg,
+      #101714 0%,
+      rgba(10, 17, 14, 0.95) 40%,
+      rgba(10, 17, 14, 0.75) 70%,
+      transparent 100%
+    );
   }
-
-  & + p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    opacity: 0.9;
+  .challenge-title {
+    color: inherit;
+  }
+  .challenge-content {
+    color: #f0f2ed;
+  }
+  .challenge-reference {
+    color: #f1d6a5;
+  }
+  .challenge-reference:hover {
+    color: #fff9ef;
+  }
+  .challenge-date,
+  .challenge-ended {
+    color: #cbd7cf;
+  }
+  .challenge-close {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(10, 17, 14, 0.8);
+    color: #fff;
+  }
+  .challenge-close:hover {
+    border-color: #fff9ef;
+    background: #fff9ef;
+    color: #101714;
+  }
+  .challenge-back {
+    color: #f0f2ed;
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+  .challenge-back:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
   }
 }
-
-// View decks button styling
-.advent__view-decks-btn {
-  display: inline-block;
-  padding: 0.5rem 1.5rem;
-  background: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);
-  color: white;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-
-  i {
-    margin-right: 0.5rem;
+@media (max-width: 575.98px) {
+  .challenge-art {
+    height: auto;
+    align-self: start;
   }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #5179f1 0%, #2ea0ff 100%);
-    color: white;
+  .challenge-copy {
+    padding: 4rem 1.25rem 1.25rem;
+  }
+  .challenge-view--illustrated .challenge-copy {
+    grid-area: 2 / 1;
+    margin-top: -3rem;
+    padding-top: 3rem;
+    background: linear-gradient(transparent, #101714 3rem);
+  }
+  .challenge-title {
+    font-size: 1.65rem;
+  }
+  .challenge-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+@media (max-width: 1100px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .advent {
+    margin-top: 1rem;
+  }
+  .advent-title p {
+    font-size: 0.8rem;
+  }
+  .advent-rules {
+    grid-template-columns: 1fr;
+    font-size: 0.8rem;
+  }
+  .calendar-status {
+    gap: 0.4rem;
+    font-size: 0.8rem;
+  }
+  .calendar-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+  .day-content {
+    padding: 0.65rem;
+  }
+  .day-unlock {
+    font-size: 0.7rem;
   }
 }

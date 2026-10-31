@@ -267,10 +267,12 @@ describe('Deck builder draft recovery', () => {
       })
       const store = TestBed.inject(DeckBuilderStore)
       Object.assign(store, {
+        setDeckErrors: vi.fn(),
         setCryptErrors: vi.fn(),
         setLibraryErrors: vi.fn(),
       })
       expect(service.validateDeck()).toBe(false)
+      expect(store.setDeckErrors).toHaveBeenCalledWith([])
       expect(
         kind === 'crypt' ? store.setCryptErrors : store.setLibraryErrors,
       ).toHaveBeenCalledWith(['deck_builder_service.missing_cards'])

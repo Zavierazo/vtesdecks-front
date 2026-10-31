@@ -92,6 +92,7 @@ import { DeckQuery } from '@state/deck/deck.query'
 import { DeckService } from '@state/deck/deck.service'
 import { DecksService } from '@state/decks/decks.service'
 import { getClanIcon, getDisciplineIcon, isSupporter } from '@utils'
+import { deckAuthorName } from '../../utils/deck-author'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import {
   BehaviorSubject,
@@ -254,6 +255,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   )
 
   isSupporter = false
+  readonly deckAuthorName = deckAuthorName
 
   collectionTracker = false
 
@@ -304,7 +306,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
           this.deckHistoryService.addVisitedDeck(
             deck.id,
             deck.name,
-            deck.author,
+            deckAuthorName(deck),
           )
         }
       }),

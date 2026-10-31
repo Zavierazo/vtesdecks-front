@@ -469,6 +469,24 @@
     </ul>
   }
   <div class="builder-sections">
+    @let deckErrors = (deckErrors$ | async) ?? [];
+    @if (deckErrors.length > 0) {
+      <section
+        class="mt-4 text-danger"
+        aria-labelledby="deck-validation-title"
+        role="status"
+      >
+        <h2 id="deck-validation-title" class="h6 mb-2">
+          <i class="bi bi-exclamation-circle-fill me-2" aria-hidden="true"></i>
+          {{ t('validation_title') }}
+        </h2>
+        <ul class="list-unstyled d-grid gap-1 mb-0">
+          @for (error of deckErrors; track error) {
+            <li [innerHTML]="error"></li>
+          }
+        </ul>
+      </section>
+    }
     <div class="col-12 mt-4">
       <div class="deck-section-header">
         <div class="deck-section-header__title">
@@ -576,7 +594,9 @@
       >
         @for (error of (cryptErrors$ | async)!; track error) {
           <li class="fw-bold">
-            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;<span
+              [innerHTML]="error"
+            ></span>
           </li>
         }
       </ul>
@@ -796,7 +816,9 @@
       >
         @for (error of (libraryErrors$ | async)!; track error) {
           <li class="fw-bold">
-            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;{{ error }}
+            <i class="bi bi-exclamation-circle-fill"></i>&nbsp;<span
+              [innerHTML]="error"
+            ></span>
           </li>
         }
       </ul>

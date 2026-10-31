@@ -1,5 +1,6 @@
 import { RouterStateSnapshot } from '@angular/router'
 import { ApiDeck, ApiDeckArchetype, ApiPublicUser } from '@models'
+import { deckAuthorName } from '../utils/deck-author'
 
 export interface SeoConfig {
   page?: string
@@ -33,6 +34,7 @@ const PUBLIC_PAGES: Record<string, string> = {
   '/statistics': 'statistics',
   '/vtesdle': 'vtesdle',
   '/advent': 'advent',
+  '/advent/2025': 'advent',
   '/proxy-generator': 'proxy',
   '/contact': 'contact',
   '/changelog': 'changelog',
@@ -44,6 +46,7 @@ const PUBLIC_PAGES: Record<string, string> = {
 }
 
 const PRIVATE_PAGES: Record<string, string> = {
+  '/user/archon/callback': 'settings',
   '/user/settings': 'settings',
   '/admin': 'admin',
   '/verify': 'verify',
@@ -63,7 +66,8 @@ export function deckSeo(deck: ApiDeck): SeoConfig & { canonicalUrl: string } {
     page: 'deck',
     params: {
       name: deck.name,
-      author: deck.author || deck.user?.displayName || deck.user?.user || '',
+      author:
+        deckAuthorName(deck) || deck.user?.displayName || deck.user?.user || '',
       details: deck.tournament || '',
     },
     index: deck.published === true,
@@ -116,6 +120,7 @@ export function routeSeo(state: RouterStateSnapshot): SeoConfig {
     return {
       ...base,
       page,
+      ...(path === '/advent/2025' ? { title: 'Advent Calendar 2025' } : {}),
       index: !(path === '/decks' && route.queryParamMap.get('type') === 'USER'),
       schemaType: ['decks', 'crypt', 'library', 'metagame'].includes(page)
         ? 'CollectionPage'

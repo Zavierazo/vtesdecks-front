@@ -6,10 +6,12 @@
   z-index: 1;
 }
 
-// The home hero pulls itself up 1rem to hug the header. Hand that space back
-// only while a notice is rendered; an empty host must not leave a white gap.
-:host:not(:empty) {
-  margin-bottom: 1rem;
+// Only the desktop hero pulls itself up 1rem to hug the header. Hand that space
+// back while a notice is rendered, without adding a gap above the mobile hero.
+@media (width > 768px) {
+  :host:not(:empty) {
+    margin-bottom: 1rem;
+  }
 }
 
 // Bootstrap positions the dismiss button at the top with padding sized for a
@@ -24,8 +26,7 @@
 }
 
 // Mirrors the hero's own escape from the container gutter, so both run edge to
-// edge on mobile. The shorthand also clears the compensation above, which the
-// mobile hero does not need: its `margin` shorthand resets the negative pull.
+// edge on mobile, where neither the banner nor the hero needs vertical offsets.
 @media (max-width: 768px) {
   :host {
     margin: 0 calc(var(--bs-gutter-x) * -0.5);

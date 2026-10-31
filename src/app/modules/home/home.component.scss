@@ -371,119 +371,81 @@
   color: white;
 }
 
-// Advent Calendar Banner (integrated in hero section)
-.advent-banner-content {
-  display: flex;
+// Advent invitation shares the calendar's compact header and Christmas logo.
+.advent-banner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 1.5rem;
-  background: linear-gradient(
-    135deg,
-    #c41e3a 0%,
-    #165b33 25%,
-    #c41e3a 50%,
-    #165b33 75%,
-    #c41e3a 100%
-  );
-  background-size: 200% 200%;
-  animation: festiveGradient 8s ease infinite;
-  border-radius: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  box-shadow:
-    0 4px 20px rgba(196, 30, 58, 0.4),
-    0 0 30px rgba(22, 91, 51, 0.3);
-  position: relative;
-  overflow: hidden;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  color: #fff8ed;
+  text-decoration: none;
+  background: linear-gradient(110deg, #173e32 0%, #285044 48%, #702e3b 100%);
+  border: 1px solid rgba(255, 248, 237, 0.25);
+  border-radius: 6px;
 
-  &:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow:
-      0 6px 30px rgba(196, 30, 58, 0.5),
-      0 0 40px rgba(22, 91, 51, 0.4);
+  &:hover,
+  &:focus-visible {
+    border-color: rgba(255, 248, 237, 0.65);
+
+    .advent-banner-action {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
   }
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+  &:focus-visible {
+    outline: 2px solid #fff8ed;
+    outline-offset: 3px;
   }
 }
 
-.advent-banner-icon {
-  font-size: 3rem;
-  animation: bounce 2s ease-in-out infinite;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-}
-
-.advent-banner-text {
-  flex: 1;
-  text-align: center;
-  color: white;
-  position: relative;
-  z-index: 1;
+.advent-banner-logo {
+  width: 48px;
+  height: 48px;
 }
 
 .advent-banner-title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  color: white;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .advent-banner-subtitle {
-  font-size: 1.2rem;
+  margin: 0;
+  color: #dce5dc;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.advent-banner-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff8ed;
+  font-size: 0.85rem;
   font-weight: 500;
-  opacity: 0.95;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  color: white;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
 }
 
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
+@media (max-width: 700px) {
+  .advent-banner {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.75rem;
+    padding: 1rem;
   }
-  50% {
-    transform: translateY(-10px);
-  }
-}
 
-@keyframes festiveGradient {
-  0% {
-    background-position: 0% 50%;
+  .advent-banner-logo {
+    width: 40px;
+    height: 40px;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
-@keyframes stripeScroll {
-  0% {
-    transform: translate(0, 0) rotate(45deg);
+  .advent-banner-subtitle {
+    font-size: 0.8rem;
   }
-  100% {
-    transform: translate(50px, 50px) rotate(45deg);
+
+  .advent-banner-action {
+    grid-column: 2;
   }
 }

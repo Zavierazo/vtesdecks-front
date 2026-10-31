@@ -1,0 +1,55 @@
+<section class="card mb-4" *transloco="let t; prefix: 'archon'">
+  <div class="card-header">
+    <h2 class="h5 mb-0">
+      <i class="bi bi-link-45deg me-2" aria-hidden="true"></i>{{ t('title') }}
+    </h2>
+  </div>
+  <div class="card-body" [attr.aria-busy]="busy()">
+    <p class="text-muted">{{ t('description') }}</p>
+    @if (status(); as status) {
+      @if (status.linked) {
+        <p class="fw-medium">{{ t('linked', { veknId: status.veknId }) }}</p>
+        <p class="small text-muted">{{ t('disconnect_help') }}</p>
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          (click)="disconnect()"
+          [disabled]="busy() || connectivity.offline()"
+        >
+          {{ t('disconnect') }}
+        </button>
+      } @else if (status.available) {
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="connect()"
+          [disabled]="busy() || connectivity.offline()"
+        >
+          {{ t('connect') }}
+        </button>
+      } @else {
+        <p class="text-muted mb-0">{{ t('unavailable') }}</p>
+      }
+    }
+    @if (busy()) {
+      <span
+        class="spinner-border spinner-border-sm text-primary ms-2"
+        role="status"
+        ><span class="visually-hidden">{{ t('loading') }}</span></span
+      >
+    }
+    @if (error(); as error) {
+      <p class="text-danger mt-3 mb-2" role="alert">{{ t(error) }}</p>
+      @if (!status()) {
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          (click)="load()"
+          [disabled]="busy() || connectivity.offline()"
+        >
+          {{ t('retry') }}
+        </button>
+      }
+    }
+  </div>
+</section>

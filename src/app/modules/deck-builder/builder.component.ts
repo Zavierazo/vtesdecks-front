@@ -215,6 +215,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   libraryBloodCost$ = this.deckBuilderQuery.selectLibraryBloodCost()
   libraryClans$ = this.deckBuilderQuery.selectLibraryClans()
   libraryDisciplines$ = this.deckBuilderQuery.selectLibraryDisciplines()
+  deckErrors$ = this.deckBuilderQuery.selectDeckErrors()
   cryptErrors$ = this.deckBuilderQuery.selectCryptErrors()
   libraryErrors$ = this.deckBuilderQuery.selectLibraryErrors()
   saved$ = this.deckBuilderQuery.selectSaved()
@@ -311,6 +312,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
         this.form.disable({ emitEvent: false })
         const clone = history.state?.deck
         const advent = history.state?.advent
+        const day = history.state?.day
         return forkJoin([
           this.cryptService.getCryptCards(),
           this.libraryService.getLibraryCards(),
@@ -318,6 +320,17 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
           // Wait for refresh completion, not the initial cached emission.
           // Initialize once so updates never overwrite an edited deck.
           switchMap(() => this.deckBuilderService.init(id, clone)),
+          switchMap((deck) => {
+            if (advent && day && !this.activeLocalDraftId()) {
+              return from(
+                this.deckBuilderService.initAdventRules(
+                  advent.toString(),
+                  day.toString(),
+                ),
+              ).pipe(map(() => deck))
+            }
+            return of(deck)
+          }),
           tap(() => {
             if (!id && !clone && !advent) {
               this.deckBuilderService.migrateLegacyDrafts()
@@ -367,7 +380,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       return
     }
-    this.deckBuilderService.validateDeck()
+    this.deckBuilderService.validateDeck(true)
     const validation = this.deckBuilderQuery.getValidation()
     if (validation) {
       const errors = validation(this.deckBuilderQuery)
@@ -817,11 +830,6 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
 
   private onDeckLoaded(checkRecovery = true) {
     this.form.enable({ emitEvent: false })
-    const { advent, day } = history.state ?? {}
-    if (advent && day && !this.activeLocalDraftId()) {
-      this.deckBuilderService.initAdventRules(advent.toString(), day.toString())
-      this.deckBuilderService.validateDeck()
-    }
     this.form
       .get('name')
       ?.patchValue(this.deckBuilderQuery.getName(), { emitEvent: false })

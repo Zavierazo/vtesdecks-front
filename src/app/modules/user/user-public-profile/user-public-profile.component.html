@@ -15,7 +15,7 @@
               />
             </div>
             @if (user(); as user) {
-              <div>
+              <div class="min-width-0">
                 <h1 class="h2 mb-0">
                   {{ user.displayName }}
 
@@ -29,7 +29,33 @@
                     <app-user-follow-button [username]="username()" />
                   }
                 </h1>
-                <p class="text-muted fs-6 my-1">@{{ user.user }}</p>
+                <div class="profile-identity-meta text-muted my-1">
+                  <span class="profile-username">@{{ user.user }}</span>
+                  @if (user.veknId; as veknId) {
+                    <span class="profile-vekn">
+                      <span aria-hidden="true">·</span>
+                      @if (user.archonProfileUrl; as archonProfileUrl) {
+                        <a
+                          [href]="archonProfileUrl"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="profile-vekn-link"
+                          [title]="
+                            'archon.profile_link' | transloco: { veknId }
+                          "
+                        >
+                          VEKN {{ veknId }}
+                          <i
+                            class="bi bi-arrow-up-right"
+                            aria-hidden="true"
+                          ></i>
+                        </a>
+                      } @else {
+                        <span>VEKN {{ veknId }}</span>
+                      }
+                    </span>
+                  }
+                </div>
                 @if (isAdmin$ | async) {
                   <button
                     type="button"
@@ -42,8 +68,12 @@
                 }
                 <p class="text-muted my-1">
                   <i class="bi bi-stack me-1"></i>
-                  {{ (total$ | async) || 0 }}
-                  {{ ((total$ | async) || 0) === 1 ? t('deck') : t('decks') }}
+                  {{ ((total$ | async) || 0) + tournamentTotal() }}
+                  {{
+                    ((total$ | async) || 0) + tournamentTotal() === 1
+                      ? t('deck')
+                      : t('decks')
+                  }}
                 </p>
                 <div class="d-flex gap-3">
                   <span
@@ -286,6 +316,58 @@
         </div>
       </div>
     </div>
+
+    @if (tournamentLoading() || tournamentError() || tournamentTotal() > 0) {
+      <div class="col-12 mb-4">
+        <section class="card" aria-labelledby="tournament-decks-title">
+          <div class="card-header">
+            <h4 class="mb-0" id="tournament-decks-title">
+              <i class="bi bi-trophy me-2" aria-hidden="true"></i
+              >{{ 'archon.tournament_decks' | transloco }}
+            </h4>
+          </div>
+          <div class="card-body" [attr.aria-busy]="tournamentLoading()">
+            <div class="row">
+              @for (deck of tournamentDecks(); track deck.id) {
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <app-deck-card [deck]="deck" height="230px" />
+                </div>
+              }
+            </div>
+            @if (tournamentError()) {
+              <p class="text-danger text-center" role="alert">
+                {{ 'archon.decks_error' | transloco }}
+              </p>
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="loadMoreTournamentDecks()"
+                >
+                  {{ 'archon.retry' | transloco }}
+                </button>
+              </div>
+            } @else if (tournamentLoading()) {
+              <div class="text-center py-3">
+                <span class="spinner-border text-primary" role="status"
+                  ><span class="visually-hidden">{{ t('loading') }}</span></span
+                >
+              </div>
+            } @else if (tournamentDecks().length < tournamentTotal()) {
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="loadMoreTournamentDecks()"
+                >
+                  {{ 'archon.load_more' | transloco }}
+                </button>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    }
 
     <!-- Decks Section -->
     <div class="col-12 mb-4">
