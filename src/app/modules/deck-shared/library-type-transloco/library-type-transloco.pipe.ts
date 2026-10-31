@@ -6,8 +6,8 @@ import { LIBRARY_TYPE_LIST } from '@utils'
 export class LibraryTypeTranslocoPipe implements PipeTransform {
   private translocoService = inject(TranslocoService)
 
-  transform(type: string): string {
-    return type
+  transform(type?: string | null): string {
+    return (type ?? '')
       .split('/')
       .map((subType) => {
         const libraryType = LIBRARY_TYPE_LIST.find((t) => t.name === subType)

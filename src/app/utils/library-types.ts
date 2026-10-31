@@ -25,8 +25,8 @@ export const LIBRARY_TYPE_LIST = [
   new LibraryType('Conviction', 'conviction', 'vtes.type.conviction'),
 ]
 
-export function getLibraryTypeIcons(value: string): string[] | undefined {
-  const libraryTypes = value.split('/')
+export function getLibraryTypeIcons(value?: string | null): string[] {
+  const libraryTypes = (value ?? '').split('/')
   return libraryTypes
     .map((type) => LIBRARY_TYPE_LIST.find((c) => c.name === type)?.icon)
     .filter((icon): icon is string => icon !== undefined)

@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing'
-import { ApiCard } from '@models'
+import { ApiCard, ApiLibrary } from '@models'
 import { CardReleaseStatusService } from '@services'
 import { CryptQuery } from '../crypt/crypt.query'
 import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderQuery } from './deck-builder.query'
 import { DeckBuilderStore } from './deck-builder.store'
-import { firstValueFrom, of } from 'rxjs'
+import { BehaviorSubject, firstValueFrom, of } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 describe('Builder crypt capacity statistics', () => {
@@ -114,6 +114,7 @@ describe('Builder library grouping', () => {
         {
           provide: LibraryQuery,
           useValue: {
+            selectAll: () => of([]),
             getEntity: (id: number) => {
               const type = (
                 { 100001: 'Master', 100002: 'Action/Reaction' } as Record<
@@ -143,5 +144,71 @@ describe('Builder library grouping', () => {
     ])
     expect(cards[1].type).toBeUndefined()
     expect(cards[2].type).toBe('')
+  })
+
+  it('resolves official IDs after a catalog refresh without another deck edit and retains unavailable cards', () => {
+    const cards: ApiCard[] = [
+      { id: 102385, number: 4 },
+      { id: 150006, number: 0 },
+      { id: 102368, number: 2, type: 'Master' },
+    ]
+    const state = { cards }
+    const catalog = new BehaviorSubject<ApiLibrary[]>([
+      { id: 150006, type: 'Combat' } as ApiLibrary,
+    ])
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: DeckBuilderStore,
+          useValue: {
+            select: (selector: (value: typeof state) => unknown) =>
+              of(selector(state)),
+          },
+        },
+        {
+          provide: LibraryQuery,
+          useValue: {
+            selectAll: () => catalog,
+            getEntity: (id: number) =>
+              catalog.value.find((card) => card.id === id),
+          },
+        },
+        { provide: CryptQuery, useValue: {} },
+        { provide: CardReleaseStatusService, useValue: {} },
+      ],
+    })
+    const emissions: ApiCard[][] = []
+    const subscription = TestBed.inject(DeckBuilderQuery)
+      .selectLibrary()
+      .subscribe((library) => emissions.push(library))
+
+    expect(emissions[0].map((card) => card.type)).toEqual([
+      undefined,
+      'Combat',
+      'Master',
+    ])
+
+    catalog.next([{ id: 102385, type: 'Combat' } as ApiLibrary])
+
+    expect(emissions).toHaveLength(2)
+    expect(emissions[1].map((card) => card.type)).toEqual([
+      'Combat',
+      undefined,
+      'Master',
+    ])
+    expect(emissions[1].map(({ id, number }) => ({ id, number }))).toEqual(
+      cards.map(({ id, number }) => ({ id, number })),
+    )
+    expect(cards[0].type).toBeUndefined()
+
+    catalog.next([])
+
+    expect(emissions[2].map((card) => card.type)).toEqual([
+      undefined,
+      undefined,
+      'Master',
+    ])
+    expect(emissions[2]).toHaveLength(3)
+    subscription.unsubscribe()
   })
 })

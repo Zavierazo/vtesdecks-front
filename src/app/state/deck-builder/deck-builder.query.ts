@@ -202,6 +202,7 @@ export class DeckBuilderQuery {
     return combineLatest([
       this.selectLibraryCards(),
       this.selectCollectionCards(),
+      this.libraryQuery.selectAll({}),
     ]).pipe(
       map(([libraryCards, collectionCards]) => {
         return libraryCards.map(
