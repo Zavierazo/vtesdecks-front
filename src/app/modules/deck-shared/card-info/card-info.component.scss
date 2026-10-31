@@ -54,3 +54,38 @@
   width: 2px;
   margin-bottom: -15px;
 }
+
+.shop-offer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.shop-offer-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.shop-offer-label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.shop-country {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  height: 0.75rem;
+  margin-inline-end: 0.25rem;
+  vertical-align: middle;
+  font-size: inherit;
+  font-weight: 600;
+
+  img {
+    display: block;
+    object-fit: contain;
+  }
+}

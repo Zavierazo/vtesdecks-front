@@ -249,7 +249,7 @@
               [class.opacity-50]="!shop.inStock"
             >
               <a
-                class="text-decoration-none flex-grow-1"
+                class="text-decoration-none flex-grow-1 shop-offer"
                 [href]="shop.link"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -258,20 +258,50 @@
                 [gaLabel]="card().name"
                 [class.text-decoration-line-through]="!shop.inStock"
               >
-                <span
-                  class="badge me-2"
-                  [class.bg-success]="shop.inStock"
-                  [class.bg-secondary]="!shop.inStock"
-                >
-                  {{ shop.shopInfo.fullName }}
-                  @if (shop.set) {
-                    - {{ shop.set }}
-                  }
-                  @if (shop.locale) {
-                    - {{ shop.locale | displayLocale | titlecase }}
-                  }
+                <span class="shop-offer-details">
+                  <span
+                    class="badge shop-offer-label"
+                    [class.bg-success]="shop.inStock"
+                    [class.bg-secondary]="!shop.inStock"
+                  >
+                    @if (countryCode(shop.country); as country) {
+                      <span
+                        class="shop-country"
+                        role="img"
+                        [attr.aria-label]="
+                          country | displayCountry: activeLanguage()
+                        "
+                        [title]="country | displayCountry: activeLanguage()"
+                      >
+                        @if (countryFlagUrl(country); as flagUrl) {
+                          <img
+                            [src]="flagUrl"
+                            alt=""
+                            width="16"
+                            height="12"
+                            loading="lazy"
+                            decoding="async"
+                            referrerpolicy="no-referrer"
+                            (error)="onCountryFlagError(country)"
+                          />
+                        } @else {
+                          {{ country }}
+                        }
+                      </span>
+                    }
+                    {{ shop.shopInfo.fullName }}
+                    @if (shop.seller) {
+                      - {{ shop.seller }}
+                    }
+                    @if (shop.set) {
+                      - {{ shop.set }}
+                    }
+                    @if (shop.locale) {
+                      - {{ shop.locale | displayLocale | titlecase }}
+                    }
+                  </span>
                 </span>
-                <span class="fw-medium">{{
+                <span class="fw-medium flex-shrink-0 text-nowrap">{{
                   shop.price | currency: shop.currency
                 }}</span>
               </a>
@@ -319,7 +349,9 @@
       (routerClick)="routerClick.emit(true)"
     />
   } @else if (connection.offline()) {
-    <p class="text-muted" role="status">{{ 'offline.details_online' | transloco }}</p>
+    <p class="text-muted" role="status">
+      {{ 'offline.details_online' | transloco }}
+    </p>
   } @else {
     <div class="d-flex justify-content-center p-3" role="status">
       <span class="spinner-border text-primary" aria-hidden="true"></span>

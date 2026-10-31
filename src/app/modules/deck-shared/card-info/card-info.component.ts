@@ -16,12 +16,18 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco'
+import { toSignal } from '@angular/core/rxjs-interop'
+import {
+  TranslocoDirective,
+  TranslocoPipe,
+  TranslocoService,
+} from '@jsverse/transloco'
 import { ApiCardInfo, ApiCrypt, ApiLibrary, ApiShop } from '@models'
 import { NgbCollapse, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { ApiDataService, MediaService } from '@services'
 import { LocalePipe } from '@shared/pipes/locale.pipe'
+import { CountryPipe } from '@shared/pipes/country.pipe'
 import { LazyLoadImageModule } from 'ng-lazyload-image'
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics'
 import { finalize, tap } from 'rxjs'
@@ -35,7 +41,7 @@ import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card
   selector: 'app-card-info',
   templateUrl: './card-info.component.html',
   styleUrls: ['./card-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslocoDirective,
     TranslocoPipe,
@@ -51,6 +57,7 @@ import { WishlistCardStatsComponent } from '../wishlist-card-stats/wishlist-card
     WishlistCardStatsComponent,
     LazyLoadImageModule,
     LocalePipe,
+    CountryPipe,
     TitleCasePipe,
     NgClass,
     AsyncPipe,
@@ -60,6 +67,11 @@ export class CardInfoComponent {
   readonly connection = inject(ConnectivityService)
   private apiDataService = inject(ApiDataService)
   private mediaService = inject(MediaService)
+  private translocoService = inject(TranslocoService)
+
+  readonly activeLanguage = toSignal(this.translocoService.langChanges$, {
+    initialValue: this.translocoService.getActiveLang(),
+  })
 
   card = input.required<ApiCrypt | ApiLibrary>()
   activeSet = input<string | null>()
@@ -85,6 +97,7 @@ export class CardInfoComponent {
   shopsCollapsed = true
   loading = signal(false)
   cardShops = signal<ApiShop[] | null>(null)
+  private readonly failedCountryFlags = signal<ReadonlySet<string>>(new Set())
 
   displayCardInfo = computed(() => {
     const cardInfo = this.cardInfo()
@@ -121,6 +134,21 @@ export class CardInfoComponent {
 
   setActiveSet(set: string): void {
     this.changeActiveSet.emit(set)
+  }
+
+  countryCode(country?: string): string {
+    return country?.trim().toUpperCase() ?? ''
+  }
+
+  countryFlagUrl(country: string): string | undefined {
+    if (!/^[A-Z]{2}$/.test(country) || this.failedCountryFlags().has(country)) {
+      return undefined
+    }
+    return `https://flagcdn.com/w40/${country.toLowerCase()}.png`
+  }
+
+  onCountryFlagError(country: string): void {
+    this.failedCountryFlags.update((failed) => new Set([...failed, country]))
   }
 
   onLoadMoreShops(): void {
