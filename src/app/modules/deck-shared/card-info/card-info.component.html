@@ -242,7 +242,11 @@
               </a>
             </div>
           }
-          @for (shop of cardInfo.shopList; track shop.link; let last = $last) {
+          @for (
+            shop of cardInfo.shopList;
+            track shopOfferKey(shop);
+            let last = $last
+          ) {
             <div
               class="d-flex align-items-center justify-content-between py-1 border-dark"
               [class.border-bottom]="!last"
@@ -317,18 +321,11 @@
           @if (cardInfo.hasMoreShops) {
             <div class="text-center mt-2">
               <button
-                class="btn btn-sm btn-outline-primary"
+                type="button"
+                class="btn btn-sm btn-outline-primary shop-load-more"
                 (click)="onLoadMoreShops()"
-                [disabled]="loading()"
               >
-                @if (loading()) {
-                  <span
-                    class="spinner-border spinner-border-sm me-2"
-                    role="status"
-                  ></span>
-                } @else {
-                  <i class="bi bi-cart-plus me-2"></i>
-                }
+                <i class="bi bi-cart-plus me-2" aria-hidden="true"></i>
                 {{ t('show_more') }}
               </button>
             </div>

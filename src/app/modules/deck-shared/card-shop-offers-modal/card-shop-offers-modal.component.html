@@ -1,0 +1,383 @@
+<ng-container *transloco="let t; prefix: 'deck_shared'">
+  <div class="modal-header d-block">
+    <div class="d-flex align-items-center gap-3">
+      <h4 class="modal-title" id="card-shop-offers-title">
+        {{ t('shop_filters.offers_title', { name: card.name }) }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close ms-auto flex-shrink-0"
+        [attr.aria-label]="'shared.close' | transloco"
+        (click)="modal.close()"
+      ></button>
+    </div>
+    <div class="d-flex align-items-start flex-wrap gap-2 mt-2">
+      @if (hasShopFilters()) {
+        <app-filter-chips
+          class="flex-grow-1"
+          [chips]="shopFilterChips()"
+          (remove)="removeShopFilter($event)"
+          (clearAll)="clearShopFilters()"
+        />
+      }
+      @if (cardShops() !== null) {
+        <span
+          class="shop-filter-count small text-body-secondary ms-auto"
+          role="status"
+          >{{
+            t('shop_filters.count', {
+              shown: filteredShops().length,
+              total: cardShops()?.length ?? 0,
+            })
+          }}</span
+        >
+      }
+    </div>
+  </div>
+  <div class="modal-body shop-offers-body p-0">
+    <div class="shop-offers-table table-responsive">
+      <table
+        class="table table-hover align-middle mb-0"
+        aria-labelledby="card-shop-offers-title"
+      >
+        <thead class="shop-filters">
+          <tr>
+            <th scope="col" class="shop-offers-seller">
+              <div
+                ngbDropdown
+                autoClose="outside"
+                container="body"
+                placement="bottom-start"
+              >
+                <button
+                  type="button"
+                  class="btn btn-sm btn-link shop-filter-trigger"
+                  ngbDropdownToggle
+                  [id]="shopFiltersPanelId + '-identity-menu'"
+                  data-shop-filter-trigger="identity"
+                  [disabled]="filtersUnavailable(identityFilters)"
+                >
+                  <span class="shop-offers-heading">{{
+                    t('shop_filters.shop') + ' / ' + t('shop_filters.seller')
+                  }}</span>
+                  <i class="bi bi-funnel" aria-hidden="true"></i>
+                  @if (filterSelectionCount(identityFilters); as count) {
+                    <span class="badge text-bg-primary">{{ count }}</span>
+                  }
+                </button>
+                <div
+                  ngbDropdownMenu
+                  class="shop-filter-menu"
+                  [attr.aria-labelledby]="shopFiltersPanelId + '-identity-menu'"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      filterMenu;
+                      context: { $implicit: identityFilters }
+                    "
+                  />
+                </div>
+              </div>
+            </th>
+            <th scope="col" class="shop-offers-printing">
+              <div
+                ngbDropdown
+                autoClose="outside"
+                container="body"
+                placement="bottom-start"
+              >
+                <button
+                  type="button"
+                  class="btn btn-sm btn-link shop-filter-trigger"
+                  ngbDropdownToggle
+                  [id]="shopFiltersPanelId + '-printing-menu'"
+                  data-shop-filter-trigger="printing"
+                  [disabled]="filtersUnavailable(printingFilters)"
+                >
+                  <span class="shop-offers-heading">{{
+                    t('shop_filters.set')
+                  }}</span>
+                  <i class="bi bi-funnel" aria-hidden="true"></i>
+                  @if (filterSelectionCount(printingFilters); as count) {
+                    <span class="badge text-bg-primary">{{ count }}</span>
+                  }
+                </button>
+                <div
+                  ngbDropdownMenu
+                  class="shop-filter-menu"
+                  [attr.aria-labelledby]="shopFiltersPanelId + '-printing-menu'"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      filterMenu;
+                      context: { $implicit: printingFilters }
+                    "
+                  />
+                </div>
+              </div>
+            </th>
+            <th scope="col" class="shop-offers-language">
+              <div
+                ngbDropdown
+                autoClose="outside"
+                container="body"
+                placement="bottom-start"
+              >
+                <button
+                  type="button"
+                  class="btn btn-sm btn-link shop-filter-trigger"
+                  ngbDropdownToggle
+                  [id]="shopFiltersPanelId + '-language-menu'"
+                  data-shop-filter-trigger="language"
+                  [disabled]="filtersUnavailable(languageFilters)"
+                >
+                  <span class="shop-offers-heading">{{
+                    t('shop_filters.locale')
+                  }}</span>
+                  <i class="bi bi-funnel" aria-hidden="true"></i>
+                  @if (filterSelectionCount(languageFilters); as count) {
+                    <span class="badge text-bg-primary">{{ count }}</span>
+                  }
+                </button>
+                <div
+                  ngbDropdownMenu
+                  class="shop-filter-menu"
+                  [attr.aria-labelledby]="shopFiltersPanelId + '-language-menu'"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      filterMenu;
+                      context: { $implicit: languageFilters }
+                    "
+                  />
+                </div>
+              </div>
+            </th>
+            <th scope="col" class="text-end">{{ t('shop_filters.price') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (shopLoadError()) {
+            <tr>
+              <td colspan="4" class="text-center py-4" role="alert">
+                <p class="text-danger">{{ t('shop_filters.load_error') }}</p>
+                <button
+                  type="button"
+                  class="btn btn-primary shop-offers-retry"
+                  (click)="loadShopOffers()"
+                >
+                  {{ t('shop_filters.retry') }}
+                </button>
+              </td>
+            </tr>
+          } @else if (cardShops() === null) {
+            <tr>
+              <td colspan="4" class="text-center py-4">
+                <div
+                  class="d-flex align-items-center justify-content-center gap-2"
+                  role="status"
+                >
+                  <span
+                    class="spinner-border text-primary"
+                    aria-hidden="true"
+                  ></span
+                  >{{ t('loading') }}
+                </div>
+              </td>
+            </tr>
+          } @else if (filteredShops().length === 0) {
+            <tr>
+              <td
+                colspan="4"
+                class="shop-filters-empty text-body-secondary text-center py-4"
+              >
+                {{ t('shop_filters.empty') }}
+              </td>
+            </tr>
+          } @else {
+            @for (shop of filteredShops(); track shopOfferKey(shop)) {
+              <tr [class.opacity-50]="shop.inStock === false">
+                <td class="shop-offers-seller">
+                  <a
+                    class="shop-offer d-block"
+                    [href]="shop.link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    gaEvent="purchase"
+                    [gaCategory]="shop.shopInfo.name"
+                    [gaLabel]="card.name"
+                  >
+                    <span
+                      class="d-inline-flex align-items-center gap-1 fw-semibold"
+                    >
+                      @if (offerLocation(shop); as location) {
+                        <span
+                          class="shop-country"
+                          role="img"
+                          [attr.aria-label]="
+                            location.type === 'continent'
+                              ? continentName(location.code)
+                              : (location.code
+                                | displayCountry: activeLanguage())
+                          "
+                          [title]="
+                            location.type === 'continent'
+                              ? continentName(location.code)
+                              : (location.code
+                                | displayCountry: activeLanguage())
+                          "
+                        >
+                          @if (locationFlagUrl(location); as flagUrl) {
+                            <img
+                              [src]="flagUrl"
+                              alt=""
+                              width="16"
+                              height="12"
+                              loading="lazy"
+                              decoding="async"
+                              referrerpolicy="no-referrer"
+                              (error)="onLocationFlagError(location.code)"
+                            />
+                          } @else {
+                            @if (location.type === 'continent') {
+                              <i
+                                class="bi bi-globe2 me-1"
+                                aria-hidden="true"
+                              ></i>
+                            }
+                            {{ location.code }}
+                          }
+                        </span>
+                      }
+                      {{ shop.shopInfo.fullName
+                      }}<i
+                        class="bi bi-box-arrow-up-right ms-1 small"
+                        aria-hidden="true"
+                      ></i>
+                    </span>
+                    @if (shop.seller) {
+                      <span class="d-block small text-body-secondary">{{
+                        shop.seller
+                      }}</span>
+                    }
+                  </a>
+                </td>
+                <td>
+                  @if (shop.set; as set) {
+                    <button
+                      type="button"
+                      class="btn btn-link p-0 shop-printing"
+                      [ngbTooltip]="printingPreview"
+                      placement="auto"
+                      container="body"
+                      triggers="mouseenter:mouseleave focusin:focusout"
+                    >
+                      {{ set }}
+                    </button>
+                    <ng-template #printingPreview
+                      ><app-set-tooltip
+                        [cardId]="card.id"
+                        [set]="set"
+                        [showImage]="true"
+                    /></ng-template>
+                  } @else {
+                    <span class="text-body-secondary">—</span>
+                  }
+                </td>
+                <td>{{ (shop.locale | displayLocale | titlecase) || '—' }}</td>
+                <td class="text-end text-nowrap">
+                  <span class="fw-semibold">{{
+                    shop.price | currency: shop.currency
+                  }}</span>
+                  @if (shop.inStock === false) {
+                    <span class="d-block small text-body-secondary">{{
+                      t('shop_filters.out_of_stock')
+                    }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-between flex-nowrap gap-3">
+    <p class="small text-body-secondary mb-0">
+      <i class="bi bi-info-circle me-1" aria-hidden="true"></i
+      >{{ t('ebay_affiliate_disclosure') }}
+    </p>
+    <button
+      type="button"
+      class="btn btn-secondary flex-shrink-0"
+      (click)="modal.close()"
+    >
+      {{ 'shared.close' | transloco }}
+    </button>
+  </div>
+  <ng-template #filterMenu let-keys>
+    @for (key of keys; track key; let first = $first) {
+      @let options = optionsForFilter(key);
+      @let selected = filterValue(key);
+      @if (!first) {
+        <div class="dropdown-divider"></div>
+      }
+      <div
+        class="shop-filter-options"
+        [attr.data-shop-filter]="key"
+        role="group"
+        [attr.aria-labelledby]="shopFiltersPanelId + '-' + key"
+      >
+        <h6
+          class="dropdown-header"
+          [id]="shopFiltersPanelId + '-' + key"
+          [class.visually-hidden]="keys.length === 1"
+        >
+          {{ t('shop_filters.' + key) }}
+        </h6>
+        <button
+          type="button"
+          ngbDropdownItem
+          class="d-flex align-items-center"
+          role="menuitemcheckbox"
+          data-shop-filter-value=""
+          [attr.aria-checked]="selected.length === 0"
+          [disabled]="options.length === 0"
+          [attr.disabled]="options.length === 0 ? '' : null"
+          (click)="setShopFilter(key, [])"
+        >
+          <span
+            class="shop-filter-checkbox"
+            [class.is-checked]="selected.length === 0"
+            aria-hidden="true"
+          >
+            @if (selected.length === 0) {
+              <i class="bi bi-check"></i>
+            }</span
+          >{{ t('shop_filters.all') }}
+        </button>
+        @for (option of options; track option.value) {
+          <button
+            type="button"
+            ngbDropdownItem
+            class="d-flex align-items-center"
+            role="menuitemcheckbox"
+            [attr.data-shop-filter-value]="option.value"
+            [attr.aria-checked]="selected.includes(option.value)"
+            (click)="toggleShopFilter(key, option.value)"
+          >
+            <span
+              class="shop-filter-checkbox"
+              [class.is-checked]="selected.includes(option.value)"
+              aria-hidden="true"
+            >
+              @if (selected.includes(option.value)) {
+                <i class="bi bi-check"></i>
+              }</span
+            >{{ key === 'locale' ? (option.label | titlecase) : option.label }}
+          </button>
+        }
+      </div>
+    }
+  </ng-template>
+</ng-container>

@@ -10,6 +10,30 @@ const CONTINENT_REGIONS: Readonly<Record<string, string>> = {
   SA: '005',
 }
 
+export function getRegionDisplayName(
+  country?: string | null,
+  locale = 'en',
+  type: 'country' | 'continent' = 'country',
+): string | undefined {
+  if (!country?.trim()) {
+    return undefined
+  }
+  const code = country.trim().toUpperCase()
+  const region = type === 'continent' ? CONTINENT_REGIONS[code] : code
+  if (!region) {
+    return code
+  }
+  try {
+    return (
+      new Intl.DisplayNames(locale, { type: 'region', fallback: 'code' }).of(
+        region,
+      ) ?? country
+    )
+  } catch {
+    return country
+  }
+}
+
 @Pipe({
   name: 'displayCountry',
 })
@@ -19,22 +43,6 @@ export class CountryPipe implements PipeTransform {
     locale = 'en',
     type: 'country' | 'continent' = 'country',
   ): string | undefined {
-    if (!country?.trim()) {
-      return undefined
-    }
-    const code = country.trim().toUpperCase()
-    const region = type === 'continent' ? CONTINENT_REGIONS[code] : code
-    if (!region) {
-      return code
-    }
-    try {
-      return (
-        new Intl.DisplayNames(locale, { type: 'region', fallback: 'code' }).of(
-          region,
-        ) ?? country
-      )
-    } catch {
-      return country
-    }
+    return getRegionDisplayName(country, locale, type)
   }
 }

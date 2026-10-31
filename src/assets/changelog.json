@@ -8,6 +8,7 @@
       "Link your <strong>Archon account</strong> in Settings to verify your VEKN ID. Your tournament decks now display your VTESDecks name and link to your public profile. Tournament decks remain read-only.",
       "Tournament decks now display the player's current <strong>Archon alias</strong>, or their registered name when no alias is set. Names update automatically when their Archon profile changes.",
       "Card purchase options now show <strong>seller names</strong> for any shop when available and a small <strong>country flag</strong> indicating the seller's country.",
+      "Card purchase options now open a dedicated <strong>offers dialog</strong> from <strong>Show more</strong>, with a comparison table and filters for shop, seller, country, continent, language and printing.",
       "Minor bug fixes and performance improvements."
     ]
   },
