@@ -82,6 +82,7 @@ export class DeckBuilderService {
     localDraftId?: string,
   ): Observable<ApiDeckBuilder> {
     this.fetchSuggestedCards()
+    this.adventService?.reset()
     this.store.reset()
     this.activeLocalDraftId.set(undefined)
     if (localDraftId) {

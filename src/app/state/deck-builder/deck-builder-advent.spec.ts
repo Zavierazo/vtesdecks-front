@@ -355,6 +355,80 @@ describe('Advent builder validation', () => {
   })
 
   it.each([2, 3])(
+    'revalidates an identical day %s deck when an old response arrives during reload',
+    async (day) => {
+      const { service, state, api } = await setup(day)
+      const archetype = new Subject<ApiDeckArchetype | null>()
+      const release = new Subject<ApiDeck>()
+      const product = {
+        crypt: [{ id: 200001, number: 1 }],
+        library: [{ id: 100001, number: 1 }],
+      } as ApiDeck
+      if (day === 2) {
+        api.getDeck.mockReturnValueOnce(release)
+      } else {
+        api.getDeckBuilderArchetype.mockReturnValueOnce(archetype)
+      }
+      await vi.advanceTimersByTimeAsync(350)
+      const savedDeck: ApiDeckBuilder = {
+        id: 'advent-deck',
+        name: state.name,
+        published: state.published,
+        extra: structuredClone(state.extra),
+        cards: state.cards.map((card) => ({ ...card })),
+      }
+      const reload = new Subject<ApiDeckBuilder>()
+      Object.assign(api, { getDeckBuilder: () => reload })
+      Object.assign(TestBed.inject(DeckBuilderStore), {
+        reset: () =>
+          Object.assign(state, {
+            name: '',
+            published: false,
+            extra: {},
+            cards: [],
+          }),
+        captureBaseline: vi.fn(),
+        setLoading: vi.fn(),
+      })
+      vi.spyOn(service, 'fetchSuggestedCards').mockImplementation(
+        () => undefined,
+      )
+      vi.spyOn(service, 'clearDraft').mockImplementation(() => undefined)
+
+      const loaded = firstValueFrom(
+        service.init(savedDeck.id, undefined as unknown as ApiDeck),
+      )
+      // The previous check completes while the builder store is empty.
+      if (day === 2) {
+        release.next(product)
+        release.complete()
+      } else {
+        archetype.next({ id: 1 } as ApiDeckArchetype)
+        archetype.complete()
+      }
+      reload.next(savedDeck)
+      reload.complete()
+      await loaded
+      expect(service.validateDeck()).toBe(false)
+      await vi.advanceTimersByTimeAsync(350)
+      expect(service.validateDeck(true)).toBe(true)
+      expect(state.deckErrors).toEqual([])
+
+      // Description-only edits do not change the remote validation fingerprint.
+      Object.assign(state, { description: 'Updated description', saved: false })
+      api.saveDeckBuilder.mockReturnValueOnce(of(savedDeck))
+      await firstValueFrom(service.saveDeck())
+      expect(api.saveDeckBuilder).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: savedDeck.id,
+          description: 'Updated description',
+          cards: savedDeck.cards,
+        }),
+      )
+    },
+  )
+
+  it.each([2, 3])(
     'keeps errors empty during repeated quantity edits while blocking saves for day %s',
     async (day) => {
       const { service, state, api } = await setup(day)
