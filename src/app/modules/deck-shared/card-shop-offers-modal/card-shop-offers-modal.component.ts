@@ -1,7 +1,8 @@
-import { CurrencyPipe, NgTemplateOutlet, TitleCasePipe } from '@angular/common'
+import { CurrencyPipe, TitleCasePipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   computed,
   inject,
   InjectionToken,
@@ -82,7 +83,6 @@ export const CARD_SHOP_OFFERS_CONTEXT = new InjectionToken<{
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CurrencyPipe,
-    NgTemplateOutlet,
     TitleCasePipe,
     TranslocoDirective,
     TranslocoPipe,
@@ -344,6 +344,13 @@ export class CardShopOffersModalComponent implements OnInit {
 
   filterValue(key: ShopFilterKey): readonly string[] {
     return this.shopFilters()[key]
+  }
+
+  @HostListener('keydown', ['$event'])
+  onNavigationKey(event: KeyboardEvent): void {
+    if (event.key.startsWith('Arrow')) {
+      event.stopPropagation()
+    }
   }
 
   loadShopOffers(): void {

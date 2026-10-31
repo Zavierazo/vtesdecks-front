@@ -192,7 +192,7 @@ describe('Card shop offers', () => {
   function filterButtons(key: string): HTMLButtonElement[] {
     return Array.from(
       document.querySelectorAll(
-        `[data-shop-filter="${key}"] [data-shop-filter-value]`,
+        `[data-shop-filter="${key}"][data-shop-filter-value]`,
       ),
     )
   }
@@ -469,7 +469,7 @@ describe('Card shop offers', () => {
       shopRoot(fixture).querySelectorAll('[data-shop-filter-trigger]'),
     ).toHaveLength(3)
     expect(
-      Array.from(document.querySelectorAll('[data-shop-filter]'))
+      Array.from(document.querySelectorAll('h6[data-shop-filter]'))
         .map((group) => group.getAttribute('data-shop-filter'))
         .sort(),
     ).toEqual(['continent', 'country', 'locale', 'seller', 'set', 'shop'])
@@ -780,7 +780,7 @@ describe('Card shop offers', () => {
       (button) => button.getAttribute('data-shop-filter-value') === 'ES',
     )!
     expect(
-      document.querySelector('[data-shop-filter="country"] .dropdown-header')
+      document.querySelector('.dropdown-header[data-shop-filter="country"]')
         ?.textContent,
     ).toContain('País')
     expect(selectedValues('country')).toEqual(['ES'])
@@ -1163,6 +1163,37 @@ describe('Card shop offers', () => {
     expect(selectedValues('set')).toEqual(['CE'])
     expect(visibleOffers(fixture)).toEqual([all[0].link])
     expect(getCardShops).toHaveBeenCalledTimes(1)
+  })
+
+  it('navigates menu options with arrows without forwarding keys to the underlying card', async () => {
+    const { fixture } = await setup([offer(1, { country: 'ES' })], true)
+    await loadMore(fixture)
+    const trigger = await openFilter(fixture, 'shop')
+    const backgroundNavigation = vi.fn()
+    window.addEventListener('keydown', backgroundNavigation)
+    try {
+      trigger.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+          cancelable: true,
+        }),
+      )
+      await fixture.whenStable()
+      expect(document.activeElement).toBe(filterButtons('shop')[0])
+      document.activeElement!.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+          cancelable: true,
+        }),
+      )
+      await fixture.whenStable()
+      expect(document.activeElement).toBe(filterButtons('shop')[1])
+      expect(backgroundNavigation).not.toHaveBeenCalled()
+    } finally {
+      window.removeEventListener('keydown', backgroundNavigation)
+    }
   })
 
   it('retains distinct printings and sellers that share the same destination link', async () => {
