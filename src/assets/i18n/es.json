@@ -78,6 +78,18 @@
     "schedulers_load_error": "No se pudieron cargar las tareas manuales"
   },
   "admin_user": {
+    "patreonId": "ID de usuario de Patreon",
+    "veknId": "VEKN ID",
+    "patreonId_hint": "Déjalo vacío para mantener supporter fuera de la gestión automática de Patreon. Solo se sincronizan las cuentas vinculadas.",
+    "veknId_hint": "Vinculación de cuenta validada por el administrador. Déjalo vacío para desvincular.",
+    "save_identifier": "Guardar ID",
+    "no_identifier": "Sin ID",
+    "identifier_invalid": "Usa hasta 64 dígitos. Déjalo vacío para borrar el ID.",
+    "identifier_saved": "Identificador guardado.",
+    "identifier_in_use": "Este identificador ya está vinculado a otra cuenta.",
+    "identifier_save_error": "No se ha podido guardar el identificador.",
+    "confirm_identifier_title": "Actualizar identificador",
+    "confirm_identifier_message": "¿Asignar {{value}} como {{identifier}} de {{user}}?",
     "title": "Ajustes de administración del usuario",
     "open_settings": "Ajustes de administración",
     "close": "Cerrar",

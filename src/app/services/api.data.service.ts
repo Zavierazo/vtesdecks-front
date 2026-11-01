@@ -156,6 +156,26 @@ export class ApiDataService {
     )
   }
 
+  updateAdminUserPatreonId(
+    identifier: string,
+    patreonId: string | null,
+  ): Observable<ApiAdminUser> {
+    return this.httpClient.put<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/patreon-id`,
+      { patreonId },
+    )
+  }
+
+  updateAdminUserVeknId(
+    identifier: string,
+    veknId: string | null,
+  ): Observable<ApiAdminUser> {
+    return this.httpClient.put<ApiAdminUser>(
+      `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/vekn-id`,
+      { veknId },
+    )
+  }
+
   impersonateAdminUser(identifier: string): Observable<ApiUser> {
     return this.httpClient.post<ApiUser>(
       `${environment.api.baseUrl}${this.adminUsersPath}/${encodeURIComponent(identifier)}/impersonate`,

@@ -162,6 +162,8 @@ The backend owns the achievement catalog and permanently records earned tiers. R
 
 ### Admin User Management
 
+The admin user modal edits private Patreon user IDs and trusted VEKN links through dedicated endpoints. Identifier saves preserve drafts in other sections. Patreon supporter reconciliation only manages accounts with a Patreon ID; accounts without one retain manually assigned supporter roles. VEKN edits refresh the displayed profile and its tournament list.
+
 The `/admin` dashboard centralizes user management, feature-flag mutation, and manual scheduler execution. Administrators can also open the user-management modal from the admin-only button on public profiles; the modal must fetch private data only after it is opened. All privileged operations use the `ADMIN`-secured `/admin/**` API, while the public `GET /feature-flag` contract remains unchanged. Manual jobs are cataloged by the backend and triggered with POST requests. Private account data must never be added to the public-user response. Role changes replace the complete assigned role set. Current database privileges are enforced on every authenticated request; role and admin-status changes preserve login sessions. Admin email changes are trusted immediately by the backend and do not require verification. Impersonation replaces the current browser authentication with the target user's token and navigates away from the admin area; there is no retained admin session to restore.
 
 ---

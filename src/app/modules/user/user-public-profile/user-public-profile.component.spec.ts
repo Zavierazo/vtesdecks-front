@@ -17,6 +17,8 @@ describe('Public profile tournament decks', () => {
   const routes = new Subject<Record<string, unknown>>()
   const tournamentRequest = vi.fn()
   const communityInit = vi.fn()
+  const modalOpen = vi.fn()
+  const publicUser = vi.fn()
   let component: UserPublicProfileComponent
   let pages: Subject<ApiDecks>[]
   beforeEach(() => {
@@ -27,6 +29,15 @@ describe('Public profile tournament decks', () => {
       return page
     })
     communityInit.mockReset()
+    publicUser
+      .mockReset()
+      .mockReturnValue(of({ user: 'alice', roles: [], veknId: '00123' }))
+    modalOpen.mockReset().mockReturnValue({
+      componentInstance: {
+        rolesChanged: new Subject<string[]>(),
+        veknIdChanged: new Subject<string | null>(),
+      },
+    })
     TestBed.configureTestingModule({
       providers: [
         { provide: ActivatedRoute, useValue: { data: routes } },
@@ -34,6 +45,7 @@ describe('Public profile tournament decks', () => {
           provide: ApiDataService,
           useValue: {
             getUserTournamentDecks: tournamentRequest,
+            getPublicUser: publicUser,
             getPublicUserAchievements: () => of([]),
           },
         },
@@ -61,7 +73,7 @@ describe('Public profile tournament decks', () => {
           provide: WishlistApiDataService,
           useValue: { getUserPublicWishlist: () => of({ totalElements: 0 }) },
         },
-        { provide: NgbModal, useValue: {} },
+        { provide: NgbModal, useValue: { open: modalOpen } },
       ],
     })
     component = TestBed.runInInjectionContext(
@@ -79,6 +91,17 @@ describe('Public profile tournament decks', () => {
       ),
       total,
     }) as ApiDecks
+
+  it('refreshes profile identity and tournament decks after an administrator changes VEKN', () => {
+    visit('alice')
+    component.openAdminSettings()
+    modalOpen.mock.results[0].value.componentInstance.veknIdChanged.next(
+      '00123',
+    )
+    expect(publicUser).toHaveBeenCalledWith('alice')
+    expect(component.user()?.veknId).toBe('00123')
+    expect(tournamentRequest).toHaveBeenCalledTimes(2)
+  })
 
   it('paginates independently and prevents overlapping requests', () => {
     visit('alice')

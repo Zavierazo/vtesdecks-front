@@ -41,13 +41,24 @@ export class AdminUserSettingsComponent implements OnInit {
 
   @Input({ required: true }) identifier!: string
   @Output() readonly rolesChanged = new EventEmitter<string[]>()
+  @Output() readonly veknIdChanged = new EventEmitter<string | null>()
   readonly user = signal<ApiAdminUser | undefined>(undefined)
   readonly loading = signal(true)
   readonly loadError = signal<'not-found' | 'error' | undefined>(undefined)
   readonly saving = signal(false)
   readonly activeAction = signal<
-    'validate' | 'password-reset' | 'email' | 'impersonate' | undefined
+    | 'validate'
+    | 'password-reset'
+    | 'email'
+    | 'impersonate'
+    | 'patreonId'
+    | 'veknId'
+    | undefined
   >(undefined)
+  readonly draftPatreonId = signal('')
+  readonly draftVeknId = signal('')
+  readonly busy = computed(() => this.saving() || !!this.activeAction())
+  readonly identifiers = ['patreonId', 'veknId'] as const
   readonly draftEmail = signal('')
   readonly emailDirty = computed(
     () => this.draftEmail().trim() !== (this.user()?.email ?? ''),
@@ -59,7 +70,9 @@ export class AdminUserSettingsComponent implements OnInit {
   readonly draftRoles = signal<Set<string>>(new Set())
   readonly dirty = computed(() => {
     const user = this.user()
-    if (!user) return false
+    if (!user) {
+      return false
+    }
     return (
       this.draftAdmin() !== user.admin ||
       JSON.stringify([...this.draftRoles()].sort()) !==
@@ -69,6 +82,89 @@ export class AdminUserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.load(this.identifier)
+  }
+
+  identifierValue(field: 'patreonId' | 'veknId'): string {
+    return field === 'patreonId' ? this.draftPatreonId() : this.draftVeknId()
+  }
+
+  identifierDirty(field: 'patreonId' | 'veknId'): boolean {
+    return this.identifierValue(field).trim() !== (this.user()?.[field] ?? '')
+  }
+
+  identifierValid(field: 'patreonId' | 'veknId'): boolean {
+    return /^(?:[0-9]{1,64})?$/.test(this.identifierValue(field).trim())
+  }
+
+  updateIdentifier(field: 'patreonId' | 'veknId', event: Event): void {
+    const value = (event.target as HTMLInputElement).value
+    if (field === 'patreonId') {
+      this.draftPatreonId.set(value)
+    } else {
+      this.draftVeknId.set(value)
+    }
+  }
+
+  resetIdentifier(field: 'patreonId' | 'veknId'): void {
+    const value = this.user()?.[field] ?? ''
+    if (field === 'patreonId') {
+      this.draftPatreonId.set(value)
+    } else {
+      this.draftVeknId.set(value)
+    }
+  }
+
+  saveIdentifier(field: 'patreonId' | 'veknId'): void {
+    if (
+      this.busy() ||
+      !this.identifierDirty(field) ||
+      !this.identifierValid(field)
+    ) {
+      return
+    }
+    const value = this.identifierValue(field).trim() || null
+    this.confirm('confirm_identifier_title', 'confirm_identifier_message', {
+      identifier: this.translocoService.translate(`admin_user.${field}`),
+      value:
+        value ?? this.translocoService.translate('admin_user.no_identifier'),
+    })
+      .pipe(
+        filter(Boolean),
+        switchMap(() => {
+          if (this.busy()) {
+            return of(undefined)
+          }
+          this.activeAction.set(field)
+          return field === 'patreonId'
+            ? this.apiDataService.updateAdminUserPatreonId(
+                this.identifier,
+                value,
+              )
+            : this.apiDataService.updateAdminUserVeknId(this.identifier, value)
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe({
+        next: (user) => {
+          if (!user) {
+            return
+          }
+          this.apply(user, field)
+          this.activeAction.set(undefined)
+          if (field === 'veknId') {
+            this.veknIdChanged.emit(user.veknId ?? null)
+          }
+          this.success('identifier_saved')
+        },
+        error: (error: HttpErrorResponse) => {
+          this.activeAction.set(undefined)
+          this.failure(
+            error.status === 409
+              ? 'identifier_in_use'
+              : 'identifier_save_error',
+          )
+        },
+      })
   }
 
   toggleAdmin(event: Event): void {
@@ -84,7 +180,9 @@ export class AdminUserSettingsComponent implements OnInit {
   }
 
   saveEmail(): void {
-    if (!this.emailDirty() || !this.emailValid() || this.activeAction()) return
+    if (!this.emailDirty() || !this.emailValid() || this.busy()) {
+      return
+    }
     const email = this.draftEmail().trim()
     this.confirm('confirm_email_title', 'confirm_email_message', { email })
       .pipe(
@@ -100,7 +198,7 @@ export class AdminUserSettingsComponent implements OnInit {
       )
       .subscribe({
         next: (user) => {
-          this.apply(user)
+          this.apply(user, 'email')
           this.activeAction.set(undefined)
           this.success('email_saved')
         },
@@ -114,7 +212,9 @@ export class AdminUserSettingsComponent implements OnInit {
   }
 
   impersonate(): void {
-    if (this.activeAction()) return
+    if (this.busy()) {
+      return
+    }
     this.confirm('confirm_impersonate_title', 'confirm_impersonate_message')
       .pipe(
         filter(Boolean),
@@ -151,11 +251,15 @@ export class AdminUserSettingsComponent implements OnInit {
 
   reset(): void {
     const user = this.user()
-    if (user) this.apply(user)
+    if (user) {
+      this.apply(user, 'access')
+    }
   }
 
   save(): void {
-    if (!this.dirty() || this.saving()) return
+    if (!this.dirty() || this.busy()) {
+      return
+    }
     const access = {
       admin: this.draftAdmin(),
       roles: [...this.draftRoles()].sort(),
@@ -178,7 +282,7 @@ export class AdminUserSettingsComponent implements OnInit {
       )
       .subscribe({
         next: (user) => {
-          this.apply(user)
+          this.apply(user, 'access')
           this.rolesChanged.emit(user.roles)
           this.success('access_saved')
         },
@@ -190,7 +294,9 @@ export class AdminUserSettingsComponent implements OnInit {
   }
 
   validateAccount(): void {
-    if (this.user()?.validated || this.activeAction()) return
+    if (this.user()?.validated || this.busy()) {
+      return
+    }
     this.confirm('confirm_validate_title', 'confirm_validate_message')
       .pipe(
         filter(Boolean),
@@ -202,7 +308,7 @@ export class AdminUserSettingsComponent implements OnInit {
       )
       .subscribe({
         next: (user) => {
-          this.apply(user)
+          this.apply(user, 'validate')
           this.activeAction.set(undefined)
           this.success('account_validated')
         },
@@ -214,7 +320,9 @@ export class AdminUserSettingsComponent implements OnInit {
   }
 
   sendPasswordReset(): void {
-    if (this.activeAction()) return
+    if (this.busy()) {
+      return
+    }
     this.confirm('confirm_reset_title', 'confirm_reset_message')
       .pipe(
         filter(Boolean),
@@ -260,11 +368,28 @@ export class AdminUserSettingsComponent implements OnInit {
       })
   }
 
-  private apply(user: ApiAdminUser): void {
+  private apply(
+    user: ApiAdminUser,
+    saved?: 'email' | 'access' | 'patreonId' | 'veknId' | 'validate',
+  ): void {
+    const emailDirty = this.emailDirty()
+    const accessDirty = this.dirty()
+    const patreonDirty = this.identifierDirty('patreonId')
+    const veknDirty = this.identifierDirty('veknId')
     this.user.set(user)
-    this.draftEmail.set(user.email)
-    this.draftAdmin.set(user.admin)
-    this.draftRoles.set(new Set(user.roles))
+    if (!saved || saved === 'email' || !emailDirty) {
+      this.draftEmail.set(user.email)
+    }
+    if (!saved || saved === 'access' || !accessDirty) {
+      this.draftAdmin.set(user.admin)
+      this.draftRoles.set(new Set(user.roles))
+    }
+    if (!saved || saved === 'patreonId' || !patreonDirty) {
+      this.draftPatreonId.set(user.patreonId ?? '')
+    }
+    if (!saved || saved === 'veknId' || !veknDirty) {
+      this.draftVeknId.set(user.veknId ?? '')
+    }
     this.saving.set(false)
     this.changeDetectorRef.markForCheck()
   }

@@ -143,6 +143,32 @@ export class UserPublicProfileComponent implements OnInit {
       scrollable: true,
     })
     modalRef.componentInstance.identifier = this.username()
+    modalRef.componentInstance.veknIdChanged
+      .pipe(untilDestroyed(this))
+      .subscribe((veknId: string | null) => {
+        const username = this.username()
+        this.user.update((user) =>
+          user
+            ? {
+                ...user,
+                veknId: veknId ?? undefined,
+                archonProfileUrl: undefined,
+              }
+            : user,
+        )
+        this.resetTournamentDecks()
+        this.apiDataService
+          .getPublicUser(username)
+          .pipe(
+            catchError(() => of(undefined)),
+            untilDestroyed(this),
+          )
+          .subscribe((user) => {
+            if (user && username === this.username()) {
+              this.user.set(user)
+            }
+          })
+      })
     modalRef.componentInstance.rolesChanged
       .pipe(untilDestroyed(this))
       .subscribe((roles: string[]) => this.updateUserRoles(roles))

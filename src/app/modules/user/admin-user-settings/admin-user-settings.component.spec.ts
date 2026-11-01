@@ -7,7 +7,7 @@ import { ApiAdminUser } from '@models'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService, ToastService } from '@services'
 import { AuthService } from '@state/auth/auth.service'
-import { of, throwError } from 'rxjs'
+import { of, Subject, throwError } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdminUserSettingsComponent } from './admin-user-settings.component'
 
@@ -33,6 +33,14 @@ describe('AdminUserSettingsComponent', () => {
       ),
       updateAdminUserEmail: vi.fn(() =>
         of({ ...managedUser, email: 'new@example.com', validated: true }),
+      ),
+      updateAdminUserPatreonId: vi.fn(
+        (_identifier: string, patreonId: string | null) =>
+          of({ ...managedUser, patreonId }),
+      ),
+      updateAdminUserVeknId: vi.fn(
+        (_identifier: string, veknId: string | null) =>
+          of({ ...managedUser, veknId }),
       ),
       validateAdminUser: vi.fn(() => of({ ...managedUser, validated: true })),
       sendAdminUserPasswordReset: vi.fn(() => of(undefined)),
@@ -171,6 +179,87 @@ describe('AdminUserSettingsComponent', () => {
     )
     expect(component.user()?.email).toBe('new@example.com')
     expect(component.user()?.validated).toBe(true)
+  })
+
+  it('saves a Patreon ID while preserving email, role and VEKN drafts', () => {
+    const { component, api } = setup()
+    component.ngOnInit()
+    component.draftEmail.set('unsaved@example.com')
+    component.draftVeknId.set('003120065')
+    component.toggleRole('tester', {
+      target: { checked: true },
+    } as unknown as Event)
+    component.draftPatreonId.set(' 00123 ')
+
+    component.saveIdentifier('patreonId')
+
+    expect(api.updateAdminUserPatreonId).toHaveBeenCalledWith('target', '00123')
+    expect(component.user()?.patreonId).toBe('00123')
+    expect(component.identifierDirty('patreonId')).toBe(false)
+    expect(component.draftEmail()).toBe('unsaved@example.com')
+    expect(component.draftVeknId()).toBe('003120065')
+    expect(component.draftRoles().has('tester')).toBe(true)
+  })
+
+  it('clears an ID with null without changing supporter', () => {
+    const { component, api } = setup({
+      getAdminUser: vi.fn(() => of({ ...managedUser, patreonId: '123' })),
+    })
+    component.ngOnInit()
+    component.draftPatreonId.set('')
+    component.saveIdentifier('patreonId')
+    expect(api.updateAdminUserPatreonId).toHaveBeenCalledWith('target', null)
+    expect(component.user()?.roles).toEqual(['supporter'])
+  })
+
+  it('validates IDs before saving and keeps a conflicting draft for correction', () => {
+    const { component, api, toast } = setup({
+      updateAdminUserPatreonId: vi.fn(() =>
+        throwError(() => new HttpErrorResponse({ status: 409 })),
+      ),
+    })
+    component.ngOnInit()
+    component.draftPatreonId.set('invalid')
+    component.saveIdentifier('patreonId')
+    expect(api.updateAdminUserPatreonId).not.toHaveBeenCalled()
+    component.draftPatreonId.set('123')
+    component.saveIdentifier('patreonId')
+    expect(component.draftPatreonId()).toBe('123')
+    expect(component.busy()).toBe(false)
+    expect(toast.show).toHaveBeenCalledWith(
+      'admin_user.identifier_in_use',
+      expect.anything(),
+    )
+  })
+
+  it('serializes independent mutations while an identifier save is pending', () => {
+    const pending = new Subject<ApiAdminUser>()
+    const { component, api } = setup({
+      updateAdminUserPatreonId: vi.fn(() => pending),
+    })
+    component.ngOnInit()
+    component.draftPatreonId.set('123')
+    component.draftVeknId.set('00123')
+    component.toggleRole('tester', {
+      target: { checked: true },
+    } as unknown as Event)
+    component.saveIdentifier('patreonId')
+    component.saveIdentifier('veknId')
+    component.save()
+    expect(api.updateAdminUserVeknId).not.toHaveBeenCalled()
+    expect(api.updateAdminUserAccess).not.toHaveBeenCalled()
+    pending.next({ ...managedUser, patreonId: '123' })
+    expect(component.busy()).toBe(false)
+  })
+
+  it('emits successful VEKN edits for the public profile to refresh', () => {
+    const { component } = setup()
+    component.ngOnInit()
+    const changed = vi.fn()
+    component.veknIdChanged.subscribe(changed)
+    component.draftVeknId.set('003120065')
+    component.saveIdentifier('veknId')
+    expect(changed).toHaveBeenCalledWith('003120065')
   })
 
   it('replaces the browser authentication when impersonating', () => {

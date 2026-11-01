@@ -66,13 +66,13 @@
                 class="form-control"
                 [class.is-invalid]="emailDirty() && !emailValid()"
                 [value]="draftEmail()"
-                [disabled]="!!activeAction()"
+                [disabled]="busy()"
                 (input)="updateDraftEmail($event)"
               />
               <button
                 type="button"
                 class="btn btn-outline-secondary"
-                [disabled]="!emailDirty() || !!activeAction()"
+                [disabled]="!emailDirty() || busy()"
                 (click)="resetEmail()"
               >
                 {{ t('reset') }}
@@ -80,7 +80,7 @@
               <button
                 type="button"
                 class="btn btn-outline-primary"
-                [disabled]="!emailDirty() || !emailValid() || !!activeAction()"
+                [disabled]="!emailDirty() || !emailValid() || busy()"
                 (click)="saveEmail()"
               >
                 @if (activeAction() === 'email') {
@@ -91,12 +91,69 @@
             </div>
             <div class="form-text">{{ t('email_trusted_notice') }}</div>
           </div>
+          @for (field of identifiers; track field) {
+            <div class="mb-3">
+              <label
+                class="form-label fw-semibold"
+                [for]="'admin-user-' + field"
+                >{{ t(field) }}</label
+              >
+              <div class="input-group">
+                <input
+                  [id]="'admin-user-' + field"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="64"
+                  class="form-control"
+                  [class.is-invalid]="
+                    identifierDirty(field) && !identifierValid(field)
+                  "
+                  [value]="identifierValue(field)"
+                  [disabled]="busy()"
+                  [attr.aria-describedby]="'admin-user-' + field + '-hint'"
+                  [attr.aria-invalid]="
+                    identifierDirty(field) && !identifierValid(field)
+                  "
+                  (input)="updateIdentifier(field, $event)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [disabled]="!identifierDirty(field) || busy()"
+                  (click)="resetIdentifier(field)"
+                >
+                  {{ t('reset') }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  [disabled]="
+                    !identifierDirty(field) || !identifierValid(field) || busy()
+                  "
+                  (click)="saveIdentifier(field)"
+                >
+                  @if (activeAction() === field) {
+                    <span class="spinner-border spinner-border-sm me-1"></span>
+                  }
+                  {{ t('save_identifier') }}
+                </button>
+              </div>
+              <div class="form-text" [id]="'admin-user-' + field + '-hint'">
+                {{ t(field + '_hint') }}
+              </div>
+              @if (identifierDirty(field) && !identifierValid(field)) {
+                <div class="text-danger small" role="alert">
+                  {{ t('identifier_invalid') }}
+                </div>
+              }
+            </div>
+          }
           <div class="d-flex flex-wrap gap-2">
             @if (!managedUser.validated) {
               <button
                 type="button"
                 class="btn btn-outline-success"
-                [disabled]="!!activeAction()"
+                [disabled]="busy()"
                 (click)="validateAccount()"
               >
                 @if (activeAction() === 'validate') {
@@ -108,7 +165,7 @@
             <button
               type="button"
               class="btn btn-outline-secondary"
-              [disabled]="!!activeAction()"
+              [disabled]="busy()"
               (click)="sendPasswordReset()"
             >
               @if (activeAction() === 'password-reset') {
@@ -119,7 +176,7 @@
             <button
               type="button"
               class="btn btn-outline-warning"
-              [disabled]="!!activeAction()"
+              [disabled]="busy()"
               (click)="impersonate()"
             >
               @if (activeAction() === 'impersonate') {
@@ -138,6 +195,7 @@
               type="checkbox"
               id="admin-access"
               [checked]="draftAdmin()"
+              [disabled]="busy()"
               (change)="toggleAdmin($event)"
             />
             <label class="form-check-label fw-semibold" for="admin-access">{{
@@ -157,6 +215,7 @@
                       type="checkbox"
                       [id]="'role-' + role"
                       [checked]="draftRoles().has(role)"
+                      [disabled]="busy()"
                       (change)="toggleRole(role, $event)"
                     />
                     <label class="form-check-label" [for]="'role-' + role">{{
@@ -172,7 +231,7 @@
             <button
               type="button"
               class="btn btn-outline-secondary"
-              [disabled]="!dirty() || saving()"
+              [disabled]="!dirty() || busy()"
               (click)="reset()"
             >
               {{ t('reset') }}
@@ -180,7 +239,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              [disabled]="!dirty() || saving()"
+              [disabled]="!dirty() || busy()"
               (click)="save()"
             >
               @if (saving()) {

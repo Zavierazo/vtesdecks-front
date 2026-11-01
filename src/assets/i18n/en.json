@@ -78,6 +78,18 @@
     "schedulers_load_error": "Could not load manual schedulers"
   },
   "admin_user": {
+    "patreonId": "Patreon user ID",
+    "veknId": "VEKN ID",
+    "patreonId_hint": "Leave empty to keep supporter outside automatic Patreon management. Only linked accounts are synchronized.",
+    "veknId_hint": "Trusted account link. Leave empty to disconnect.",
+    "save_identifier": "Save ID",
+    "no_identifier": "No ID",
+    "identifier_invalid": "Use up to 64 digits. Leave empty to remove the ID.",
+    "identifier_saved": "Identifier saved.",
+    "identifier_in_use": "This identifier is already linked to another account.",
+    "identifier_save_error": "Unable to save the identifier.",
+    "confirm_identifier_title": "Update identifier",
+    "confirm_identifier_message": "Set {{identifier}} for {{user}} to {{value}}?",
     "title": "Admin user settings",
     "open_settings": "Admin settings",
     "close": "Close",

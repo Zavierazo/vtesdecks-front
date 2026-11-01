@@ -3,6 +3,8 @@ export interface ApiAdminUser {
   displayName: string
   profileImage: string
   email: string
+  patreonId?: string | null
+  veknId?: string | null
   validated: boolean
   admin: boolean
   roles: string[]
