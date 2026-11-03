@@ -118,6 +118,51 @@ describe('Builder catalog initialization', () => {
 })
 
 describe('Builder named saves', () => {
+  it.each([
+    'Refresh your browser. If the problem persists, contact support.',
+    {
+      message:
+        'Refresh your browser. If the problem persists, contact support.',
+    },
+  ])(
+    'shows any backend 400 message verbatim and preserves the draft: %j',
+    (body) => {
+      const error = { status: 400, error: body, message: 'Generic HTTP error' }
+      const saveDeck = vi.fn(() => throwError(() => error))
+      const show = vi.fn()
+      const reset = vi.fn()
+      const navigate = vi.fn()
+      const onDeckLoaded = vi.fn()
+      const translate = vi.fn((key: string) => key)
+      const context = Object.assign(Object.create(BuilderComponent.prototype), {
+        deckBuilderQuery: {
+          getSaved: () => false,
+          getName: () => 'Draft',
+          getValidation: () => undefined,
+          getPublished: () => false,
+        },
+        deckBuilderService: { validateDeck: vi.fn(), saveDeck },
+        tagLabelControl: { value: 'Keep this version', reset },
+        toastService: { show },
+        translocoService: { translate },
+        router: { navigate },
+        onDeckLoaded,
+      }) as BuilderComponent
+
+      context.saveDeck()
+
+      expect(show).toHaveBeenCalledExactlyOnceWith(
+        'Refresh your browser. If the problem persists, contact support.',
+        { classname: 'bg-danger text-light', delay: 10000 },
+      )
+      expect(saveDeck).toHaveBeenCalledExactlyOnceWith('Keep this version')
+      expect(translate).not.toHaveBeenCalled()
+      expect(reset).not.toHaveBeenCalled()
+      expect(navigate).not.toHaveBeenCalled()
+      expect(onDeckLoaded).not.toHaveBeenCalled()
+    },
+  )
+
   it.each([true, false])(
     'preserves the version name unless saving succeeds: %s',
     (success) => {

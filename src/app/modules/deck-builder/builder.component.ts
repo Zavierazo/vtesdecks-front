@@ -428,7 +428,12 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       )
       .subscribe({
         error: (error) => {
-          if (error.message) {
+          if (error.status === 400 && error.error) {
+            this.toastService.show(error.error.message ?? error.error, {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            })
+          } else if (error.message) {
             this.toastService.show(
               this.translocoService.translate(
                 'shared.unexpected_error_with_message',
