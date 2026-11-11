@@ -1765,6 +1765,8 @@
     "show_less": "Show fewer",
     "family": {
       "published_decks": "Deck Builder",
+      "clan_explorer": "Clan Explorer",
+      "tournament_champion": "Tournament Champion",
       "deck_comments": "Community Voice",
       "deck_appreciation": "Deck Appreciation",
       "community_favorite": "Community Favorite",
@@ -1774,12 +1776,16 @@
       "consistent_contributor": "Consistent Contributor",
       "collection_cards": "Card Collector",
       "anniversary": "Anniversary",
+      "advent_challenger": "Advent Challenger",
+      "advent_completionist": "Advent Completionist",
       "monthly_gold": "User of the Month",
       "monthly_silver": "Monthly Runner-up",
       "monthly_bronze": "Monthly Podium"
     },
     "description": {
       "published_decks": "Publish community decks.",
+      "clan_explorer": "Publish decks with different primary clans in their crypts.",
+      "tournament_champion": "Win distinct tournaments under your verified Archon identity.",
       "deck_comments": "Comment on different players' decks.",
       "deck_appreciation": "Receive appreciation from different players.",
       "community_favorite": "Have different players bookmark your decks.",
@@ -1789,6 +1795,8 @@
       "consistent_contributor": "Earn another count for every calendar month with a published deck or comment.",
       "collection_cards": "Add cards to your collection.",
       "anniversary": "Earn another count for every completed year in the community.",
+      "advent_challenger": "Publish a deck for at least one Advent challenge per edition.",
+      "advent_completionist": "Publish a deck for each of the 24 challenges in an Advent edition.",
       "monthly_gold": "Finish first in a monthly ranking.",
       "monthly_silver": "Finish second in a monthly ranking.",
       "monthly_bronze": "Finish third in a monthly ranking."

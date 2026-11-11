@@ -160,6 +160,8 @@ Authenticated users can link Archon through server-side OAuth with PKCE and `pro
 
 The backend owns the achievement catalog and permanently records earned tiers. Repeatable families store one occurrence and expose a multiplier; milestone families expose their highest earned tier. Public profiles load earned achievement families from `/public/user/{username}/achievements`; owners load the full catalog and progress from `/user/achievements`. `ApiPublicUser.achievementBadges` is the compact, server-prioritized top-three list used on the full deck view, not on deck cards. Frontend components must use stable family IDs for translations and presentation and must not independently decide whether an achievement has been earned.
 
+Advent Challenger and Advent Completionist record one permanent occurrence per edition after a player publishes eligible decks for one or all 24 distinct challenge days, respectively. The backend anchors historical `earnedDates` to their editions, and the profile uses the shared repeatable achievement display. Historical reconciliation awards past editions silently. Clan Explorer counts distinct primary clans on public community decks by crypt copy count, omitting tied decks. Tournament Champion counts distinct archived first-place event IDs matched to the account's verified VEKN ID.
+
 ### Admin User Management
 
 The admin user modal edits private Patreon user IDs and trusted VEKN links through dedicated endpoints. Identifier saves preserve drafts in other sections. Patreon supporter reconciliation only manages accounts with a Patreon ID; accounts without one retain manually assigned supporter roles. VEKN edits refresh the displayed profile and its tournament list.

@@ -1765,6 +1765,8 @@
     "show_less": "Mostrar menos",
     "family": {
       "published_decks": "Constructor de mazos",
+      "clan_explorer": "Explorador de clanes",
+      "tournament_champion": "Campeón de torneos",
       "deck_comments": "Voz de la comunidad",
       "deck_appreciation": "Aprecio por los mazos",
       "community_favorite": "Favorito de la comunidad",
@@ -1774,12 +1776,16 @@
       "consistent_contributor": "Colaborador constante",
       "collection_cards": "Coleccionista de cartas",
       "anniversary": "Aniversario",
+      "advent_challenger": "Participante de Adviento",
+      "advent_completionist": "Calendario de Adviento completo",
       "monthly_gold": "Usuario del mes",
       "monthly_silver": "Subcampeón mensual",
       "monthly_bronze": "Podio mensual"
     },
     "description": {
       "published_decks": "Publica mazos de la comunidad.",
+      "clan_explorer": "Publica mazos con distintos clanes principales en sus criptas.",
+      "tournament_champion": "Gana distintos torneos con tu identidad verificada de Archon.",
       "deck_comments": "Comenta en mazos de distintos jugadores.",
       "deck_appreciation": "Recibe reconocimiento de distintos jugadores.",
       "community_favorite": "Consigue que distintos jugadores guarden tus mazos.",
@@ -1789,6 +1795,8 @@
       "consistent_contributor": "Suma una vez por cada mes con un mazo publicado o un comentario.",
       "collection_cards": "Añade cartas a tu colección.",
       "anniversary": "Suma una vez por cada año completado en la comunidad.",
+      "advent_challenger": "Publica un mazo para al menos un desafío de Adviento por edición.",
+      "advent_completionist": "Publica un mazo para cada uno de los 24 desafíos de una edición de Adviento.",
       "monthly_gold": "Termina primero en una clasificación mensual.",
       "monthly_silver": "Termina segundo en una clasificación mensual.",
       "monthly_bronze": "Termina tercero en una clasificación mensual."

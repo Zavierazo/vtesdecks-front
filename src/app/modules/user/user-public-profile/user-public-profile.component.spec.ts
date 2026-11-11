@@ -1,24 +1,31 @@
-import { OnDestroy } from '@angular/core'
-import { TestBed } from '@angular/core/testing'
-import { ActivatedRoute } from '@angular/router'
-import { ApiDeck, ApiDecks } from '@models'
+import { NO_ERRORS_SCHEMA } from '@angular/core'
+import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { ActivatedRoute, provideRouter } from '@angular/router'
+import { TranslocoTestingModule } from '@jsverse/transloco'
+import { ApiAchievementFamily, ApiDeck, ApiDecks } from '@models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { ApiDataService } from '@services'
+import { UserFollowButtonComponent } from '@shared/components/user-follow-button/user-follow-button.component'
 import { AuthQuery } from '@state/auth/auth.query'
 import { DecksQuery } from '@state/decks/decks.query'
 import { DecksService } from '@state/decks/decks.service'
 import { of, Subject } from 'rxjs'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import en from '../../../../assets/i18n/en.json'
 import { CollectionApiDataService } from '../../collection/services/collection-api.data.service'
 import { WishlistApiDataService } from '../../wishlist/services/wishlist-api.data.service'
 import { UserPublicProfileComponent } from './user-public-profile.component'
 
-describe('Public profile tournament decks', () => {
+describe('UserPublicProfileComponent', () => {
   const routes = new Subject<Record<string, unknown>>()
   const tournamentRequest = vi.fn()
   const communityInit = vi.fn()
   const modalOpen = vi.fn()
   const publicUser = vi.fn()
+  const signedInUser = vi.fn<() => string | undefined>()
+  const publicAchievements = vi.fn()
+  const myAchievements = vi.fn()
+  let fixture: ComponentFixture<UserPublicProfileComponent>
   let component: UserPublicProfileComponent
   let pages: Subject<ApiDecks>[]
   beforeEach(() => {
@@ -29,6 +36,9 @@ describe('Public profile tournament decks', () => {
       return page
     })
     communityInit.mockReset()
+    signedInUser.mockReset()
+    publicAchievements.mockReset().mockReturnValue(of([]))
+    myAchievements.mockReset().mockReturnValue(of([]))
     publicUser
       .mockReset()
       .mockReturnValue(of({ user: 'alice', roles: [], veknId: '00123' }))
@@ -39,19 +49,28 @@ describe('Public profile tournament decks', () => {
       },
     })
     TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: { en },
+          translocoConfig: { availableLangs: ['en'], defaultLang: 'en' },
+          preloadLangs: true,
+        }),
+      ],
       providers: [
+        provideRouter([]),
         { provide: ActivatedRoute, useValue: { data: routes } },
         {
           provide: ApiDataService,
           useValue: {
             getUserTournamentDecks: tournamentRequest,
             getPublicUser: publicUser,
-            getPublicUserAchievements: () => of([]),
+            getPublicUserAchievements: publicAchievements,
+            getMyAchievements: myAchievements,
           },
         },
         {
           provide: AuthQuery,
-          useValue: { getUser: () => undefined, selectAdmin: () => of(false) },
+          useValue: { getUser: signedInUser, selectAdmin: () => of(false) },
         },
         {
           provide: DecksService,
@@ -75,13 +94,14 @@ describe('Public profile tournament decks', () => {
         },
         { provide: NgbModal, useValue: { open: modalOpen } },
       ],
+    }).overrideComponent(UserPublicProfileComponent, {
+      remove: { imports: [UserFollowButtonComponent] },
+      add: { schemas: [NO_ERRORS_SCHEMA] },
     })
-    component = TestBed.runInInjectionContext(
-      () => new UserPublicProfileComponent(),
-    )
-    component.ngOnInit()
+    fixture = TestBed.createComponent(UserPublicProfileComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
   })
-  afterEach(() => (component as unknown as OnDestroy).ngOnDestroy())
   const visit = (user: string) => routes.next({ user: { user, roles: [] } })
   const page = (start: number, count: number, total: number) =>
     ({
@@ -137,4 +157,52 @@ describe('Public profile tournament decks', () => {
     component.loadMoreTournamentDecks()
     expect(tournamentRequest).toHaveBeenLastCalledWith('alice', 6, 6)
   })
+
+  it.each(['public', 'owner'])(
+    'uses the Anniversary date format for Advent on the %s profile',
+    (viewer) => {
+      const achievements: ApiAchievementFamily[] = [
+        {
+          id: 'advent_challenger',
+          icon: 'bi-gift',
+          repeatCount: 2,
+          tiers: [{ id: 'advent_challenger_1', threshold: 1, earned: true }],
+          earnedDates: [
+            new Date('2025-12-01T00:00:00Z'),
+            new Date('2026-12-04T00:00:00Z'),
+          ],
+        },
+        {
+          id: 'anniversary',
+          icon: 'bi-hourglass-split',
+          repeatCount: 1,
+          tiers: [{ id: 'anniversary_1', threshold: 1, earned: true }],
+          earnedDates: [new Date('2026-01-01T00:00:00Z')],
+        },
+      ]
+      const request = viewer === 'owner' ? myAchievements : publicAchievements
+      signedInUser.mockReturnValue(viewer === 'owner' ? 'alice' : undefined)
+      request.mockReturnValue(of(achievements))
+
+      visit('alice')
+      fixture.detectChanges()
+
+      expect(request).toHaveBeenCalledOnce()
+      const profile = fixture.nativeElement as HTMLElement
+      const [advent, anniversary] =
+        profile.querySelectorAll('.achievement-card')
+      expect(advent.querySelector('h5')?.textContent?.trim()).toBe(
+        'Advent Challenger',
+      )
+      expect(advent.querySelector('.badge')?.textContent?.trim()).toBe('×2')
+      expect(
+        Array.from(advent.querySelectorAll('details li'), (item) =>
+          item.textContent?.trim(),
+        ),
+      ).toEqual(['December 2025', 'December 2026'])
+      expect(anniversary.querySelector('details li')?.textContent?.trim()).toBe(
+        'January 2026',
+      )
+    },
+  )
 })

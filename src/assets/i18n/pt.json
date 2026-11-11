@@ -1765,6 +1765,8 @@
     "show_less": "Mostrar menos",
     "family": {
       "published_decks": "Construtor de decks",
+      "clan_explorer": "Explorador de clãs",
+      "tournament_champion": "Campeão de torneios",
       "deck_comments": "Voz da comunidade",
       "deck_appreciation": "Apreciação de decks",
       "community_favorite": "Favorito da comunidade",
@@ -1774,12 +1776,16 @@
       "consistent_contributor": "Colaborador constante",
       "collection_cards": "Colecionador de cartas",
       "anniversary": "Aniversário",
+      "advent_challenger": "Participante do Advento",
+      "advent_completionist": "Calendário do Advento completo",
       "monthly_gold": "Utilizador do mês",
       "monthly_silver": "Segundo lugar mensal",
       "monthly_bronze": "Pódio mensal"
     },
     "description": {
       "published_decks": "Publique decks da comunidade.",
+      "clan_explorer": "Publique baralhos com diferentes clãs principais nas suas criptas.",
+      "tournament_champion": "Vença torneios distintos com a sua identidade verificada no Archon.",
       "deck_comments": "Comente em decks de jogadores diferentes.",
       "deck_appreciation": "Receba apreciação de jogadores diferentes.",
       "community_favorite": "Faça jogadores diferentes guardarem os seus decks.",
@@ -1789,6 +1795,8 @@
       "consistent_contributor": "Some uma vez por cada mês com um deck publicado ou comentário.",
       "collection_cards": "Adicione cartas à sua coleção.",
       "anniversary": "Some uma vez por cada ano completo na comunidade.",
+      "advent_challenger": "Publique um baralho para pelo menos um desafio do Advento por edição.",
+      "advent_completionist": "Publique um baralho para cada um dos 24 desafios de uma edição do Advento.",
       "monthly_gold": "Termine em primeiro num ranking mensal.",
       "monthly_silver": "Termine em segundo num ranking mensal.",
       "monthly_bronze": "Termine em terceiro num ranking mensal."

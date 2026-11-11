@@ -1765,6 +1765,8 @@
     "show_less": "Afficher moins",
     "family": {
       "published_decks": "Constructeur de decks",
+      "clan_explorer": "Explorateur de clans",
+      "tournament_champion": "Champion de tournoi",
       "deck_comments": "Voix de la communauté",
       "deck_appreciation": "Decks appréciés",
       "community_favorite": "Favori de la communauté",
@@ -1774,12 +1776,16 @@
       "consistent_contributor": "Contributeur régulier",
       "collection_cards": "Collectionneur de cartes",
       "anniversary": "Anniversaire",
+      "advent_challenger": "Défi de l’Avent",
+      "advent_completionist": "Calendrier de l’Avent complet",
       "monthly_gold": "Utilisateur du mois",
       "monthly_silver": "Deuxième du mois",
       "monthly_bronze": "Podium mensuel"
     },
     "description": {
       "published_decks": "Publiez des decks communautaires.",
+      "clan_explorer": "Publiez des decks dont les cryptes ont des clans principaux différents.",
+      "tournament_champion": "Remportez différents tournois avec votre identité Archon vérifiée.",
       "deck_comments": "Commentez les decks de différents joueurs.",
       "deck_appreciation": "Recevez l'appréciation de différents joueurs.",
       "community_favorite": "Faites ajouter vos decks aux favoris.",
@@ -1789,6 +1795,8 @@
       "consistent_contributor": "Ajoutez un point pour chaque mois avec un deck publié ou un commentaire.",
       "collection_cards": "Ajoutez des cartes à votre collection.",
       "anniversary": "Ajoutez un point pour chaque année passée dans la communauté.",
+      "advent_challenger": "Publiez un deck pour au moins un défi de l’Avent par édition.",
+      "advent_completionist": "Publiez un deck pour chacun des 24 défis d’une édition de l’Avent.",
       "monthly_gold": "Terminez premier d'un classement mensuel.",
       "monthly_silver": "Terminez deuxième d'un classement mensuel.",
       "monthly_bronze": "Terminez troisième d'un classement mensuel."
