@@ -2,7 +2,7 @@ import { signal } from '@angular/core'
 import { convertToParamMap } from '@angular/router'
 import { ApiCrypt, ApiLibrary } from '@models'
 import { ApiCard } from '@models'
-import { firstValueFrom, of, Subject, throwError } from 'rxjs'
+import { BehaviorSubject, firstValueFrom, of, Subject, throwError } from 'rxjs'
 import { describe, expect, it, vi } from 'vitest'
 import { BuilderComponent } from './builder.component'
 
@@ -35,6 +35,50 @@ describe('Builder recommendation refresh', () => {
 })
 
 describe('Builder catalog initialization', () => {
+  it('keeps the editing session when a first save adds the deck ID to the URL', () => {
+    const queryParams = new BehaviorSubject(convertToParamMap({}))
+    let deckId: string | undefined
+    const init = vi.fn((id: string | undefined) => {
+      deckId = id
+      return of({ id })
+    })
+    const context = {
+      route: { queryParamMap: queryParams },
+      deckBuilderQuery: { getDeckId: () => deckId, getSaved: () => true },
+      deckBuilderService: { init, migrateLegacyDrafts: vi.fn() },
+      cryptService: { getCryptCards: () => of([]) },
+      libraryService: { getLibraryCards: () => of([]) },
+      initializing: signal(false),
+      form: { disable: vi.fn() },
+      onDeckLoaded: vi.fn(),
+      openLocalDrafts: vi.fn(),
+    }
+    const subscription = BuilderComponent.prototype.initDeck
+      .call(context as unknown as BuilderComponent)
+      .subscribe()
+
+    expect(init).toHaveBeenCalledTimes(1)
+    deckId = 'first-save'
+    queryParams.next(convertToParamMap({ id: deckId }))
+    expect(init).toHaveBeenCalledTimes(1)
+
+    queryParams.next(convertToParamMap({ id: 'another-deck' }))
+    expect(init.mock.calls.map(([id]) => id)).toEqual([
+      undefined,
+      'another-deck',
+    ])
+
+    // Cloning clears the store ID while the URL still points to the source deck.
+    deckId = undefined
+    queryParams.next(convertToParamMap({}))
+    expect(init.mock.calls.map(([id]) => id)).toEqual([
+      undefined,
+      'another-deck',
+      undefined,
+    ])
+    subscription.unsubscribe()
+  })
+
   it('waits for Advent initialization before updating the form or saving the draft', async () => {
     const previousState = history.state
     history.replaceState({ advent: 2026, day: 2 }, '')

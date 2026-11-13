@@ -7,14 +7,21 @@ import {
   ApiDeckLimitedFormat,
   ApiSuggestedCardsResponse,
   CryptFilter,
+  CryptSortBy,
   DeckCryptSortBy,
   DeckLibrarySortBy,
   LibraryFilter,
+  LibrarySortBy,
 } from '@models'
 import { CryptQuery } from '@state/crypt/crypt.query'
 import { LibraryQuery } from '@state/library/library.query'
 import { map, Observable } from 'rxjs'
 import { DeckBuilderQuery } from './deck-builder.query'
+
+interface PickerSort<Field> {
+  field: Field
+  direction: 'asc' | 'desc'
+}
 
 export interface DeckBuilderState {
   baseline?: ApiCard[]
@@ -30,9 +37,11 @@ export interface DeckBuilderState {
   cryptFilter: CryptFilter
   cryptErrors: string[]
   cryptSortBy: DeckCryptSortBy
+  cryptPickerSort: PickerSort<CryptSortBy>
   libraryFilter: LibraryFilter
   libraryErrors: string[]
   librarySortBy: DeckLibrarySortBy
+  libraryPickerSort: PickerSort<LibrarySortBy>
   saved: boolean
   suggestedCards?: ApiSuggestedCardsResponse | null
   collectionCards?: ApiCollectionCard[]
@@ -208,9 +217,11 @@ export class DeckBuilderStore {
       cryptFilter: this.cryptQuery.getDefaultCryptFilter(),
       cryptErrors: [],
       cryptSortBy: 'capacity',
+      cryptPickerSort: { field: 'relevance', direction: 'desc' },
       libraryFilter: this.libraryQuery.getDefaultLibraryFilter(),
       libraryErrors: [],
       librarySortBy: 'name',
+      libraryPickerSort: { field: 'relevance', direction: 'desc' },
       published: true,
       saved: true,
       collection: false,

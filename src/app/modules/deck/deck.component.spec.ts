@@ -30,6 +30,8 @@ import { DeckSnapshotService } from '../../services/deck-snapshot.service'
 
 describe('DeckComponent view tracking', () => {
   afterEach(() => {
+    localStorage.removeItem('deck-view-crypt-sort')
+    localStorage.removeItem('deck-view-library-sort')
     vi.useRealTimers()
     TestBed.resetTestingModule()
   })
@@ -157,6 +159,25 @@ describe('DeckComponent view tracking', () => {
       addVisitedDeck,
     }
   }
+
+  it('remembers each read-only card sort across deck pages and ignores unsupported values', () => {
+    const { component } = setup({ id: 'first' } as ApiDeck)
+    expect(component.sortByCrypt).toBe('capacity')
+    expect(component.sortByLibrary).toBe('name')
+    component.onChangeSortByCrypt('group')
+    component.onChangeSortByLibrary('quantity')
+
+    TestBed.resetTestingModule()
+    const second = setup({ id: 'second' } as ApiDeck).component
+    expect(second.sortByCrypt).toBe('group')
+    expect(second.sortByLibrary).toBe('quantity')
+
+    localStorage.setItem('deck-view-library-sort', JSON.stringify('group'))
+    TestBed.resetTestingModule()
+    const third = setup({ id: 'third' } as ApiDeck).component
+    expect(third.sortByCrypt).toBe('group')
+    expect(third.sortByLibrary).toBe('name')
+  })
 
   it('delegates saved owner visibility and excludes snapshots and other decks', async () => {
     const deck = { id: 'owned', owner: true, type: 'COMMUNITY' } as ApiDeck

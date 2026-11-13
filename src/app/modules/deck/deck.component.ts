@@ -69,6 +69,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ApiDataService,
   DeckHistoryService,
+  LocalStorageService,
   MediaService,
   PreviousRouteService,
   SeoService,
@@ -116,6 +117,9 @@ import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { FinalTableComponent } from './final-table/final-table.component'
+
+const CRYPT_SORT_KEY = 'deck-view-crypt-sort'
+const LIBRARY_SORT_KEY = 'deck-view-library-sort'
 
 @UntilDestroy()
 @Component({
@@ -212,6 +216,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
+  private readonly localStorageService = inject(LocalStorageService)
   private readonly injector = inject(Injector)
 
   isSnapshot = false
@@ -263,9 +268,17 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   cdnDomain = environment.cdnDomain
 
-  sortByCrypt: DeckCryptSortBy = 'capacity'
+  sortByCrypt = this.readSortPreference<DeckCryptSortBy>(
+    CRYPT_SORT_KEY,
+    'capacity',
+    ['capacity', 'name', 'quantity', 'clan', 'group'],
+  )
 
-  sortByLibrary: DeckLibrarySortBy = 'name'
+  sortByLibrary = this.readSortPreference<DeckLibrarySortBy>(
+    LIBRARY_SORT_KEY,
+    'name',
+    ['name', 'quantity'],
+  )
 
   displayMode$ = this.authQuery.selectDeckDisplayMode()
   displayModeOptions = [
@@ -696,10 +709,25 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onChangeSortByLibrary(sortBy: DeckLibrarySortBy): void {
     this.sortByLibrary = sortBy
+    this.localStorageService.setValue(LIBRARY_SORT_KEY, sortBy)
   }
 
   onChangeSortByCrypt(sortBy: DeckCryptSortBy): void {
     this.sortByCrypt = sortBy
+    this.localStorageService.setValue(CRYPT_SORT_KEY, sortBy)
+  }
+
+  private readSortPreference<Sort extends string>(
+    key: string,
+    fallback: Sort,
+    options: readonly Sort[],
+  ): Sort {
+    try {
+      const saved = this.localStorageService.getValue<unknown>(key)
+      return options.find((option) => option === saved) ?? fallback
+    } catch {
+      return fallback
+    }
   }
 
   deleteDeck(): void {

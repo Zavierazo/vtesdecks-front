@@ -104,8 +104,6 @@ export class LibraryBuilderComponent implements OnInit {
   isMobile$ = this.mediaService.observeMobile()
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   private limitTo = LibraryBuilderComponent.PAGE_SIZE
-  sortBy!: LibrarySortBy
-  sortByOrder!: 'asc' | 'desc'
   private suggestedCardIds: number[] = []
   private rankingStats!: LibraryStats
   readonly recommendations = toSignal(
@@ -148,11 +146,15 @@ export class LibraryBuilderComponent implements OnInit {
   ]
 
   get displayedSortBy(): string {
-    return this.sortByTrigramSimilarity ? 'relevance' : this.sortBy
+    return this.sortByTrigramSimilarity
+      ? 'relevance'
+      : this.deckBuilderQuery.getValue().libraryPickerSort.field
   }
 
   get displayedSortByOrder(): 'asc' | 'desc' {
-    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+    return this.sortByTrigramSimilarity
+      ? 'desc'
+      : this.deckBuilderQuery.getValue().libraryPickerSort.direction
   }
 
   private updateFilterChips(): void {
@@ -233,27 +235,28 @@ export class LibraryBuilderComponent implements OnInit {
         customLimitedFormat: undefined,
       }))
     }
-    this.sortBy = 'relevance'
-    this.sortByOrder = 'desc'
     this.initQuery()
   }
 
   onChangeSortBy(sortBy: string, event?: MouseEvent) {
     event?.preventDefault()
     event?.stopPropagation()
-    if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
+    const current = this.deckBuilderQuery.getValue().libraryPickerSort
+    let direction: 'asc' | 'desc' = 'asc'
+    if (current.field === sortBy) {
+      direction = current.direction === 'asc' ? 'desc' : 'asc'
     } else if (
       sortBy === 'relevance' ||
       sortBy === 'deckPopularity' ||
       sortBy === 'cardPopularity' ||
       sortBy === 'minPrice'
     ) {
-      this.sortByOrder = 'desc'
-    } else {
-      this.sortByOrder = 'asc'
+      direction = 'desc'
     }
-    this.sortBy = sortBy as LibrarySortBy
+    this.deckBuilderService.setLibraryPickerSort({
+      field: sortBy as LibrarySortBy,
+      direction,
+    })
     this.initQuery()
   }
 
@@ -297,13 +300,12 @@ export class LibraryBuilderComponent implements OnInit {
   }
 
   private updateQuery() {
+    const sort = this.deckBuilderQuery.getValue().libraryPickerSort
     this.library$ = this.libraryQuery
       .selectAll({
         filter: this.deckBuilderQuery.getLibraryFilter(),
-        sortBy: this.sortByTrigramSimilarity
-          ? 'trigramSimilarity'
-          : this.sortBy,
-        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : sort.field,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : sort.direction,
         stats: this.rankingStats,
         priorityIds: this.suggestedCardIds,
       })

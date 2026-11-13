@@ -39,7 +39,7 @@ import { CollectionQueryState } from '../../modules/collection/state/collection.
 import { LocalDeckDraftsService } from '../../services/local-deck-drafts.service'
 import { LibraryQuery } from '../library/library.query'
 import { DeckBuilderQuery } from './deck-builder.query'
-import { DeckBuilderStore } from './deck-builder.store'
+import { DeckBuilderState, DeckBuilderStore } from './deck-builder.store'
 @Injectable({ providedIn: 'root' })
 export class DeckBuilderService {
   private readonly store = inject(DeckBuilderStore)
@@ -453,6 +453,14 @@ export class DeckBuilderService {
 
   setLibrarySortBy(sortBy: DeckLibrarySortBy) {
     this.store.setLibrarySortBy(sortBy)
+  }
+
+  setCryptPickerSort(sort: DeckBuilderState['cryptPickerSort']): void {
+    this.store.update((state) => ({ ...state, cryptPickerSort: sort }))
+  }
+
+  setLibraryPickerSort(sort: DeckBuilderState['libraryPickerSort']): void {
+    this.store.update((state) => ({ ...state, libraryPickerSort: sort }))
   }
 
   validateDeck(retryAdvent = false): boolean {

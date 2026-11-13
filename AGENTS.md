@@ -125,6 +125,8 @@ Deck and picker quantities use `CardQuantityComponent` to display a number until
 
 Crypt and Library pickers reuse the browser filter-chip builders and sort control. Result counts cover all filtered matches before pagination; pagination must retain the captured recommendation ranking. Individual chip removal preserves other selections, and Reset retains the existing deck-derived initialization rules.
 
+The Deck Builder keeps four independent sort choices in its editing state, one for each deck card list and one for each card picker. They survive saves and picker reopenings and reset when opening a different deck or starting a new editing session. Picker filter resets retain the chosen field and direction. Plain-text name searches of at least four characters temporarily use best name match. The read-only deck view, including snapshots, remembers its Crypt and Library sort choices independently in browser storage.
+
 
 Crypt and Library list-row artwork uses the shared `CardArtBackgroundComponent` to clip canonical full-card images with CSS. It loads through `OfflineImagesService`, preserves the source-pixel crop rectangles and responsive background alignment, and hides unavailable artwork. List rows must not request separate `cropImage` assets.
 

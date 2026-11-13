@@ -3,7 +3,8 @@
     "version": "2.85.0",
     "date": "13th November, 2026",
     "changes": [
-      "<strong>Deck export filenames</strong> now include the deck name, the export format (Lackey, JOL or TWD) and the saved version number when available."
+      "<strong>Deck export filenames</strong> now include the deck name, the export format (Lackey, JOL or TWD) and the saved version number when available.",
+      "The <strong>Deck Builder</strong> remembers your Crypt and Library sort choices, including the card pickers, while you edit a deck. <strong>Read-only deck pages</strong> remember each section's last sort in your browser."
     ]
   },
   {

@@ -306,7 +306,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
       map((params) => params.get('id') || undefined),
       distinctUntilChanged(),
       switchMap((id) => {
-        if (initialized && id === this.deckBuilderQuery.getDeckId()) {
+        if (initialized && id && id === this.deckBuilderQuery.getDeckId()) {
           return EMPTY
         }
         initialized = true
