@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.85.0",
+    "date": "13th November, 2026",
+    "changes": [
+      "<strong>Deck export filenames</strong> now include the deck name, the export format (Lackey, JOL or TWD) and the saved version number when available."
+    ]
+  },
+  {
     "version": "2.84.0",
     "date": "31th October, 2026",
     "changes": [

@@ -36,6 +36,7 @@ import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
 import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
+import { DeckExportService } from '@deck-shared/deck-export.service'
 import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
@@ -201,6 +202,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly authService = inject(AuthService)
   private readonly toastService = inject(ToastService)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly deckExport = inject(DeckExportService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly previousRouteService = inject(PreviousRouteService)
   private readonly mediaService = inject(MediaService)
@@ -509,10 +511,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
     return getDisciplineIcon(discipline, superior)
   }
 
-  get exportUrl(): string {
-    return environment.api.baseUrl + '/decks/' + this.id + '/export'
-  }
-
   openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
     if (!this.cryptQuery.getEntity(card.id)) {
       // Loading...
@@ -565,6 +563,19 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onTag(tag: string): void {
     this.router.navigate(['/decks'], { queryParams: { tags: tag } })
+  }
+
+  onExportFile(type: string): void {
+    const deck = this.currentDeck
+    if (!this.isSnapshot && deck?.id === this.id) {
+      const canReadHistory =
+        deck.type === 'COMMUNITY' &&
+        (deck.owner === true || this.authQuery.isAdmin())
+      this.deckExport
+        .download(deck.id, type, deck.name, canReadHistory)
+        .pipe(untilDestroyed(this))
+        .subscribe()
+    }
   }
 
   onCopyToClipboard(type: string): void {

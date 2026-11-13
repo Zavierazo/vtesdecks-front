@@ -546,39 +546,33 @@
                         </button>
                         <div ngbDropdownMenu class="dropdown-menu">
                           <div class="dropdown-header">{{ t('file') }}</div>
-                          <a
+                          <button
                             ngbDropdownItem
                             class="text-black"
-                            [href]="exportUrl + '?type=LACKEY'"
-                            target="_blank"
-                            rel="noopener"
+                            (click)="onExportFile('LACKEY')"
                             gaEvent="export"
                             gaCategory="file_lackey"
                           >
                             <i class="bi bi-file-earmark me-2"></i>Lackey
-                          </a>
-                          <a
+                          </button>
+                          <button
                             ngbDropdownItem
                             class="text-black"
-                            [href]="exportUrl + '?type=JOL'"
-                            target="_blank"
-                            rel="noopener"
+                            (click)="onExportFile('JOL')"
                             gaEvent="export"
                             gaCategory="file_jol"
                           >
                             <i class="bi bi-file-earmark me-2"></i>JOL
-                          </a>
-                          <a
+                          </button>
+                          <button
                             ngbDropdownItem
                             class="text-black"
-                            [href]="exportUrl + '?type=TWD'"
-                            target="_blank"
-                            rel="noopener"
+                            (click)="onExportFile('TWD')"
                             gaEvent="export"
                             gaCategory="file_twd"
                           >
                             <i class="bi bi-file-earmark me-2"></i>TWD
-                          </a>
+                          </button>
                           <div class="dropdown-divider"></div>
                           <div class="dropdown-header">
                             {{ t('clipboard') }}

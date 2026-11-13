@@ -3,6 +3,7 @@ import { Clipboard } from '@angular/cdk/clipboard'
 import { DeckSnapshot } from '../../models/deck-snapshot'
 import { ShareDeckComponent } from '../deck-shared/share-deck/share-deck.component'
 import { DeckShareService } from '../../services/deck-share.service'
+import { DeckExportService } from '@deck-shared/deck-export.service'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -162,6 +163,7 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly deckExport = inject(DeckExportService)
 
   form!: FormGroup
   readonly initializing = signal(true)
@@ -771,27 +773,13 @@ export class BuilderComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onExportFile(type: string): void {
-    const deckId = this.deckBuilderQuery.getDeckId()!
-    this.apiDataService
-      .getExportDeck(deckId, type)
-      .pipe(
-        catchError(() => {
-          this.toastService.show(
-            this.translocoService.translate('deck_builder.export_error'),
-            { classname: 'bg-danger text-light', delay: 5000 },
-          )
-          return EMPTY
-        }),
-      )
-      .subscribe((data) => {
-        const blob = new Blob([data], { type: 'text/plain' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `deck_${deckId}_${type.toLowerCase()}.txt`
-        a.click()
-        URL.revokeObjectURL(url)
-      })
+    const { id, name, saved } = this.deckBuilderQuery.getValue()
+    if (id && saved) {
+      this.deckExport
+        .download(id, type, name, true)
+        .pipe(untilDestroyed(this))
+        .subscribe()
+    }
   }
 
   get descriptionControl(): FormControl<string> {
