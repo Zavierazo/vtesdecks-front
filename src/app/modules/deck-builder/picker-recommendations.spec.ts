@@ -19,6 +19,10 @@ import { LibraryStore } from '@state/library/library.store'
 import { SetQuery } from '@state/set/set.query'
 import { DeckBuilderQuery } from '@state/deck-builder/deck-builder.query'
 import { DeckBuilderService } from '@state/deck-builder/deck-builder.service'
+import {
+  DeckBuilderState,
+  DeckBuilderStore,
+} from '@state/deck-builder/deck-builder.store'
 import { BehaviorSubject, firstValueFrom, of } from 'rxjs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CryptBuilderComponent } from './crypt-builder/crypt-builder.component'
@@ -49,6 +53,12 @@ describe.each(['crypt', 'library'] as const)(
         filter = update(filter)
       }
       const builder = {
+        setCryptPickerSort: (sort: DeckBuilderState['cryptPickerSort']) => {
+          store.update((state) => ({ ...state, cryptPickerSort: sort }))
+        },
+        setLibraryPickerSort: (sort: DeckBuilderState['libraryPickerSort']) => {
+          store.update((state) => ({ ...state, libraryPickerSort: sort }))
+        },
         updateCryptFilter: updateFilter,
         updateLibraryFilter: updateFilter,
         resetCryptFilter: () => {
@@ -83,7 +93,10 @@ describe.each(['crypt', 'library'] as const)(
         getLibraryDisciplines: () => [],
         getCryptSects: () => [],
         selectSuggestedCards: () => suggestions,
-        getValue: () => ({ suggestedCards: suggestions.value }),
+        getValue: () => ({
+          ...store.getValue(),
+          suggestedCards: suggestions.value,
+        }),
       }
       TestBed.configureTestingModule({
         providers: [
@@ -137,6 +150,7 @@ describe.each(['crypt', 'library'] as const)(
       }))
       const cryptStore = TestBed.inject(CryptStore)
       const libraryStore = TestBed.inject(LibraryStore)
+      const store = TestBed.inject(DeckBuilderStore)
       await Promise.all([cryptStore.ready, libraryStore.ready])
       cryptStore.set(catalog as unknown as ApiCrypt[])
       libraryStore.set(catalog as unknown as ApiLibrary[])
@@ -166,7 +180,19 @@ describe.each(['crypt', 'library'] as const)(
           : librarySelect.mock.lastCall?.[0].stats?.total
       const changeRecommendations = () =>
         suggestions.next({ keyCrypt: [rec(59, 4)], keyLibrary: [rec(59, 4)] })
-      return { component, create, results, latestTotal, changeRecommendations }
+      const latestSort = () =>
+        kind === 'crypt'
+          ? cryptSelect.mock.lastCall?.[0]
+          : librarySelect.mock.lastCall?.[0]
+      return {
+        component,
+        create,
+        results,
+        latestTotal,
+        changeRecommendations,
+        latestSort,
+        store,
+      }
     }
 
     it('counts all matches independently of the loaded page', async () => {
@@ -264,6 +290,51 @@ describe.each(['crypt', 'library'] as const)(
       component.nameFormControl.setValue('')
       vi.advanceTimersByTime(500)
       expect((await results())[0]).toBe(59)
+    })
+
+    it('remembers the field and direction across picker opens and filter resets until the builder resets', async () => {
+      const { component, create, latestSort, store } = await setup()
+      const field = kind === 'crypt' ? 'group' : 'type'
+      component.onChangeSortBy(field)
+      component.onChangeSortBy(field)
+
+      const reopened = create()
+      expect(reopened.displayedSortBy).toBe(field)
+      expect(reopened.displayedSortByOrder).toBe('desc')
+      reopened.resetFilters()
+      expect(latestSort()).toMatchObject({ sortBy: field, sortByOrder: 'desc' })
+      const otherSort =
+        kind === 'crypt' ? 'libraryPickerSort' : 'cryptPickerSort'
+      expect(store.getValue()[otherSort]).toEqual({
+        field: 'relevance',
+        direction: 'desc',
+      })
+
+      store.reset()
+      create()
+      expect(latestSort()).toMatchObject({
+        sortBy: 'relevance',
+        sortByOrder: 'desc',
+      })
+    })
+
+    it('restores the chosen sort after clearing a best-name-match search', async () => {
+      const { component, latestSort } = await setup()
+      const field = kind === 'crypt' ? 'group' : 'type'
+      vi.useFakeTimers()
+      component.onChangeSortBy(field)
+      component.nameFormControl.setValue('Card 01')
+      vi.advanceTimersByTime(500)
+      expect(component.sortByTrigramSimilarity).toBe(true)
+      expect(latestSort()).toMatchObject({
+        sortBy: 'trigramSimilarity',
+        sortByOrder: 'desc',
+      })
+
+      component.nameFormControl.setValue('')
+      vi.advanceTimersByTime(500)
+      expect(component.sortByTrigramSimilarity).toBe(false)
+      expect(latestSort()).toMatchObject({ sortBy: field, sortByOrder: 'asc' })
     })
   },
 )

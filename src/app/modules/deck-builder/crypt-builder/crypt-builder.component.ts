@@ -102,8 +102,6 @@ export class CryptBuilderComponent implements OnInit {
   isMobile$ = this.mediaService.observeMobile()
   isMobileOrTablet$ = this.mediaService.observeMobileOrTablet()
   private limitTo = CryptBuilderComponent.PAGE_SIZE
-  sortBy!: CryptSortBy
-  sortByOrder!: 'asc' | 'desc'
   private suggestedCardIds: number[] = []
   private rankingStats!: CryptStats
   readonly recommendations = toSignal(
@@ -148,11 +146,15 @@ export class CryptBuilderComponent implements OnInit {
   ]
 
   get displayedSortBy(): string {
-    return this.sortByTrigramSimilarity ? 'relevance' : this.sortBy
+    return this.sortByTrigramSimilarity
+      ? 'relevance'
+      : this.deckBuilderQuery.getValue().cryptPickerSort.field
   }
 
   get displayedSortByOrder(): 'asc' | 'desc' {
-    return this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder
+    return this.sortByTrigramSimilarity
+      ? 'desc'
+      : this.deckBuilderQuery.getValue().cryptPickerSort.direction
   }
 
   private updateFilterChips(): void {
@@ -255,27 +257,28 @@ export class CryptBuilderComponent implements OnInit {
         ],
       }))
     }
-    this.sortBy = 'relevance'
-    this.sortByOrder = 'desc'
     this.initQuery()
   }
 
   onChangeSortBy(sortBy: string, event?: MouseEvent) {
     event?.preventDefault()
     event?.stopPropagation()
-    if (this.sortBy === sortBy) {
-      this.sortByOrder = this.sortByOrder === 'asc' ? 'desc' : 'asc'
+    const current = this.deckBuilderQuery.getValue().cryptPickerSort
+    let direction: 'asc' | 'desc' = 'asc'
+    if (current.field === sortBy) {
+      direction = current.direction === 'asc' ? 'desc' : 'asc'
     } else if (
       sortBy === 'relevance' ||
       sortBy === 'deckPopularity' ||
       sortBy === 'cardPopularity' ||
       sortBy === 'minPrice'
     ) {
-      this.sortByOrder = 'desc'
-    } else {
-      this.sortByOrder = 'asc'
+      direction = 'desc'
     }
-    this.sortBy = sortBy as CryptSortBy
+    this.deckBuilderService.setCryptPickerSort({
+      field: sortBy as CryptSortBy,
+      direction,
+    })
     this.initQuery()
   }
 
@@ -318,13 +321,12 @@ export class CryptBuilderComponent implements OnInit {
   }
 
   private updateQuery() {
+    const sort = this.deckBuilderQuery.getValue().cryptPickerSort
     this.crypt$ = this.cryptQuery
       .selectAll({
         filter: this.deckBuilderQuery.getCryptFilter(),
-        sortBy: this.sortByTrigramSimilarity
-          ? 'trigramSimilarity'
-          : this.sortBy,
-        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : this.sortByOrder,
+        sortBy: this.sortByTrigramSimilarity ? 'trigramSimilarity' : sort.field,
+        sortByOrder: this.sortByTrigramSimilarity ? 'desc' : sort.direction,
         crypt: this.rankingStats,
         priorityIds: this.suggestedCardIds,
       })

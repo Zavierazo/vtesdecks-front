@@ -36,6 +36,7 @@ import { CryptGridCardComponent } from '@deck-shared/crypt-grid-card/crypt-grid-
 import { CryptComponent } from '@deck-shared/crypt/crypt.component'
 import { DeckComparisonModalComponent } from '@deck-shared/deck-comparison-modal/deck-comparison-modal.component'
 import { DeckComparisonComponent } from '@deck-shared/deck-comparison/deck-comparison.component'
+import { DeckExportService } from '@deck-shared/deck-export.service'
 import { DisciplineTranslocoPipe } from '@deck-shared/discipline-transloco/discipline-transloco.pipe'
 import { LibraryListComponent } from '@deck-shared/library-list/library-list.component'
 import { PrintProxyModalComponent } from '@deck-shared/print-proxy-modal/print-proxy-modal.component'
@@ -68,6 +69,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import {
   ApiDataService,
   DeckHistoryService,
+  LocalStorageService,
   MediaService,
   PreviousRouteService,
   SeoService,
@@ -115,6 +117,9 @@ import { CommentsComponent } from '../comments/comments.component'
 import { DrawCardsComponent } from '../deck-builder/draw-cards/draw-cards.component'
 import { DeckCardComponent } from '../deck-card/deck-card.component'
 import { FinalTableComponent } from './final-table/final-table.component'
+
+const CRYPT_SORT_KEY = 'deck-view-crypt-sort'
+const LIBRARY_SORT_KEY = 'deck-view-library-sort'
 
 @UntilDestroy()
 @Component({
@@ -201,6 +206,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly authService = inject(AuthService)
   private readonly toastService = inject(ToastService)
   private readonly apiDataService = inject(ApiDataService)
+  private readonly deckExport = inject(DeckExportService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly previousRouteService = inject(PreviousRouteService)
   private readonly mediaService = inject(MediaService)
@@ -210,6 +216,7 @@ export class DeckComponent implements OnInit, AfterViewInit {
   private readonly clipboard = inject(Clipboard)
   private readonly translocoService = inject(TranslocoService)
   private readonly deckHistoryService = inject(DeckHistoryService)
+  private readonly localStorageService = inject(LocalStorageService)
   private readonly injector = inject(Injector)
 
   isSnapshot = false
@@ -261,9 +268,17 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   cdnDomain = environment.cdnDomain
 
-  sortByCrypt: DeckCryptSortBy = 'capacity'
+  sortByCrypt = this.readSortPreference<DeckCryptSortBy>(
+    CRYPT_SORT_KEY,
+    'capacity',
+    ['capacity', 'name', 'quantity', 'clan', 'group'],
+  )
 
-  sortByLibrary: DeckLibrarySortBy = 'name'
+  sortByLibrary = this.readSortPreference<DeckLibrarySortBy>(
+    LIBRARY_SORT_KEY,
+    'name',
+    ['name', 'quantity'],
+  )
 
   displayMode$ = this.authQuery.selectDeckDisplayMode()
   displayModeOptions = [
@@ -509,10 +524,6 @@ export class DeckComponent implements OnInit, AfterViewInit {
     return getDisciplineIcon(discipline, superior)
   }
 
-  get exportUrl(): string {
-    return environment.api.baseUrl + '/decks/' + this.id + '/export'
-  }
-
   openCryptCard(card: ApiCard, cardList: ApiCard[]): void {
     if (!this.cryptQuery.getEntity(card.id)) {
       // Loading...
@@ -565,6 +576,19 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onTag(tag: string): void {
     this.router.navigate(['/decks'], { queryParams: { tags: tag } })
+  }
+
+  onExportFile(type: string): void {
+    const deck = this.currentDeck
+    if (!this.isSnapshot && deck?.id === this.id) {
+      const canReadHistory =
+        deck.type === 'COMMUNITY' &&
+        (deck.owner === true || this.authQuery.isAdmin())
+      this.deckExport
+        .download(deck.id, type, deck.name, canReadHistory)
+        .pipe(untilDestroyed(this))
+        .subscribe()
+    }
   }
 
   onCopyToClipboard(type: string): void {
@@ -685,10 +709,25 @@ export class DeckComponent implements OnInit, AfterViewInit {
 
   onChangeSortByLibrary(sortBy: DeckLibrarySortBy): void {
     this.sortByLibrary = sortBy
+    this.localStorageService.setValue(LIBRARY_SORT_KEY, sortBy)
   }
 
   onChangeSortByCrypt(sortBy: DeckCryptSortBy): void {
     this.sortByCrypt = sortBy
+    this.localStorageService.setValue(CRYPT_SORT_KEY, sortBy)
+  }
+
+  private readSortPreference<Sort extends string>(
+    key: string,
+    fallback: Sort,
+    options: readonly Sort[],
+  ): Sort {
+    try {
+      const saved = this.localStorageService.getValue<unknown>(key)
+      return options.find((option) => option === saved) ?? fallback
+    } catch {
+      return fallback
+    }
   }
 
   deleteDeck(): void {

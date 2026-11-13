@@ -471,9 +471,13 @@ export class ApiDataService {
     )
   }
 
-  getDeckBuilderHistory(id: string): Observable<ApiDeckBuilderHistory[]> {
+  getDeckBuilderHistory(
+    id: string,
+    background = false,
+  ): Observable<ApiDeckBuilderHistory[]> {
     return this.httpClient.get<ApiDeckBuilderHistory[]>(
       `${environment.api.baseUrl}${this.userDeckBuilderPath}/${id}/history`,
+      { context: new HttpContext().set(BACKGROUND_REFRESH, background) },
     )
   }
 
